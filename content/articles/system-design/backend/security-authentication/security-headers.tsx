@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,21 +28,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Security headers</strong> are HTTP response headers that instruct the browser to enforce specific
           security controls — they are the first line of defense against web attacks (XSS, clickjacking, MIME
           sniffing, protocol downgrade). Security headers are sent by the server with every HTTP response and
           enforced by the browser — they do not require any client-side code or server-side processing beyond
           setting the header value.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Security headers are essential for any web application — without them, the browser&apos;s default behavior
           may allow attacks that security headers would prevent. For example, without Content-Security-Policy,
           the browser will execute any inline script (including injected XSS payloads); without
           Strict-Transport-Security, the browser may allow HTTP connections (enabling SSL stripping attacks);
           without X-Content-Type-Options, the browser may sniff MIME types (executing a file as JavaScript that
           was served as text/plain).
-        </p>
+        </HighlightBlock>
         <p>
           The evolution of security headers has been shaped by increasingly sophisticated attacks. Early headers
           (X-Frame-Options, X-XSS-Protection) were browser-specific and limited in scope. Modern headers
@@ -84,21 +88,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content-Security-Policy (CSP) is the most powerful security header — it controls which resources the
           browser can load and execute. CSP directives include script-src (controls script sources), style-src
           (controls style sources), img-src (controls image sources), frame-ancestors (controls iframe
           embedding), default-src (fallback for unspecified directives), and many others. A strict CSP
           (default-src &apos;self&apos;; script-src &apos;self&apos;) allows only same-origin resources, blocking all external and inline
           scripts — this prevents XSS because injected scripts cannot load or execute.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CSP has two modes: enforcing mode (Content-Security-Policy) blocks resources that violate the policy,
           and report-only mode (Content-Security-Policy-Report-Only) reports violations without blocking.
           Report-only mode is used to test new CSP policies before enforcing them — the browser sends violation
           reports to a specified endpoint (report-uri or report-to), allowing developers to identify and fix
           policy violations before enforcement.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/security-headers-diagram-1.svg"
           alt="HTTP security headers showing HSTS, CSP, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, and Permissions-Policy"
@@ -155,15 +162,18 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Security headers are set at the web server level (Nginx, Apache, Caddy) or CDN level (Cloudflare,
           Fastly, AWS CloudFront) — this ensures that headers are sent with every response, including static
           files, error pages, and redirects. The web server configuration includes add_header directives (Nginx)
           or Header set directives (Apache) that add the security headers to every response. The CDN configuration
           includes Transform Rules (Cloudflare) or Response Headers (CloudFront) that add the security headers
           before the response reaches the client.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The security header flow begins with the client sending a request to the server. The server processes
           the request and generates the response. Before sending the response, the web server adds the security
           headers (Strict-Transport-Security, Content-Security-Policy, X-Content-Type-Options, X-Frame-Options,
@@ -172,7 +182,7 @@ export default function ArticlePage() {
           future requests (HSTS), prevents MIME type sniffing (X-Content-Type-Options), prevents iframe embedding
           (X-Frame-Options), controls the Referrer header (Referrer-Policy), and restricts browser API access
           (Permissions-Policy).
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/security-headers-diagram-3.svg"
           alt="Security header implementation guide showing application, web server, and CDN levels, and security rating impact"
@@ -201,7 +211,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Strict CSP versus relaxed CSP is a trade-off between security and compatibility. A strict CSP
           (default-src &apos;self&apos;; script-src &apos;self&apos;) blocks all external and inline scripts — this provides maximum XSS
           protection but may break legitimate functionality (third-party widgets, analytics scripts, inline
@@ -209,8 +222,8 @@ export default function ArticlePage() {
           compatibility but provides less XSS protection. The recommended approach is to use a strict CSP with
           nonce-based allowances for specific inline scripts — this provides strong XSS protection while allowing
           legitimate inline scripts.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Application-level versus web server-level security headers is a trade-off between convenience and
           comprehensiveness. Application-level headers (set by the application framework) are convenient — they
           are set in the application code and version-controlled with the application. However, they only cover
@@ -218,7 +231,7 @@ export default function ArticlePage() {
           server. Web server-level headers are comprehensive — they cover all responses (application responses,
           static files, error pages, redirects). The recommended approach is web server-level headers for
           comprehensive coverage, with application-level headers as a fallback.
-        </p>
+        </HighlightBlock>
         <p>
           HSTS preload versus standard HSTS is a trade-off between first-visit security and irreversibility.
           HSTS preload ensures that the browser enforces HTTPS even on the first visit (before receiving the
@@ -244,19 +257,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Set security headers at the web server or CDN level — this ensures that headers are sent with every
           response, including static files, error pages, and redirects. Use Nginx add_header directives, Apache
           Header set directives, or CDN Transform Rules to add the headers. Do not rely on application-level
           headers alone — they do not cover static files, error pages, or redirects.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use a strict Content-Security-Policy — set default-src &apos;self&apos; to block all external resources by default,
           and explicitly allow only trusted sources (script-src &apos;self&apos;, style-src &apos;self&apos; &apos;unsafe-inline&apos;, img-src
           &apos;self&apos; https: data:). Avoid &apos;unsafe-inline&apos; and &apos;unsafe-eval&apos; — they allow inline scripts and eval(), which
           enable XSS. Use nonce-based allowances for specific inline scripts (script-src &apos;nonce-abc123&apos;) instead
           of &apos;unsafe-inline&apos;.
-        </p>
+        </HighlightBlock>
         <p>
           Enable HSTS with a max-age of at least 31536000 (1 year) and includeSubDomains — this forces the
           browser to use HTTPS for all future requests to the domain and its subdomains. Submit the domain to
@@ -284,20 +300,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using &apos;unsafe-inline&apos; in CSP is a common pitfall — it allows inline scripts, which enables XSS. Attackers
           can inject inline scripts into the page, and the browser will execute them because &apos;unsafe-inline&apos;
           allows all inline scripts. The fix is to remove &apos;unsafe-inline&apos; and use nonce-based allowances for
           specific inline scripts (script-src &apos;nonce-abc123&apos;). If inline scripts cannot be avoided (legacy code),
           use CSP report-only mode to identify and migrate inline scripts to external files.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not setting HSTS is a common pitfall — without HSTS, the browser may allow HTTP connections, enabling
           SSL stripping attacks (where an attacker intercepts the initial HTTP request and prevents the upgrade
           to HTTPS). The fix is to set Strict-Transport-Security with a max-age of at least 31536000 and
           includeSubDomains. Additionally, redirect all HTTP requests to HTTPS to ensure that users always
           connect over HTTPS.
-        </p>
+        </HighlightBlock>
         <p>
           Setting security headers only at the application level is a common pitfall — application-level headers
           only cover application responses, not static files, error pages, or redirects handled by the web
@@ -325,7 +344,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses strict security headers for its web application — Strict-Transport-Security
           (max-age=31536000; includeSubDomains; preload), Content-Security-Policy (default-src &apos;self&apos;; script-src
           &apos;self&apos; &apos;nonce-abc123&apos;; style-src &apos;self&apos; &apos;unsafe-inline&apos;; img-src &apos;self&apos; https: data:),
@@ -333,15 +355,15 @@ export default function ArticlePage() {
           and Permissions-Policy (camera=(), microphone=(), geolocation=()). The platform sets headers at the
           Nginx level (for comprehensive coverage) and monitors CSP violation reports. The platform achieves an
           A+ rating on Mozilla Observatory and Security Headers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses HSTS preload for its banking application — the domain is submitted
           to the HSTS preload list, ensuring that the browser enforces HTTPS even on the first visit. The company
           uses a strict CSP (default-src &apos;self&apos;; script-src &apos;self&apos;) and monitors CSP violation reports for
           potential XSS attempts. The company logs all CSP violations and alerts on anomalous patterns (multiple
           violations from the same IP, violations indicating injected scripts). The company achieves PCI-DSS
           compliance in part due to its security header controls.
-        </p>
+        </HighlightBlock>
         <p>
           A healthcare organization uses security headers for its patient portal — the organization sets headers
           at the Cloudflare level (for comprehensive coverage, including static files and error pages). The
@@ -365,14 +387,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is Content-Security-Policy, and how does it prevent XSS?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               CSP controls which resources the browser can load and execute — it uses directives (script-src, style-src, img-src) to specify allowed sources for each resource type. A strict CSP (default-src &apos;self&apos;; script-src &apos;self&apos;) allows only same-origin resources, blocking all external and inline scripts.
-            </p>
+            </HighlightBlock>
             <p>
               CSP prevents XSS because injected scripts cannot load or execute — the browser blocks any script that is not from an allowed source. Even if an attacker injects a script into the page, the browser will not execute it because the script is not from an allowed source (it is inline or from an external domain).
             </p>

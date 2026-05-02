@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Fault detection</strong> is the systematic practice of identifying when a component, service, or dependency has deviated from expected operational behavior. It is the foundational layer of any reliability strategy—without accurate and timely detection, no amount of automation, failover, or redundancy can prevent user impact. Fault detection answers the question "is something wrong?" before the system can answer "what should we do about it?"
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Fault detection is deceptively simple in theory ("monitor error rates, alert when high") but complex in practice. Without careful signal design, teams face alert fatigue from false positives, miss subtle failures due to false negatives, or chase symptoms rather than root causes. At production scale, fault detection requires multi-signal correlation, anomaly-aware thresholds, structured observability across logs, metrics, and traces, and well-designed alert pipelines that route the right signal to the right responder at the right time.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, fault detection requires balancing four competing concerns. <strong>Sensitivity</strong> means the system must detect real failures quickly—delays extend user impact and burn error budgets. <strong>Specificity</strong> means the system must avoid false positives—spurious alerts waste on-call time, create alert fatigue, and can trigger self-induced outages via unnecessary failover. <strong>Context</strong> means alerts must include actionable information, not just symptoms—responders need dependency health, saturation signals, and recent change history to diagnose quickly. <strong>Cost</strong> means observability infrastructure itself must not become a reliability risk—deep instrumentation consumes compute, network, and storage resources that must be budgeted.
         </p>
@@ -48,6 +52,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/reliability-fault-tolerance/fault-detection-patterns.svg"
@@ -56,12 +63,12 @@ export default function ArticlePage() {
         />
 
         <h3>Heartbeat Monitoring</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Heartbeat monitoring is the simplest fault detection pattern. A component periodically emits a signal ("I am alive") at a known interval. If the signal stops arriving within an expected window, the component is presumed failed. Heartbeats answer the binary question of liveness: is the process running and able to communicate?
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The critical design decision is the heartbeat interval and the failure detection threshold. Too frequent, and heartbeat traffic becomes overhead, especially at scale. Too infrequent, and detection latency is unacceptably long. A common pattern is a heartbeat every 5-10 seconds with failure declared after 3 missed beats (15-30 second detection window). For critical systems, use shorter intervals; for background workers, longer intervals are acceptable.
-        </p>
+        </HighlightBlock>
         <p>
           Heartbeat monitoring has inherent limitations. A process can be alive but unresponsive (deadlocked threads, saturated connection pools), or it can be alive but returning incorrect results (stale cache, data corruption). Heartbeats detect process death, not functional degradation. They must be combined with other signals—readiness probes, synthetic transactions, and SLO monitoring—to provide meaningful fault coverage.
         </p>
@@ -125,14 +132,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust fault detection architecture treats telemetry as a first-class pipeline with proper collection, processing, and alerting at each stage. The flow begins with instrumented services emitting metrics, structured logs, and distributed traces into a collection layer. These signals flow into a processing layer where aggregation, correlation, and anomaly detection occur. The evaluation layer applies detection rules—SLO burn rates, threshold crossings, anomaly scores—and produces alerts. The routing layer classifies severity, assigns teams, and delivers notifications with contextual runbooks.
-        </p>
+        </HighlightBlock>
 
         <h3>Signal Collection Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Instrumentation should be baked into the service framework, not bolted on as an afterthought. Use OpenTelemetry or equivalent standards for consistent metric naming, trace propagation, and log formatting across all services. Emit the four golden signals for every service: latency (p50, p95, p99), traffic (requests per second), errors (error rate by type), and saturation (CPU, memory, queue depth, connection pool usage). Collect logs in structured JSON format with consistent field names for service, level, trace ID, and error type. Propagate trace context across service boundaries using W3C Trace Context headers so that a single request can be traced end to end.
-        </p>
+        </HighlightBlock>
 
         <h3>Signal Processing and Correlation</h3>
         <p>
@@ -156,12 +166,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Fault detection involves fundamental trade-offs between detection speed, false positive rate, and operational cost. Aggressive detection with tight thresholds reduces mean time to detection but increases false positives. Each false page costs on-call focus, creates alert fatigue, and can trigger unnecessary failover that itself causes outages. Conservative detection with loose thresholds reduces noise but delays response, allowing errors to accumulate and error budgets to burn before anyone notices.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The staff-level approach uses a multi-tier alerting strategy. Page-worthy alerts use multi-signal confirmation and SLO burn rates—they fire rarely but always indicate real user impact. Ticket-worthy alerts use single-signal thresholds with longer windows—they flag emerging issues without paging. Dashboard-only signals provide continuous visibility without noise. This tiered approach balances sensitivity and specificity by applying different detection rigor to different response channels.
-        </p>
+        </HighlightBlock>
         <p>
           Observability depth is another trade-off. Deep instrumentation with distributed tracing, structured logging, and fine-grained metrics provides excellent detection coverage but consumes significant compute, storage, and network resources. Sampling reduces cost but introduces blind spots. The pragmatic approach is full metric coverage (cheap), sampled tracing (balance cost and visibility), and structured logs at warning level and above (expensive but necessary for investigation).
         </p>
@@ -172,12 +185,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Define primary and secondary signals for each critical service. Primary signals trigger incident response—typically SLO burn rate and user-visible error rates. Secondary signals validate and diagnose—saturation metrics, dependency health, and trace-based latency attribution. This separation ensures that the right signal triggers the right response and that responders have the context they need to diagnose quickly.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use SLO burn-rate alerts rather than static thresholds wherever possible. Burn-rate alerts translate raw metric values into error budget consumption, which directly maps to business urgency. A 14x burn rate pages immediately; a 1x burn rate creates a ticket. This approach naturally accounts for traffic level and focuses responders on what matters: user impact, not arbitrary metric values.
-        </p>
+        </HighlightBlock>
         <p>
           Every alert must have an associated runbook and a clear owner. The runbook should include the first three things to check, safe mitigation actions, dependency contacts, and exit criteria for resolution. Assign alert ownership to specific teams and enforce an on-call budget for alert volume—no team should receive more pages than they can meaningfully act on. Conduct quarterly alert reviews where each alert must justify its existence with a clear response playbook and demonstrated user impact correlation.
         </p>
@@ -191,12 +207,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most dangerous pitfall is relying on a single signal for detection. A service returning 200 status codes can still be failing—returning stale data, experiencing extreme tail latency, or silently dropping writes. Teams that monitor only error rates miss these failures entirely. Detection must include latency percentiles, saturation indicators, and progress signals such as queue depth and stuck workers to catch failures that do not manifest as HTTP errors.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Alert fatigue from noisy thresholds is a reliability risk in itself. When too many alerts fire, responders ignore all of them—including the ones that matter. The root cause is usually thresholds that do not account for traffic patterns, diurnal variation, or deployment-induced transient changes. The fix is multi-signal confirmation, SLO burn rates, and quarterly alert hygiene reviews where every alert must prove its value.
-        </p>
+        </HighlightBlock>
         <p>
           False negatives from undetected slow failures are equally dangerous. A gradual latency creep over weeks, a slow memory leak, or increasing data inconsistency may never cross a static threshold until the system collapses. Anomaly detection and trend analysis catch these slow failures, but many teams deploy only threshold-based monitoring and remain blind to gradual degradation until it becomes catastrophic.
         </p>
@@ -210,16 +229,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce: Detecting Payment Processing Failures</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce platform experienced intermittent payment processing failures that affected only 2 percent of transactions but went undetected for 45 minutes because the overall error rate stayed below the static threshold. The fix was implementing SLO burn-rate alerts on the payment funnel specifically, with segmentation by payment provider. When one provider started failing, the burn rate spiked immediately even though the aggregate error rate remained low. Detection time dropped from 45 minutes to under 2 minutes, and the team could route traffic to a backup provider before significant revenue loss occurred.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Platform: Multi-Tenant Latency Degradation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A B2B SaaS platform served hundreds of tenants from a shared infrastructure. A noisy neighbor caused latency degradation for a small subset of tenants while global p95 remained healthy. The fix was segmenting latency metrics by tenant tier and implementing anomaly detection on per-tenant latency distributions. The anomaly detection system flagged the deviation from normal patterns within minutes, allowing the team to isolate the noisy tenant and apply rate limiting before the degradation spread to other tenants.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Services: Anomaly Detection for Data Consistency</h3>
         <p>
@@ -237,14 +259,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How do you balance false positives versus false negatives in fault detection?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Use a multi-tier alerting strategy with different detection rigor for different response channels. Page-worthy alerts require multi-signal confirmation and SLO burn-rate thresholds—they fire rarely but always indicate real user impact. Ticket-worthy alerts use single-signal thresholds with longer evaluation windows—they flag emerging issues without paging. Dashboard-only signals provide continuous visibility without noise.
-            </p>
+            </HighlightBlock>
             <p>
               The key is mapping detection to consequence. False positives on pages create alert fatigue and can trigger self-induced outages via unnecessary failover. False negatives extend user impact silently. The right balance depends on how costly the outage is and how safe automation is for that specific failure mode. Review alert quality post-incident: was it actionable, did it map to a playbook, and did it indicate real user harm?
             </p>

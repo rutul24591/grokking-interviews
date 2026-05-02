@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function LSMTreesArticle() {
     <ArticleLayout metadata={metadata}>
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A Log-Structured Merge tree (LSM tree) is a write-optimized storage structure that buffers writes in a small in-memory component, periodically flushes them to immutable on-disk files, and merges those files in the background. Unlike a B-tree, which updates pages in place, an LSM tree never modifies an existing on-disk file — it only appends new ones and rewrites them during compaction. This converts what would be random-write workloads into sequential I/O patterns that match the strengths of both spinning disks and SSDs.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Patrick O&apos;Neil and collaborators introduced the LSM tree in 1996 as a multi-component structure for high-throughput insert workloads in transaction-processing systems. It moved from theoretical curiosity to dominant pattern via Google&apos;s Bigtable (2006), which used the design at planet scale, and Bigtable&apos;s open-source descendants — LevelDB (Google, 2011), HBase, and Cassandra. RocksDB (Facebook, 2012) forked LevelDB into the modern reference implementation, now embedded in MyRocks, CockroachDB&apos;s Pebble, TiKV, Kafka Streams state stores, and many others.
-        </p>
+        </HighlightBlock>
         <p>
           The pattern fits modern hardware: SSDs handle sequential writes efficiently while penalizing random writes with garbage-collection amplification; cloud object storage (S3) is fundamentally append-only. LSM trees were designed for spinning rust but turned out to be ideal for flash and cloud-native storage stacks. They underpin most write-heavy systems built in the last decade, from time-series databases (InfluxDB, TimescaleDB), to wide-column stores (Cassandra, HBase, ScyllaDB), to log-structured filesystems (BTRFS COW, F2FS).
         </p>
@@ -36,12 +40,15 @@ export default function LSMTreesArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The LSM architecture has three primary components. The <strong>MemTable</strong> is an in-memory sorted structure (typically a skip list, sometimes a B-tree or hash) that absorbs writes. A <strong>Write-Ahead Log</strong> (WAL) records every mutation before it lands in the MemTable, so a crash before MemTable flush can be recovered by replay. <strong>SSTables</strong> (Sorted String Tables) are immutable, sorted on-disk files holding (key, value) pairs along with index and Bloom-filter metadata.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           When the MemTable hits its size threshold (typically 64 MB), it&apos;s frozen, a new active MemTable takes over, and the frozen one flushes to disk as a new L0 SSTable. The WAL associated with the flushed MemTable is then truncated. This sequence — append to WAL, mutate MemTable, flush when full — converts every user-facing write into a small in-memory mutation plus a sequential disk append. No random-write disk pages, no in-place B-tree splits.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           The on-disk levels are organized so that newer writes sit at the top (L0) and older, larger merged data accumulates at lower levels. Each level is roughly 10× the size of the one above it. L0 SSTables can have overlapping key ranges (since they came from independent MemTable flushes). From L1 downward, SSTables within a level have non-overlapping ranges — an invariant maintained by compaction.
         </p>
@@ -54,12 +61,15 @@ export default function LSMTreesArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The write path is straightforward. A PUT(k, v) appends a record to the WAL (fsync depending on durability setting), then inserts into the MemTable&apos;s skip list. Both operations are O(log n) in memory. Deletes are not in-place removals; they write a <strong>tombstone</strong> — a sentinel record that masks any earlier value during reads and gets dropped during compaction once it&apos;s known no older snapshot needs the prior value.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The read path is more complex. To find a key, the engine checks the active MemTable, then any immutable MemTables awaiting flush, then SSTables level by level, newest first. At each SSTable, a Bloom filter check (typically ~1% false positive rate) eliminates most negative cases before any disk read. If the Bloom filter says &quot;maybe present,&quot; the index block (mapping key ranges to data-block offsets) is consulted, then the relevant data block is read. The first match wins — a tombstone short-circuits and returns &quot;not found.&quot;
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Compaction</strong> is the background process that bounds read amplification and reclaims space. The compactor selects SSTables (by policy) and rewrites them: merging overlapping key ranges, dropping tombstones older than the gc-grace window, and resolving duplicate keys (newest version wins). The result is fewer, larger, non-overlapping SSTables one level deeper. Without compaction, read amplification grows unbounded as L0 fills with hundreds of overlapping files.
         </p>
@@ -75,12 +85,15 @@ export default function LSMTreesArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           LSM trees optimize for writes; B+ trees optimize for reads. The numbers vary by workload, but as rough orders: LSM tree writes can be 10–100× cheaper than B+ tree writes for random insert/update workloads, while B+ tree point lookups are typically 1–3× faster than LSM lookups (more so without Bloom filters). Range scans favor neither inherently — both can be efficient when data is sorted, though B+ tree leaf-link traversal is slightly cheaper than LSM&apos;s merge-iterator over multiple SSTables.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The <strong>RUM Conjecture</strong> (Athanassoulis et al. 2016) frames the trade-off: any storage structure must compromise on at least one of Read amplification, Update cost, or Memory amplification. The intuition is that you cannot simultaneously minimize read-access cost, update cost, and memory overhead — optimizing any two forces a cost on the third. B+ trees minimize R but pay in U; LSMs minimize U but pay in R; in-memory hash tables minimize both R and U but pay in M. Engineering choices live on this triangle.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Compared with simple append-only logs (Kafka, write-ahead logs), LSM trees add the indexed-lookup capability — you can ask &quot;what is the current value for key K?&quot; rather than just replaying the log. The cost is the compaction machinery and the read-amplification overhead. Many systems combine both: Kafka for event streaming, an LSM-backed state store (RocksDB embedded in stream processors) for materialized views.
         </p>
@@ -91,9 +104,12 @@ export default function LSMTreesArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li><strong>Match compaction strategy to workload</strong>: leveled for read-heavy and small space budgets; tiered for write-heavy ingest; time-window (TWCS) for time-series with TTL; FIFO for purely append-only ring-buffer-like data.</li>
-          <li><strong>Tune Bloom filter bits per key</strong>. Default ~10 bits gives ~1% false-positive rate. Read-heavy workloads benefit from raising to 15-20 bits; pure write workloads can lower it to save memory.</li>
+          <HighlightBlock as="li" tier="important"><strong>Match compaction strategy to workload</strong>: leveled for read-heavy and small space budgets; tiered for write-heavy ingest; time-window (TWCS) for time-series with TTL; FIFO for purely append-only ring-buffer-like data.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Tune Bloom filter bits per key</strong>. Default ~10 bits gives ~1% false-positive rate. Read-heavy workloads benefit from raising to 15-20 bits; pure write workloads can lower it to save memory.</HighlightBlock>
           <li><strong>Size MemTables and L0 to balance write stalls</strong>. L0 holds at most ~4 SSTables in RocksDB before triggering write throttling — too small a MemTable means frequent flushes saturate the L0→L1 compactor.</li>
           <li><strong>Use compression at the block level</strong>. Snappy, LZ4, or Zstd cut SSTable size by 2-5× for typical text/JSON data, reducing both disk I/O and write amplification per logical byte.</li>
           <li><strong>Pin per-SSTable metadata</strong> (Bloom filter, index block) in the block cache. Hot SSTables&apos; metadata living in cache turns most lookups into a cache hit + at most one disk read.</li>
@@ -105,9 +121,12 @@ export default function LSMTreesArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li><strong>Write stalls under sustained ingest</strong>: when L0 fills faster than compaction can drain it, the engine throttles or stops writes. Symptoms: write latency spikes, then full stalls. Causes: undersized compaction thread pool, undersized memtable, slow disk. Fix: more compaction threads, faster storage, or back off ingest with rate limiting.</li>
-          <li><strong>Tombstone explosion</strong> (the &quot;Cassandra tombstone problem&quot;): heavy delete/TTL workloads accumulate tombstones that aren&apos;t collected until gc_grace_seconds passes (default 10 days in Cassandra). Reads against tombstone-heavy partitions slow drastically and may fail. Fix: shorten gc_grace where consistency allows, partition by time so TTL drops whole SSTables, or use TWCS.</li>
+          <HighlightBlock as="li" tier="important"><strong>Write stalls under sustained ingest</strong>: when L0 fills faster than compaction can drain it, the engine throttles or stops writes. Symptoms: write latency spikes, then full stalls. Causes: undersized compaction thread pool, undersized memtable, slow disk. Fix: more compaction threads, faster storage, or back off ingest with rate limiting.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Tombstone explosion</strong> (the &quot;Cassandra tombstone problem&quot;): heavy delete/TTL workloads accumulate tombstones that aren&apos;t collected until gc_grace_seconds passes (default 10 days in Cassandra). Reads against tombstone-heavy partitions slow drastically and may fail. Fix: shorten gc_grace where consistency allows, partition by time so TTL drops whole SSTables, or use TWCS.</HighlightBlock>
           <li><strong>Excessive write amplification</strong> from leveled compaction in write-heavy workloads. Symptom: SSD wear-out faster than expected. Fix: switch to tiered compaction, accept higher read amplification, or move to engines designed for low write amp (FoundationDB&apos;s Redwood, fractal trees).</li>
           <li><strong>Range scans missing the Bloom filter benefit</strong>: point-lookup Bloom filters don&apos;t help range scans. Without prefix Bloom filters configured, range scans must touch every SSTable in every level for every level boundary the range crosses.</li>
           <li><strong>fsync amplification</strong> in WAL: per-write fsync on slow disks dominates write latency. Group commit (batch many writes, fsync once) restores throughput at the cost of a small staleness window on crash.</li>
@@ -118,12 +137,15 @@ export default function LSMTreesArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Embedded key-value stores</strong>: RocksDB is the workhorse — embedded in MyRocks (Facebook&apos;s MySQL fork that replaces InnoDB), TiKV (TiDB&apos;s storage layer), CockroachDB Pebble, Apache Kafka Streams state stores, Apache Flink&apos;s RocksDBStateBackend, ScyllaDB&apos;s commitlog, and many others. LevelDB powers Bitcoin Core&apos;s chainstate database. RocksDB&apos;s tunability is a key reason it dominates.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Distributed databases</strong>: Apache Cassandra and ScyllaDB use LSM trees natively with size-tiered or time-window compaction. HBase uses LSM-style storage on top of HDFS. Apache Druid uses LSM-like immutable segments with background re-segmentation. CockroachDB and YugabyteDB layer SQL semantics over RocksDB-derived LSM storage.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Time-series databases</strong>: InfluxDB&apos;s TSM engine is an LSM variant tuned for time-series patterns. TimescaleDB layers time-partitioned hypertables over PostgreSQL B-trees but borrows LSM ideas for chunk merging. Prometheus&apos;s TSDB uses immutable per-block storage with periodic compaction analogous to LSM compaction.
         </p>
@@ -139,10 +161,13 @@ export default function LSMTreesArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Walk through what happens when a Cassandra cluster receives 100K writes/second sustained for an hour.</p>
-            <p className="mt-2 text-sm">A: Each node receives a portion of writes. For each: append to commitlog (WAL), insert into the in-memory MemTable. When the MemTable fills (typically 64 MB or threshold reached), it&apos;s flushed to a new SSTable on disk and the corresponding commitlog segments are recycled. Over an hour at this rate, hundreds of SSTables accumulate. The compaction strategy (size-tiered by default) periodically picks groups of similarly-sized SSTables and merges them into larger ones in higher tiers. If writes outpace compaction, the SSTable count grows and read latency degrades — eventually triggering throttling. Operators watch <code>nodetool tpstats</code> for CompactionExecutor pending counts and <code>nodetool compactionstats</code> to see if backlog is growing.</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Walk through what happens when a Cassandra cluster receives 100K writes/second sustained for an hour.</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">A: Each node receives a portion of writes. For each: append to commitlog (WAL), insert into the in-memory MemTable. When the MemTable fills (typically 64 MB or threshold reached), it&apos;s flushed to a new SSTable on disk and the corresponding commitlog segments are recycled. Over an hour at this rate, hundreds of SSTables accumulate. The compaction strategy (size-tiered by default) periodically picks groups of similarly-sized SSTables and merges them into larger ones in higher tiers. If writes outpace compaction, the SSTable count grows and read latency degrades — eventually triggering throttling. Operators watch <code>nodetool tpstats</code> for CompactionExecutor pending counts and <code>nodetool compactionstats</code> to see if backlog is growing.</HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: A team running RocksDB notices read latency degrading slowly over weeks despite stable write rate. What would you investigate?</p>

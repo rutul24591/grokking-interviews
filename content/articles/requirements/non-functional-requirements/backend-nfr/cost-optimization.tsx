@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function CostOptimizationArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cost optimization</strong> is the practice of minimizing infrastructure and operational
           costs while maintaining required performance, availability, and compliance standards. It is
           not about spending the least amount of money — it is about spending the right amount of money
           to achieve business objectives. Over-spending wastes resources that could be invested in
           product development; under-spending causes performance degradation, outages, and compliance
           failures that cost more in the long run.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cloud infrastructure costs grow with usage — as user base, data volume, and feature complexity
           increase, so does the cost of compute, storage, network, and managed services. Without active
           cost management, cloud costs typically grow 20-40% year-over-year, often outpacing revenue
           growth. Cost optimization is a continuous discipline that requires visibility into cost drivers,
           automation of cost-saving measures, and a culture of cost awareness across engineering teams.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, cost optimization architecture demonstrates
           business acumen, understanding of cloud pricing models, and the ability to balance technical
@@ -70,13 +74,16 @@ export default function CostOptimizationArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding cost optimization requires grasping several foundational concepts about cloud
           pricing models, resource efficiency, and cost governance.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cloud Pricing Models</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cloud providers offer multiple pricing models for compute resources. On-demand instances are
           pay-as-you-go with no commitment — the most flexible but most expensive option. Reserved
           instances require a 1- or 3-year commitment in exchange for 30-60% discount — ideal for
@@ -85,7 +92,7 @@ export default function CostOptimizationArticle() {
           fault-tolerant, batch, or stateless workloads. Savings plans are flexible commitments to
           a specific spend level (e.g., $10/hour) in exchange for discounted rates across instance
           families and regions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Resource Rightsizing</h3>
         <p>
@@ -111,10 +118,13 @@ export default function CostOptimizationArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cost optimization architecture spans resource management, pricing optimization, waste elimination,
           and cost governance.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/cost-optimization.svg"
@@ -123,14 +133,14 @@ export default function CostOptimizationArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Hybrid Capacity Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The optimal capacity strategy combines multiple pricing models: reserved instances for baseline
           capacity (predictable, long-lived workloads), on-demand instances for variable capacity
           (unpredictable spikes, new deployments), and spot instances for fault-tolerant workloads
           (batch processing, CI/CD runners, stateless microservices). The hybrid approach achieves
           40-60% cost savings compared to all on-demand, while maintaining reliability through capacity
           diversity.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Auto-Scaling for Cost Efficiency</h3>
         <p>
@@ -153,34 +163,37 @@ export default function CostOptimizationArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Pricing Model</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Pricing Model</th>
               <th className="p-3 text-left">Discount</th>
               <th className="p-3 text-left">Commitment</th>
               <th className="p-3 text-left">Best For</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>On-Demand</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>On-Demand</strong></td>
               <td className="p-3">0% (baseline)</td>
               <td className="p-3">None</td>
               <td className="p-3">Unpredictable workloads, testing, new deployments</td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Reserved (1yr)</strong></td>
               <td className="p-3">30-40%</td>
               <td className="p-3">1 year</td>
               <td className="p-3">Baseline capacity, predictable workloads</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Reserved (3yr)</strong></td>
               <td className="p-3">50-60%</td>
               <td className="p-3">3 years</td>
               <td className="p-3">Stable, long-lived workloads</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Spot</strong></td>
               <td className="p-3">70-90%</td>
@@ -200,9 +213,12 @@ export default function CostOptimizationArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Implement FinOps Governance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           FinOps governance establishes cost accountability across engineering teams. Assign cost owners
           to each service or team — the cost owner is responsible for monitoring their service&apos;s
           infrastructure costs, identifying optimization opportunities, and implementing cost-saving
@@ -210,17 +226,17 @@ export default function CostOptimizationArticle() {
           team, service, or project. Generate monthly cost reports that show each team&apos;s spending,
           trends, and optimization progress. Use cost reports in team retrospectives to drive cost
           awareness and continuous improvement.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Automate Waste Elimination</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Infrastructure waste accumulates silently — unused instances, unattached storage volumes,
           idle load balancers, and orphaned IP addresses. Automated waste elimination tools scan
           infrastructure daily, identify unused resources, and either notify owners or automatically
           delete resources that have been unused for a configurable period (30 days for development
           resources, 90 days for production resources). Automated waste elimination typically reduces
           infrastructure costs by 15-25% with zero impact on reliability.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Right-Size Continuously</h3>
         <p>
@@ -249,19 +265,22 @@ export default function CostOptimizationArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Premature Reserved Capacity Commitments</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Committing to reserved capacity before understanding usage patterns locks the organization
           into suboptimal capacity levels. If the service grows faster than expected, reserved capacity
           is insufficient and expensive on-demand or spot instances fill the gap at higher average cost.
           If the service grows slower than expected, reserved capacity is wasted. Wait 3-6 months of
           stable usage data before purchasing reserved capacity, and start with 1-year commitments
           (more flexible) before committing to 3-year terms.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Ignoring Hidden Costs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cloud billing has many line items beyond compute and storage — data transfer, API requests,
           monitoring, logging, security scanning, backup storage, and managed service fees. These
           &quot;hidden&quot; costs can account for 20-40% of total cloud spend. Monitor all cost
@@ -269,7 +288,7 @@ export default function CostOptimizationArticle() {
           unexpected increases. Many hidden costs are optimization opportunities — reducing log volume
           reduces both storage and data transfer costs, consolidating API calls reduces API request
           costs, and eliminating unused managed services reduces service fees.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Over-Optimizing at the Expense of Reliability</h3>
         <p>
@@ -295,9 +314,12 @@ export default function CostOptimizationArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Netflix — Spot Instance Orchestration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix runs 70%+ of its workloads on spot instances, achieving 60-70% cost savings compared
           to on-demand pricing. Netflix&apos;s spot instance orchestration system (EC2 Fleet) automatically
           provisions spot instances across multiple instance types and availability zones, monitors for
@@ -305,10 +327,10 @@ export default function CostOptimizationArticle() {
           when spot instances are reclaimed. Netflix&apos;s stateless microservices architecture is
           inherently fault-tolerant, making it ideal for spot instance usage — if an instance is
           reclaimed, the service continues running on other instances while a replacement is provisioned.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Airbnb — Storage Tiering at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Airbnb processes petabytes of data daily and stores exabytes of historical data. Without
           storage tiering, storage costs would grow linearly with data volume. Airbnb implements
           automated storage tiering — data accessed within the last 30 days stays in hot storage (SSD),
@@ -317,7 +339,7 @@ export default function CostOptimizationArticle() {
           storage (Deep Archive). Automated tiering reduces Airbnb&apos;s storage costs by 70% compared
           to keeping all data in hot storage, with no impact on user experience (data is automatically
           restored from archive when accessed).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Pinterest — Auto-Scaling Cost Efficiency</h3>
         <p>
@@ -346,19 +368,22 @@ export default function CostOptimizationArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cost optimization decisions have security implications — reducing capacity below requirements can cause security controls to fail, while eliminating redundancy can create single points of failure for security infrastructure.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Cost-Related Security Risks</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Security Control Degradation:</strong> Reducing capacity for security infrastructure (WAF, IDS/IPS, log aggregation) below requirements causes security controls to drop traffic or logs. Mitigation: exclude security infrastructure from cost optimization targets, maintain minimum capacity guarantees for security controls, monitor security control utilization separately.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Spot Instance Security:</strong> Spot instances may be reclaimed and reassigned to other customers — residual data on reclaimed instances could be exposed. Mitigation: use instance store encryption, wipe storage on termination, never store persistent data on spot instances, use EBS volumes with encryption for any stateful workloads.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Cost Alert Fatigue:</strong> Excessive cost alerts cause teams to ignore all alerts, including security-relevant cost anomalies (sudden increase in data transfer may indicate data exfiltration). Mitigation: tune cost alerts to reduce false positives, correlate cost anomalies with security events, prioritize alerts by severity and security impact.
             </li>
@@ -381,19 +406,22 @@ export default function CostOptimizationArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cost optimization must be validated through systematic testing — rightsizing accuracy, auto-scaling responsiveness, waste elimination correctness, and cost allocation accuracy must all be verified.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Cost Optimization Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Right-Sizing Validation:</strong> Compare recommended instance types against actual utilization over 30 days. Verify that rightsizing recommendations maintain utilization within target range (40-60%) after implementation. Test with traffic spikes to verify that rightsized instances have sufficient headroom.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Auto-Scaling Cost Efficiency:</strong> Simulate traffic patterns with known peak and trough periods. Verify that auto-scaling reduces capacity during trough periods and increases capacity before peak periods. Measure cost savings compared to static provisioning and verify that performance SLOs are maintained during scaling events.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Waste Elimination Safety:</strong> Verify that automated waste elimination does not delete resources that are actively in use. Test with resources that have intermittent usage patterns (weekly batch jobs, monthly reports) to verify that they are not incorrectly identified as unused. Verify that notification and grace period mechanisms function correctly before automated deletion.
             </li>

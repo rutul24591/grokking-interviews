@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function CSSVendorPrefixesArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>CSS vendor prefixes</strong> are browser-specific identifiers
           prepended to CSS property names and values that allow rendering
           engines to implement experimental or non-finalized CSS features
@@ -49,8 +53,8 @@ export default function CSSVendorPrefixesArticle() {
           Recommendation status. This mechanism allowed web developers to use
           cutting-edge features like CSS Grid, Flexbox, transforms, transitions,
           and animations years before they were formally standardized.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The vendor prefix system emerged in the early 2000s as a pragmatic
           solution to the tension between innovation speed and standards
           stability. Browser vendors wanted to experiment with new CSS features
@@ -61,7 +65,7 @@ export default function CSSVendorPrefixesArticle() {
           namespace. When the specification stabilized, browsers would add
           support for the unprefixed version and eventually deprecate the
           prefixed variant.
-        </p>
+        </HighlightBlock>
         <p>
           In practice, the vendor prefix system created significant problems.
           Developers often forgot to include all necessary prefixes, leading to
@@ -94,8 +98,11 @@ export default function CSSVendorPrefixesArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Rendering Engine Prefixes:</strong> Each major browser
             rendering engine has its own prefix: -webkit- for Blink (Chrome,
             Edge Chromium, Opera) and WebKit (Safari), -moz- for Gecko
@@ -104,8 +111,8 @@ export default function CSSVendorPrefixesArticle() {
             to which engine is essential for diagnosing rendering differences
             and for understanding why some -webkit- properties work in
             non-WebKit browsers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Autoprefixer:</strong> A PostCSS plugin that automatically
             adds and removes vendor prefixes based on the project&apos;s
             browserslist configuration. Autoprefixer uses data from Can I Use to
@@ -114,7 +121,7 @@ export default function CSSVendorPrefixesArticle() {
             management, eliminating manual prefix maintenance and ensuring
             completeness. Developers write standard, unprefixed CSS and
             Autoprefixer handles the compatibility layer at build time.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Prefix Lifecycle:</strong> A CSS feature&apos;s prefix
             lifecycle follows a predictable pattern: experimental (prefix-only
@@ -181,18 +188,21 @@ export default function CSSVendorPrefixesArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CSS vendor prefix management is primarily a build pipeline concern,
           with Autoprefixer automating the process. The following diagrams
           illustrate the architecture of prefix management at scale.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/web-standards-and-compatibility/css-vendor-prefixes-diagram-1.svg"
           alt="PostCSS pipeline showing CSS source flowing through nesting, custom properties, Autoprefixer, and minification stages"
           caption="Figure 1: PostCSS processing pipeline — how Autoprefixer fits within the broader CSS build pipeline."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The PostCSS pipeline processes CSS through a series of plugins, each
           performing a specific transformation. CSS source (written as standard,
           unprefixed CSS) enters the pipeline and flows through plugins in
@@ -205,7 +215,7 @@ export default function CSSVendorPrefixesArticle() {
           ensures that any CSS properties generated by earlier plugins also
           receive appropriate prefixes. The pipeline output is production-ready
           CSS with all necessary prefixes and no unnecessary ones.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/web-standards-and-compatibility/css-vendor-prefixes-diagram-2.svg"
@@ -252,6 +262,9 @@ export default function CSSVendorPrefixesArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr>
@@ -267,7 +280,7 @@ export default function CSSVendorPrefixesArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2">
                 Autoprefixer automation
               </td>
@@ -283,8 +296,8 @@ export default function CSSVendorPrefixesArticle() {
                 requirements, making debugging harder when Autoprefixer is not
                 available.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2">
                 Manual prefix management
               </td>
@@ -298,7 +311,7 @@ export default function CSSVendorPrefixesArticle() {
                 bugs, stale prefixes bloat CSS. Requires constant monitoring of
                 browser support changes. Not viable for large codebases.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="border border-theme p-2">
                 CSS-in-JS auto-prefixing
@@ -355,8 +368,11 @@ export default function CSSVendorPrefixesArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Use Autoprefixer as the sole prefix management mechanism:
             </strong>{" "}
@@ -366,8 +382,8 @@ export default function CSSVendorPrefixesArticle() {
             introduces inconsistency — some properties will have outdated
             prefixes while others miss necessary ones. Configure Autoprefixer in
             the PostCSS pipeline and write only standard, unprefixed CSS.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Align Autoprefixer&apos;s browserslist with your compatibility
               contract:
@@ -378,7 +394,7 @@ export default function CSSVendorPrefixesArticle() {
             build tools to ensure CSS and JavaScript compatibility targets are
             synchronized. Review and update the configuration quarterly using
             production analytics data.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Enable Autoprefixer&apos;s remove option:</strong> By
             default, Autoprefixer adds prefixes but also removes outdated ones
@@ -435,16 +451,19 @@ export default function CSSVendorPrefixesArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Writing vendor prefixes manually in source CSS:</strong>{" "}
             Manual prefix authoring is the most common source of prefix-related
             bugs. Developers forget prefixes for some browsers, include obsolete
             prefixes that inflate bundle size, and fail to update prefixes when
             browser support changes. The fix is simple and absolute: use
             Autoprefixer and never write a vendor prefix in source CSS.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Using only -webkit- prefixes:</strong> A historical
             anti-pattern where developers included only -webkit- prefixes
             because Chrome and Safari were the primary target browsers. This
@@ -453,7 +472,7 @@ export default function CSSVendorPrefixesArticle() {
             this compatibility layer exists, relying on it is fragile and does
             not cover all -webkit- properties. Autoprefixer adds all necessary
             prefixes automatically.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Assuming prefixed and unprefixed properties are identical:
@@ -504,7 +523,10 @@ export default function CSSVendorPrefixesArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Tailwind CSS and Autoprefixer integration:</strong> Tailwind
           CSS recommends Autoprefixer as a required PostCSS plugin in its
           installation guide. Tailwind generates utility classes with standard,
@@ -515,8 +537,8 @@ export default function CSSVendorPrefixesArticle() {
           configuration shared between Tailwind&apos;s CSS and the
           application&apos;s JavaScript bundler ensures consistent compatibility
           scope.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Bootstrap&apos;s prefix strategy evolution:</strong> Bootstrap
           transitioned from manually maintaining vendor prefixes in its Sass
           source to using Autoprefixer as part of its build pipeline. In earlier
@@ -527,7 +549,7 @@ export default function CSSVendorPrefixesArticle() {
           shift reduced maintenance burden and ensured that Bootstrap&apos;s CSS
           output remained compatible with each project&apos;s specific
           browserslist configuration.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Microsoft Teams&apos; IE 11 Grid support:</strong> When
           Microsoft Teams needed to support IE 11 (which only supports the old
@@ -556,28 +578,34 @@ export default function CSSVendorPrefixesArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CSS Vendor Prefixes introduce security considerations around experimental features and ensuring prefixed properties don't introduce vulnerabilities.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Vendor Prefix Security Patterns</h3>
-          <ul className="space-y-2">
-            <li>
-              <strong>Experimental Feature Security:</strong> Prefixed properties may have security implications. Mitigation: test prefixed features for security issues, avoid experimental features in security-critical contexts, implement Content Security Policy.
-            </li>
-            <li>
-              <strong>CSS Injection Prevention:</strong> User-controlled CSS can be exploited. Mitigation: sanitize user CSS input, use Content Security Policy, avoid eval() for CSS.
-            </li>
-          </ul>
-        </div>
+	          <h3 className="mb-4 text-lg font-semibold">Vendor Prefix Security Patterns</h3>
+	          <ul className="space-y-2">
+	            <HighlightBlock as="li" tier="important">
+	              <strong>Experimental Feature Security:</strong> Prefixed properties may have security implications. Mitigation: test prefixed features for security issues, avoid experimental features in security-critical contexts, implement Content Security Policy.
+	            </HighlightBlock>
+	            <HighlightBlock as="li" tier="important">
+	              <strong>CSS Injection Prevention:</strong> User-controlled CSS can be exploited. Mitigation: sanitize user CSS input, use Content Security Policy, avoid eval() for CSS.
+	            </HighlightBlock>
+	          </ul>
+	        </div>
       </section>
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CSS Vendor Prefixes performance depends on prefix count, CSS file size, and browser parsing overhead.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -590,16 +618,16 @@ export default function CSSVendorPrefixesArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">CSS File Size</td>
                 <td className="p-2">&lt;100KB gzipped</td>
                 <td className="p-2">Webpack Bundle Analyzer</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Prefix Overhead</td>
                 <td className="p-2">&lt;30% size increase</td>
                 <td className="p-2">CSS comparison</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Render Time</td>
                 <td className="p-2">&lt;16ms per frame</td>
@@ -612,9 +640,12 @@ export default function CSSVendorPrefixesArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CSS Vendor Prefixes have minimal direct costs but provide significant benefits for cross-browser compatibility.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
@@ -633,22 +664,25 @@ export default function CSSVendorPrefixesArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">When to Use Vendor Prefixes</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Use vendor prefixes when: (1) you need to support browsers without standard support, (2) you want to use cutting-edge CSS features, (3) you serve users with varying browser capabilities. Use Autoprefixer to automate prefix management.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What are CSS vendor prefixes, and why did the web standards
               community move away from them?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Vendor prefixes are browser-specific identifiers (-webkit-,
               -moz-, -ms-, -o-) prepended to CSS properties to namespace
               experimental implementations. They allowed browsers to ship early
@@ -661,7 +695,7 @@ export default function CSSVendorPrefixesArticle() {
               developers and browser vendors was unsustainable. Modern browsers
               now use feature flags for experimental CSS features, limiting
               experimental exposure to developers who explicitly opt in.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

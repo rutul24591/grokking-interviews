@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -86,9 +87,12 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Trigger Types &amp; Execution</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Trigger Timing: BEFORE, AFTER, INSTEAD OF</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>BEFORE triggers</strong> fire before the operation executes. Use for:
           <strong>Validation</strong> (reject invalid data), <strong>Modification</strong>
           (change data before insert/update). Example:
@@ -96,9 +100,9 @@ export default function ArticlePage() {
           FOR EACH ROW EXECUTE FUNCTION check_email_format()</code>. Trigger checks email
           format, raises exception if invalid (insert rejected). Benefits: prevent invalid
           data, modify data before storage. Trade-offs: adds latency to operation.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>AFTER triggers</strong> fire after the operation completes. Use for:
           <strong>Logging</strong> (record what changed), <strong>Notifications</strong>
           (alert on changes), <strong>Derived data</strong> (update totals). Example:
@@ -106,7 +110,7 @@ export default function ArticlePage() {
           EACH ROW EXECUTE FUNCTION log_new_order()</code>. Trigger inserts audit record
           (order was created). Benefits: operation already committed (can't rollback), access
           to final data. Trade-offs: can't prevent operation (only react).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>INSTEAD OF triggers</strong> replace the operation. Used primarily for
@@ -184,9 +188,12 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Audit &amp; Derived Data</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Audit Logging with Triggers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Triggers are ideal for <strong>audit logging</strong>: track all changes to
           sensitive tables. Create audit table: <code className="inline-code">CREATE TABLE
           audit_log (id SERIAL, table_name TEXT, operation TEXT, old_data JSONB, new_data
@@ -194,16 +201,16 @@ export default function ArticlePage() {
           (log_change from above). Create triggers for each table:
           <code className="inline-code">CREATE TRIGGER audit_users AFTER INSERT OR UPDATE
           OR DELETE ON users FOR EACH ROW EXECUTE FUNCTION log_change()</code>.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Benefits: <strong>Automatic</strong> (all changes logged, can't forget),
           <strong>Consistent</strong> (same logging for all operations),
           <strong>Complete</strong> (old and new values captured), <strong>Compliance</strong>
           (meets SOX, GDPR requirements). Trade-offs: <strong>Storage</strong> (audit table
           grows), <strong>Performance</strong> (extra INSERT per operation),
           <strong>Complexity</strong> (debugging trigger issues).
-        </p>
+        </HighlightBlock>
 
         <p>
           Best practices: <strong>Async logging</strong> (use queue, not direct INSERT),
@@ -281,19 +288,22 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Triggers vs Application Logic</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fundamental question: should logic be in triggers (database) or in application?
           Understanding the trade-offs helps you make the right choice.
-        </p>
+        </HighlightBlock>
 
         <h3>Trigger Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Automatic execution</strong> is the primary advantage. Triggers fire
           automatically—no application code needed. Can't forget to call trigger (it's
           automatic). Benefits: consistent behavior (all applications get same logic),
           can't bypass (trigger always fires).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Centralized logic</strong>: Define once, all applications inherit. No
@@ -410,18 +420,21 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Triggers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Keep triggers simple.</strong> Triggers should do one thing well (log
           change, update total). Complex logic belongs in application (easier to test,
           maintain). Limit: 10-20 lines of code per trigger.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Avoid recursion.</strong> Trigger A modifies table → triggers Trigger B
           → modifies table A → infinite loop. Solution: design carefully (no circular
           triggers), use recursion limits (max recursion depth), document trigger chains.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Document well.</strong> Document trigger purpose, timing (BEFORE/AFTER),
@@ -465,19 +478,22 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Complex logic in triggers.</strong> Putting business rules in triggers
           (hard to test, maintain, debug). Solution: Keep triggers simple (audit, derived
           data), put business logic in application.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Triggers calling triggers (recursion).</strong> Trigger A modifies table
           → triggers Trigger B → modifies table A → infinite loop. Solution: design carefully
           (no circular triggers), use recursion limits, document trigger chains, test for
           recursion.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Hidden side effects.</strong> Trigger does something unexpected (update
@@ -518,26 +534,29 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Audit Logging: Financial Transactions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Banking system uses triggers for audit logging:
           <code className="inline-code">CREATE TRIGGER audit_transactions AFTER INSERT OR
           UPDATE OR DELETE ON transactions FOR EACH ROW EXECUTE FUNCTION log_change()</code>.
           Every transaction change is logged (who, what, when, old/new values). Benefits:
           complete audit trail (compliance), automatic (can't forget), consistent (all
           changes logged).
-        </p>
+        </HighlightBlock>
 
         <h3>Derived Data: Order Total</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce maintains order total with trigger:
           <code className="inline-code">CREATE TRIGGER maintain_order_total AFTER INSERT
           OR UPDATE OR DELETE ON order_items FOR EACH ROW EXECUTE FUNCTION
           update_order_total()</code>. Order total is auto-updated when items change.
           Benefits: always current (no stale totals), fast queries (read total, don't
           aggregate), consistent (can't have mismatched total).
-        </p>
+        </HighlightBlock>
 
         <h3>Validation: Inventory Check</h3>
         <p>
@@ -563,13 +582,16 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: What are database triggers? When would you use them?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Triggers are automatic actions that execute in
               response to events (INSERT/UPDATE/DELETE) on a table. Types: BEFORE (fire
               before operation - validate/modify), AFTER (fire after - log/notify),
@@ -579,7 +601,7 @@ export default function ArticlePage() {
               bypass), notifications (alert on changes). Avoid for: business logic (hard
               to test/maintain), complex operations (slow triggers block), user-facing
               features (hard to iterate).
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What's the difference between ROW and STATEMENT
               level? Answer: ROW fires once per affected row (100 rows = 100 executions).

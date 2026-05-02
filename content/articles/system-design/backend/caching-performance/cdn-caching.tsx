@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A Content Delivery Network (CDN) is a geographically distributed network of edge nodes that cache content close to end users, reducing latency and shielding the origin server from traffic spikes. CDN caching extends the HTTP caching protocol with additional capabilities: global distribution logic, sophisticated cache key management, tag-based purge mechanisms, origin shielding, tiered caching hierarchies, and increasingly, edge compute capabilities that allow dynamic content personalization at the edge.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental value proposition of a CDN is twofold. First, it reduces user-perceived latency by serving content from an edge node that is physically closer to the user than the origin server. A request that would traverse 15 network hops and 80 milliseconds to reach the origin may be served from an edge node 2 hops and 5 milliseconds away. Second, it protects the origin from traffic surges by absorbing cacheable requests at the edge, allowing the origin to operate at a predictable, steady-state load regardless of traffic patterns. This shielding effect is critical for production systems where origin capacity is expensive and scaling the origin vertically or horizontally is slower than scaling the CDN edge, which is inherently elastic.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, CDN caching is a production-critical concern that intersects with architecture, security, cost, and user experience. A misconfigured CDN can serve stale content to millions of users, leak personalized data through incorrect cache key design, or cause origin outages through purge storms. Conversely, a well-architected CDN can reduce origin load by 80 to 95 percent, cut global latency in half, and provide a resilience layer that absorbs DDoS attacks and traffic spikes. The decisions around cache key design, purge strategy, TTL policy, and edge logic have lasting consequences that are difficult to reverse once traffic patterns and user expectations are established.
         </p>
@@ -39,12 +43,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CDN caching operates through several interconnected mechanisms that collectively determine cache hit rates, content freshness, and origin load. Understanding each mechanism and how they interact is essential for designing systems that leverage CDNs effectively.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Edge cache architecture is the foundation. A CDN consists of hundreds or thousands of edge nodes distributed across global points of presence (PoPs). Each edge node runs a caching proxy (typically a customized variant of Varnish, Nginx, or a proprietary implementation) that stores responses for cacheable requests. When a user request arrives, the CDN&apos;s DNS routing or anycast network directs the user to the nearest edge node. The edge node checks its local cache: on a hit, it serves the response immediately; on a miss, it fetches the response from the origin (or from a parent cache in a tiered architecture), caches it locally, and serves it to the user. The cache population decision is governed by cache-control headers from the origin, CDN-specific configuration rules, and the response&apos;s cacheability characteristics (status code, content type, presence of set-cookie headers).
-        </p>
+        </HighlightBlock>
         <p>
           Cache key design determines which requests map to the same cached response. The default cache key is typically the full URL including the query string, but production systems often require more nuanced key construction. The cache key may include or exclude specific query parameters (ignoring tracking parameters like utm_source while including pagination parameters like page and limit), specific request headers (Accept-Language for localized content, Accept-Encoding for compression variants), and device-classification headers (mobile vs. desktop rendering). An overly broad cache key — one that includes too many varying parameters — fragments the cache, reducing hit rates and increasing origin load. An overly narrow cache key — one that omits parameters that affect content — serves incorrect responses, potentially leaking personalized data between users. The cache key design must be precise, documented, and tested against real traffic patterns.
         </p>
@@ -58,9 +65,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production CDN architecture is a multi-layered system that routes user requests through edge nodes, optional shield tiers, and finally the origin, with cache decisions made at each layer based on cache-control headers, CDN configuration, and request characteristics.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/cdn-edge-architecture.svg`}
@@ -68,9 +78,9 @@ export default function ArticlePage() {
           caption="CDN request flow: user to edge node, optional shield tier, origin server, with cache population on miss"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The request flow begins with DNS resolution or anycast routing that directs the user to the nearest edge node. The edge node evaluates the request against its cache key configuration, computes the cache key, and checks its local cache store. On a cache hit, the edge node serves the cached response, adding headers such as Age (indicating how long the response has been cached) and X-Cache: HIT to the response. On a cache miss, the edge node forwards the request to the next tier — either a shield node or the origin — caches the response according to the cache-control headers, and serves it to the user with X-Cache: MISS headers.
-        </p>
+        </HighlightBlock>
         <p>
           The critical architectural decision is how cache-control headers from the origin interact with CDN-specific configuration overrides. Most CDNs allow you to override origin headers with CDN rules, which is both powerful and dangerous. Overriding a short origin max-age with a longer CDN TTL can improve hit rates but risks serving stale content. Overriding a long origin max-age with a shorter CDN TTL reduces staleness but increases origin load. The recommended approach is to have the origin set accurate cache-control headers that reflect the actual freshness requirements of each response, and to use CDN rules only for safety nets (for example, setting a maximum ceiling on TTL to prevent accidentally infinite caching of dynamic content) rather than for primary caching policy.
         </p>
@@ -104,17 +114,20 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Aspect</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Aspect</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3">
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3">
                 <strong>URL-Based Purge</strong>
               </td>
               <td className="p-3">
@@ -123,8 +136,8 @@ export default function ArticlePage() {
               <td className="p-3">
                 Impractical for bulk invalidation (one API call per URL). Requires knowing all affected URLs. Does not handle derived or related content.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Tag-Based Purge</strong>
               </td>
@@ -134,8 +147,8 @@ export default function ArticlePage() {
               <td className="p-3">
                 Tag cardinality affects performance (too many tags slows purge). Misconfigured tags cause mass eviction. Purge propagation takes longer than URL-based purge.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Origin Shielding</strong>
               </td>
@@ -145,7 +158,7 @@ export default function ArticlePage() {
               <td className="p-3">
                 Shield node is a potential bottleneck and single point of failure. Adds one network hop to cache-miss latency. Requires careful sizing of shield capacity.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Tiered Caching</strong>
@@ -174,13 +187,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Define a Canonical Cache Key Policy and Enforce It:</strong> Document exactly which URL components, query parameters, and headers are included in the cache key for each content class (static assets, API responses, HTML pages). Normalize URLs before computing the cache key: lowercase the path, sort query parameters, strip tracking parameters, and resolve path segments. Implement this normalization as a CDN rule that applies to all requests, and test it against real traffic logs to verify that it does not fragment the cache or merge distinct responses.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Tag-Based Purges with Rate Limiting and Approval:</strong> For content that changes frequently and affects multiple URLs (product updates, user profile changes), use tag-based purges with well-defined tag taxonomy. Rate-limit purge operations to prevent accidental or malicious mass eviction (for example, maximum 100 purge requests per minute). Require approval for purges that affect more than a threshold number of entries (for example, purges touching more than 10,000 cache entries require manual approval). Log all purge operations with the requester, timestamp, affected entries, and propagation status for auditability.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Enable Origin Shielding for All Traffic Paths:</strong> Configure an origin shield tier between the edge nodes and the origin server. The shield absorbs duplicate requests during purge events, cache warm-up periods, and traffic spikes, protecting the origin from thundering-herd scenarios. Size the shield capacity based on the peak concurrent cache-miss rate, not the total request rate, since the majority of requests should be served from the edge. Monitor shield hit ratio and origin request rate to ensure the shield is functioning correctly.
           </li>
@@ -198,13 +214,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Cache Fragmentation from Uncontrolled Query Parameters:</strong> When the CDN cache key includes all query parameters without filtering, tracking parameters (utm_source, fbclid, gclid) and session identifiers create unique cache entries for each user visit, destroying cache hit rates. The solution is to explicitly define an allowlist of query parameters that affect content and exclude all others from the cache key. Monitor cache key cardinality before and after applying the filter to verify the improvement.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Purge Storms Causing Origin Overload:</strong> A bulk purge that evicts millions of cache entries causes every edge node to simultaneously fetch from the origin, creating a thundering herd that can overwhelm the origin server. This is the most common CDN-related production incident. The solution is to use tag-based purges with rate limiting, enable origin shielding to absorb duplicate requests, and pre-warm critical content after purge events. Additionally, design the origin to handle cache-miss load gracefully with request coalescing (multiple concurrent requests for the same key are coalesced into a single origin fetch).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Leaking Personalized Data Through Incorrect Cache Keys:</strong> If the cache key does not include headers or cookies that differentiate personalized content, the CDN may serve one user&apos;s personalized data to another user. This is a critical security incident. The solution is to never cache responses that contain user-specific data unless the cache key explicitly includes the user identifier, or better yet, to mark personalized responses as private or no-store so that the CDN does not cache them at all. Use edge compute to assemble personalized fragments after the cached page loads rather than caching the personalized page itself.
           </li>
@@ -219,9 +238,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Media Streaming Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A video streaming service uses a CDN to cache video manifests, thumbnail images, and
           static assets across 200+ edge nodes globally. Video segments are cached with long TTLs
           (24 hours) and immutable URLs using versioned filenames, while manifests are cached with
@@ -230,10 +252,10 @@ export default function ArticlePage() {
           Origin shielding absorbs duplicate manifest requests during popular show launches. Tag-based
           purges invalidate manifests when new episodes are added, and pre-warming populates edge
           caches with new manifests before the official release time.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce Product Catalog</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce platform caches product pages, category listings, and product images at the
           CDN edge. Product images use immutable URLs with 1-year TTLs. Product pages use tag-based
           purges with tags such as product-123, category-electronics, and brand-nike to enable
@@ -241,7 +263,7 @@ export default function ArticlePage() {
           for localized content but excludes tracking parameters. During flash sales, the CDN absorbs
           95 percent of traffic, and the origin handles only cache misses and personalized cart
           operations. Rate-limited purges prevent accidental mass invalidation during catalog updates.
-        </p>
+        </HighlightBlock>
 
         <h3>Global News Publication</h3>
         <p>
@@ -284,14 +306,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q1: A CDN is serving an e-commerce site. After a product price update, some users still see the old price. Walk through the possible causes and how you would diagnose and fix each one.
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               There are several possible causes, each requiring a different diagnostic approach. First, the CDN edge cache may still hold the old response because its TTL has not expired. Diagnose this by checking the Age header on the response and comparing it to the expected max-age. Fix by issuing a tag-based purge for the affected product pages and setting a shorter max-age for price-sensitive content. Second, the browser cache may be serving the old response. Diagnose by checking the Cache-Control headers on the original response and verifying that the browser is respecting them. Fix by adding must-revalidate to the Cache-Control header for price-sensitive content, ensuring that the browser revalidates with the CDN before serving a cached response. Third, the purge may not have propagated to all edge nodes yet. Diagnose by checking the purge status API and sampling responses from different edge nodes. Fix by waiting for propagation to complete (typically seconds to minutes) and using the CDN&apos;s purge priority feature (if available) to prioritize the affected URLs. Fourth, the cache key may be incorrect, causing the purge to target the wrong entries. Diagnose by comparing the cache key used for the purge against the cache key used for the actual requests. Fix by normalizing the cache key configuration and ensuring that the purge uses the same key computation as the request path.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,14 +28,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>SQL Injection (SQLi)</strong> is a code injection attack where an attacker inserts malicious SQL
           statements into input fields, causing the database to execute unintended SQL commands. SQL injection
           exploits vulnerabilities that occur when user input is concatenated directly into SQL queries without
           proper sanitization or parameterization — the attacker&apos;s input becomes part of the SQL structure rather
           than just data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SQL injection is consistently ranked as the most dangerous web application vulnerability. According to
           OWASP, SQL injection is the number one risk in the OWASP Top 10 because it can lead to complete database
           compromise — an attacker can read, modify, or delete any data in the database, bypass authentication,
@@ -42,7 +46,7 @@ export default function ArticlePage() {
           of the database server. SQL injection has been responsible for some of the largest data breaches in
           history, including the 2008 Heartland Payment Systems breach (130 million credit cards) and the 2017
           Equifax breach (147 million records).
-        </p>
+        </HighlightBlock>
         <p>
           There are several types of SQL injection: in-band SQLi (the attacker receives results directly in the
           response, either through error messages or UNION-based extraction), blind SQLi (the attacker infers data
@@ -84,14 +88,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SQL injection occurs when user input is concatenated directly into SQL queries. For example:
           query = &quot;SELECT * FROM users WHERE username = &apos;&quot; + username + &quot;&apos; AND password = &apos;&quot; + password +
           &quot;&apos;&quot;. If the username input is &apos; OR &apos;1&apos;=&apos;1&apos; --, the resulting query becomes: SELECT * FROM users
           WHERE username = &apos;&apos; OR &apos;1&apos;=&apos;1&apos; -- &apos; AND password = &apos;...&apos;. The &apos;1&apos;=&apos;1&apos; condition is always true, so the
           query returns all users, and the attacker bypasses authentication.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Parameterized queries (prepared statements) are the primary defense against SQL injection. Instead of
           concatenating user input into the SQL query, the query uses placeholders (?) for user input, and the
           input is sent separately as parameters. For example: query = &quot;SELECT * FROM users WHERE username = ?&quot;
@@ -99,7 +106,7 @@ export default function ArticlePage() {
           data), then binds the parameters as literal values. Because the parameters are never part of the SQL
           structure, they cannot change the query&apos;s logic — even if the input contains SQL syntax, it is treated
           as data, not as SQL commands.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/sql-injection-prevention-diagram-1.svg"
           alt="SQL injection attack flow showing authentication bypass, data exfiltration, and blind SQL injection techniques"
@@ -146,21 +153,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The SQL injection prevention architecture consists of the parameterized query layer (which separates SQL
           structure from data), the ORM/query builder (which generates parameterized queries automatically), the
           input validator (which validates input before query execution), the database access control layer (which
           enforces least-privilege database accounts), and the WAF/monitoring layer (which detects and blocks SQL
           injection attempts). Each layer provides an independent defense, and together they provide comprehensive
           protection.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The parameterized query flow begins with the application receiving user input (form data, URL parameter,
           API request body). The application constructs a parameterized query (using placeholders for user input)
           and sends the query and parameters separately to the database. The database compiles the query structure
           first, binds the parameters, and executes the compiled query with the bound parameters. The parameters
           are treated as literal values, never as SQL commands.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/sql-injection-prevention-diagram-3.svg"
           alt="SQL injection defense-in-depth showing parameterized queries, ORM, least privilege, input validation, and WAF/monitoring layers"
@@ -196,7 +206,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Parameterized queries versus stored procedures is a trade-off between flexibility and control.
           Parameterized queries are flexible — they can be used for any SQL query, including complex joins,
           subqueries, and aggregations. Stored procedures encapsulate SQL logic on the database side, providing
@@ -204,8 +217,8 @@ export default function ArticlePage() {
           harder to test and debug, and can become a bottleneck if they contain complex logic. The recommended
           approach is parameterized queries in the application layer, with stored procedures only for
           database-specific optimizations (e.g., bulk operations, complex aggregations).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           ORM versus raw SQL is a trade-off between productivity and control. ORMs provide automatic
           parameterization, database abstraction (write once, run on any database), and productivity
           (less boilerplate code). However, ORMs can generate inefficient queries (N+1 queries, unnecessary
@@ -213,7 +226,7 @@ export default function ArticlePage() {
           over query performance and complexity but requires manual parameterization. The recommended approach is
           ORM for most queries (CRUD operations, simple joins) and raw parameterized queries for complex queries
           (reporting, analytics, bulk operations).
-        </p>
+        </HighlightBlock>
         <p>
           Input validation versus output encoding is a trade-off between prevention and mitigation. Input
           validation prevents malicious input from entering the system — it rejects obviously malicious content
@@ -238,17 +251,20 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use parameterized queries for all database queries — never concatenate user input into SQL queries. Use
           prepared statements (PreparedStatement in Java, cursor.execute(query, params) in Python,
           connection.query(query, params) in Node.js) for all queries that include user input. Parameterized
           queries are the single most effective defense against SQL injection.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use ORM methods (find, where, create, update, delete) for most queries — ORMs generate parameterized
           queries automatically, reducing the risk of SQL injection. Only use raw SQL methods when necessary
           (complex queries, reporting, analytics), and always parameterize raw SQL queries manually.
-        </p>
+        </HighlightBlock>
         <p>
           Use least-privilege database accounts — the application should connect to the database using a dedicated
           account with only the permissions necessary for its function. Read-only accounts for read-only queries,
@@ -280,18 +296,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Concatenating user input into SQL queries is the most common SQL injection pitfall. Even if the input
           is validated or sanitized, concatenation is vulnerable to SQL injection — attackers can bypass
           validation using encoding tricks, alternative syntaxes, or novel attack patterns. The fix is to use
           parameterized queries — never concatenate user input into SQL queries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using raw SQL methods in ORM without parameterization is a common pitfall. ORM raw SQL methods
           (find_by_sql, raw(), execute()) do not automatically parameterize — if you concatenate user input into
           raw SQL, it is vulnerable to SQL injection. The fix is to use parameterized raw SQL methods
           (find_by_sql with params, raw() with bindings, execute() with parameters).
-        </p>
+        </HighlightBlock>
         <p>
           Using stored procedures with dynamic SQL is a common pitfall. Stored procedures that construct dynamic
           SQL (EXEC, EXECUTE IMMEDIATE, sp_executesql with concatenated input) are vulnerable to SQL injection.
@@ -317,7 +336,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses parameterized queries for all database queries — the application uses
           PreparedStatement (Java) for all queries that include user input (search, login, checkout, profile
           updates). The platform uses ORM (Hibernate) for CRUD operations and raw parameterized queries for
@@ -325,14 +347,14 @@ export default function ArticlePage() {
           has SELECT, INSERT, UPDATE, DELETE permissions on application tables, but no DROP, ALTER, or GRANT
           permissions. The platform monitors database queries for anomalous patterns and alerts on SQL injection
           attempts.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses ORM (SQLAlchemy) for most database queries, with raw parameterized
           queries for complex reporting and analytics. The company uses least-privilege database accounts — the
           application account has SELECT permissions on a read-only replica for read queries, and SELECT, INSERT,
           UPDATE permissions on the primary database for write queries. The company monitors database queries and
           WAF logs for SQL injection attempts and has an incident response plan for SQL injection breaches.
-        </p>
+        </HighlightBlock>
         <p>
           A healthcare organization uses parameterized queries for all database queries in its patient management
           system — the application uses cursor.execute(query, params) (Python) for all queries that include user
@@ -356,14 +378,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How do parameterized queries prevent SQL injection?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Parameterized queries separate SQL structure from data. The database compiles the SQL query structure first (without any user data), then binds user input as parameters. Because the parameters are never part of the SQL structure, they cannot change the query&apos;s logic — even if the input contains SQL syntax, it is treated as data, not as SQL commands.
-            </p>
+            </HighlightBlock>
             <p>
               For example, if the query is &quot;SELECT * FROM users WHERE username = ?&quot; and the input is &apos; OR &apos;1&apos;=&apos;1&apos; --, the database treats the input as a literal string value (the username is literally &apos; OR &apos;1&apos;=&apos;1&apos; --), not as SQL logic. The query searches for a user with that exact username, which does not exist, and returns no results.
             </p>

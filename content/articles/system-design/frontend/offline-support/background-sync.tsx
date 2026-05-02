@@ -249,6 +249,15 @@ export default function BackgroundSyncConciseArticle() {
           Understanding its trade-offs relative to alternatives is essential for
           making sound architectural decisions:
         </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Interview framing: Background Sync gives “eventual delivery” for mutations when the page is gone. The
+          trade-offs are limited control and limited observability; your design must add idempotency and user-facing
+          state.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Another trade-off: browser support is limited (primarily Chromium). A robust design always includes
+          feature detection and a fallback replay loop (online/visibility events) so reliability isn’t vendor-locked.
+        </HighlightBlock>
 
         <div className="my-6 overflow-x-auto">
           <table className="w-full border-collapse text-sm">
@@ -593,7 +602,7 @@ export default function BackgroundSyncConciseArticle() {
               Q: Design a reliable offline form submission system using
               Background Sync.
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The system has four layers. First, an{" "}
               <strong>outbox layer</strong>: when the user submits, serialize
               the full request (URL, method, headers, body, and a
@@ -612,7 +621,7 @@ export default function BackgroundSyncConciseArticle() {
               message from the SW. Edge cases to address: outbox quota limits,
               captive portal detection, and <code>event.lastChance</code>{" "}
               handling for permanent failures.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -647,8 +656,12 @@ export default function BackgroundSyncConciseArticle() {
 
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          For interviews, cite the spec/MDN for the contract, and pair it with web.dev guidance for real-world
+          offline patterns (outbox, retries, and sync UX).
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.chrome.com/blog/background-sync"
               className="text-accent hover:underline"
@@ -657,8 +670,8 @@ export default function BackgroundSyncConciseArticle() {
             >
               Google Chrome Blog — Introducing Background Sync
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://wicg.github.io/background-sync/spec/"
               className="text-accent hover:underline"
@@ -667,8 +680,8 @@ export default function BackgroundSyncConciseArticle() {
             >
               WICG Background Sync Specification
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/Background_Synchronization_API"
               className="text-accent hover:underline"
@@ -677,7 +690,7 @@ export default function BackgroundSyncConciseArticle() {
             >
               MDN — Background Synchronization API
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://web.dev/articles/offline-cookbook"
@@ -688,7 +701,7 @@ export default function BackgroundSyncConciseArticle() {
               web.dev — The Offline Cookbook
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://jakearchibald.com/2014/offline-cookbook/"
               className="text-accent hover:underline"
@@ -698,7 +711,7 @@ export default function BackgroundSyncConciseArticle() {
               Jake Archibald — Offline Cookbook (original, with Background Sync
               patterns)
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

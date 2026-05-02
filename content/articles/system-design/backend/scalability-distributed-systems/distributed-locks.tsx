@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -40,7 +41,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>distributed lock</strong> is a synchronization primitive
           that ensures mutual exclusion across multiple processes or services
           that do not share memory. In a single-process application, a mutex
@@ -51,8 +55,8 @@ export default function ArticlePage() {
           process can access a shared resource (a database row, a file, a
           counter, an external API) at a time, even when the processes are
           running on different machines in different data centers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Distributed locks are fundamentally harder to implement correctly
           than in-process mutexes because they must handle network partitions,
           clock skew, process crashes, and garbage collection pauses — failure
@@ -65,7 +69,7 @@ export default function ArticlePage() {
           garbage collection pause may cause a process to hold the lock longer
           than its lease time, allowing another process to acquire the lock and
           access the resource concurrently.
-        </p>
+        </HighlightBlock>
         <p>
           The two most widely deployed distributed lock implementations are{" "}
           <strong>Redis-based locks</strong> (using the Redlock algorithm,
@@ -97,8 +101,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fundamental property of a distributed lock is{" "}
           <strong>mutual exclusion</strong> — at any point in time, at most one
           process holds the lock for a given resource. This property must be
@@ -110,9 +117,9 @@ export default function ArticlePage() {
           instances in Redlock). In ZooKeeper, the lock service is the ZooKeeper
           ensemble (a consensus-based cluster that provides a consistent view
           of the lock state).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>TTL-based leases</strong> are the primary mechanism for
           preventing deadlocks when a lock holder crashes. Instead of acquiring
           a lock indefinitely, the client acquires a <em>lease</em> — a
@@ -125,7 +132,7 @@ export default function ArticlePage() {
           short, and the client may lose the lock during a temporary slowdown
           (e.g., a garbage collection pause); too long, and other clients must
           wait too long for the lock if the holder crashes.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Fencing tokens</strong> are the primary mechanism for
@@ -182,6 +189,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/distributed-locks-diagram-1.svg"
@@ -189,7 +199,7 @@ export default function ArticlePage() {
           caption="Lock lifecycle — client acquires lock with TTL, performs exclusive operation, and releases; if the client crashes, the TTL auto-releases the lock"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The lock acquisition flow begins with the client sending a lock
           request to the lock service. The request includes the resource
           identifier (e.g., <code>/resource/X</code>), the desired TTL (e.g.,
@@ -202,9 +212,9 @@ export default function ArticlePage() {
           the <code>SET NX</code> command returns failure) or queues the
           request and notifies the client when the lock becomes available (in
           ZooKeeper, the client waits for a watch notification).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Once the client holds the lock, it performs its exclusive operation
           on the protected resource. The client must complete the operation
           within the TTL — if the operation takes longer than the TTL, the lock
@@ -217,7 +227,7 @@ export default function ArticlePage() {
           believes it still holds the lock (because its renewal was delayed),
           the resource will reject its operations if the token is lower than the
           highest token the resource has seen.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/distributed-locks-diagram-2.svg"
@@ -249,8 +259,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The choice of distributed lock implementation involves trade-offs
           across latency, fairness, fault tolerance, and operational complexity.
           Redis locks (single instance) are the simplest to deploy and provide
@@ -268,20 +281,20 @@ export default function ArticlePage() {
           provide linearizable locks (using the Raft consensus protocol) with
           moderate latency (5–15 ms) and strong consistency, but they require
           an etcd cluster.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Property</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Property</th>
               <th className="p-3 text-left">Redis (Single)</th>
               <th className="p-3 text-left">Redis Redlock</th>
               <th className="p-3 text-left">ZooKeeper</th>
               <th className="p-3 text-left">etcd</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Latency</strong>
               </td>
@@ -291,8 +304,8 @@ export default function ArticlePage() {
               <td className="p-3">5–50 ms</td>
               <td className="p-3">5–20 ms</td>
               <td className="p-3">5–15 ms</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Fault Tolerance</strong>
               </td>
@@ -306,7 +319,7 @@ export default function ArticlePage() {
               <td className="p-3">
                 Up to f of 2f+1 cluster
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Fairness</strong>
@@ -342,8 +355,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Always use fencing tokens to protect the resource from stale clients.
           The lock service returns a monotonically increasing token with each
           lock grant, and the client includes this token in every operation on
@@ -354,9 +370,9 @@ export default function ArticlePage() {
           Without fencing tokens, distributed locks provide mutual exclusion
           only under normal conditions — they fail to protect the resource under
           network partitions, clock skew, or garbage collection pauses.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choose the TTL carefully based on the expected operation duration and
           the system&apos;s failure modes. The TTL should be long enough to
           cover the expected operation duration plus a safety margin (e.g., 2–3×
@@ -368,7 +384,7 @@ export default function ArticlePage() {
           (batch processing, data migrations). The client should renew the lock
           (extend the TTL) periodically (every half-TTL) if the operation is
           still in progress, to prevent the lock from expiring.
-        </p>
+        </HighlightBlock>
 
         <p>
           Use ZooKeeper sequential locks when fair ordering is important (e.g.,
@@ -417,8 +433,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Using a distributed lock when a simpler approach would suffice is a
           common anti-pattern. Distributed locks are complex, error-prone, and
           introduce a single point of coordination (the lock service). Before
@@ -430,9 +449,9 @@ export default function ArticlePage() {
           concurrent writes without corruption, because the writes are
           idempotent). Distributed locks should be a last resort, not a first
           choice.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Not handling the case where the lock holder crashes without releasing
           the lock is a critical error. If the lock does not have a TTL (or an
           equivalent auto-release mechanism), the lock is held indefinitely,
@@ -442,7 +461,7 @@ export default function ArticlePage() {
           The TTL must be chosen carefully — too short, and the lock may expire
           during a temporary slowdown; too long, and other clients must wait
           too long for the lock if the holder crashes.
-        </p>
+        </HighlightBlock>
 
         <p>
           Releasing a lock that the client no longer holds is a subtle bug that
@@ -494,8 +513,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-world Use Cases */}
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           GitHub uses Redis-based distributed locks for its repository
           maintenance operations (garbage collection, repacking, and index
           updates). Each repository has its own lock key (e.g.,{" "}
@@ -508,9 +530,9 @@ export default function ArticlePage() {
           lock ensures that only one maintenance operation runs on a repository
           at a time, preventing concurrent garbage collection from corrupting
           the repository&apos;s object database.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix uses ZooKeeper-based distributed locks for its content
           ingestion pipeline, where multiple ingestion workers compete to
           process new content (movies, TV shows) from a queue. Each content
@@ -521,7 +543,7 @@ export default function ArticlePage() {
           the lock is released if the worker crashes (the ZooKeeper session
           ends), allowing another worker to pick up the content. Netflix&apos;s
           ZooKeeper ensemble consists of 5 nodes, tolerating 2 failures.
-        </p>
+        </HighlightBlock>
 
         <p>
           etcd is used as a distributed lock service by many Kubernetes
@@ -555,6 +577,9 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
@@ -562,7 +587,7 @@ export default function ArticlePage() {
           experiences a 35-second garbage collection pause. What happens to the
           lock, and how do you prevent the resulting data corruption?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             During the GC pause, the client is unable to renew the lock, and
             the lock expires after 30 seconds. Another client acquires the lock
             and begins operating on the protected resource. When the first
@@ -571,8 +596,8 @@ export default function ArticlePage() {
             expired), and it continues operating on the resource — concurrently
             with the second client. This causes data corruption, because the
             resource is being modified by two clients simultaneously.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The prevention is <strong>fencing tokens</strong>. When the lock
             service grants a lock, it returns a monotonically increasing token
             (e.g., token 1 for the first client, token 2 for the second client).
@@ -582,7 +607,7 @@ export default function ArticlePage() {
             first client resumes and tries to operate on the resource with token
             1, the resource rejects the operation (because 1 &lt; 2), preventing
             the data corruption.
-          </p>
+          </HighlightBlock>
           <p>
             An additional mitigation is to use a longer TTL (e.g., 60 seconds
             instead of 30 seconds) to reduce the probability of the lock

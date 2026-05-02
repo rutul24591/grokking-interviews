@@ -768,14 +768,14 @@ export default function LazyLoadingArticle() {
         </HighlightBlock>
 
         <div className="space-y-6">
-          <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <h3 className="text-lg font-semibold mb-3">Question 1: What is lazy loading and why is it important for performance?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="important" className="mb-3">
-              Lazy loading is a design pattern that defers loading of resources until they are actually needed, rather 
-              than loading everything during initial page load. It applies to images (below-fold images load as user 
-              scrolls), components (heavy UI elements load when triggered), and routes (page bundles load on navigation).
-            </HighlightBlock>
+            <div className="rounded-lg border border-theme bg-panel-soft p-5">
+              <h3 className="text-lg font-semibold mb-3">Question 1: What is lazy loading and why is it important for performance?</h3>
+              <p className="text-muted mb-3"><strong>Answer:</strong></p>
+              <p className="mb-3">
+                Lazy loading is a design pattern that defers loading of resources until they are actually needed, rather 
+                than loading everything during initial page load. It applies to images (below-fold images load as user 
+                scrolls), components (heavy UI elements load when triggered), and routes (page bundles load on navigation).
+              </p>
             <p className="mb-3">
               It is important for performance because:
             </p>
@@ -820,12 +820,12 @@ export default function LazyLoadingArticle() {
             </p>
           </div>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <h3 className="text-lg font-semibold mb-3">Question 3: When should you NOT use lazy loading?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="crucial" className="mb-3">
-              Lazy loading is not appropriate in these scenarios:
-            </HighlightBlock>
+            <div className="rounded-lg border border-theme bg-panel-soft p-5">
+              <h3 className="text-lg font-semibold mb-3">Question 3: When should you NOT use lazy loading?</h3>
+              <p className="text-muted mb-3"><strong>Answer:</strong></p>
+              <p className="mb-3">
+                Lazy loading is not appropriate in these scenarios:
+              </p>
             <ul className="space-y-1">
               <li>• <strong>Above-the-fold content:</strong> The LCP element and critical above-the-fold images 
               should load eagerly. Lazy loading these adds 1-3 seconds to LCP.</li>
@@ -933,8 +933,13 @@ export default function LazyLoadingArticle() {
           ============================================================ */}
       <section>
         <h2>References</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: treat lazy loading as a prioritization tool. Know when it helps (below-fold, non-critical),
+          when it hurts (LCP/above-the-fold), and the underlying primitives (native `loading`, IntersectionObserver,
+          route/component splitting).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://web.dev/browser-level-image-lazy-loading/" 
               className="text-accent hover:underline" 
@@ -946,8 +951,8 @@ export default function LazyLoadingArticle() {
             <p className="text-sm text-muted mt-1">
               Google&apos;s guide to native lazy loading with the loading attribute.
             </p>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" 
               className="text-accent hover:underline" 
@@ -959,8 +964,8 @@ export default function LazyLoadingArticle() {
             <p className="text-sm text-muted mt-1">
               Complete documentation for the Intersection Observer API with examples.
             </p>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://react.dev/reference/react/lazy" 
               className="text-accent hover:underline" 
@@ -972,7 +977,7 @@ export default function LazyLoadingArticle() {
             <p className="text-sm text-muted mt-1">
               Official React documentation for lazy loading components with code splitting.
             </p>
-          </li>
+          </HighlightBlock>
           <li>
             <a 
               href="https://web.dev/lazy-loading-images/" 

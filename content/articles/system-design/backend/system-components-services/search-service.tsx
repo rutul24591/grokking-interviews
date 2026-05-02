@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,12 +39,15 @@ export default function SearchServiceArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Search service</strong> is the infrastructure that enables users to find relevant items (products, documents, users, content) by submitting free-text queries. It processes documents through an indexing pipeline (extracting text, tokenizing, analyzing, and building an inverted index that maps terms to the documents containing them), accepts search queries (parsing the query text, expanding synonyms, applying filters, scoring matching documents using ranking algorithms like BM25, and returning ranked results), and provides relevance tuning capabilities (field boosting, function scoring, synonym dictionaries, learning-to-rank models) that allow search engineers to optimize result quality. The search service is the primary discovery mechanism for large catalogs — when users know what they are looking for but do not know the exact identifier, search bridges the gap between intent and result.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, designing a search service is a distributed systems and information retrieval challenge that spans index architecture (inverted index data structures, distributed sharding, replica management), query processing (query parsing, tokenization, synonym expansion, distributed fan-out, score aggregation, result merging), relevance engineering (BM25 tuning, field boosting, function scoring, learning-to-rank models, A/B testing relevance changes), and operational reliability (index freshness, query latency, shard balance, fault tolerance). The technical difficulty lies in balancing three competing objectives: relevance (returning the most useful results), latency (responding within 50-200ms), and freshness (reflecting catalog changes within seconds to minutes).
-        </p>
+        </HighlightBlock>
         <p>
           Search service design involves several technical considerations. Indexing pipeline (extracting documents from source databases, transforming text through analyzers — tokenization, stemming, stop word removal, synonym expansion — and building an inverted index that maps each term to a posting list of document IDs). Distributed architecture (partitioning the index across shards for horizontal scaling, replicating shards for high availability, distributing queries across shards in parallel, and merging results from all shards). Query processing (parsing the user&apos;s query text, applying the same analyzer used during indexing, expanding synonyms and handling spelling corrections, executing a distributed fan-out to all relevant shards, scoring matching documents using BM25 or a learned model, and merging and ranking results from all shards). Relevance tuning (boosting certain fields over others — title matches rank higher than description matches, applying function scoring to combine BM25 with business signals like popularity and recency, and using learning-to-rank models that combine hundreds of features into a final ranking score).
         </p>
@@ -55,14 +59,17 @@ export default function SearchServiceArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Inverted Index and Posting Lists</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The inverted index is the fundamental data structure that enables efficient full-text search. During indexing, each document is analyzed (tokenized into individual terms, stemmed to reduce words to their root form, filtered to remove stop words), and for each term, the document ID is added to that term&apos;s posting list (the list of documents containing that term). The inverted index maps terms to posting lists — for example, the term &quot;laptop&quot; maps to a posting list containing the IDs of all documents that mention &quot;laptop&quot;. Each posting list entry includes the document ID, the term frequency within the document (how many times the term appears), and the term positions (where in the document the term appears, for phrase matching and proximity scoring).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At query time, the search engine looks up each query term in the inverted index, retrieves the corresponding posting lists, and computes a relevance score for each document that appears in at least one posting list. Documents that appear in more posting lists (matching more query terms) and that have higher term frequencies (matching query terms more often) receive higher scores. The posting lists are sorted by document ID and stored in compressed format (delta encoding for document IDs, variable-byte encoding for term frequencies) to minimize disk space and maximize retrieval speed.
-        </p>
+        </HighlightBlock>
 
         <h3>BM25 Ranking Algorithm</h3>
         <p>
@@ -100,9 +107,12 @@ export default function SearchServiceArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The search service architecture consists of the indexing pipeline (extracting documents from source databases, transforming text through analyzers, building the inverted index, and distributing it across shards), the query processing layer (parsing queries, expanding synonyms, fanning out to shards, scoring, merging results), the result delivery layer (pagination, facets, highlighting, suggestions, caching), and the analytics system (tracking popular queries, zero-result queries, click-through rates, and query reformulation patterns). The flow begins with document ingestion — the indexing pipeline extracts documents from the source database (via batch export or change data capture), applies text analysis (tokenization, stemming, stop word removal, synonym expansion), builds the inverted index (mapping each term to its posting list of document IDs), and distributes the index across shards with replicas.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/system-components-services/search-architecture.svg"
@@ -112,9 +122,9 @@ export default function SearchServiceArticle() {
           height={550}
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a user submits a search query, the query processing layer parses the query text, applies the same analyzer used during indexing (ensuring consistent tokenization between indexing and querying), expands synonyms from the synonym dictionary, corrects spelling errors using edit distance against the index vocabulary, and constructs a structured query object. The structured query is fanned out to all relevant shards in parallel — each shard independently executes the query against its local inverted index, scores matching documents using BM25 (or the configured ranking model), and returns its top-K results with scores to the query coordinator. The coordinator merges results from all shards (comparing BM25 scores, which are comparable because they are normalized by corpus statistics), applies any post-ranking business rules (boosting sponsored items, filtering by user-specific permissions), and returns the global top-K results to the client with pagination metadata (total hits, current page, results per page).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/system-components-services/search-indexing.svg"
@@ -162,14 +172,17 @@ export default function SearchServiceArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Search service design involves trade-offs between relevance and latency, index freshness and indexing cost, exact match and fuzzy match, and self-managed and managed search infrastructure. Understanding these trade-offs is essential for designing search systems that match your catalog size, query patterns, and relevance requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>BM25 Versus Neural Ranking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>BM25:</strong> A probabilistic ranking algorithm based on term frequency, inverse document frequency, and document length normalization. Advantages: fast to compute (simple formula with few parameters), interpretable (each factor&apos;s contribution is transparent), no training data required (works out of the box with any document collection), and computationally efficient (scoring millions of documents per second). Limitations: does not capture semantic similarity (queries and documents must share exact terms, no understanding of synonyms or related concepts unless explicitly configured), does not incorporate user context (personalization, location, device), and requires manual tuning (field boosts, synonym dictionaries, function scoring) for optimal relevance. Best for: most general-purpose search applications, catalogs with well-structured text fields, systems without training data for ML models.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Neural Ranking (Learning-to-Rank, Dense Retrieval):</strong> Machine learning models that score documents based on hundreds of features (BM25, field matches, popularity, recency, user context, click history). Advantages: captures complex ranking signals (combines lexical matching with semantic similarity, personalization, and business signals), automatically learns optimal feature weights from training data (no manual tuning of field boosts), and improves over time as more training data (clicks, relevance judgments) is collected. Limitations: requires labeled training data (relevance judgments or implicit feedback from user behavior), computationally expensive (neural models take 1-10ms per document, compared to 0.1ms for BM25), less interpretable (difficult to explain why a document ranks higher than another), and requires ML infrastructure (model training, serving, monitoring). Best for: large-scale search applications with rich training data (e-commerce, content platforms), systems where relevance is a primary business metric.
         </p>
@@ -202,16 +215,19 @@ export default function SearchServiceArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Design Analyzers for Both Indexing and Query Time</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The text analyzer (tokenizer, stemmer, stop word filter, synonym filter) must be configured identically for both indexing and query processing. If the indexing analyzer stems words but the query analyzer does not, query terms will not match indexed terms (searching for &quot;running&quot; will not match documents indexed with &quot;run&quot;). Define the analyzer chain in a versioned configuration and use the same configuration for both indexing and querying. Test the analyzer with representative queries and documents to verify that query terms produce the expected tokens and that indexed documents produce the expected tokens. Common analyzer configurations include the standard analyzer (tokenizes on whitespace and punctuation, lowercases, removes common stop words), the language analyzer (adds language-specific stemming and stop word lists), and the custom analyzer (combines specific tokenizers, filters, and synonym expansion for domain-specific search requirements).
-        </p>
+        </HighlightBlock>
 
         <h3>Use Field Boosting to Prioritize Important Fields</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Not all document fields are equally important for search relevance. A query term match in the product title is more significant than a match in the product description. Configure field boosts to reflect this — assign a boost factor of 3.0 to the title field, 2.0 to the description field, and 1.0 to the body field. This ensures that documents with query term matches in the title rank higher than documents with matches only in the description. Field boosting is the most impactful relevance tuning lever for most search applications and should be the first adjustment made when results are not relevant enough.
-        </p>
+        </HighlightBlock>
 
         <h3>Monitor Zero-Result Queries and Query Reformulation</h3>
         <p>
@@ -237,16 +253,19 @@ export default function SearchServiceArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Inconsistent Analyzers Between Indexing and Querying</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Using different text analyzers for indexing and querying causes query terms to not match indexed terms — for example, if the indexing analyzer stems words (&quot;running&quot; becomes &quot;run&quot;) but the query analyzer does not, searching for &quot;running&quot; produces the token &quot;running&quot; which does not match the indexed token &quot;run&quot;. This causes relevant documents to be missed. The mitigation is to define the analyzer chain in a shared, versioned configuration that is used for both indexing and querying, and to test the analyzer with representative queries and documents before deployment.
-        </p>
+        </HighlightBlock>
 
         <h3>Deep Pagination Causing Performance Degradation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Deep pagination (requesting page 1000 of search results with 20 results per page) requires the search engine to score and sort all documents matching the query (potentially millions) and then return results 20,000-20,020. This is computationally expensive — scoring millions of documents for a single query consumes significant CPU and memory, and can cause query latency spikes for all users. The mitigation is to limit pagination depth (typically to page 100 or 1,000 results) and to use search_after (a cursor-based pagination that starts from the last result of the previous page, rather than re-scoring all documents from the beginning). For use cases requiring full result export (data dumps, reporting), use a separate scroll API that streams results asynchronously rather than through paginated queries.
-        </p>
+        </HighlightBlock>
 
         <h3>Ignoring Synonym and Spelling Configuration</h3>
         <p>
@@ -272,16 +291,19 @@ export default function SearchServiceArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Product Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms (Amazon, Shopify stores, eBay) use search services to help users find products in catalogs ranging from thousands to billions of items. The search index includes product title, description, brand, category, price, rating, availability, and custom attributes. Query processing includes synonym expansion (&quot;cell phone&quot; matches &quot;mobile phone&quot;), spelling correction (&quot;laptap&quot; corrected to &quot;laptop&quot;), and field boosting (title matches weighted 3x description matches). Relevance tuning combines BM25 with function scoring for popularity (products with higher sales rank higher), recency (newer products rank higher), and inventory status (in-stock products rank higher than out-of-stock). Faceted navigation allows users to filter results by category, brand, price range, and rating. Amazon processes billions of search queries per year and attributes 10-30% of revenue to search-driven purchases.
-        </p>
+        </HighlightBlock>
 
         <h3>Enterprise Document Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Enterprise search platforms (Elastic Workplace Search, Algolia, Microsoft Search) enable employees to find documents, emails, contacts, and knowledge base articles across fragmented information systems (Google Drive, SharePoint, Salesforce, Slack, Confluence). The search index aggregates documents from multiple sources, normalizing their metadata into a unified schema. Query processing includes intent classification (determining whether the user is searching for a person, a document, or a conversation) and routing to the appropriate source index. Access control filtering ensures that users only see documents they have permission to access. Enterprise search is particularly challenging due to the diversity of document formats (PDFs, Word documents, spreadsheets, presentations, emails) and the need for robust access control enforcement across all sources.
-        </p>
+        </HighlightBlock>
 
         <h3>Content Platform Search</h3>
         <p>
@@ -297,15 +319,18 @@ export default function SearchServiceArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How does an inverted index work, and why is it efficient for full-text search?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: An inverted index maps each term (word) to a posting list of document IDs that contain that term. During indexing, each document is tokenized into terms, and for each term, the document ID is appended to the term&apos;s posting list. At query time, the engine looks up each query term in the inverted index, retrieves the posting lists, and computes a relevance score (BM25) for each document in the union of the posting lists. This is efficient because the engine only examines documents that contain at least one query term — it does not scan every document in the collection. Posting lists are stored in compressed format (delta encoding for document IDs, variable-byte encoding for term frequencies) and sorted by document ID, enabling fast intersection operations (finding documents that contain multiple query terms) using merge algorithms.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

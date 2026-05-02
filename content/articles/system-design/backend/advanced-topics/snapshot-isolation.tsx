@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +30,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Snapshot isolation</strong> (SI) is a transaction isolation level that
           guarantees each transaction reads from a consistent snapshot of the database taken at
           the transaction&apos;s start time. Every transaction sees a consistent view of the
@@ -37,8 +41,8 @@ export default function ArticlePage() {
           by other transactions. Writes performed by a transaction are not visible to other
           transactions until the transaction commits. If two concurrent transactions attempt to
           write to the same data item, one transaction is aborted (first-committer-wins rule).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider two concurrent transactions: Transaction A reads the account balance ($100),
           and Transaction B also reads the same balance ($100). Transaction A deposits $50
           (balance becomes $150), and Transaction B withdraws $30 (balance becomes $70). Under
@@ -47,7 +51,7 @@ export default function ArticlePage() {
           The first transaction to commit succeeds, and the second transaction is aborted because
           it wrote to a data item that was modified by a concurrent transaction after its snapshot
           was taken.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, snapshot isolation requires understanding the trade-offs
           between snapshot isolation and serializability (SI allows the write skew anomaly, while
@@ -74,6 +78,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/snapshot-isolation-mvcc.svg`}
@@ -82,22 +89,22 @@ export default function ArticlePage() {
         />
 
         <h3>Multi-Version Concurrency Control</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Snapshot isolation is implemented using multi-version concurrency control (MVCC),
           which maintains multiple versions of each data item. When a transaction reads a data
           item, it reads the version that was committed before the transaction&apos;s snapshot
           timestamp. When a transaction writes to a data item, it creates a new version with its
           own transaction timestamp. The new version is not visible to other transactions until
           the writing transaction commits.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           MVCC provides consistent snapshots without blocking reads: read transactions do not
           acquire locks on data items, because they read from a consistent snapshot (the version
           visible at their snapshot timestamp). Write transactions create new versions, which do
           not interfere with concurrent reads (reads see the old version, writes create a new
           version). This enables high concurrency: reads and writes can proceed concurrently
           without blocking each other.
-        </p>
+        </HighlightBlock>
 
         <h3>First-Committer-Wins Rule</h3>
         <p>
@@ -149,9 +156,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Snapshot Isolation in PostgreSQL</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           PostgreSQL implements snapshot isolation as its default isolation level (called
           &quot;read committed&quot; for statement-level snapshots, and &quot;repeatable read&quot;
           for transaction-level snapshots). Each transaction is assigned a transaction ID (xid)
@@ -159,15 +169,15 @@ export default function ArticlePage() {
           transaction IDs at the snapshot time. When the transaction reads a data item, it reads
           the version with the highest xid that is less than or equal to the snapshot&apos;s
           committed xids.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           When a transaction writes to a data item, PostgreSQL creates a new version of the row
           with the transaction&apos;s xid. The new version is not visible to other transactions
           until the transaction commits. If two concurrent transactions write to the same row,
           the first transaction to commit succeeds, and the second transaction detects the
           conflict at commit time (the row has been modified by a concurrent transaction with
           a higher xid) and is aborted.
-        </p>
+        </HighlightBlock>
 
         <h3>Serializable Snapshot Isolation</h3>
         <p>
@@ -197,14 +207,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Snapshot isolation trades full serializability for higher concurrency. Compared to
           serializable isolation, snapshot isolation does not block reads on writes (reads see
           a consistent snapshot instead of waiting for the writing transaction to commit),
           enabling higher read throughput. However, snapshot isolation allows the write skew
           anomaly, which can lead to incorrect results in certain applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compared to read committed isolation (the default in many databases), snapshot
           isolation provides stronger read consistency (no non-repeatable reads, no phantom
           reads) because all reads within a transaction see the same snapshot. Read committed
@@ -212,7 +225,7 @@ export default function ArticlePage() {
           return different values if another transaction modifies it between the reads) and
           phantom reads (a query run twice within a transaction may return different numbers
           of rows if another transaction inserts or deletes rows between the reads).
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -220,21 +233,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use snapshot isolation as the default isolation level for most applications. It
           provides strong read consistency (no dirty reads, no non-repeatable reads, no phantom
           reads) while allowing high concurrency (no read-write blocking). Use serializable
           isolation (or serializable snapshot isolation) for applications that require full
           serializability (e.g., financial systems where write skew could lead to incorrect
           results).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement retry logic for aborted transactions. Under snapshot isolation, concurrent
           write conflicts cause one of the transactions to be aborted. The aborted transaction
           must be retried from the beginning. Implement exponential backoff for retries to
           prevent retry storms (many transactions retrying simultaneously, causing more
           conflicts).
-        </p>
+        </HighlightBlock>
         <p>
           Monitor transaction abort rates and alert when they exceed a threshold. High abort
           rates indicate that many transactions are conflicting, which reduces throughput and
@@ -257,7 +273,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is assuming that snapshot isolation prevents all concurrency
           anomalies. Snapshot isolation prevents dirty reads, non-repeatable reads, and phantom
           reads, but it allows the write skew anomaly. Applications that rely on snapshot
@@ -265,15 +284,15 @@ export default function ArticlePage() {
           occurs. The fix is to use serializable snapshot isolation (SSI) for applications
           that require full serializability, or implement explicit constraint checks to
           prevent write skew.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not implementing retry logic for aborted transactions causes application failures
           when concurrent write conflicts occur. Under snapshot isolation, write conflicts
           are resolved by aborting one of the transactions, which must be retried. If the
           application does not handle the abort and retry, the transaction fails silently
           and the application loses data. The fix is to implement retry logic with exponential
           backoff for all transactions that may conflict.
-        </p>
+        </HighlightBlock>
         <p>
           Long-running transactions cause snapshot retention overhead. The database must
           retain all versions of data items that are visible to any active transaction&apos;s
@@ -298,9 +317,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Google Spanner: Serializable Snapshot Isolation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Spanner implements serializable snapshot isolation (SSI) as its default
           isolation level, providing full serializability without the blocking behavior of
           traditional serializable isolation. Spanner uses TrueTime (atomic clocks + GPS
@@ -308,10 +330,10 @@ export default function ArticlePage() {
           isolation across data centers. Spanner&apos;s SSI implementation detects write skew
           by tracking read-write dependencies between transactions and aborting one of the
           conflicting transactions.
-        </p>
+        </HighlightBlock>
 
         <h3>PostgreSQL: Repeatable Read and Serializable</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           PostgreSQL implements snapshot isolation as its &quot;repeatable read&quot; isolation
           level and serializable snapshot isolation as its &quot;serializable&quot; isolation
           level. The repeatable read level provides snapshot isolation (no dirty reads, no
@@ -319,7 +341,7 @@ export default function ArticlePage() {
           skew detection to provide full serializability. PostgreSQL&apos;s MVCC implementation
           maintains multiple versions of each row, enabling consistent snapshots without
           blocking reads.
-        </p>
+        </HighlightBlock>
 
         <h3>CockroachDB: Default Serializable Isolation</h3>
         <p>
@@ -337,18 +359,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is snapshot isolation and how does it work?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Snapshot isolation (SI) guarantees that each transaction reads from a consistent
               snapshot of the database taken at the transaction&apos;s start time. Every
               transaction sees a consistent view of the database as it existed at a specific
               point in time, regardless of concurrent writes. Writes are not visible to other
               transactions until the transaction commits.
-            </p>
+            </HighlightBlock>
             <p>
               SI is implemented using MVCC (multi-version concurrency control), which maintains
               multiple versions of each data item. When two concurrent transactions write to the

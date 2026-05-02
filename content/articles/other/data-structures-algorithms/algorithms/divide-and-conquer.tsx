@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,15 +25,18 @@ export default function DivideAndConquerArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Divide and conquer (D&amp;C)</span> is an algorithmic
           paradigm that solves a problem by recursively breaking it into smaller instances of
           the same problem, solving those independently, and combining their solutions. The
           paradigm traces back to binary search in 1946 and was formalized as a general
           technique by John von Neumann's 1945 merge sort. It underpins most of the classical
           n log n algorithms and nearly every parallel or distributed computation.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A D&amp;C algorithm has three steps: <span className="font-semibold">divide</span>{" "}
           (split the input of size n into a subproblems of size n/b),{" "}
           <span className="font-semibold">conquer</span> (solve each recursively), and{" "}
@@ -41,7 +45,7 @@ export default function DivideAndConquerArticle() {
           dictated by the{" "}
           <span className="font-semibold">Master Theorem</span> — a three-case cookbook
           engineers must know cold.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Interviewers probe D&amp;C fluency because it powers merge sort, quicksort,
           quickselect, binary search, FFT, Strassen and Karatsuba multiplication, closest pair
@@ -58,22 +62,25 @@ export default function DivideAndConquerArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Recurrence relations</span> capture the cost of
           recursion. Writing T(n) = a·T(n/b) + f(n) forces clarity about how many subproblems
           are spawned (a), how much each shrinks (b), and how costly the combine step is
           (f(n)). Getting a, b, or f wrong by a constant factor leaves the complexity class
           unchanged — but conflating additive vs multiplicative splits (T(n−1) vs T(n/2))
           changes the answer completely.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">The three Master Theorem cases</span> compare f(n)
           against the leaf-work n^(log_b a). Case 1: leaves dominate — f is polynomially
           smaller, so T(n)=Θ(n^(log_b a)). Case 2: balanced — f is Θ of the leaf-work, adding
           a log factor to give Θ(n^(log_b a) · log n). Case 3: root dominates — f is
           polynomially larger, and (given a regularity condition a·f(n/b) ≤ c·f(n) for some
           c&lt;1) the answer is Θ(f(n)).
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Leaf-work intuition:</span> a recursion tree has
           branching factor a and depth log_b n, so n^(log_b a) leaves. Each leaf does O(1)
@@ -110,19 +117,22 @@ export default function DivideAndConquerArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A D&amp;C implementation is typically a recursive function with a base case, a split,
           recursive calls, and a combine. Merge sort embodies the structure textbook-exactly:
           base case n ≤ 1 is already sorted; split in half; recursively sort each half; merge
           the two sorted halves in linear time.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">The combine step is where design choices live.</span>{" "}
           Merge sort's merge is linear; closest pair's combine inspects a strip of width 2δ
           around the median line and exploits the geometry to bound it to O(n). Strassen's
           combine does 18 matrix additions of size n/2 × n/2 — which is O(n²), balanced
           against 7 multiplicative sub-calls.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Base case tuning</span> matters in production.
           Recursion has per-call overhead (stack frame, cache pollution, branch prediction)
@@ -156,19 +166,22 @@ export default function DivideAndConquerArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">D&amp;C vs DP:</span> both recurse on subproblems.
           D&amp;C assumes independence; DP exploits overlap. A D&amp;C algorithm whose
           subproblems repeat becomes DP with memoization. Conversely, pure D&amp;C is
           preferable when subproblems truly don't overlap: you save the memoization table and
           gain trivial parallelism.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">D&amp;C vs greedy:</span> greedy commits locally and
           never recurses; D&amp;C explores a fanned-out tree and combines. Greedy runs faster
           in constants but requires the problem to have the greedy-choice property. D&amp;C
           has wider applicability but pays recursion overhead.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">D&amp;C vs iterative:</span> for some problems,
           iterative bottom-up reconstructions are both simpler and faster. Bottom-up merge
@@ -192,18 +205,21 @@ export default function DivideAndConquerArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Write the recurrence first, then solve it.</span>{" "}
           Resist the urge to hand-wave "n log n" before setting up T(n) = a·T(n/b) + f(n).
           Putting the recurrence on the board forces precision about splits and combine cost,
           and the Master Theorem application becomes mechanical.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Identify the combine cost f(n) precisely.</span> Is
           the combine linear, quadratic, constant? In merge sort's merge, it's Θ(n). In
           quickselect, it's Θ(n) for partition but only one recursive call (so a=1, not 2).
           In Strassen, it's 18 n/2 × n/2 additions = Θ(n²).
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Switch to an iterative base case for small n.</span>{" "}
           Insertion sort at n ≤ 16 inside a merge/quick sort cuts runtime by 15–25% in
@@ -230,16 +246,19 @@ export default function DivideAndConquerArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Confusing subtractive and divisive recurrences.</span>{" "}
           T(n)=T(n−1)+n is Θ(n²); T(n)=T(n/2)+n is Θ(n). A minus sign vs a division sign is
           the entire difference between quadratic and linear.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Ignoring the regularity condition.</span> Case 3 of
           the Master Theorem requires a·f(n/b) ≤ c·f(n). Without it, the bound may fail for
           rare pathological f.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Missing the log-factor edge.</span> T(n)=2T(n/2)+n
           log n is not Case 2 (f must be Θ(n^(log_b a)), not n·log n). It needs the extended
@@ -269,19 +288,22 @@ export default function DivideAndConquerArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">MapReduce / Spark:</span> Google's original
           MapReduce paper (2004) and its Apache Hadoop / Spark descendants are D&amp;C at
           datacenter scale. The map phase divides, the shuffle partitions intermediate data,
           and reduce combines. A query touching petabytes runs in minutes because the tree of
           reducers is shallow and each reducer processes only its share.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Parallel prefix sums (scan):</span> the{" "}
           Blelloch/Hillis scan used in GPU programming (CUDA, OpenCL) is a two-phase
           D&amp;C: an upward reduction tree then a downward sweep, both O(log n) depth. It
           powers stream compaction, sorting networks, and radix sort on GPUs.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">External merge sort:</span> databases sort terabyte
           files by reading sorted runs of memory-sized chunks, then k-way merging via a heap
@@ -315,15 +337,18 @@ export default function DivideAndConquerArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Solve T(n) = 2T(n/2) + n log n."</span> Not pure
           Master — extended form gives Θ(n·log² n). Leaf-work is n, root-work is n log n, and
           work doubles per level at log-factor rate.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Solve T(n) = 7T(n/2) + n²" </span> (Strassen).
           Leaf-work n^(log_2 7) ≈ n^2.807 dominates n², so Case 1 → Θ(n^2.807).
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">"When does D&amp;C beat DP?"</span> When
           subproblems don't overlap. Merge sort's halves are disjoint — no benefit from

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,12 +37,15 @@ export default function VirtualMachinesArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Virtual Machines (VMs)</strong> are software-defined computers that run on physical hardware, virtualizing the entire operating system — including the kernel, system libraries, and user space. Each VM runs its own guest operating system, isolated from other VMs on the same physical host by a hypervisor (software layer that virtualizes hardware resources and allocates them to VMs). Unlike containers that share the host OS kernel, VMs have their own kernel, providing stronger isolation at the cost of higher resource overhead (gigabytes per VM instead of megabytes, minutes to start instead of seconds).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, virtual machines represent the foundation of cloud computing. Before containers became dominant, VMs were the primary unit of cloud deployment (AWS EC2, Google Compute Engine, Azure Virtual Machines). VMs remain essential for use cases that containers cannot address — running different OS kernels on the same host (Linux and Windows VMs on the same hardware), strong isolation requirements (multi-tenant hosting, untrusted code execution), legacy applications that require specific OS configurations, and regulated industries that mandate kernel-level isolation.
-        </p>
+        </HighlightBlock>
         <p>
           Virtual machines involve several technical considerations. Hypervisors (Type 1 — bare metal, running directly on hardware: VMware ESXi, Microsoft Hyper-V, KVM; Type 2 — hosted, running on top of an OS: VirtualBox, VMware Workstation). Resource allocation (CPU cores, memory, disk space, network bandwidth allocated to each VM — overcommitting resources to maximize utilization, but risking performance degradation if overcommitted too aggressively). VM lifecycle management (provisioning, configuration, monitoring, scaling, decommissioning — automated through infrastructure as code tools like Terraform, CloudFormation). Security (VM escape vulnerabilities, snapshot management, encryption at rest, network isolation between VMs, patch management for guest OS).
         </p>
@@ -53,12 +57,15 @@ export default function VirtualMachinesArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Hypervisors:</strong> The hypervisor is the software layer that virtualizes hardware resources and allocates them to VMs. Type 1 hypervisors run directly on hardware and include VMware ESXi, Microsoft Hyper-V, KVM, and Xen. Type 1 hypervisors have better performance because there is no host OS overhead, and they are used in production environments including cloud providers and data centers. Type 2 hypervisors run on top of an operating system and include VirtualBox, VMware Workstation, and Parallels. Type 2 hypervisors are easier to set up but have lower performance due to host OS overhead, making them suitable for development and testing rather than production workloads.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Guest OS:</strong> The guest operating system runs inside the VM with its own kernel, system libraries, and user space. Each VM has its own guest OS such as Linux, Windows, or BSD, and the guest OS is unaware that it is running in a VM because it interacts with virtualized hardware presented by the hypervisor. Guest OS management including patching, updates, and configuration is the responsibility of the VM owner, not the hypervisor administrator. This separation of responsibilities is fundamental to VM-based infrastructure and has important implications for security and operational workflows.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Virtual Hardware:</strong> The hypervisor presents virtualized hardware to the VM including virtual CPUs mapped to physical CPU cores, virtual memory mapped to physical RAM, virtual disks stored as files on physical storage, and virtual network interfaces connected to virtual switches and mapped to physical network interfaces. Virtual hardware is configurable without changing physical hardware — you can allocate more vCPUs, more memory, or more disk space to a VM by adjusting the VM configuration. The virtual hardware abstraction enables VMs to be portable across different physical hosts with different hardware configurations.
         </p>
@@ -84,12 +91,15 @@ export default function VirtualMachinesArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           VM architecture consists of the physical hardware (CPU, memory, disk, network), the hypervisor (virtualizing hardware resources), the VMs (each with its own guest OS, virtual hardware, and applications), and the management layer (provisioning, monitoring, scaling, migrating VMs — vCenter for VMware, System Center for Hyper-V, libvirt for KVM). The flow begins with provisioning a VM (selecting the guest OS, allocating resources — vCPUs, memory, disk, network), installing the guest OS and applications, configuring the VM (networking, security, monitoring), and running workloads. The management layer monitors VM health, resource usage, and performance, adjusting resource allocation as needed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For production deployments, VMs are provisioned through infrastructure as code (Terraform, CloudFormation — declarative specifications for VM configuration), configured through configuration management (Ansible, Puppet, Chef — automated configuration of guest OS and applications), monitored through infrastructure monitoring (Prometheus, Datadog, New Relic — monitoring CPU, memory, disk, network, application metrics), and managed through VM lifecycle automation (auto-scaling groups for VM scaling, auto-healing for VM recovery, rolling updates for VM replacement).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/vm-vs-container.svg"
@@ -122,14 +132,17 @@ export default function VirtualMachinesArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Virtual machines involve trade-offs between isolation and resource efficiency, flexibility and complexity, and VMs and containers. Understanding these trade-offs is essential for choosing the right deployment strategy.
-        </p>
+        </HighlightBlock>
 
         <h3>VMs vs. Containers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Virtual Machines:</strong> Virtualize the entire OS (kernel, system libraries, user space). Advantages: strong isolation (each VM has its own kernel — kernel-level attacks cannot cross VM boundaries), OS flexibility (different VMs can run different OS kernels — Linux, Windows, BSD), mature ecosystem (decades of VM management tools, monitoring, security). Limitations: heavy resource usage (gigabytes per VM), slow startup (minutes), lower density (fewer VMs per host), higher operational overhead (patching guest OS, managing VM lifecycle). Best for: running different OS kernels on the same host, strong isolation requirements (multi-tenant hosting, untrusted code execution), legacy applications, regulated industries.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Containers:</strong> Virtualize only the user space (share host OS kernel). Advantages: lightweight resource usage (megabytes per container), fast startup (seconds), higher density (more containers per host), lower operational overhead (no guest OS to patch, simpler lifecycle management). Limitations: weaker isolation (containers share the host kernel — kernel-level attacks can affect all containers), OS constraint (all containers must use the same OS kernel as the host). Best for: application deployment, microservices, CI/CD pipelines, development environments.
         </p>
@@ -154,12 +167,15 @@ export default function VirtualMachinesArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Right-Size VM Resources:</strong> Allocate appropriate CPU, memory, and disk resources for each VM — not too many to avoid wasting resources, and not too few to prevent performance issues. Monitor VM resource usage over time including CPU utilization, memory usage, disk I/O, and network bandwidth, and adjust resource allocation based on actual usage by downsizing over-provisioned VMs and upsizing under-provisioned VMs. Right-sizing reduces costs by paying only for resources you need and improves performance by ensuring VMs have sufficient resources for their workloads. Base allocation on peak usage rather than average usage to handle demand spikes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use Templates and Images:</strong> Provision VMs from templates or pre-built images rather than from scratch. Templates and images ensure consistency because all VMs start from the same baseline, speed up provisioning because cloning is faster than installing, and simplify configuration management because changing the template and cloning new VMs with the updated configuration is more efficient than reconfiguring individual VMs. Maintain a library of templates for common use cases including web servers, databases, application servers, and monitoring servers.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Automate VM Lifecycle:</strong> Use infrastructure as code tools like Terraform or CloudFormation to provision VMs, configuration management tools like Ansible, Puppet, or Chef to configure VMs, and monitoring tools like Prometheus or Datadog to monitor VMs. Automate scaling through auto-scaling groups that add VMs during high demand and remove VMs during low demand, self-healing through automatic replacement of failed VMs, and updates through rolling updates that update VMs one at a time without downtime. Automation reduces operational overhead and human error while ensuring consistent VM management at scale.
         </p>
@@ -177,12 +193,15 @@ export default function VirtualMachinesArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Over-Provisioning Resources:</strong> Allocating more CPU, memory, or disk than the VM needs wastes resources by paying for unused capacity, reduces host density by fitting fewer VMs per host, and increases costs unnecessarily. Right-size VM resources based on actual usage by monitoring resource usage over time and adjusting allocation accordingly. Use auto-scaling to dynamically adjust resources based on demand rather than statically over-provisioning for peak capacity that is rarely used. Over-provisioning is one of the most common sources of cloud infrastructure waste.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Under-Provisioning Resources:</strong> Allocating too few CPU, memory, or disk resources for the VM&apos;s workload causes performance issues such as slow response times, timeouts, and crashes. Under-provisioning leads to user-facing errors and potential data loss if the VM crashes during write operations. Monitor VM resource usage and set up alerts for resource exhaustion such as CPU usage above 80 percent, memory usage above 85 percent, and disk usage above 90 percent. Right-size VM resources based on peak usage rather than average usage to handle demand spikes without degradation.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Ignoring Guest OS Patching:</strong> Not patching the guest OS regularly leaves VMs vulnerable to known exploits and CVEs, which attackers can use to compromise the VM. Automate guest OS patching through configuration management tools or OS update automation, test patches in staging before applying to production, and monitor patch compliance to ensure all VMs are patched. Guest OS patching is the VM owner&apos;s responsibility, not the hypervisor administrator&apos;s, and neglecting this responsibility is a common source of security breaches in VM-based infrastructure.
         </p>
@@ -200,16 +219,19 @@ export default function VirtualMachinesArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Multi-OS Hosting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Organizations running diverse workloads (Linux web servers, Windows application servers, BSD database servers) use VMs to host different OS on the same physical hardware. Each OS runs in its own VM, isolated from other VMs (kernel-level isolation). This pattern is essential for organizations with legacy applications that require specific OS (Windows-only applications, Linux-only databases), and for organizations that need to test applications across multiple OS (development, QA, staging environments with different OS).
-        </p>
+        </HighlightBlock>
 
         <h3>Cloud Infrastructure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cloud providers (AWS EC2, Google Compute Engine, Azure Virtual Machines) use VMs as the primary compute resource for customers. Customers provision VMs (select instance type, OS image, networking, storage), run workloads on VMs, and pay for VM usage (per-second or per-hour billing). Cloud VMs are managed by the cloud provider (hardware maintenance, hypervisor management, network infrastructure), while customers manage the guest OS (patching, configuration, application deployment). This pattern is the foundation of Infrastructure as a Service (IaaS).
-        </p>
+        </HighlightBlock>
 
         <h3>Development and Testing Environments</h3>
         <p>
@@ -225,15 +247,18 @@ export default function VirtualMachinesArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between Type 1 and Type 2 hypervisors?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Type 1 hypervisors (bare metal) run directly on hardware — VMware ESXi, Microsoft Hyper-V, KVM, Xen. They have better performance (no host OS overhead), better security (smaller attack surface), and are production-ready. Type 2 hypervisors (hosted) run on top of an OS — VirtualBox, VMware Workstation, Parallels. They are easier to set up but have lower performance (host OS overhead) and are used for development and testing. Type 1 is used in production environments, Type 2 is used for development and testing.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

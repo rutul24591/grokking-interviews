@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ContentRecoveryArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content Recovery enables users to recover deleted or lost content. Users can access trash (view deleted content), undelete content (restore from trash), recover from backup (restore from backup), and recover from disaster (recover from major data loss). Content recovery is fundamental to data loss prevention (recover from accidental deletion), user confidence (know content can be recovered), and business continuity (recover from disasters). For platforms with user content, effective content recovery is essential for user trust, data protection, and business continuity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, content recovery architecture involves trash management (manage deleted content), undelete functionality (restore deleted content), backup recovery (restore from backup), disaster recovery (recover from major loss), and recovery verification (verify recovery successful). The implementation must balance recoverability (can recover content) with storage (deleted content consumes storage) and security (don&apos;t recover unauthorized content). Poor content recovery leads to permanent data loss, user distrust, and business impact.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of content recovery extends beyond simple undelete. Trash management (where to store deleted content). Retention period (how long to keep deleted content). Undelete functionality (how to restore content). Backup recovery (how to restore from backup). Disaster recovery (how to recover from major loss). For staff engineers, content recovery is a data protection infrastructure decision affecting user trust, data loss prevention, and business continuity.
         </p>
@@ -46,13 +50,16 @@ export default function ContentRecoveryArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Trash Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Trash storage stores deleted content. Soft delete (mark as deleted, don&apos;t remove). Trash storage (move to trash folder). Separate storage (store separately from active). Trash storage enables recovery. Benefits include recoverability (can recover deleted), user confidence (know can recover). Drawbacks includes storage overhead (deleted content consumes storage), complexity (manage trash).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Trash retention manages how long to keep deleted content. Retention period (keep for X days). Auto-delete (delete after retention period). Manual delete (user deletes from trash). Trash retention balances recoverability with storage. Benefits include storage management (don&apos;t keep forever), recoverability (keep long enough). Drawbacks includes complexity (manage retention), data loss risk (delete before recovery).
-        </p>
+        </HighlightBlock>
         <p>
           Trash organization organizes deleted content. Trash folder (folder for deleted content). Organization by type (organize by content type). Organization by date (organize by delete date). Trash organization enables finding deleted content. Benefits include findability (find deleted content), management (manage trash). Drawbacks includes complexity (organize trash), storage (store organization data).
         </p>
@@ -104,9 +111,12 @@ export default function ContentRecoveryArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content recovery architecture spans trash service, backup service, recovery service, and verification service. Trash service manages deleted content. Backup service manages backups. Recovery service manages recovery operations. Verification service verifies recovery successful. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/content-recovery/recovery-architecture.svg"
@@ -117,9 +127,9 @@ export default function ContentRecoveryArticle() {
         />
 
         <h3>Trash Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Trash service manages deleted content. Soft delete (mark as deleted). Trash storage (store in trash). Trash retention (manage retention). Trash service is the core of content recovery. Benefits include centralization (one place for deleted), consistency (same deletion everywhere). Drawbacks includes complexity (manage trash), storage overhead (store deleted content).
-        </p>
+        </HighlightBlock>
         <p>
           Trash policies define trash rules. Retention period (how long to keep). Auto-delete (delete after period). Manual delete (user deletes). Trash policies automate trash management. Benefits include automation (automatic deletion), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function ContentRecoveryArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content recovery design involves trade-offs between recoverability and storage, automatic and manual recovery, and local and remote backup. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Recovery: High vs. Low Retention</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           High retention (keep deleted content long time). Pros: Maximum recoverability (can recover long after deletion), user confidence (know can recover), mistake protection (protect from mistakes). Cons: Storage cost (store deleted content long), management overhead (manage long retention), may keep unnecessary. Best for: Important content, compliance requirements.
-        </p>
+        </HighlightBlock>
         <p>
           Low retention (delete deleted content quickly). Pros: Lower storage cost (don&apos;t store long), less management overhead, storage efficiency. Cons: Limited recoverability (can&apos;t recover after period), user frustration (can&apos;t recover), mistake risk (permanent deletion). Best for: Casual content, storage-constrained environments.
         </p>
@@ -207,13 +220,16 @@ export default function ContentRecoveryArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement trash management:</strong> Soft delete. Trash folder. Retention period. Auto-delete after period.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enable undelete:</strong> Undelete button. Restore options. Verify undelete. Notify on undelete.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Create backups:</strong> Scheduled backups. Incremental backups. Remote backups. Test backups.
           </li>
@@ -243,13 +259,16 @@ export default function ContentRecoveryArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No trash:</strong> Permanent deletion immediately. <strong>Solution:</strong> Implement trash, soft delete.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Short retention:</strong> Delete from trash too quickly. <strong>Solution:</strong> Appropriate retention period.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No undelete:</strong> Can&apos;t recover deleted content. <strong>Solution:</strong> Enable undelete functionality.
           </li>
@@ -279,16 +298,19 @@ export default function ContentRecoveryArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Gmail Trash and Recovery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Gmail provides email recovery. Trash folder (deleted emails go to trash). 30-day retention (keep in trash for 30 days). Undelete (restore from trash). Backup recovery (recover from Google backup). Users can recover accidentally deleted emails.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Google Drive File Recovery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Drive provides file recovery. Trash folder (deleted files go to trash). Retention period (keep for 30 days). Version history (recover previous versions). Backup recovery (recover from backup). Users can recover accidentally deleted files.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Windows Recycle Bin</h3>
         <p>
@@ -308,12 +330,15 @@ export default function ContentRecoveryArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you implement trash management that balances recoverability with storage?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you implement trash management that balances recoverability with storage?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement tiered trash management because deleted content consumes storage but users need time to recover accidentally deleted items. Soft delete: mark as deleted, don&apos;t remove from storage—content hidden from user view but recoverable, storage still consumed. Retention period: keep for appropriate period (30 days for consumer apps, 90 days for enterprise, 7 years for compliance)—balance recoverability (users need time to notice deletion) with storage (deleted content costs money). Auto-delete: delete after period (automated cleanup job, notify before deletion, grace period for recovery)—storage reclamation, prevents indefinite storage growth. Storage optimization: compress deleted content (gzip, deduplication), move to cold storage (cheaper tier for trash)—reduces storage cost while keeping recoverable. The storage insight: deleted content consumes storage—balance recoverability (keep long enough for users to notice and recover) with storage costs (compress, tier, auto-delete), keep long enough for recovery, delete when no longer needed.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

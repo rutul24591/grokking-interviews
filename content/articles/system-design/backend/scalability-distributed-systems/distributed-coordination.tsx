@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -41,7 +42,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Distributed coordination</strong> refers to the set of
           mechanisms that enable multiple processes or services running on
           different machines to coordinate their actions, share state, and agree
@@ -54,8 +58,8 @@ export default function ArticlePage() {
           the distributed equivalents of these primitives: distributed locks,
           barriers, queues, leader election, configuration management, and
           service discovery.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The need for distributed coordination arises in virtually every
           distributed system. When multiple instances of a service need to
           elect a leader (e.g., the Kubernetes controller manager), when services
@@ -66,7 +70,7 @@ export default function ArticlePage() {
           when the system needs to know which instances are alive and which have
           failed (group membership) — all of these require distributed
           coordination.
-        </p>
+        </HighlightBlock>
         <p>
           The three most widely deployed distributed coordination services are{" "}
           <strong>Apache ZooKeeper</strong> (the original coordination service,
@@ -96,8 +100,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Leader election</strong> is the process by which a group of
           processes selects one process as the leader. The leader is responsible
           for coordinating the group&apos;s actions (e.g., processing tasks,
@@ -109,9 +116,9 @@ export default function ArticlePage() {
           <strong>safety</strong> — at most one leader is elected at any time,
           and <strong>liveness</strong> — a leader is eventually elected (even
           if the current leader fails).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           ZooKeeper implements leader election using ephemeral sequential
           znodes. Each candidate creates an ephemeral sequential znode under a
           well-known path (e.g., <code>/election/leader</code>). ZooKeeper
@@ -124,7 +131,7 @@ export default function ArticlePage() {
           requested election), automatic leader release (ephemeral znodes are
           deleted when the session ends), and no thundering herd (each candidate
           watches only its predecessor, not all znodes).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Service discovery</strong> is the process by which services
@@ -190,6 +197,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/distributed-coordination-diagram-1.svg"
@@ -197,7 +207,7 @@ export default function ArticlePage() {
           caption="Distributed coordination — clients use the coordination service (ZooKeeper/etcd/Consul) for locks, discovery, configuration, and election"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The coordination service cluster is the central component of the
           distributed coordination architecture. It consists of an odd number of
           nodes (typically 3, 5, or 7) that run a consensus protocol (Zab for
@@ -208,9 +218,9 @@ export default function ArticlePage() {
           cluster can tolerate the failure of up to (N-1)/2 nodes — a 3-node
           cluster tolerates 1 failure, a 5-node cluster tolerates 2 failures,
           and a 7-node cluster tolerates 3 failures.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The client flow begins with the client connecting to one of the
           coordination service nodes (typically via a client library that manages
           the connection, handles reconnections, and retries failed operations).
@@ -224,7 +234,7 @@ export default function ArticlePage() {
           the client from the cluster, the session expires after a timeout
           (typically 10–30 seconds), and the client&apos;s ephemeral znodes are
           automatically deleted.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/distributed-coordination-diagram-2.svg"
@@ -258,8 +268,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The choice of coordination service involves trade-offs across consensus
           protocol, API design, operational complexity, and ecosystem integration.
           ZooKeeper is the most mature coordination service (released in 2008),
@@ -274,34 +287,34 @@ export default function ArticlePage() {
           discovery, health checking, and a simple API, but it is more complex
           to operate (it requires both the Consul server cluster and the Consul
           agent on each node).
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Property</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Property</th>
               <th className="p-3 text-left">ZooKeeper</th>
               <th className="p-3 text-left">etcd</th>
               <th className="p-3 text-left">Consul</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Consensus Protocol</strong>
               </td>
               <td className="p-3">Zab</td>
               <td className="p-3">Raft</td>
               <td className="p-3">Raft (via Serf)</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>API Model</strong>
               </td>
               <td className="p-3">Hierarchical znodes</td>
               <td className="p-3">Flat key-value</td>
               <td className="p-3">KV store + service catalog</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Locks</strong>
@@ -339,8 +352,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use an odd number of nodes in the coordination service cluster (3, 5,
           or 7) to maximize fault tolerance for a given cluster size. A cluster
           of <code>2f + 1</code> nodes tolerates <code>f</code> failures — a
@@ -354,9 +370,9 @@ export default function ArticlePage() {
           manageable. Clusters larger than 7 nodes are rarely beneficial — the
           additional nodes increase the quorum size and message overhead without
           proportionally increasing availability.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Deploy coordination service nodes across independent failure domains
           (different availability zones, different racks, different physical
           servers). The purpose of having <code>2f + 1</code> nodes is to
@@ -367,7 +383,7 @@ export default function ArticlePage() {
           reducing the effective fault tolerance. For a 5-node cluster that
           needs to tolerate 2 failures, the 5 nodes should be deployed across 5
           independent failure domains.
-        </p>
+        </HighlightBlock>
 
         <p>
           Use ephemeral znodes (or leases in etcd) for all transient state
@@ -413,8 +429,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Using the coordination service as a general-purpose database is a
           common anti-pattern. The coordination service is optimized for
           coordination operations (locks, leader election, configuration
@@ -430,9 +449,9 @@ export default function ArticlePage() {
           coordination state (locks, leader election, configuration, service
           discovery) and to use a dedicated database (PostgreSQL, Cassandra,
           Redis) for application data.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Not handling session expiration correctly is a common source of bugs.
           When the client&apos;s session expires (due to a network partition, a
           client crash, or a GC pause), the client&apos;s ephemeral znodes are
@@ -446,7 +465,7 @@ export default function ArticlePage() {
           session expiration callback — when the session expires, the callback
           is invoked, and the client can re-acquire its locks, re-run for
           leadership, and re-register its service instances.
-        </p>
+        </HighlightBlock>
 
         <p>
           Setting watches on high-churn paths causes excessive watch
@@ -499,8 +518,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-world Use Cases */}
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Kubernetes uses etcd as its coordination service for the entire
           control plane. The Kubernetes API server stores all cluster state
           (pods, services, deployments, configmaps, secrets) in etcd, and the
@@ -512,9 +534,9 @@ export default function ArticlePage() {
           examples of distributed coordination in production — etcd manages the
           state of millions of pods across thousands of nodes in large
           Kubernetes clusters.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Apache Kafka uses ZooKeeper for its broker coordination — ZooKeeper
           manages the cluster metadata (which brokers are alive, which topics
           exist, which partitions are assigned to which brokers), performs
@@ -525,7 +547,7 @@ export default function ArticlePage() {
           one of the most prominent examples of distributed coordination in
           production — ZooKeeper manages the state of thousands of partitions
           across hundreds of brokers in large Kafka clusters.
-        </p>
+        </HighlightBlock>
 
         <p>
           Netflix uses ZooKeeper for its service discovery and configuration
@@ -559,13 +581,16 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: How does ZooKeeper&apos;s leader election using ephemeral
           sequential znodes work? What are the advantages of this approach?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Each candidate creates an ephemeral sequential znode under a
             well-known path (e.g., <code>/election/leader</code>). ZooKeeper
             assigns a monotonically increasing sequence number to each znode.
@@ -573,8 +598,8 @@ export default function ArticlePage() {
             leader fails, its ephemeral znode is automatically deleted by
             ZooKeeper, and the candidate with the next-lowest sequence number
             becomes the new leader.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The advantages are: <strong>(1)</strong> Fair ordering — candidates
             become leaders in the order they requested election (the lowest
             sequence number wins). <strong>(2)</strong> Automatic leader
@@ -585,7 +610,7 @@ export default function ArticlePage() {
             number), so only one candidate is notified when the leader fails
             (the candidate watching the leader&apos;s znode), and it becomes the
             new leader without competing with other candidates.
-          </p>
+          </HighlightBlock>
           <p>
             The disadvantages are: <strong>(1)</strong> It requires ZooKeeper
             (a dedicated coordination service), which adds operational

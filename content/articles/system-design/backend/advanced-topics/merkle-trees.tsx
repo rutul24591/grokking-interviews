@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +30,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Merkle trees</strong> (hash trees) are a binary tree data structure where each
           leaf node contains the cryptographic hash of a data block, and each internal node
           contains the hash of its two child nodes. The root node&apos;s hash (the Merkle root)
@@ -37,8 +41,8 @@ export default function ArticlePage() {
           data block propagates up the tree, changing the Merkle root. This property enables
           efficient integrity verification: to verify that a dataset has not been tampered with,
           you only need to compare the Merkle root, not the entire dataset.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider a distributed database that replicates data across three nodes. To verify
           that all three nodes have identical data, a naive approach would compare every block
           of data across all nodes, consuming O(N) network bandwidth where N is the dataset
@@ -47,7 +51,7 @@ export default function ArticlePage() {
           compare child node hashes to identify the specific blocks that differ, consuming
           O(log N) network bandwidth. For a 1 TB dataset divided into 4 KB blocks, the
           difference is 1 TB (naive) vs. a few kilobytes (Merkle tree).
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, Merkle trees require understanding the trade-offs
           between tree depth (verification efficiency vs. update cost), hash function choice
@@ -76,6 +80,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/merkle-tree-structure.svg`}
@@ -84,19 +91,19 @@ export default function ArticlePage() {
         />
 
         <h3>Merkle Tree Construction</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A Merkle tree is constructed bottom-up. Each data block is hashed using a cryptographic
           hash function (SHA-256, SHA-3, or BLAKE3), producing a leaf node hash. Pairs of leaf
           node hashes are concatenated and hashed to produce parent node hashes. This process
           continues recursively until a single root hash (the Merkle root) is produced.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           If the number of data blocks is not a power of two, the last block is duplicated to
           create a complete binary tree. Alternatively, the tree can be constructed as an
           incomplete binary tree where some internal nodes have only one child. The choice
           affects the tree depth and the number of hashes required for verification, but does
           not affect the correctness of the Merkle root as a fingerprint of the dataset.
-        </p>
+        </HighlightBlock>
 
         <h3>Merkle Proofs</h3>
         <p>
@@ -145,22 +152,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Data Synchronization with Merkle Trees</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Merkle trees enable efficient data synchronization between two replicas. Each replica
           builds a Merkle tree over its data and computes the Merkle root. The replicas exchange
           roots. If the roots match, the data is identical and no synchronization is needed.
           If the roots differ, the replicas recursively exchange child node hashes to identify
           the specific blocks that differ. Once the differing blocks are identified, the replica
           with the correct data transmits only those blocks to the other replica.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This approach is used by rsync (file synchronization), BitTorrent (peer-to-peer file
           sharing), and Cassandra (anti-entropy repair between replicas). The synchronization
           bandwidth is proportional to the number of differing blocks (O(D log N)), not the
           total dataset size (O(N)), making it efficient for large datasets with small changes.
-        </p>
+        </HighlightBlock>
 
         <h3>Merkle Trees in Blockchain</h3>
         <p>
@@ -192,21 +202,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Merkle trees trade computational overhead for verification efficiency. Building the
           tree requires O(N) hash computations, and updating a block requires O(log N) hash
           computations. The verification cost is O(log N) hashes per block, compared to O(N)
           for comparing the entire dataset. The trade-off is favorable for large datasets that
           change infrequently: the one-time O(N) build cost is amortized over many O(log N)
           verification operations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compared to simple hash checksums (a single hash of the entire dataset), Merkle
           trees provide incremental verification: you can verify individual blocks without
           downloading the entire dataset. Compared to per-block checksums, Merkle trees
           provide a single root hash that commits to the entire dataset, enabling efficient
           comparison of two datasets (compare roots instead of comparing N checksums).
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -214,19 +227,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use a cryptographically secure hash function (SHA-256, SHA-3, or BLAKE3) for Merkle
           tree construction. Avoid non-cryptographic hash functions (MurmurHash, CRC32) for
           security-critical applications, as they are vulnerable to collision attacks where an
           attacker can craft two different datasets with the same Merkle root.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Choose the block size based on the expected dataset size and change frequency. For
           large datasets (GB-TB), use larger blocks (64 KB-4 MB) to keep the tree depth
           manageable. For small datasets (KB-MB), use smaller blocks (4 KB) to enable
           fine-grained synchronization. The optimal block size balances tree depth (verification
           efficiency) against granularity (synchronization precision).
-        </p>
+        </HighlightBlock>
         <p>
           Cache intermediate node hashes to avoid recomputing them on every verification.
           When a block changes, only the hashes along the path from the changed leaf to the
@@ -246,15 +262,18 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is using a non-cryptographic hash function for security-critical
           applications. Non-cryptographic hash functions (MurmurHash, CRC32, FNV) are designed
           for speed, not collision resistance. An attacker can craft two different datasets with
           the same hash, producing the same Merkle root and bypassing integrity verification.
           The fix is to use a cryptographically secure hash function (SHA-256, SHA-3, BLAKE3)
           for all security-critical Merkle tree applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not handling odd-numbered leaves correctly can produce incorrect Merkle roots. When
           the number of data blocks is not a power of two, the tree construction must handle
           the last block correctly (either duplicate it or construct an incomplete binary tree).
@@ -262,7 +281,7 @@ export default function ArticlePage() {
           data. The fix is to use a standardized tree construction algorithm (e.g., RFC 6962
           for Certificate Transparency Merkle trees) that specifies exactly how odd-numbered
           leaves are handled.
-        </p>
+        </HighlightBlock>
         <p>
           Recomputing the entire tree on every update is an O(N) operation that becomes
           prohibitively expensive for large datasets. The fix is to use incremental updates:
@@ -284,25 +303,28 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Bitcoin: Transaction Merkle Trees</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Bitcoin uses Merkle trees to commit to the set of transactions in each block. The
           Merkle root is included in the 80-byte block header, which is hashed to produce the
           block hash. This enables SPV (Simplified Payment Verification) clients to verify
           that a transaction is included in a block without downloading the entire block: the
           client downloads the block header and the Merkle proof (log N hashes) and verifies
           that the computed root matches the root in the block header.
-        </p>
+        </HighlightBlock>
 
         <h3>Cassandra: Anti-Entropy Repair</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cassandra uses Merkle trees for anti-entropy repair between replicas. Each replica
           builds a Merkle tree over its data and exchanges the tree with other replicas. The
           replicas compare roots and recursively identify differing blocks, then synchronize
           only the changed blocks. This reduces the repair bandwidth from O(N) (full data
           comparison) to O(D log N) where D is the number of differing blocks.
-        </p>
+        </HighlightBlock>
 
         <h3>IPFS: Content-Addressed Storage</h3>
         <p>
@@ -320,18 +342,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is a Merkle tree and how does it work?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               A Merkle tree is a binary tree where each leaf node contains the hash of a data
               block, and each internal node contains the hash of its two child nodes. The root
               node&apos;s hash (the Merkle root) serves as a cryptographic fingerprint of the
               entire dataset. Any change to any data block propagates up the tree, changing
               the Merkle root.
-            </p>
+            </HighlightBlock>
             <p>
               This enables efficient integrity verification: to verify that a dataset has not
               been tampered with, you only need to compare the Merkle root. To verify that a

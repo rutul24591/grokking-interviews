@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function FullTextSearchLibrariesArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Full-text search libraries</strong> provide client-side search
           capabilities with indexing, tokenization, stemming, and relevance
           scoring. Unlike simple string matching (array.filter), these libraries
@@ -44,8 +48,8 @@ export default function FullTextSearchLibrariesArticle() {
           They handle natural language search — understanding that &quot;running&quot;
           matches &quot;run&quot;, &quot;React hooks&quot; matches documents
           containing both terms, and &quot;cafe&quot; should match &quot;caf&eacute;&quot;.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Three popular libraries dominate client-side full-text search:{" "}
           <strong>Lunr.js</strong> provides classic full-text search with
           stemming and field boosting. <strong>Fuse.js</strong> specializes in
@@ -54,7 +58,7 @@ export default function FullTextSearchLibrariesArticle() {
           Each serves different use cases — Lunr for documentation search, Fuse
           for contact lists with fuzzy matching, FlexSearch for large datasets
           requiring speed.
-        </p>
+        </HighlightBlock>
         <p>
           These libraries solve fundamental search challenges: tokenization
           (splitting text into searchable terms), normalization (lowercasing,
@@ -76,21 +80,24 @@ export default function FullTextSearchLibrariesArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Inverted Index:</strong> The core data structure — maps
             terms to documents containing them. Instead of storing documents
             with their words, stores words with lists of document IDs. Enables
             O(1) or O(log n) lookups instead of O(n) linear scanning. All three
             libraries build inverted indexes during indexing phase.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Tokenization:</strong> Splitting text into searchable terms.
             Handles punctuation, whitespace, and special characters. Lunr uses
             whitespace + punctuation splitting. Fuse allows custom tokenizers.
             FlexSearch supports multiple tokenization strategies including
             n-grams for partial matching.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Stemming:</strong> Reducing words to root form —
             &quot;running&quot;, &quot;runs&quot;, &quot;ran&quot; all become
@@ -134,13 +141,16 @@ export default function FullTextSearchLibrariesArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Full-text search library architecture consists of an indexing phase
           that processes documents and builds the inverted index, and a search
           phase that queries the index and returns ranked results. The indexing
           phase is O(n) but runs once; search phase is O(1) or O(log n) per
           query.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/search-filtering/full-text-search/indexing-flow.svg"
@@ -151,12 +161,12 @@ export default function FullTextSearchLibrariesArticle() {
         />
 
         <h3>Library Architecture Comparison</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Lunr.js</strong> follows classic search engine architecture —
           build index once, search many times. Index is serialized and can be
           saved/loaded. Supports field boosting, stemming, stopword removal.
           Index size scales with document count and vocabulary size.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Fuse.js</strong> uses a simpler architecture — stores
           normalized records with searchable keys. Doesn&apos;t build a true
@@ -174,9 +184,12 @@ export default function FullTextSearchLibrariesArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Library selection involves trade-offs across multiple dimensions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/search-filtering/full-text-search/library-architecture-comparison.svg"
@@ -186,14 +199,14 @@ export default function FullTextSearchLibrariesArticle() {
           height={500}
         />
 
-        <p className="mt-4">
+        <HighlightBlock as="p" tier="important" className="mt-4">
           The architecture comparison diagram shows how each library approaches
           indexing differently. Lunr&apos;s inverted index is most flexible but
           largest. Fuse&apos;s bitwise matching is simplest but doesn&apos;t
           scale. FlexSearch&apos;s context-based approach offers the best
           performance but is most complex. Choose based on your dataset size
           and performance requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Bundle Size</h3>
         <p>
@@ -245,18 +258,21 @@ export default function FullTextSearchLibrariesArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Index at Build Time:</strong> For static content
             (documentation, blogs), build the index at build time and ship it
             pre-built. This eliminates indexing delay on page load. Lunr
             supports serializing indexes for this purpose.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Lazy Load Search:</strong> Don&apos;t load search library
             until user interacts with search input. Code-split the library to
             reduce initial bundle size. Show a loading state while library loads.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Limit Indexed Fields:</strong> Only index searchable fields.
             Don&apos;t index IDs, timestamps, or other non-searchable data.
@@ -284,18 +300,21 @@ export default function FullTextSearchLibrariesArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Indexing on Every Render:</strong> Rebuilding the index on
             every component render is extremely slow. Build index once (in
             useEffect or useMemo) and reuse. Only rebuild when data changes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Too Much Fuzziness:</strong> High fuzziness (threshold
             &gt;0.5) returns many irrelevant results. Users searching for
             &quot;react&quot; don&apos;t want results for &quot;ract&quot; or
             &quot;reactor&quot;. Use moderate fuzziness (0.3-0.4).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring Stemming:</strong> Without stemming,
             &quot;running&quot; won&apos;t match &quot;run&quot;. Enable
@@ -324,22 +343,25 @@ export default function FullTextSearchLibrariesArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Documentation Site (Lunr.js)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Documentation sites use Lunr.js for full-text search across hundreds
           of pages. Index is built at build time (Gatsby, Next.js), serialized,
           and loaded on page load. Provides instant search with stemming and
           field boosting (title matches rank higher).
-        </p>
+        </HighlightBlock>
 
         <h3>Contact List (Fuse.js)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Contact lists benefit from Fuse.js&apos;s fuzzy matching. Users
           searching for &quot;Jhon&quot; find &quot;John&quot;, searching for
           &quot;Smth&quot; finds &quot;Smith&quot;. Multi-property search across
           name, email, and phone. Threshold 0.3-0.4 provides good typo tolerance.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce Product Search (FlexSearch)</h3>
         <p>
@@ -360,13 +382,16 @@ export default function FullTextSearchLibrariesArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you choose between Lunr.js, Fuse.js, and FlexSearch?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The choice depends on requirements. Lunr.js is best for
               classic full-text search with stemming — ideal for documentation
               sites. Fuse.js excels at fuzzy matching for typo-tolerant search
@@ -375,7 +400,7 @@ export default function FullTextSearchLibrariesArticle() {
               100× faster than Lunr. Consider bundle size (Fuse smallest,
               FlexSearch largest), features needed (stemming, fuzzy, partial
               matching), and dataset size.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

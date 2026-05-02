@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -41,21 +42,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Chat widget integration</strong> is the embedding of a
           third-party customer support or sales chat capability into your
           application. Chat widgets are commonly used because they reduce
           operational overhead (vendor handles agents, UI, and infrastructure),
           but they come with significant runtime and privacy implications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Chat widgets are usually long-lived, high-privilege scripts: they
           attach global listeners, open connections, collect context, and often
           run throughout the session. This makes them one of the most common
           sources of frontend performance regressions and data exposure,
           especially in enterprise products where customer trust and compliance
           expectations are high.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, chat widget integration focuses on: making
           chat optional, constraining what data the widget can access, ensuring
@@ -95,6 +99,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/third-party-integration/chat-widget-isolation.svg"
@@ -103,10 +110,10 @@ export default function ArticlePage() {
         />
 
         <h3>Widget Isolation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Chat widgets must be isolated from your application to prevent
           security and stability issues:
-        </p>
+        </HighlightBlock>
 
         <h4>Isolation Level 1: Iframe (Recommended)</h4>
         <ul className="space-y-2">
@@ -147,10 +154,10 @@ export default function ArticlePage() {
             postMessage needed.
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Recommendation:</strong> Use iframe for third-party chat
           widgets. Shadow DOM only for trusted internal widgets.
-        </p>
+        </HighlightBlock>
 
         <h3>Identity Handoff</h3>
         <p>
@@ -316,14 +323,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust chat widget architecture treats the widget as an{" "}
           <strong>untrusted micro-frontend</strong> that must be isolated,
           monitored, and controlled.
-        </p>
+        </HighlightBlock>
 
         <h3>Widget Lifecycle</h3>
-        <p>Chat widgets have a lifecycle that must be managed:</p>
+        <HighlightBlock as="p" tier="important">Chat widgets have a lifecycle that must be managed:</HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Load:</strong> Inject script, initialize SDK, create iframe
@@ -428,10 +438,13 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Chat widget integration involves trade-offs between functionality,
           performance, and privacy.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -466,12 +479,12 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that{" "}
           <strong>lazy load on interaction</strong> is the default choice. The
           small delay when first opening chat is acceptable trade-off for zero
           impact on page load.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -479,15 +492,18 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Iframe Isolation:</strong> Always isolate chat widget in
             iframe. Never render directly in your DOM.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Lazy Load Widget:</strong> Load widget only when user clicks
             chat button. Don't load on page load.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use HMAC for Identity:</strong> Never pass raw tokens. Use
             HMAC verification for secure identity handoff.
@@ -528,15 +544,18 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No Iframe Isolation:</strong> Rendering widget directly in
             DOM allows it to access your data.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Eager Loading:</strong> Loading widget on page load wastes
             bandwidth and slows page load.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Passing Raw Tokens:</strong> Passing session tokens gives
             widget full backend access.
@@ -569,17 +588,20 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>SaaS: Secure Identity Handoff</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Problem:</strong> SaaS company wanted chat widget to show user
           identity and account context without compromising security.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong> Used iframe isolation. Generated HMAC hash
           of user_id for secure identity verification. Lazy loaded chat on user
           click. Implemented proper teardown on logout.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Results:</strong> Secure identity handoff verified by chat
           vendor. Page load impact reduced from 2.5s to 0s (lazy load). Support
@@ -638,6 +660,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
@@ -645,9 +670,9 @@ export default function ArticlePage() {
               Question 1: How do you securely pass user identity to a chat
               widget?
             </h3>
-            <p className="text-muted mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3">
               <strong>Answer:</strong>
-            </p>
+            </HighlightBlock>
             <ul className="space-y-2 mb-3">
               <li>
                 <strong>Never Pass Raw Tokens:</strong> Don't pass session
@@ -668,11 +693,11 @@ export default function ArticlePage() {
                 consented to data sharing.
               </li>
             </ul>
-            <p>
+            <HighlightBlock as="p" tier="important">
               HMAC verification is industry standard pattern used by Intercom,
               Drift, Zendesk, and other chat vendors for secure identity
               handoff.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">

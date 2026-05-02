@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function BookmarkSaveUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Bookmark and save UI enables users to curate personal libraries of content for later consumption. Unlike likes that express momentary appreciation or shares that distribute content to networks, bookmarks represent intentional commitment to return. Users bookmark articles to read later, products to purchase, recipes to cook, and videos to watch. This intent signal is valuable for both users—who build personalized reference libraries—and platforms—who gain insight into user preferences and drive repeat engagement.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Major platforms implement bookmarking with different emphases. Twitter bookmarks provide private saving for tweets users want to reference later. Instagram collections organize saved posts into themed folders. Pinterest boards serve as visual inspiration collections with social sharing options. Pocket specializes in article saving with offline reading capability. Each implementation reflects different use cases from private reference to public curation.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, bookmark implementation involves navigating technical and product challenges. The system must handle collection management with efficient organization and retrieval. Cross-device synchronization ensures bookmarks are available regardless of device. Offline access requires local caching with conflict resolution when connectivity resumes. Privacy controls must support both private bookmarks and shareable collections. The architecture must handle content that becomes unavailable—deleted posts, expired products, removed videos—gracefully informing users while maintaining their collection structure.
         </p>
@@ -47,13 +51,16 @@ export default function BookmarkSaveUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Save Actions and States</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The save button operates as a toggle between saved and unsaved states. In the unsaved state, the button displays an outlined bookmark icon with "Save" label. When activated, the icon fills and the label changes to "Saved" or shows the collection name. Long-press or secondary click opens collection picker for organizing the save into specific folders.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Save state management tracks which content a user has saved and in which collections. A single piece of content can exist in multiple collections simultaneously— a recipe might be in both "Weeknight Dinners" and "Healthy Meals" collections. The data model supports many-to-many relationships between content and collections with metadata like save date and optional notes per collection.
-        </p>
+        </HighlightBlock>
         <p>
           Optimistic updates provide instant feedback when saving. The bookmark icon fills immediately while the API request completes in background. On failure, the icon reverts with error notification offering retry. This pattern maintains the perception of instant response essential for engagement features.
         </p>
@@ -105,9 +112,12 @@ export default function BookmarkSaveUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Bookmark architecture spans client state management, API design, collection storage, and synchronization infrastructure. The client component manages save state, collection picker, and offline queue. The API layer validates save requests, enforces collection limits, and persists bookmark records. The database stores bookmarks with efficient indexes for collection queries. Sync infrastructure ensures cross-device availability.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/interaction-engagement/bookmark-save-ui/bookmark-architecture.svg"
@@ -118,9 +128,9 @@ export default function BookmarkSaveUIArticle() {
         />
 
         <h3>Client Component Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The save button component maintains local state for saved status, pending action during API calls, and error state. On user interaction, it updates the visual state optimistically and fires the API request. For collection selection, long-press or secondary click opens collection picker modal showing existing collections with create new option.
-        </p>
+        </HighlightBlock>
         <p>
           Collection picker displays collections in scrollable list with search for users with many collections. Each collection shows item count for context. "Create new collection" option at top or bottom opens inline creation field. Selected collections show checkmark indicators. Multi-select enables saving to multiple collections in one action.
         </p>
@@ -172,14 +182,17 @@ export default function BookmarkSaveUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Bookmark UI design involves trade-offs affecting organization flexibility, user experience, and system complexity. Understanding these trade-offs enables informed decisions aligned with user needs and platform goals.
-        </p>
+        </HighlightBlock>
 
         <h3>Organization Method Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Flat collections maximize simplicity but don't scale for power users. Users with 50+ collections face unwieldy scrolling and difficulty finding specific collections. Search becomes essential at scale. Flat model works well for casual users who save occasionally and don't need complex organization.
-        </p>
+        </HighlightBlock>
         <p>
           Nested collections enable deep organization but add friction to the save flow. Users must navigate folder tree to select destination, which may discourage saving. Mobile interfaces struggle with nested pickers due to limited screen space. Nested model works well for desktop-first platforms with power users who value organization.
         </p>
@@ -220,13 +233,16 @@ export default function BookmarkSaveUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use optimistic updates:</strong> Update save state immediately on user interaction, then sync to server. Revert on failure with clear error messaging. Users expect instant feedback for save actions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Support collection picker:</strong> Long-press or secondary click opens collection selection. Show existing collections with search for users with many collections. Enable creating new collection inline.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle unavailable content gracefully:</strong> Show placeholder with "Content no longer available" rather than broken links. Offer bulk cleanup after grace period with user confirmation.
           </li>
@@ -250,13 +266,16 @@ export default function BookmarkSaveUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No collection organization:</strong> Single flat list of saves becomes unmanageable. Users can't find specific saved content. Provide collections from launch even if basic.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Broken links without notification:</strong> Saved content becomes unavailable without user awareness. Show placeholder and notify users before auto-cleanup.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No cross-device sync:</strong> Bookmarks only available on device where saved. Users expect universal access. Implement cloud sync with offline queuing.
           </li>
@@ -274,16 +293,19 @@ export default function BookmarkSaveUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter Bookmarks</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter provides private-only bookmarks with no organization (flat list). Bookmarks are completely private—no one can see what you've bookmarked. Search within bookmarks enables finding specific saved tweets. Twitter chose simplicity over organization, assuming most users bookmark occasionally rather than building large libraries.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Pinterest Boards</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pinterest uses public-by-default boards with sections for nested organization. Users build themed boards (Wedding Ideas, Home Decor) with sections for subcategories. Boards can be kept secret for private planning. Collaborative boards allow multiple contributors. Pinterest optimizes for public curation and discovery.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Pocket Article Saving</h3>
         <p>
@@ -298,12 +320,15 @@ export default function BookmarkSaveUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle saved content that's deleted?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle saved content that's deleted?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Show placeholder with "Content no longer available" message in the collection view. Preserve the bookmark entry so collection structure remains intact. Optionally store content snapshot at save time for reference. Notify users before auto-cleanup (30-90 days) with option to manually remove. Log deleted content for analytics—may indicate popular content that was removed or policy violations.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,15 +36,18 @@ export default function StringsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>string</strong> is a finite, ordered sequence of characters
           drawn from some alphabet. The definition sounds simple until one asks
           what a &quot;character&quot; is — and at that point the abstraction
           shatters into a stack of decisions about encoding, normalization,
           memory layout, and interpretation that together make strings the
           richest and most error-prone data structure in mainstream programming.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The earliest strings were literally arrays of bytes — one byte per
           character, with the character interpreted through a code page
           (ASCII, EBCDIC, Latin-1, Shift-JIS). That flat-array model persists
@@ -54,7 +58,7 @@ export default function StringsArticle() {
           Unicode-aware view even though the underlying storage may be UTF-16,
           UTF-8, or a mixture of byte and two-byte-per-code-unit encodings
           depending on the runtime&apos;s small-string optimizations.
-        </p>
+        </HighlightBlock>
         <p>
           Beyond the encoding question sits the mutability question. C and
           Rust strings are mutable when owned; Java, JavaScript, Python, and
@@ -82,11 +86,14 @@ export default function StringsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Unicode and its encodings
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Unicode assigns every character a <em>code point</em> — an integer
           in the range U+0000 to U+10FFFF. Encodings translate code points
           into byte sequences. <strong>UTF-8</strong> is a variable-length
@@ -106,12 +113,12 @@ export default function StringsArticle() {
           UTF-16 code units regardless. <strong>UTF-32</strong> uses a flat 4 bytes per code
           point; it&apos;s rarely used outside of transient buffers because it
           triples memory for ASCII-heavy text.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Code units vs code points vs grapheme clusters
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In JavaScript, <code>&quot;hello&quot;.length</code> returns 5, but{" "}
           <code>&quot;🎉&quot;.length</code> returns 2 — because the party
           popper emoji is a single code point (U+1F389) encoded as a UTF-16
@@ -124,7 +131,7 @@ export default function StringsArticle() {
           <code>Intl.Segmenter</code> (built into modern browsers) or{" "}
           <code>graphemer</code> handle the Unicode grapheme cluster break
           algorithm correctly.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Immutability and interning
@@ -154,17 +161,20 @@ export default function StringsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production-quality string implementation is almost never a single
           flat byte array. Modern runtimes maintain multiple internal string
           shapes and transition between them based on how the string was
           produced and what operations are performed on it.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           V8 string shapes
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           V8 distinguishes at least seven string shapes:{" "}
           <strong>SeqString</strong> (flat bytes, either one-byte Latin-1 or
           two-byte UTF-16), <strong>ConsString</strong> (a binary tree where
@@ -180,7 +190,7 @@ export default function StringsArticle() {
           is hashed, compared, or passed to a native API does V8{" "}
           <em>flatten</em> it into a SeqString, materializing the content on
           demand.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Ropes and structural sharing
@@ -227,23 +237,26 @@ export default function StringsArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Encoding trade-offs
         </h3>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>UTF-8</strong>: compact for ASCII-dominant text, stateless
             (any byte is self-identifying), friendly to old <code>grep</code>
             {" "}and byte-oriented tooling. Costly to random-access by code point
             (requires a scan to compute the <em>i</em>th code point).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>UTF-16</strong>: fixed 2 bytes for BMP characters,
             simpler per-code-unit indexing, but doubles ASCII memory and
             requires surrogate-pair handling. Forced on you if you run on
             JVM, .NET, JavaScript, or Windows.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>UTF-32</strong>: trivial O(1) indexing by code point at
             4× ASCII memory cost. Used only in transient processing buffers
@@ -285,7 +298,7 @@ export default function StringsArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Flat string vs rope vs gap buffer
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Flat strings win whenever the workload is read-mostly and the
           content fits comfortably in memory. Ropes win when concatenations
           and mid-string edits dominate — large document editors, collaborative
@@ -295,7 +308,7 @@ export default function StringsArticle() {
           near the gap and linear only when the cursor jumps. Modern editors
           often compose these: CodeMirror 6 uses a rope; VS Code&apos;s
           document model uses piece tables; classic Emacs uses a gap buffer.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -303,22 +316,25 @@ export default function StringsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Know which length you want.</strong> In JavaScript,
             {" "}<code>str.length</code> counts UTF-16 code units;{" "}
             <code>[...str].length</code> counts code points;{" "}
             <code>new Intl.Segmenter().segment(str)</code> gives grapheme
             clusters. For user-visible counts (character limits, cursor
             positions), use grapheme clusters.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Normalize before comparing user input.</strong> Call{" "}
             <code>str.normalize(&quot;NFC&quot;)</code> on both sides before
             equality or hashing. <code>café</code> with a combining acute and{" "}
             <code>café</code> with a precomposed é look identical but are not{" "}
             <code>===</code> until normalized.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Build large strings via a buffer, not loop
             concatenation.</strong> Although V8&apos;s ConsString defuses the
@@ -356,22 +372,25 @@ export default function StringsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Confusing length.</strong> Truncating{" "}
             <code>description</code> at <code>str.slice(0, 100)</code> in
             JavaScript can cut a surrogate pair in half, producing an
             unpaired surrogate that many downstream systems reject or render
             as U+FFFD. Always truncate on grapheme-cluster boundaries.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Mojibake from wrong encoding assumptions.</strong> A
             UTF-8 byte stream decoded as Latin-1 displays{" "}
             <code>café</code> as <code>cafÃ©</code>. Triple-encoded strings
             (typical of migrations through multiple systems) are notoriously
             hard to recover. Always label encodings in storage and transport
             explicitly.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Allocator pressure from loop concatenation.</strong>{" "}
             Building a CSV or JSON response with{" "}
@@ -416,11 +435,14 @@ export default function StringsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           V8 ConsString in template literal pipelines
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every template literal expansion in a tight loop in Node.js leverages
           ConsString. Logging pipelines, JSON serializers, and JSX
           renderers would be prohibitively slow without it — a 100-line JSX
@@ -428,19 +450,19 @@ export default function StringsArticle() {
           one would explode the allocator. V8 defers the flatten until the
           result is actually read by a native API such as{" "}
           <code>http.ServerResponse.write</code>.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Rope structures in collaborative editors
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Docs, Figma&apos;s text tool, Notion&apos;s block editor, and
           CodeMirror 6 all rely on rope-like structures to support
           logarithmic-time edits and CRDT merges. The rope is the substrate
           that lets two users type in different parts of a 10,000-line
           document simultaneously without re-serializing the whole buffer on
           every keystroke.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Pattern matching in log indexers and IDEs
@@ -480,13 +502,16 @@ export default function StringsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: Why is <code>str.length</code> in JavaScript not the number
               of characters?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Because JavaScript strings are sequences of UTF-16 code
               units, not code points or user-perceived characters. A code
               point in the supplementary planes (anything beyond U+FFFF —
@@ -498,7 +523,7 @@ export default function StringsArticle() {
               storage-size proxying, <code>[...str].length</code> for code
               point counts, <code>Intl.Segmenter</code> for visible-character
               counts.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

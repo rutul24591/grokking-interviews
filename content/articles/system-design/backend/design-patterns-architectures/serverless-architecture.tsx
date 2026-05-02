@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,12 +28,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Serverless architecture</strong> is a cloud computing execution model where you deploy code and configure managed services, while the cloud provider handles provisioning, scaling, patching, capacity planning, and most operational mechanics of the underlying servers. The term is misleading: servers still exist, but they are abstracted away from the developer. You no longer think in terms of virtual machines, containers, or clusters. You think in terms of functions, triggers, and managed service configurations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In practice, serverless architecture decomposes into two complementary paradigms. <strong>Function as a Service (FaaS)</strong> provides event-driven compute primitives—short-lived functions triggered by HTTP requests, queue messages, cron schedules, or storage events. Providers include AWS Lambda, Google Cloud Functions, Azure Functions, and Cloudflare Workers. <strong>Backend as a Service (BaaS)</strong> provides managed backend capabilities—databases, authentication, storage, messaging, and APIs—that replace what you would otherwise build and operate yourself. Examples include Firebase, AWS DynamoDB, Auth0, Supabase, and managed message queues like SQS or Pub/Sub.
-        </p>
+        </HighlightBlock>
         <p>
           The distinction between FaaS and BaaS matters architecturally. FaaS is about compute abstraction—you write the logic, the provider runs it. BaaS is about capability abstraction—you configure the service, the provider operates it. A mature serverless architecture combines both: functions orchestrate business logic while managed services handle persistence, messaging, authentication, and storage. The ratio of FaaS to BaaS in your architecture determines your operational burden, your vendor coupling, and your cost structure.
         </p>
@@ -54,14 +58,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>FaaS vs BaaS: Architectural Distinction</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding the distinction between FaaS and BaaS is fundamental to designing effective serverless systems. FaaS provides event-driven compute where you write functions that execute in response to triggers. Each invocation is isolated, ephemeral, and billed by execution duration and memory allocation. The function lifecycle includes initialization (cold start), execution, and teardown. You control the code, the runtime, and the dependencies. The provider controls the underlying infrastructure, scaling, and availability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           BaaS provides managed backend capabilities that replace infrastructure you would otherwise build yourself. Managed databases like DynamoDB or Firestore handle replication, backups, scaling, and encryption. Managed authentication like Auth0 or Cognito handles user identity, token management, and federation. Managed messaging like SQS, SNS, or Pub/Sub handles queue management, retry logic, and dead-letter processing. Managed storage like S3 or Cloud Storage handles object lifecycle, versioning, and global distribution.
-        </p>
+        </HighlightBlock>
         <p>
           The architectural relationship between FaaS and BaaS is symbiotic. Functions orchestrate business logic and coordinate between managed services. Managed services provide durable state, messaging, and capabilities that functions consume. A well-designed serverless system has thin functions that delegate heavy lifting to managed services. Functions should be stateless coordinators, not data stores. When functions start managing their own state, caching, or complex data structures, you are fighting the serverless model rather than embracing it.
         </p>
@@ -110,14 +117,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Cold Start Mitigation Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cold start mitigation is a multi-layered discipline that spans runtime selection, deployment packaging, initialization optimization, and traffic management. The most effective approach combines several strategies rather than relying on a single technique.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Provisioned concurrency</strong> is the most direct mitigation. Providers like AWS Lambda allow you to pre-warm a specified number of execution environments so that they are ready to handle requests immediately. This eliminates cold starts entirely for the provisioned capacity but incurs cost even when the environments are idle. The strategy works well for latency-sensitive APIs with predictable baseline traffic. For bursty traffic, provisioned concurrency should be combined with auto-scaling configuration that provisions additional environments as demand increases.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>SnapStart</strong> is a technique used by AWS Lambda for Java functions that creates a snapshot of the initialized execution environment and reuses it for subsequent cold starts. The snapshot captures the initialized JVM, loaded classes, and initialized dependencies, reducing cold start latency from seconds to hundreds of milliseconds. This is particularly effective for Java functions with heavy initialization overhead.
         </p>
@@ -173,14 +183,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>Serverless vs Container-Based Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The choice between serverless and container-based architectures like Kubernetes or ECS is one of the most common architectural decisions staff engineers face. Each approach has distinct trade-offs across operational overhead, cost structure, performance characteristics, and team capabilities.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Serverless provides the lowest operational overhead. You do not manage nodes, clusters, autoscaling groups, or load balancers. The provider handles all infrastructure concerns. The trade-off is less control over the execution environment. You cannot choose the OS, the kernel version, or the network stack. You are constrained by the provider&apos;s limits on execution time, memory, and package size. For teams that value speed of delivery and have standard workload requirements, serverless is the superior choice.
-        </p>
+        </HighlightBlock>
         <p>
           Container-based architectures provide full control over the execution environment. You choose the base image, the runtime, the network configuration, and the resource limits. You can run long-lived processes, maintain persistent connections, and customize every aspect of the infrastructure. The trade-off is significant operational overhead. You must manage clusters, handle upgrades, configure autoscaling, monitor node health, and maintain the control plane. This requires dedicated platform engineering expertise.
         </p>
@@ -231,13 +244,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Design functions to be small, focused, and single-purpose. A function should do one thing well. This improves cold start times because smaller functions have fewer dependencies, makes testing easier because the surface area is limited, and enables independent scaling because different functions have different load profiles. Avoid the temptation to build monolithic functions that handle multiple unrelated responsibilities. The serverless model rewards granularity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement idempotent handlers as a default practice. Every function that performs a write operation, sends a notification, or triggers a side effect must be safe to execute multiple times with the same input. Use deduplication keys stored in a durable store, conditional writes that check-and-set atomically, or event sourcing patterns that naturally handle duplicate events. Treat at-least-once delivery as the norm, not the exception.
-        </p>
+        </HighlightBlock>
         <p>
           Structure deployment packages for fast cold starts. Include only the dependencies your function actually uses. Use bundling tools to eliminate dead code. Prefer lightweight runtimes for latency-sensitive workloads. Defer heavy initialization to the first invocation rather than the cold start phase. Profile your function&apos;s initialization sequence and optimize the slowest components.
         </p>
@@ -263,13 +279,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is treating serverless functions like traditional long-running services. Functions are ephemeral, stateless, and time-limited. Attempting to maintain persistent connections, store state locally, or run indefinitely leads to failures and data loss. The mental model must shift from &quot;my service runs continuously&quot; to &quot;my function runs when triggered and then disappears.&quot;
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Underestimating cold start impact on user experience is another frequent mistake. Teams design APIs without considering cold start latency, then discover that p95 and p99 latency is unacceptable for interactive users. Cold starts should be factored into API design from the start. For latency-sensitive endpoints, use provisioned concurrency, edge computing, or container-based alternatives. Do not discover cold start impact in production.
-        </p>
+        </HighlightBlock>
         <p>
           Ignoring event delivery semantics leads to data corruption and incorrect outcomes. When functions process events non-idempotently, duplicate events create duplicate records, double charges, and inconsistent state. This is the most common cause of production incidents in serverless systems. Every team building event-driven serverless must understand at-least-once delivery and design idempotent handlers before writing production code.
         </p>
@@ -292,14 +311,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Coca-Cola: Serverless Vending Machine Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Coca-Cola implemented a serverless architecture to manage their freestyle vending machines across thousands of locations. The previous architecture required managing servers that collected telemetry data from machines, processed it, and generated alerts for maintenance and restocking needs. The operational overhead of managing this infrastructure at global scale was significant.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The serverless solution uses Lambda functions triggered by IoT events from vending machines. Each machine sends telemetry data including inventory levels, error codes, and usage patterns. Lambda functions process the data, update DynamoDB tables, and trigger alerts when machines need attention. The architecture handles millions of events per day with automatic scaling and zero server management.
-        </p>
+        </HighlightBlock>
         <p>
           The results were transformative. Coca-Cola reported a significant reduction in operational costs because they no longer needed to manage server infrastructure for variable workloads. The serverless architecture automatically scaled during peak consumption periods and scaled to zero during quiet periods. Machine uptime improved because alerts were processed in near-real-time, enabling proactive maintenance rather than reactive repairs. The team could focus on improving the business logic rather than managing infrastructure.
         </p>
@@ -343,14 +365,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: Explain the difference between FaaS and BaaS. How do they work together in a serverless architecture?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               FaaS (Function as a Service) provides event-driven compute primitives where you write functions that execute in response to triggers like HTTP requests, queue messages, or scheduled events. Examples include AWS Lambda, Google Cloud Functions, and Azure Functions. You control the code, runtime, and dependencies. The provider controls infrastructure, scaling, and availability. Functions are ephemeral, stateless, and billed by execution duration and memory.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               BaaS (Backend as a Service) provides managed backend capabilities that replace infrastructure you would otherwise build and operate yourself. Examples include managed databases (DynamoDB, Firestore), authentication (Auth0, Cognito), messaging (SQS, Pub/Sub), and storage (S3). You configure the service; the provider operates it, handles replication, backups, scaling, and encryption.
             </p>

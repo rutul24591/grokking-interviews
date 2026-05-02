@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Event tracking</strong> is the systematic capture of user interactions beyond page views: button clicks, form submissions, video plays, file downloads, search queries, scroll depth, and custom actions. While page views answer "where did users go?", event tracking answers "what did users do?"—enabling deeper analysis of engagement, conversion, and user behavior.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Event tracking is deceptively simple to start ("track a click") but complex to scale. Without governance, teams accumulate hundreds of inconsistently-named events, missing properties, duplicate events, and unqueryable data. At scale, event tracking requires standardized taxonomy, batching for performance, data quality monitoring, and privacy compliance.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, event tracking requires balancing four competing concerns. <strong>Data Quality</strong> means events must be accurate, consistent, and complete—poor data quality leads to wrong decisions. <strong>Performance</strong> means event tracking must not impact user experience—batching and async sending are critical. <strong>Flexibility</strong> means the schema must accommodate new events without breaking existing analysis. <strong>Privacy</strong> means events must not capture PII without consent—GDPR/CCPA compliance is mandatory.
         </p>
@@ -48,6 +52,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/analytics-tracking/event-taxonomy.svg"
@@ -56,12 +63,12 @@ export default function ArticlePage() {
         />
 
         <h3>Event Taxonomy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event taxonomy is the standardized system for naming and structuring events. Without taxonomy, you get inconsistent event names, missing properties, and unqueryable data. A well-designed taxonomy makes events queryable, analyzable, and maintainable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For naming conventions, use a consistent format like <code>[object]_[action]</code>—for example, <code>button_clicked</code>, <code>form_submitted</code>, <code>video_played</code>. Group events by domain namespace like <code>checkout_</code>, <code>search_</code>, <code>user_</code>. Use consistent verbs like clicked, viewed, submitted, started, completed, failed. Use snake_case for event names, which is the industry standard.
-        </p>
+        </HighlightBlock>
         <p>
           Event properties fall into two categories. <strong>Common properties</strong> are included on all events: user_id, session_id, timestamp, page_url, and device_type. <strong>Event-specific properties</strong> are properties specific to event type, like product_id for product_viewed or form_name for form_submitted. Enforce data types (string, number, boolean) and don't mix types for the same property.
         </p>
@@ -122,14 +129,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust event tracking architecture treats events as a first-class data pipeline with proper validation, batching, and monitoring.
-        </p>
+        </HighlightBlock>
 
         <h3>Event Collection Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement event collection by creating a tracking utility that abstracts the analytics provider. Call <code>track(eventName, properties)</code> instead of calling the analytics SDK directly. This abstraction makes it easy to switch providers later. Validate event schema before sending and reject invalid events. Add common properties (user_id, session_id, timestamp, page_url) automatically. Add validated events to a queue for batching. Send the batch when threshold is reached or timer expires. Retry failed batches with exponential backoff.
-        </p>
+        </HighlightBlock>
 
         <h3>Event Batching Architecture</h3>
         <p>
@@ -155,12 +165,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Event tracking involves trade-offs between data completeness, performance, and cost. Tracking everything provides the best data completeness but poor performance with many requests and the highest cost. This is only suitable for low-traffic sites. Batched tracking provides good data completeness with good performance from fewer requests and medium cost. This works for most sites. Sampled tracking provides fair statistical data completeness with best performance and low cost. This is best for high-traffic sites.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that batched tracking with selective sampling is the default choice. Batch all events, and sample only high-volume events.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -168,12 +181,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Define an event taxonomy with naming conventions and property standards. Document all events. Use batching to reduce requests—flush on timer, threshold, or page unload. Validate events before sending and reject invalid events. Abstract tracking by not calling the analytics SDK directly—use an abstraction for flexibility.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Sample high-volume events like scroll, mousemove, and impressions to reduce volume. Monitor data quality by tracking event delivery rate and alerting on drops or spikes. Wrap tracking in try-catch—never let tracking break core functionality. Avoid PII by never sending raw email, name, or other PII without consent—use hashed identifiers. Test events in staging before deploying and verify events appear correctly. Conduct quarterly audits of all events, remove unused events, and update documentation.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -181,12 +197,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is having no event taxonomy, which leads to inconsistent event names and properties that result in unqueryable data. Sending PII like raw email, name, or other personal data without consent violates GDPR/CCPA. Not batching events and sending every event immediately wastes bandwidth and increases failure rate.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not validating events allows invalid events to pollute the data warehouse, which is hard to clean up later. Not monitoring means you won't know when tracking breaks. Without governance, event count grows unmanageable—this is event sprawl. Tracking the same event multiple times inflates metrics—this is duplicate events.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -194,16 +213,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce: Conversion Funnel Tracking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce site needed to track conversion funnel but had inconsistent event tracking. The solution was defining event taxonomy for funnel events like product_viewed, cart_added, checkout_started, and purchase_completed. Batching was implemented, and validation and monitoring were added. Data quality improved, funnel analysis became reliable, and they identified a 15% drop-off at checkout. After fixing the friction, conversion increased 12%.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS: Feature Adoption Tracking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A SaaS company didn't know which features users engaged with. The solution was implementing event tracking for all feature interactions with consistent taxonomy and batching events for performance. They identified underused features and focused product improvements on high-engagement features. User engagement increased 25%.
-        </p>
+        </HighlightBlock>
 
         <h3>Media Site: High-Volume Event Sampling</h3>
         <p>
@@ -221,14 +243,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is an event taxonomy and why is it important?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Event taxonomy is a standardized system for naming and structuring analytics events. It includes a naming convention with consistent format like [object]_[action] such as button_clicked, property standards with consistent property names and types across events, and documentation with a registry of all events with descriptions and expected properties.
-            </p>
+            </HighlightBlock>
             <p>
               Importance: Consistent events are queryable and analyzable. Without taxonomy, you get inconsistent data that's impossible to analyze reliably. Maintainability improves because new team members can understand existing events. Governance prevents event sprawl and duplication.
             </p>

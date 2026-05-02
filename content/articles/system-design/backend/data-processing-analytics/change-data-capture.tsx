@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,22 +25,25 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Change Data Capture (CDC)</strong> is the practice of observing and recording every change made to a
           database — inserts, updates, and deletes — and streaming those changes to downstream systems in near real-time.
           CDC transforms a traditional database from a passive data store into an active event source, where every data
           modification becomes a streamable event that other systems can consume, react to, and build upon. Unlike
           batch-based ETL that extracts data on a schedule, CDC captures changes continuously as they occur, enabling
           downstream systems to stay synchronized with the source database with sub-second to sub-minute latency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental mechanism behind CDC is reading the database&apos;s transaction log (WAL in PostgreSQL,
           binlog in MySQL, redo log in Oracle, oplog in MongoDB). The transaction log is an append-only record of
           every change made to the database, written before the change is applied to the actual data pages. This
           log-based approach has two critical properties: it captures every change without modifying the source
           database&apos;s query path (no triggers or polling queries), and it preserves the exact order and atomicity
           of changes as they occurred in the source database.
-        </p>
+        </HighlightBlock>
         <p>
           CDC has become essential infrastructure in modern data platforms because it solves the &quot;data
           synchronization problem&quot; — keeping multiple data stores consistent with each other — without requiring
@@ -78,20 +82,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The transaction log is the single source of truth for CDC. Every change that reaches the database is first
           written to the transaction log in sequential order, and the log sequence number (LSN) provides a total
           ordering of all changes. This ordering is essential because it ensures that downstream consumers see changes
           in the same order they were committed in the source database, preserving referential integrity and causal
           relationships between changes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The CDC connector reads the transaction log sequentially, parsing each change record and transforming it
           into a structured event. The connector must handle several operational challenges: schema evolution (columns
           added, removed, or type-changed in the source database), log rotation (the database purges old log segments
           to reclaim disk space), and connector restart (resuming from the last committed offset after a crash or
           maintenance). Each of these challenges has specific failure modes that must be monitored and mitigated.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/change-data-capture-diagram-1.svg"
           alt="CDC architecture showing source database with transaction log, CDC connector, message broker, and downstream consumers with CDC event structure"
@@ -150,21 +157,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The CDC pipeline architecture follows a consistent flow: source database transaction log, CDC connector,
           message broker, and downstream consumers. The source database writes every change to its transaction log
           before applying it to data pages. The CDC connector connects to the database as a replication client, reads
           the transaction log sequentially, and parses each change record into a structured event. The connector
           emits events to the message broker, typically partitioning by the source table&apos;s primary key to ensure
           that all changes for the same row go to the same partition and maintain ordering.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The message broker serves as the decoupling layer between the CDC connector and downstream consumers. It
           provides durable storage of change events, independent consumption by multiple consumer groups, and replay
           capability for bootstrapping new consumers or reprocessing historical changes. The broker&apos;s retention
           policy determines how long change events are available for consumption — typically hours to days — after
           which they are deleted and only the snapshot provides the initial state for new consumers.
-        </p>
+        </HighlightBlock>
         <p>
           Downstream consumers process change events and apply them to their own data stores. A cache layer consumer
           applies INSERT and UPDATE events to update cached records and DELETE events to evict records. A search index
@@ -209,7 +219,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CDC versus batch-based ETL represents a trade-off between latency and operational complexity. CDC provides
           near-real-time data synchronization with sub-second to sub-minute latency, but requires managing always-on
           connectors, monitoring lag, handling schema evolution, and recovering from connector failures. Batch-based
@@ -218,8 +231,8 @@ export default function ArticlePage() {
           most organizations is to use CDC for operational data synchronization (cache invalidation, search index
           updates, real-time dashboards) and batch ETL for analytical data processing (reporting, compliance,
           historical analysis).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CDC versus dual-write patterns is a reliability trade-off. Dual-write patterns — where the application
           writes to both the primary database and the downstream system synchronously — provide strong consistency
           but couple the application to the downstream system&apos;s availability and latency. If the downstream system
@@ -227,7 +240,7 @@ export default function ArticlePage() {
           downstream systems: the application writes only to the primary database, and the CDC connector asynchronously
           propagates the change. The trade-off is eventual consistency — downstream systems see the change after a
           delay — but the application&apos;s write path is not affected by downstream system health.
-        </p>
+        </HighlightBlock>
         <p>
           Log-based CDC versus trigger-based CDC is an architectural choice with significant performance implications.
           Log-based CDC reads the database&apos;s transaction log, adding minimal overhead to the source database (the
@@ -249,20 +262,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Monitor CDC lag continuously and alert when it approaches the database&apos;s log retention window. CDC lag
           is the difference between the database&apos;s current LSN and the connector&apos;s current LSN. When lag approaches
           the log retention window, the database may purge log segments that the connector has not yet read, forcing a
           full snapshot recovery. Set the alert threshold at 50 percent of the log retention window to provide
           sufficient time for investigation and remediation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use a schema registry with backward compatibility for CDC event schemas. Register the CDC event schema in
           the schema registry and enforce backward compatibility so that new schema versions are compatible with
           consumers that have not yet been updated. This allows downstream consumers to evolve at their own pace
           without being blocked by schema changes in the source database. Reject incompatible schema changes at the
           registry level rather than allowing them to break downstream consumers.
-        </p>
+        </HighlightBlock>
         <p>
           Design downstream consumers to be idempotent: applying the same CDC event twice produces the same state
           as applying it once. This is essential because CDC connectors typically provide at-least-once delivery,
@@ -294,15 +310,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Schema changes at the source breaking the CDC connector is the most common operational failure. When a
           column is added, removed, or has its type changed in the source database, the CDC connector may fail to
           parse subsequent change records or emit events with an unexpected schema that downstream consumers cannot
           process. The fix is to use a schema registry with compatibility checks that validate schema changes before
           they are applied, and to design the connector to handle schema evolution gracefully by emitting schema
           change events alongside data change events.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Log truncation before the connector catches up forces expensive snapshot recovery. If the connector falls
           behind due to network issues, high load, or a crash, and the database purges old transaction log segments,
           the connector cannot resume from its last offset. The only recovery is to take a full snapshot of the source
@@ -310,7 +329,7 @@ export default function ArticlePage() {
           period of inconsistency in downstream systems. The fix is continuous lag monitoring with alerts at 50
           percent of the log retention window, and increasing the log retention period if the connector consistently
           operates close to the truncation boundary.
-        </p>
+        </HighlightBlock>
         <p>
           Duplicate events from connector restart causing downstream data corruption is a correctness failure that
           occurs when downstream consumers are not idempotent. After a connector restart, events between the last
@@ -340,7 +359,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An e-commerce platform uses CDC to replicate its PostgreSQL order database to a Redis cache layer, an
           Elasticsearch search index, and a Snowflake data warehouse. The Debezium connector reads the PostgreSQL
           WAL and emits change events to Kafka topics partitioned by order ID. The Redis consumer applies INSERT and
@@ -350,8 +372,8 @@ export default function ArticlePage() {
           Snowflake consumer applies events to a fact table for real-time revenue reporting, with a nightly batch
           reconciliation that corrects any discrepancies between the CDC-applied data and the authoritative database
           state.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses CDC to replicate its core banking database to a downstream fraud detection
           system. The CDC pipeline captures every account update, transaction, and balance change, streaming them to
           the fraud detection system with end-to-end latency under 500 milliseconds. The fraud detection system
@@ -359,7 +381,7 @@ export default function ArticlePage() {
           uses acks all with idempotent producers to ensure that no transaction event is lost or duplicated, and the
           fraud detection system uses the transaction ID from each CDC event as a deduplication key to ensure
           idempotent processing.
-        </p>
+        </HighlightBlock>
         <p>
           A SaaS platform uses CDC to implement multi-tenant data synchronization across its microservices. When a
           tenant updates their configuration in the primary database, CDC propagates the change to the configuration
@@ -381,25 +403,28 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How does CDC differ from dual-write patterns, and when would you choose one over the other?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             In a dual-write pattern, the application writes to both the primary database and the downstream system
             synchronously within the same request. This provides strong consistency — both systems are updated before
             the request returns — but couples the application to the downstream system&apos;s availability and latency.
             If the downstream system is slow, the application&apos;s response is slow. If the downstream system is down,
             the application&apos;s write fails.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             CDC decouples the application from downstream systems by writing only to the primary database and
             asynchronously propagating changes through the transaction log. The application&apos;s write path is not
             affected by downstream system health, and downstream systems can evolve independently. The trade-off is
             eventual consistency — downstream systems see the change after a delay determined by the CDC pipeline&apos;s
             end-to-end latency.
-          </p>
+          </HighlightBlock>
           <p>
             Choose dual-write when strong consistency is required — for example, when a payment must be recorded in
             both the transaction database and the ledger before the transaction is considered complete. Choose CDC

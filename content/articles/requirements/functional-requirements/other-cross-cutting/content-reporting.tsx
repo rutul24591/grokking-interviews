@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ContentReportingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content reporting enables users to report inappropriate or policy-violating content including posts, comments, images, videos, and links. The content reporting system is a critical community safety mechanism that empowers users to flag problematic content while providing moderation teams with structured reports for review. For staff and principal engineers, content reporting implementation involves report submission workflows (accessible reporting interface), content categorization (structured violation types), report prioritization (severity-based routing), content review processes (automated and human review), false report handling (reporting system abuse prevention), and integration with content moderation systems (queue management, automated actions).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of content reporting extends beyond simple &quot;report content&quot; buttons. Report submission must be contextual (pre-filled with content ID, type, timestamp), specific (categorize violation type with examples), and accessible (available on all content types). Content categorization must distinguish violation types (spam, hate speech, misinformation, nudity, violence, harassment) for appropriate routing. Report prioritization must balance severity (credible threats vs. minor policy violations), content reach (viral content prioritized), and reporter trust (reports from trusted users weighted higher). The system must integrate with broader moderation workflows (reports feed content moderation queue, trigger automated removal for severe violations).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, content reporting architecture involves user-facing components (report dialogs, report tracking), backend services (report storage, categorization, routing), content processing (automated content analysis, ML-based violation detection), and moderation integration (queue management, decision capture). The system must handle high volume (popular platforms receive millions of content reports daily), provide transparency (report status tracking, outcome notification), and maintain community trust (fair handling, consistent enforcement, clear policies). Legal compliance is critical—some content types (child exploitation, copyright infringement) have specific legal reporting requirements.
         </p>
@@ -46,13 +50,16 @@ export default function ContentReportingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Report Submission Workflows</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Report entry points provide multiple ways to report content. Post reports (report individual posts, status updates). Comment reports (report comments on posts, videos). Media reports (report images, videos, audio content). Link reports (report shared URLs, external content). Each entry point pre-fills relevant context (content ID, content type, author, timestamp, engagement metrics) to reduce reporter burden and improve report quality.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Report categorization structures content reports for effective triage. Violation types include spam (commercial, engagement bait), hate speech (targeting protected groups), misinformation (false claims, conspiracy theories), nudity/sexual content (explicit material, adult content), violence/gore (graphic violence, animal cruelty), harassment (targeted abuse, bullying), and other violations. Subcategories provide specificity (hate speech → racial, religious, LGBTQ+ targeting). Specific categorization enables routing to appropriate reviewers and automated actions for clear violations.
-        </p>
+        </HighlightBlock>
         <p>
           Report details capture context for review. Description field allows reporters to explain specific concerns (which part violates policy, why it&apos;s harmful). Evidence specification (multiple pieces of content showing pattern, context from conversation thread). Timeline information (when content posted, when reporter became aware). Related content linkage (connected posts from same author, conversation context). Detailed reports enable more accurate moderation decisions.
         </p>
@@ -115,9 +122,12 @@ export default function ContentReportingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content reporting architecture spans report submission, content analysis, triage and routing, and moderation integration. Report submission provides user-facing interfaces for reporting content. Content analysis processes reported content with automated tools. Triage and routing prioritizes reports and routes to appropriate reviewers. Moderation integration feeds reports into content moderation workflows with tracking and feedback loops.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/content-reporting/content-reporting-architecture.svg"
@@ -128,9 +138,9 @@ export default function ContentReportingArticle() {
         />
 
         <h3>Report Submission Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Report submission layer provides user-facing interfaces. Report dialogs embedded on posts, comments, media, and shared links. Context pre-filling automatically includes relevant information (content ID, content type, author, timestamp, engagement metrics). Categorization UI guides reporters through violation type selection with clear descriptions and examples. Evidence specification enables reporters to point to specific violating elements (timestamp in video, specific text in post).
-        </p>
+        </HighlightBlock>
         <p>
           Report validation ensures report quality before submission. Required fields validation (violation type, specific concern). Evidence validation for severe categories (some violations require specific evidence). Duplicate detection prevents multiple reports about same content from same reporter. Rate limiting prevents report spam (max reports per hour/day). Validation happens client-side for immediate feedback and server-side for security.
         </p>
@@ -190,14 +200,17 @@ export default function ContentReportingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content reporting design involves trade-offs between accessibility and quality, automation and human review, and speed and accuracy. Understanding these trade-offs enables informed decisions aligned with platform values and safety requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Report Submission: Simple vs. Detailed</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Simple submission (minimal fields, quick reporting). Pros: Low friction (users more likely to report), fast (seconds to report), accessible (works for all users). Cons: Low quality reports (vague, no specifics), high volume (including frivolous reports), harder to triage effectively. Best for: High-volume platforms, low-severity violations.
-        </p>
+        </HighlightBlock>
         <p>
           Detailed submission (multiple fields, specific evidence required). Pros: High quality reports (specific, evidenced), easier to triage, lower false positive rate. Cons: High friction (users less likely to report), slow (minutes to complete), may discourage legitimate reports. Best for: Severe violations, platforms prioritizing report quality over volume.
         </p>
@@ -249,13 +262,16 @@ export default function ContentReportingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide contextual reporting:</strong> Report buttons on all content types. Pre-fill content context (ID, type, author, timestamp). Minimize reporter burden while capturing essential information.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use structured categorization:</strong> Clear violation types with examples. Subcategories for specificity. Guide reporters to appropriate categories.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement automated content analysis:</strong> ML models for violation detection. Confidence scoring for prioritization. Context analysis to prevent false positives.
           </li>
@@ -285,13 +301,16 @@ export default function ContentReportingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Too much friction in reporting:</strong> Long forms, multiple steps, required evidence for all reports. Solution: Minimize friction for low-severity reports, require detail only for severe cases.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Poor categorization:</strong> All reports treated same, no violation differentiation. Solution: Structured violation types, severity scoring, priority queues.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No automated analysis:</strong> All content reviewed manually. Solution: ML-based pre-analysis, confidence scoring, auto-action for clear violations.
           </li>
@@ -321,16 +340,19 @@ export default function ContentReportingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Facebook Content Reporting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook content reporting for comprehensive safety. Report options for posts, comments, photos, videos, live streams, stories. Detailed categorization (hate speech, harassment, nudity, violence, misinformation, spam). Context pre-filling with content metadata. ML-based pre-analysis for prioritization. Integration with Community Standards enforcement. Reporter receives outcome notification when decision made. Escalation paths for complex cases (fact-checking for misinformation).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">YouTube Content Reporting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           YouTube content reporting for video safety. Report videos, comments, live streams, channels. Categorization includes harmful content, hate speech, harassment, misinformation, copyright. Timestamp specification for long videos (report specific moment). ML analysis of reported content (Content ID, policy violation detection). Integration with Creator Responsibility team. Reporter tracking with status updates. Copyright reports have separate DMCA workflow.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Twitter Content Reporting</h3>
         <p>
@@ -350,12 +372,15 @@ export default function ContentReportingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design content reporting that balances accessibility with report quality?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design content reporting that balances accessibility with report quality?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Balance friction with quality to encourage legitimate reports while filtering low-quality submissions. Low-friction reporting: 1-2 clicks to initiate report from any content, minimal required fields (violation type, optional context), pre-filled content metadata (URL, timestamp, content type)—reduces reporter burden, encourages honest reporting. Structured categorization: clear violation categories (hate speech, harassment, spam, misinformation, nudity, violence) with plain-language descriptions and examples—guides reporters to appropriate category, improves routing accuracy. Post-submission quality checks: automated analysis of reported content (does content match reported violation?), reporter scoring (track reporter&apos;s historical accuracy), pattern detection (same user reporting same content repeatedly)—filter low-quality reports without blocking submission. Transparency: reporters see status (&quot;under review,&quot; &quot;action taken,&quot; &quot;no violation found&quot;) and outcomes—builds trust, encourages quality reporting over time. The key insight: make it easy to report honestly, use backend systems to assess quality rather than front-end barriers that discourage legitimate reporting. Front-end friction reduces report volume but doesn&apos improve quality—bad actors will overcome friction, legitimate users get discouraged.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

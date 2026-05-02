@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function TouchEventsVsPointerEventsArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Touch Events</strong> and <strong>Pointer Events</strong> are
           browser APIs for handling touch input from mobile devices, tablets,
           and touch-enabled laptops. Touch Events (touchstart, touchmove,
@@ -46,15 +50,15 @@ export default function TouchEventsVsPointerEventsArticle() {
           pen/stylus. For staff-level engineers, the choice between Touch Events
           and Pointer Events affects code complexity, cross-device compatibility,
           and future-proofing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Touch Events provide fine-grained touch information: multiple touch
           points (multi-touch), touch pressure (on supported devices), and
           touch-specific properties (radiusX, radiusY, rotationAngle). However,
           Touch Events are touch-only — you need separate mouse event handlers
           for desktop users. This doubles code complexity and can cause issues
           with devices that support both touch and mouse (hybrid laptops).
-        </p>
+        </HighlightBlock>
         <p>
           Pointer Events unify touch and mouse into a single API. A
           pointerdown event fires for both touch and mouse input. The
@@ -79,23 +83,26 @@ export default function TouchEventsVsPointerEventsArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Touch Events:</strong> touchstart (finger touches screen),
             touchmove (finger moves), touchend (finger lifts), touchcancel
             (interrupted). Event object has <code>touches</code> array (all
             current touch points), <code>targetTouches</code> (touches on this
             element), <code>changedTouches</code> (touches that changed in this
             event).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Pointer Events:</strong> pointerdown (any pointer pressed),
             pointermove (pointer moved), pointerup (pointer released),
             pointercancel (interrupted). Event object has{" "}
             <code>pointerType</code> (&apos;touch&apos;, &apos;mouse&apos;,
             &apos;pen&apos;), <code>pressure</code> (0-1),{" "}
             <code>isPrimary</code> (first touch point).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Multi-Touch:</strong> Multiple simultaneous touch points.
             Touch Events: <code>event.touches.length</code> gives count. Pointer
@@ -134,13 +141,16 @@ export default function TouchEventsVsPointerEventsArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Touch/Pointer event handling architecture consists of event listeners
           (capturing raw input), gesture recognition (interpreting sequences),
           and action handlers (responding to recognized gestures). The
           architecture must handle multi-touch, prevent default browser
           behavior during gestures, and work across touch and mouse input.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/mobile-considerations/pointer-events-unified-input.svg"
@@ -151,13 +161,13 @@ export default function TouchEventsVsPointerEventsArticle() {
         />
 
         <h3>Event Handler Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Touch Events Architecture:</strong> Separate handlers for
           touch and mouse. Touch: touchstart, touchmove, touchend. Mouse:
           mousedown, mousemove, mouseup. Problem: hybrid devices fire both,
           causing duplicate events. Solution: preventDefault in touch handlers,
           or use Pointer Events.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Pointer Events Architecture:</strong> Single handler for all
           input. pointerdown, pointermove, pointerup. Check{" "}
@@ -184,19 +194,22 @@ export default function TouchEventsVsPointerEventsArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Touch Events vs. Pointer Events involves trade-offs between browser
           support, code complexity, and feature coverage.
-        </p>
+        </HighlightBlock>
 
         <h3>Touch Events vs. Pointer Events</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Touch Events:</strong> Touch-specific API. Advantages:
           universal touch support (all touch devices), fine-grained touch data
           (touches array). Limitations: touch-only (need separate mouse
           handlers), duplicate events on hybrid devices, more code. Best for:
           legacy browser support, touch-exclusive features.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Pointer Events:</strong> Unified pointer API. Advantages:
           single handler for all input, no duplicate events, simpler code,
@@ -235,19 +248,22 @@ export default function TouchEventsVsPointerEventsArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Pointer Events for New Projects:</strong> Single API
             for all input types. Check <code>pointerType</code> if needed.
             Simplifies code, avoids duplicate events on hybrid devices. Add
             Touch Events fallback for Safari &lt; 13 if needed.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Prevent Default During Gestures:</strong> Call{" "}
             <code>event.preventDefault()</code> in touchstart/pointerdown to
             prevent scroll during custom gestures. Don&apos;t prevent default
             for scrollable content — use only for gesture areas.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Passive Listeners for Scroll:</strong>{" "}
             <code>{`{ passive: true }`}</code> for scroll handlers tells browser
@@ -276,18 +292,21 @@ export default function TouchEventsVsPointerEventsArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Handling Both Touch and Mouse:</strong> Adding both
             touchstart and click handlers causes double-firing on touch devices
             (touch triggers both). Solution: use Pointer Events, or preventDefault
             in touch handler, or use touchend with 300ms delay.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Preventing Default:</strong> Custom swipe gestures
             trigger browser back/forward navigation or scroll. Call
             preventDefault() in touchstart/pointerdown for gesture areas.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring Multi-Touch:</strong> Assuming single touch point.
             Two-finger swipe triggers unexpected behavior. Handle multiple
@@ -317,24 +336,27 @@ export default function TouchEventsVsPointerEventsArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Image Gallery with Swipe</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Photo gallery apps use touch gestures for navigation. Swipe left/right
           to navigate images, pinch to zoom, double-tap to zoom. Pointer Events
           handle both touch and mouse (for desktop users). Prevent default
           during swipe to block scroll. Use CSS scroll snap for simple
           swipe-to-scroll galleries.
-        </p>
+        </HighlightBlock>
 
         <h3>Map Applications</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Map apps (Google Maps) use complex multi-touch gestures. Single-finger
           drag to pan, two-finger pinch to zoom, two-finger rotate to rotate
           map. Track multiple pointerIds simultaneously. Calculate scale from
           distance between touch points. High performance critical — use
           requestAnimationFrame for smooth updates.
-        </p>
+        </HighlightBlock>
 
         <h3>Drawing Applications</h3>
         <p>
@@ -358,14 +380,17 @@ export default function TouchEventsVsPointerEventsArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What&apos;s the difference between Touch Events and Pointer
               Events?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Touch Events (touchstart, touchmove, touchend) are
               touch-specific — fire only for touch input. Need separate mouse
               handlers for desktop. Pointer Events (pointerdown, pointermove,
@@ -374,7 +399,7 @@ export default function TouchEventsVsPointerEventsArticle() {
               input type (&apos;touch&apos;, &apos;mouse&apos;,
               &apos;pen&apos;). Pointer Events simplify code, avoid duplicate
               events on hybrid devices.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,10 @@ export default function RealTimeUIHandlingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Real-Time UI Handling</strong> encompasses the patterns,
           protocols, and architectures for displaying live, updating data in web
           applications without requiring user refresh. This includes chat and
@@ -47,8 +51,8 @@ export default function RealTimeUIHandlingArticle() {
           infrastructure complexity — selecting the right protocol, managing
           connection lifecycle, handling reconnection gracefully, and optimizing
           UI updates to prevent jank.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The protocol selection decision is foundational. Push-based protocols
           (WebSockets, Server-Sent Events) maintain a persistent connection from
           server to client, enabling the server to push updates immediately when
@@ -59,7 +63,7 @@ export default function RealTimeUIHandlingArticle() {
           update frequency (how often does data change), latency requirements
           (how quickly must updates appear), and infrastructure constraints
           (WebSocket support, server capacity, CDN compatibility).
-        </p>
+        </HighlightBlock>
         <p>
           Real-time UI architecture extends beyond the transport protocol to
           encompass connection management (establishing, maintaining, and
@@ -75,7 +79,10 @@ export default function RealTimeUIHandlingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           WebSockets provide full-duplex, bidirectional communication over a
           single persistent TCP connection. After an HTTP handshake upgrades the
           connection to WebSocket protocol, both client and server can send
@@ -86,8 +93,8 @@ export default function RealTimeUIHandlingArticle() {
           trading platforms. Libraries like Socket.IO add automatic
           reconnection, message acknowledgment, and fallback to long polling
           when WebSockets are unavailable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Server-Sent Events (SSE) provide server-to-client communication over
           a persistent HTTP connection. The client opens a connection and the
           server pushes events as they occur. SSE is unidirectional — the client
@@ -98,7 +105,7 @@ export default function RealTimeUIHandlingArticle() {
           not need to send frequent messages — live notifications, stock price
           feeds, news tickers, build status monitors. SSE has built-in
           reconnection and event ID support that WebSockets lack.
-        </p>
+        </HighlightBlock>
         <p>
           Polling strategies provide a simpler alternative when persistent
           connections are not feasible. Short polling sends periodic HTTP
@@ -121,7 +128,10 @@ export default function RealTimeUIHandlingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The WebSocket connection management architecture handles the full
           connection lifecycle. On application load or when real-time features
           are needed, the client establishes a WebSocket connection to the
@@ -135,8 +145,8 @@ export default function RealTimeUIHandlingArticle() {
           reestablished. After N failed reconnection attempts, the connection is
           marked as failed and the user is notified with a manual reconnect
           option.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The message protocol defines the structure of WebSocket
           communication. Each message includes a type identifier (CHAT,
           NOTIFICATION, PRESENCE, TYPING), metadata (timestamp, sender ID,
@@ -147,7 +157,7 @@ export default function RealTimeUIHandlingArticle() {
           sends an acknowledgment when the message is received and stored, and
           the client resends unacknowledged messages after a timeout. Duplicate
           messages are detected by sequence number and discarded.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/websocket-architecture.svg"
@@ -178,7 +188,10 @@ export default function RealTimeUIHandlingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Protocol selection involves balancing latency, bidirectionality, and
           infrastructure complexity. WebSockets provide the lowest latency and
           bidirectional communication but require dedicated server infrastructure
@@ -192,8 +205,8 @@ export default function RealTimeUIHandlingArticle() {
           latency. The decision matrix: bidirectional + frequent = WebSockets;
           server-push only = SSE; infrequent updates = short polling; WebSocket
           unavailable = long polling fallback.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Connection management trade-offs affect battery life and server
           capacity. Persistent WebSocket connections keep the device&apos;s
           network radio active, draining battery on mobile devices. For
@@ -206,7 +219,7 @@ export default function RealTimeUIHandlingArticle() {
           anyway. Disconnecting the WebSocket when the app is backgrounded and
           reconnecting on foreground is a compromise that saves battery but
           introduces a reconnection delay when the user returns.
-        </p>
+        </HighlightBlock>
         <p>
           Real-time update frequency versus UI performance is a critical
           trade-off. Rapid updates (stock prices changing every 100ms, typing
@@ -224,7 +237,10 @@ export default function RealTimeUIHandlingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement robust reconnection with exponential backoff and jitter.
           When the WebSocket closes, wait 1 second before reconnecting, then 2
           seconds, 4 seconds, 8 seconds, up to a maximum of 30 seconds. Add
@@ -235,8 +251,8 @@ export default function RealTimeUIHandlingArticle() {
           and show the user a manual reconnect button. Queue outgoing messages
           during disconnection and flush them when the connection is
           reestablished.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Integrate real-time updates with the application&apos;s state
           management system. When a WebSocket message arrives, dispatch it to
           the global store (Redux, Zustand) through an action that updates the
@@ -247,7 +263,7 @@ export default function RealTimeUIHandlingArticle() {
           real-time update indicates that cached data is stale — this combines
           the immediacy of real-time push with the reliability of server-state
           caching and deduplication.
-        </p>
+        </HighlightBlock>
         <p>
           Throttle rapid updates to maintain UI performance. For typing
           indicators, debounce at 100-200ms — send one &quot;typing&quot; event
@@ -263,7 +279,10 @@ export default function RealTimeUIHandlingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Failing to handle WebSocket reconnection gracefully is the most common
           real-time UI bug. When the connection drops (network change, server
           restart, idle timeout), the application silently stops receiving
@@ -273,8 +292,8 @@ export default function RealTimeUIHandlingArticle() {
           automatically reconnect with exponential backoff. After exhausting
           retries, show an error with a manual reconnect option. Test
           reconnection by simulating network disconnect in DevTools.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not handling message ordering and duplicates causes data inconsistency.
           When messages arrive out of order (due to network routing differences),
           displaying them in arrival order rather than sequence order produces
@@ -284,7 +303,7 @@ export default function RealTimeUIHandlingArticle() {
           already-received messages and discard duplicates. Use idempotent
           operations where possible so that processing the same message twice
           produces the same result.
-        </p>
+        </HighlightBlock>
         <p>
           Scaling WebSockets without proper architecture causes connection storms
           and server overload. Each WebSocket connection consumes server memory
@@ -301,7 +320,10 @@ export default function RealTimeUIHandlingArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Chat and messaging applications are the most common real-time UI use
           case. Slack, Discord, and WhatsApp Web use WebSockets for instant
           message delivery, typing indicators, presence updates, and read
@@ -312,8 +334,8 @@ export default function RealTimeUIHandlingArticle() {
           connection is maintained while the app is active and disconnected when
           backgrounded to save battery, with push notifications for new messages
           while disconnected.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Collaborative editing (Google Docs, Figma, Notion) requires the most
           sophisticated real-time architecture. Every edit (character insertion,
           deletion, cursor movement) is captured as an operation, sent to the
@@ -325,7 +347,7 @@ export default function RealTimeUIHandlingArticle() {
           broadcast at a lower frequency (debounced) to reduce network load. The
           result is sub-second collaborative editing that feels like working on
           a shared local document.
-        </p>
+        </HighlightBlock>
         <p>
           Financial trading platforms use real-time UI for live market data.
           Stock prices, order book depth, and trade execution updates arrive
@@ -342,12 +364,15 @@ export default function RealTimeUIHandlingArticle() {
 
       <section>
         <h2>Advanced Real-Time Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           WebSocket scaling architecture at production scale requires careful attention to connection management, message distribution, and horizontal scaling. Each WebSocket connection consumes server resources — approximately 4-8KB of memory per connection for the socket buffer, plus application-level state (user session, subscription data, message queues). A server with 16GB of RAM can theoretically hold 2-4 million connections, but in practice the limit is much lower due to file descriptor constraints, CPU overhead for message processing, and network bandwidth for message delivery. Sticky sessions are required when running multiple WebSocket servers behind a load balancer — each client&apos;s connection must be routed to the same server for the duration of the session, because WebSocket connections are stateful and the server maintains per-connection state. The load balancer uses the connection&apos;s source IP or a session cookie to route to the correct backend server. For message broadcasting across multiple servers (when user A on server 1 sends a message to user B on server 2), Redis Pub/Sub provides the cross-server message distribution layer — server 1 publishes the message to a Redis channel, and all servers subscribed to that channel receive the message and deliver it to their connected clients. The Redis Pub/Sub approach works well for moderate scale (tens of thousands of connections) but becomes a bottleneck at higher scale because every message is published to every subscriber regardless of whether they have interested clients. For larger scale, a sharded pub/sub architecture partitions users across multiple Redis instances based on user ID or geographic region, so each server only subscribes to the Redis instances that serve its connected users. Managed services like Pusher, Ably, and Supabase Realtime abstract away this complexity by handling connection management, scaling, and monitoring automatically — they are the recommended choice for production applications where real-time infrastructure is not the core competency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Message ordering and deduplication are critical for maintaining data consistency in real-time systems where network conditions can cause messages to arrive out of order or be duplicated. Message ordering is ensured by assigning a monotonically increasing sequence number to each message at the server — the server maintains a per-channel or per-conversation sequence counter that increments with each message, and includes the sequence number in the message payload. The client buffers incoming messages and reorders them by sequence number before rendering, handling the case where message 105 arrives before message 104 due to network routing differences. For globally distributed systems where servers in different regions may assign sequence numbers independently, hybrid logical clocks combine a wall-clock timestamp with a logical counter to produce globally unique, roughly ordered identifiers. Deduplication detects and discards duplicate messages that arise from retransmissions (when the server does not receive an acknowledgment within the timeout and resends the message) or from the client reconnecting and receiving messages it has already processed. The client maintains a set of recently processed sequence numbers (typically the last 1000-5000 entries, using a bounded data structure like a ring buffer to limit memory usage) and checks each incoming message against this set before processing. If the sequence number is already in the set, the message is discarded as a duplicate. For idempotent operations (setting a value, not incrementing a counter), processing the same message twice produces the same result, so deduplication is a performance optimization rather than a correctness requirement. For non-idempotent operations (incrementing a counter, appending to a list), deduplication is essential to prevent data corruption.
-        </p>
+        </HighlightBlock>
         <p>
           Offline message queue architecture ensures that user actions performed while disconnected are eventually synchronized when connectivity returns. When the WebSocket connection is lost (network interruption, server restart, browser backgrounding), outgoing messages (chat messages, form submissions, state updates) are queued in a local persistent store (IndexedDB for durability across page reloads, or in-memory for transient data). Each queued message includes the action type, payload, a unique client-generated message ID, and a timestamp. When the connection is reestablished, the client sends a sync request to the server, including the last sequence number it received, and the server responds with any messages the client missed during disconnection. After the client has caught up on incoming messages, it flushes the outgoing queue, sending each queued message to the server in timestamp order. The server processes each message and responds with an acknowledgment containing the server-assigned sequence number. If a message in the queue is no longer valid (the user deleted the draft, the session expired, the target resource was removed), the server responds with an error and the client removes the message from the queue without retrying. The offline queue must handle conflict resolution — if the user modified the same data on two devices while one was offline, the server applies the offline changes with the appropriate conflict resolution strategy (last-write-wins, field-level merge, or CRDT-based merge) and notifies the client of any changes that were overwritten.
         </p>
@@ -364,12 +389,15 @@ export default function RealTimeUIHandlingArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: When would you use WebSockets versus SSE versus polling?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: WebSockets for bidirectional, frequent updates — chat,
               collaborative editing, live trading. SSE for server-push only —
               notifications, live feeds, build status — simpler than WebSockets,
@@ -380,7 +408,7 @@ export default function RealTimeUIHandlingArticle() {
               (persistent connections drain mobile batteries), infrastructure
               complexity (WebSockets need dedicated servers), and browser
               support.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

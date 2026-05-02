@@ -265,6 +265,14 @@ export default function ServiceWorkersConciseArticle() {
           invalidation mistakes, version skew during upgrades, and storage
           eviction behavior that varies across browsers (especially iOS Safari).
         </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Interview framing: service workers shift problems from “fetch data” to “serve the correct version”.
+          Expect to discuss cache versioning, update UX (waiting/activate), and rollback when a bad SW ships.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Another key trade-off: you can’t assume durability. Storage quotas and eviction mean you need a rehydrate
+          path (server fetch) and telemetry to detect cache misses and degraded offline experience.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -456,12 +464,16 @@ export default function ServiceWorkersConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The highest-severity pitfall is breaking users with a “poisoned cache” (bad SW + cached shell). Always
+          have a recovery/escape hatch: cache versioning, offline fallback, and a way to force-update.
+        </HighlightBlock>
         <p>
           These mistakes cause the majority of Service Worker bugs in
           production:
         </p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Understanding the Waiting Phase:</strong> The most
             common complaint is "I deployed a new Service Worker but users still
             see old content." This happens because the new worker enters the
@@ -469,15 +481,15 @@ export default function ServiceWorkersConciseArticle() {
             must either implement a proper update flow (notify user, skipWaiting
             on confirmation, reload) or understand that users need to close all
             tabs and reopen the site.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Caching Too Aggressively:</strong> Caching HTML pages with a
             cache-first strategy means users never see updated content unless
             they force-refresh or the SW updates. This is the Service Worker
             equivalent of shipping a broken build with no rollback. Always use
             network-first or stale-while-revalidate for content that changes,
             and reserve cache-first for immutable, fingerprinted assets only.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Treating Navigation Requests Like Asset Requests:</strong>{" "}
             Navigation requests (document fetches when the user navigates to a
@@ -528,6 +540,10 @@ export default function ServiceWorkersConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Staff-level framing: service workers are most valuable when you can define a cacheable “app shell” and a
+          durable client storage story (IndexedDB), plus a reliable sync/retry channel for mutations.
+        </HighlightBlock>
         <p>
           Service Workers excel in specific scenarios and are counterproductive
           in others:
@@ -536,21 +552,21 @@ export default function ServiceWorkersConciseArticle() {
         <div className="space-y-6">
           <div>
             <h3 className="mb-3 font-semibold">When to Use Service Workers</h3>
-            <ul className="space-y-3">
-              <li>
-                <strong>Offline-Capable Applications:</strong> Apps like Google
-                Docs, Notion, or Figma that must function without a network
-                connection. The SW caches the app shell and critical data, while
-                IndexedDB stores user content. Changes sync when connectivity
-                returns via Background Sync.
-              </li>
-              <li>
-                <strong>Push Notifications:</strong> News apps, messaging
-                platforms, and e-commerce sites that send time-sensitive
-                notifications. The SW receives push events even when no tab is
-                open, displays a notification, and handles the click to open the
-                appropriate page.
-              </li>
+	            <ul className="space-y-3">
+	              <HighlightBlock as="li" tier="important">
+	                <strong>Offline-Capable Applications:</strong> Apps like Google
+	                Docs, Notion, or Figma that must function without a network
+	                connection. The SW caches the app shell and critical data, while
+	                IndexedDB stores user content. Changes sync when connectivity
+	                returns via Background Sync.
+	              </HighlightBlock>
+	              <HighlightBlock as="li" tier="important">
+	                <strong>Push Notifications:</strong> News apps, messaging
+	                platforms, and e-commerce sites that send time-sensitive
+	                notifications. The SW receives push events even when no tab is
+	                open, displays a notification, and handles the click to open the
+	                appropriate page.
+	              </HighlightBlock>
               <li>
                 <strong>Background Sync:</strong> Forms, chat applications, or
                 any app where users submit data that must eventually reach the
@@ -598,13 +614,17 @@ export default function ServiceWorkersConciseArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Staff-level expectation: you can explain the lifecycle (install/waiting/activate), why waiting exists,
+          and how you roll out updates without bricking users via cache version skew.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: Explain the Service Worker lifecycle and why the "waiting"
               phase exists.
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: A Service Worker progresses through five states: installing,
               waiting, activating, activated, and redundant. After installation,
               if an existing SW controls open pages, the new worker enters the
@@ -618,7 +638,7 @@ export default function ServiceWorkersConciseArticle() {
               before the new worker takes control, guaranteeing consistency.
               Engineers can bypass this with skipWaiting(), but should only do
               so when the update is backward-compatible.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -646,7 +666,7 @@ export default function ServiceWorkersConciseArticle() {
               Q: What are the security implications of Service Workers and why
               do they require HTTPS?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Service Workers can intercept, modify, and fabricate responses
               for every request within their scope. On an insecure HTTP
               connection, a man-in-the-middle attacker could inject a malicious
@@ -660,15 +680,19 @@ export default function ServiceWorkersConciseArticle() {
               briefly compromised server), and the isolated execution context
               (no DOM access, no shared memory with the page) which limits the
               blast radius of any vulnerability in the SW code itself.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>
 
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          In interviews, cite at least one canonical reference (MDN/spec) and one production practice reference
+          (web.dev/Workbox) for cache strategies and update lifecycle.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://web.dev/learn/pwa/service-workers/"
               className="text-accent hover:underline"
@@ -677,8 +701,8 @@ export default function ServiceWorkersConciseArticle() {
             >
               Learn PWA: Service Workers - web.dev
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API"
               className="text-accent hover:underline"
@@ -687,8 +711,8 @@ export default function ServiceWorkersConciseArticle() {
             >
               Service Worker API - MDN Web Docs
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.chrome.com/docs/workbox/"
               className="text-accent hover:underline"
@@ -697,7 +721,7 @@ export default function ServiceWorkersConciseArticle() {
             >
               Workbox Documentation - Chrome Developers
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://jakearchibald.com/2014/offline-cookbook/"
@@ -708,7 +732,7 @@ export default function ServiceWorkersConciseArticle() {
               The Offline Cookbook - Jake Archibald
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://w3c.github.io/ServiceWorker/"
               className="text-accent hover:underline"
@@ -717,7 +741,7 @@ export default function ServiceWorkersConciseArticle() {
             >
               Service Workers Specification - W3C
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

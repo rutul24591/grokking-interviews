@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,7 +24,10 @@ export default function CyclicSortArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">Definition & Context</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Cyclic sort is a deceptively simple in-place rearrangement that solves an entire family of
         Leetcode problems built on the same premise: an array contains integers drawn from a
         bounded range, typically <em>1..n</em> or <em>0..n</em>, and the question asks you to find
@@ -33,8 +37,8 @@ export default function CyclicSortArticle() {
         while keeping auxiliary space at O(1), and that single advantage is why it appears
         repeatedly in the &quot;array of size n with values from 1..n&quot; corner of interview
         question banks.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         The core observation is structural. If a value <em>v</em> belongs at index <em>v − 1</em>
         (or <em>v</em>, depending on whether the range starts at 1 or 0), then a fully sorted
         array of a permutation of 1..n is one where every cell <em>i</em> holds value{" "}
@@ -43,7 +47,7 @@ export default function CyclicSortArticle() {
         places at least one value permanently. The total number of swaps is bounded by n, which
         gives the algorithm its O(n) running time despite the nested loop in the textbook
         formulation.
-      </p>
+      </HighlightBlock>
       <p>
         Recognising when to reach for cyclic sort is the entire game. The signal is almost always
         explicit in the problem statement: &quot;an array of n integers where each integer is in
@@ -56,7 +60,10 @@ export default function CyclicSortArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Core Concepts</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         The invariant cyclic sort maintains is straightforward: at the moment the outer loop
         advances past index <em>i</em>, either <em>nums[i]</em> equals its target value or the
         target value lives outside the array&apos;s legal range and was deliberately skipped. The
@@ -66,8 +73,8 @@ export default function CyclicSortArticle() {
         a value at its final destination or detects that the value is already home; in either
         case the count of misplaced values strictly decreases. The amortised cost across the
         entire outer loop is O(n).
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Correctness rests on a simple cycle argument. Imagine the permutation as a directed graph
         where index <em>i</em> points to index <em>nums[i] − 1</em>. Every node has out-degree
         one, and because the values form a permutation, every node also has in-degree one. The
@@ -75,7 +82,7 @@ export default function CyclicSortArticle() {
         once, performing one swap per misplaced element along the cycle. After the cycle closes,
         all of its members are at their correct indices and no further work is needed in that
         region of the array.
-      </p>
+      </HighlightBlock>
       <p>
         The space argument is equally clean. The algorithm rewrites the input in place. It uses
         only a constant number of scalar variables — typically the outer index, a target index
@@ -92,7 +99,10 @@ export default function CyclicSortArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Architecture & Flow</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         The canonical template runs an outer index <em>i</em> from 0 to <em>n − 1</em>. At each
         position, compute the target index for <em>nums[i]</em>: for the 1..n variant the target
         is <em>nums[i] − 1</em>; for 0..n − 1 it is <em>nums[i]</em>. If the value at the target
@@ -101,8 +111,8 @@ export default function CyclicSortArticle() {
         the right value?&quot;) is what prevents infinite loops on inputs with duplicates: once a
         cell holds the correct value, swapping with it would do nothing, so the algorithm moves
         on rather than spinning.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Variant one is the bounded range with a sentinel out-of-range value. In <em>Missing
         Number</em>, values are 0..n on an array of length n, so exactly one of those values is
         absent. The target-index computation is <em>nums[i]</em> directly. If <em>nums[i]</em>
@@ -110,7 +120,7 @@ export default function CyclicSortArticle() {
         <em>nums[i] != i</em> reveals the missing value. The same scaffold solves <em>First
         Missing Positive</em>, except values outside 1..n are also skipped — only positives in
         range are routed, and after the pass the first unmet index identifies the answer.
-      </p>
+      </HighlightBlock>
       <p>
         Variant two is the &quot;find duplicates&quot; family. Here the post-pass scan looks for
         cells where <em>nums[i] != i + 1</em>; those cells contain duplicates of values that
@@ -138,14 +148,17 @@ export default function CyclicSortArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Trade-offs & Comparisons</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Cyclic sort versus hashset: equal in asymptotic time, but hashset costs O(n) auxiliary
         space and pays the constant factor of hashing. Cyclic sort is preferable whenever the
         input is mutable and the range is bounded; the hashset is preferable when the input must
         not be mutated, when values are unbounded, or when the array is being streamed and cannot
         be revisited.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Cyclic sort versus sign-marking (negation trick): both achieve O(n)/O(1). Sign-marking
         flips <em>nums[abs(v) − 1]</em> negative as a presence indicator, then scans for positive
         cells. It is shorter to write but breaks if the array can legitimately contain zero (no
@@ -153,7 +166,7 @@ export default function CyclicSortArticle() {
         both cases. The negation trick is often slightly faster in practice due to fewer swaps,
         but reviewers find cyclic sort easier to reason about because the post-condition
         (&quot;array is sorted&quot;) is a global structural property, not a per-cell flag.
-      </p>
+      </HighlightBlock>
       <p>
         Cyclic sort versus XOR: XOR solves <em>Missing Number</em> in one pass with no auxiliary
         space and no mutation. It is the right choice for that exact problem. It does not
@@ -171,19 +184,22 @@ export default function CyclicSortArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Best Practices</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Compute the target index into a named local variable before the swap test. Reading{" "}
         <em>nums[nums[i] − 1]</em> twice in the same conditional is a common source of off-by-one
         errors and subtle aliasing bugs when the value at <em>i</em> changes mid-expression. Name
         it <em>target</em>, do the equality check against <em>nums[target]</em>, swap, and let
         the outer loop revisit <em>i</em> on the next iteration.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Use a <em>while</em> loop inside the <em>for</em>, not a recursive call. The inner work
         is &quot;keep swapping until the cell is settled&quot;, and that is naturally a while
         condition. Recursion adds stack frames for no algorithmic benefit and obscures the
         invariant.
-      </p>
+      </HighlightBlock>
       <p>
         Choose the equality guard carefully. For permutation problems (no duplicates), guarding
         on <em>nums[i] != i + 1</em> is correct. For duplicate-tolerant problems, guard on{" "}
@@ -204,18 +220,21 @@ export default function CyclicSortArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Common Pitfalls</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Infinite loop on duplicates. If the guard is &quot;swap while <em>nums[i] != i + 1</em>
         &quot; and the input contains two copies of the same value, the loop will swap them
         forever. The fix is value-level equality on the target: stop swapping when{" "}
         <em>nums[target]</em> already equals <em>nums[i]</em>.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Out-of-range targets. In <em>First Missing Positive</em>, values can be negative, zero,
         or larger than n. Routing them produces an invalid index. Guard the swap with a range
         check: only swap if <em>1 ≤ nums[i] ≤ n</em>. For values outside the range, treat the
         cell as already &quot;done&quot; and advance.
-      </p>
+      </HighlightBlock>
       <p>
         Off-by-one in the target formula. The 1..n variant routes value <em>v</em> to index{" "}
         <em>v − 1</em>; the 0..n − 1 variant routes <em>v</em> to <em>v</em>. Picking the wrong
@@ -242,22 +261,25 @@ export default function CyclicSortArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Real-World Use Cases</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Although cyclic sort is most famous as an interview pattern, the underlying idea — route
         each record to its home slot in O(n) when keys are dense small integers — appears in
         practical systems too. Bucket-allocation routines in memory pools use the same logic to
         place free slots into a contiguous prefix. Slot-based scheduler queues that index by
         priority level lay out tasks the same way. Any time you have a dense-key permutation, the
         cyclic-sort routing is the optimal placement strategy.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         On the Leetcode side, the canonical problem set is tight and well-known. <em>268. Missing
         Number</em> is the simplest application: values 0..n, one is missing, return it.{" "}
         <em>448. Find All Numbers Disappeared in an Array</em> generalises to multiple missing
         values, returned as a list. <em>287. Find the Duplicate Number</em> finds the single
         duplicate; cyclic sort solves it cleanly, though Floyd&apos;s tortoise-and-hare is the
         more famous answer.
-      </p>
+      </HighlightBlock>
       <p>
         <em>442. Find All Duplicates in an Array</em> handles up to <em>n</em> duplicates where
         each value appears once or twice. <em>645. Set Mismatch</em> asks for one duplicate and
@@ -281,17 +303,20 @@ export default function CyclicSortArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why is cyclic sort O(n) when it has a nested loop?</strong> Because each inner
+        <HighlightBlock as="li" tier="important"><strong>Why is cyclic sort O(n) when it has a nested loop?</strong> Because each inner
         iteration places exactly one value at its final position, and there are at most n
         misplaced values. The total work across all inner iterations is bounded by n, regardless
         of how it is distributed across outer iterations. Amortised analysis, not worst-case
-        per-step, gives the right bound.</li>
-        <li><strong>Prove the algorithm terminates on inputs with duplicates.</strong> The guard
+        per-step, gives the right bound.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Prove the algorithm terminates on inputs with duplicates.</strong> The guard
         compares values, not indices: the loop stops swapping as soon as the target cell already
         holds the same value. So duplicates are recognised on first encounter and do not trigger
         further swaps. The number of swaps therefore strictly decreases the count of unsettled
-        cells.</li>
+        cells.</HighlightBlock>
         <li><strong>How does cyclic sort compare to negation marking?</strong> Both achieve O(n)/O(1)
         on the missing-positive family. Negation is faster in practice but breaks when the array
         contains zero or when sign already carries meaning. Cyclic sort is more robust because it

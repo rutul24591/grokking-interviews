@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -82,9 +83,12 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Objects, Buckets, &amp; Keys</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>The Object Model</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Object storage has three core concepts: <strong>buckets</strong> are containers for
           objects (like top-level folders, but flat). <strong>Objects</strong> are the stored
           data units, consisting of: the data itself (blob, up to 5TB in S3), metadata (system
@@ -92,15 +96,15 @@ export default function ArticlePage() {
           identifier within the bucket). <strong>Keys</strong> are strings that identify objects
           (e.g., "photos/2024/vacation.jpg"). Keys can include "/" characters to simulate
           hierarchy, but the namespace is flat—there are no actual folders.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This model differs fundamentally from file systems. File systems have hierarchical
           directories (folder/subfolder/file), with limits on directory size and nesting depth.
           Object storage has a flat namespace—billions of objects in a single bucket, no
           hierarchy limits. The "/" in keys is purely cosmetic, used for organization and
           prefix-based listing.
-        </p>
+        </HighlightBlock>
 
         <h3>Immutability</h3>
         <p>
@@ -149,24 +153,27 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Scaling &amp; Durability</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Distributed Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Object storage is fundamentally distributed. Objects are partitioned across thousands of
           servers based on key hash. Each object is replicated across multiple availability zones
           (typically 3x replication or erasure coding). This architecture enables:
           <strong>Massive scalability</strong>—add servers to increase capacity and throughput.
           <strong>High durability</strong>—multiple copies survive hardware failures.
           <strong>High availability</strong>—requests routed to healthy replicas.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Erasure coding</strong> is more efficient than replication. Instead of storing
           3 full copies, data is split into fragments with redundancy (e.g., 10 data fragments +
           4 parity fragments). Any 10 fragments can reconstruct the original data. This provides
           equivalent durability to 3x replication with only 1.4x storage overhead. The trade-off:
           higher compute cost for encoding/decoding.
-        </p>
+        </HighlightBlock>
 
         <h3>Consistency Models</h3>
         <p>
@@ -213,19 +220,22 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Object vs Block vs File Storage</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Storage types occupy different niches. Understanding the trade-offs helps you choose
           the right storage for your workload.
-        </p>
+        </HighlightBlock>
 
         <h3>Object Storage Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Massive scalability</strong> is the primary advantage. Object storage scales to
           exabytes and billions of objects without performance degradation. File systems hit
           limits (directory size, inode counts); object storage does not. This is essential for
           data lakes, media archives, and backup systems.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Durability</strong> is exceptional. S3 offers 99.999999999% (11 nines)
@@ -294,20 +304,23 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Object Storage</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use lifecycle policies from day one.</strong> Define tier transitions and
           expiration rules when creating buckets. Don't wait until storage costs explode.
           Typical policy: Standard → Infrequent Access (30 days) → Archive (90 days) → Delete
           (7 years). Adjust based on access patterns.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Enable versioning for critical data.</strong> Versioning protects against
           accidental deletes and overwrites. Combine with lifecycle policies to delete old
           versions after a retention period (e.g., 30 days). This balances protection with
           storage cost.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Use appropriate storage classes.</strong> Don't keep all data in Standard
@@ -340,18 +353,21 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>No lifecycle management.</strong> Data accumulates indefinitely, filling
           expensive Standard tier. Solution: Define lifecycle policies from day one. Transition
           data to cooler tiers based on age. Set expiration rules for temporary data.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Versioning without cleanup.</strong> Versioning retains all versions, causing
           storage costs to grow unbounded. Solution: Combine versioning with lifecycle policies
           that delete old versions after a retention period (e.g., 30 days).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Storing frequently-changing data.</strong> Object storage is immutable—frequent
@@ -382,20 +398,23 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Media Streaming (Netflix, Spotify)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix stores all video content in S3. Videos are uploaded once (immutable), then
           streamed to millions of users. S3 provides the durability (no data loss) and scalability
           (petabytes of content) required. CloudFront CDN caches popular content at edge locations
           for low-latency streaming. Lifecycle policies transition older content to cheaper tiers.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This pattern works because media files are immutable (uploaded once, never changed),
           large (GBs per video), and accessed via HTTP (streaming). Object storage is ideal for
           this workload.
-        </p>
+        </HighlightBlock>
 
         <h3>Backup and Disaster Recovery (Enterprise)</h3>
         <p>
@@ -442,14 +461,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: When would you choose object storage over block or file storage? Give a concrete
               example.
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Choose object storage for unstructured data at massive
               scale with infrequent updates. Example: Photo-sharing application with millions of
               user uploads. In file storage, nested folders create bottlenecks (directory limits,
@@ -459,7 +481,7 @@ export default function ArticlePage() {
               billions of objects, lifecycle policies transition old photos to cheaper tiers.
               Choose block for: databases, low-latency access. Choose file for: shared files,
               legacy apps. Choose object for: media, backups, archives, data lakes.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What if users need to update photos (e.g., apply
               filters)? Answer: Object storage is immutable—updates create new objects. For

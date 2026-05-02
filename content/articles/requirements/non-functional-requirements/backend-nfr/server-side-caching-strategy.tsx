@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function ServerSideCachingStrategyArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Server-side caching</strong> is the practice of storing frequently accessed data
           in memory (Redis, Memcached, local cache) to reduce database load and improve response
           latency. Caching is one of the most effective performance optimizations — a cache hit
           returns data in sub-milliseconds (memory access) instead of milliseconds (database query),
           reducing database load by 80-95% for read-heavy workloads.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Server-side caching introduces complexity — cache invalidation (when to remove stale
           data), cache coherence (ensuring all cache nodes have consistent data), cache eviction
           (what to remove when the cache is full), and cache stampede (what happens when a popular
           cache entry expires and many requests hit the database simultaneously). These challenges
           must be addressed to ensure that caching improves performance without causing correctness
           or availability issues.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, server-side caching architecture demonstrates
           understanding of performance optimization, the ability to design caching strategies that
@@ -71,13 +75,16 @@ export default function ServerSideCachingStrategyArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding server-side caching requires grasping several foundational concepts about
           cache eviction, cache invalidation, distributed caching, and cache stampede prevention.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cache Eviction Policies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When the cache is full, the eviction policy determines which entries to remove. LRU
           (Least Recently Used) removes the least recently accessed entry — it is the most common
           eviction policy because it keeps frequently accessed data in the cache. LFU (Least
@@ -86,7 +93,7 @@ export default function ServerSideCachingStrategyArticle() {
           it ensures data freshness but may evict frequently accessed data. Most caching systems
           use LRU with TTL — entries are evicted by LRU when the cache is full, and by TTL when
           they expire.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cache Invalidation</h3>
         <p>
@@ -114,10 +121,13 @@ export default function ServerSideCachingStrategyArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Server-side caching architecture spans cache topology, cache invalidation mechanisms,
           cache stampede prevention, and distributed cache management.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/caching-deep-dive.svg"
@@ -126,13 +136,13 @@ export default function ServerSideCachingStrategyArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cache-Aside Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a request arrives, the application checks the cache for the data — if the data is
           in the cache (cache hit), it is returned immediately (sub-millisecond latency). If the
           data is not in the cache (cache miss), the application reads from the database, populates
           the cache with the data (with a TTL), and returns the data. Subsequent requests for the
           same data hit the cache until the TTL expires.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Distributed Caching</h3>
         <p>
@@ -160,25 +170,28 @@ export default function ServerSideCachingStrategyArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Caching Pattern</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Caching Pattern</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Cache-Aside</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>Cache-Aside</strong></td>
               <td className="p-3">
                 Simple to implement. Flexible. Only caches data that is requested. Cache miss loads from database.
               </td>
               <td className="p-3">
                 Cache miss latency (database query). Stale data between updates. Cache stampede risk.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Read-Through</strong></td>
               <td className="p-3">
                 Application logic simplified (only reads from cache). Cache populates itself on miss. Consistent caching.
@@ -186,8 +199,8 @@ export default function ServerSideCachingStrategyArticle() {
               <td className="p-3">
                 Cache must know how to load data. Less flexible. Cache miss still has database latency.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Write-Through</strong></td>
               <td className="p-3">
                 Cache-database consistency. No stale data. Read performance improved.
@@ -195,7 +208,7 @@ export default function ServerSideCachingStrategyArticle() {
               <td className="p-3">
                 Write latency increased (write to cache + database). Complex for writes that update multiple entries.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Write-Behind</strong></td>
               <td className="p-3">
@@ -212,25 +225,28 @@ export default function ServerSideCachingStrategyArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Use Cache-Aside for Most Use Cases</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cache-aside is the most common and flexible caching pattern — the application controls
           when data is cached and when it is invalidated. Use cache-aside for read-heavy data with
           infrequent updates (user profiles, product catalog, configuration). Use write-through for
           write-heavy data that requires cache-database consistency (session data, real-time counters).
           Use write-behind for write-heavy data where eventual consistency is acceptable (analytics,
           logging).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Set Appropriate TTLs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           TTLs should be set based on data freshness requirements — data that changes frequently
           should have short TTLs (seconds to minutes), data that changes infrequently should have
           long TTLs (hours to days). Monitor cache hit rate and adjust TTLs to balance performance
           (higher hit rate) with freshness (shorter TTLs). Use probabilistic early expiration to
           prevent cache stampedes for popular data.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Prevent Cache Stampedes</h3>
         <p>
@@ -256,25 +272,28 @@ export default function ServerSideCachingStrategyArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cache Invalidation Bugs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cache invalidation is one of the hardest problems in computer science — getting it wrong
           causes stale data to be served. Common cache invalidation bugs include: not invalidating
           cache on data update (stale data served), invalidating the wrong cache key (unnecessary
           cache misses), and invalidating cache in the wrong order (race conditions). Use
           event-based cache invalidation (invalidate cache when data changes) or version-based
           invalidation (include version in cache key) to avoid cache invalidation bugs.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cache Stampede</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cache stampede occurs when a popular cache entry expires and many requests simultaneously
           miss the cache and hit the database. Without stampede prevention, the database may be
           overwhelmed, causing an outage. Prevent cache stampedes using probabilistic early
           expiration or lock-based prevention. Monitor cache hit rate and cache miss latency to
           detect cache stampedes early.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cache Memory Exhaustion</h3>
         <p>
@@ -298,25 +317,28 @@ export default function ServerSideCachingStrategyArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Facebook — Memcached for Social Graph</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook uses Memcached for social graph caching — user profiles, friend lists, and news
           feed data are cached in Memcached to reduce database load. Facebook&apos;s Memcached cluster
           has thousands of nodes and handles billions of cache operations per second. Facebook uses
           consistent hashing for cache distribution and lease-based stampede prevention (only one
           request loads the data from the database, others wait). Facebook&apos;s caching
           infrastructure reduces database load by 95%+ for read-heavy workloads.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Twitter — Redis for Timeline Caching</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter uses Redis for timeline caching — user timelines are pre-computed and cached in
           Redis, enabling sub-millisecond timeline retrieval. Twitter uses write-behind caching for
           timeline updates — when a user tweets, the tweet is written to the cache and asynchronously
           written to the database. Twitter&apos;s Redis cluster handles millions of cache operations
           per second with sub-millisecond latency.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Amazon — ElastiCache for E-Commerce</h3>
         <p>
@@ -339,19 +361,22 @@ export default function ServerSideCachingStrategyArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Server-side caching involves security risks — cache may contain sensitive data, cache access must be controlled, and cache failures must not expose data.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Cache Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Sensitive Data in Cache:</strong> Cache may contain sensitive data (user profiles, session data, API responses) that must be protected. Mitigation: encrypt sensitive data in cache (Redis encryption at rest), restrict cache access to authorized services only, monitor cache access patterns, include cache in data classification and compliance audits.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Cache Access Control:</strong> Cache should only be accessible from authorized services — not from public networks. Mitigation: use VPC-private caches (Redis in VPC, Memcached in private subnet), restrict cache access via security groups, use mutual TLS (mTLS) for service-to-cache authentication, monitor cache access for anomalies.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Cache Failure Handling:</strong> If the cache fails, requests may hit the database directly, potentially overwhelming it. Mitigation: implement circuit breakers for cache access (if cache fails, fallback to database with rate limiting), use distributed cache to avoid single points of failure, monitor cache health and alert on failures.
             </li>
@@ -362,19 +387,22 @@ export default function ServerSideCachingStrategyArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Server-side caching must be validated through systematic testing — cache hit rate, cache invalidation, stampede prevention, and cache failure handling must all be tested.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Caching Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Cache Hit Rate Test:</strong> Send requests for the same data multiple times and verify that the first request is a cache miss (loads from database) and subsequent requests are cache hits (return from cache). Verify that cache hit rate meets targets (80%+ for read-heavy workloads).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Cache Invalidation Test:</strong> Update the underlying data and verify that the cache is invalidated (next request is a cache miss and loads fresh data from database). Verify that stale data is not served after data update.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Cache Stampede Test:</strong> Simulate cache expiration for popular data and verify that the database is not overwhelmed (only one request loads the data, others wait for the result). Verify that cache stampede prevention works correctly.
             </li>

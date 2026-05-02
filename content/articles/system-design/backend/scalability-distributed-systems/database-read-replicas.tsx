@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -40,7 +41,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Read replicas</strong> are copies of a primary database that
           asynchronously receive and apply the primary&apos;s write-ahead log
           (WAL), maintaining an eventually consistent copy of the primary&apos;s
@@ -52,8 +56,8 @@ export default function ArticlePage() {
           second, adding 3 read replicas increases the system&apos;s total read
           capacity to approximately 40,000 reads per second, assuming the
           primary&apos;s write load does not become a bottleneck.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Read replicas are distinct from multi-primary replication (where
           multiple nodes accept writes) and from consensus-based replication
           (where a majority of nodes must agree on every write). Read replicas
@@ -64,7 +68,7 @@ export default function ArticlePage() {
           <em>replication lag</em> — which depends on the network latency
           between the primary and the replica, the replica&apos;s processing
           capacity, and the write volume on the primary.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, read replica architecture involves
           several non-trivial design decisions: how to route reads across
@@ -92,8 +96,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Replication lag</strong> is the time between the primary
           applying a write and the replica applying the same write. It is caused
           by three factors: <em>network latency</em> — the time to transmit the
@@ -110,9 +117,9 @@ export default function ArticlePage() {
           WAL position and the replica&apos;s applied WAL position), and alerts
           are triggered when the lag exceeds a threshold (typically 1–5 seconds
           for user-facing applications).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Read routing</strong> determines which replica serves each
           read query. The simplest strategy is <em>round-robin</em> — each
           successive read is routed to the next replica in the list. This
@@ -125,7 +132,7 @@ export default function ArticlePage() {
           threshold, the read is routed to the primary (which always has the
           latest data). Lag-aware routing minimizes stale reads but adds the
           overhead of monitoring and comparing lag on every read.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Read-your-writes consistency</strong> is a guarantee that a
@@ -179,6 +186,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/database-read-replicas-diagram-1.svg"
@@ -186,7 +196,7 @@ export default function ArticlePage() {
           caption="Primary-replica architecture — writes go to the primary, WAL streams to replicas asynchronously, reads are load-balanced across replicas"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The write flow begins with the client sending a write to the primary.
           The primary applies the write, appends it to its WAL, and if
           semi-synchronous replication is enabled, waits for at least one
@@ -199,9 +209,9 @@ export default function ArticlePage() {
           position. The replication thread on each replica runs continuously,
           consuming WAL entries from the primary&apos;s replication stream and
           applying them one by one.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The read flow begins with the client sending a read query to the read
           proxy (or load balancer). The read proxy determines which replica
           should serve the read based on the configured routing strategy
@@ -213,7 +223,7 @@ export default function ArticlePage() {
           because no replica meets the read-your-writes consistency requirement),
           the latency is the network latency to the primary plus the primary&apos;s
           query execution time.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/database-read-replicas-diagram-2.svg"
@@ -246,8 +256,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Read replicas must be compared against the alternatives. The simplest
           alternative is a single database node with no replicas — this provides
           strong consistency (no replication lag) but cannot scale reads beyond
@@ -261,19 +274,19 @@ export default function ArticlePage() {
           replicas are the first scaling step — they are simpler to deploy and
           manage than sharding and provide immediate read scalability for
           read-heavy workloads.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Property</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Property</th>
               <th className="p-3 text-left">Single Node</th>
               <th className="p-3 text-left">Read Replicas</th>
               <th className="p-3 text-left">Sharding</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Read Scaling</strong>
               </td>
@@ -284,8 +297,8 @@ export default function ArticlePage() {
               <td className="p-3">
                 Yes — linear with shard count
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Write Scaling</strong>
               </td>
@@ -294,7 +307,7 @@ export default function ArticlePage() {
               <td className="p-3">
                 Yes — distributed across shards
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Read Consistency</strong>
@@ -332,8 +345,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Monitor replication lag per replica continuously and alert when it
           exceeds acceptable thresholds. Replication lag is the most important
           read-replica-specific metric — it measures the time between the
@@ -348,9 +364,9 @@ export default function ArticlePage() {
           consume them. The alert should trigger before the lag becomes
           critical, giving the on-call engineer time to investigate and
           remediate.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use lag-aware read routing for user-facing reads and round-robin for
           analytical reads. User-facing reads (profile pages, order history,
           dashboards) should be routed to the least-lagged replica that meets
@@ -361,7 +377,7 @@ export default function ArticlePage() {
           The read proxy should track each replica&apos;s current lag (updated
           every 1–5 seconds via a lightweight heartbeat query) and use this
           information to make routing decisions.
-        </p>
+        </HighlightBlock>
 
         <p>
           Implement read-your-writes consistency for user-facing applications.
@@ -411,8 +427,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Assuming that asynchronous replication provides durability guarantees
           is a critical error. In asynchronous replication, the primary
           acknowledges the write before replicating it to replicas. If the
@@ -428,9 +447,9 @@ export default function ArticlePage() {
           acknowledge receipt of the WAL entry before acknowledging the write to
           the client, ensuring that every acknowledged write exists on at least
           two nodes.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Ignoring the impact of replication lag on application correctness is
           a common source of subtle bugs. When an application reads from a
           replica that has not yet received the latest writes from the primary,
@@ -443,7 +462,7 @@ export default function ArticlePage() {
           asynchronous replicas. The application should be designed with an
           explicit understanding of which reads require strong consistency and
           which can tolerate eventual consistency.
-        </p>
+        </HighlightBlock>
 
         <p>
           Not handling replica promotion correctly during failover can cause
@@ -493,8 +512,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-world Use Cases */}
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           GitHub uses PostgreSQL read replicas for its core data, with the
           primary accepting all writes (push operations, issue creation, pull
           request updates) and replicas serving reads (repository browsing,
@@ -508,9 +530,9 @@ export default function ArticlePage() {
           detected as unhealthy, a replica is promoted within 30 seconds, and
           the client routing layer (HAProxy) is updated to direct writes to the
           new primary.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Instagram uses MySQL read replicas for its social graph data, with
           hundreds of replicas serving read traffic (feed loads, profile views,
           follower/following lists). The primary handles all writes (post
@@ -522,7 +544,7 @@ export default function ArticlePage() {
           typically 50–200 ms, and Instagram uses read-your-writes consistency
           to ensure that users see their own posts immediately after creating
           them.
-        </p>
+        </HighlightBlock>
 
         <p>
           Shopify uses MySQL read replicas for its e-commerce platform, with the
@@ -557,6 +579,9 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
@@ -564,13 +589,13 @@ export default function ArticlePage() {
           immediately navigates to their profile page, but sees the old profile
           data. What is the root cause, and how do you fix it?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The root cause is <em>replication lag</em>. The user&apos;s write
             was applied to the primary, but the read was served by a replica
             that has not yet received the replicated write from the primary. The
             replica returns the old profile data, and the user sees stale data.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The fix depends on the application&apos;s consistency requirements.
             If the user must see their own writes immediately (the common case
             for profile pages), implement <em>read-your-writes consistency</em>:
@@ -581,7 +606,7 @@ export default function ArticlePage() {
             user&apos;s last write offset. If yes, the read goes to that
             replica. If no, the read goes to the primary, which always has the
             latest data.
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             An alternative approach is <em>optimistic UI</em>: the application
             shows the updated profile data immediately (using the data from the

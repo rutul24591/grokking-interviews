@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -24,15 +25,18 @@ export default function NotificationServiceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>notification service</strong> is a multi-channel delivery infrastructure that routes messages to
           users through their preferred communication channels (email, push, SMS, in-app, webhook) while respecting
           user preferences, rate limits, quiet hours, and delivery constraints. It serves as the central nervous system
           for user communication across an application, handling everything from transactional messages (receipts,
           password resets) to marketing campaigns (promotions, newsletters) to system alerts (security incidents,
           outages).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The notification service is deceptively complex. What appears to be a simple &quot;send message to user&quot;
           operation involves template resolution with internationalization, preference checking, channel selection based
           on notification priority, rate limiting to prevent user fatigue, provider selection and failover for
@@ -40,7 +44,7 @@ export default function NotificationServiceArticle() {
           and analytics for measuring engagement. Each of these concerns must be handled correctly at scale, where a
           single event (e.g., a flash sale) can trigger millions of notifications across multiple channels within
           minutes.
-        </p>
+        </HighlightBlock>
         <p>
           The fundamental architectural challenge in notification service design is balancing reliability with user
           experience. Notifications must be delivered reliably (the user should not miss important messages), but they
@@ -62,7 +66,10 @@ export default function NotificationServiceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Notification types</strong> categorize messages by their purpose and urgency. Transactional
           notifications (receipts, password resets, order confirmations) are triggered by user actions and must be
           delivered reliably and quickly. Marketing notifications (promotions, newsletters, product announcements) are
@@ -72,8 +79,8 @@ export default function NotificationServiceArticle() {
           that benefit from digest batching to reduce notification fatigue. Reminder notifications (calendar events, task
           deadlines, subscription renewals) are time-based messages that require precise scheduling and timezone-aware
           delivery.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Channel routing</strong> determines which communication channel is used for each notification. The
           routing decision considers the notification type (transactional notifications go through all available
           channels, marketing notifications only through opted-in channels), the user&apos;s channel preferences (the
@@ -82,7 +89,7 @@ export default function NotificationServiceArticle() {
           reserved for critical notifications). The routing system supports fallback channels: if the primary channel
           fails to deliver (push notification to an uninstalled app), the system attempts delivery through the fallback
           channel (email) after a configurable timeout.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Template management</strong> provides version-controlled, internationalized message templates for
           each notification type and channel. Templates use a templating language (Handlebars, Mustache) to inject
@@ -135,21 +142,24 @@ export default function NotificationServiceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The notification service architecture consists of event sources that trigger notification creation, a
           notification gateway that resolves templates and checks preferences, a channel router that selects the
           appropriate delivery channel, channel providers that handle the actual delivery through external services
           (SendGrid for email, FCM/APNs for push, Twilio for SMS), a delivery tracking system that monitors notification
           status, and an analytics pipeline that processes delivery and engagement events.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Event sources send notification requests to the gateway API with a notification type, user identifier, and
           template variables. The gateway resolves the notification type to determine its priority, required channels,
           and template requirements. It then checks the user&apos;s preferences to determine whether the notification
           should be delivered and through which channels. If the notification is suppressed by preferences (the user has
           disabled this notification type), the request is silently dropped. If the notification is allowed, it proceeds
           to the channel router.
-        </p>
+        </HighlightBlock>
         <p>
           The channel router selects the primary channel based on notification priority and user preferences, checks
           rate limits to ensure the user has not exceeded their notification quota, and enqueues the notification in the
@@ -178,7 +188,10 @@ export default function NotificationServiceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The primary trade-off in notification service design is between delivery reliability and user experience.
           Sending notifications through multiple channels simultaneously (push + email + SMS) maximizes the probability
           of delivery but risks overwhelming the user with duplicate messages. Sending through a single channel with
@@ -186,8 +199,8 @@ export default function NotificationServiceArticle() {
           fail before trying the fallback. The recommended approach is single-channel delivery for normal notifications
           with fallback, and multi-channel delivery only for critical notifications (security alerts, account takeover
           notifications) where the cost of non-delivery is high.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Building a notification service in-house versus using a managed service (SendGrid, OneSignal, Firebase Cloud
           Messaging, Twilio Notify) involves a build-versus-buy decision. Managed services provide comprehensive channel
           coverage, delivery tracking, template management, and compliance handling (CAN-SPAM, GDPR) without the
@@ -198,7 +211,7 @@ export default function NotificationServiceArticle() {
           requirements, and operating the delivery infrastructure. Organizations with fewer than one million
           notifications per month typically benefit from managed services, while larger organizations may justify the
           investment in custom infrastructure.
-        </p>
+        </HighlightBlock>
         <p>
           Eager delivery (send immediately) versus batched delivery (collect and send as digest) affects both user
           experience and operational cost. Eager delivery provides the most timely notification but can overwhelm users
@@ -240,15 +253,18 @@ export default function NotificationServiceArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement a comprehensive user preferences system from day one. Users should be able to control which
           notification types they receive, through which channels, and at what frequency. The preferences system should
           support quiet hours, digest mode, and per-channel settings. Providing granular preferences reduces user churn
           caused by notification fatigue and improves engagement with the notifications that are delivered. The
           preferences should be stored in a fast, durable store (Redis for performance with PostgreSQL backup) and
           cached in the notification gateway for sub-millisecond preference checks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use multi-provider failover for each channel to ensure delivery resilience. Configure a primary provider
           (e.g., SendGrid for email) and a backup provider (e.g., AWS SES) with automatic failover when the primary
           provider&apos;s error rate exceeds a threshold. The circuit breaker should open when the error rate exceeds
@@ -256,7 +272,7 @@ export default function NotificationServiceArticle() {
           recovers (error rate below one percent for five minutes), the circuit breaker should close and the system
           should resume using the primary provider. This approach ensures that a single provider outage does not prevent
           notification delivery.
-        </p>
+        </HighlightBlock>
         <p>
           Implement bounce and complaint handling to maintain sender reputation. When an email provider reports a hard
           bounce (the email address does not exist), the system should immediately remove the email address from the
@@ -294,14 +310,17 @@ export default function NotificationServiceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not implementing rate limiting leads to notification fatigue and user churn. When a single event triggers
           hundreds of notifications (e.g., a popular post receives a flood of comments, each generating a notification),
           the affected user is overwhelmed and may disable all notifications or delete their account. Rate limits must
           be enforced at multiple levels: per-user, per-channel, and per-notification-type. The rate limiting system
           should use a distributed token bucket algorithm to ensure consistent enforcement across all service instances.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not handling provider webhooks for bounce and complaint processing damages sender reputation and reduces
           deliverability. When email providers report bounces or spam complaints through webhooks, the notification
           service must process these events promptly and update the suppression list. Failure to do so means that the
@@ -309,7 +328,7 @@ export default function NotificationServiceArticle() {
           further damages sender reputation and reduces deliverability for all emails. The webhook processing pipeline
           should be resilient to provider outages (queue webhook events for processing when the provider recovers) and
           should validate webhook signatures to prevent spoofed events.
-        </p>
+        </HighlightBlock>
         <p>
           Not cleaning up stale push tokens wastes API calls and degrades delivery rates. When users uninstall the app
           or disable push notifications, their push tokens become invalid. Sending notifications to invalid tokens
@@ -346,7 +365,10 @@ export default function NotificationServiceArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Slack uses a sophisticated notification service that balances real-time communication with user attention
           management. Slack&apos;s notification system respects per-channel notification settings (users can mute
           specific channels), quiet hours (do not disturb mode with configurable schedule), and keyword-based overrides
@@ -355,15 +377,15 @@ export default function NotificationServiceArticle() {
           normal-priority messages for non-urgent updates. The notification service also handles the complex logic of
           determining whether a notification is needed at all (if the user is currently active in the relevant channel,
           no notification is sent).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Amazon uses a notification service that handles hundreds of notification types across its e-commerce platform,
           from order confirmations and shipping updates to price drop alerts and product recommendations. Amazon&apos;s
           notification service uses a preference system that allows users to control which notifications they receive
           and through which channels (email, push, SMS). The service also implements digest batching for low-priority
           notifications (e.g., product recommendations are batched into a weekly email rather than sent individually),
           reducing notification fatigue and improving engagement with the notifications that are delivered.
-        </p>
+        </HighlightBlock>
         <p>
           Uber uses a notification service for ride-related communications: ride confirmation, driver arrival updates,
           trip receipts, and safety alerts. Uber&apos;s notification service must deliver critical notifications (driver
@@ -394,12 +416,15 @@ export default function NotificationServiceArticle() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How would you design a notification service that handles ten million notifications per day across email, push, and SMS?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Ten million notifications per day is approximately one hundred fifteen notifications per second on average,
             with peak rates potentially five to ten times higher during busy periods. The architecture uses a
             queue-based design with separate queues per channel: an email queue processed by fifty workers, a push
@@ -414,14 +439,14 @@ export default function NotificationServiceArticle() {
             handled through provider webhooks that update notification status in a PostgreSQL database. The analytics
             pipeline processes delivery and engagement events asynchronously through a separate Kafka topic, feeding
             dashboards that monitor delivery rates, open rates, and engagement metrics.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 2: How do you handle the scenario where a user receives the same notification multiple times?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Duplicate notifications are prevented through deduplication using an idempotency key. Each notification
             request includes a reference ID (e.g., order ID for a receipt, comment ID for a social notification) that,
             combined with the notification type and user ID, forms a unique idempotency key. The gateway checks this key
@@ -434,7 +459,7 @@ export default function NotificationServiceArticle() {
             check and the enqueue operation), the provider-level deduplication (FCM collapses duplicate push
             notifications, email providers may deduplicate based on message ID) serves as a final defense. The
             analytics pipeline tracks duplicate rates as a quality metric, alerting if duplicates exceed a threshold.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

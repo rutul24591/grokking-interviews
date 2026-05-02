@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function KruskalsMSTArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Kruskal's algorithm finds a minimum spanning tree (MST) of a
           connected, undirected, weighted graph: a subset of V-1 edges that
           connects all V vertices with the minimum total edge weight. The
@@ -46,8 +50,8 @@ export default function KruskalsMSTArticle() {
           edges, stopping at V-1. With a union-find (disjoint-set union, DSU)
           data structure to test cycles, Kruskal runs in O(E log E) time,
           dominated by the sort.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Joseph Kruskal published the algorithm in 1956 in a four-page
           paper "On the Shortest Spanning Subtree of a Graph and the
           Traveling Salesman Problem." The MST problem is older — Borůvka
@@ -57,7 +61,7 @@ export default function KruskalsMSTArticle() {
           and Kruskal's. All three are correct and run in roughly the same
           asymptotic time; they differ in data structures, parallelism,
           and which property of MSTs they exploit.
-        </p>
+        </HighlightBlock>
         <p>
           MSTs underpin a surprising range of systems. Network design
           (telecom backbone, fiber laying, road planning) literally
@@ -88,7 +92,10 @@ export default function KruskalsMSTArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The correctness rests on the <em>cut property</em>: for any cut of
           the graph (a partition of vertices into two non-empty sets), the
           lightest edge crossing the cut belongs to some MST. Conversely,
@@ -98,8 +105,8 @@ export default function KruskalsMSTArticle() {
           are already in the same component), the heaviest edge in that
           cycle would be the new edge, so excluding it preserves the
           possibility of an MST.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The proof is a "cut-and-paste" exchange argument. Suppose Kruskal's
           output T is not an MST. Take any MST T*. The first edge e in
           Kruskal's sorted order that's in T but not T*: adding e to T*
@@ -110,7 +117,7 @@ export default function KruskalsMSTArticle() {
           with weight no greater than T* — still an MST — that agrees with
           T on more edges. Repeat to convert T* into T; therefore T is also
           an MST.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Union-Find (DSU) is the workhorse.</strong> Each vertex
           starts in its own component. <code>find(u)</code> returns the
@@ -164,26 +171,29 @@ export default function KruskalsMSTArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The data structures are minimal: an edge list with weights, a
           DSU array for component membership, and an output array of
           accepted edges. Build the edge list (one pass over input), sort
           it, iterate while running union-find, stop at V-1. Memory is
           O(V + E) — proportional to input.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/kruskals-mst-diagram-2.svg"
           alt="MST algorithm comparison and tie-breaking"
           caption="Kruskal vs. Prim vs. Borůvka — the three classical MST algorithms and their operational tradeoffs, plus tie-breaking effects on tree structure."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           For very large E, the sort can be the bottleneck both in CPU and
           memory. External-memory MST (Arge et al.) handles graphs that
           don't fit in RAM by external sorting and DSU on disk.
           Production cases include continent-scale road network MSTs and
           scientific co-occurrence graphs with hundreds of millions of
           edges.
-        </p>
+        </HighlightBlock>
         <p>
           For distributed graphs, Kruskal needs the full edge list at one
           place to sort, which doesn't scale. Borůvka's algorithm is the
@@ -221,7 +231,10 @@ export default function KruskalsMSTArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Kruskal vs Prim.</strong> Kruskal is O(E log V) and
           processes edges globally; Prim is O((V + E) log V) with binary
           heap and processes vertices via frontier expansion. On sparse
@@ -230,14 +243,14 @@ export default function KruskalsMSTArticle() {
           Prim can use Fibonacci heaps for O(E + V log V) theoretically;
           Kruskal can't benefit from fancier heaps (its cost is sort, not
           heap).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Kruskal vs Borůvka.</strong> Borůvka's parallel waves
           map naturally to distributed and parallel settings; Kruskal's
           global sort doesn't. For MapReduce-style processing or huge
           graphs that don't fit on one machine, Borůvka wins. On a single
           machine with sortable edges, Kruskal is simpler.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Path compression vs union by rank.</strong> Both
           optimizations are individually effective; both together give
@@ -268,17 +281,20 @@ export default function KruskalsMSTArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use a real DSU with both optimizations.</strong> Path
           compression alone gives O(log V); union by rank alone gives
           O(log V); both together give O(α(V)). The implementation
           difference is a few lines.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Stop at V-1 edges.</strong> Don't iterate the full sorted
           edge list. On graphs where V is small relative to E, this saves
           most of the loop.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Canonicalize tie-breaking.</strong> Sort by (weight,
           edge_id) or (weight, min_endpoint, max_endpoint) so reruns
@@ -319,19 +335,22 @@ export default function KruskalsMSTArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>DSU without optimizations.</strong> A naive
           implementation (find walks parent chain, union sets one parent
           to the other) gives O(V) per operation worst-case, blowing the
           O(E log V) target. Always use both path compression and union
           by rank.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Not handling disconnected input.</strong> Kruskal on a
           disconnected graph returns a forest, not a tree. Callers
           expecting V-1 edges may read past the array. Defensive code
           checks edge count and either errors or returns the forest.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Mutating the edge list during iteration.</strong> Sorting
           in place, then iterating, is fine. Mutating during iteration
@@ -367,20 +386,23 @@ export default function KruskalsMSTArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/kruskals-mst-diagram-3.svg"
           alt="Kruskal applications and MST variants"
           caption="Production applications of Kruskal — network design, clustering, image segmentation, TSP approximation — and the family of MST variants and extensions."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Network design.</strong> The original motivation —
           finding minimum-cost cabling for an electrical grid (Borůvka's
           1926 problem) generalized to fiber backbones, road networks, and
           telecom infrastructure. Real-world systems add constraints
           (degree limits, redundancy, capacity), giving NP-hard variants
           for which MST provides starting solutions or LP-rounding bases.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Single-linkage clustering.</strong> Build MST on the
           pairwise-distance graph; cut at threshold to form clusters. The
           dendrogram is the MST. Used in bioinformatics (gene-expression
@@ -388,7 +410,7 @@ export default function KruskalsMSTArticle() {
           single-linkage is sensitive to "chaining" (long thin clusters
           form via outlier bridges) but remains a fast, intuitive
           baseline.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Image segmentation.</strong> Felzenszwalb and
           Huttenlocher's 2004 graph-based segmentation builds an
@@ -434,18 +456,21 @@ export default function KruskalsMSTArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Min Cost to Connect All Points (LeetCode 1584).</strong>
           The canonical Kruskal problem. Build edges (Manhattan distance
           between every pair), sort, run union-find. O(N² log N). Bonus
           discussion: when N is large, a Manhattan-MST algorithm runs in
           O(N log N).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Connecting Cities With Minimum Cost.</strong> Same
           shape, slightly different framing. Tests whether you can
           extract the MST formulation from prose.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Optimize Water Distribution in a Village.</strong>
           Twist: each city can also build its own well (a self-edge to a

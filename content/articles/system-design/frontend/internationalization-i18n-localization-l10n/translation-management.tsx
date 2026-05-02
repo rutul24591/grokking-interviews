@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function TranslationManagementArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Translation Management</strong> encompasses the processes,
           tools, and workflows for creating, reviewing, updating, and deploying
           translations at scale. This includes Translation Management Systems
@@ -45,8 +46,8 @@ export default function TranslationManagementArticle() {
           for translations; and continuous localization pipelines. For global
           applications with frequent releases, manual translation workflows
           don&apos;t scale — automated translation management is essential.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, translation management involves
           architectural decisions about TMS selection (cloud vs. self-hosted),
           integration patterns (API vs. Git-based), workflow automation
@@ -54,8 +55,8 @@ export default function TranslationManagementArticle() {
           deployment). The key insight: translations are code — they need
           version control, code review, automated testing, and deployment
           pipelines.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Translation management involves several technical challenges.{" "}
           <strong>String extraction</strong> — automatically finding
           translatable strings in code. <strong>Context for
@@ -63,7 +64,7 @@ export default function TranslationManagementArticle() {
           <strong>Version sync</strong> — keeping translations in sync with code
           releases. <strong>Quality assurance</strong> — catching missing
           translations, broken placeholders, and inconsistent terminology.
-        </p>
+        </HighlightBlock>
         <p>
           The business case for translation management is clear: manual
           translation processes bottleneck releases. With proper TMS and
@@ -77,24 +78,24 @@ export default function TranslationManagementArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Translation Management System (TMS):</strong> Platform for
             managing translations: Crowdin, Transifex, Lokalise, Phrase.
             Features: translation memory, glossary, collaboration, API,
             integrations. Cloud-based TMS enables distributed translator teams.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Translation Memory:</strong> Database of previously
             translated segments. When similar string appears, suggests existing
             translation. Improves consistency and reduces cost (pay per unique
             word). Match threshold: 100% (exact), fuzzy (75-99%).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Glossary/Terminology:</strong> Approved translations for
             key terms (product names, features, brand terms). Ensures
             consistency across translators and languages. TMS highlights glossary
             terms during translation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>String Extraction:</strong> Automatically finding
             translatable strings in codebase. Tools: i18next-parser,
@@ -127,13 +128,13 @@ export default function TranslationManagementArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Translation management architecture consists of a string extraction
           layer (finding translatable strings), TMS integration (syncing
           translations), and deployment pipeline (quality gates, versioning).
           The architecture must handle parallel translation workflows, version
           conflicts, and rollback capabilities.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/internationalization-i18n-localization-l10n/tms-integration-patterns.svg"
@@ -144,17 +145,17 @@ export default function TranslationManagementArticle() {
         />
 
         <h3>TMS Integration Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>API-Based Sync:</strong> CLI tool syncs strings to TMS via
           API. Advantages: real-time, automated. Limitations: TMS is source of
           truth, requires API access. Best for: continuous localization.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Git-Based:</strong> Translation files in Git, TMS creates PRs
           with updates. Advantages: version control, code review. Limitations:
           slower, requires Git integration. Best for: teams wanting full Git
           workflow.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Hybrid:</strong> Source strings in Git, translations in TMS,
           periodic sync. Advantages: version control for source, TMS features
@@ -165,22 +166,22 @@ export default function TranslationManagementArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Translation management involves trade-offs between automation,
           control, and cost.
-        </p>
+        </HighlightBlock>
 
         <h3>TMS Selection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Crowdin:</strong> Popular, good developer experience.
           Advantages: Git integration, API, screenshot context. Pricing: per
           seat + word count. Best for: software projects.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Transifex:</strong> Enterprise-focused. Advantages: workflow
           automation, integrations. Pricing: higher, enterprise tiers. Best for:
           large enterprises.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Lokalise:</strong> Developer-friendly, good API. Advantages:
           collaborative editing, integrations. Pricing: competitive. Best for:
@@ -214,22 +215,22 @@ export default function TranslationManagementArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Provide Context for Translators:</strong> Include screenshots,
             descriptions, character limits, and usage examples. Translators
             make better decisions with context. TMS platforms support context
             attachments.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Translation Memory:</strong> Enable TM for consistency
             and cost savings. Set match threshold (75%+ for fuzzy matches).
             Review fuzzy matches — high similarity doesn&apos;t mean correct.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Maintain Glossary:</strong> Create glossary of key terms
             early. Update as product evolves. Enforce glossary usage in QA.
             Prevents inconsistent translations of core features.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Automate String Extraction:</strong> Run extraction in CI
             on every PR. Fail if new strings aren&apos;t added to TMS. Prevents
@@ -252,21 +253,21 @@ export default function TranslationManagementArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>No Context for Translators:</strong> Sending just strings
             without context leads to wrong translations. &quot;Save&quot; could
             be verb or noun. Always provide context.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Translation Time:</strong> Translations take time.
             Don&apos;t merge code with untranslated strings. Plan for
             translation lead time or use fallback to base language.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No Quality Assurance:</strong> Deploying translations
             without QA catches errors too late. Implement automated QA + human
             review before deployment.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Inconsistent Terminology:</strong> Different translators,
             different terms for same feature. Use glossary + translation memory
@@ -289,30 +290,30 @@ export default function TranslationManagementArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>SaaS Continuous Localization</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           SaaS companies (GitHub, Notion) use continuous localization:
           developers write code with translation keys, CI extracts new strings,
           syncs to TMS, translators notified, reviewed translations sync back,
           deploy with release. Translation doesn&apos;t block releases —
           untranslated strings fall back to base language.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce Product Content</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce sites translate product descriptions, categories, and
           marketing content. High volume, frequent changes. Use MT + human
           review for speed. Glossary ensures brand terms consistent. TMS
           integrates with PIM (Product Information Management) for automated
           product translation.
-        </p>
+        </HighlightBlock>
 
         <h3>Mobile App Localization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mobile apps have app store listings, in-app strings, and push
           notification templates. TMS integrates with app build pipeline.
           Screenshots provide context for translators. App store translations
           managed separately from in-app strings.
-        </p>
+        </HighlightBlock>
 
         <h3>Enterprise Software</h3>
         <p>
@@ -329,22 +330,22 @@ export default function TranslationManagementArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: How do you integrate a TMS into a CI/CD pipeline?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Steps: (1) On PR: extract new strings, upload to TMS via API.
               (2) TMS notifies translators. (3) On merge: download completed
               translations, run QA checks (no missing, placeholders match). (4)
               Commit translations to Git, trigger deployment. Use TMS CLI or
               custom scripts. Fail CI if QA fails.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do you handle translation updates for urgent bug fixes?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: For urgent fixes: (1) Fix code with translation keys. (2) If
               string exists in TMS, use existing translation. (3) If new string,

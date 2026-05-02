@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,7 +35,7 @@ export default function PerformanceMonitoringArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2>Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           <strong>Real User Monitoring (RUM)</strong> is the practice of collecting performance telemetry
           directly from actual user sessions as they interact with your application in production. Unlike
           synthetic monitoring, which runs scripted tests in controlled lab environments, RUM captures the
@@ -43,8 +44,8 @@ export default function PerformanceMonitoringArticle() {
           This distinction matters enormously because the gap between lab performance and field performance
           can be staggering — it is not uncommon for a page that scores 95 in Lighthouse to have a p75 LCP
           above four seconds in real user data.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The business case for RUM is no longer theoretical. Google incorporated Core Web Vitals as
           ranking signals in its Page Experience Update, meaning that field performance data (sourced from
           the Chrome User Experience Report, or CrUX) directly influences organic search visibility. Beyond
@@ -54,8 +55,8 @@ export default function PerformanceMonitoringArticle() {
           Vodafone improved LCP by 31 percent and saw an 8 percent increase in sales conversions. These are
           not marginal gains — they represent material business outcomes that justify significant engineering
           investment in performance monitoring infrastructure.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the technical level, RUM leverages a family of browser Performance APIs that have matured
           substantially over the past several years. The <code>Navigation Timing API</code> provides
           timestamps for every phase of document loading, from DNS lookup through DOM complete.
@@ -66,7 +67,7 @@ export default function PerformanceMonitoringArticle() {
           elements render. And the <code>Event Timing API</code> captures interaction latency. Together,
           these APIs form a comprehensive instrumentation layer that RUM libraries consume, aggregate, and
           transmit to analytics backends.
-        </p>
+        </HighlightBlock>
         <p>
           In the broader observability stack, RUM occupies the frontend pillar alongside error tracking,
           logging, and session replay. While backend observability focuses on traces, metrics, and logs
@@ -92,12 +93,12 @@ export default function PerformanceMonitoringArticle() {
         <h2>Core Concepts</h2>
 
         <h3>Core Web Vitals: LCP, INP, and CLS</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Google&apos;s Core Web Vitals represent three dimensions of user experience that the Chrome team
           identified as most impactful after years of research across millions of page loads. Each metric
           targets a specific perceptual concern.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Largest Contentful Paint (LCP)</strong> measures perceived loading speed by recording when
           the largest image or text block in the viewport finishes rendering. The thresholds are: good at or
           below 2.5 seconds, needs improvement between 2.5 and 4.0 seconds, and poor above 4.0 seconds.
@@ -105,8 +106,8 @@ export default function PerformanceMonitoringArticle() {
           because those events reflect browser internals rather than what users actually see. A page can fire
           its load event quickly while the hero image is still downloading. LCP captures the moment that
           matters to the user — when the main content is visually complete.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Interaction to Next Paint (INP)</strong> measures responsiveness by tracking the latency of
           every discrete interaction (clicks, taps, key presses) throughout the page&apos;s entire
           lifecycle, then reporting the worst interaction (or near-worst for pages with many interactions).
@@ -115,7 +116,7 @@ export default function PerformanceMonitoringArticle() {
           because FID only measured the <em>first</em> interaction and only measured the <em>delay</em>{" "}
           component (time before the event handler runs), ignoring processing time and presentation delay.
           INP captures the full duration from user action to the next frame paint, across all interactions.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Cumulative Layout Shift (CLS)</strong> measures visual stability by summing all unexpected
           layout shift scores that occur during the page&apos;s lifetime. A layout shift happens when a
@@ -238,13 +239,18 @@ export default function PerformanceMonitoringArticle() {
       <section className="mb-12">
         <h2>Architecture &amp; Flow</h2>
 
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           A production RUM system consists of several interconnected layers: instrumentation in the browser,
           a transport mechanism for sending data to backend collectors, a processing pipeline for
           aggregation and enrichment, a storage layer optimized for time-series queries, and a presentation
           layer for dashboards and alerting. The following diagrams illustrate the key architectural
           patterns.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          At scale, the hard parts are sampling and correlation: you need enough fidelity to debug
+          regressions, but you must control ingestion volume and still tie frontend metrics to backend
+          traces and releases.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/performance-monitoring-diagram-2.svg"
@@ -252,7 +258,7 @@ export default function PerformanceMonitoringArticle() {
           caption="Figure 2: Core Web Vitals measurement points in page lifecycle"
         />
 
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Understanding <em>when</em> each metric fires is essential for correct instrumentation. LCP
           candidates are emitted as the page loads — each time a larger content element renders, a new LCP
           entry is created. The final LCP value is the last candidate before user input or page visibility
@@ -261,7 +267,7 @@ export default function PerformanceMonitoringArticle() {
           windows, with the maximum window score reported. This lifecycle-aware collection means that RUM
           scripts must remain active for the entire page session and transmit final values reliably during
           unload — making <code>sendBeacon</code> the preferred transport mechanism.
-        </p>
+        </HighlightBlock>
 
       </section>
 
@@ -271,11 +277,11 @@ export default function PerformanceMonitoringArticle() {
       <section className="mb-12">
         <h2>Trade-offs &amp; Comparisons</h2>
 
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           The three primary sources of performance data — RUM, synthetic monitoring, and CrUX — each have
           distinct characteristics that make them suitable for different purposes. The following comparison
           highlights their trade-offs across key dimensions.
-        </p>
+        </HighlightBlock>
 
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">
@@ -340,22 +346,22 @@ export default function PerformanceMonitoringArticle() {
           </table>
         </div>
 
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           The strategic insight is that these approaches are <strong>complementary, not competing</strong>.
           Synthetic monitoring belongs in your CI/CD pipeline to catch regressions before they ship. RUM
           belongs in production to measure what users actually experience. CrUX provides the ground truth
           for how Google perceives your site&apos;s performance. A mature performance monitoring strategy
           employs all three, using synthetic data for fast feedback loops during development, RUM for
           production visibility and business metric correlation, and CrUX for SEO impact assessment.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The cost model also differs significantly. Synthetic monitoring has predictable costs based on
           test frequency and number of pages. RUM costs scale with traffic — a site serving 100 million page
           views per month generates substantial beacon volume, often requiring sampling strategies (for
           example, only collecting from 10 percent of sessions) to manage ingestion and storage costs. The
           sampling rate itself becomes an architectural decision: too aggressive and you lose visibility into
           rare conditions; too conservative and costs become prohibitive.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -365,28 +371,28 @@ export default function PerformanceMonitoringArticle() {
         <h2>Best Practices</h2>
 
         <ul className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Monitor p75, not averages.</strong> Averages hide the long tail of poor experiences.
             The 75th percentile is Google&apos;s threshold for Core Web Vitals and provides a meaningful
             indicator of whether the majority of your users have acceptable performance. Track p50 for
             general health, p75 for Web Vitals compliance, and p95 or p99 for tail latency awareness. When
             reporting to stakeholders, always present percentile distributions rather than single averages.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Segment data by meaningful dimensions.</strong> Aggregate metrics hide critical patterns.
             Always segment by device type (mobile vs desktop vs tablet), connection effective type (4G, 3G,
             2G, slow-2G via the <code>NetworkInformation</code> API), geography (at minimum country, ideally
             region), browser, and page type (homepage vs product page vs checkout). Create custom segments for
             your business context — for example, logged-in versus anonymous users, or users with ad blockers
             versus those without.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Set performance budgets and enforce them in CI.</strong> Define explicit thresholds for
             JavaScript bundle size, total page weight, LCP, and INP. Use tools like Lighthouse CI or{" "}
             <code>size-limit</code> to fail pull requests that exceed budgets. Complement CI enforcement with
             production alerting on RUM metrics to catch regressions that synthetic tests miss (such as
             third-party script performance degradation).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use the <code>web-vitals</code> library for consistent measurement.</strong> Google&apos;s
             open-source <code>web-vitals</code> library handles the substantial complexity of correctly
@@ -435,7 +441,7 @@ export default function PerformanceMonitoringArticle() {
         <h2>Common Pitfalls</h2>
 
         <ul className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Optimizing for Lighthouse instead of real users.</strong> Lighthouse runs on a simulated
             mid-tier device with throttled network conditions. It is entirely possible to achieve a perfect
             Lighthouse score while real users on actual mid-tier devices have terrible performance, because
@@ -443,15 +449,15 @@ export default function PerformanceMonitoringArticle() {
             patterns, and uses a fixed viewport. Teams that optimize exclusively for Lighthouse often
             celebrate synthetic improvements that never materialize in the field. Always validate synthetic
             improvements with RUM data.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring device and network diversity.</strong> If your RUM dashboard only shows global
             aggregates, you are blind to the users who need optimization most. Mobile users on slow
             connections in emerging markets often represent a significant and growing portion of traffic, yet
             their experience can be radically different from the desktop-on-fiber median. Build dashboards
             that prominently feature mobile p75 and segment by effective connection type.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Sampling bias in RUM data.</strong> If your RUM script is loaded asynchronously at the
             end of the document, users who abandon the page before the script loads are never measured —
             creating survivorship bias where your data systematically excludes the worst experiences.
@@ -459,7 +465,7 @@ export default function PerformanceMonitoringArticle() {
             head) and using the <code>buffered</code> flag on PerformanceObservers. Also be aware that if
             you sample by session, you should ensure the sampling decision is made consistently for a given
             user to avoid skewing repeat-visit analysis.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring long-tail performance.</strong> If your p75 LCP is 2.3 seconds but your p95 is
             8 seconds, one in twenty users has a severely degraded experience. For high-traffic sites, that
@@ -493,7 +499,7 @@ export default function PerformanceMonitoringArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>Google&apos;s CrUX and Search Ranking Integration</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Google operates the largest RUM system in the world through the Chrome User Experience Report
           (CrUX). Chrome browsers with usage statistics sharing enabled report performance data back to
           Google, which aggregates it into per-origin and per-URL datasets covering millions of websites.
@@ -504,10 +510,10 @@ export default function PerformanceMonitoringArticle() {
           page performs in a controlled test but how it performs for real Chrome users over a 28-day rolling
           window. This incentivized the entire web ecosystem to invest in RUM, because the only way to
           know whether your CrUX scores are improving is to monitor real user performance continuously.
-        </p>
+        </HighlightBlock>
 
         <h3>Shopify&apos;s Storefront Performance Monitoring</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Shopify powers millions of e-commerce storefronts, making performance monitoring at scale a
           critical infrastructure challenge. Their approach combines RUM across all merchant storefronts
           with automated performance regression detection tied to their deployment pipeline. When Shopify
@@ -520,10 +526,10 @@ export default function PerformanceMonitoringArticle() {
           correlating storefront performance with checkout conversion rates provided the business case for
           sustained performance investment, demonstrating that faster storefronts directly translate to
           higher merchant revenue.
-        </p>
+        </HighlightBlock>
 
         <h3>The Guardian&apos;s Frontend Performance Dashboard</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Guardian, a major news publication, built a comprehensive frontend performance monitoring
           system that has become a widely cited example of RUM done well. Their approach centers on a
           real-time performance dashboard that tracks Core Web Vitals segmented by article type, ad
@@ -538,7 +544,7 @@ export default function PerformanceMonitoringArticle() {
           metrics beyond acceptable thresholds. Their open-source contributions to performance tooling and
           their transparent public reporting of their own performance metrics have influenced how many
           organizations approach RUM implementation.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/performance-monitoring-diagram-3.svg"
@@ -552,14 +558,17 @@ export default function PerformanceMonitoringArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="mb-4 font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: What is the difference between Real User Monitoring and synthetic monitoring, and when
               would you use each?
-            </p>
-            <p>
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               <strong>A:</strong> RUM collects performance data from actual user sessions in production,
               capturing the full diversity of real devices, networks, and usage patterns. Synthetic
               monitoring runs scripted tests in controlled lab environments with predetermined device
@@ -571,14 +580,14 @@ export default function PerformanceMonitoringArticle() {
               uses both: synthetic for shift-left detection during development, and RUM for production truth.
               CrUX provides a third data source — aggregated real Chrome user data that Google uses for
               search ranking decisions.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="mb-4 font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: Explain the three Core Web Vitals, their thresholds, and why Google chose these specific
               metrics.
-            </p>
+            </HighlightBlock>
             <p>
               <strong>A:</strong> The three Core Web Vitals are LCP (Largest Contentful Paint), which
               measures perceived load speed with thresholds of good at 2.5 seconds or below, needs

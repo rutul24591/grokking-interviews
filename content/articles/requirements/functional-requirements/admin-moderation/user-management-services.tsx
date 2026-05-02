@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function UserManagementServicesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User management services enable administrative user management through programmatic interfaces. The user management service system is the primary tool for administrators, operations teams, and automated systems to manage users, assign roles, manage permissions, and perform user lifecycle operations. For staff and principal engineers, user management services involve user CRUD operations (create, read, update, delete users), role management (manage user roles), permission management (manage user permissions), user lifecycle (manage user lifecycle), bulk operations (perform bulk user operations), and user service security (secure user management services).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of user management services extends beyond simple user CRUD. User CRUD operations must manage users (manage users). Role management must manage user roles (manage user roles). Permission management must manage user permissions (manage user permissions). User lifecycle must manage user lifecycle (manage user lifecycle). Bulk operations must perform bulk user operations (perform bulk user operations). User service security must secure user management services (secure user management services).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, user management services architecture involves user CRUD operations (manage users), role management (manage user roles), permission management (manage user permissions), user lifecycle (manage user lifecycle), bulk operations (perform bulk user operations), and user service security (secure user management services). The system must support multiple user types (admin users, regular users, service users), multiple role types (admin roles, user roles, service roles), and multiple permission types (read permissions, write permissions, admin permissions). Performance is important—user management services must be fast and reliable.
         </p>
@@ -47,13 +51,16 @@ export default function UserManagementServicesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>User CRUD Operations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           User creation creates users. User creation (create users). User creation validation (validate user creation). User creation enforcement (enforce user creation). User creation reporting (report on user creation).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User reading reads users. User reading (read users). User reading validation (validate user reading). User reading enforcement (enforce user reading). User reading reporting (report on user reading).
-        </p>
+        </HighlightBlock>
         <p>
           User updating updates users. User updating (update users). User updating validation (validate user updating). User updating enforcement (enforce user updating). User updating reporting (report on user updating).
         </p>
@@ -119,9 +126,12 @@ export default function UserManagementServicesArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User management services architecture spans user CRUD operations, role management, permission management, and user lifecycle. User CRUD operations manage users. Role management manages user roles. Permission management manages user permissions. User lifecycle manages user lifecycle.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/admin-moderation/user-management-services/user-management-services-architecture.svg"
@@ -132,9 +142,9 @@ export default function UserManagementServicesArticle() {
         />
 
         <h3>User CRUD Operations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           User CRUD operations manage users. User creation (create users). User reading (read users). User updating (update users). User deletion (delete users).
-        </p>
+        </HighlightBlock>
         <p>
           User creation validation validates user creation. User creation validation (validate user creation). User creation validation enforcement (enforce user creation validation). User creation validation verification (verify user creation validation). User creation validation reporting (report on user creation validation).
         </p>
@@ -194,14 +204,17 @@ export default function UserManagementServicesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User management services design involves trade-offs between flexibility and complexity, validation and performance, and security and usability. Understanding these trade-offs enables informed decisions aligned with user management needs and platform constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>CRUD: Comprehensive vs. Simple</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comprehensive CRUD (comprehensive CRUD). Pros: Comprehensive (comprehensive CRUD), effective CRUD. Cons: Complex (complex CRUD), expensive. Best for: User-intensive (high-user platforms).
-        </p>
+        </HighlightBlock>
         <p>
           Simple CRUD (simple CRUD). Pros: Simple (simple CRUD), cheap. Cons: Not comprehensive (not comprehensive CRUD), not effective. Best for: Non-user (low-user platforms).
         </p>
@@ -253,13 +266,16 @@ export default function UserManagementServicesArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement user CRUD operations:</strong> User creation, user reading, user updating, user deletion. User CRUD management. User CRUD enforcement.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement role management:</strong> Role assignment, role revocation, role management. Role management management. Role management enforcement.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement permission management:</strong> Permission assignment, permission revocation, permission management. Permission management management. Permission management enforcement.
           </li>
@@ -289,13 +305,16 @@ export default function UserManagementServicesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No user CRUD operations:</strong> Don&apos;t manage users. Solution: User CRUD operations (creation, reading, updating, deletion).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No role management:</strong> Don&apos;t manage user roles. Solution: Role management (assignment, revocation, management).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No permission management:</strong> Don&apos;t manage user permissions. Solution: Permission management (assignment, revocation, management).
           </li>
@@ -325,16 +344,19 @@ export default function UserManagementServicesArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>User CRUD Operations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           User CRUD operations for user management. User creation (create users). User reading (read users). User updating (update users). User deletion (delete users). User CRUD management (manage user CRUD).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Role Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Role management for role management. Role assignment (assign roles to users). Role revocation (revoke roles from users). Role management (manage roles). Role management management (manage role management).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Permission Management</h3>
         <p>
@@ -354,12 +376,15 @@ export default function UserManagementServicesArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you implement user CRUD operations that are both efficient and auditable?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you implement user CRUD operations that are both efficient and auditable?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement structured user management service with complete audit trail. User creation: validate input (email format, password strength, required fields), check for duplicates, create user record, send welcome email, log creation event. User reading: implement efficient queries with pagination, cache frequently accessed user data, implement soft fields for privacy (don&apos;t return sensitive fields unless necessary). User updating: validate updates, implement optimistic locking to prevent concurrent modification conflicts, log what changed (before/after values). User deletion: implement soft delete with retention period (allows recovery), hard delete after retention expires, cascade delete or reassign owned resources, log deletion. The critical requirement: audit every operation with complete context (who made change, what changed, when, why). Implement bulk operations with same audit rigor—bulk operations are high-risk. The key trade-off: efficiency vs. audit completeness—don&apos;t skip audit logging for performance, instead optimize audit log writes (async, batched).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

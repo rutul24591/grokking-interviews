@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +30,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>hot partition</strong> occurs when one partition in a distributed database
           receives a disproportionate share of read or write traffic compared to other partitions.
           In a well-partitioned system, traffic is evenly distributed across all partitions, and
@@ -39,8 +43,8 @@ export default function ArticlePage() {
           becomes overwhelmed with requests while other nodes are underutilized, and the overall
           system throughput is limited by the hot partition&apos;s capacity rather than the total
           cluster capacity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider a social media platform that partitions user data by user ID. When a celebrity
           with 100 million followers posts a message, their partition receives 100 million read
           requests (one from each follower&apos;s feed) while the partitions of ordinary users
@@ -49,7 +53,7 @@ export default function ArticlePage() {
           partitions in the cluster are largely idle. The system&apos;s overall throughput is
           limited by the celebrity partition&apos;s capacity, not by the cluster&apos;s total
           capacity.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, hot partitions require understanding the root causes
           (sequential keys, celebrity accounts, timestamp-based partitioning), detection
@@ -77,6 +81,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/hot-partition-problem.svg`}
@@ -85,7 +92,7 @@ export default function ArticlePage() {
         />
 
         <h3>Causes of Hot Partitions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Hot partitions are caused by uneven key distribution: the partition key maps many
           requests to the same partition. The most common causes are <strong>sequential
           keys</strong> (auto-incrementing IDs, timestamps) where all recent writes go to the
@@ -94,15 +101,15 @@ export default function ArticlePage() {
           e.g., a celebrity&apos;s profile page receiving millions of views per hour), and
           <strong>timestamp-based partitioning</strong> (partitioning by time, where all writes
           for the current time period go to the same partition).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another cause is <strong>range-based partitioning with skewed data</strong>: if the
           data distribution is not uniform (e.g., most users are in the US, few in other
           countries), range-based partitioning by country code will create hot partitions for
           popular ranges and idle partitions for unpopular ranges. Hash-based partitioning
           reduces this risk but does not eliminate it: if the hash function is weak or the key
           space is small, hash collisions can create hot partitions.
-        </p>
+        </HighlightBlock>
 
         <h3>Detecting Hot Partitions</h3>
         <p>
@@ -150,9 +157,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Key Salting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Key salting is the most common mitigation for hot partitions caused by sequential or
           celebrity keys. The partition key is modified by adding a random suffix (salt) that
           distributes requests across multiple sub-partitions. For example, instead of using
@@ -160,14 +170,14 @@ export default function ArticlePage() {
           <code className="inline-code">user_id + &quot;_&quot; + random(0..N-1)</code>, where
           N is the number of sub-partitions. Writes are distributed across all N sub-partitions,
           and reads must query all N sub-partitions and merge the results.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Key salting is effective for write-heavy hot partitions because writes are distributed
           across sub-partitions, eliminating the write bottleneck. However, it increases read
           latency because reads must query all N sub-partitions. The trade-off is acceptable for
           write-heavy workloads (celebrity accounts receiving mostly writes) but problematic for
           read-heavy workloads (celebrity accounts receiving mostly reads).
-        </p>
+        </HighlightBlock>
 
         <h3>Sub-Partitioning</h3>
         <p>
@@ -213,7 +223,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Hot partition mitigation involves trade-offs between write distribution, read latency,
           operational complexity, and data consistency. Key salting distributes writes evenly
           but increases read latency (must query all sub-partitions). Sub-partitioning increases
@@ -221,15 +234,15 @@ export default function ArticlePage() {
           Caching absorbs read traffic but introduces cache invalidation complexity. Write
           coalescing reduces write operations but introduces write latency (the coalescing
           window).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that the right mitigation depends on the access pattern.
           For write-heavy hot partitions (celebrity accounts with mostly writes), key salting or
           write coalescing is most effective. For read-heavy hot partitions (celebrity accounts
           with mostly reads), caching is most effective. For mixed workloads, sub-partitioning
           provides the best balance because it handles both reads and writes without significant
           trade-offs.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -237,20 +250,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design partition keys for even distribution from the start. Avoid sequential keys
           (auto-incrementing IDs, timestamps) as partition keys. Use hash-based partitioning
           with a strong hash function (MurmurHash3, SHA-256) to distribute keys uniformly
           across partitions. If range queries are required, use a composite key that includes
           a hash prefix for distribution and a range suffix for ordering (e.g.,
           <code className="inline-code">hash(user_id) + timestamp</code>).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Monitor per-partition traffic continuously and set alerts on partition skew. Track
           the ratio of the busiest partition&apos;s request rate to the average request rate,
           and alert when it exceeds 3x. Implement automated hot partition detection that
           identifies hot partitions and triggers mitigation strategies automatically.
-        </p>
+        </HighlightBlock>
         <p>
           Implement automatic sub-partitioning for partitions that exceed a traffic threshold.
           When a partition&apos;s request rate exceeds 80% of its node&apos;s capacity, split
@@ -270,19 +286,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is using sequential or timestamp-based keys as partition keys.
           This guarantees that all recent writes go to the same partition, creating a hot
           partition for every write-heavy workload. The fix is to use hash-based partitioning
           with a strong hash function, or to salt sequential keys with a random prefix to
           distribute writes across sub-partitions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common pitfall is not monitoring per-partition traffic. Without per-partition
           metrics, hot partitions go undetected until they cause cascading failures. The fix is
           to instrument every partition with request rate, latency, and resource utilization
           metrics, and set alerts on partition skew (busiest partition / average &gt; 3x).
-        </p>
+        </HighlightBlock>
         <p>
           Using key salting for read-heavy workloads is a performance pitfall. Key salting
           distributes writes across sub-partitions but requires reads to query all sub-partitions
@@ -305,9 +324,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter: Celebrity Account Hot Partitions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter&apos;s most-followed accounts (celebrities, brands, news organizations) receive
           millions of views per hour, creating hot partitions in the user data store. Twitter
           mitigates this through aggressive caching: celebrity profiles and timelines are cached
@@ -315,17 +337,17 @@ export default function ArticlePage() {
           cache. Writes (profile updates, new tweets) are written to the partition and the cache
           is invalidated. This absorbs 99% of read traffic, reducing the partition&apos;s load
           to a manageable level.
-        </p>
+        </HighlightBlock>
 
         <h3>DynamoDB: Automatic Sub-Partitioning</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           DynamoDB automatically detects hot partitions and splits them into sub-partitions.
           When a partition&apos;s traffic exceeds the provisioned throughput, DynamoDB splits
           the partition into two sub-partitions, redistributes the data, and updates the routing
           table. This increases the effective capacity of the hot partition by distributing its
           load across two nodes. The split is transparent to the application: the application
           continues to use the same partition key, and DynamoDB handles the routing internally.
-        </p>
+        </HighlightBlock>
 
         <h3>Instagram: Write Coalescing for Like Counts</h3>
         <p>
@@ -343,17 +365,20 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What causes hot partitions and how do you detect them?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Hot partitions are caused by uneven key distribution: sequential keys, celebrity
               accounts, timestamp-based partitioning, or skewed data in range-based partitioning.
               All these causes map many requests to the same partition, overwhelming that
               partition&apos;s node while other nodes are idle.
-            </p>
+            </HighlightBlock>
             <p>
               Detect hot partitions through per-partition monitoring: track request rate, latency,
               and resource utilization for each partition. Alert when the ratio of the busiest

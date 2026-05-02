@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Agent orchestration</strong> is the architecture and set of
           patterns for coordinating multiple AI agents to accomplish complex
           tasks that no single agent can handle effectively. While a multi-agent
@@ -32,8 +36,8 @@ export default function ArticlePage() {
           they have), orchestration defines the behavior (how agents are
           selected, how tasks are decomposed, how results are combined, and how
           failures are handled).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The need for orchestration arises when tasks span multiple domains
           requiring different expertise, when sub-tasks can be executed in
           parallel for speedup, when quality assurance requires independent
@@ -43,7 +47,7 @@ export default function ArticlePage() {
           and the individual agent executions (&quot;search for market data&quot;,
           &quot;analyze competitors&quot;, &quot;synthesize findings&quot;,
           &quot;format report&quot;).
-        </p>
+        </HighlightBlock>
         <p>
           For software engineers, agent orchestration is analogous to
           distributed system orchestration — just as Kubernetes orchestrates
@@ -57,7 +61,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>supervisor pattern</strong> is the most common
           orchestration approach. A supervisor agent receives the high-level
           goal, decomposes it into sub-tasks, delegates each sub-task to the
@@ -68,8 +75,8 @@ export default function ArticlePage() {
           other. This star topology simplifies debugging (all communication
           flows through one point) but creates a bottleneck (the supervisor must
           process all information).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>router pattern</strong> classifies incoming requests and
           routes them to the most appropriate agent. Unlike the supervisor
           pattern, the router does not decompose tasks — it performs a single
@@ -78,7 +85,7 @@ export default function ArticlePage() {
           require multi-step decomposition. The router&apos;s accuracy is
           critical — misclassification means the request goes to the wrong
           agent and produces an irrelevant response.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/agent-orchestration-patterns.svg"
@@ -127,7 +134,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An agent orchestration system consists of several layers. The{" "}
           <strong>goal interpretation layer</strong> receives the user&apos;s
           request and translates it into a structured goal with success
@@ -138,7 +148,7 @@ export default function ArticlePage() {
           manages the execution timeline. The <strong>synthesis layer</strong>{" "}
           collects results from all agents, resolves conflicts, validates
           quality, and produces the final output.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/supervisor-agent-flow.svg"
@@ -146,7 +156,7 @@ export default function ArticlePage() {
           caption="Supervisor flow — receive goal → decompose into tasks → delegate to specialists → collect results → synthesize final output"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>execution plan</strong> can be represented as a directed
           acyclic graph (DAG) where nodes are tasks and edges are dependencies.
           Tasks with no dependencies can be executed in parallel, reducing
@@ -154,7 +164,7 @@ export default function ArticlePage() {
           prerequisite tasks to complete. The orchestrator performs a topological
           sort of the DAG to determine the execution order and identifies
           parallel execution opportunities.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>State management</strong> in orchestration tracks the state
           of each sub-task (pending, in-progress, completed, failed), the
@@ -176,7 +186,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Supervisor versus router</strong> is the primary orchestration
           decision. Use a supervisor when the task requires decomposition into
           multiple sub-tasks that need to be combined into a coherent output.
@@ -184,8 +197,8 @@ export default function ArticlePage() {
           by a single specialist agent. The supervisor pattern is more flexible
           but more expensive (multiple agent calls per request), while the
           router pattern is cheaper and faster but limited to single-agent tasks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Sequential versus parallel execution</strong> involves a
           latency versus coordination trade-off. Sequential execution (each
           agent waits for the previous one to complete) is simpler to implement
@@ -194,7 +207,7 @@ export default function ArticlePage() {
           complexity — agents may produce conflicting results that need
           resolution, and the orchestrator must manage partial failures (some
           agents complete while others fail).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/hierarchical-planning-pattern.svg"
@@ -218,22 +231,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Start with a single agent and decompose only when
           necessary</strong>. Before building a multi-agent orchestration
           system, verify that a single agent with appropriate tools cannot
           accomplish the task. Multi-agent orchestration adds significant
           complexity, cost, and debugging difficulty — it should be motivated
           by a clear benefit that a single agent cannot provide.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Define clear interfaces between agents</strong>. Each agent
           should have a well-defined input schema (what it expects to receive)
           and output schema (what it produces). This enables agents to be
           developed, tested, and replaced independently. Use structured data
           formats (JSON with schemas) rather than free-text communication
           between agents.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Implement comprehensive observability</strong>. In a
           multi-agent system, debugging is significantly harder than in a
@@ -256,15 +272,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>over-orchestration</strong> —
           creating a complex multi-agent system for a task that a single agent
           could handle. This adds 3-10x the cost and latency with no quality
           improvement. Always start simple and add orchestration complexity
           only when justified by measurable quality improvements or task
           requirements that a single agent cannot meet.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Lossy information transfer between agents</strong> occurs
           when the output of one agent does not contain enough context for the
           next agent to understand it fully. This happens when agents communicate
@@ -272,7 +291,7 @@ export default function ArticlePage() {
           omits important metadata. The solution is to design rich output
           schemas that include not just the answer but the reasoning, evidence,
           and confidence level behind it.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Cascading failures</strong> — when one agent fails, it can
           cause downstream agents to fail because they lack the input they need.
@@ -293,22 +312,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Research and report generation</strong> — a supervisor
           orchestrates a research agent (gathers information from multiple
           sources), an analysis agent (identifies patterns and insights), a
           fact-checking agent (verifies claims against authoritative sources),
           and a writing agent (produces the final report). Each agent specializes
           in its domain, and the supervisor ensures quality and coherence.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Software development workflows</strong> — an orchestration
           system with a planning agent (decomposes feature requirements into
           tasks), a coding agent (implements each task), a testing agent (writes
           and runs tests), and a review agent (reviews code for quality and
           security). The supervisor coordinates the workflow, ensuring that
           tests pass and reviews are approved before considering a task complete.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Customer operations at scale</strong> — a router classifies
           incoming customer queries and routes them to the appropriate
@@ -321,13 +343,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: How do you decompose a complex goal into sub-tasks for
             multi-agent execution?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Task decomposition follows several principles. First, identify the
             major domains the goal spans — each domain typically maps to a
             specialist agent. Second, within each domain, identify the
@@ -337,14 +362,14 @@ export default function ArticlePage() {
             need the output of other tasks as input. Fifth, define success
             criteria for each sub-task — how does the orchestrator know when a
             task is complete and correct.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             The decomposition should be represented as a directed acyclic graph
             (DAG) where nodes are tasks and edges are dependencies. The DAG
             enables the orchestrator to schedule parallel tasks, track progress,
             and handle failures gracefully. Tools like LangGraph provide native
             DAG-based orchestration with conditional branching.
-          </p>
+          </HighlightBlock>
           <p>
             A practical approach is to use an LLM as the decomposer — give it
             the goal and the available agents, and ask it to create a task plan.

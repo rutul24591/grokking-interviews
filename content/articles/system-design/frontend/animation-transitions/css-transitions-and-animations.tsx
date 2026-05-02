@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function CssTransitionsAndAnimationsArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>CSS transitions</strong> and <strong>CSS animations</strong>{" "}
           are the two declarative mechanisms the browser provides for
           interpolating visual property changes over time. Transitions handle
@@ -49,8 +53,8 @@ export default function CssTransitionsAndAnimationsArticle() {
           browser can optimize declarative animations far more aggressively than
           imperative ones because it knows the full animation graph at parse
           time.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the staff-engineer level, the conversation moves beyond syntax to
           compositing layers, GPU rasterization, and the rendering pipeline. A
           CSS transition on <code>opacity</code> or <code>transform</code> is
@@ -63,7 +67,7 @@ export default function CssTransitionsAndAnimationsArticle() {
           devices. Understanding which CSS properties are compositor-only versus
           layout-triggering is the single most impactful piece of animation
           knowledge a frontend engineer can possess.
-        </p>
+        </HighlightBlock>
         <p>
           The modern CSS animation landscape has expanded considerably with{" "}
           <code>@scroll-timeline</code>, <code>animation-timeline</code>, and
@@ -91,8 +95,11 @@ export default function CssTransitionsAndAnimationsArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>CSS Transition:</strong> A property-level interpolation
             triggered by a state change (hover, class toggle, media query
             match). Defined with <code>transition-property</code>,{" "}
@@ -102,8 +109,8 @@ export default function CssTransitionsAndAnimationsArticle() {
             animate when a property&apos;s computed value actually changes. They
             run exactly once per trigger and reverse automatically when the
             triggering condition is removed.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>@keyframes Animation:</strong> A named sequence of property
             states defined at percentage waypoints (0%, 50%, 100%) or with{" "}
             <code>from</code>/<code>to</code> shorthand. Applied via{" "}
@@ -113,7 +120,7 @@ export default function CssTransitionsAndAnimationsArticle() {
             and <code>animation-play-state</code>. Unlike transitions, keyframe
             animations can loop, alternate direction, and run independently of
             state changes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Easing Functions:</strong> The mathematical curve that
             controls the rate of interpolation over time.{" "}
@@ -187,12 +194,15 @@ export default function CssTransitionsAndAnimationsArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/css-transitions-and-animations-diagram-1.svg"
           alt="CSS rendering pipeline showing how transitions on different properties trigger layout, paint, or compositor-only paths"
           caption="Figure 1: Browser rendering pipeline — compositor-only properties skip layout and paint entirely"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The browser rendering pipeline processes changes through five stages:
           Style → Layout → Paint → Composite → Display. When a CSS transition
           fires on a layout-triggering property like <code>width</code> or{" "}
@@ -205,14 +215,14 @@ export default function CssTransitionsAndAnimationsArticle() {
           stage on the compositor thread, bypassing layout and paint entirely.
           This is why the universal animation performance rule is: only animate
           transform and opacity.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/css-transitions-and-animations-diagram-2.svg"
           alt="Compositing layer architecture showing promoted elements, GPU texture memory, and layer tree"
           caption="Figure 2: GPU compositing layer architecture — promoted elements get dedicated texture memory"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           When an element is promoted to its own compositing layer (via{" "}
           <code>will-change</code>, <code>transform</code>,{" "}
           <code>opacity</code>, or <code>position: fixed</code>), the browser
@@ -225,7 +235,7 @@ export default function CssTransitionsAndAnimationsArticle() {
           fine; promoting large overlapping elements can exhaust GPU memory and
           cause the browser to fall back to software compositing, which is
           slower than not using layers at all.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/css-transitions-and-animations-diagram-3.svg"
@@ -252,6 +262,9 @@ export default function CssTransitionsAndAnimationsArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr>
@@ -267,7 +280,7 @@ export default function CssTransitionsAndAnimationsArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2 font-medium">
                 Trigger Model
               </td>
@@ -278,8 +291,8 @@ export default function CssTransitionsAndAnimationsArticle() {
                 Explicit — runs on element render or class application, can
                 auto-play
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2 font-medium">
                 Complexity
               </td>
@@ -290,7 +303,7 @@ export default function CssTransitionsAndAnimationsArticle() {
                 Multi-step waypoints (0% → 25% → 75% → 100%), any number of
                 stages
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="border border-theme p-2 font-medium">Looping</td>
               <td className="border border-theme p-2">
@@ -348,8 +361,11 @@ export default function CssTransitionsAndAnimationsArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Only animate transform and opacity for smooth 60 fps:
             </strong>{" "}
@@ -360,8 +376,8 @@ export default function CssTransitionsAndAnimationsArticle() {
             <code>transform: translate()</code> instead of{" "}
             <code>top/left/margin</code>. This single rule eliminates the
             majority of animation jank.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use will-change sparingly and remove it after:</strong>{" "}
             Apply <code>will-change: transform</code> on{" "}
             <code>mouseenter</code> or via a class just before the animation
@@ -369,7 +385,7 @@ export default function CssTransitionsAndAnimationsArticle() {
             <code>will-change</code> on many elements wastes GPU memory. Never
             apply <code>will-change: auto</code> to everything as a blanket
             optimization — it defeats the purpose.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Define motion tokens in your design system:
@@ -430,15 +446,18 @@ export default function CssTransitionsAndAnimationsArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Animating layout-triggering properties:</strong> Transitioning{" "}
             <code>height</code>, <code>width</code>, <code>padding</code>, or{" "}
             <code>margin</code> forces layout recalculation on every frame.
             This is the number one cause of animation jank. The fix is to use
             transform equivalents or the FLIP technique.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Transitioning height: auto:</strong> CSS cannot interpolate
             between a numeric value and <code>auto</code>. Expanding an
             accordion by transitioning <code>height</code> from 0 to{" "}
@@ -447,7 +466,7 @@ export default function CssTransitionsAndAnimationsArticle() {
             using <code>grid-template-rows: 0fr</code> to{" "}
             <code>1fr</code> (which is interpolatable), or using the FLIP
             technique.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Blanket will-change promotion:</strong> Applying{" "}
             <code>will-change: transform</code> to dozens or hundreds of
@@ -483,16 +502,19 @@ export default function CssTransitionsAndAnimationsArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Stripe:</strong> Uses CSS transitions extensively for their
             payment form interactions — input focus rings, card number field
             sliding, and error state color changes. Their &quot;radar&quot;
             loading animation is a CSS keyframe animation on transform and
             opacity, running entirely on the compositor thread to avoid
             interfering with the payment form&apos;s input handling.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Apple:</strong> Their product pages use scroll-driven CSS
             animations to reveal device images, text blocks, and feature
             callouts as the user scrolls. By leveraging{" "}
@@ -500,7 +522,7 @@ export default function CssTransitionsAndAnimationsArticle() {
             Intersection Observer fallback, they achieve smooth parallax effects
             without the scroll jank associated with JavaScript-driven
             approaches.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Material Design (Google):</strong> Defines a comprehensive
             motion token system with three easing curves (standard, decelerate,
@@ -522,14 +544,17 @@ export default function CssTransitionsAndAnimationsArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-medium">
+            <HighlightBlock as="p" tier="important" className="font-medium">
               Why should you only animate transform and opacity? What happens
               when you animate width or top?
-            </p>
-            <p className="mt-2">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2">
               Transform and opacity are the only properties guaranteed to run on
               the compositor thread, which operates independently of the main
               thread. Animating these properties means the GPU handles the
@@ -541,7 +566,7 @@ export default function CssTransitionsAndAnimationsArticle() {
               must complete within 16.6ms per frame on the main thread, which
               is nearly impossible for complex layouts, resulting in dropped
               frames and visible stutter.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

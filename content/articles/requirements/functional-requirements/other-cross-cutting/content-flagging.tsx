@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ContentFlaggingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content flagging enables users to flag content for moderator review when it may violate community standards but doesn&apos;t clearly fit reporting categories. The flagging system is a community-driven quality mechanism that empowers users to surface borderline content for human review, helping moderators prioritize review queue and maintain community standards. For staff and principal engineers, content flagging implementation involves flag submission workflows (easy flagging with specific reasons), flag categorization (structured flag types), flag prioritization (priority scoring for review queue), content review processes (moderator review workflows), flag abuse prevention (preventing flag weaponization), and integration with moderation systems (flag queue, automated triage).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of content flagging extends beyond simple &quot;flag content&quot; buttons. Flagging differs from reporting—reporting is for clear violations (spam, harassment, illegal content), while flagging is for borderline content that needs human judgment (misinformation, context-dependent violations, community guideline edge cases). Flag prioritization must balance flag volume (popular content gets more flags) with severity (serious violations prioritized). Flag abuse prevention must prevent weaponization (mass flagging to silence voices) while protecting legitimate flaggers. The system must handle edge cases (flags on deleted content, flags from blocked users, coordinated flagging campaigns) while maintaining effectiveness.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, content flagging architecture involves user-facing components (flag dialogs, flag tracking), backend services (flag storage, categorization, prioritization), moderation integration (flag queue, review workflows), and community health systems (flag patterns inform community health, flag abuse detection). The system must handle high volume (popular platforms receive millions of flags daily), provide transparency (flag status tracking, outcome notification), and maintain community trust (flags reviewed fairly, consistent enforcement). Legal compliance is critical—some flagged content (illegal content, threats) requires specific handling and reporting.
         </p>
@@ -46,13 +50,16 @@ export default function ContentFlaggingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Flag Submission Workflows</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Flag entry points provide multiple ways to flag content. Post flagging (flag individual posts). Comment flagging (flag comments). Profile flagging (flag user profiles). Message flagging (flag direct messages). Each entry point should be accessible (1-2 clicks maximum), clear (explain flag purpose), and specific (categorize flag reason). Flag confirmation dialogs explain flag purpose (content will be reviewed by moderators) without promising specific action.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Flag categorization structures flags for effective triage. Flag types include misinformation (false or misleading information), harmful content (content that could cause harm), community guidelines (potential guideline violations), context needed (content needs context to evaluate), and other concerns. Subcategories provide specificity (misinformation → health, politics, science). Specific categorization enables routing to appropriate reviewers and prioritization based on flag type.
-        </p>
+        </HighlightBlock>
         <p>
           Flag details capture context for review. Description field allows flaggers to explain concern (why content is problematic, what context is missing). Evidence specification (related content, conversation context, external sources). Timeline information (when content posted, when flagger became aware). Related flags linkage (multiple flags about same content). Detailed flags enable more accurate moderator decisions.
         </p>
@@ -104,9 +111,12 @@ export default function ContentFlaggingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content flagging architecture spans flag submission, flag processing, review workflows, and moderation integration. Flag submission provides user-facing interfaces for flagging. Flag processing validates, categorizes, and prioritizes flags. Review workflows route flags to appropriate reviewers. Moderation integration feeds flags into moderation workflows with tracking and feedback loops.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/content-flagging/content-flagging-architecture.svg"
@@ -117,9 +127,9 @@ export default function ContentFlaggingArticle() {
         />
 
         <h3>Flag Submission Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Flag submission layer provides user-facing interfaces. Flag dialogs embedded on posts, comments, profiles, messages. Flag categorization UI guides flaggers through flag type selection with clear descriptions and examples. Evidence specification enables flaggers to provide context, related content, external sources. Submission validation ensures flag quality before submission (required fields, evidence for severe flags).
-        </p>
+        </HighlightBlock>
         <p>
           Flag validation ensures flag quality before processing. Required fields validation (flag type, specific concern). Evidence validation for severe categories (some flags require evidence). Duplicate detection prevents multiple flags about same content from same flagger. Rate limiting prevents flag spam (max flags per hour/day). Validation happens client-side for immediate feedback and server-side for security.
         </p>
@@ -179,14 +189,17 @@ export default function ContentFlaggingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content flagging design involves trade-offs between accessibility and quality, anonymity and accountability, and automation and human review. Understanding these trade-offs enables informed decisions aligned with platform values and community standards.
-        </p>
+        </HighlightBlock>
 
         <h3>Flag Submission: Easy vs. Detailed</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Easy submission (minimal fields, quick flagging). Pros: Low friction (users more likely to flag), fast (seconds to flag), accessible (works for all users). Cons: Low quality flags (vague, no context), high volume (including frivolous flags), harder to triage. Best for: High-volume platforms, low-severity flags.
-        </p>
+        </HighlightBlock>
         <p>
           Detailed submission (multiple fields, evidence required). Pros: High quality flags (specific, evidenced), easier to triage, lower false positive rate. Cons: High friction (users less likely to flag), slow (minutes to complete), may discourage legitimate flags. Best for: Severe flags, platforms prioritizing flag quality.
         </p>
@@ -238,13 +251,16 @@ export default function ContentFlaggingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide multiple flag entry points:</strong> Flag buttons on posts, comments, profiles, messages. Contextual flagging (flag from where content appears). Quick access (flag within 1-2 clicks).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Offer anonymous flagging option:</strong> Anonymous toggle for sensitive cases. Protect flagger identity from content creators. Anonymous flaggers still receive outcome notifications.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement flag prioritization:</strong> Severity-based prioritization. Flag volume weighting. Flagger trust scoring. Content reach consideration.
           </li>
@@ -274,13 +290,16 @@ export default function ContentFlaggingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Too much friction in flagging:</strong> Long forms, multiple steps, required evidence for all flags. Solution: Minimize friction for low-severity flags, require detail only for severe cases.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No flagger protection:</strong> Flaggers face retaliation from content creators. Solution: Anonymous flagging option, protect flagger identity, safety options.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No status transparency:</strong> Flaggers don&apos;t know what happened to their flag. Solution: Status tracking, outcome notifications, flag history.
           </li>
@@ -310,16 +329,19 @@ export default function ContentFlaggingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Facebook Content Flagging</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook content flagging for community standards. Flag options for posts, comments, profiles, groups. Categorization includes misinformation, harmful content, guideline violations, context needed. Anonymous flagging option available. Flag prioritization based on severity and reach. Integration with Community Standards enforcement. Flagger receives outcome notification when decision made.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Twitter Content Flagging</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter content flagging for tweet review. Flag tweets for misinformation, harmful content, guidelines. Context specification (why content is problematic). Flag prioritization for viral content. Integration with Twitter Rules enforcement. Flag tracking with status updates. Specialized review for misinformation (fact-checking partners).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">YouTube Content Flagging</h3>
         <p>
@@ -339,12 +361,15 @@ export default function ContentFlaggingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design content flagging that encourages legitimate flags while preventing system abuse?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design content flagging that encourages legitimate flags while preventing system abuse?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Balance accessibility with accountability to encourage legitimate flags while deterring bad actors. Low-friction flagging: 1-2 clicks to initiate flag from any content (post, comment, video), minimal required fields (flag type, optional context), pre-filled metadata (URL, timestamp, content type)—reduces flagger burden, encourages honest flagging from users who spot problematic content. Anonymous flagging option: flagger identity hidden from content creator—critical for vulnerable flaggers (reporting harassment, abuse, illegal content) who fear retaliation. Post-hoc accountability through flagger scoring: track flag quality over time (upheld flags = +1, not upheld = 0, false flags = -1), rolling 90-day score—low scores trigger additional scrutiny on future flags, not automatic rejection. Pattern detection: identify coordinated flag abuse (multiple accounts flagging same content, rapid-fire flags, copy-paste flags)—flag for review, potentially suspend abusing accounts. The key insight: make it easy to flag honestly (low friction, anonymity), hard to abuse without consequences (scoring, pattern detection, penalties). Provide transparency (flaggers see status and outcomes) to build trust in system fairness—users who trust the system flag more accurately.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

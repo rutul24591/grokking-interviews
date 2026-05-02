@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function ErrorBoundariesArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Error boundaries</strong> are React components that catch
           JavaScript errors anywhere in their child component tree, log those
           errors, and display a fallback UI instead of the component tree that
@@ -52,8 +53,8 @@ export default function ErrorBoundariesArticle() {
           was a worse user experience than removing it entirely, and error
           boundaries became the official mechanism for defining those fault
           isolation zones.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An error boundary is a class component that implements either{" "}
           <code>static getDerivedStateFromError()</code> or{" "}
           <code>componentDidCatch()</code>, or both. This is one of the few
@@ -67,8 +68,8 @@ export default function ErrorBoundariesArticle() {
           call stack. The first boundary it encounters &ldquo;catches&rdquo;
           the error, and everything below that boundary in the tree is unmounted
           and replaced with the fallback UI.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Error boundaries catch errors thrown during rendering, in lifecycle
           methods, and in constructors of the entire subtree beneath them.
           However, they deliberately do not catch errors in several important
@@ -84,7 +85,7 @@ export default function ErrorBoundariesArticle() {
           mechanisms. Understanding this distinction is critical for staff
           engineers because it means error boundaries are only one layer in a
           comprehensive error handling strategy, not a silver bullet.
-        </p>
+        </HighlightBlock>
         <p>
           There is an ongoing debate in the React community about the
           &ldquo;error boundary tax&rdquo; — the cost of introducing class
@@ -120,7 +121,7 @@ export default function ErrorBoundariesArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Error Boundary Lifecycle
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           React provides two distinct lifecycle methods for error boundaries,
           each serving a different purpose in the error handling flow.{" "}
           <code>static getDerivedStateFromError(error)</code> is a pure
@@ -131,8 +132,8 @@ export default function ErrorBoundariesArticle() {
           be side-effect free: no logging, no API calls, no DOM mutations.
           Its sole purpose is to transition the boundary into its error state
           so React can render the fallback synchronously.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <code>componentDidCatch(error, errorInfo)</code> is called during
           the commit phase, after the fallback UI has been rendered to the DOM.
           This is where side effects belong: sending error reports to a
@@ -145,8 +146,8 @@ export default function ErrorBoundariesArticle() {
           while the component stack shows exactly which application component
           failed and its position in the tree. In production, this component
           stack is the primary diagnostic tool for triaging rendering errors.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A subtle but important distinction: <code>getDerivedStateFromError</code>{" "}
           is called for every error caught by the boundary, while{" "}
           <code>componentDidCatch</code> may not be called in all cases in
@@ -156,7 +157,7 @@ export default function ErrorBoundariesArticle() {
           pattern is to use <code>getDerivedStateFromError</code> for state
           transitions and <code>componentDidCatch</code> exclusively for side
           effects, never relying on it for rendering logic.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Granularity Strategies
@@ -283,13 +284,19 @@ export default function ErrorBoundariesArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Understanding where to place error boundaries requires thinking about
           your application&apos;s architecture in terms of fault domains —
           regions of the component tree that share a failure mode and should
           fail together. The diagrams below illustrate the layered approach
           used in production applications.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          For staff/principal interviews, describe your boundary strategy as a
+          mapping of <strong>failure domains</strong> to <strong>fallback UX</strong>:
+          app shell, route, feature, and risky widgets each get different isolation
+          and recovery behavior.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/error-boundaries-diagram-2.svg"
@@ -297,7 +304,7 @@ export default function ErrorBoundariesArticle() {
           caption="Figure 2: Error propagation through the React fiber tree to the nearest error boundary"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           When an error is thrown during rendering, React&apos;s reconciler
           walks up the fiber tree from the throwing component, checking each
           ancestor for error boundary lifecycle methods. The first boundary it
@@ -311,7 +318,7 @@ export default function ErrorBoundariesArticle() {
           than the call stack. The component stack trace provided in{" "}
           <code>componentDidCatch</code> makes this propagation path visible
           for debugging.
-        </p>
+        </HighlightBlock>
 
       </section>
 
@@ -320,17 +327,17 @@ export default function ErrorBoundariesArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Trade-offs & Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Choosing the right error boundary granularity involves balancing
           several competing concerns. The following table compares the three
           primary strategies across dimensions that matter in production
           systems.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 overflow-x-auto rounded-lg border border-theme">
           <table className="min-w-full text-sm">
             <thead className="bg-panel-soft">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <th className="px-4 py-3 text-left font-semibold">Aspect</th>
                 <th className="px-4 py-3 text-left font-semibold">
                   App-Level Boundary
@@ -341,7 +348,7 @@ export default function ErrorBoundariesArticle() {
                 <th className="px-4 py-3 text-left font-semibold">
                   Component-Level Boundary
                 </th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody className="divide-y divide-theme">
               <tr>
@@ -441,7 +448,7 @@ export default function ErrorBoundariesArticle() {
           </table>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           In practice, most production applications use a combination of all
           three levels. The app-level boundary is non-negotiable — it prevents
           the white screen of death. Feature-level boundaries are applied
@@ -450,7 +457,7 @@ export default function ErrorBoundariesArticle() {
           widget rendering or user-generated content display. The goal is not
           maximum granularity but appropriate granularity: every boundary
           should have a clear rationale tied to a failure mode analysis.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -459,7 +466,7 @@ export default function ErrorBoundariesArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Layer boundaries strategically</strong> — Always have an
             app-level boundary as the last resort. Add route-level boundaries
             for page isolation. Apply feature-level boundaries selectively
@@ -467,8 +474,8 @@ export default function ErrorBoundariesArticle() {
             reliability requirements. Avoid the temptation to wrap every
             component; instead, perform a failure mode analysis to identify
             where boundaries provide the most value.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Design fallbacks with the same rigor as primary UI</strong>{" "}
             — Fallback components should be part of the design system, not
             afterthoughts. They should convey what failed, what the user can
@@ -478,8 +485,8 @@ export default function ErrorBoundariesArticle() {
             erodes it. Ensure fallbacks themselves are extremely simple and
             cannot throw — a crashing fallback escalates the error to the next
             boundary up.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Integrate error reporting in{" "}
               <code>componentDidCatch</code>
@@ -490,7 +497,7 @@ export default function ErrorBoundariesArticle() {
             an error telemetry pipeline that enables feature-level error
             budgets and SLO tracking. Include breadcrumbs of recent user
             actions to aid reproduction.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle event handler and async errors separately</strong>{" "}
             — Since error boundaries do not catch these error types, establish
@@ -550,7 +557,7 @@ export default function ErrorBoundariesArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Single app-level boundary as the only protection</strong>{" "}
             — This is the most common mistake. With only one boundary, any
             rendering error anywhere in the application replaces the entire UI
@@ -558,8 +565,8 @@ export default function ErrorBoundariesArticle() {
             down the entire dashboard. The fix is to add route-level and
             feature-level boundaries, so that errors are contained to the
             smallest reasonable fault domain.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Assuming error boundaries catch event handler errors
             </strong>{" "}
@@ -569,8 +576,8 @@ export default function ErrorBoundariesArticle() {
             mechanism entirely. Teams discover this gap only when users report
             unresponsive buttons or silent failures, because the errors are
             swallowed by the global error handler or ignored entirely.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Missing error boundaries around lazy-loaded routes
             </strong>{" "}
@@ -582,7 +589,7 @@ export default function ErrorBoundariesArticle() {
             because it manifests only in production after a new deployment when
             users with cached HTML request chunk files that no longer exist on
             the server.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Fallback UI that can itself throw errors</strong> — If the
             fallback component references the same data or services that
@@ -637,7 +644,7 @@ export default function ErrorBoundariesArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Facebook/Meta: News Feed Error Isolation
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Facebook&apos;s News Feed is composed of dozens of independently
           developed component types — text posts, photo albums, video players,
           link previews, ads, event cards, group recommendations, and more.
@@ -654,12 +661,12 @@ export default function ErrorBoundariesArticle() {
           where each team monitors their component&apos;s error rate against an
           error budget. If a team&apos;s component exceeds its budget, their
           deployment pipeline automatically rolls back the most recent change.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Airbnb: Booking Flow Protection
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Airbnb&apos;s booking flow is a multi-step process involving
           property details, date selection, guest information, payment, and
           confirmation. An error at any step has direct revenue impact — an
@@ -677,12 +684,12 @@ export default function ErrorBoundariesArticle() {
           and the recovery flow restores this state so the user does not need
           to re-enter their information. This approach directly reduced
           booking abandonment rates attributed to frontend errors.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Shopify: Admin Dashboard Resilience
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shopify&apos;s admin dashboard is used by merchants to manage
           products, orders, customers, and analytics. The dashboard consists
           of embedded apps, third-party extensions, and first-party widgets,
@@ -700,7 +707,7 @@ export default function ErrorBoundariesArticle() {
           a staleness timestamp. This architecture ensures that a single
           buggy app extension cannot compromise a merchant&apos;s ability to
           manage their store.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/error-boundaries-diagram-3.svg"
@@ -714,14 +721,17 @@ export default function ErrorBoundariesArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: What types of errors do React error boundaries catch, and
               what types do they not catch?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Error boundaries catch errors thrown during rendering, in
               lifecycle methods, and in constructors of any component in their
               subtree. They do not catch errors in event handlers (which
@@ -735,14 +745,14 @@ export default function ErrorBoundariesArticle() {
               error boundaries with try-catch in event handlers, global
               unhandled rejection listeners, and server-side error handling
               mechanisms.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: Why must error boundaries be class components? Will React
               ever support function component error boundaries?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Error boundaries require either{" "}
               <code>static getDerivedStateFromError</code> or{" "}

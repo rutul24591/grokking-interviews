@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function LanguageSettingsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Language Settings enable users to select and manage their preferred language for the application. Users can select language (choose from available languages), detect language (automatically detect language), persist language (save language preferences), sync language (sync across devices), and manage translations (manage translated content). Language settings are fundamental to internationalization (support multiple languages), accessibility (users can use their language), and user satisfaction (users appreciate native language). For platforms with international users, effective language settings are essential for internationalization, accessibility, and user satisfaction.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, language settings architecture involves language management (manage languages), language detection (detect user language), language persistence (persist language preferences), language sync (sync across devices), and translation management (manage translations). The implementation must balance automation (auto-detect language) with user control (users can override) and performance (fast language switching). Poor language settings lead to user frustration, accessibility issues, and limited international reach.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of language settings extends beyond simple language selector. Language selection (choose from available languages). Language detection (automatically detect language). Language persistence (save preferences). Language sync (sync across devices). Translation management (manage translated content). For staff engineers, language settings are an internationalization infrastructure decision affecting international reach, accessibility, and user satisfaction.
         </p>
@@ -46,13 +50,16 @@ export default function LanguageSettingsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Language Selection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Language selector provides language selection. Language list (list available languages). Language search (search for language). Language selection (select language). Language selector enables language selection. Benefits include user control (users select language), accessibility (users use their language). Drawbacks includes complexity (many languages), may be confusing (users may not find language).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Language detection detects user language. Browser detection (detect from browser). System detection (detect from system). Location detection (detect from location). Language detection enables automatic language. Benefits include automation (automatically detect), user convenience (don&apos;t have to select). Drawbacks includes detection accuracy (may not detect correctly), may not match preference (may not match user preference).
-        </p>
+        </HighlightBlock>
         <p>
           Language override overrides detected language. Manual override (manually override). Override persistence (persist override). Override sync (sync override). Language override enables manual language. Benefits include user control (users control language), accuracy (accurate language). Drawbacks includes complexity (manage override), may be confusing (users may not understand).
         </p>
@@ -104,9 +111,12 @@ export default function LanguageSettingsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Language settings architecture spans language service, persistence service, sync service, and translation service. Language service manages languages. Persistence service manages language persistence. Sync service manages language sync. Translation service manages translations. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/language-settings/language-architecture.svg"
@@ -117,9 +127,9 @@ export default function LanguageSettingsArticle() {
         />
 
         <h3>Language Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Language service manages user languages. Language storage (store languages). Language retrieval (retrieve languages). Language update (update languages). Language service is the core of language settings. Benefits include centralization (one place for languages), consistency (same languages everywhere). Drawbacks includes complexity (manage languages), coupling (services depend on language service).
-        </p>
+        </HighlightBlock>
         <p>
           Language policies define language rules. Default languages (default languages). Language validation (validate languages). Language sync (sync languages). Language policies automate language management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function LanguageSettingsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Language settings design involves trade-offs between auto-detection and manual selection, local and cloud persistence, and comprehensive and limited language support. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Detection: Auto vs. Manual</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Auto detection (automatically detect language). Pros: Automation (automatically detect), user convenience (don&apos;t have to select), immediate (immediate language). Cons: Detection accuracy (may not detect correctly), may not match preference (may not match user preference), privacy concern (detect from location). Best for: User convenience, immediate language.
-        </p>
+        </HighlightBlock>
         <p>
           Manual selection (manually select language). Pros: Accuracy (accurate selection), user control (users control language), no privacy concern (no privacy concern). Cons: User burden (must manually select), delay (not immediate), may be confusing (may be confusing). Best for: Accuracy, user control.
         </p>
@@ -207,13 +220,16 @@ export default function LanguageSettingsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide language selection:</strong> Language list. Language search. Language selection. Let users choose.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enable language detection:</strong> Browser detection. System detection. Location detection. Let users override.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Persist languages:</strong> Local persistence. Cloud persistence. Hybrid persistence. Let users choose.
           </li>
@@ -243,13 +259,16 @@ export default function LanguageSettingsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No language selection:</strong> Can&apos;t select language. <strong>Solution:</strong> Provide language selection.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No language detection:</strong> Don&apos;t detect language. <strong>Solution:</strong> Enable language detection.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No language persistence:</strong> Language not saved. <strong>Solution:</strong> Persist languages.
           </li>
@@ -279,16 +298,19 @@ export default function LanguageSettingsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>OS Language Settings</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Operating systems provide language settings. Language selection (select from many languages). Language detection (detect from system). Language persistence (persist languages). Language sync (sync across devices). Users control OS language.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Browser Language Settings</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Browsers provide language settings. Language selection (select from many languages). Language detection (detect from browser). Language persistence (persist languages). Language sync (sync across devices). Users control browser language.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">App Language Settings</h3>
         <p>
@@ -308,12 +330,15 @@ export default function LanguageSettingsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design language settings that balance automation with user control?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design language settings that balance automation with user control?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement auto-detection with manual override because users want automation (don&apos;t want to manually select language every time) but want control (can choose different language than detected). Auto-detect language: detect from browser (Accept-Language header), detect from system (OS language setting), detect from IP geolocation (fallback when browser/system unavailable)—intelligent defaults, no user action needed. Enable manual override: users can override (language selector, choose any available language, override auto-detect)—user control, multilingual users can choose preferred language. Persist override: persist user override (save choice, remember across sessions, don&apos;t re-detect after override)—respect user choice, don&apos;t keep asking. Sync override: sync across devices (user&apos;s language choice follows them, consistent experience)—seamless multi-device experience. The control insight: users want automation but want control—provide auto-detection (browser, system, geolocation), manual override (any language), persist override (remember choice), sync override (across devices), and respect user choice after override.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

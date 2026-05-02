@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -25,7 +26,10 @@ export default function ArticlePage() {
       {/* Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Observability</strong> is the ability to explain a system&apos;s internal behavior from its external outputs
           without requiring new code to be deployed or new instrumentation to be written. The term originates from
           control theory, where a system is observable if its internal states can be inferred from measurable outputs.
@@ -33,8 +37,8 @@ export default function ArticlePage() {
           unexpectedly and under pressure — an on-call engineer can answer novel questions about what is happening,
           which users are affected, where the bottleneck lies, and what change will reduce impact, all by querying the
           telemetry the system already emits.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This is fundamentally different from traditional monitoring. Monitoring tells you that something is wrong by
           comparing pre-defined metrics against thresholds. It answers known questions: is CPU above eighty percent, is
           the error rate climbing, is the p99 latency breaching the SLO. Observability answers the questions you did
@@ -42,7 +46,7 @@ export default function ArticlePage() {
           deploy, and which downstream dependency is the root cause. Monitoring is a subset of observability — the
           detection layer — while observability is the full diagnostic workflow from impact detection through root cause
           isolation to mitigation verification.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, observability is not a tooling decision but a system design constraint. It
           shapes how services emit telemetry, how correlation identifiers propagate across boundaries, how telemetry
@@ -67,20 +71,23 @@ export default function ArticlePage() {
       {/* Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Observability is built from multiple telemetry <strong>signals</strong>, each serving a distinct purpose in the
           diagnostic workflow. <strong>Metrics</strong> are aggregated time-series data that capture trends and enable
           alerting. They excel at answering &quot;is something wrong&quot; and &quot;how bad is it&quot; by showing
           latency percentiles, error rates, saturation levels, and SLO burn rates over time. Metrics are the first
           signal responders consult because they provide an immediate view of system health and blast radius.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Traces</strong> represent the end-to-end journey of a single request as it flows through multiple
           services. A trace consists of spans, where each span records the duration and attributes of an operation — an
           HTTP request, a database query, a cache lookup. Traces answer &quot;where is the bottleneck&quot; by revealing
           which hop in the request path consumes the most time or produces errors. They expose the dependency graph in
           production, showing not just what services exist but how they actually communicate under load.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Logs</strong> are discrete, timestamped records of events within a service. They contain the
           highest-fidelity detail: stack traces, error messages, retry loop evidence, payload inspection results, and
@@ -124,13 +131,16 @@ export default function ArticlePage() {
       {/* Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The observability architecture in a production system spans three layers: the <strong>instrumentation
           layer</strong> within each service, the <strong>telemetry pipeline</strong> that collects and transports
           signals, and the <strong>query and visualization layer</strong> that responders interact with during
           incidents. Each layer introduces design decisions that affect reliability, cost, and diagnostic power.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the instrumentation layer, services use SDKs — typically OpenTelemetry or vendor-specific agents — to emit
           traces, metrics, and logs. The key architectural decision here is the <strong>telemetry contract</strong>: a
           standardized set of attributes that every service must attach to its telemetry. This contract defines the
@@ -138,7 +148,7 @@ export default function ArticlePage() {
           name convention, the error categorization scheme, and the required correlation identifiers. Services that
           deviate from the contract produce telemetry that cannot be correlated with other services, creating blind
           spots in the diagnostic workflow.
-        </p>
+        </HighlightBlock>
         <p>
           The telemetry pipeline is responsible for collecting, buffering, batching, and transporting telemetry from
           services to storage backends. This layer introduces several architectural concerns. First, the pipeline itself
@@ -205,7 +215,10 @@ export default function ArticlePage() {
       {/* Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Observability design involves several fundamental trade-offs that staff engineers must navigate. The first is
           <strong>telemetry completeness versus cost</strong>. Retaining every trace, every log line, and every metric
           data point at full fidelity provides maximum diagnostic power but is economically unsustainable at production
@@ -214,15 +227,15 @@ export default function ArticlePage() {
           historical trend analysis; and sampling policies that prioritize error and slow-path evidence over routine
           success-path data. The decision of what to sample and how aggressively is a business risk assessment — the
           cost of missing evidence during an incident versus the cost of storing everything.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The second trade-off is <strong>standardization versus team autonomy</strong>. A telemetry contract that
           mandates exact attribute names, error categories, and naming conventions ensures correlation across services
           but can feel restrictive to teams that want flexibility. The compromise is to define a minimal required set —
           service name, environment, region, deploy version, trace ID, operation name, and outcome — and allow teams to
           add optional attributes within a cardinality budget. This gives teams the freedom to instrument domain-specific
           concepts while ensuring that cross-service correlation always works through the required fields.
-        </p>
+        </HighlightBlock>
         <p>
           The third trade-off is <strong>head-based versus tail-based sampling</strong>. Head-based sampling makes the
           decision to retain or drop a trace at the start of the request, before the outcome is known. This is
@@ -265,7 +278,10 @@ export default function ArticlePage() {
       {/* Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most effective observability practice begins with a <strong>telemetry contract</strong> that defines the
           minimum required attributes for every service. This contract should include service name following a standard
           format, environment and region identifiers, deploy or configuration version, trace ID propagated across all
@@ -273,15 +289,15 @@ export default function ArticlePage() {
           distinguishing success from error types. The contract should be enforced through code review, CI validation,
           or automated instrumentation checks. Services that do not meet the contract baseline should not be promoted to
           production.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Instrumentation should prioritize <strong>golden paths</strong> — the user journeys that dominate revenue and
           trust. Login, checkout, search, payment processing, and other critical workflows should have comprehensive
           tracing with span-level detail for every dependency call. Each golden-path trace should include attributes for
           the tenant tier, the user segment, the feature flags active during the request, and the specific dependency
           instances contacted. This enables responders to quickly segment impact and identify whether an issue affects
           all users or a specific subset.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Correlation identifiers</strong> must propagate through every service boundary and appear in every
           signal type. The trace ID should be generated at the entry point of the system, propagated via HTTP headers or
@@ -333,7 +349,10 @@ export default function ArticlePage() {
       {/* Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most damaging observability failure is <strong>broken pivots</strong> — when trace IDs are missing from
           logs, or deploy versions are not attached to metrics, or service names change between releases. When pivots
           break, responders cannot move from impact detection to root cause isolation, and the incident devolves into
@@ -341,15 +360,15 @@ export default function ArticlePage() {
           updates its instrumentation without updating the contract, or a deploy renames a service without updating the
           dashboards and alert rules that depend on the old name. The mitigation is to treat telemetry schema changes
           with the same rigor as API changes: version them, communicate them, and validate them in CI.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Tool sprawl</strong> is another common failure. Different teams adopt different observability tools —
           one team uses Datadog, another uses New Relic, another uses an internal ELK stack. The result is fragmented
           evidence: metrics in one platform, traces in another, logs in a third, with no correlation between them.
           During incidents, responders waste time switching between tools and manually correlating timestamps. The
           solution is a unified observability platform with a single query interface, or at minimum a federation layer
           that presents a correlated view across backends.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Sampling blind spots</strong> occur when the sampling policy discards the evidence needed to
           investigate an incident. If head-based sampling drops traces randomly, a rare but severe failure might have
@@ -388,20 +407,23 @@ export default function ArticlePage() {
       {/* Real-world Use Cases */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider a multi-tenant e-commerce platform where a deployment increases p99 latency for a subset of tenants
           on the checkout endpoint in a single availability zone. The observability workflow begins when the SLO burn
           rate for checkout latency exceeds the alert threshold. The responder opens the latency dashboard and
           immediately sees that the issue is concentrated in one region, affects only tenants on the latest deploy
           version, and is specific to the checkout route. This segmentation, powered by correlation attributes attached
           to metrics, narrows the blast radius within seconds.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The responder then examines traces for representative slow checkout requests. The trace breakdown reveals that
           time is dominated by a call to the inventory service — specifically, a particular shard of the inventory
           database. The span shows a per-hop latency of several seconds, while all other hops complete in milliseconds.
           This pinpoints the bottleneck without requiring the responder to guess which dependency might be affected.
-        </p>
+        </HighlightBlock>
         <p>
           Filtering logs by the trace ID from the slow trace reveals a pattern: repeated retry attempts against the
           same inventory shard, each returning a connection timeout error. The logs show that the application&apos;s
@@ -448,27 +470,30 @@ export default function ArticlePage() {
       {/* Interview Q&A */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How do you distinguish monitoring from observability in practical terms, and why does the distinction matter for system design?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Monitoring answers predefined questions against predefined thresholds. It tells you whether CPU is above
             eighty percent, whether the error rate exceeds one percent, whether the p99 latency breaches the SLO.
             Monitoring is essential — it is the detection layer that pages responders when something is wrong. But it
             cannot answer novel questions. If an incident affects only a specific tenant tier on one route in one region
             after a particular deploy, monitoring dashboards will show the impact but will not tell you which dependency
             is the root cause or what changed to trigger it.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             Observability answers the novel questions. It correlates metrics, traces, and logs through stable
             identifiers so that a responder can pivot from impact detection to root cause isolation to detail
             confirmation. Observability is the diagnostic workflow that follows monitoring&apos;s alert. The distinction
             matters for system design because it determines what telemetry you emit, how you correlate it, and what
             contracts you enforce. A system designed for monitoring emits metrics that trigger alerts. A system designed
             for observability emits correlated signals that support a repeatable diagnostic workflow.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

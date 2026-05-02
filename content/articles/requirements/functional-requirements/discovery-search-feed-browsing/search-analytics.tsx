@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,22 +35,25 @@ export default function SearchAnalyticsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Search Analytics</strong> is the systematic tracking and analysis of
           search behavior to improve search quality, understand user needs, and identify
           content gaps. It transforms raw search logs into actionable insights—what users
           are searching for, what results they click, where they abandon, and what queries
           yield no results. Search analytics is critical for continuous improvement:
           without measurement, you cannot optimize.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Key use cases include: identifying zero-result queries (content gaps to fill),
           low CTR queries (ranking problems to fix), popular queries (optimize for these),
           query refinement patterns (users struggling to find content), and seasonal trends
           (prepare for demand spikes). E-commerce sites use search analytics to optimize
           product discovery, content platforms use it to guide content creation, and
           documentation sites use it to identify missing docs.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, search analytics involves data pipeline design
           (logging, aggregation, storage), privacy compliance (anonymization, GDPR),
@@ -61,10 +65,13 @@ export default function SearchAnalyticsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Key Metrics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Essential search quality metrics:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Search Volume:</strong> Total searches per day/hour. Track trends,
@@ -98,9 +105,9 @@ export default function SearchAnalyticsArticle() {
         </ul>
 
         <h3 className="mt-6">Query Logging</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           What to log for each search:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Query Text:</strong> The raw search query. Normalize for analysis
@@ -215,10 +222,13 @@ export default function SearchAnalyticsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production search analytics involves real-time logging, aggregation, and
           insight generation.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery-search-feed-browsing/search-analytics/analytics-pipeline.svg"
@@ -318,9 +328,9 @@ export default function SearchAnalyticsArticle() {
         </ul>
 
         <h3 className="mt-6">Closing the Loop</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Using analytics to improve search:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Synonym Addition:</strong> Zero-result queries → add synonyms.
@@ -347,9 +357,12 @@ export default function SearchAnalyticsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Search analytics design involves balancing detail, privacy, and performance.
-        </p>
+        </HighlightBlock>
 
         <h3>Logging Strategy Comparison</h3>
         <div className="overflow-x-auto">
@@ -394,11 +407,11 @@ export default function SearchAnalyticsArticle() {
         />
 
         <h3 className="mt-6">Real-time vs Batch Analytics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Real-time:</strong> Metrics computed every minute. Detect issues
           immediately. Higher infrastructure cost. Best for: Alerting, trending
           detection.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Batch:</strong> Metrics computed hourly/daily. Cheaper, more accurate
           (complete data). Best for: Trend analysis, content gap identification.
@@ -425,15 +438,18 @@ export default function SearchAnalyticsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Log Everything (Responsibly):</strong> Log queries, clicks,
             refinements, filters. Anonymize PII. You can't analyze what you don't log.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Track Zero Results:</strong> Zero-result queries are goldmines for
             improvement. Prioritize by volume.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Segment by Position:</strong> Track CTR by result position. Position
             1 should have 30%+ CTR, position 10 &lt;5%.
@@ -463,15 +479,18 @@ export default function SearchAnalyticsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Logging PII:</strong> Accidentally logging emails, names in queries.
             Solution: Sanitize queries, hash user IDs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No Zero-Result Tracking:</strong> Not tracking queries with no
             results. Solution: Log result count, alert on zero results.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring Long Tail:</strong> Only analyzing top queries. Solution:
             Analyze long tail for emerging trends, niche needs.
@@ -493,17 +512,20 @@ export default function SearchAnalyticsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-commerce Search Optimization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce site tracks zero-result queries. Discovers "cell phone cases"
           returns 0 results but "phone cases" returns 1000s. Adds synonym. Conversion
           rate increases 15%.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Insight:</strong> Zero-result analysis revealed vocabulary
           mismatch between users and product catalog.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Content Platform Gap Analysis</h3>
         <p>
@@ -540,16 +562,19 @@ export default function SearchAnalyticsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you log search queries?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you log search queries?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Log query text, timestamp, anonymized user ID, session
               ID, results count, clicked results (with positions), dwell time, filters
               applied, device/location. Use server-side logging for reliability. Send to
               Kafka/Kinesis for processing. Anonymize PII (hash user IDs, strip PII from
               queries). Comply with GDPR (retention policy, opt-out).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

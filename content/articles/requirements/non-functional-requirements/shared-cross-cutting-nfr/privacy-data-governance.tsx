@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,15 +25,18 @@ export default function PrivacyDataGovernanceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Privacy &amp; Data Governance</strong> encompasses the policies, processes, and technical
           controls for managing data throughout its lifecycle while respecting user privacy rights and
           regulatory requirements. It addresses what data is collected, how it is used, who can access
           it, where it is stored, and how long it is retained. This is not merely a compliance
           exercise—it is a fundamental aspect of building trustworthy systems that respect user rights
           and maintain regulatory compliance across multiple jurisdictions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Privacy regulations including GDPR, CCPA, HIPAA, LGPD, and PIPEDA have transformed data
           handling from a best practice to a legal requirement with significant financial consequences.
           Non-compliance carries substantial penalties: GDPR allows fines up to 4% of global annual
@@ -40,7 +44,7 @@ export default function PrivacyDataGovernanceArticle() {
           violation, and HIPAA penalties reach up to 1.5 million dollars per violation category per year.
           Beyond regulatory fines, privacy breaches damage brand reputation, erode user trust, and can
           result in class-action lawsuits.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, privacy and data governance represent critical architectural
           concerns that must be baked into system design from the ground up, not bolted on as an
@@ -69,9 +73,12 @@ export default function PrivacyDataGovernanceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Data Subjects, Controllers, and Processors</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding the roles defined by privacy regulations is essential for implementing compliant
           systems. The data subject is the individual whose personal data is being processed, and under
           GDPR, data subjects have specific rights including access, erasure, and portability that systems
@@ -86,10 +93,10 @@ export default function PrivacyDataGovernanceArticle() {
           distinctions: controllers need mechanisms to honor user rights requests and manage processor
           relationships, while processors need to support controller instructions and maintain processing
           records.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Personal Data and Sensitive Data Distinction</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Not all data receives equal protection under regulations. Personal data, also known as PII,
           includes any information relating to an identified or identifiable natural person, encompassing
           obvious identifiers such as name, email, and SSN, as well as indirect identifiers such as IP
@@ -107,7 +114,7 @@ export default function PrivacyDataGovernanceArticle() {
           controls, enhanced audit logging, and potentially separate storage. De-identification techniques
           such as k-anonymity and differential privacy require careful implementation to prevent
           re-identification attacks.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Lawful Basis for Processing</h3>
         <p>
@@ -227,9 +234,12 @@ export default function PrivacyDataGovernanceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Data Discovery and Classification Pipeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The data discovery and classification pipeline continuously identifies, catalogs, and classifies
           data across all systems. Automated scanning tools crawl databases, data warehouses, data lakes,
           file stores, and log aggregation systems to identify personal data through pattern matching for
@@ -243,10 +253,10 @@ export default function PrivacyDataGovernanceArticle() {
           privacy and governance processes. The data inventory serves as the single source of truth for
           what personal data exists, where it is stored, what classification level it has, what lawful
           basis applies, what retention policy governs it, and who has access.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consent Management Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Consent management architecture captures, stores, and enforces user consent across the
           organization. The consent capture layer provides user interfaces for obtaining explicit,
           informed, freely-given consent that is specific per purpose, unambiguous through opt-in rather
@@ -262,7 +272,7 @@ export default function PrivacyDataGovernanceArticle() {
           consent management platform must also track the lawful basis for each processing activity beyond
           consent, including contract, legal obligation, vital interests, public task, and legitimate
           interests, and enforce processing restrictions accordingly.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">DSAR Processing Pipeline</h3>
         <p>
@@ -373,9 +383,12 @@ export default function PrivacyDataGovernanceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Centralized vs Federated Governance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Centralized data governance establishes a single governance team that sets policies, monitors
           compliance, and enforces standards across the entire organization. This provides consistent
           policies, unified compliance reporting, and clear accountability, but can become a bottleneck
@@ -386,10 +399,10 @@ export default function PrivacyDataGovernanceArticle() {
           policy interpretation and compliance gaps between domains. For most large organizations, a
           federated model with strong central standards and regular compliance auditing provides the best
           balance between consistency and scalability.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Opt-In vs Opt-Out Consent</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Opt-in consent requires users to take explicit action to consent to data processing, providing
           stronger legal basis and higher user trust but resulting in lower consent rates since many users
           do not take action. Opt-out consent assumes consent by default and allows users to withdraw,
@@ -400,7 +413,7 @@ export default function PrivacyDataGovernanceArticle() {
           data sales but opt-in remains preferable for building user trust. Organizations designing for
           multi-jurisdictional compliance should implement opt-in globally to meet the strictest standard,
           accepting lower consent rates in exchange for stronger legal position and higher user trust.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Data Minimization vs Data Utility</h3>
         <p>
@@ -565,9 +578,12 @@ export default function PrivacyDataGovernanceArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Organizational Practices</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Appointing a Data Protection Officer or privacy lead and creating a privacy steering committee
           provides organizational accountability for privacy decisions. Privacy must be integrated into
           the software development lifecycle through privacy requirements in user stories, privacy reviews
@@ -582,10 +598,10 @@ export default function PrivacyDataGovernanceArticle() {
           breaches. Vendor due diligence must include privacy assessments before engagement, requiring
           SOC 2 or ISO 27001 certification, comprehensive data processing agreements with clear
           responsibilities, and annual audits of vendor privacy practices.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Technical Practices</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Technical privacy controls should follow defense in depth with multiple access control layers
           including network-level access controls, application-level authentication and authorization,
           database-level row and column access controls, and encryption at rest and in transit. Privacy
@@ -601,7 +617,7 @@ export default function PrivacyDataGovernanceArticle() {
           sensitive data, bulk exports indicating potential data exfiltration, consent enforcement
           failures, and retention policy violations, with alerts routed to the privacy team for
           investigation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Rights Fulfillment</h3>
         <p>
@@ -639,7 +655,10 @@ export default function PrivacyDataGovernanceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Treating privacy as a one-time compliance project rather than an ongoing operational commitment
           fails because privacy must be integrated into daily operations with regular audits and continuous
           improvement. An incomplete data inventory leads to missing systems that result in incomplete
@@ -659,17 +678,27 @@ export default function PrivacyDataGovernanceArticle() {
           testing of retention policies, access controls, and consent enforcement mechanisms. Ignoring
           training leads to employees causing accidental violations through ignorance, requiring mandatory
           annual privacy training for all employees and role-specific training for engineers. Poor breach
-          response due to lack of planning leads to delayed notification and regulatory penalties,
-          requiring a written response plan, tabletop exercises, and 72-hour notification awareness for
-          GDPR compliance.
-        </p>
-      </section>
+	          response due to lack of planning leads to delayed notification and regulatory penalties,
+	          requiring a written response plan, tabletop exercises, and 72-hour notification awareness for
+	          GDPR compliance.
+	        </HighlightBlock>
+	        <HighlightBlock as="p" tier="important">
+	          In interviews, emphasize operational measurability: without privacy telemetry you will not know
+	          whether controls are working. Track DSAR SLAs end-to-end, deletion propagation lag across systems,
+	          the volume of PII in logs/analytics, and access-control drift (who can see what, and why). Pair this
+	          with automated enforcement (retention sweeps, policy-as-code checks in CI/CD) so privacy does not
+	          degrade silently over time.
+	        </HighlightBlock>
+	      </section>
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Apple Privacy Posture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Apple has made privacy a core product differentiator, marketing &quot;Privacy on iPhone&quot;
           as a fundamental feature of its ecosystem. Their approach includes App Tracking Transparency
           requiring apps to obtain explicit user permission before tracking across apps and websites,
@@ -681,10 +710,10 @@ export default function PrivacyDataGovernanceArticle() {
           regulatory requirements. Their technical architecture prioritizes on-device processing and
           minimization, collecting only the data necessary for service delivery and processing it locally
           whenever possible.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Google Consent Mode</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Consent Mode provides a framework for websites to adjust how Google tags behave based
           on user consent for cookies and tracking. When a user does not consent to analytics cookies,
           Consent Mode configures Google Analytics and Google Ads tags to operate in a privacy-preserving
@@ -695,7 +724,7 @@ export default function PrivacyDataGovernanceArticle() {
           adjust tag behavior based on user consent signals. This approach balances the website
           owner&apos;s need for analytics data with the user&apos;s right to privacy, though critics argue
           that modeling still processes personal data and requires a lawful basis under GDPR.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Meta Data Governance Evolution</h3>
         <p>
@@ -740,10 +769,13 @@ export default function PrivacyDataGovernanceArticle() {
 
       <section>
         <h2>Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design a system for GDPR compliance?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design a system for GDPR compliance?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Start with comprehensive data mapping to know what data you have and where it is stored
               across all systems. Implement privacy-by-design with data minimization at collection points,
               purpose limitation enforcement at the processing layer, consent management with granular
@@ -755,7 +787,7 @@ export default function PrivacyDataGovernanceArticle() {
               processing agreements, and a breach response plan with 72-hour notification awareness.
               Design for the strictest standard which is typically GDPR, then apply jurisdiction-specific
               variations for CCPA, HIPAA, and other regulations.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

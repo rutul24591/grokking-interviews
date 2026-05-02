@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function ResponsiveDesignArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Responsive Design</strong> is an approach to web design that
           makes web pages render well on a variety of devices and window or
           screen sizes. Coined by Ethan Marcotte in 2010, responsive design
@@ -47,8 +51,8 @@ export default function ResponsiveDesignArticle() {
           optimal viewing experience — easy reading and navigation with minimum
           resizing, panning, and scrolling — across devices from mobile phones
           to large desktop monitors.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, responsive design is not just about CSS —
           it&apos;s about architectural decisions that affect performance,
           maintainability, and user experience. The choice between responsive
@@ -57,7 +61,7 @@ export default function ResponsiveDesignArticle() {
           implications for caching, SEO, and development workflow. Responsive
           design requires thinking about content prioritization, touch targets,
           performance budgets, and progressive enhancement from the start.
-        </p>
+        </HighlightBlock>
         <p>
           Responsive design involves several technical challenges.{" "}
           <strong>Breakpoint strategy</strong> — where to set media query
@@ -83,15 +87,18 @@ export default function ResponsiveDesignArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Fluid Grids:</strong> Layout based on relative units
             (percentages, fr, em, rem) rather than fixed pixels. A three-column
             layout becomes <code>width: 33.33%</code> per column, not{" "}
             <code>width: 400px</code>. Fluid grids enable layouts to scale
             smoothly across viewport sizes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Media Queries:</strong> CSS rules that apply conditionally
             based on device characteristics. Most common:{" "}
             <code>min-width</code> and <code>max-width</code> for viewport
@@ -99,7 +106,7 @@ export default function ResponsiveDesignArticle() {
             <code>prefers-color-scheme</code>, <code>orientation</code>,{" "}
             <code>resolution</code>. Media queries enable different styles for
             different contexts.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Flexible Images:</strong> Images that scale within their
             containers. Basic: <code>img {'{'} max-width: 100%; height: auto; {'}'}</code>.
@@ -139,13 +146,16 @@ export default function ResponsiveDesignArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Responsive design architecture consists of a fluid grid system, a
           breakpoint strategy, responsive images, and responsive typography. The
           architecture must handle the full range of viewport sizes (from 320px
           to 2560px+), different pixel densities (1x to 3x+), and different
           input methods (touch, mouse, keyboard).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/mobile-considerations/fluid-grid-system.svg"
@@ -156,7 +166,7 @@ export default function ResponsiveDesignArticle() {
         />
 
         <h3>Breakpoint Strategy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Two approaches exist for breakpoints. <strong>Device-based
           breakpoints</strong> target specific devices (iPhone, iPad, desktop).
           Problem: new devices constantly released, maintenance burden.{" "}
@@ -165,7 +175,7 @@ export default function ResponsiveDesignArticle() {
           excessive). Advantage: future-proof, design-driven. Modern best
           practice: content-based breakpoints with device breakpoints as
           refinement.
-        </p>
+        </HighlightBlock>
         <p>
           Implementation: start with mobile base styles (no media query). Add{" "}
           <code>@media (min-width: 600px)</code> where content needs more space.
@@ -186,10 +196,13 @@ export default function ResponsiveDesignArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Responsive design involves trade-offs between performance,
           maintainability, and user experience.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/mobile-considerations/responsive-vs-adaptive.svg"
@@ -200,13 +213,13 @@ export default function ResponsiveDesignArticle() {
         />
 
         <h3>Responsive vs. Adaptive vs. RESS</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Responsive (same HTML, different CSS):</strong> Single URL,
           single HTML document, CSS adapts layout. Advantages: maintainable
           (one codebase), SEO-friendly (one URL), shareable links. Limitations:
           mobile downloads desktop HTML (performance), one-size-fits-all
           content. Best for: most websites, content sites, e-commerce.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Adaptive (different HTML per device):</strong> Server detects
           device, serves different HTML. Advantages: optimized HTML per device,
@@ -246,20 +259,23 @@ export default function ResponsiveDesignArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Mobile-First CSS:</strong> Write base styles for mobile, use{" "}
             <code>min-width</code> media queries for larger screens. This
             ensures mobile users get optimized CSS (no unused desktop styles).
             Forces content prioritization — what&apos;s essential for mobile?
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Relative Units:</strong> Use <code>em</code>,{" "}
             <code>rem</code>, <code>%</code>, <code>vw</code>, <code>fr</code>{" "}
             instead of <code>px</code> for layout. Relative units scale
             naturally with viewport and user preferences (browser zoom, font
             size settings).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Responsive Images with srcset:</strong> Use{" "}
             <code>srcset</code> and <code>sizes</code> attributes to serve
@@ -291,19 +307,22 @@ export default function ResponsiveDesignArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Desktop-First CSS:</strong> Writing desktop styles as base,
             then using <code>max-width</code> media queries to scale down.
             Problem: mobile downloads all desktop CSS, then overrides it.
             Solution: mobile-first with <code>min-width</code> queries.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Fixed-Width Elements:</strong> Using <code>px</code> for
             layout widths. Breaks on viewports smaller than fixed width.
             Solution: use percentages, <code>fr</code> units, or{" "}
             <code>clamp()</code>.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Non-Responsive Images:</strong> Serving same image file to
             all devices. A 2MB desktop image wastes mobile bandwidth. Solution:{" "}
@@ -334,25 +353,28 @@ export default function ResponsiveDesignArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Product Pages</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce sites (Amazon, Shopify stores) use responsive design for
           product pages. Mobile: single column, large product images, sticky
           &quot;Add to Cart&quot; button. Tablet: two columns (image + details).
           Desktop: three columns (images, details, related products). Images use
           srcset for optimal sizing. Touch targets large enough for mobile
           shopping.
-        </p>
+        </HighlightBlock>
 
         <h3>News and Media Sites</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           News sites (NYTimes, Guardian) prioritize readability across devices.
           Mobile: single column, large readable text (16px+), simplified
           navigation. Desktop: multi-column with sidebar, related articles,
           ads. Typography scales with viewport using clamp(). Images use lazy
           loading and responsive srcset.
-        </p>
+        </HighlightBlock>
 
         <h3>Dashboard Applications</h3>
         <p>
@@ -378,14 +400,17 @@ export default function ResponsiveDesignArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What&apos;s the difference between mobile-first and
               desktop-first responsive design?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Mobile-first: base styles for mobile, <code>min-width</code>{" "}
               media queries to enhance for larger screens. Desktop-first: base
               styles for desktop, <code>max-width</code> queries to scale down.
@@ -395,7 +420,7 @@ export default function ResponsiveDesignArticle() {
               desktop CSS. Industry standard is mobile-first. Mobile-first also
               aligns with progressive enhancement philosophy — start with basic
               experience, enhance for capable devices/browsers.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

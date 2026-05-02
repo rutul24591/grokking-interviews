@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Metrics are numerical time series that quantify the behavior of a system over time. Unlike logs, which record
           discrete events, or traces, which follow individual requests through distributed paths, metrics provide a
           continuous, aggregated view of system health at low cardinality and low storage cost. They are the backbone of
           operational awareness: every alert that pages an on-call engineer, every dashboard used during incident response,
           and every capacity planning decision depends on metrics being correct, fresh, and semantically stable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental question metrics answer is whether users are receiving correct responses within the latency they
           expect. At staff and principal engineering levels, the conversation shifts from "what should we monitor?" to "what
           decisions will this metric enable?" A metric that does not drive a decision is a vanity metric, and vanity metrics
           create dashboards that look informative but fail during incidents because they lack actionable signal. The most
           powerful metric systems are anchored in user-impact indicators, designed to stay correct as services scale, and
           instrumented with enough semantic clarity that any engineer on the team can interpret them under pressure.
-        </p>
+        </HighlightBlock>
         <p>
           Metrics also serve as a historical record for capacity planning, regression detection, and cost optimization. When
           a deployment causes a subtle increase in tail latency, or when traffic growth pushes a dependency toward saturation,
@@ -51,7 +55,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of any metric system rests on four primitive types, each answering different mathematical questions.
           Understanding when to use each type is critical because selecting the wrong type produces misleading dashboards and
           unreliable alerts. Counters are monotonically increasing values that only go up or reset to zero. They measure
@@ -60,14 +67,14 @@ export default function ArticlePage() {
           Alerting on a raw counter value is almost always wrong; alerting on the rate of change, the acceleration of that
           rate, or the ratio between two counters (error rate derived from error count divided by total request count) is
           where actionable signal lives.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Gauges represent point-in-time measurements that can go up or down. Queue depth, memory utilization, active
           connections, and CPU percentage are all gauges. Gauges are useful for understanding saturation and capacity, but
           they are inherently less stable than counters because they reflect a single moment rather than an accumulated total.
           A gauge can spike and return to normal within a single scrape interval, which means alerting on gauges requires
           careful consideration of evaluation windows and smoothing.
-        </p>
+        </HighlightBlock>
         <p>
           Histograms are the most important metric type for latency analysis. A histogram divides the range of observed
           values into buckets and counts how many observations fall into each bucket. This structure allows you to compute
@@ -106,7 +113,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production-grade metrics architecture must handle bursty writes during traffic spikes while maintaining fast
           read performance during incident response when dozens of engineers are querying dashboards simultaneously. The
           collection model you choose shapes this architecture fundamentally. Scrape-based models, where a central service
@@ -114,8 +124,8 @@ export default function ArticlePage() {
           instance stops exporting, the scrape fails and staleness is immediately detectable. Push-based models, where
           instances send metrics to a collector, reduce scrape overhead at scale but introduce different failure modes: a
           failing instance stops pushing silently, and the collector must infer staleness from missing heartbeats.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The aggregation layer is where metrics transform from raw measurements into decision-ready signals. Rate
           computation over counters requires handling counter resets gracefully, which occur when processes restart or
           deployments roll out new instances. A naive rate calculation that does not account for resets produces false
@@ -123,7 +133,7 @@ export default function ArticlePage() {
           monotonically increasing values and adjust the computation accordingly. Histogram aggregation across instances
           requires merging bucket counts, which is mathematically sound because histogram buckets are additive. This is one
           of the strongest arguments for histograms over summaries in distributed systems.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/metrics-diagram-2.svg"
@@ -170,7 +180,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The central trade-off in metrics design is cardinality versus diagnostic power. Every label you add to a metric
           enables more granular slicing for diagnosis, but it also multiplies the number of unique time series, increasing
           storage cost, query latency, and the risk of system instability under cardinality explosions. The resolution
@@ -179,8 +192,8 @@ export default function ArticlePage() {
           enforcement through instrumentation SDKs that reject or coalesce values exceeding the budget. Some organizations
           implement "top offender" reporting that identifies which labels are driving cardinality growth, enabling
           data-driven pruning of label space.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another critical trade-off exists between scrape-based and push-based collection models. Scrape-based collection,
           championed by Prometheus, provides clean staleness semantics because the absence of a successful scrape within
           the expected interval is an unambiguous signal that the target is unhealthy. It also provides natural backpressure
@@ -189,7 +202,7 @@ export default function ArticlePage() {
           across scraper instances. Push-based collection, used by systems like StatsD and OpenTelemetry push gateways,
           reduces the operational burden of managing scrapers at scale but introduces the silent failure problem where a
           crashing instance stops sending metrics without any explicit signal.
-        </p>
+        </HighlightBlock>
         <p>
           The choice between histograms and summaries for latency measurement involves a trade-off between aggregation
           correctness and quantile accuracy. Summaries provide accurate per-instance quantiles because they compute
@@ -219,15 +232,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Start metric design from user-impact service level indicators rather than from infrastructure signals. The
           metrics that matter most are availability, tail latency, and correctness of user-facing operations. Infrastructure
           metrics like CPU, memory, and disk I/O are useful for diagnosis but should never be the primary alert source
           because they do not directly measure user impact. A service can have high CPU while serving users perfectly, and
           it can have low CPU while failing due to a downstream dependency timeout. By anchoring alerts in user-impact
           SLIs, you ensure that every page reflects a real degradation in the user experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use histograms for all latency measurements and alert on tail percentiles rather than averages. The specific
           percentile you alert on depends on your SLO and traffic volume. For services handling millions of requests per
           day, p99 or even p999 is appropriate because the tail represents thousands of real users experiencing degraded
@@ -235,7 +251,7 @@ export default function ArticlePage() {
           should be derived from your SLO target, not from an arbitrary number that "feels right." If your SLO promises
           99.9 percent of requests complete within 500 milliseconds, then your alert should fire when the p999 approaches
           or exceeds 500 milliseconds, not when the average exceeds some unrelated value.
-        </p>
+        </HighlightBlock>
         <p>
           Implement burn-rate alerting for SLO-aligned paging rather than static thresholds. Burn rate measures how fast
           you are consuming your error budget. A 1x burn rate means you are consuming budget at the exact rate that will
@@ -273,22 +289,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Counter reset errors are among the most insidious metric failures. When a process restarts, its counters reset
           to zero. A rate calculation that does not detect this reset interprets the drop as a negative rate, producing
           either a false zero or a false negative spike depending on implementation. This error causes dashboards to show
           traffic dropping to zero during deployments and alerts to fire on phantom anomalies. Proper implementations
           detect resets by identifying when the current counter value is less than the previous value and skip the
           calculation for that interval rather than computing a nonsensical negative rate.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Unit drift between services creates threshold errors that are difficult to diagnose. When one service reports
           latency in milliseconds and another reports in seconds, a dashboard that aggregates them produces meaningless
           results, and alert rules configured with the wrong unit either never fire or fire constantly. This problem is
           particularly common in organizations with multiple teams managing their own instrumentation, where conventions
           diverge over time. The solution is to establish organization-wide unit conventions and enforce them through
           instrumentation SDK validation and code review.
-        </p>
+        </HighlightBlock>
         <p>
           Mixed population aggregation hides hotspot problems. When a histogram combines latency from all endpoints into a
           single metric, the aggregate p99 can look healthy even while one specific endpoint is experiencing severe
@@ -316,7 +335,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider a scenario where users report intermittent slowness on a checkout flow, but the overall error rate
           remains stable and the average latency appears normal. The on-call engineer consults the golden dashboard and
           immediately sees that the p99 latency for the checkout endpoint has increased from 400 milliseconds to 1.2
@@ -324,8 +346,8 @@ export default function ArticlePage() {
           the same region are unaffected. Overlaying saturation metrics reveals that the connection pool wait time for
           the checkout service in that region has increased from 5 milliseconds to 120 milliseconds, and the retry rate
           to the downstream payment service has doubled.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This pattern points to a saturation problem in the payment service dependency specific to one region. The
           responder reduces the maximum connection pool size for the affected service to reduce queueing, shifts a
           portion of traffic to a healthy region, and watches the p99 latency and pool wait time return to baseline over
@@ -333,7 +355,7 @@ export default function ArticlePage() {
           In the post-incident review, the team adds a multi-window burn-rate alert for the checkout SLO that would have
           detected this degradation automatically, and they remove a per-instance CPU utilization alert that had paged
           three times in the previous month without ever correlating to actual user impact.
-        </p>
+        </HighlightBlock>
         <p>
           Another common scenario involves deployment regression detection. After a new version rolls out, the metrics
           dashboard comparing latency by deployment version shows that the new version has a p99 that is 30 percent higher
@@ -355,13 +377,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How do you design metrics for a new service to ensure they are actionable rather than vanity
             metrics?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The approach starts with identifying the service level indicators that directly measure user impact:
             availability of the service, tail latency of user-facing operations, and correctness of responses. These SLIs
             become the primary metrics, and every other metric is secondary, serving only diagnostic purposes. For each
@@ -369,14 +394,14 @@ export default function ArticlePage() {
             classification for availability, and how correctness is determined. Then define a small set of saturation
             metrics that serve as early warning signals for capacity constraints, such as connection pool utilization,
             queue depth, and downstream dependency latency.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The next step is label design with bounded cardinality. Each metric gets an allowlist of labels with defined
             semantics and value sets. Labels like region, environment, route template, status class, and deployment version
             are standard. Labels with unbounded values like user IDs or request IDs are rejected. Before the service ships,
             the metric definitions are reviewed the same way API contracts are reviewed, because changing metric semantics
             after production deployment breaks dashboards, alerts, and historical analysis.
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             Finally, the alert strategy is defined alongside the metrics. Each alert is tied to a specific decision: page
             on-call, file a ticket, or log for review. Alerts that do not map to a decision are removed. This discipline

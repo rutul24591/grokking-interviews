@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,7 +35,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Health monitoring</strong> is the discipline of defining, measuring, and acting on signals that answer
           a deceptively simple question: should this instance receive traffic? At surface level, the answer seems
           trivial — if the process is running, it is healthy. In production systems at scale, this binary view collapses
@@ -43,8 +47,8 @@ export default function ArticlePage() {
           Conversely, a process can be temporarily degraded in a way that should not cause a load balancer to eject it —
           perhaps a non-critical dependency is slow, and the service can operate in a degraded mode that still satisfies
           the core user journey.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Health monitoring exists at the intersection of three concerns. First, <strong>traffic routing</strong>: load
           balancers, ingress controllers, and service meshes need a signal to decide which backends are eligible to
           receive requests. Second, <strong>self-healing</strong>: orchestrators like Kubernetes need a signal to decide
@@ -52,7 +56,7 @@ export default function ArticlePage() {
           engineers need a signal to understand whether an outage is caused by a broken dependency, capacity saturation,
           or a code regression. These three concerns map to three different health check types — readiness, liveness, and
           synthetic probes — and conflating them is one of the most common causes of production outages.
-        </p>
+        </HighlightBlock>
         <p>
           The distinction between liveness and readiness was formalized by Kubernetes, but the concept predates container
           orchestration by decades. Load balancers have performed TCP health checks since the early 2000s, and
@@ -74,12 +78,15 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Health checks serve different purposes, and mixing them into a single endpoint or a single boolean signal leads
           to either false positives — ejecting healthy instances unnecessarily — or false negatives — keeping broken
           instances in the traffic pool. A robust design separates checks by intent, ensuring each check answers exactly
           one question with a clear action associated with its result.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/health-monitoring-diagram-1.svg"
@@ -87,14 +94,14 @@ export default function ArticlePage() {
           caption="Figure 1: Four health check types — liveness (restart), readiness (route), startup (wait), and synthetic (probe) — each with a distinct question and action."
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Liveness checks</strong> answer the question: is the process stuck or in an unrecoverable state? They
           are used to trigger automatic restarts. A liveness check should be lightweight and local — it verifies that the
           process has not deadlocked, that its main thread is responsive, and that it has not entered a state from which
           it cannot recover without a restart. Liveness checks should not call external dependencies. If a database goes
           down, restarting every dependent service does not fix the database and creates a thundering herd when it comes
           back. Liveness is about the internal state of the process, not the state of its environment.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Readiness checks</strong> answer the question: can this instance serve traffic right now without
           violating correctness or latency SLAs? They are used by load balancers and service meshes to route traffic.
@@ -134,13 +141,16 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The architecture of health monitoring spans three layers: the probe execution layer (what checks run, how
           frequently, with what timeouts), the routing layer (how health signals control traffic distribution), and the
           response layer (how operators and automated systems act on health signals during normal operation and incidents).
           Each layer has distinct requirements and failure modes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the probe execution layer, the fundamental tension is between check fidelity and check cost. A readiness
           check that performs a full database query, validates cache state, pings every downstream dependency, and runs a
           synthetic transaction will give you high-fidelity health information. It will also consume significant
@@ -149,7 +159,7 @@ export default function ArticlePage() {
           the request-serving threads, creating a self-fulfilling prophecy where the act of checking health causes the
           instance to become unhealthy. This phenomenon, known as a &quot;health check storm,&quot; has caused multiple
           production outages.
-        </p>
+        </HighlightBlock>
         <p>
           The safe design makes probes lightweight, deterministic, and bounded. Readiness checks should verify local
           capacity (thread pool utilization, memory headroom, connection pool availability) and connectivity to <em>hard</em>
@@ -222,12 +232,15 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing health checks involves navigating a series of trade-offs between check strictness, check cost,
           failure detection speed, and false-positive tolerance. There is no universally correct configuration — the right
           choices depend on the service&apos;s role, its dependencies, its traffic patterns, and the organization&apos;s
           tolerance for different failure modes.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr>
@@ -332,28 +345,31 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p className="mt-4">
+        <HighlightBlock as="p" tier="important" className="mt-4">
           The recommended approach for most production systems is: readiness checks that verify local capacity and hard
           dependencies only, with moderate frequency (10s), generous timeouts (5s), and a failure threshold of 3
           consecutive failures. Re-entry should use slow-start to prevent oscillation. Synthetic probes should run
           independently at lower frequency (60s) from multiple regions, covering the top 3-5 user journeys. Liveness
           checks should be minimal — a simple ping to the main thread or event loop — with a startup check gate to
           protect warm-up.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Separating liveness, readiness, and startup into distinct endpoints with distinct semantics is the foundational
           best practice. Never overload a single endpoint to serve all three purposes. When a liveness check fails, the
           action is restart. When a readiness check fails, the action is remove from traffic. When a startup check is
           pending, the action is wait. These actions are mutually incompatible — you cannot simultaneously restart an
           instance and remove it from traffic, and you should not remove an instance from traffic just because it is
           still starting up.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Readiness must reflect the instance&apos;s ability to serve requests, not the health of its entire dependency
           graph. Distinguish hard dependencies from soft dependencies explicitly in your architecture documentation and
           enforce this distinction in your readiness implementation. A hard dependency is one without which the service
@@ -361,7 +377,7 @@ export default function ArticlePage() {
           store for a file-serving service. A soft dependency is one that enhances the service but is not required: a
           recommendation engine, a geocoding API, a rate-limiting service that can fail open. When a soft dependency
           fails, the service should degrade gracefully, not fail readiness.
-        </p>
+        </HighlightBlock>
         <p>
           Health endpoints must be served on a separate port or thread pool from the main application. This prevents
           health checks from competing with request-serving threads and ensures that health checks remain responsive even
@@ -397,15 +413,18 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is the <strong>overloaded health endpoint</strong>: a single <code>/health</code>
           endpoint that checks process liveness, database connectivity, Redis connectivity, downstream service
           availability, cache warmth, and disk space. This endpoint is expensive to call, produces a binary pass/fail
           result that obscures the actual failure mode, and creates tight coupling between health signaling and
           dependency health. When a non-critical dependency becomes slow, this endpoint fails, the load balancer ejects
           all instances, and the service experiences a full outage even though it could have operated in degraded mode.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>health check storm</strong> is a second common pitfall. Health checks are called frequently from
           many sources: load balancer nodes, orchestrator agents, monitoring systems, dashboards. Under normal
           conditions, this is fine. During an incident, when many instances are slow or partially failed, the aggregate
@@ -413,7 +432,7 @@ export default function ArticlePage() {
           database connection, or a downstream call. If a service has 500 instances and each is checked every 10 seconds
           by 5 different systems, that is 250 health check requests per second. During an incident when response times
           are elevated, these checks queue up, consume resources, and accelerate the path to saturation.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>False &quot;up&quot; from shallow checks</strong> is the inverse problem. A health endpoint that only
           checks whether the HTTP server is listening and returns 200 OK provides no useful information. The server can
@@ -451,7 +470,10 @@ export default function ArticlePage() {
       {/* Section 7: Real-world Use Cases */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Netflix readiness patterns.</strong> Netflix operates hundreds of microservices with complex
           dependency graphs. Their approach to readiness emphasizes the distinction between &quot;can serve&quot; and
           &quot;can serve optimally.&quot; Readiness checks at Netflix verify that critical dependencies are reachable
@@ -462,8 +484,8 @@ export default function ArticlePage() {
           internal readiness checks are the authoritative source for traffic routing decisions. During the 2020-2021
           traffic surge, this separation allowed Netflix services to degrade gracefully under load rather than
           catastrophically failing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>AWS ELB health checks.</strong> Amazon Elastic Load Balancing performs health checks to determine
           whether targets are available to receive traffic. ELB supports both TCP and HTTP health checks, with
           configurable intervals, timeouts, and healthy/unhealthy thresholds. A key design decision in ELB is that the
@@ -472,7 +494,7 @@ export default function ArticlePage() {
           healthy three times before receiving traffic, but only needs to fail twice to be removed. ELB also supports
           slow-start, where newly registered targets receive a gradually increasing share of traffic over a configurable
           period, preventing cold instances from being overwhelmed.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Kubernetes health probes.</strong> Kubernetes formalized the three-probe model: liveness probes
           (kubelet restarts the container if the probe fails), readiness probes (kubelet removes the pod&apos;s IP from
@@ -500,25 +522,28 @@ export default function ArticlePage() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: What is the difference between liveness and readiness probes, and why does mixing them into a single endpoint cause production outages?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Liveness answers whether the process is stuck and needs restarting; readiness answers whether the instance
             can serve traffic without violating SLAs and needs routing decisions. The actions are fundamentally
             different: liveness failure triggers a restart, readiness failure triggers traffic removal. When you mix
             them into a single endpoint, a single check failure triggers both actions simultaneously.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Consider a scenario where a non-critical dependency (like a recommendation service) becomes slow. A mixed
             endpoint that checks this dependency would fail readiness (correctly indicating the instance is degraded)
             and also fail liveness (incorrectly indicating the process is stuck). The orchestrator restarts the
             container while the load balancer removes it from traffic. The restart does not fix the slow dependency,
             so the new container fails the same check, gets restarted again, and enters a crash loop. Meanwhile, the
             load balancer has removed a healthy-capable instance from the traffic pool.
-          </p>
+          </HighlightBlock>
           <p>
             If this happens across many instances, the service loses capacity unnecessarily while also churn restarting
             containers that are not actually broken. The fix is to separate the endpoints: liveness checks only local

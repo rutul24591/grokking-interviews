@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>context window</strong> of a Large Language Model is the
           maximum number of tokens the model can process in a single request,
           encompassing both the input (system prompt, context, user query) and
@@ -33,8 +37,8 @@ export default function ArticlePage() {
           within this window. The context window size has grown dramatically,
           from 4K tokens in GPT-3 to 128K in GPT-4, 200K in Claude 3, and 1M+
           in specialized models like Gemini 1.5 Pro.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The context window is not just a capacity limit — it is a fundamental
           architectural constraint that affects how information flows through
           the model. The Transformer&apos;s self-attention mechanism computes
@@ -44,7 +48,7 @@ export default function ArticlePage() {
           computationally expensive and why various optimization techniques
           (FlashAttention, sliding window attention, linear attention) have been
           developed to reduce the computational burden.
-        </p>
+        </HighlightBlock>
         <p>
           For software engineers, understanding context window mechanics is
           essential because the context window is the most expensive resource in
@@ -60,7 +64,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The context window is managed through several key mechanisms.{" "}
           <strong>Positional encoding</strong> gives the model information about
           the relative and absolute positions of tokens in the sequence. Without
@@ -72,8 +79,8 @@ export default function ArticlePage() {
           mechanism, allowing the model to generalize to sequence lengths longer
           than those seen during training. This extrapolation capability is
           critical for models that need to handle variable-length inputs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>KV caching</strong> is the primary optimization that makes
           autoregressive generation efficient. During generation, each new token
           is produced by attending to all previous tokens. Without caching, the
@@ -84,7 +91,7 @@ export default function ArticlePage() {
           computation. The trade-off is memory: the KV cache grows linearly with
           sequence length and can consume more GPU memory than the model weights
           themselves for long contexts.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/kv-cache-memory-allocation.svg"
@@ -138,7 +145,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The context window allocation in a production system follows a
           structured hierarchy. <strong>System instructions</strong> occupy the
           beginning of the context and should be concise but complete — they
@@ -152,7 +162,7 @@ export default function ArticlePage() {
           end of the context, ensuring the model attends to the current query
           (recency effect). The remaining budget is allocated to the{" "}
           <strong>generated response</strong>.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/context-window-management.svg"
@@ -160,7 +170,7 @@ export default function ArticlePage() {
           caption="Context management — sliding window, summarization, selective retention, and priority-based truncation"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Context window management</strong> becomes critical when the
           total content exceeds the model&apos;s context limit. The management
           strategy depends on the content type: for conversation history, older
@@ -170,7 +180,7 @@ export default function ArticlePage() {
           is exhausted, with lower-ranked documents excluded. For document
           processing, the document can be chunked and processed in segments,
           with each segment&apos;s summary accumulated into a running context.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Long-context retrieval</strong> is an emerging pattern for
           contexts that exceed even the largest model&apos;s window. Instead of
@@ -197,7 +207,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Context window size vs. model quality</strong> presents a
           counterintuitive trade-off. Larger context windows don&apos;t
           necessarily produce better outputs — the &quot;lost in the middle&quot;
@@ -207,8 +220,8 @@ export default function ArticlePage() {
           model supports. A model with a 128K context window may produce better
           results with 8K tokens of carefully selected context than with 64K
           tokens of mixed relevance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Full context vs. compressed context</strong> involves a
           quality-cost-speed trade-off. Full context preserves all information
           but costs more (more input tokens), takes longer to process (more
@@ -219,7 +232,7 @@ export default function ArticlePage() {
           (missing a single detail could change the answer), while summarization
           tasks benefit from compressed context (the goal is to extract key
           points anyway).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/context-compression-strategies.svg"
@@ -243,7 +256,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Place critical information at the beginning and end</strong>{" "}
           of the context window to leverage the primacy and recency effects.
           System instructions go first (the model attends to them throughout),
@@ -251,8 +267,8 @@ export default function ArticlePage() {
           prompt or immediately before the user query, and less relevant
           documents go in the middle. This simple reordering can improve
           retrieval-based answer accuracy by 10-20%.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement active context management</strong> — don&apos;t
           passively let the context fill up and then truncate. Actively manage
           what goes in and what comes out: summarize old conversation turns,
@@ -260,7 +276,7 @@ export default function ArticlePage() {
           information that is no longer needed. A well-managed context window
           contains only the information the model needs for the current task,
           maximizing both quality and cost efficiency.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Monitor context window utilization</strong> as a production
           metric. Track the average and peak context window usage per request,
@@ -284,7 +300,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most costly pitfall is <strong>assuming the model uses all
           context equally</strong>. Due to the &quot;lost in the middle&quot;
           phenomenon, information in the middle of a long context is
@@ -294,8 +313,8 @@ export default function ArticlePage() {
           critical information that happened to be in the middle. Always order
           context by relevance and place the most important information at the
           edges.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Ignoring the input-output split</strong> leads to response
           truncation. The context window includes both input AND output tokens.
           If you send a 120K token prompt to a 128K context model with
@@ -303,7 +322,7 @@ export default function ArticlePage() {
           output tokens (120K input + 8K output = 128K limit), potentially
           mid-sentence. Always calculate: input_tokens + max_output_tokens ≤
           context_window.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Unbounded conversation history</strong> causes context window
           exhaustion in multi-turn conversations. Each turn adds the user&apos;s
@@ -325,7 +344,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Codebase understanding</strong> — developers paste entire
           code files or directory structures into the context window for the
           model to analyze. The challenge is fitting large codebases (100K+
@@ -335,8 +357,8 @@ export default function ArticlePage() {
           only for the most relevant files), symbol extraction (extract function
           signatures and class definitions as a map), and intelligent ranking
           (files modified recently or referenced by the user query go first).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Long document analysis</strong> — processing legal contracts,
           research papers, or financial reports that exceed the model&apos;s
           context window. The approach is chunk-and-summarize: split the
@@ -344,7 +366,7 @@ export default function ArticlePage() {
           chunk, then combine the summaries for a final analysis. This enables
           processing documents of arbitrary length with models of any context
           size.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Multi-turn customer support</strong> — maintaining context
           across dozens of conversation turns between a customer and a support
@@ -358,13 +380,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: What is the &quot;lost in the middle&quot; phenomenon and how
             does it affect your system design?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The &quot;lost in the middle&quot; phenomenon, documented by Liu et
             al. (2023), shows that LLMs exhibit a U-shaped pattern in their
             ability to retrieve information from long contexts: they most
@@ -372,8 +397,8 @@ export default function ArticlePage() {
             the context, while information in the middle is significantly less
             likely to be retrieved. The effect is strongest for contexts above
             8K tokens and becomes more pronounced as context length increases.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             This affects system design in several ways. First, retrieved
             documents should be ranked by relevance and placed with the most
             relevant at the beginning (right after the system prompt) and the
@@ -383,7 +408,7 @@ export default function ArticlePage() {
             Third, for document processing, chunking strategies should ensure
             that each chunk&apos;s key information is at the chunk&apos;s
             beginning or end, not in the middle.
-          </p>
+          </HighlightBlock>
           <p>
             The phenomenon is rooted in how the attention mechanism works — as
             sequence length increases, the attention distribution becomes more

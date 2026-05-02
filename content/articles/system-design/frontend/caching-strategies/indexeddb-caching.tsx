@@ -142,12 +142,22 @@ export default function IndexedDBCachingConciseArticle() {
           reads from and writes to IndexedDB first, then synchronizes with the server in the background. This
           pattern requires a sync queue, conflict resolution strategy, and network status awareness.
         </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          At scale, the hard parts are lifecycle and coordination: schema changes require versioned upgrades, and an
+          old tab holding an open connection can block an upgrade for every other tab. Plan for
+          <strong>multi-tab</strong> behavior (graceful &quot;please refresh&quot; UX) and consider how you
+          gate writes during migrations.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Treat quota and eviction as production constraints. Large stores can be evicted under storage pressure or
+          cleared by users, so you need a recovery path: detect missing data, rehydrate from the network, and fall back
+          to a smaller cached working set when space is constrained.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/caching-strategies/offline-sync-flow.svg"
           alt="Offline Sync Flow - IndexedDB as local source of truth with background synchronization"
           caption="Offline sync architecture: IndexedDB serves as the local data layer, with a sync queue that drains when connectivity is restored"
-          captionTier="important"
         />
 
         <p>
@@ -164,6 +174,11 @@ export default function IndexedDBCachingConciseArticle() {
           IndexedDB is the right tool when you need{" "}
           <Highlight tier="important">large structured data</Highlight> with queries and transactions. If you just need
           to cache fetch responses, prefer the Cache API; if you just need a handful of keys, prefer localStorage.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          IndexedDB buys you async storage and queryability, but at the cost of API complexity (transactions,
+          version upgrades, error handling) and operational edge cases (blocked upgrades, cross-tab contention).
+          In interviews, call out that you typically wrap it (Dexie/idb) rather than hand-rolling raw event handlers.
         </HighlightBlock>
         <p>Understanding when to use IndexedDB requires comparing it against other client-side storage mechanisms:</p>
         <table className="w-full border-collapse">
@@ -473,22 +488,26 @@ export default function IndexedDBCachingConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: IndexedDB is your durable client-side database. Use these references to understand schema
+          upgrades/transactions, and to choose a wrapper library that makes production usage sane.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN Web Docs - IndexedDB API
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://dexie.org/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Dexie.js - A Minimalistic Wrapper for IndexedDB
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://web.dev/articles/indexeddb" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev - Working with IndexedDB
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://www.w3.org/TR/IndexedDB-3/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               W3C - Indexed Database API 3.0 Specification

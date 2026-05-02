@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,13 +34,16 @@ export default function CredentialRotationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Credential Rotation</strong> is the systematic practice of periodically changing
           authentication credentials — passwords, tokens, API keys, and signing keys — to limit the
           impact of compromised credentials. It is a fundamental security practice that protects
           user accounts, prevents unauthorized access, and maintains compliance with security
           standards.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/credential-rotation-flow.svg"
@@ -47,14 +51,14 @@ export default function CredentialRotationArticle() {
           caption="Credential Rotation Flow — showing scheduled rotation, compromise-triggered rotation, and validation workflows"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing credential rotation requires deep
           understanding of password policies (NIST guidelines, breach-based rotation), token
           rotation patterns (refresh token rotation, reuse detection), key rotation strategies
           (JWKS, key overlap, HSM storage), and operational concerns (user experience, emergency
           rotation, compliance). The implementation must balance security (frequent rotation) with
           usability (not frustrating users) while supporting high-volume rotation operations.
-        </p>
+        </HighlightBlock>
         <p>
           Modern credential rotation has evolved from mandatory 90-day password changes (which NIST
           now discourages) to risk-based, breach-triggered rotation. Organizations like Google,
@@ -67,19 +71,22 @@ export default function CredentialRotationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Credential rotation is built on fundamental concepts that determine how credentials are
           rotated, validated, and invalidated. Understanding these concepts is essential for
           designing effective rotation systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Password Rotation:</strong> The practice of requiring users to change passwords
           periodically. NIST SP 800-63B now recommends against mandatory periodic rotation (users
           choose weak passwords like Password1, Password2). Instead, require rotation only when
           compromise is detected (breach database match, suspicious activity) or for high-risk
           accounts (admin, privileged access). Prevent password reuse (last 5 passwords), enforce
           minimum length (12+ characters), and check against breach databases (Have I Been Pwned).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Token Rotation:</strong> The practice of issuing new tokens and invalidating old
           ones. For OAuth flows, access tokens are short-lived (15-60 minutes) and refreshed using
@@ -105,11 +112,14 @@ export default function CredentialRotationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Credential rotation architecture separates rotation logic from credential storage,
           enabling centralized rotation management with distributed validation. This architecture
           is critical for scaling rotation across distributed systems.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/token-rotation.svg"
@@ -117,7 +127,7 @@ export default function CredentialRotationArticle() {
           caption="Token Rotation — showing refresh token rotation, invalidation, and reuse detection workflow"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The token rotation flow starts when a client presents a refresh token to obtain a new
           access token. The authorization server validates the refresh token (signature, expiry),
           marks it as used, generates a new refresh token and access token, stores the new refresh
@@ -125,7 +135,7 @@ export default function CredentialRotationArticle() {
           presented, the server detects reuse, revokes all sessions for that user, alerts the
           security team, and requires re-authentication with MFA. This pattern prevents token
           theft attacks where attackers steal refresh tokens from compromised clients.
-        </p>
+        </HighlightBlock>
         <p>
           Key rotation architecture uses JWKS (JSON Web Key Set) to publish public keys for token
           validation. The JWKS endpoint returns multiple keys with key ID (kid), each with
@@ -153,25 +163,28 @@ export default function CredentialRotationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing credential rotation systems involves trade-offs between security, usability,
           and operational complexity. Understanding these trade-offs is essential for making
           informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Scheduled vs Breach-Based Rotation</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Scheduled (90-day):</strong> Traditional approach, compliance-friendly.
               Limitation: users choose weak passwords (Password1, Password2), creates support
               burden, false sense of security.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Breach-Based:</strong> Rotate only when compromise detected (breach database
               match, suspicious activity). Limitation: requires breach detection infrastructure,
               may miss undetected compromises.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Hybrid:</strong> No scheduled rotation for standard users, mandatory for
               high-risk accounts (admin, privileged). Best balance — security where it matters,
@@ -219,20 +232,23 @@ export default function CredentialRotationArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing credential rotation requires following established best practices to ensure
           security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement token rotation for all refresh tokens — new token on each use, old one
           invalidated. Detect and respond to token reuse — if old token presented, revoke all
           sessions, alert security team, require MFA re-authentication. Rotate signing keys
           regularly (90 days) — automate key rotation, use HSM for key storage, support key overlap
           during transition. Revoke all sessions on credential change — increment session version,
           force re-authentication.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
         <p>
@@ -264,21 +280,24 @@ export default function CredentialRotationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing credential rotation to ensure secure,
           usable, and maintainable rotation systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No token rotation:</strong> Refresh tokens valid indefinitely, stolen tokens
             usable forever. <strong>Fix:</strong> Rotate refresh tokens on each use, invalidate old
             token immediately.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No reuse detection:</strong> Stolen tokens can be reused without detection.{" "}
             <strong>Fix:</strong> Mark tokens as used, detect reuse, revoke all sessions on reuse,
             require MFA re-authentication.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Forced periodic expiry:</strong> Users choose weak passwords (Password1,
             Password2) to comply with 90-day rotation. <strong>Fix:</strong> Breach-based rotation
@@ -322,17 +341,20 @@ export default function CredentialRotationArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Credential rotation is critical for organizations with security and compliance
           requirements. Here are real-world implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SSO (Okta/Azure AD)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Enterprise with 10,000 employees using Okta for SSO. Need to
           rotate signing keys without disrupting user access, comply with SOC 2 requirements,
           support emergency rotation if key compromised.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Automated key rotation every 90 days. JWKS endpoint with
           multiple keys (kid). Overlap period (30 days) — sign with new key, validate with any
@@ -433,14 +455,17 @@ export default function CredentialRotationArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of credential rotation design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Should passwords expire periodically?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Should passwords expire periodically?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: NIST SP 800-63B now recommends against periodic expiry — users choose weak
               passwords (Password1, Password2) to comply. Prefer breach-based rotation — require

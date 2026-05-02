@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,12 +36,15 @@ export default function SubscriptionLifecycleManagementArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Subscription lifecycle management manages the complete journey of a subscription from creation to expiration: trial → active → past_due → cancelled → expired. Each state has specific behaviors (billing, access, notifications), transitions are triggered by events (payment success, payment failure, customer cancellation), and dunning management recovers failed payments. For staff and principal engineers, subscription lifecycle involves state machine design (states, transitions, guards), dunning orchestration (retry logic, communication), churn prevention (win-back offers, save flows), and subscription metrics (MRR, churn rate, LTV).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of subscription lifecycle extends beyond simple state transitions. Subscriptions have multiple states (trial, active, past_due, cancelled, expired, paused), each with different billing behavior (bill, don&apos;t bill), access levels (full access, limited access, no access), and communication requirements (welcome emails, payment failure notifications, cancellation confirmations). Dunning management handles failed payments (retry logic, communication cadence, final failure). Churn prevention identifies at-risk subscribers (usage decline, payment failures) and triggers save flows (discount offers, feature upgrades). The system must handle edge cases (mid-cycle changes, prorated upgrades, grace periods) gracefully with clear communication.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, subscription lifecycle architecture involves state machine implementation (states, transitions, guards), event-driven architecture (state change events, billing events, dunning events), and subscription analytics (cohort analysis, churn analysis, LTV calculation). The system must support multiple subscription types (fixed-term, evergreen, usage-based), multiple billing frequencies (weekly, monthly, annual), and multiple dunning strategies (aggressive, conservative, custom). Analytics track subscription health (active subscriptions, churn rate, recovery rate), dunning effectiveness (recovery rate by attempt, communication effectiveness), and churn patterns (voluntary vs. involuntary churn, churn by cohort).
         </p>
@@ -48,13 +52,16 @@ export default function SubscriptionLifecycleManagementArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Subscription States</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Trial state: subscription in trial period. Access: full access (all features), limited access (some features), or time-limited (14 days, 30 days). Billing: no charges during trial, card verification (authorize $1, void immediately), auto-convert (trial → active at end). Transitions: trial → active (trial ends, payment success), trial → cancelled (customer cancels during trial), trial → expired (trial ends, payment failure). Communication: welcome email (trial started), trial ending soon (3 days before), trial ended (converted or expired).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Active state: subscription active and billing. Access: full access (all features), role-based access (different plans, different features). Billing: recurring charges (monthly, annual), usage-based charges (per API call, per GB), overage charges (exceed limits). Transitions: active → past_due (payment failure), active → cancelled (customer cancels), active → expired (final payment failure). Communication: billing receipts (each charge), upcoming renewal (7 days before), plan change confirmations (upgrade, downgrade).
-        </p>
+        </HighlightBlock>
         <p>
           Past_due state: subscription payment failed, grace period active. Access: full access (grace period), limited access (reduced features), or no access (suspended). Billing: retry payment (retry logic, retry schedule), late fees (optional, configurable). Transitions: past_due → active (payment success), past_due → cancelled (customer cancels), past_due → expired (grace period ends). Communication: payment failed (immediate), retry reminder (before retry), final notice (before expiration).
         </p>
@@ -115,9 +122,12 @@ export default function SubscriptionLifecycleManagementArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Subscription lifecycle architecture spans state machine, dunning orchestration, churn prevention, and subscription analytics. State machine manages subscription states (trial, active, past_due, cancelled, expired), transitions (state changes), and guards (transition requirements). Dunning orchestration handles payment recovery (retry logic, communication cadence, access levels). Churn prevention identifies at-risk subscribers (churn signals, scoring) and triggers save flows (save offers, win-back campaigns). Subscription analytics tracks metrics (MRR, churn rate, LTV) and provides insights (cohort analysis, churn analysis).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/subscription-lifecycle-management/lifecycle-architecture.svg"
@@ -128,9 +138,9 @@ export default function SubscriptionLifecycleManagementArticle() {
         />
 
         <h3>State Machine Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Subscription state machine defines states and transitions. States: trial, active, past_due, cancelled, expired, paused (optional). Transitions: trial → active, active → past_due, past_due → active, past_due → expired, active → cancelled, cancelled → expired, cancelled → active, expired → active. Guards: payment success (trial → active), payment failure (active → past_due), max retries (past_due → expired), customer request (active → cancelled). Implementation: state machine library (XState, StateMachine), custom implementation (state table, transition logic), event-driven (state change events, trigger actions).
-        </p>
+        </HighlightBlock>
         <p>
           State persistence stores subscription state. Storage: subscription table (subscription_id, customer_id, state, state_changed_at, trial_ends_at, current_period_start, current_period_end), state history table (subscription_id, from_state, to_state, transitioned_at, reason, metadata). Indexes: customer_id (fetch customer subscriptions), state (fetch subscriptions by state), current_period_end (fetch renewals due). Queries: active subscriptions (state = active), renewals due (current_period_end &lt; now + 7 days), past_due subscriptions (state = past_due).
         </p>
@@ -190,14 +200,17 @@ export default function SubscriptionLifecycleManagementArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Subscription lifecycle design involves trade-offs between retention, revenue, customer experience, and operational complexity. Understanding these trade-offs enables informed decisions aligned with business model and customer expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Dunning: Aggressive vs. Conservative</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Aggressive dunning (immediate suspension, frequent retries). Pros: Higher recovery rate (urgency to pay), lower bad debt (collect sooner), clear signal (payment required). Cons: Higher churn (customers leave if suspended), customer frustration (access lost immediately), support tickets (customers contact support). Best for: Low-margin businesses (can&apos;t afford bad debt), B2C (lower switching costs), high involuntary churn (need recovery).
-        </p>
+        </HighlightBlock>
         <p>
           Conservative dunning (grace period, infrequent retries). Pros: Lower churn (retain customers), better customer experience (grace period, understanding), fewer support tickets (customers don&apos;t panic). Cons: Higher bad debt (collect later, may not collect), lower recovery rate (less urgency), revenue delay (collect later). Best for: High-margin businesses (can afford grace period), B2B (higher switching costs, relationships), low involuntary churn (rare payment failures).
         </p>
@@ -249,13 +262,16 @@ export default function SubscriptionLifecycleManagementArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement clear state machine:</strong> Define states (trial, active, past_due, cancelled, expired), transitions (state changes), guards (transition requirements). Use state machine library (XState, StateMachine) or custom implementation. Log all state changes (audit trail, debugging).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Design effective dunning:</strong> Retry schedule (1 day, 3 days, 7 days, 14 days), communication cadence (payment failed, retry reminder, final notice), access levels (full, limited, none). Tier by segment (VIP = conservative, standard = aggressive).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement churn prevention:</strong> Churn scoring (usage decline, payment issues, support tickets), save flows (cancellation survey, save offers), win-back campaigns (post-cancellation, post-expiration). Track save rate (% offered, % accepted).
           </li>
@@ -285,13 +301,16 @@ export default function SubscriptionLifecycleManagementArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Unclear state machine:</strong> States not defined, transitions ambiguous. Solution: Define states clearly, document transitions, implement guards.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No dunning strategy:</strong> No retry logic, no communication. Solution: Implement retry schedule, communication cadence, access levels.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Poor communication:</strong> Unclear emails, no CTAs, impersonal. Solution: Clear subject lines, clear CTAs, personalization, multiple channels.
           </li>
@@ -321,16 +340,19 @@ export default function SubscriptionLifecycleManagementArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Netflix Subscription Lifecycle</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix subscription lifecycle: trial (30 days free, full access), active (monthly billing, full access), past_due (payment failed, retry logic, full access during grace period), cancelled (access until period end, win-back offers), expired (access lost, data retained 10 months). Dunning: 3 retry attempts (day 1, 3, 7), email communication (payment failed, retry reminder, final notice), full access during dunning (retain value). Churn prevention: usage monitoring (viewing frequency, engagement), save offers (plan downgrade, pause), win-back campaigns (new content, special offers).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Spotify Subscription Lifecycle</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Spotify subscription lifecycle: trial (30 days free, limited skip), active (monthly billing, full access), past_due (payment failed, retry logic, limited access during dunning), cancelled (access until period end, win-back offers), expired (access lost, playlists retained). Dunning: 3 retry attempts (day 1, 3, 7), email + push communication (payment failed, retry reminder, final notice), limited access during dunning (ads, limited skip). Churn prevention: usage monitoring (listening frequency, playlist engagement), save offers (student discount, family plan), win-back campaigns (new features, special offers).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Salesforce Subscription Lifecycle</h3>
         <p>
@@ -350,12 +372,15 @@ export default function SubscriptionLifecycleManagementArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design subscription state machine?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design subscription state machine?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> States: trial, active, past_due, cancelled, expired, paused (optional). Transitions: trial → active (trial ends), active → past_due (payment failure), past_due → active (payment recovery), past_due → expired (max retries), active → cancelled (customer request), cancelled → expired (period ends), cancelled → active (reactivation). Guards: payment success (trial → active), payment failure (active → past_due), max retries (past_due → expired), customer request (active → cancelled). Implementation: state machine library (XState, StateMachine), state persistence (subscription table, state history table), state change events (trigger actions, notifications).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

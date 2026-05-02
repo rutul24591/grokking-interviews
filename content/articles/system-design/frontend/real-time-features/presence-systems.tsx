@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,7 @@ export default function PresenceSystemsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           <strong>Presence systems</strong> track and broadcast the real-time
           status of users within an application — whether they are online,
           offline, idle, away, in a meeting, or actively engaged in a specific
@@ -52,8 +53,8 @@ export default function PresenceSystemsArticle() {
           when people choose to send messages (preferring to reach someone who
           is online), create a sense of shared space in remote collaboration,
           and reduce the uncertainty of asynchronous communication.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           From a systems design perspective, presence is deceptively complex.
           The fundamental challenge is that presence is inherently distributed
           and ephemeral: a user might have multiple devices (phone, laptop,
@@ -65,8 +66,8 @@ export default function PresenceSystemsArticle() {
           while minimizing both false positives (showing someone as online when
           they are not) and false negatives (showing someone as offline when
           they are actively using the app on another device).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The scale challenge compounds the technical difficulty. A messaging
           application with 10 million online users generates presence updates
           at enormous volume: each heartbeat from each user produces an event
@@ -79,7 +80,7 @@ export default function PresenceSystemsArticle() {
           subscription, lazy evaluation (only computing presence for users
           whose status is being viewed), and tiered propagation that prioritizes
           updates for actively visible contacts.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, designing a presence system is a
           classic distributed systems problem that touches on consistency
@@ -109,7 +110,7 @@ export default function PresenceSystemsArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Heartbeat Protocol and Timeout Detection
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           The heartbeat protocol is the foundation of presence detection. Each
           connected client periodically sends a lightweight signal (a
           &quot;heartbeat&quot; or &quot;ping&quot;) to the presence server,
@@ -123,12 +124,12 @@ export default function PresenceSystemsArticle() {
           Production systems typically use a 30-second heartbeat with a
           90-second timeout, meaning a user appears offline 60-90 seconds
           after actually disconnecting.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Multi-Device Presence Merging
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Modern users are simultaneously connected from multiple devices — a
           laptop browser tab, a mobile app, and possibly a desktop client.
           The presence system must merge these signals into a single coherent
@@ -143,12 +144,12 @@ export default function PresenceSystemsArticle() {
           active on another. Custom statuses (Do Not Disturb, In a Meeting)
           are typically set explicitly by the user and take priority over
           computed statuses.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Typing Indicators and Activity Signals
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Typing indicators are a specialized form of presence that broadcast
           a user&apos;s in-progress activity. When a user begins typing in a
           chat input, the client sends a &quot;typing started&quot; event to
@@ -164,7 +165,7 @@ export default function PresenceSystemsArticle() {
           page,&quot; and &quot;user is editing this field&quot; — each
           following the same pattern of throttled emission, server broadcast,
           and client-side expiration.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Subscription and Fan-out Models
@@ -212,13 +213,18 @@ export default function PresenceSystemsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Production presence architectures are designed around the
           observation that most presence data is neither viewed nor immediately
           needed. The system optimizes for the common case — efficiently
           computing and delivering presence only for users who are actively
           being observed.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Treat presence as an eventually-consistent signal: you optimize for
+          freshness and cost, but you must also define explicit timeouts, jitter
+          handling, and multi-device merging semantics so UX remains predictable.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/real-time-features/presence-systems-diagram-2.svg"
@@ -226,7 +232,7 @@ export default function PresenceSystemsArticle() {
           caption="Figure 2: Distributed presence architecture with tiered fan-out"
         />
 
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           The architecture separates three concerns: heartbeat ingestion
           (receiving and timestamping heartbeats from millions of connections),
           status computation (merging multi-device sessions and determining
@@ -241,7 +247,7 @@ export default function PresenceSystemsArticle() {
           to observe. The tiered fan-out layer ensures that only actively
           viewed presence indicators generate real-time push events — others
           are resolved on-demand when the UI element becomes visible.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -251,16 +257,16 @@ export default function PresenceSystemsArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Presence system design involves fundamental trade-offs between
           accuracy, latency, bandwidth, and server cost. The following
           comparison evaluates different approaches to presence detection and
           propagation.
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-theme text-sm">
             <thead>
-              <tr className="bg-panel">
+              <HighlightBlock as="tr" tier="important">
                 <th className="border border-theme px-4 py-2 text-left">
                   Approach
                 </th>
@@ -270,10 +276,10 @@ export default function PresenceSystemsArticle() {
                 <th className="border border-theme px-4 py-2 text-left">
                   Disadvantages
                 </th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody>
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="border border-theme px-4 py-2 font-medium">
                   Connection-based (online while connected)
                 </td>
@@ -283,7 +289,7 @@ export default function PresenceSystemsArticle() {
                 <td className="border border-theme px-4 py-2">
                   Cannot distinguish active from idle; disconnects during network blips cause flicker
                 </td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="border border-theme px-4 py-2 font-medium">
                   Heartbeat-based (periodic pings)
@@ -328,24 +334,24 @@ export default function PresenceSystemsArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Implement a hybrid presence model that combines connection state
             (for fast disconnect detection), heartbeats (for zombie connection
             detection), and user activity events (for idle vs. active
             differentiation)
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Use &quot;last seen&quot; timestamps instead of binary
             online/offline for users who are not currently active — showing
             &quot;last seen 5 minutes ago&quot; is more informative and less
             privacy-invasive than a hard offline status
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Throttle typing indicators to one event per 2-3 seconds and
             implement a client-side expiration timer (4-5 seconds) — this
             prevents event storms during fast typing and ensures the indicator
             disappears if the sender closes the tab without sending
-          </li>
+          </HighlightBlock>
           <li>
             Use Redis with TTL-based keys for heartbeat storage — set the key
             on each heartbeat with a TTL equal to the offline timeout. When
@@ -382,24 +388,24 @@ export default function PresenceSystemsArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Status flicker</strong> — showing rapid online/offline
             transitions during network instability. Users find this distracting
             and lose trust in the indicator. Add a debounce or grace period
             before transitioning to offline
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Phantom online users</strong> — users shown as online long
             after they have left because heartbeat timeouts are too long or
             zombie connections are not detected. Tune the heartbeat interval
             and implement connection-level health checks
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Typing indicator stuck on</strong> — a typing indicator
             that never disappears because the sender closed the tab or lost
             connectivity before the &quot;stopped typing&quot; event was sent.
             Always implement a client-side expiration timer on the receiver
-          </li>
+          </HighlightBlock>
           <li>
             <strong>O(N²) fan-out</strong> — broadcasting every presence
             change to every subscriber creates quadratic messaging volume.
@@ -431,7 +437,7 @@ export default function PresenceSystemsArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Slack: Workspace-Wide Presence at Scale
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Slack&apos;s presence system manages real-time status for millions of
           concurrent users across thousands of workspaces. Each user&apos;s
           presence is determined by a combination of WebSocket connection
@@ -447,12 +453,12 @@ export default function PresenceSystemsArticle() {
           auto-expire unless the user sets a duration. Their presence
           fan-out is optimized to only push real-time updates to workspace
           members who have the sidebar visible.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Google Docs: Document Collaboration Presence
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Google Docs implements context-specific presence that goes beyond
           simple online/offline indicators. Each collaborator&apos;s cursor
           position, selection range, and currently viewed page section are
@@ -466,12 +472,12 @@ export default function PresenceSystemsArticle() {
           in the toolbar uses a separate, less granular presence system that
           counts unique users with the document open, updated every few
           seconds rather than in real-time, to reduce server load.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           WhatsApp: Privacy-Centric Presence
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           WhatsApp&apos;s presence system demonstrates how privacy
           requirements shape technical design. Users can control who sees
           their &quot;last seen&quot; and online status: everyone, contacts
@@ -484,7 +490,7 @@ export default function PresenceSystemsArticle() {
           inherently enforces privacy policies — the server never has a
           complete picture of any user&apos;s presence, only the updates they
           have chosen to share with specific contacts.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/real-time-features/presence-systems-diagram-3.svg"
@@ -498,14 +504,17 @@ export default function PresenceSystemsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How would you design a presence system for a messaging
               application with 10 million concurrent users?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               Use a distributed architecture: heartbeat ingestion through
               stateless gateway servers writing to Redis with TTL keys
               (per-user-session, TTL = offline timeout). Status computation as a
@@ -516,14 +525,14 @@ export default function PresenceSystemsArticle() {
               for background contexts, lazy evaluation for off-screen users.
               Use channel-level aggregation (member count) instead of individual
               presence where possible.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do you handle the transition from online to offline without
               status flicker?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               Implement a grace period (5-10 seconds) before transitioning to
               offline. When a connection drops, start a timer rather than

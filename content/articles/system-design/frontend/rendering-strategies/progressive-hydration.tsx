@@ -38,7 +38,7 @@ export default function ProgressiveHydrationConciseArticle() {
           incrementally hydrates remaining components based on priority,
           viewport visibility, or user interaction.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           This approach emerged as a solution to the &quot;hydration
           problem&quot; in SSR applications. Traditional SSR sends
           fully-rendered HTML to the browser, providing fast First Contentful
@@ -47,8 +47,8 @@ export default function ProgressiveHydrationConciseArticle() {
           During this hydration period (often 3-8 seconds on mobile), the page
           appears interactive but is actually frozen - clicks and interactions
           are ignored or queued, creating a frustrating user experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Progressive hydration addresses this by breaking the monolithic
           hydration process into smaller, prioritized chunks. Critical
           interactive elements (navigation, forms, buttons above-the-fold)
@@ -60,15 +60,15 @@ export default function ProgressiveHydrationConciseArticle() {
             requestIdleCallback
           </code>
           .
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This technique is particularly valuable for content-heavy sites,
           e-commerce platforms, and news sites where fast Time to Interactive
           (TTI) is crucial for user engagement and conversion rates. Companies
           like Airbnb, Shopify, and The Guardian have reported significant
           improvements in TTI and user engagement after implementing progressive
           hydration strategies.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -78,26 +78,26 @@ export default function ProgressiveHydrationConciseArticle() {
           concepts:
         </p>
         <ul>
-          <HighlightBlock as="li" tier="important">
+          <HighlightBlock as="li" tier="crucial">
             <strong>Hydration Priority Levels:</strong> Components are assigned
             priority levels (critical, high, normal, low, idle) based on their
             importance to user experience. Critical components include
             navigation, hero sections, and forms. Low-priority components
             include analytics, chat widgets, and footer content.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Visibility-Based Hydration:</strong> Using Intersection
             Observer API to detect when components enter the viewport.
             Components outside the visible area remain as static HTML until
             scrolled into view, reducing initial JavaScript execution time.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Interaction-Based Hydration:</strong> Deferring hydration
             until user interaction. A static button or form remains
             non-interactive until clicked, at which point it hydrates instantly.
             This works for components where slight delay is acceptable.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Idle-Time Hydration:</strong> Leveraging browser idle
             periods using
             <code className="mx-1 rounded bg-slate-700 px-1.5 py-0.5 text-sm">
@@ -105,19 +105,19 @@ export default function ProgressiveHydrationConciseArticle() {
             </code>{" "}
             to hydrate low-priority components without blocking the main thread
             during critical rendering.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Code Splitting Integration:</strong> Progressive hydration
             works hand-in-hand with code splitting. Each component&apos;s
             hydration code is split into separate bundles, loaded on-demand when
             needed, reducing initial JavaScript payload.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Suspense Boundaries:</strong> In React 18+, Suspense
             boundaries enable progressive hydration by allowing independent
             hydration of component trees. Each Suspense boundary can hydrate
             separately without blocking others.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -125,7 +125,11 @@ export default function ProgressiveHydrationConciseArticle() {
         <h2>Architecture & Flow</h2>
         <p>Progressive hydration follows a multi-stage process:</p>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
+        <HighlightBlock
+          as="div"
+          tier="important"
+          className="my-6 rounded-lg bg-panel-soft p-6"
+        >
           <h3 className="mb-4 text-lg font-semibold">
             Progressive Hydration Flow
           </h3>
@@ -180,7 +184,14 @@ export default function ProgressiveHydrationConciseArticle() {
               Hydrate components when user interacts
             </li>
           </ol>
-        </div>
+        </HighlightBlock>
+
+        <HighlightBlock as="p" tier="important">
+          In interviews, expect follow-ups on how you set priorities: you
+          typically combine product intent (conversion-critical flows) with real
+          user behavior (RUM funnels, click heatmaps) and guardrails (perf
+          budgets per tier).
+        </HighlightBlock>
 
         <HighlightBlock as="p" tier="crucial">
           This staged approach ensures users can interact with critical parts of
@@ -213,7 +224,7 @@ export default function ProgressiveHydrationConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Time to Interactive</strong>
               </td>
@@ -227,8 +238,8 @@ export default function ProgressiveHydrationConciseArticle() {
                 <br />
                 All-or-nothing interactivity
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Initial JS Payload</strong>
               </td>
@@ -242,7 +253,7 @@ export default function ProgressiveHydrationConciseArticle() {
                 <br />
                 Everything loads upfront
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>User Experience</strong>
@@ -262,7 +273,7 @@ export default function ProgressiveHydrationConciseArticle() {
                 Frustrating delay
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Complexity</strong>
               </td>
@@ -280,8 +291,8 @@ export default function ProgressiveHydrationConciseArticle() {
                 <br />
                 Easy to implement
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Core Web Vitals</strong>
               </td>
@@ -299,7 +310,7 @@ export default function ProgressiveHydrationConciseArticle() {
                 <br />
                 High TBT
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Mobile Performance</strong>
@@ -354,18 +365,18 @@ export default function ProgressiveHydrationConciseArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Prioritize Based on User Intent:</strong> Analyze user
             behavior to determine which components users interact with first.
             Navigation, search, and primary CTAs should always be critical
             priority. Use analytics to inform priority decisions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Suspense Boundaries Strategically:</strong> In React
             18+, wrap each priority level in separate Suspense boundaries. This
             enables independent hydration and prevents one slow component from
             blocking others.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement Intersection Observer:</strong> For below-the-fold
             content, use Intersection Observer with appropriate rootMargin
@@ -378,12 +389,12 @@ export default function ProgressiveHydrationConciseArticle() {
             time. Set reasonable timeout (2-3s) as fallback since
             requestIdleCallback isn&apos;t supported everywhere.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Code Split Aggressively:</strong> Each lazily hydrated
             component should be in its own bundle. Use dynamic imports with
             React.lazy() or Next.js dynamic(). Keep critical bundle under
             50-70KB gzipped.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Provide Meaningful Fallbacks:</strong> While components
             hydrate, show skeleton screens or lightweight placeholders. Avoid
@@ -395,40 +406,40 @@ export default function ProgressiveHydrationConciseArticle() {
             hardware, not just Chrome DevTools throttling. Aim for &lt;1s TTI on
             mid-range Android (Moto G4/G5).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Monitor Performance Metrics:</strong> Track TTI, TBT (Total
             Blocking Time), and INP (Interaction to Next Paint) with Real User
             Monitoring (RUM). Set performance budgets for each priority level.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle Hydration Errors Gracefully:</strong> Wrap hydration
             logic in error boundaries. If hydration fails, fall back to static
             HTML. Log errors to monitoring service for debugging.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Document Priority Levels:</strong> Maintain clear
             documentation of which components belong to which priority tier and
             why. This helps team members make consistent decisions when adding
             new features.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Over-Prioritizing Everything:</strong> Marking too many
             components as &quot;critical&quot; defeats the purpose. Be ruthless
             - only navigation, hero section, and primary CTAs should be
             critical. Everything else can wait.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Hydration Mismatches:</strong> Server HTML must
             exactly match client-rendered output, or React will throw hydration
             errors and re-render everything (killing performance). Avoid
             randomness, timestamps, or client-only logic in SSR code.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not Testing Edge Cases:</strong> What happens if a component
             fails to hydrate? What if JavaScript is disabled? Ensure graceful
@@ -445,17 +456,17 @@ export default function ProgressiveHydrationConciseArticle() {
             to disconnect observers after hydration creates memory leaks. Always
             cleanup in useEffect return or componentWillUnmount.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Loading Too Much Too Soon:</strong> Starting to load a
             component when it&apos;s 50% visible is too late. Use generous
             rootMargin (100-200px) to start loading before user scrolls to it.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Blocking Critical Hydration:</strong> Ensure critical
             components don&apos;t have heavy dependencies. If your Navigation
             imports a 200KB library, that blocks TTI. Lazy load dependencies
             too.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Poor Error Handling:</strong> If a low-priority component
             fails to load, don&apos;t let it crash the app. Use error boundaries
@@ -474,44 +485,44 @@ export default function ProgressiveHydrationConciseArticle() {
         <p>Progressive hydration excels in these scenarios:</p>
 
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>E-commerce Product Pages:</strong> Shopify, Amazon, and Etsy
             use progressive hydration to make &quot;Add to Cart&quot; buttons
             interactive within 500ms while deferring reviews, recommendations,
             and footer hydration. This directly improves conversion rates -
             every 100ms delay in interactivity costs 1% conversion.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>News & Media Sites:</strong> The Guardian, NYTimes, and
             Washington Post progressively hydrate article pages. The reading
             experience (scrolling, text selection) works immediately while
             comments, related articles, and ads hydrate later. This reduces
             bounce rate from frustrated users.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Social Media Feeds:</strong> Twitter and Facebook hydrate
             visible posts first, then progressively hydrate off-screen content
             as users scroll. Infinite scroll triggers hydration of new posts
             on-demand.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>SaaS Dashboards:</strong> Notion, Linear, and Airtable
             hydrate critical navigation and primary views first, then lazy load
             heavy components (charts, editors, sidebars) as needed. This makes
             apps feel instant even with complex functionality.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Documentation Sites:</strong> Next.js docs, React docs, and
             MDN progressively hydrate the main content area first, then sidebar
             navigation, then footer. Search is prioritized since it&apos;s
             heavily used.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Marketing Landing Pages:</strong> High-conversion landing
             pages use progressive hydration to make hero CTAs interactive within
             200-300ms while deferring testimonials, feature grids, and analytics
             scripts.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Booking Platforms:</strong> Airbnb, Booking.com hydrate
             search filters and date pickers first (critical for user intent),
@@ -539,7 +550,11 @@ export default function ProgressiveHydrationConciseArticle() {
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="crucial"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">
               Q: How does progressive hydration improve Time to Interactive?
             </p>
@@ -552,9 +567,13 @@ export default function ProgressiveHydrationConciseArticle() {
               &quot;frozen page&quot; problem where users click but nothing
               happens.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="important"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">
               Q: How do you decide component priority levels?
             </p>
@@ -566,9 +585,13 @@ export default function ProgressiveHydrationConciseArticle() {
               footer. Avoid assumptions - use real user behavior data to inform
               priorities.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="important"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">
               Q: What&apos;s the difference between progressive, selective, and
               partial hydration?
@@ -581,14 +604,14 @@ export default function ProgressiveHydrationConciseArticle() {
               (visibility, interaction, time). All three solve the same problem
               (slow hydration) with different approaches.
             </p>
-          </div>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>References & Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://web.dev/progressive-hydration/"
               className="text-accent hover:underline"
@@ -597,8 +620,8 @@ export default function ProgressiveHydrationConciseArticle() {
             >
               Progressive Hydration - web.dev
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://react.dev/reference/react/Suspense"
               className="text-accent hover:underline"
@@ -607,8 +630,8 @@ export default function ProgressiveHydrationConciseArticle() {
             >
               React 18 Suspense Documentation
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading"
               className="text-accent hover:underline"
@@ -617,8 +640,8 @@ export default function ProgressiveHydrationConciseArticle() {
             >
               Next.js Lazy Loading & Code Splitting
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://docs.astro.build/en/concepts/islands/"
               className="text-accent hover:underline"
@@ -627,7 +650,7 @@ export default function ProgressiveHydrationConciseArticle() {
             >
               Astro Islands Architecture
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://qwik.builder.io/docs/concepts/resumable/"

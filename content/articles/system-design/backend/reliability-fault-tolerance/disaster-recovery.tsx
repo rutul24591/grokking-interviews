@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 const BASE_PATH = "/diagrams/system-design-concepts/backend/reliability-fault-tolerance";
@@ -28,12 +29,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Disaster recovery (DR)</strong> is the set of strategies, architectures, and procedures used to restore critical services and data after catastrophic failures that exceed the scope of routine failover. These events include region-wide outages, data center destruction, large-scale data corruption, ransomware attacks, or security incidents that compromise an entire environment. Unlike routine high-availability failover—which handles individual node or rack failures—disaster recovery addresses scenarios where an entire primary site is unavailable or untrustworthy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           DR is governed by two key objectives: <strong>Recovery Time Objective (RTO)</strong> defines the maximum acceptable duration of service disruption—the time from disaster declaration to service restoration. <strong>Recovery Point Objective (RPO)</strong> defines the maximum acceptable data loss window—the point in time to which data must be recovered. A system with an RTO of 4 hours and an RPO of 15 minutes must be able to restore service within 4 hours and lose no more than 15 minutes of data. These objectives are not technical targets; they are business requirements derived from revenue impact, regulatory mandates, and user expectations.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, disaster recovery is not an optional insurance policy—it is a design constraint that shapes architecture from day one. The choice between synchronous and asynchronous data replication, the decision to deploy pilot light versus warm standby, the automation of infrastructure provisioning in the recovery site, and the coordination of failover across interdependent services all trace back to RTO and RPO requirements. DR planning that happens after architecture is finalized will always be inadequate.
         </p>
@@ -50,6 +54,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/dr-strategy-comparison.svg`}
@@ -58,12 +65,12 @@ export default function ArticlePage() {
         />
 
         <h3>DR Strategy Spectrum</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Disaster recovery strategies exist on a spectrum from minimal readiness to full redundancy. At the minimal end, <strong>backup and restore</strong> (cold standby) relies on periodic backups stored in a separate region or cloud provider. Recovery requires provisioning infrastructure, restoring data from backups, and validating correctness. RTO can range from hours to days, and RPO depends on backup frequency. This strategy is appropriate for non-critical systems where downtime is tolerable and cost must be minimized.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Pilot light</strong> architecture maintains a minimal version of the environment in the recovery region—core databases are running and continuously replicating, but application servers are not provisioned or run at minimal capacity. During a disaster, application servers are scaled up, traffic is routed, and the system comes online. RTO ranges from 30 minutes to 2 hours, and RPO depends on replication lag. This strategy balances cost and recovery time by keeping only the essential components warm.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Warm standby</strong> maintains a scaled-down but fully functional version of the application in the recovery region. Application servers are running but handling minimal or no traffic, databases are replicating, and configuration is synchronized. During a disaster, the standby is scaled up and traffic is redirected. RTO ranges from minutes to 30 minutes, with RPO determined by replication lag. This is the most common strategy for business-critical systems. <strong>Active-active</strong> maintains fully provisioned, fully serving environments in multiple regions with bidirectional data replication. RTO is near-zero and RPO is minimal, but cost is effectively doubled. This strategy is reserved for the most critical systems where any downtime is unacceptable.
         </p>
@@ -113,12 +120,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production-grade DR architecture begins with infrastructure parity between the primary and recovery environments. The recovery environment must be continuously provisioned—at minimum in pilot light form—and must be capable of receiving the same deployment artifacts as production. Infrastructure as Code (IaC) tools like Terraform, CloudFormation, or Pulumi enable rapid, consistent provisioning of the recovery environment. Configuration drift between primary and recovery environments is one of the most common causes of DR failure, and continuous drift detection should be part of the operational monitoring stack.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data replication is the backbone of RPO compliance. For relational databases, options include synchronous replication (zero data loss but higher latency and write performance impact), asynchronous replication (lower latency impact but potential data loss within the replication lag window), and log-shipping or continuous backup (near-zero data loss with controlled restore points). The choice depends on the RPO requirement and the tolerance for write latency impact. Cross-region replication always introduces latency, and synchronous replication across regions with high network latency may be impractical for write-heavy workloads.
-        </p>
+        </HighlightBlock>
         <p>
           The traffic routing layer must support rapid redirection from the primary to the recovery site. DNS-based failover is simple but slow—DNS TTL caching means clients may continue sending traffic to the failed site for the duration of the TTL. Load balancer-based failover is faster and supports connection draining, but is limited to routing within the same network boundary. A hybrid approach uses DNS for cross-region routing (accepting the TTL delay) and load balancers for intra-region failover (enabling rapid local recovery). The failover trigger must be based on multiple health signals to avoid false positives that cause unnecessary cutover.
         </p>
@@ -132,12 +142,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The primary trade-off in DR design is between cost and recovery capability. Active-active multi-region deployments provide near-zero RTO and minimal RPO but effectively double infrastructure costs and introduce significant operational complexity—bidirectional data replication, conflict resolution, cross-region consistency, and traffic management across regions. Warm standby reduces cost by 40-60% compared to active-active while providing RTO in the range of minutes, but introduces a recovery window during which the system is unavailable. Pilot light reduces cost further but requires 30 minutes to 2 hours for recovery. Backup and restore is the cheapest option but carries the highest risk of extended downtime and data loss.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The service-tiering approach resolves this trade-off by matching DR strategy to business impact. Revenue-critical, user-facing services receive active-active or warm standby investment. Internal tooling, analytics, and non-critical batch processing can use pilot light or backup and restore. The key is to make this decision explicit and documented, not implicit and discovered during an incident. Every service should have a declared DR tier with corresponding RTO and RPO targets.
-        </p>
+        </HighlightBlock>
         <p>
           Synchronous versus asynchronous data replication presents another critical trade-off. Synchronous replication guarantees zero data loss (RPO of zero) but adds write latency proportional to the network round-trip time between regions. For regions separated by thousands of kilometers, this latency can be 50-100ms per write, which is unacceptable for latency-sensitive applications. Asynchronous replication adds negligible write latency but introduces an RPO window equal to the replication lag, which can range from seconds to minutes depending on throughput and network conditions. Most production systems use asynchronous replication for cross-region DR and accept the small data loss window.
         </p>
@@ -151,12 +164,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tier every service by business impact and define explicit RTO and RPO targets for each tier. Revenue-critical and user-facing services should have tight RTO and RPO (minutes). Internal tools and batch processing can tolerate looser objectives (hours). Document these targets and ensure that every dependency of a service meets the same tier—if a service requires 5-minute RTO but depends on an identity service with 2-hour RTO, the effective RTO is 2 hours regardless of the service's own DR investment.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Maintain infrastructure parity between primary and recovery environments using Infrastructure as Code. The recovery environment should be continuously provisioned, even if only in pilot light form, and should receive the same deployment artifacts as production. Run continuous drift detection to identify and remediate configuration differences between environments. A DR plan that requires a special one-off deployment path will fail under pressure because the special path is not practiced and not understood by the team.
-        </p>
+        </HighlightBlock>
         <p>
           Run regular DR drills that exercise the full failover sequence end to end. Measure RTO and RPO achievement, record the number of manual steps required, and identify bottlenecks in the restoration process. Include ambiguous scenarios in drills to test the system's behavior when health signals are uncertain. After each drill, document gaps, update runbooks, and fix identified issues. DR readiness should decay over time as architecture evolves, so drills must be recurring, not one-time exercises.
         </p>
@@ -170,12 +186,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is an untested DR plan. Teams invest in DR infrastructure—replication, standby environments, runbooks—but never execute a full-region failover drill until a real disaster occurs. During the real event, they discover that runbooks are incomplete, credentials are missing, replication is misconfigured, or key engineers are unavailable. An untested DR plan provides false confidence and is often worse than no plan at all, because the false confidence delays alternative recovery approaches.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A second pitfall is dependency gaps in DR scope. Teams replicate their application services and databases but forget critical dependencies like identity providers, DNS configuration, secrets management, observability infrastructure, or CI/CD pipelines. When the disaster occurs, the application is restored but users cannot authenticate, engineers cannot deploy fixes, and no one can monitor system health. DR scope must include every dependency that is required for the system to function, not just the components the team directly controls.
-        </p>
+        </HighlightBlock>
         <p>
           A third pitfall is configuration drift between primary and recovery environments. Over time, the primary environment accumulates configuration changes—new environment variables, updated library versions, modified security groups—that are not replicated to the recovery environment. When failover occurs, the recovery environment behaves differently than expected, causing cascading failures. Continuous drift detection and automated configuration synchronization are essential to prevent this.
         </p>
@@ -189,16 +208,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Financial Services: Regulatory DR Compliance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A financial services company is subject to regulatory requirements mandating RTO under 2 hours and RPO under 5 minutes for trading systems. The architecture uses warm standby in a geographically separate region with asynchronous database replication at sub-minute lag. DNS-based traffic routing with reduced TTLs (60 seconds) enables rapid failover. Monthly DR drills are conducted with full failover execution, RTO/RPO measurement, and regulatory reporting. The DR plan includes clean-room recovery procedures for security incidents with credential rotation from offline secure storage. Regulatory audits validate DR readiness quarterly.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce: Black Friday DR Preparation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce platform implements warm standby DR before peak shopping events. The recovery region is scaled up to match production capacity 48 hours before the event, replication lag is verified to be under 30 seconds, and a full DR drill is executed. During the event, the team monitors primary region health with automated failover triggers for complete site unavailability. The DR plan prioritizes checkout and payment services first, with analytics and recommendation engines restored secondarily. This tiered approach ensures revenue-critical paths are recovered first if a disaster occurs.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS: Multi-Cloud DR Strategy</h3>
         <p>
@@ -216,14 +238,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between RTO and RPO?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               RTO (Recovery Time Objective) is the maximum acceptable duration of service disruption—the time from disaster declaration to the point where the service is operational and serving users. RPO (Recovery Point Objective) is the maximum acceptable data loss window—the point in time to which data must be recovered. If a disaster occurs at 10:00 AM and the RPO is 15 minutes, the system must be able to restore all data up to at least 9:45 AM.
-            </p>
+            </HighlightBlock>
             <p>
               Together, RTO and RPO determine the minimum viable DR strategy. Tight RTO requires pre-provisioned infrastructure and automated failover. Tight RPO requires continuous or near-continuous data replication. These constraints directly influence cost: tighter objectives require more expensive architectures like active-active multi-region versus warm standby or pilot light.
             </p>

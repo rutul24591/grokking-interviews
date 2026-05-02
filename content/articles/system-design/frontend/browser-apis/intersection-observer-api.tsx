@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,15 +37,15 @@ export default function IntersectionObserverAPIArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Intersection Observer API</strong> provides a programmatic way to asynchronously observe changes in the intersection of a target element with an ancestor element or viewport. This API represents a fundamental shift from the traditional approach of listening to scroll events and manually calculating element positions using getBoundingClientRect, which was not only verbose but also performance-problematic due to the frequency of scroll events and the layout thrashing caused by repeated DOM queries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Intersection Observer API was introduced to address a common need in web development: detecting when elements become visible or invisible within the viewport. Before this API, developers relied on scroll event listeners combined with manual position calculations. This approach had several critical flaws: scroll events fire at the refresh rate of the display (typically 60 times per second), each getBoundingClientRect call forces a synchronous layout recalculation, and the combination could easily cause jank and poor scroll performance, especially on mobile devices with limited CPU resources.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Intersection Observer solves these problems by running asynchronously in a separate thread, batching observations, and only invoking callbacks when intersection changes actually occur. The browser can optimize the observation process, deferring calculations until they are actually needed and avoiding unnecessary layout recalculations. This results in significantly better scroll performance and reduced main thread blocking, which is critical for maintaining 60fps scroll performance on all devices.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, Intersection Observer is essential for implementing modern web performance patterns: lazy loading images (loading images only when they are about to enter the viewport), infinite scroll (loading more content when the user scrolls near the bottom), scroll-based animations (triggering animations when elements become visible), and analytics tracking (tracking when content actually becomes visible to users, not just when it is loaded). Understanding the API's capabilities, limitations, and performance characteristics is essential for building performant, modern web applications.
         </p>
@@ -57,15 +58,15 @@ export default function IntersectionObserverAPIArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Observer:</strong> The IntersectionObserver instance that watches target elements for intersection changes. Created with a callback function and options object (root, rootMargin, threshold). A single observer can efficiently watch multiple target elements, with the browser batching observations and invoking the callback only when intersection changes occur. The callback receives an array of IntersectionObserverEntry objects, each describing the intersection state of one target element.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Target:</strong> The DOM element(s) being observed for intersection changes. Call observer.observe(element) to start watching an element, and observer.unobserve(element) to stop watching a specific element. Call observer.disconnect() to stop watching all elements and clean up the observer. Multiple targets can be observed with a single observer, which is more efficient than creating multiple observers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Intersection Ratio:</strong> A number between 0.0 and 1.0 indicating what percentage of the target element is visible within the root or viewport. 0.0 means the target is completely invisible, 1.0 means the target is completely visible, and 0.5 means 50% of the target is visible. This ratio is used to trigger callbacks at specific visibility thresholds.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Threshold:</strong> An array of intersection ratios at which the callback should be invoked. For example, threshold: [0] triggers when any part of the element becomes visible, threshold: [1] triggers when the element becomes fully visible, and threshold: [0, 0.5, 1] triggers at multiple visibility levels (0%, 50%, and 100% visible). Choose thresholds based on your specific use case.
           </li>
@@ -92,12 +93,12 @@ export default function IntersectionObserverAPIArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Intersection Observer architecture consists of observer creation (with callback and options), target registration (observe elements), and callback handling (respond to intersection changes). The architecture must handle batching (multiple observations delivered together in a single callback invocation), threshold-based triggering (callback invoked only when crossing specified thresholds), and cleanup (disconnect when done to prevent memory leaks).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The observer runs asynchronously in a separate thread from the main JavaScript thread, which means it does not block the main thread and does not cause jank or scroll performance issues. The browser batches observations and invokes the callback only when intersection changes actually occur, rather than on every scroll event. This is fundamentally more efficient than the traditional scroll event listener approach.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/browser-apis/lazy-loading-patterns.svg"
@@ -108,9 +109,9 @@ export default function IntersectionObserverAPIArticle() {
         />
 
         <h3>Common Use Cases</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Image Lazy Loading:</strong> Observe all images on the page with a rootMargin (e.g., "200px" to start loading 200 pixels before the image enters the viewport). When an image intersects the expanded viewport, load the actual image source by copying the data-src attribute to the src attribute. After the image is loaded, unobserve the image to stop observing it and free up resources. This pattern can reduce initial page load time by 50% or more for image-heavy pages, directly improving Core Web Vitals metrics like Largest Contentful Paint (LCP) and reducing bandwidth usage for users who do not scroll to the bottom of the page.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Infinite Scroll:</strong> Place a sentinel element (an empty div or similar) at the bottom of the content feed. Observe the sentinel element with Intersection Observer. When the sentinel intersects the viewport (meaning the user has scrolled near the bottom), trigger the loading of more content. Maintain a loading state to prevent multiple simultaneous loads (ignore observer callbacks while loading is in progress). After new content is loaded and appended, the sentinel moves to the new bottom, and the process repeats. Handle the empty state (no more content to load) by disconnecting the observer when there is no more content to load.
         </p>
@@ -133,17 +134,17 @@ export default function IntersectionObserverAPIArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Intersection Observer involves trade-offs between convenience, control, browser support, and performance. Understanding these trade-offs is essential for making informed decisions about when to use Intersection Observer and when to use alternative approaches.
-        </p>
+        </HighlightBlock>
 
         <h3>Intersection Observer vs. Scroll Events</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Scroll Events:</strong> The traditional approach of listening to scroll events and manually calculating element positions using getBoundingClientRect. Advantages: full control over when and how calculations are performed, works in all browsers including very old browsers. Limitations: scroll events fire at the refresh rate of the display (typically 60 times per second), each getBoundingClientRect call forces a synchronous layout recalculation, the combination can easily cause jank and poor scroll performance especially on mobile devices with limited CPU resources, requires manual throttling or debouncing to reduce the frequency of calculations. Best for: legacy browser support where Intersection Observer is not available.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Intersection Observer:</strong> The modern approach of asynchronously observing intersection changes. Advantages: efficient (browser optimizes observations and batches callbacks), does not block the main thread, simple API (no manual position calculations needed), no throttling or debouncing required. Limitations: newer API (Internet Explorer not supported, requires polyfill for older browsers), less fine-grained control over when callbacks are invoked (callback is invoked only when intersection changes, not on every scroll). Best for: modern browsers, performance-critical applications where scroll performance is important.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Hybrid Approach:</strong> Use Intersection Observer where available, fall back to scroll events for older browsers. Detect API support using feature detection ('IntersectionObserver' in window). If supported, use Intersection Observer. If not supported, fall back to scroll events with throttling. This provides the best of both worlds: modern performance in modern browsers, compatibility in older browsers. Best for: maximum compatibility while maintaining performance in modern browsers.
         </p>
@@ -172,15 +173,15 @@ export default function IntersectionObserverAPIArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Unobserve After Trigger:</strong> Once a lazy-loaded element is loaded, call unobserve to stop observing the element. This prevents unnecessary callbacks (the callback will not be invoked again for that element) and frees up resources. For images: load the source (copy data-src to src), wait for the image to load (listen for the load event), then call unobserve. For animations: trigger the animation (add a CSS class), then call unobserve. This pattern ensures that each element is observed only until it is no longer needed, reducing the overhead of the observer.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use rootMargin for Preloading:</strong> Set rootMargin to expand the root bounding box (e.g., rootMargin: "200px" triggers 200 pixels before the element enters the viewport). This gives time to load content before the user scrolls to it, providing a smoother user experience. For lazy loading images, use rootMargin: "200px" to start loading images 200 pixels before they enter the viewport. This ensures that images are loaded before the user scrolls to them, avoiding the flash of unloaded images. For infinite scroll, use rootMargin: "100px" to start loading more content 100 pixels before the user reaches the bottom, providing a seamless infinite scroll experience.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Handle Loading State:</strong> For infinite scroll, maintain a loading state to prevent multiple simultaneous loads. When the sentinel intersects, check the loading state. If loading is in progress, ignore the callback (do not trigger another load). If loading is not in progress, set loading to true, trigger the load, and reset loading to false when the load is complete. Show a loading indicator (spinner, skeleton, etc.) while loading is in progress. This pattern prevents duplicate requests and provides visual feedback to users.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cleanup on Unmount:</strong> Call observer.disconnect() when the component unmounts or when observation is no longer needed. This prevents memory leaks (the observer holds references to observed elements, preventing garbage collection) and stale callbacks (the callback will not be invoked for elements that are no longer in the DOM). In React, call disconnect in the useEffect cleanup function. In other frameworks, call disconnect in the appropriate lifecycle hook (e.g., componentWillUnmount in class components).
           </li>
@@ -197,15 +198,15 @@ export default function IntersectionObserverAPIArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not Unobserving:</strong> Observing elements forever causes memory leaks (the observer holds references to observed elements, preventing garbage collection) and unnecessary callbacks (the callback will be invoked every time the element intersects the viewport, even after it is no longer needed). Always call unobserve after the element is loaded or when observation is no longer needed. Always call disconnect when the component unmounts or when observation is no longer needed.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Loading State:</strong> For infinite scroll, not maintaining a loading state causes multiple simultaneous loads (the callback is invoked multiple times while loading is in progress, triggering multiple loads). This wastes bandwidth, overloads the server, and can cause race conditions (the order of responses may not match the order of requests). Always maintain a loading state and ignore callbacks while loading is in progress.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No Placeholder:</strong> Lazy loading without placeholder content causes layout shift (the page jumps when the actual content loads) and poor perceived performance (users see a blank space while the content is loading). Always use placeholder content (gray box, blur-up image, skeleton loader) to reserve space and provide visual feedback.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Wrong Threshold:</strong> Using threshold: 1 for lazy loading triggers too late (the element must be fully visible before the callback is invoked, which means the user will see the unloaded element). Use threshold: 0 with rootMargin for preloading (callback is invoked when any part of the element is visible, and rootMargin expands the viewport to trigger earlier). Choose thresholds based on your specific use case.
           </li>
@@ -223,19 +224,19 @@ export default function IntersectionObserverAPIArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>E-Commerce Image Lazy Loading</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           E-commerce sites (Amazon, Shopify stores) lazy load product images on category pages and search results pages. Intersection Observer triggers image load when the product card nears the viewport (using rootMargin to start loading before the image is visible). Placeholder images (gray boxes or blur-up images) are shown while the actual images are loading. Result: 50% or more reduction in initial page load time, faster time to interactive, improved Core Web Vitals metrics (LCP), reduced bandwidth usage for users who do not scroll to the bottom of the page. This directly improves user experience and search engine rankings (Core Web Vitals are a ranking factor).
-        </p>
+        </HighlightBlock>
 
         <h3>Social Media Infinite Scroll</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms (Twitter, Instagram, Facebook, TikTok) use infinite scroll for content feeds. A sentinel element is placed at the bottom of the feed. Intersection Observer triggers when the sentinel intersects the viewport (meaning the user has scrolled near the bottom). New content is loaded and appended seamlessly, providing an endless content discovery experience without pagination friction. Loading state prevents multiple simultaneous loads. This pattern improves user engagement (users discover more content) and reduces friction (no need to click "next page" buttons).
-        </p>
+        </HighlightBlock>
 
         <h3>Content Site Scroll Animations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Content sites (marketing sites, blogs, portfolios) use scroll animations for engagement. Elements (text, images, cards) fade in, slide up, or scale up when they enter the viewport. Intersection Observer triggers CSS class changes when elements become visible. CSS transitions provide smooth animations. This pattern creates engaging, modern user experiences without the performance cost of scroll event listeners. The animations are triggered only when elements are actually visible, avoiding unnecessary animations for elements that are off-screen.
-        </p>
+        </HighlightBlock>
 
         <h3>Analytics Impression Tracking</h3>
         <p>
@@ -249,18 +250,18 @@ export default function IntersectionObserverAPIArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: How does Intersection Observer work and why is it more efficient than scroll events?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Intersection Observer asynchronously observes target elements and notifies when intersection with the viewport changes. It is more efficient than scroll events for several reasons: the observer runs in a separate thread from the main JavaScript thread, so it does not block the main thread. The browser batches observations and invokes the callback only when intersection changes actually occur, rather than on every scroll event. There is no need for manual position calculations (getBoundingClientRect), which force synchronous layout recalculations. There is no need for throttling or debouncing, because the browser handles the optimization internally. Scroll events fire at the refresh rate of the display (typically 60 times per second), each getBoundingClientRect call forces a synchronous layout recalculation, and the combination can easily cause jank and poor scroll performance. Intersection Observer avoids all of these problems.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do you implement image lazy loading with Intersection Observer?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Create an Intersection Observer with a callback that checks if the entry is intersecting. For each image, set the actual image URL in a data-src attribute (not the src attribute, to prevent the browser from loading the image immediately). Call observe on the image element. In the callback, when entry.isIntersecting is true, copy the data-src attribute to the src attribute (this triggers the browser to load the image). Wait for the image to load (listen for the load event), then call unobserve on the image element to stop observing it. Use rootMargin (e.g., "200px") to start loading images 200 pixels before they enter the viewport, providing a smoother user experience. Use placeholder images (gray boxes or blur-up images) to prevent layout shift and improve perceived performance.
             </p>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function FollowSubscribeUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Follow and subscribe UI enables users to build their social graph by establishing connections with other users, creators, or topics. When a user follows another account, they commit to seeing that account's content in their feed on an ongoing basis. This makes the follow decision more significant than ephemeral engagement like likes—it represents sustained interest rather than momentary appreciation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Different platforms use different terminology reflecting their unique positioning. Twitter and Instagram use "follow" for one-way connections where the follower sees the followed user's content without requiring mutual agreement. YouTube uses "subscribe" emphasizing the ongoing content consumption relationship. LinkedIn uses "connect" for mutual two-way relationships requiring acceptance, alongside "follow" for one-way connections to influencers. TikTok uses "follow" with emphasis on creator-fan relationships.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, follow UI implementation involves navigating significant technical and social challenges. The system must integrate with social graph databases that efficiently store and query follower relationships at scale. It must power feed generation algorithms that rank content from followed accounts. The architecture must handle follow suggestions that help users discover relevant accounts. Privacy controls must support private accounts that require approval. Additionally, engineers must consider abuse prevention through rate limiting, anti-spam measures, and tools for users to manage their social graph.
         </p>
@@ -47,13 +51,16 @@ export default function FollowSubscribeUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Follow Button States</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The follow button operates through multiple states reflecting the relationship status. The default unconnected state displays a prominent "Follow" or "Subscribe" button inviting the user to connect. When activated, the button transitions to a "Following" or "Subscribed" state with subdued styling indicating the active relationship. Clicking again initiates unfollow with an optional confirmation dialog to prevent accidental disconnections.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Private accounts introduce a pending state. When following a private account, the button displays "Requested" until the account owner approves. During this pending period, the user cannot see the account's content. The account owner receives a notification and can approve or deny the request. Approved requests transition to following state, while denied requests revert to unconnected state.
-        </p>
+        </HighlightBlock>
         <p>
           Some platforms implement intermediate states for special relationships. Instagram shows "Follow Back" when the followed user already follows you, highlighting the mutual connection. Twitter shows "Follows You" badge on profiles of users who follow you. LinkedIn distinguishes between "Connected" (mutual) and "Following" (one-way) relationships with different visual treatments.
         </p>
@@ -94,9 +101,12 @@ export default function FollowSubscribeUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Follow UI architecture spans client interaction, API design, social graph storage, and downstream system integration. The client component manages button state, loading indicators, and error handling. The API layer validates follow requests, enforces rate limits, and updates relationship records. The social graph stores follower relationships efficiently for fast queries. Downstream systems consume follow events to update feeds, send notifications, and refresh recommendations.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/interaction-engagement/follow-subscribe-ui/follow-architecture.svg"
@@ -107,9 +117,9 @@ export default function FollowSubscribeUIArticle() {
         />
 
         <h3>Client Component Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The follow button component maintains local state for the connection status, pending action state, and error state. On user interaction, it immediately updates the visual state using optimistic updates, then fires the API request in the background. If the API succeeds, the pending state clears. If the API fails, the component reverts to the previous state and displays an error notification with retry option.
-        </p>
+        </HighlightBlock>
         <p>
           Follow buttons appear in multiple contexts throughout the platform: user profiles, search results, follow suggestion carousels, and follower/following lists. Each context may require different button styling and size while maintaining consistent behavior. The component should be reusable across contexts with props controlling appearance and behavior variations.
         </p>
@@ -161,14 +171,17 @@ export default function FollowSubscribeUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Follow UI design involves numerous trade-offs affecting network growth, user experience, and system complexity. Understanding these trade-offs enables informed decisions aligned with platform goals.
-        </p>
+        </HighlightBlock>
 
         <h3>One-Way vs Two-Way Connections</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           One-way follow relationships maximize network growth speed and content distribution. Users can follow anyone without permission barriers, enabling rapid audience building for creators. The asymmetry reflects real-world celebrity-fan dynamics. However, one-way follows can create imbalanced relationships where users follow many accounts that don't follow back, potentially reducing engagement.
-        </p>
+        </HighlightBlock>
         <p>
           Two-way connect relationships create higher-quality connections with mutual interest. Both parties must agree, ensuring bidirectional engagement. This model works well for professional networks where relationship quality matters more than quantity. However, the friction of requiring acceptance slows network growth and can create anxiety around connection requests that go unanswered.
         </p>
@@ -209,13 +222,16 @@ export default function FollowSubscribeUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use optimistic updates:</strong> Update the follow button state immediately on click, then sync to the server. Revert on failure with clear error messaging and retry option. Users expect instant feedback for simple actions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Show follower counts:</strong> Display follower and following counts on profiles. Social proof influences follow decisions. Update counts in real-time for active profiles, with eventual consistency acceptable for large accounts.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Provide follow suggestions:</strong> Surface relevant accounts to follow based on social graph, interests, and activity. Refresh suggestions regularly as user interests evolve. Allow users to dismiss suggestions to improve future recommendations.
           </li>
@@ -236,13 +252,16 @@ export default function FollowSubscribeUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No optimistic updates:</strong> Waiting for server confirmation before updating UI introduces noticeable latency. Users perceive the follow action as slow or broken. Always use optimistic updates for follow actions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Inaccurate follower counts:</strong> Counts that don't update or show stale values erode trust. Implement proper cache invalidation and periodic reconciliation between cached and database counts.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Poor follow suggestions:</strong> Irrelevant suggestions (already followed accounts, inactive users, completely unrelated accounts) frustrate users and reduce feature effectiveness. Invest in suggestion quality with multiple ranking signals.
           </li>
@@ -260,16 +279,19 @@ export default function FollowSubscribeUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter Follow Model</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter pioneered the modern one-way follow model for social media. Users can follow any public account without approval. The follow button shows "Follow" for unconnected users and "Following" for active connections. Twitter shows follower counts prominently and provides extensive follow suggestions based on social graph and interests. The platform handles hundreds of millions of follow actions daily with sharded databases and cached counts.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">YouTube Subscribe Model</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           YouTube uses subscribe terminology emphasizing content consumption. Subscribers receive notifications about new videos and see content in their subscription feed. YouTube shows subscriber counts publicly, creating social proof for creators. The platform introduced subscription tiers allowing creators to offer paid subscription levels with exclusive benefits, monetizing the subscribe relationship.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">LinkedIn Connect Model</h3>
         <p>
@@ -284,12 +306,15 @@ export default function FollowSubscribeUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you generate follow suggestions?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you generate follow suggestions?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Combine multiple signals for follow suggestions. Social graph analysis finds friends of friends—people connected to users you already follow. Interest-based matching analyzes content you engage with and surfaces similar creators. Imported contacts match your email/phone contacts against platform users. Activity-based suggestions show accounts followed by users with similar behavior patterns. Rank suggestions by predicted follow probability using machine learning models trained on historical follow data.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

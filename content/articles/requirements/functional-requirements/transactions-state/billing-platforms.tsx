@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function BillingPlatformsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Billing platforms provide comprehensive billing infrastructure: subscription management, invoicing, proration, tax calculation, dunning, and revenue recognition. Platforms include Stripe Billing, Chargebee, Recurly, Zuora, and others. Platform selection impacts development velocity (build vs. buy), operational complexity (platform manages billing), and cost (platform fees vs. development cost). For staff and principal engineers, billing platform architecture involves platform evaluation (features, cost, scalability), integration patterns (API integration, webhooks, SDKs), multi-platform routing (route by region, by customer segment), and migration strategies (platform migration, data migration).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of billing platforms extends beyond simple API integration. Different platforms have different APIs (REST, GraphQL, SDKs), different features (subscription management, invoicing, tax calculation), different pricing models (percentage of revenue, flat fee, per-transaction), and different scalability (startup-friendly, enterprise-ready). Integration patterns vary by platform (direct API, webhooks, SDKs, middleware). Multi-platform routing optimizes for cost (route to cheapest platform), features (route to platform with required features), and geography (route to platform with regional support). Migration strategies handle platform migration (from platform A to platform B), data migration (customer data, subscription data, billing history), and cutover (gradual cutover, big-bang cutover).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, billing platform architecture involves platform abstraction (unified platform interface), routing logic (route by cost, features, geography), and migration orchestration (data migration, cutover, rollback). The system must support multiple platforms (Stripe Billing, Chargebee, Recurly), multiple integration patterns (direct API, webhooks, SDKs), and multiple migration strategies (gradual cutover, big-bang cutover). Analytics track platform performance (success rate, latency, cost), routing effectiveness (cost savings, feature availability), and migration progress (data migrated, customers migrated, issues resolved).
         </p>
@@ -47,13 +51,16 @@ export default function BillingPlatformsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Platform Comparison</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe Billing: developer-friendly billing platform. Features: subscription management (recurring billing, usage-based billing), invoicing (professional invoices, multiple formats), proration (daily proration, mid-cycle changes), tax calculation (Stripe Tax, automatic tax), dunning (retry logic, communication cadence). Pricing: 0.5% of successful invoices (subscription billing), 0.5% + Stripe payment processing fees (payment processing). Best for: Startups, developers, Stripe users (existing Stripe integration), simple to complex billing (flexible platform).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Chargebee: subscription billing platform. Features: subscription management (recurring billing, usage-based billing), invoicing (professional invoices, multiple formats), proration (daily proration, mid-cycle changes), tax calculation (Avalara, TaxJar integration), dunning (retry logic, communication cadence). Pricing: Starter ($0/month, up to $100K revenue), Growth ($200/month, up to $200K revenue), Professional ($450/month, up to $450K revenue). Best for: SMBs, growing businesses, multi-gateway support (Stripe, Braintree, PayPal), complex billing (usage-based, tiered pricing).
-        </p>
+        </HighlightBlock>
         <p>
           Recurly: subscription billing platform. Features: subscription management (recurring billing, usage-based billing), invoicing (professional invoices, multiple formats), proration (daily proration, mid-cycle changes), tax calculation (automatic tax, multiple jurisdictions), dunning (retry logic, communication cadence), revenue recognition (GAAP compliance, deferred revenue). Pricing: Core ($249/month, up to $50K MRR), Professional ($549/month, up to $250K MRR), Enterprise (custom pricing). Best for: SMBs, enterprise, revenue recognition (GAAP compliance), complex billing (usage-based, tiered pricing).
         </p>
@@ -108,9 +115,12 @@ export default function BillingPlatformsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Billing platform architecture spans platform abstraction, routing logic, integration layer, and migration orchestration. Platform abstraction provides unified platform interface (create subscription, generate invoice, charge payment). Routing logic routes to optimal platform (cost, features, geography). Integration layer integrates with platforms (API integration, webhooks, SDKs). Migration orchestration handles platform migration (data migration, cutover, rollback).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/billing-platforms/platform-architecture.svg"
@@ -121,9 +131,9 @@ export default function BillingPlatformsArticle() {
         />
 
         <h3>Platform Abstraction</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Unified platform interface defines common operations. Operations: create subscription (customer, plan, billing cycle), generate invoice (customer, billing period, line items), charge payment (invoice, payment method), refund payment (payment, amount, reason), cancel subscription (subscription, cancellation date, proration). Request: customer info (customer ID, payment method, billing address), subscription info (plan, billing cycle, start date), invoice info (billing period, line items, tax info). Response: success/failure, subscription ID, invoice ID, payment ID, error code, error message.
-        </p>
+        </HighlightBlock>
         <p>
           Platform adapters implement unified interface. Adapters: StripeBillingAdapter (Stripe Billing API), ChargebeeAdapter (Chargebee API), RecurlyAdapter (Recurly API), ZuoraAdapter (Zuora API). Implementation: translate unified request to platform-specific request, translate platform-specific response to unified response, handle platform-specific errors (map to unified errors). Benefits: swap platforms (change adapter), test platforms (mock adapter), multi-platform (route to different adapters).
         </p>
@@ -183,14 +193,17 @@ export default function BillingPlatformsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Billing platform design involves trade-offs between development effort, operational complexity, cost, and flexibility. Understanding these trade-offs enables informed decisions aligned with business requirements and operational capabilities.
-        </p>
+        </HighlightBlock>
 
         <h3>Build vs. Buy: In-House vs. Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In-house billing (build your own). Pros: Full control (customize billing logic, features), no vendor dependency (don&apos;t rely on third-party), lower cost (no vendor fees, at scale). Cons: High complexity (billing logic, tax calculation, compliance), high maintenance (billing changes, compliance updates), high risk (billing errors, compliance penalties). Best for: Large businesses (&gt;$100M revenue, billing team), specific requirements (custom billing logic, custom features), cost-sensitive (high volume, vendor fees expensive).
-        </p>
+        </HighlightBlock>
         <p>
           Platform billing (Stripe Billing, Chargebee, Recurly, Zuora). Pros: Simplified (platform handles billing logic, tax calculation, compliance), faster time-to-market (quick integration, quick launch), lower risk (platform liable for errors, compliance). Cons: Vendor dependency (rely on third-party), vendor cost (platform fees, per-transaction fees), less control (platform controls logic, features). Best for: Most production systems—simplified, faster, lower risk.
         </p>
@@ -242,13 +255,16 @@ export default function BillingPlatformsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use platform abstraction:</strong> Unified interface (create subscription, generate invoice, charge payment), adapters per platform (StripeBillingAdapter, ChargebeeAdapter), easy to swap (change adapter). Benefits: swap platforms, test platforms, multi-platform routing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement multi-platform routing:</strong> Route by cost (cheapest platform), features (platform with required features), geography (platform with regional support). Benefits: cost savings (0.5-1% of revenue), feature availability (required features available), regional support (tax compliance, local payment methods).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use SDK integration:</strong> Platform SDKs (official SDKs, community SDKs), simplified integration (SDK handles API, authentication), language-specific (SDKs for multiple languages). Benefits: simplified integration, official support, language-specific.
           </li>
@@ -278,13 +294,16 @@ export default function BillingPlatformsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No platform abstraction:</strong> Tied to single platform, hard to switch. Solution: Unified interface, adapters per platform, easy to swap.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Single platform dependency:</strong> Platform down = no billing. Solution: Multi-platform (primary + backup), failover routing, automatic failover.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Poor integration:</strong> Direct API without SDK, complex integration. Solution: Use SDKs (official SDKs, community SDKs), simplified integration, official support.
           </li>
@@ -314,16 +333,19 @@ export default function BillingPlatformsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Stripe Billing for SaaS Startup</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SaaS startup uses Stripe Billing for subscription management. Features: recurring billing (monthly, annual plans), usage-based billing (API calls, storage), invoicing (professional invoices, email delivery), proration (mid-cycle upgrades, downgrades), dunning (retry logic, email communication). Integration: Stripe SDK (Node.js SDK), webhooks (subscription events, payment events), direct API (custom logic, custom features). Benefits: developer-friendly (easy integration, good documentation), scalable (handles growth, handles volume), cost-effective (0.5% of invoices, no monthly fees).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Chargebee for Growing E-commerce</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Growing e-commerce uses Chargebee for subscription boxes. Features: subscription management (recurring billing, usage-based billing), invoicing (professional invoices, multiple formats), proration (daily proration, mid-cycle changes), tax calculation (Avalara integration, multiple jurisdictions), dunning (retry logic, communication cadence). Integration: Chargebee SDK (Python SDK), webhooks (subscription events, payment events), middleware (Zapier, sync with e-commerce platform). Benefits: multi-gateway support (Stripe, Braintree, PayPal), complex billing (usage-based, tiered pricing), growing business (scales with revenue, handles complexity).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Recurly for Enterprise SaaS</h3>
         <p>
@@ -343,12 +365,15 @@ export default function BillingPlatformsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you select a billing platform?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you select a billing platform?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Criteria: feature requirements (subscription management, invoicing, proration, tax calculation, dunning, revenue recognition), cost evaluation (platform fees, payment processing fees, integration costs, operational costs), scalability evaluation (transaction volume, revenue volume, customer count, feature complexity). Evaluation: platform features (match against requirements), platform roadmap (future features, platform direction), platform references (customer references, case studies). Decision: platform selection (select platform, negotiate contract), integration planning (integration approach, timeline, resources).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 const BASE_PATH = "/diagrams/system-design-concepts/backend/network-communication";
@@ -38,7 +39,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Server-Sent Events (SSE) is a W3C-recommended standard that enables a
           server to push a unidirectional stream of text-based events to a
           browser or HTTP client over a single, long-lived HTTP connection.
@@ -50,8 +54,8 @@ export default function ArticlePage() {
           as part of HTML5 and is supported by all modern browsers, making it
           the simplest real-time communication mechanism available on the web
           platform without requiring any external libraries or protocols.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The defining characteristic of SSE is its asymmetry: data flows only
           from server to client. If the client needs to communicate with the
           server, it must use a separate HTTP request. This constraint is not a
@@ -65,7 +69,7 @@ export default function ArticlePage() {
           communication: live notification feeds, real-time dashboards, stock
           tickers, build progress streams, and AI-generated token streaming in
           large language model interfaces.
-        </p>
+        </HighlightBlock>
         <p>
           SSE operates over standard HTTP/1.1 or HTTP/2, which means it works
           through any HTTP-compatible proxy, load balancer, or CDN that respects
@@ -83,7 +87,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The SSE wire format is deliberately minimal. Each event is composed of
           one or more fields terminated by a blank line (double newline). The
           recognized fields are &quot;data&quot;, which carries the event payload
@@ -97,8 +104,8 @@ export default function ArticlePage() {
           simplicity of this format means that SSE events are human-readable and
           can be inspected in a browser&apos;s developer tools or streamed through
           a terminal with curl.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The reconnection mechanism is one of SSE&apos;s most valuable features
           and the one that most production implementations get wrong. When an SSE
           connection drops — whether due to a network interruption, server
@@ -115,7 +122,7 @@ export default function ArticlePage() {
           events. The server must therefore design its event emission to be safe
           under duplicate delivery, or the client must deduplicate using the
           event IDs.
-        </p>
+        </HighlightBlock>
         <p>
           Heartbeat messages (often called &quot;keep-alive&quot; or
           &quot;ping&quot; events) are essential for maintaining SSE connections
@@ -148,7 +155,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An SSE architecture consists of three primary components: the event
           producer (the system generating events, which may be an application
           service, a message broker consumer, or a database change-data-capture
@@ -160,7 +170,7 @@ export default function ArticlePage() {
           to this mechanism and forwards events to the appropriate connected
           clients based on subscription criteria. The event consumer receives
           events and dispatches them to application-level handlers.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/server-sent-events.svg`}
@@ -168,7 +178,7 @@ export default function ArticlePage() {
           caption="SSE architecture — events flow from producers through a distributor that maintains long-lived HTTP connections to each connected client"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The event distributor is the operational bottleneck in any SSE system.
           Each connected client consumes one HTTP connection on the server, which
           means the server must maintain a connection table mapping client
@@ -182,7 +192,7 @@ export default function ArticlePage() {
           event is produced, it must be delivered to all connected clients across
           all instances, not just those connected to the instance that received
           the event.
-        </p>
+        </HighlightBlock>
 
         <p>
           The standard solution for distributed SSE is to use a pub/sub
@@ -238,13 +248,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The decision to use SSE, WebSockets, or long-polling is determined by
           the communication pattern, the infrastructure constraints, and the
           operational capacity of the team. Each technology occupies a distinct
           position in the design space, and understanding their boundaries
           prevents misapplication.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -342,7 +355,7 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The production reality is that SSE is the right default choice for
           most server-to-client streaming needs. Its built-in reconnection,
           native browser support, and HTTP compatibility make it operationally
@@ -354,12 +367,15 @@ export default function ArticlePage() {
           impossible (such as restrictive corporate firewalls) or when event
           frequency is so low that maintaining a persistent connection is
           wasteful.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Always implement explicit event ID tracking on the server side. The
           event ID should be a monotonically increasing identifier that the
           server can use to determine which events a reconnecting client has
@@ -369,8 +385,8 @@ export default function ArticlePage() {
           Last-Event-ID header, replay all events that occurred after that ID
           before resuming the live stream. The replay must happen before new
           events are sent to ensure ordering is preserved.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Send heartbeat messages at intervals shorter than the shortest proxy
           timeout in your deployment path. A 15-second heartbeat interval is a
           reasonable default that works through most proxy configurations. The
@@ -382,7 +398,7 @@ export default function ArticlePage() {
           the client to retry after a delay. Without admission control, a traffic
           surge can exhaust file descriptors and crash the server, dropping all
           existing connections simultaneously.
-        </p>
+        </HighlightBlock>
         <p>
           Use HTTP/2 for SSE connections when possible. HTTP/2 multiplexing means
           that multiple SSE streams from the same origin can share a single TCP
@@ -420,7 +436,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is failing to account for intermediary behavior.
           NGINX, by default, buffers responses from upstream servers, which means
           it will not forward SSE events to the client until the buffer is full
@@ -433,8 +452,8 @@ export default function ArticlePage() {
           Each of these intermediaries requires specific configuration to
           support SSE, and the configurations are platform-specific, making it
           easy to miss one during a migration.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another frequent error is neglecting the event ID and reconnection
           logic entirely. Many initial SSE implementations omit event IDs and
           simply stream events without tracking what each client has received.
@@ -446,7 +465,7 @@ export default function ArticlePage() {
           notifications, stale dashboard data, or incomplete audit logs. The fix
           is to implement event IDs and a server-side event log from day one,
           not as an afterthought.
-        </p>
+        </HighlightBlock>
         <p>
           Connection exhaustion is a scaling pitfall that catches teams by
           surprise. Each SSE connection consumes a file descriptor, a small
@@ -475,7 +494,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           GitHub uses SSE for its real-time notification system, pushing
           notifications about pull request reviews, issue comments, and workflow
           runs to the web interface. The unidirectional nature of notifications
@@ -484,8 +506,8 @@ export default function ArticlePage() {
           fit. GitHub also uses SSE for its live update feature on repository
           pages, showing real-time changes to branch activity and deployment
           status.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Stripe uses SSE for its webhook event delivery system, pushing payment
           events, subscription updates, and fraud alerts to merchant dashboards
           in real time. The event ID mechanism is critical here: payment events
@@ -494,7 +516,7 @@ export default function ArticlePage() {
           Black Friday), they will receive all missed events upon reconnection.
           Stripe also uses SSE for its CLI tool, allowing developers to tail
           webhook events in their terminal during development.
-        </p>
+        </HighlightBlock>
         <p>
           Large language model interfaces, such as those used by ChatGPT and
           similar services, use SSE (or SSE-compatible streaming) to deliver
@@ -520,13 +542,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg bg-panel-soft p-6">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How does SSE reconnection work, and what role does the
               Last-Event-ID header play?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: When an SSE connection drops, the browser automatically attempts
               to reconnect after a delay (default 3 seconds, configurable via the
               retry field). On reconnection, the browser includes an Last-Event-ID
@@ -537,7 +562,7 @@ export default function ArticlePage() {
               if the acknowledgment was lost, but they will not be skipped. The
               server must maintain an event log with sufficient retention to cover
               the maximum expected reconnection delay.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg bg-panel-soft p-6">

@@ -142,11 +142,11 @@ export default function VirtualizationWindowingArticle() {
             with text content uses ~0.5KB. A list item with nested elements (avatar, text, metadata, 
             actions) can easily exceed 2KB.
           </li>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Initial Render Cost:</strong> Creating DOM nodes is expensive. The browser must 
             parse HTML, create node objects, calculate styles, compute layout, and paint pixels. For 
             10,000 nodes, this takes 2-5 seconds on mid-tier devices.
-          </HighlightBlock>
+          </li>
           <HighlightBlock as="li" tier="important">
             <strong>Layout Cost:</strong> Any style change triggers layout recalculation. With thousands 
             of nodes, a single setState can cause the browser to recalculate layout for the entire tree, 
@@ -758,12 +758,12 @@ export default function VirtualizationWindowingArticle() {
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What problem does virtualization solve?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="crucial" className="mb-3">
+            <p className="mb-3">
               Virtualization solves the DOM bottleneck when rendering large lists. The DOM is expensive: 
               each node consumes memory (~0.5-1KB), and creating thousands of nodes blocks the main thread 
               for seconds. Virtualization only renders visible items (20-30 nodes) instead of the full 
               dataset (10,000+ nodes).
-            </HighlightBlock>
+            </p>
             <p className="mb-3">
               The performance impact is dramatic: initial render drops from 2-5 seconds to 5-15ms, memory 
               usage drops from 50-100MB to 2-5MB, and scroll performance improves from 15-30fps to 55-60fps.
@@ -924,12 +924,16 @@ export default function VirtualizationWindowingArticle() {
           ============================================================ */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: virtualization is about protecting main-thread work and memory under large data sets. Use
+          these to compare libraries, understand trade-offs (dynamic heights, overscan), and not forget accessibility.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://tanstack.com/virtual/latest" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               TanStack Virtual Documentation
             </a> — Official docs for @tanstack/react-virtual with examples and API reference.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://react-window.vercel.app/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               react-window Examples
@@ -940,21 +944,21 @@ export default function VirtualizationWindowingArticle() {
               React Virtuoso Documentation
             </a> — Guides for dynamic heights, grouped lists, and infinite scroll.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://web.dev/virtualize-long-lists-react-window/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev: Virtualize Long Lists
             </a> — Google&apos;s guide on list virtualization for web performance.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN: content-visibility
             </a> — CSS-based alternative to JavaScript virtualization for moderate lists.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.w3.org/WAI/ARIA/apg/patterns/listbox/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               WAI-ARIA Listbox Pattern
             </a> — Accessibility guidelines for listbox implementations.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

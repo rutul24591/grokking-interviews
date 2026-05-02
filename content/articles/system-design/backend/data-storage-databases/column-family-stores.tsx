@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -78,22 +79,25 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Wide Rows &amp; Column Families</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>The Wide Row Data Model</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Column-family stores organize data as a map of maps: <code className="inline-code">Map&lt;RowKey, Map&lt;ColumnFamily, Map&lt;ColumnKey, Value&gt;&gt;&gt;</code>.
           Row keys are sorted (lexicographically or by custom comparator), enabling efficient range
           queries. Column families group related columns—each family stored separately on disk.
           Columns within a family are key-value pairs with timestamps (for conflict resolution) and
           optional TTL (time-to-live for automatic expiration).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This model enables <strong>sparse data</strong>: rows can have different columns without
           wasting storage. A user profile might have 50 possible columns, but each user only has
           10-20 populated. In a relational database, NULL values still consume space. In a
           column-family store, missing columns simply don't exist—no storage cost.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Wide rows</strong> can have millions of columns. A messaging inbox might have one
@@ -167,23 +171,26 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Scaling &amp; Compaction</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Write-Optimized Design</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Column-family stores are fundamentally write-optimized. Writes are <strong>append-only</strong>:
           new data is appended to the MemTable, then flushed sequentially to SSTables. There are
           no in-place updates—updates create new versions with newer timestamps. Deletes create
           <strong>tombstones</strong> (markers indicating deleted keys) that are removed during
           compaction.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This design has implications: <strong>Write throughput</strong> is high because writes
           are sequential (disk heads don't seek). <strong>Read latency</strong> can be higher than
           random-access databases because reads may check multiple SSTables. <strong>Storage
           overhead</strong> exists because multiple versions of keys coexist until compaction.
           <strong>Delete latency</strong> exists because tombstones persist until compaction.
-        </p>
+        </HighlightBlock>
 
         <h3>Compaction Strategies in Practice</h3>
         <p>
@@ -234,20 +241,23 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Column-Family vs Other Stores</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Column-family stores occupy a specific niche: write-heavy workloads with sparse,
           time-ordered data. Understanding the trade-offs helps you choose the right tool for
           each workload.
-        </p>
+        </HighlightBlock>
 
         <h3>Column-Family Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Write throughput</strong> is the primary advantage. Sequential writes enable
           hundreds of thousands of writes per second per node. This is essential for high-volume
           ingestion (IoT sensors, clickstreams, logs). Relational databases struggle with
           write-heavy workloads due to random I/O and index updates.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Sparse data</strong> is handled efficiently. Rows can have varying columns
@@ -320,20 +330,23 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Column-Family Stores</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Design row keys carefully.</strong> Row keys determine data distribution and
           query patterns. Use prefixes for grouping (user:123, user:456) to enable range queries.
           Avoid hot spots (row keys that concentrate writes on one node). Use hashing or salting
           if needed to distribute writes evenly.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Model for your queries.</strong> Design column families based on how you'll
           query data. If you frequently query "messages for user X," use user ID as row key and
           timestamps as column keys. Don't design for entities—design for access patterns. You
           may need multiple column families for different query patterns (denormalization).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Use TTL for automatic expiration.</strong> Instead of explicit deletes, set TTL
@@ -365,19 +378,22 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Poor row key design.</strong> Using sequential row keys (timestamps, auto-increment
           IDs) causes hot spots—all writes go to one node. Solution: hash the row key, add salt
           prefixes, or use UUIDs. Monitor write distribution across nodes.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Unbounded row growth.</strong> Wide rows with millions of columns can cause
           performance issues. Reads must scan many columns, and compaction becomes expensive.
           Solution: limit row size (e.g., one row per day, not one row forever), use time-based
           partitioning, or archive old data.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Ignoring tombstones.</strong> Large deletes create many tombstones that slow
@@ -409,20 +425,23 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Time-Series Metrics (Netflix, Monitoring Systems)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix uses Cassandra for time-series metrics: server CPU, memory, latency, error rates.
           Each metric is a row key (server_id:metric_name), timestamps are column keys, values are
           metric values. Querying "CPU usage for server X last hour" is a range scan within a row.
           TTL automatically expires old data (30-day retention).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This pattern scales to billions of data points per day. Writes are sequential (fast),
           reads are time-range queries (efficient), and TTL manages storage automatically.
           Relational databases would struggle with the write volume and storage costs.
-        </p>
+        </HighlightBlock>
 
         <h3>Messaging Inboxes (Facebook Messenger, Craigslist)</h3>
         <p>
@@ -471,14 +490,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: When would you choose a column-family store over a relational or document
               database? Give a concrete example.
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Choose column-family stores for write-heavy workloads with
               sparse, time-ordered data. Example: IoT sensor network reporting metrics every minute.
               In a relational database, every reading inserts a row with all columns—even if some
@@ -488,7 +510,7 @@ export default function ArticlePage() {
               last hour" is a range scan within a row—efficient. Choose relational for: transactions,
               complex queries. Choose document for: flexible schema, nested data. Choose column-family
               for: write-heavy, time-series, sparse data.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What if you need to query by sensor type, not sensor ID?
               Answer: Maintain a secondary index (separate column family mapping sensor_type →

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function WebRTCArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           WebRTC (Web Real-Time Communication) enables peer-to-peer real-time audio/video communication directly between browsers without plugins. Originally developed by Google, now a W3C standard, WebRTC powers video calls, screen sharing, file transfer, and data channels. By establishing direct connections, WebRTC reduces server costs and latency compared to server-relayed communication. Major platforms use WebRTC: Google Meet, Discord, WhatsApp Web, Facebook Messenger.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of WebRTC stems from NAT traversal, signaling, and media negotiation. Most devices are behind NAT (Network Address Translation)—private IPs not directly reachable from the internet. STUN servers help discover public IP, TURN servers relay when direct connection fails. Signaling (not part of WebRTC spec) exchanges connection info between peers. Media negotiation agrees on codecs, resolutions, bandwidth. Security uses DTLS/SRTP encryption for all media.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, WebRTC implementation involves networking and real-time systems challenges. Connection establishment requires signaling server (WebSocket, Socket.io). NAT traversal success rate optimization (minimize TURN usage for cost). Quality adaptation based on network conditions. Scaling to many concurrent calls requires SFU (Selective Forwarding Unit) or MCU (Multipoint Control Unit) for group calls. Monitoring connection quality, handling reconnection, and fallback strategies are critical for production reliability.
         </p>
@@ -47,13 +51,16 @@ export default function WebRTCArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Peer-to-Peer Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Direct P2P: peers connect directly, media flows directly. Pros: Lowest latency, no server cost for media. Cons: Requires public IPs or successful NAT traversal. Works for ~80% of connections (both peers have favorable NAT types).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Server-relayed (TURN): media relayed through TURN server. Pros: Works for all NAT types, firewall-friendly. Cons: Higher latency, server bandwidth cost. Fallback when P2P fails (~20% of connections).
-        </p>
+        </HighlightBlock>
         <p>
           Hybrid: attempt P2P first, fallback to TURN. ICE (Interactive Connectivity Establishment) manages this automatically. Gather all candidates (host, server-reflexive, relayed), test connectivity, select best path.
         </p>
@@ -105,9 +112,12 @@ export default function WebRTCArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           WebRTC architecture spans signaling, peer connection, media handling, and NAT traversal. Signaling server exchanges connection metadata. PeerConnection manages connection state. Media streams captured from devices, encoded, transmitted. STUN/TURN servers assist NAT traversal.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/webrtc/webrtc-architecture.svg"
@@ -118,9 +128,9 @@ export default function WebRTCArticle() {
         />
 
         <h3>Signaling Server</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WebSocket server for real-time signaling. Messages: SDP offer/answer, ICE candidates, control events (call start, end, mute). Authentication required (JWT, session). Scale horizontally (stateless, Redis for room state).
-        </p>
+        </HighlightBlock>
         <p>
           Room management: users join rooms (1:1 call room, group call room). Room state (participants, media state) stored in Redis. Events broadcast to room members. Leave room cleanup (notify others, cleanup resources).
         </p>
@@ -191,14 +201,17 @@ export default function WebRTCArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           WebRTC design involves trade-offs between latency, cost, reliability, and complexity. Understanding these trade-offs enables informed decisions aligned with use case and scale.
-        </p>
+        </HighlightBlock>
 
         <h3>P2P vs SFU vs MCU</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mesh (P2P): direct connections between all peers. Pros: Lowest latency, no server cost. Cons: N×(N-1) connections, bandwidth intensive. Best for: 2-5 participants.
-        </p>
+        </HighlightBlock>
         <p>
           SFU: central relay forwards streams. Pros: Scales to 10-50, selective forwarding. Cons: Server bandwidth cost, single point of failure. Best for: Most group calls.
         </p>
@@ -250,13 +263,16 @@ export default function WebRTCArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use multiple STUN servers:</strong> Include 2-3 STUN servers for redundancy. Google's public STUN + your own. Improves NAT traversal success rate.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement TURN fallback:</strong> Always include TURN servers in ICE config. Test TURN credentials regularly. Monitor TURN usage for cost management.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Trickle ICE:</strong> Send candidates as discovered for faster connection. Handle race conditions (answer before all candidates received).
           </li>
@@ -286,13 +302,16 @@ export default function WebRTCArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No TURN servers:</strong> 20% of connections fail without TURN. Solution: Always include TURN in ICE config.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Signaling not secure:</strong> SDP contains IP addresses, vulnerable to interception. Solution: Use WSS, authenticate messages.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No error handling:</strong> getUserMedia fails, connection drops. Solution: Handle all error cases, provide fallbacks.
           </li>
@@ -322,16 +341,19 @@ export default function WebRTCArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Google Meet</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WebRTC-based video conferencing. SFU architecture for group calls. Simulcast for adaptive quality. TURN servers globally deployed. Noise cancellation, echo cancellation. Screen sharing, recording.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Discord</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WebRTC for voice/video calls. Low-latency optimization for gaming. Screen sharing (Go Live). SFU for group voice channels. UDP for voice, TCP fallback.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">WhatsApp Web</h3>
         <p>
@@ -351,12 +373,15 @@ export default function WebRTCArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How does WebRTC NAT traversal work?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How does WebRTC NAT traversal work?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> ICE gathers candidates: host (local IP), server-reflexive (via STUN), relayed (via TURN). Send candidates to remote peer via signaling. Connectivity checks test each pair. Best working pair selected for media. P2P works for ~80%, TURN fallback for remaining 20%.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

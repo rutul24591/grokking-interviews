@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -41,7 +42,10 @@ export default function ArticlePage() {
       {/* Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Log aggregation</strong> is the disciplined practice of collecting, normalizing, storing, and querying
           log output from every service, host, and infrastructure component in a distributed system so that a single
           operator can reconstruct what happened, across any number of nodes, within seconds of an incident signal. If
@@ -49,8 +53,8 @@ export default function ArticlePage() {
           that transforms those isolated signals into a searchable, correlated, and retainable evidence store. Without
           aggregation, logs remain stranded on ephemeral containers, autoscaled instances, or geographically distributed
           regions, rendering diagnosis during outages slow, incomplete, and often impossible.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The need for aggregation has grown alongside the shift toward microservices, container orchestration, and
           multi-region deployments. In a monolithic architecture, a single log file on a known host was often sufficient
           for debugging. In a system with hundreds of services, each running multiple replicas across availability zones,
@@ -59,7 +63,7 @@ export default function ArticlePage() {
           boundaries. Log aggregation provides the backbone for that correlation, enabling operators to trace a single
           request id through every hop it takes, identify which service first returned an error, and determine whether the
           failure was isolated or systemic.
-        </p>
+        </HighlightBlock>
         <p>
           Beyond incident response, log aggregation serves several organizational functions. It supports compliance
           audits by providing a durable, tamper-evident record of system activity. It enables security teams to detect
@@ -82,7 +86,10 @@ export default function ArticlePage() {
       {/* Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of any effective log aggregation system is <strong>structured logging</strong>. When services
           emit logs as formatted strings, search operators are forced to rely on brittle text matching and regular
           expressions that break whenever log messages change. Structured logs, by contrast, emit each event as a
@@ -91,8 +98,8 @@ export default function ArticlePage() {
           the field <code>http.status_code</code> equals <code>503</code> and the field <code>service_name</code> equals
           <code>payment-processor</code> returns exactly the relevant records, without false positives from unrelated
           text that happens to contain the same characters.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Structured logging requires a shared schema or contract across teams. The schema defines which fields are
           mandatory for every log entry and which fields are optional or domain-specific. Mandatory fields typically
           include a precise timestamp using ISO 8601 format, the log level such as <code>DEBUG</code>,{" "}
@@ -101,7 +108,7 @@ export default function ArticlePage() {
           Correlation identifiers are the connective tissue that makes aggregation valuable: trace ids link logs to
           distributed tracing spans, request ids correlate logs within a single service when tracing is not instrumented,
           and user or tenant identifiers enable scoped investigation for multi-tenant systems.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>log aggregation pipeline</strong> itself consists of distinct stages, each with its own reliability
           characteristics and failure modes. The first stage is emission, where application code writes log entries to
@@ -159,15 +166,18 @@ export default function ArticlePage() {
       {/* Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production-grade log aggregation architecture must be designed around the principle that the pipeline
           behaves predictably under stress. The most common mistake is to build a pipeline that functions well during
           normal operations but degrades catastrophically during incidents. This happens because incident conditions
           produce the exact load patterns the pipeline is least equipped to handle: sudden volume spikes from retry
           storms, bursts of unparseable logs from schema drift during a rolling deployment, and network congestion from
           services competing for bandwidth between request processing and log shipping.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The collector layer is the first line of defense. Collectors run as lightweight agents on each host, as
           sidecar containers in Kubernetes pods, or as DaemonSets across the cluster. Popular choices include Fluent
           Bit, Vector, and Filebeat. The critical design property of a collector is that it must never block the
@@ -177,7 +187,7 @@ export default function ArticlePage() {
           through bounded memory buffers, disk-backed spill queues, and configurable drop policies. The collector also
           implements batching, sending logs in chunks rather than individually, which reduces network overhead and
           improves throughput.
-        </p>
+        </HighlightBlock>
         <p>
           The buffer layer sits between collection and processing, providing durability and decoupling. Kafka is the
           most common buffer choice because it offers strong durability guarantees, replayability, and the ability to
@@ -247,7 +257,10 @@ export default function ArticlePage() {
       {/* Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Every design decision in log aggregation involves a trade-off between diagnostic completeness and operational
           cost. The most significant trade-off centers on sampling. Preserving every log entry at full fidelity provides
           maximum diagnostic power but is financially unsustainable for high-traffic systems. A service handling one
@@ -255,8 +268,8 @@ export default function ArticlePage() {
           average of one kilobyte per line, this is approximately five gigabytes per minute, or seven terabytes per day.
           Storing and indexing this volume indefinitely is cost-prohibitive for all but the most well-funded
           organizations. Sampling is therefore not optional at scale; the question is how to sample intelligently.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The comparison between managed and self-hosted log aggregation platforms illustrates another set of trade-offs.
           Managed platforms such as Datadog Log Management, Splunk Cloud, and Elastic Cloud provide turnkey
           infrastructure, automatic scaling, and built-in analytics capabilities. They reduce operational overhead
@@ -268,7 +281,7 @@ export default function ArticlePage() {
           handle software upgrades, tune index settings, and respond to infrastructure incidents. This trade-off is
           familiar to organizations with mature infrastructure teams but can be a distraction for teams focused on
           product development.
-        </p>
+        </HighlightBlock>
         <p>
           The choice between structured and unstructured log storage presents another trade-off. Fully structured storage,
           where every log entry is parsed into named fields and stored in a columnar or document-oriented format, enables
@@ -304,22 +317,25 @@ export default function ArticlePage() {
       {/* Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Adopt a shared structured logging schema across all services and enforce it through automated validation. The
           schema should define mandatory fields including timestamp, log level, service name, environment, deployment
           version, and at least one correlation identifier such as a trace id or request id. Services that emit logs
           outside the schema should fail continuous integration checks or generate warnings during deployment. Schema
           enforcement prevents the gradual drift that occurs when teams independently add fields, change formats, or
           omit critical identifiers, all of which degrade the quality of aggregated log data over time.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Index only fields that support actual operational decisions. Before adding a field to the index, ask whether an
           operator would ever query on that field during an incident. If the answer is no, the field should not be
           indexed. This discipline keeps index sizes manageable and query performance predictable. High-cardinality
           fields such as user ids, email addresses, or request payloads should never be indexed because the storage cost
           of the inverted index grows linearly with the number of unique values. These fields can remain in the log
           entry for full-text search but should not contribute to index overhead.
-        </p>
+        </HighlightBlock>
         <p>
           Implement automated redaction for sensitive data patterns before logs reach storage. Common patterns include
           credit card numbers matching known formats, social security numbers, authentication tokens, API keys, and
@@ -357,7 +373,10 @@ export default function ArticlePage() {
       {/* Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most destructive pitfall is building a log aggregation pipeline that works during normal operations but
           collapses during incidents. This happens when teams test the pipeline under steady-state load and assume it
           will handle incident conditions proportionally. Incident conditions are not proportional; they produce volume
@@ -365,15 +384,15 @@ export default function ArticlePage() {
           never tested against. The mitigation is to deliberately inject incident-like load into the pipeline during
           chaos engineering exercises and verify that buffering, sampling, and rate limiting engage correctly before
           real incidents occur.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common pitfall is the unchecked growth of indexed fields. As teams discover new fields they want to
           query on, they add them to the index without removing old ones. Over time, the index grows to include dozens of
           fields, many of which are rarely or never queried. This increases storage costs, degrades query performance,
           and extends the time required for index recovery after cluster restarts. Regular index audits, perhaps
           quarterly, should review field usage statistics and remove indexes that have not been queried in the preceding
           period.
-        </p>
+        </HighlightBlock>
         <p>
           Parsing drift is a subtle but pervasive pitfall. When a service changes its log format during a deployment, the
           parsing layer may fail to recognize the new format. If the parser is configured to drop unparseable logs, those
@@ -407,7 +426,10 @@ export default function ArticlePage() {
       {/* Real-world Use Cases */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In e-commerce platforms, log aggregation is essential for diagnosing checkout failures that affect revenue.
           When a customer reports a failed payment, responders use the correlation id from the payment gateway to trace
           the request through the checkout service, the payment processor integration, the inventory reservation system,
@@ -418,8 +440,8 @@ export default function ArticlePage() {
           preventing order confirmation. Without log aggregation, each of these diagnoses would require manually
           accessing logs from multiple services and correlating them by timestamp, a process that is too slow during an
           active revenue-impacting incident.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In multi-tenant SaaS platforms, log aggregation enables tenant-specific investigation and blast-radius
           assessment. When a degradation affects only a subset of tenants, responders filter logs by tenant identifier
           and tenant tier to determine which customers are affected and whether the failure correlates with a specific
@@ -427,7 +449,7 @@ export default function ArticlePage() {
           incidents: support teams can provide accurate, data-driven updates about which tenants are affected and what
           the estimated resolution timeline is. Log aggregation also supports tenant-level SLA reporting by aggregating
           error rates and latency metrics per tenant over billing periods.
-        </p>
+        </HighlightBlock>
         <p>
           In financial services, log aggregation serves both operational and compliance functions. Trading platforms
           generate massive log volumes during market open, when order processing peaks and latency requirements are
@@ -452,13 +474,16 @@ export default function ArticlePage() {
       {/* Interview Q&A */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: During a production incident, log volume spikes by 50x due to retry storms. How do you ensure
             the log aggregation pipeline does not collapse and lose critical diagnostic evidence?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The answer requires addressing both pipeline resilience and evidence preservation. First, the pipeline must
             have pre-configured rate limiting at the collector level, where each service is assigned a maximum log
             throughput. When a service exceeds its limit, the collector drops lower-priority logs such as debug and
@@ -474,7 +499,7 @@ export default function ArticlePage() {
             specific services, with an automatic expiry to prevent the elevated configuration from persisting after the
             incident resolves. The key insight is that these controls must be pre-configured and tested before incidents
             occur; attempting to tune pipeline behavior during an active outage is too slow and error-prone.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
@@ -482,7 +507,7 @@ export default function ArticlePage() {
             Question 2: How do you design log retention and indexing to balance diagnostic completeness with cost
             constraints at a scale of ten terabytes of logs per day?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             At ten terabytes per day, retaining all logs in a fully indexed hot store is financially unsustainable. The
             design must use tiered retention with selective indexing. The hot tier retains seven days of logs in a fully
             indexed, SSD-backed search cluster, supporting sub-second query performance for incident response. Only a
@@ -498,7 +523,7 @@ export default function ArticlePage() {
             all services, and reviewed after incidents to ensure it preserved the evidence that responders actually
             needed. Regular index audits remove fields that are rarely queried, and field budgets cap the total number of
             indexed fields to prevent uncontrolled growth.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

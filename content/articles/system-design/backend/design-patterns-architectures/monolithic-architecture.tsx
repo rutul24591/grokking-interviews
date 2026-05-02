@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,12 +28,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>monolithic architecture</strong> packages an application as a single deployable unit. The monolith may contain many modules, features, and teams&apos; work, but it is built, tested, and deployed together. The defining trait is not code size; it is the deployment and runtime boundary. All components—user interface, business logic, data access layer—run within the same process and share the same memory space and database.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Monoliths are often treated as a default starting point, and for good reason. A well-structured monolith can deliver substantial value with low operational overhead: a single codebase, a single deployment pipeline, and a single runtime to observe. The monolith becomes a problem primarily when internal boundaries are not managed, when any module can call any other module without restriction, and when the database schema is shared and unowned. Over time, this unchecked coupling transforms a productive architecture into what practitioners call a &quot;ball of mud&quot;—a system so entangled that changes become risky and slow.
-        </p>
+        </HighlightBlock>
         <p>
           The industry narrative has shifted heavily toward microservices in recent years, but this pendulum swing has created its own problems. Many organizations adopted microservices prematurely, paying the distributed systems tax—network latency, eventual consistency, operational complexity—without yet needing the benefits of independent deployment or scaling. Companies like Shopify, Basecamp, and Stack Overflow have demonstrated that monoliths, when designed with discipline, can serve tens of millions of users and thousands of developers without fracturing into microservices.
         </p>
@@ -52,14 +56,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Single Deployable Unit</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The monolith&apos;s defining characteristic is that the entire application is packaged and deployed as one artifact. This could be a WAR file, a JAR file, a Docker container, or a process running on a virtual machine. Regardless of packaging, the key property is that all functionality ships together. When you deploy a change, you deploy everything—even if the change affects only one module.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This single-deployable nature has profound implications. It means that the build system must compile and test the entire codebase on every change. It means that the deployment pipeline has only one gate to pass. It means that rollback restores the entire system to its previous state, not individual components. These properties are both strengths and weaknesses: deployment is simple and atomic, but the blast radius of a bad deploy is the entire application.
-        </p>
+        </HighlightBlock>
 
         <h3>Shared Runtime and Memory</h3>
         <p>
@@ -108,14 +115,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Internal Layering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A well-structured monolith follows a clear internal layering that separates concerns while keeping everything within the same deployable. The presentation layer handles HTTP requests, renders views, and manages the request lifecycle. The application layer contains use-case-specific logic, orchestrating domain objects and external services. The domain layer holds the core business entities, rules, and invariants. The infrastructure layer provides implementations for external concerns like database access, email sending, and third-party API integration.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The dependency rule is critical: outer layers depend on inner layers, never the reverse. The domain layer has zero dependencies on presentation or infrastructure. The application layer depends on domain and on interfaces defined in infrastructure, but not on concrete implementations. This dependency inversion makes the system testable—the domain and application layers can be unit-tested without a database, HTTP server, or external service.
-        </p>
+        </HighlightBlock>
 
         <h3>Request Flow</h3>
         <p>
@@ -145,14 +155,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>Monolith Versus Microservices: A Structured Comparison</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The decision between monolithic and microservices architecture is not about which is universally better; it is about which trade-offs match your organizational and operational context. A monolith provides a single codebase that all developers work within, a single deployment pipeline, strong consistency through in-process transactions, in-process communication with nanosecond latency, simple debugging with a single stack trace, and a single database with ACID guarantees. It scales horizontally by replicating the entire application. The team structure typically involves one or a few teams sharing the codebase.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Microservices, by contrast, provide multiple codebases owned by individual teams, multiple deployment pipelines enabling independent releases, eventual consistency with distributed transactions, inter-service communication over the network with millisecond latency, complex debugging requiring distributed tracing, and databases per service requiring cross-service data synchronization. They scale by scaling individual services independently. The team structure involves multiple teams, each owning one or more services end-to-end.
-        </p>
+        </HighlightBlock>
         <p>
           The operational complexity difference is substantial. A monolith requires managing one deployment pipeline, one runtime environment, one set of logs, and one observability stack. Microservices require managing service discovery, API gateways, circuit breakers, distributed tracing, log aggregation across services, container orchestration, and inter-service communication protocols. Each of these introduces its own failure modes and operational overhead.
         </p>
@@ -190,12 +203,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Organize code by business capability rather than technical layer. Create modules for orders, users, inventory, and payments—each containing its own controllers, services, and data access logic. This organization keeps related code together and makes the system&apos;s structure obvious to new developers. When a developer needs to modify order-related behavior, they know exactly which module to look in.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enforce module boundaries through automated tooling. Use architecture fitness functions—automated tests that verify architectural constraints. ArchUnit for Java, NDepend for .NET, Depcheck and ESLint import rules for TypeScript, and custom scripts for other languages can all enforce dependency rules. Prohibit circular dependencies. Restrict cross-module imports to public interfaces only. Run these checks as part of the CI pipeline so violations are caught before code reaches the main branch.
-        </p>
+        </HighlightBlock>
         <p>
           Treat module interfaces as contracts. Define clear public APIs for each module, with versioned interfaces when breaking changes are necessary. Document what each module exposes, what it consumes, and what it owns. When a module needs data from another module, it should call the owning module&apos;s public API rather than querying the database directly. This indirection allows the owning module to change its internal data model without breaking consumers.
         </p>
@@ -215,12 +231,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most dangerous pitfall is allowing module boundaries to erode. Without automated enforcement, developers will take shortcuts—querying another module&apos;s tables directly, importing internal classes, creating circular dependencies. Each shortcut seems justified in the moment, but the cumulative effect is a tangled system where every change risks breaking something unrelated. The antidote is architecture fitness functions that run on every commit and fail the build when boundaries are violated.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Shared database contention is another common problem. As traffic grows, all modules compete for the same database connection pool, the same IOPS, and the same schema migration pipeline. A long-running query in one module can starve queries in other modules. The mitigation is to identify heavy workloads and isolate them—move read-heavy operations to replicas, introduce caching layers, and consider extracting the most demanding workloads into dedicated services with their own databases.
-        </p>
+        </HighlightBlock>
         <p>
           Slow and risky releases happen when one change requires redeploying everything. Without feature flags, every deployment is a big-bang release. The team hesitates to deploy, deployments become infrequent, and each deploy carries enormous risk. The solution is to invest in feature flags, automated testing, and progressive delivery. These practices reduce the blast radius of a bad deploy while preserving the monolith&apos;s &quot;one artifact&quot; simplicity.
         </p>
@@ -240,14 +259,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Shopify: Scaling a Ruby on Rails Monolith</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shopify runs largely as a Ruby on Rails monolith serving millions of merchants and handling billions of dollars in annual commerce volume. Rather than splitting into microservices, Shopify invested heavily in making their monolith work at scale. They implemented modular boundaries within the Rails codebase, organizing functionality by business capability—orders, products, customers, payments—each with clear ownership and internal APIs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Shopify&apos;s scaling strategy focused on horizontal replication with intelligent request routing. They use a technique called &quot;sharding&quot; at the application level, where merchant stores are grouped into shards, and each shard is served by a dedicated subset of monolith instances. This approach allows them to isolate noisy neighbors and scale specific merchant cohorts independently while maintaining a single codebase.
-        </p>
+        </HighlightBlock>
         <p>
           Shopify also extracted specific high-throughput components into dedicated services—such as their search infrastructure and real-time analytics pipeline—but the core commerce platform remains a monolith. Their lesson is instructive: extract only when a specific component genuinely requires independent scaling or deployment, and keep everything else in the monolith.
         </p>
@@ -280,14 +302,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What are the main advantages of a monolithic architecture, and when is it the right choice?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               A monolithic architecture offers several compelling advantages. Simplicity is the foremost benefit—one codebase, one deployment pipeline, one runtime to observe. This simplicity translates directly into developer velocity, especially for small to medium teams. Strong consistency is easier to achieve because in-process ACID transactions span all data operations within a single database. Performance is superior because in-process function calls take nanoseconds rather than the milliseconds required for network calls, and there are no distributed failure modes like timeouts or retry storms. Debuggability is straightforward because a single stack trace tells you exactly what happened, in what order, and with what inputs.
-            </p>
+            </HighlightBlock>
             <p>
               The monolith is the right choice for early-stage products validating product-market fit, teams of one to twenty engineers, applications with strong consistency requirements like financial systems, organizations with limited DevOps maturity, and applications with unpredictable traffic patterns where uniform scaling is simpler than predicting per-service capacity needs.
             </p>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Command Query Responsibility Segregation (CQRS)</strong> is an
           architectural pattern that separates the responsibility for handling
           write operations (commands) from the responsibility for handling read
@@ -53,8 +57,8 @@ export default function ArticlePage() {
           answer complex queries with a single lookup, while writes benefit from
           normalized, constraint-enforcing data structures that maintain
           invariants and prevent invalid state transitions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The term was coined by Greg Young in 2010, building on the Command/
           Query Separation (CQS) principle introduced by Bertrand Meyer in 1988,
           which states that every method should be either a command (producing a
@@ -66,7 +70,7 @@ export default function ArticlePage() {
           publishes domain events describing the changes it made, and the read
           side subscribes to these events and updates its denormalized read
           models accordingly.
-        </p>
+        </HighlightBlock>
         <p>
           The critical property of CQRS is that the read model is{" "}
           <em>eventually consistent</em> with the write model. When a command
@@ -105,8 +109,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>command side</strong> (write side) of CQRS is responsible
           for processing commands — requests to change the system&apos;s state.
           Each command is handled by a command handler that loads the aggregate
@@ -121,9 +128,9 @@ export default function ArticlePage() {
           describing what changed (e.g., <code>OrderCreated</code>,{" "}
           <code>OrderConfirmed</code>, <code>ItemAdded</code>). These events are
           the bridge between the write side and the read side.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>query side</strong> (read side) is responsible for
           processing queries — requests for data that do not modify state. Each
           query is handled by a query handler that reads from the{" "}
@@ -140,7 +147,7 @@ export default function ArticlePage() {
           projection (containing daily revenue, average order value, and top
           products). Each projection subscribes to the domain events it cares
           about and updates its denormalized view accordingly.
-        </p>
+        </HighlightBlock>
 
         <p>
           The <strong>projection pipeline</strong> is the event-driven mechanism
@@ -185,6 +192,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/cqrs-diagram-1.svg"
@@ -192,7 +202,7 @@ export default function ArticlePage() {
           caption="CQRS architecture — command and query sides use independent data models connected by an event bus"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The request flow in a CQRS system begins with the client issuing
           either a command or a query. Commands are routed to the command side:
           the API gateway or command dispatcher receives the command, validates
@@ -209,9 +219,9 @@ export default function ArticlePage() {
           handler reads from the appropriate read model projection and returns
           the result — typically a single query to a denormalized table that
           answers the entire query without joins.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The event bus is the critical infrastructure component connecting the
           command side to the query side. It must provide at-least-once delivery
           (every event is delivered at least once to each subscriber) and
@@ -227,7 +237,7 @@ export default function ArticlePage() {
           event bus must be durable — events are persisted to disk before being
           acknowledged, ensuring that events are not lost if the event bus
           crashes.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/cqrs-diagram-2.svg"
@@ -278,8 +288,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           CQRS must be evaluated against the simpler alternatives it replaces.
           The baseline is a single-database CRUD architecture where one schema
           serves both reads and writes. This is simple to build, deploy, and
@@ -292,7 +305,7 @@ export default function ArticlePage() {
           CQRS addresses both read scaling and query flexibility by providing
           independent read models that can be denormalized for specific query
           patterns.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -389,7 +402,7 @@ export default function ArticlePage() {
           </tbody>
         </table>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The complexity curve of CQRS adoption is non-linear. Stage 1 (CRUD
           with a single database) has minimal complexity and is appropriate for
           the vast majority of applications. Stage 2 (CRUD with read replicas)
@@ -404,14 +417,17 @@ export default function ArticlePage() {
           Stage 3: CQRS without Event Sourcing. Event Sourcing should be adopted
           only when its specific benefits (full audit trail, temporal queries,
           flexible read model evolution) are required by the business.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Start with CQRS on a single bounded context, not the entire system.
           The most common mistake teams make when adopting CQRS is applying it
           globally — separating read and write models for every entity in the
@@ -423,9 +439,9 @@ export default function ArticlePage() {
           orders, items, customers, and products). The User Management context
           (simple CRUD with low traffic) does not need CQRS. Apply CQRS
           selectively and incrementally.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Design read models around query patterns, not entity relationships.
           The read model should not be a normalized representation of the domain
           — it should be a set of denormalized views, each optimized for a
@@ -437,7 +453,7 @@ export default function ArticlePage() {
           row — not scattered across five tables requiring JOINs. This is the
           entire point of CQRS: the read model is optimized for reading, not for
           storing.
-        </p>
+        </HighlightBlock>
 
         <p>
           Implement read-your-writes consistency for the most common post-command
@@ -490,8 +506,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Adopting CQRS for a simple CRUD application is the most common and
           costly mistake. CQRS adds significant operational complexity — an
           event bus, projection infrastructure, read model design, eventual
@@ -504,9 +523,9 @@ export default function ArticlePage() {
           JOINs, or you have distinct user groups with fundamentally different
           read requirements. If none of these conditions apply, CQRS is
           over-engineering.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Not handling projection failures gracefully is a common operational
           gap. When a projection fails to process an event (due to a schema
           mismatch, a database connection error, or a bug in the projection
@@ -521,7 +540,7 @@ export default function ArticlePage() {
           is fixed. Without a DLQ, a single failed event can block the entire
           projection, causing the read model to fall further and further behind
           until it becomes completely stale.
-        </p>
+        </HighlightBlock>
 
         <p>
           Coupling the command handler&apos;s response to the read model update
@@ -575,8 +594,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Microsoft implemented CQRS for its Azure DevOps service (formerly
           Visual Studio Team Services), where the read-to-write ratio for work
           item queries exceeds 500:1. The write side uses a normalized SQL
@@ -590,9 +612,9 @@ export default function ArticlePage() {
           queries (e.g., &quot;show all bugs assigned to me, created in the last
           sprint, with priority &gt; 1&quot;) in under 100 milliseconds — a
           query that would take seconds with a normalized JOIN-based approach.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The UK Government&apos;s GOV.UK platform uses CQRS for its content
           management system. The write side is a Rails application with a
           PostgreSQL database that content editors use to create and publish
@@ -605,7 +627,7 @@ export default function ArticlePage() {
           load. The projection lag (the time between publishing content and it
           appearing on the live site) is approximately 30 seconds, which is
           acceptable for government content publishing.
-        </p>
+        </HighlightBlock>
 
         <p>
           Event Store Ltd (the company behind the Event Store database) uses
@@ -645,6 +667,9 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
@@ -653,12 +678,12 @@ export default function ArticlePage() {
             model and returns &quot;order not found&quot; because the projection
             has not yet processed the OrderCreated event. How do you solve this?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             This is the classic read-after-write consistency problem in CQRS
             systems. There are three standard solutions, each with different
             trade-offs.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             <strong>Solution 1: Return data from the command handler.</strong>{" "}
             The command handler, after successfully creating the order, returns
             the full order data (order ID, items, total, status, etc.) in the
@@ -670,7 +695,7 @@ export default function ArticlePage() {
             read model data, which couples the command API to the read model
             structure. This is a pragmatic coupling that is acceptable for this
             specific scenario.
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             <strong>Solution 2: Optimistic UI with polling.</strong> The
             confirmation page displays a &quot;loading&quot; state immediately

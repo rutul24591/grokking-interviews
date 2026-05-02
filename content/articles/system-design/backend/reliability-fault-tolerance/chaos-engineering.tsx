@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,7 +28,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Chaos engineering is the discipline of experimenting on a distributed
           system in production to build confidence in its capability to withstand
           turbulent and unexpected conditions. Unlike traditional testing, which
@@ -39,8 +43,8 @@ export default function ArticlePage() {
           was pioneered at Netflix with the creation of Chaos Monkey, a tool that
           randomly terminated production instances to validate that the system
           could tolerate individual node failures without user-visible impact.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The defining characteristic of chaos engineering is that it is
           empirical rather than theoretical. It does not rely on architecture
           diagrams, design documents, or failure mode analyses to assert that a
@@ -53,7 +57,7 @@ export default function ArticlePage() {
           observe, learn, remediate, repeat -- transforms reliability from an
           aspirational design goal into a measurable, improvable property of the
           system.
-        </p>
+        </HighlightBlock>
         <p>
           Chaos engineering occupies a unique position in the reliability
           engineering landscape. It is not a replacement for unit tests,
@@ -96,9 +100,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>The Hypothesis-Driven Experiment Loop</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every chaos experiment begins with a hypothesis about system behavior
           under a specific failure condition. A well-formed hypothesis has three
           components: the fault to be injected, the steady-state metrics that define
@@ -108,8 +115,8 @@ export default function ArticlePage() {
           the system will rebalance cache partitions within two minutes." This
           hypothesis is specific, measurable, and falsifiable -- it can be proven
           wrong by the experiment.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The steady-state definition is the most critical component of the
           hypothesis. It defines what "normal" looks like in terms of observable
           metrics: latency percentiles, error rates, throughput, saturation levels,
@@ -120,7 +127,7 @@ export default function ArticlePage() {
           utilization while user-facing error rates spike because of a subtle
           routing issue -- the internal metrics would give a false sense of
           stability.
-        </p>
+        </HighlightBlock>
         <p>
           During the experiment, the fault is injected and the system's behavior is
           observed against the steady-state definition. If the metrics remain within
@@ -243,7 +250,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A chaos engineering platform consists of four main components: the
           experiment catalog that defines available fault injections, the experiment
           orchestrator that schedules and executes experiments, the observability
@@ -251,8 +261,8 @@ export default function ArticlePage() {
           safety controller that enforces guardrails and manages kill switches.
           These components work together to provide a safe, repeatable, and
           measurable chaos engineering capability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The experiment catalog is a library of parameterized fault injections that
           can be applied to the system. Common experiments include instance
           termination, network latency injection, packet loss simulation, DNS
@@ -263,7 +273,7 @@ export default function ArticlePage() {
           what duration), the expected system response, and the rollback procedure.
           The catalog grows over time as new failure modes are discovered and
           encoded as repeatable experiments.
-        </p>
+        </HighlightBlock>
         <p>
           The experiment orchestrator selects experiments from the catalog based on
           a schedule, a priority ranking, or a continuous chaos policy. It
@@ -289,7 +299,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental trade-off in chaos engineering is between learning value
           and operational risk. Experiments that probe the most interesting failure
           modes -- region failover, database primary loss, complete dependency
@@ -300,8 +313,8 @@ export default function ArticlePage() {
           capabilities. The art of chaos engineering is finding experiments that
           maximize learning while keeping risk acceptably low, and progressing to
           riskier experiments as the system's resilience improves.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           There is also a trade-off between manual and automated chaos. Manual
           experiments, such as game days, allow for creative exploration,
           real-time adaptation, and organizational learning through shared
@@ -315,7 +328,7 @@ export default function ArticlePage() {
           The most effective programs use both: automated experiments for routine
           validation and manual game days for exploratory investigation of new
           architecture patterns.
-        </p>
+        </HighlightBlock>
         <p>
           The cultural trade-off is between the comfort of avoiding production
           risk and the benefit of discovering weaknesses before real incidents do.
@@ -347,7 +360,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Start with the steady-state hypothesis before designing any experiment.
           The steady state defines what "normal" means for your system, and without
           it, you cannot determine whether an experiment succeeded or failed. Define
@@ -357,8 +373,8 @@ export default function ArticlePage() {
           over a sufficiently long window to establish stability, and document it
           so that everyone involved in the experiment agrees on what constitutes
           acceptable behavior.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Begin with small blast radius and increase scope gradually. The first
           experiments should target single instances in large fleets, where the
           impact of failure is minimal even if the system does not handle it
@@ -367,7 +383,7 @@ export default function ArticlePage() {
           entire availability zones, cross-region scenarios. Each increase in scope
           should be a deliberate decision based on confidence gained from smaller
           experiments, not a scheduled escalation.
-        </p>
+        </HighlightBlock>
         <p>
           Treat every falsified hypothesis as a reliability bug with the same
           priority as a production incident. The value of chaos engineering is not
@@ -394,7 +410,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most dangerous pitfall is running chaos experiments without adequate
           guardrails, leading to avoidable production outages. This happens when
           experiments are scoped too broadly, when stop conditions are not defined
@@ -407,8 +426,8 @@ export default function ArticlePage() {
           fault. Guardrails should be validated before the first experiment runs,
           not discovered to be broken during an actual incident caused by an
           experiment.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A second pitfall is running experiments without clear hypotheses, which
           yields no actionable learning. When engineers inject a fault and observe
           the system's behavior without a predefined steady-state definition or
@@ -419,7 +438,7 @@ export default function ArticlePage() {
           metrics, the expected outcome, and the criteria for success or failure.
           This discipline ensures that every experiment produces a clear result and
           that falsified hypotheses generate specific, actionable findings.
-        </p>
+        </HighlightBlock>
         <p>
           A third pitfall is neglecting the follow-through after experiments. Chaos
           experiments reveal weaknesses, but if those weaknesses are not tracked,
@@ -454,9 +473,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Netflix Chaos Monkey and Continuous Instance Termination</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix's Chaos Monkey is the foundational chaos engineering tool,
           designed to randomly terminate instances in production during business
           hours. The rationale for running during business hours is that failures
@@ -473,10 +495,10 @@ export default function ArticlePage() {
           non-compliant architectures), and Janitor Monkey (cleans up unused
           resources), creating a comprehensive suite of resilience validation
           tools.
-        </p>
+        </HighlightBlock>
 
         <h3>Dependency Latency Injection and Circuit Breaker Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A common chaos experiment in service-oriented architectures involves
           injecting latency into a critical dependency such as a database, cache, or
           external API. The experiment adds a configurable delay to all requests
@@ -491,7 +513,7 @@ export default function ArticlePage() {
           normal load, peak load, and asymmetric load -- reveals second-order
           effects such as cache eviction storms under peak load that would not be
           visible under normal conditions.
-        </p>
+        </HighlightBlock>
 
         <h3>Cross-Region Failover Game Days</h3>
         <p>
@@ -534,16 +556,19 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">
               Question 1: What makes a good chaos experiment, and how is it
               different from simply breaking things in production?
             </h3>
-            <p className="text-muted mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3">
               <strong>Answer:</strong>
-            </p>
-            <p className="mb-3">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               A good chaos experiment is a hypothesis-driven test with four
               essential components: a clearly defined steady state that describes
               normal system behavior using measurable metrics, a specific fault to
@@ -552,7 +577,7 @@ export default function ArticlePage() {
               acceptable bounds, and a documented rollback procedure to restore
               normal operation. Without these components, injecting faults is not
               chaos engineering -- it is vandalism with a dashboard.
-            </p>
+            </HighlightBlock>
             <p>
               The key difference between chaos engineering and randomly breaking
               things is intent and methodology. Chaos engineering seeks to validate

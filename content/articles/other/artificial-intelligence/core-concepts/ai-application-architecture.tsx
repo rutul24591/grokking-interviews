@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>AI application architecture</strong> encompasses the design
           patterns, integration strategies, and operational practices for
           building production systems that incorporate Large Language Models.
@@ -33,8 +37,8 @@ export default function ArticlePage() {
           outputs, high latency (seconds per request), variable cost (per-token
           pricing), context window limits, and the need for fallback strategies
           when the model fails or produces unsatisfactory output.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental architectural decision for AI integration is{" "}
           <strong>synchronous versus asynchronous</strong> processing.
           Synchronous integration (the user waits for the complete AI response)
@@ -44,7 +48,7 @@ export default function ArticlePage() {
           submits a request and receives the result later via notification or
           polling) can handle longer processing times but requires state
           management, result storage, and notification infrastructure.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, AI application architecture is a
           first-class design concern that affects user experience, system
@@ -57,7 +61,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Streaming responses</strong> is the primary technique for
           reducing perceived latency in synchronous AI integration. Instead of
           waiting for the complete response (which may take 5-10 seconds), the
@@ -67,8 +74,8 @@ export default function ArticlePage() {
           waiting for the complete response. Streaming requires the application
           to handle partial responses, manage the streaming connection, and
           handle cases where the stream is interrupted.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Fallback strategies</strong> are essential for AI systems
           because LLM calls can fail in multiple ways: API timeouts, rate
           limit exceeded, model producing invalid output, model producing
@@ -77,7 +84,7 @@ export default function ArticlePage() {
           backoff for transient errors, switch to a smaller model for capacity
           errors, return cached response for repeated failures, or escalate to
           human review for quality failures.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/ai-app-integration-patterns.svg"
@@ -129,7 +136,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production AI application architecture consists of several layers.
           The <strong>gateway layer</strong> handles request routing, rate
           limiting, authentication, and load balancing across multiple model
@@ -139,7 +149,7 @@ export default function ArticlePage() {
           switching, caching, and human escalation. The <strong>observability
           layer</strong> tracks latency, cost, quality, and error metrics for
           every interaction.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/streaming-response-architecture.svg"
@@ -147,7 +157,7 @@ export default function ArticlePage() {
           caption="Streaming — server-sent events or WebSocket connection delivers tokens incrementally, reducing perceived latency from seconds to milliseconds"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>multi-provider architecture</strong> avoids vendor
           lock-in and provides resilience. By abstracting the model interface,
           the application can route requests across multiple providers
@@ -157,7 +167,7 @@ export default function ArticlePage() {
           normalizes differences between providers (different API formats,
           different token counting, different error responses) into a unified
           interface.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Progressive enhancement</strong> is the pattern of providing
           a baseline experience that works without AI and enhancing it with AI
@@ -170,7 +180,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Streaming versus batch response</strong> involves a
           user-experience versus complexity trade-off. Streaming provides
           better perceived responsiveness (user sees content appearing
@@ -179,8 +192,8 @@ export default function ArticlePage() {
           with stream interruptions). Batch responses are simpler to implement
           but force the user to wait for the complete response, which can be
           5-30 seconds for complex queries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Single-provider versus multi-provider</strong> involves a
           resilience versus complexity trade-off. Single-provider integration
           is simpler to implement and debug but creates vendor lock-in and a
@@ -189,7 +202,7 @@ export default function ArticlePage() {
           (route to cheapest available provider) but requires an abstraction
           layer, provider-specific error handling, and testing across multiple
           APIs.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/fallback-strategy-flow.svg"
@@ -200,22 +213,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Always implement streaming for interactive applications</strong>{" "}
           — the perceived latency improvement from streaming (first token in
           500ms-2s versus complete response in 5-15s) is the single most
           impactful UX improvement for AI integration. Use server-sent events
           (SSE) or WebSocket for the streaming connection, and implement
           graceful degradation for clients that do not support streaming.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement comprehensive fallback chains</strong> — every AI
           call should have a fallback path: retry on transient error, switch
           to alternative model on capacity error, return cached response on
           repeated failure, and escalate to human on quality failure. The
           fallback chain should be configurable and monitored — track how
           often each fallback is triggered and why.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Set realistic latency SLOs</strong> — AI calls are
           inherently slower than traditional API calls. Set SLOs based on the
@@ -236,21 +252,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>treating AI calls like traditional
           API calls</strong> — setting the same timeout values (1-2 seconds
           instead of 30-60 seconds), not implementing retry logic, not handling
           rate limits, and not providing fallback paths. AI calls are
           fundamentally different from traditional API calls and require
           different handling at every level.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Not implementing request queuing</strong> — when rate limits
           are approached, failing requests immediately causes a poor user
           experience (error messages during peak usage). Instead, queue requests
           and process them at the maximum sustainable rate. This smooths out
           traffic spikes and ensures all requests are eventually processed.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Ignoring the prefill-decode latency split</strong> — LLM
           inference has two phases: prefill (processing the input context,
@@ -275,15 +294,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Streaming chat interface</strong> — a conversational AI
           application that streams tokens to the client as they are generated,
           allowing the user to start reading the response while it is still
           being generated. The interface handles stream interruptions
           gracefully (reconnect and continue from where it left off) and
           provides a stop button to cancel generation mid-stream.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Asynchronous document processing</strong> — an AI system
           that processes uploaded documents (summarization, extraction,
           analysis) asynchronously. The user uploads a document, receives a
@@ -291,7 +313,7 @@ export default function ArticlePage() {
           The user is notified when processing is complete and can view the
           results. This pattern handles long documents that require minutes
           of processing time.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Multi-provider analytics platform</strong> — a data analytics
           system that uses different models for different pipeline stages: a
@@ -311,12 +333,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: How do you design a fallback strategy for AI applications?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A comprehensive fallback strategy has multiple layers. At the
             network level: retry with exponential backoff and jitter for
             transient errors (timeouts, connection failures). At the capacity
@@ -327,14 +352,14 @@ export default function ArticlePage() {
             (temperature, prompt rephrasing) or switch to a more capable model.
             At the system level: if all AI fallbacks fail, return a cached
             response, a simplified non-AI response, or escalate to human review.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             Each fallback should be logged with its trigger reason so that the
             fallback chain can be optimized over time. Monitor fallback
             frequency — if a particular fallback is triggered frequently, it
             indicates a systemic issue that needs to be addressed at the root
             cause rather than handled by the fallback chain.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

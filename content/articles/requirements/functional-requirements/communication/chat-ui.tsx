@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function ChatInterfaceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Chat interface enables real-time text communication between users, requiring responsive UI, message status indicators, typing awareness, and seamless real-time updates. Modern chat interfaces have evolved beyond simple text exchange to support rich media (images, videos, files), reactions, replies, threading, and integrations with other services. The chat interface is often the most frequently used feature in messaging applications, making performance and user experience critical for user retention.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The technical complexity of chat interfaces is often underestimated. A production-ready chat must handle messages arriving in real-time while maintaining correct ordering across time zones and network delays. It must support conversations with thousands of messages through virtualization and pagination. It must work seamlessly across network conditions—showing optimistic updates when online, queuing messages when offline, and synchronizing when connectivity resumes. The interface must feel instant despite network latency, which requires careful state management and optimistic UI patterns.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, chat interface implementation involves navigating significant technical challenges. The architecture must integrate with WebSocket connections for real-time delivery while handling reconnection gracefully. Message ordering must account for clock skew, network delays, and concurrent sends. The UI must virtualize long conversations to maintain performance. Accessibility requires keyboard navigation, screen reader support, and proper focus management. The system must handle edge cases like duplicate messages, failed sends, and conflicting updates from multiple devices.
         </p>
@@ -47,13 +51,16 @@ export default function ChatInterfaceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Message Display and Grouping</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Message bubbles display sent messages aligned right (typically in a distinct color like blue or green) and received messages aligned left (typically gray or white). This visual distinction helps users quickly identify who sent each message. Message grouping combines consecutive messages from the same sender within a time threshold (typically 5-10 minutes) into a single visual group, reducing visual clutter and improving readability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Timestamps display using relative time for recent messages ("2m ago", "1h ago") and absolute time for older messages ("Mar 25, 2:30 PM"). Delivery status indicators show message state: sending (spinner), sent (single check), delivered (double check), read (double check with color change or "Read" label). These indicators provide senders awareness of message consumption without requiring explicit confirmation.
-        </p>
+        </HighlightBlock>
         <p>
           Rich content rendering handles links with preview cards (Open Graph metadata), images with inline display and tap-to-expand, videos with thumbnail and play overlay, and files with icon and download action. Each content type requires different handling—images need aspect ratio preservation, videos need player integration, files need secure download handling.
         </p>
@@ -105,9 +112,12 @@ export default function ChatInterfaceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Chat interface architecture spans client state management, WebSocket integration, message storage, and real-time synchronization. The client component manages message list state, input state, connection state, and UI state (typing indicator, scroll position). WebSocket connection handles bidirectional real-time communication. Local storage caches messages for offline access and quick re-load.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/chat-ui/chat-interface-architecture.svg"
@@ -118,9 +128,9 @@ export default function ChatInterfaceArticle() {
         />
 
         <h3>Client Component Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Message list component renders messages with virtualization for performance. It maintains scroll position, handles new message insertion, and triggers pagination on scroll. Component subscribes to WebSocket message events and updates state accordingly. Focus management ensures keyboard users can navigate messages and input efficiently.
-        </p>
+        </HighlightBlock>
         <p>
           Input component manages text state, attachment state, and send action. It handles keyboard events (Enter to send), paste events (for image paste), and composition events (for IME input). Input validation checks for empty messages, oversized attachments, and rate limits before sending.
         </p>
@@ -180,14 +190,17 @@ export default function ChatInterfaceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Chat interface design involves numerous trade-offs affecting user experience, performance, complexity, and privacy. Understanding these trade-offs enables informed decisions aligned with product goals and user needs.
-        </p>
+        </HighlightBlock>
 
         <h3>Optimistic vs Pessimistic Updates</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Optimistic updates show messages immediately before server confirmation. Pros: Instant feel, better UX, works well with retry on failure. Cons: Requires rollback handling, can show duplicates if retry succeeds after user retries manually. Best for: Consumer chat apps where speed matters.
-        </p>
+        </HighlightBlock>
         <p>
           Pessimistic updates wait for server confirmation before showing message. Pros: No rollback needed, guaranteed consistency. Cons: Noticeable delay on slow networks, feels sluggish. Best for: Enterprise or regulated environments where message guarantee is critical.
         </p>
@@ -239,13 +252,16 @@ export default function ChatInterfaceArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use optimistic updates:</strong> Show messages immediately with "sending" status. Revert on failure with clear error and retry option. Users expect instant feedback.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement virtualization:</strong> For conversations exceeding 100 messages, use virtual scrolling. Libraries like react-window handle this well. Maintain scroll position on new messages and pagination.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle reconnection gracefully:</strong> Queue outgoing messages while offline. Auto-reconnect with exponential backoff. Sync missed messages on reconnect. Show connection state to user.
           </li>
@@ -275,13 +291,16 @@ export default function ChatInterfaceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No message deduplication:</strong> Network retries create duplicate messages. Solution: Use client-generated unique IDs, server-side deduplication with idempotency.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Poor scroll position management:</strong> Scroll jumps when new messages arrive or old messages load. Solution: Measure and restore scroll offset, use "new messages" banner when scrolled up.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No offline support:</strong> Messages fail silently when offline. Solution: Queue outgoing messages, show pending status, sync on reconnect.
           </li>
@@ -305,16 +324,19 @@ export default function ChatInterfaceArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>WhatsApp Chat Interface</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WhatsApp uses optimistic updates with double-check delivery system (single gray check for sent, double gray for delivered, double green for read). Messages group by sender and time. Virtualization handles conversations with thousands of messages. End-to-end encryption with local message storage encrypted at rest. Disappearing messages auto-delete after 7 days.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Slack Threaded Conversations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Slack introduces threading to reduce channel noise. Reply to specific message creates threaded sidebar. Main channel shows thread preview with reply count. Threading preserves context while keeping channels readable. Slack uses virtualization extensively—channels with 10,000+ messages remain performant. Rich integrations with embeds, code snippets, and file previews.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Discord Message Features</h3>
         <p>
@@ -334,12 +356,15 @@ export default function ChatInterfaceArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle message ordering?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle message ordering?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use server-assigned sequence numbers for total ordering—each message in a conversation gets an incrementing number. Client timestamps for display only, server timestamps for ordering. Handle clock skew by trusting server receive time. For concurrent sends, sequence numbers ensure consistent ordering across all clients. Store sequence number with message, use for pagination and gap detection.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

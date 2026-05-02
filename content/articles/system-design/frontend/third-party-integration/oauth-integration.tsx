@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>OAuth</strong> is an authorization framework used to grant a client application scoped access to protected resources without sharing user credentials directly. In modern frontend systems, OAuth is often paired with OpenID Connect (OIDC) for authentication, and it is typically delivered via a third-party identity provider (IdP) such as Auth0, Okta, AWS Cognito, Google, or GitHub.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           OAuth integration is not "just login." It is a <strong>cross-cutting system design problem</strong> that touches: security posture (token theft, redirect manipulation), user experience (redirects, session continuity), scale (multi-tenant configuration, key rotation), and reliability (IdP outages and latency). The frontend is in the blast radius because it owns redirects, handles tokens, and mediates user identity state.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, the goal is to design an integration that balances security, UX, and operational complexity. Key decisions include:
         </p>
@@ -76,6 +80,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/third-party-integration/oauth-flow.svg"
@@ -84,14 +91,14 @@ export default function ArticlePage() {
         />
 
         <h3>OAuth 2.0 Flows</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           OAuth defines several authorization flows, each suited for different client types:
-        </p>
+        </HighlightBlock>
 
         <h4>Flow 1: Authorization Code with PKCE (Recommended for SPAs)</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           This is the current best practice for single-page applications. PKCE (Proof Key for Code Exchange) adds an extra layer of security by preventing authorization code interception attacks.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Step 1:</strong> Client generates code_verifier (random string) and derives code_challenge = SHA256(code_verifier).
@@ -323,14 +330,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust OAuth architecture treats authentication as a <strong>cross-cutting concern</strong> that affects routing, API calls, error handling, and user experience.
-        </p>
+        </HighlightBlock>
 
         <h3>Authentication Flow Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The complete authentication flow involves multiple components:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Auth Guard:</strong> Route protection that checks authentication state and redirects to login if needed.
@@ -434,9 +444,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           OAuth implementation involves trade-offs between security, UX, and complexity.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -478,9 +491,9 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that <strong>security should drive the decision</strong>. For high-risk applications (financial, healthcare, enterprise), invest in BFF or httpOnly cookies. For lower-risk applications (content sites, portfolios), memory + refresh may be acceptable.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -488,13 +501,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Authorization Code with PKCE:</strong> Never use Implicit Flow. PKCE is required for public clients (SPAs).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Store Tokens Securely:</strong> httpOnly cookies preferred. Memory acceptable. Never localStorage.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Short Access Token Lifetime:</strong> 5-60 minutes maximum. Limits damage if token is stolen.
           </li>
@@ -533,13 +549,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Using Implicit Flow:</strong> Implicit Flow is deprecated and insecure. Use Authorization Code with PKCE.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Storing Tokens in localStorage:</strong> Any XSS vulnerability can steal tokens. Use httpOnly cookies or memory.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No State Parameter:</strong> Without state parameter, OAuth flow is vulnerable to CSRF attacks.
           </li>
@@ -566,14 +585,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>SaaS Platform: Multi-Tenant OAuth</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Problem:</strong> SaaS platform needed to support multiple IdPs (Google, Microsoft, Okta) for different enterprise customers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong> Implemented dynamic IdP discovery based on user email domain. Used Authorization Code with PKCE for all flows. Stored tokens in httpOnly cookies with BFF pattern.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Results:</strong> Supported 50+ enterprise IdPs. Zero security incidents. Enterprise customers passed security audits.
         </p>
@@ -617,14 +639,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is OAuth 2.0 and how does it differ from authentication?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               OAuth 2.0 is an <strong>authorization framework</strong>, not an authentication protocol. It allows users to grant third-party applications limited access to their resources without sharing credentials.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               The key distinction:
             </p>

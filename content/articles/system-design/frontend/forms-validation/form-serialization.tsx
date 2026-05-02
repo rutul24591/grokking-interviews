@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function FormSerializationArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Form serialization</strong> is the process of converting form
           data from its DOM representation into a structured format suitable for
           transmission to a server or further processing. When a user fills out
@@ -47,8 +51,8 @@ export default function FormSerializationArticle() {
           JSON for modern APIs, <code>application/x-www-form-urlencoded</code>{" "}
           for traditional form submissions, or <code>multipart/form-data</code>{" "}
           for forms with file uploads.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The serialization process seems straightforward until edge cases
           emerge. How do you handle nested data structures (address object with
           street, city, zip)? How do you serialize arrays (multiple selected
@@ -58,7 +62,7 @@ export default function FormSerializationArticle() {
           handling, date inputs return strings that may need timezone
           conversion. Multi-step forms compound the problem — do you serialize
           each step independently or accumulate data across steps?
-        </p>
+        </HighlightBlock>
         <p>
           The <code>FormData</code> API, introduced as part of the HTML5
           specification, provides a native way to extract form data. Calling{" "}
@@ -94,8 +98,11 @@ export default function FormSerializationArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>FormData API:</strong> The browser&apos;s native API for
             extracting form data. <code>new FormData(formElement)</code>{" "}
             creates an iterable object with all form fields. FormData supports{" "}
@@ -106,8 +113,8 @@ export default function FormSerializationArticle() {
             <code>Object.fromEntries(formData.entries())</code>. Limitations:
             all values are strings, no native nested object support, files
             require special handling.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>JSON Serialization:</strong> Converting form data to JSON
             via <code>JSON.stringify()</code>. This is the most common approach
             for modern APIs. JSON preserves types (numbers, booleans, null),
@@ -116,7 +123,7 @@ export default function FormSerializationArticle() {
             JSON structure — date strings need parsing, checkbox unchecked
             state needs explicit handling, and nested structures require custom
             transformation logic.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>URL-Encoded Format:</strong> The traditional{" "}
             <code>application/x-www-form-urlencoded</code> format represents
@@ -192,13 +199,16 @@ export default function FormSerializationArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Form serialization architecture consists of several stages: extraction
           (getting values from the DOM or state), transformation (converting
           types, building nested structures), validation (ensuring data matches
           expected schema), and encoding (producing the final serialized
           format). Each stage can be customized based on requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/forms-validation/form-serialization/serialization-pipeline.svg"
@@ -208,14 +218,14 @@ export default function FormSerializationArticle() {
           height={550}
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The serialization pipeline diagram shows how raw form data flows
           through each stage. Extraction pulls values from FormData or React
           state. Transformation handles type conversion, nested object building,
           and array collection. Validation ensures the transformed data matches
           the expected schema. Encoding produces the final output format (JSON,
           FormData, URL-encoded).
-        </p>
+        </HighlightBlock>
 
         <h3>FormData vs Direct Object Serialization</h3>
         <p>
@@ -251,10 +261,13 @@ export default function FormSerializationArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Serialization approach decisions involve trade-offs between
           simplicity, flexibility, and type safety.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/forms-validation/form-serialization/formdata-vs-direct-object.svg"
@@ -265,7 +278,7 @@ export default function FormSerializationArticle() {
         />
 
         <h3>FormData vs JSON Serialization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>FormData</strong> is ideal for file uploads (required for
           multipart encoding), progressive enhancement (forms work without
           JavaScript), and simple forms where string values are acceptable.
@@ -273,7 +286,7 @@ export default function FormSerializationArticle() {
           submissions. The downside is type loss (everything is a string),
           verbose syntax for manipulation, and inconsistent browser support for
           iteration.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>JSON serialization</strong> is ideal for modern APIs, complex
           data structures, and type-sensitive data. JSON preserves types,
@@ -327,21 +340,24 @@ export default function FormSerializationArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Establish Naming Conventions:</strong> Use consistent
             naming for nested fields (<code>user.address.city</code> or{" "}
             <code>user[address][city]</code>). Document the convention and
             ensure both frontend and backend teams follow it. This makes
             transformation logic predictable and maintainable.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Handle Type Conversion Explicitly:</strong> Don&apos;t rely
             on implicit type coercion. Convert empty strings to null,
             &quot;true&quot;/&quot;false&quot; to booleans, numeric strings to
             numbers. Use schema validation libraries to parse and validate in
             one step.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Exclude Client-Only Fields:</strong> Filter out fields that
             shouldn&apos;t be sent to the server (password confirmation, UI
@@ -380,21 +396,24 @@ export default function FormSerializationArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Unchecked Checkboxes Missing:</strong> Unchecked checkboxes
             don&apos;t appear in FormData. If you need to explicitly send{" "}
             <code>false</code> for unchecked checkboxes, use a hidden input
             with the same name before the checkbox, or handle checkboxes
             separately in JavaScript.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Date Timezone Issues:</strong> Date inputs return strings
             in local time (<code>2024-01-15</code>), but APIs often expect UTC
             ISO strings (<code>2024-01-15T00:00:00Z</code>). Failing to handle
             timezone conversion causes off-by-one-day errors. Always convert
             dates to the expected timezone format.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Number Strings vs Numbers:</strong> FormData returns all
             values as strings. Sending <code>&quot;25&quot;</code> instead of{" "}
@@ -425,9 +444,12 @@ export default function FormSerializationArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Checkout Form</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Checkout forms have nested structures (shipping address, billing
           address, payment info), arrays (multiple items in cart), and mixed
           types (quantities as numbers, dates for delivery). Serialization
@@ -435,17 +457,17 @@ export default function FormSerializationArticle() {
           order API. Files (uploaded proof of address) are handled separately
           via multipart upload. The serialized payload excludes client-only
           fields like &quot;same as shipping&quot; checkbox state.
-        </p>
+        </HighlightBlock>
 
         <h3>User Profile Editor</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Profile forms often have dynamic arrays (skills, social links,
           certifications) where users add/remove items. Serialization collects
           indexed fields (<code>skills[0].name</code>,{" "}
           <code>skills[0].level</code>) into an array. Removed items are
           excluded from serialization. Avatar upload is handled via separate
           file upload, with the resulting URL included in the profile JSON.
-        </p>
+        </HighlightBlock>
 
         <h3>Survey Application</h3>
         <p>
@@ -462,17 +484,20 @@ export default function FormSerializationArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Common Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the FormData API, and what are its limitations?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: FormData is a browser API that extracts form data from form
               elements. You create it with new FormData(formElement), and it
               contains all form fields with their names and values.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               Advantages: Automatically handles all input types, supports file
               uploads (required for multipart/form-data), can be sent directly

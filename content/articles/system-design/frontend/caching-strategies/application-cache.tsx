@@ -167,12 +167,22 @@ export default function ApplicationCacheConciseArticle() {
           captionTier="important"
         />
 
-        <HighlightBlock as="p" tier="important">
-          The key architectural insight is that AppCache always served from cache first, then checked for updates in
-          the background. There was no way to bypass this behavior. You could not say &quot;check the network first
-          and fall back to cache.&quot; You could not selectively update one resource. You could not invalidate a
-          single cached entry. The cache was all-or-nothing, and the update was always one load cycle behind.
-        </HighlightBlock>
+	        <HighlightBlock as="p" tier="important">
+	          The key architectural insight is that AppCache always served from cache first, then checked for updates in
+	          the background. There was no way to bypass this behavior. You could not say &quot;check the network first
+	          and fall back to cache.&quot; You could not selectively update one resource. You could not invalidate a
+	          single cached entry. The cache was all-or-nothing, and the update was always one load cycle behind.
+	        </HighlightBlock>
+	        <HighlightBlock as="p" tier="important">
+	          Interview takeaway: this flow creates a correctness and operability trap. Users can remain on a stale
+	          version indefinitely, and even when an update is downloaded, activation is decoupled from fetch. Modern
+	          caching designs make activation/versioning explicit so you can roll forward or roll back predictably.
+	        </HighlightBlock>
+	        <HighlightBlock as="p" tier="important">
+	          If you must ship offline capability, you want the Service Worker model: explicit cache versioning,
+	          per-request strategy choice, and an intentional UX for updates (e.g., &quot;New version available&quot;
+	          with controlled reload), not a silent background swap.
+	        </HighlightBlock>
         <p>
           This architecture was acceptable for truly static applications (e.g., a calculator app or a simple game)
           where the content rarely changed. But for any application with dynamic content, user-generated data, or
@@ -181,12 +191,22 @@ export default function ApplicationCacheConciseArticle() {
         </p>
       </section>
 
-      <section>
-        <h2>Trade-offs & Comparisons</h2>
-        <HighlightBlock as="p" tier="crucial">
-          The comparison with Service Workers is the point: AppCache was easy to enable but impossible to operate
-          safely; Service Workers are more work up front, but they make caching explicit, debuggable, and evolvable.
-        </HighlightBlock>
+	      <section>
+	        <h2>Trade-offs & Comparisons</h2>
+	        <HighlightBlock as="p" tier="crucial">
+	          The comparison with Service Workers is the point: AppCache was easy to enable but impossible to operate
+	          safely; Service Workers are more work up front, but they make caching explicit, debuggable, and evolvable.
+	        </HighlightBlock>
+	        <HighlightBlock as="p" tier="important">
+	          Interview takeaway: AppCache failed because it made caching <strong>implicit</strong> and updates
+	          <strong>non-deterministic</strong> (cache-first + background update + double reload). Modern designs
+	          force you to choose explicit strategies and define lifecycle/activation semantics.
+	        </HighlightBlock>
+	        <HighlightBlock as="p" tier="important">
+	          If you see legacy AppCache in production, the right move is not to &quot;tune&quot; it, but to
+	          migrate to Service Workers (or server/CDN caching) with explicit cache versioning, offline fallbacks,
+	          and a controlled rollout/rollback story.
+	        </HighlightBlock>
         <p>
           The comparison between AppCache and Service Workers is central to understanding why the migration happened
           and why Service Workers are designed as they are.
@@ -514,29 +534,33 @@ export default function ApplicationCacheConciseArticle() {
       </section>
 
       {/* Section 10: References & Further Reading */}
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://alistapart.com/article/application-cache-is-a-douchebag/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Application Cache is a Douchebag - Jake Archibald (A List Apart)
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/applicationCache" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN: Window.applicationCache (Deprecated)
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/service-worker-lifecycle/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              The Service Worker Lifecycle - web.dev
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.chrome.com/blog/appcache-removal/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Preparing for AppCache Removal - Chrome Developers Blog
-            </a>
-          </li>
+	      <section>
+	        <h2>References & Further Reading</h2>
+	        <HighlightBlock as="p" tier="crucial">
+	          Use these primarily as historical context: AppCache is a cautionary tale about making caching implicit.
+	          In interviews, tie the lessons to modern SW cache versioning, activation control, and offline UX.
+	        </HighlightBlock>
+	        <ul className="space-y-2">
+	          <HighlightBlock as="li" tier="important">
+	            <a href="https://alistapart.com/article/application-cache-is-a-douchebag/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+	              Application Cache is a Douchebag - Jake Archibald (A List Apart)
+	            </a>
+	          </HighlightBlock>
+	          <HighlightBlock as="li" tier="important">
+	            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/applicationCache" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+	              MDN: Window.applicationCache (Deprecated)
+	            </a>
+	          </HighlightBlock>
+	          <HighlightBlock as="li" tier="important">
+	            <a href="https://web.dev/service-worker-lifecycle/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+	              The Service Worker Lifecycle - web.dev
+	            </a>
+	          </HighlightBlock>
+	          <li>
+	            <a href="https://developer.chrome.com/blog/appcache-removal/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+	              Preparing for AppCache Removal - Chrome Developers Blog
+	            </a>
+	          </li>
           <li>
             <a href="https://developer.chrome.com/docs/workbox/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Workbox: Production-Ready Service Worker Libraries - Google

@@ -776,10 +776,10 @@ export default function MinificationUglificationArticle() {
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is minification and how does it reduce bundle size?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="important" className="mb-3">
+            <p className="mb-3">
               Minification removes unnecessary characters from source code without changing 
               functionality:
-            </HighlightBlock>
+            </p>
             <ul className="space-y-2 mb-3">
               <li>
                 <strong>Whitespace Removal:</strong> Spaces, tabs, newlines for readability are removed.
@@ -798,9 +798,9 @@ export default function MinificationUglificationArticle() {
                 <strong>Expression Optimization:</strong> Constant expressions evaluated at build time.
               </li>
             </ul>
-            <HighlightBlock as="p" tier="important">
+            <p>
               Together, these techniques reduce JavaScript by 30-60% and CSS by 20-40% before compression.
-            </HighlightBlock>
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
@@ -820,10 +820,10 @@ export default function MinificationUglificationArticle() {
                 Written in Rust.
               </li>
             </ul>
-            <HighlightBlock as="p" tier="important">
+            <p>
               Choose Terser for smallest bundles, esbuild for fastest builds, SWC for TypeScript 
               projects.
-            </HighlightBlock>
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
@@ -933,17 +933,21 @@ export default function MinificationUglificationArticle() {
           ============================================================ */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: explain what minification removes vs what compression removes, and why source maps are
+          non-negotiable for production debugging and error symbolication.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://terser.org/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Terser Documentation
             </a> — Official Terser minifier documentation with configuration options.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://esbuild.github.io/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               esbuild Documentation
             </a> — Fast JavaScript bundler and minifier.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://swc.rs/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               SWC Documentation
@@ -954,11 +958,11 @@ export default function MinificationUglificationArticle() {
               cssnano Documentation
             </a> — CSS minification with PostCSS.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Use_a_source_map" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN — Source Maps
             </a> — Guide to using source maps for debugging.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://webpack.js.org/plugins/terser-webpack-plugin/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Webpack — Terser Plugin

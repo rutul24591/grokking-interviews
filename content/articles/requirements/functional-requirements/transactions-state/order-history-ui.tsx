@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function OrderHistoryUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Order history UI provides customers visibility into their past orders: what they bought, when, order status, and reorder capability. Unlike transaction history (financial transactions), order history focuses on purchased items, delivery status, and post-purchase actions (reorder, return, review). A well-designed order history reduces support tickets (customers find order info themselves), drives repeat purchases (easy reorder), and builds trust (transparent order tracking). For staff and principal engineers, order history involves data aggregation (orders from multiple channels), performance optimization (large order histories, fast search), and account integration (guest order lookup, order merging).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of order history extends beyond simple list display. Orders come from multiple channels (web, mobile, phone, in-store), each with different data structures. Filtering must handle date ranges (last 30 days, custom), order status (delivered, processing, cancelled), and fulfillment type (shipping, pickup). Search must be fast (indexed, cached) and flexible (order number, product name, SKU). Order details must show items (thumbnails, names, quantities), status (processing, shipped, delivered), and actions (reorder, return, review). The UI must handle edge cases (guest orders, cancelled orders, partially shipped orders) gracefully with clear messaging.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, order history architecture involves backend integration (order API, product API, inventory API), data aggregation (unify multiple channels), and performance optimization (pagination, lazy loading, search indexes). Analytics track usage (search terms, filter usage, reorder rate), performance (query time, page load), and errors (failed searches, missing orders). The system must support multiple user types (registered users, guest lookup, business accounts with multiple users), multiple order types (standard, subscription, pre-order), and multiple fulfillment types (shipping, pickup, delivery).
         </p>
@@ -47,13 +51,16 @@ export default function OrderHistoryUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Order List Display</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Order list shows past orders. Display: order number, date, status (delivered, processing, cancelled), total, items (thumbnail, count), actions (view details, reorder, return). Grouping: by month (December 2024, November 2024), by status (processing, delivered, cancelled), by year (2024, 2023). Sorting: by date (newest first default), by total (highest first), by status (processing first). Display: list (order cards), table (order rows), grid (order tiles).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Order status indicators show order state. Processing: yellow spinner, &quot;Processing&quot; (order received, preparing). Shipped: blue truck, &quot;Shipped&quot; (on way, tracking available). Delivered: green checkmark, &quot;Delivered&quot; (received, can review/return). Cancelled: red X, &quot;Cancelled&quot; (not fulfilled, refund issued). Display: color-coded badges, tooltip on hover (explain status), clickable (filter by status).
-        </p>
+        </HighlightBlock>
         <p>
           Order summary provides quick order info. Content: order number (clickable), date (order date), total (order total), items (thumbnail, count: &quot;3 items&quot;), status (badge). Display: card (order card with summary), row (table row with summary), tile (grid tile with summary). Actions: view details (full order page), reorder (add to cart), return (if eligible).
         </p>
@@ -105,9 +112,12 @@ export default function OrderHistoryUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Order history UI architecture spans data aggregation, list display, filtering/search, and order details. Data aggregation fetches orders from multiple channels (web, mobile, in-store). List display shows orders (cards, table, grid). Filtering/search filters and finds orders. Order details shows full order info (items, shipping, payment).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/order-history-ui/order-history-architecture.svg"
@@ -118,9 +128,9 @@ export default function OrderHistoryUIArticle() {
         />
 
         <h3>Data Aggregation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Order sources aggregate multiple data sources. Web orders: online purchases (website, mobile app). Phone orders: call center orders (phone orders, customer service). In-store orders: POS orders (in-store pickup, in-store purchase). Marketplace orders: third-party sales (Amazon, eBay store). Display: unified list (all orders), channel indicator (web icon, store icon).
-        </p>
+        </HighlightBlock>
         <p>
           Data normalization unifies different data structures. Web format: order number, items, total, date. Phone format: order number, CSR ID, total, date. In-store format: receipt number, store ID, total, date. Normalized format: order ID, channel, items, total, date, status. Benefits: single query (unified list), consistent filtering (all orders), simplified frontend (one data structure).
         </p>
@@ -180,14 +190,17 @@ export default function OrderHistoryUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Order history design involves trade-offs between information density, performance, functionality, and user experience. Understanding these trade-offs enables informed decisions aligned with business requirements and customer expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Display: Card vs. Table vs. Grouped</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Card view (order cards). Pros: Mobile-friendly (touch-friendly), visual (thumbnails visible), scannable (easy to find order). Cons: Less info per order (need to click for details), more vertical space (scroll more), harder to compare (side-by-side). Best for: Mobile-first (mobile shoppers), visual products (fashion, home), fewer orders (&lt;50 orders).
-        </p>
+        </HighlightBlock>
         <p>
           Table view (order rows). Pros: More info (all columns visible), comparable (side-by-side), sortable (click headers). Cons: Not mobile-friendly (horizontal scroll), less visual (small thumbnails), overwhelming (too much info). Best for: Desktop-first (desktop shoppers), B2B (need details), many orders (&gt;50 orders).
         </p>
@@ -239,13 +252,16 @@ export default function OrderHistoryUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide multiple views:</strong> Card (mobile), table (desktop), grouped (by month). Let users choose (view toggle). Default: card (mobile), table (desktop), grouped (by month).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement fast search:</strong> Server-side search (indexed), debounced input (300ms), highlight matches (bold text). Advanced search: order number, product name, SKU.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Show clear order status:</strong> Color-coded badges (processing=yellow, delivered=green, cancelled=red), tooltip (explain status), timeline (order journey).
           </li>
@@ -275,13 +291,16 @@ export default function OrderHistoryUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Slow search:</strong> Client-side search on large dataset. Solution: Server-side search, search index, debounced input.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No reorder:</strong> Can&apos;t easily reorder. Solution: &quot;Reorder&quot; button, check availability, modify option.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No return access:</strong> Can&apos;t initiate return. Solution: &quot;Return&quot; button (if eligible), eligibility check, return flow.
           </li>
@@ -311,16 +330,19 @@ export default function OrderHistoryUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Amazon Order History</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon order history: comprehensive order tracking. Features: grouped by year (2024, 2023), filters (date, status), search (product, order number). Display: list view (order cards), order details (items, shipping, payment). Actions: reorder (exact or modify), return (if eligible), review (if delivered), download invoice (PDF). Guest lookup: order number + email.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Walmart Order History</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Walmart order history: online and in-store orders. Features: unified list (online + in-store), filters (date, status, fulfillment), search (order number, product). Display: list view (order cards), order details (items, pickup/delivery). Actions: reorder (exact or modify), return (in-store or mail), review (if delivered). Guest lookup: order number + email.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Best Buy Order History</h3>
         <p>
@@ -340,12 +362,15 @@ export default function OrderHistoryUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle large order histories?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle large order histories?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Pagination (20-50 per page), lazy loading (load on scroll), server-side search (indexed), caching (repeat queries), archiving (old orders to cold storage). Display: grouped by year (collapse old years), search-first (search instead of scroll), export (download full history for accounting).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

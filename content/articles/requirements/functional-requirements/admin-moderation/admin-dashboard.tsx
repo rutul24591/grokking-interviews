@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function AdminDashboardArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Admin dashboard provides operators, moderators, and administrators with centralized visibility into system health, user metrics, operational status, and actionable workflows. The dashboard is the primary interface for platform operations teams to monitor system health, respond to incidents, manage users, and make data-driven decisions. For staff and principal engineers, admin dashboard implementation involves real-time data aggregation (metrics from multiple sources), role-based access control (different views for different roles), and operational workflows (user management, content moderation, incident response).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of admin dashboards extends beyond simple metric display. Real-time updates require WebSocket connections or efficient polling strategies. Role-based access control ensures users see only data they&apos;re authorized to access (support agents see user data, engineers see system metrics, executives see business KPIs). Operational workflows integrate with backend services (user suspension, content removal, incident escalation). The dashboard must handle high-frequency updates (metrics updating every second), large datasets (thousands of users, millions of events), and provide actionable insights (not just data display).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, admin dashboard architecture involves data aggregation (metrics from multiple services), access control (RBAC, audit logging), and operational excellence (incident response, workflow automation). The system must support multiple user types (support agents, moderators, engineers, executives), multiple data sources (user service, content service, infrastructure monitoring), and multiple use cases (user management, content moderation, system monitoring, business intelligence). Security is critical—admin dashboards have elevated privileges, requiring MFA, audit logging, and session management.
         </p>
@@ -47,13 +51,16 @@ export default function AdminDashboardArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Dashboard Metrics and KPIs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           User metrics track platform adoption and engagement. DAU/MAU (daily active users / monthly active users) measures engagement ratio (healthy: 20-50% depending on product). Signups (new users per day/week/month) tracks growth. Retention (D1, D7, D30 retention) measures user stickiness. Churn rate (users lost / total users) tracks user attrition. Engagement metrics (session duration, pages per session, actions per session) measure product usage depth.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content metrics track content creation and consumption. Content created (posts, comments, uploads per day) measures creator activity. Content consumed (views, reads, watches per day) measures consumer activity. Viral coefficient (invites sent × conversion rate) measures viral growth. Content quality (engagement rate, report rate, removal rate) measures content health.
-        </p>
+        </HighlightBlock>
         <p>
           System health metrics track platform reliability. Uptime (percentage of time system is available, target: 99.9%+). Error rate (errors per 1,000 requests, target: &lt;1%). Latency (p50, p95, p99 response times, target: p99 &lt;500ms). Throughput (requests per second, transactions per second). Resource utilization (CPU, memory, disk, network utilization).
         </p>
@@ -97,9 +104,12 @@ export default function AdminDashboardArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Admin dashboard architecture spans data aggregation, access control, real-time updates, and operational workflows. Data aggregation layer collects metrics from multiple services (user service, content service, infrastructure monitoring). Access control layer enforces RBAC (role-based views, permission checks). Real-time layer pushes updates via WebSocket. Operational workflows integrate with backend services (user management, content moderation, incident response).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/admin-moderation/admin-dashboard/dashboard-architecture.svg"
@@ -110,9 +120,9 @@ export default function AdminDashboardArticle() {
         />
 
         <h3>Data Aggregation Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Metrics collection gathers data from multiple sources. User service (user counts, signups, retention). Content service (content created, consumed, quality metrics). Infrastructure monitoring (CPU, memory, latency, error rates). Business intelligence (revenue, LTV, conversion rates). Collection methods: event streaming (Kafka, Kinesis), database queries, API calls.
-        </p>
+        </HighlightBlock>
         <p>
           Metrics aggregation pre-computes dashboard metrics. Real-time aggregation (streaming aggregation for real-time metrics like error rate, throughput). Batch aggregation (hourly/daily aggregation for historical metrics like DAU, retention). Aggregation storage (time-series database like InfluxDB, TimescaleDB, or pre-computed tables in PostgreSQL).
         </p>
@@ -172,14 +182,17 @@ export default function AdminDashboardArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Admin dashboard design involves trade-offs between real-time freshness, performance, complexity, and security. Understanding these trade-offs enables informed decisions aligned with operational requirements and security requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Real-time Updates: WebSocket vs. Polling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WebSocket for real-time updates. Pros: True real-time (sub-second updates), efficient (single persistent connection), bidirectional (server can push updates). Cons: Connection management complexity (reconnection, fallback), infrastructure overhead (WebSocket servers), mobile battery impact. Best for: Critical metrics (error rates, system health), operational dashboards (engineer view).
-        </p>
+        </HighlightBlock>
         <p>
           Polling for periodic updates. Pros: Simple implementation (HTTP requests), no special infrastructure, works everywhere. Cons: Not real-time (update delay), inefficient (polling overhead), server load (many concurrent polls). Best for: Non-critical metrics (business metrics, historical data), executive dashboards.
         </p>
@@ -231,13 +244,16 @@ export default function AdminDashboardArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement role-based views:</strong> Different dashboards for different roles (support, moderator, engineer, executive). Role-specific metrics and workflows. Permission checks on backend (not just UI).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use real-time updates for critical metrics:</strong> WebSocket for error rates, system health. Polling for business metrics. Fallback mechanism (WebSocket unavailable → polling).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Pre-aggregate metrics:</strong> Real-time aggregation for operational metrics. Batch aggregation for business metrics. Cache common queries (Redis).
           </li>
@@ -267,13 +283,16 @@ export default function AdminDashboardArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No access control:</strong> All users see all data. Solution: RBAC, permission checks on backend, audit logging.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No MFA:</strong> Admin accounts compromised. Solution: MFA required for all admin access.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Real-time everything:</strong> WebSocket for all metrics, performance issues. Solution: WebSocket for critical, polling for others.
           </li>
@@ -303,16 +322,19 @@ export default function AdminDashboardArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Facebook Admin Dashboard</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook admin dashboard provides role-based views for different teams. Support agents see user reports, account issues. Moderators see flagged content, moderation queue. Engineers see system health, error rates, latency. Executives see DAU/MAU, revenue, growth metrics. Real-time updates for critical metrics (error spikes, service down). MFA required for all admin access. Audit logging for all admin actions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Uber Operations Dashboard</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uber operations dashboard tracks real-time ride metrics. Active rides, driver availability, ETA accuracy. Incident detection (surge pricing, service disruptions). Regional views (city-level, region-level). Support workflows (refund processing, driver support). Real-time alerts (service degradation, high demand). Mobile access for on-call engineers.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Airbnb Trust and Safety Dashboard</h3>
         <p>
@@ -332,12 +354,15 @@ export default function AdminDashboardArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design dashboards for different roles, and what are the key trade-offs?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design dashboards for different roles, and what are the key trade-offs?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Design role-specific views with relevant metrics and workflows. Support agents need user management and support tickets. Moderators need content queues and moderation workflows. Engineers need system health, error rates, and latency metrics. Executives need business KPIs and growth metrics. The key trade-off is between customization and consistency—too much customization leads to fragmented experiences, while too little limits usefulness. Implement backend permission checks (not just UI) to enforce access control. Provide customizable widgets for power users while maintaining template dashboards for common roles. At scale, consider caching role-specific aggregations to reduce query load.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

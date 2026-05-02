@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function RTLSupportArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>RTL (Right-to-Left) support</strong> enables applications to
           display content correctly for languages that read right-to-left,
           primarily Arabic, Hebrew, Persian (Farsi), and Urdu. RTL is not just
@@ -45,8 +46,8 @@ export default function RTLSupportArticle() {
           reverse, and the visual hierarchy reflects RTL reading patterns. Over
           600 million people worldwide use RTL languages, making RTL support a
           significant accessibility and market requirement.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, RTL implementation involves architectural
           decisions about CSS strategy (logical properties vs. directional
           classes), component design (building direction-agnostic components),
@@ -55,8 +56,8 @@ export default function RTLSupportArticle() {
           fundamental layout direction that affects every component. Building
           RTL support after launch requires extensive refactoring; planning for
           bidirectional support from the start is significantly more efficient.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           RTL support involves several technical challenges. <strong>Layout
           mirroring</strong> — flipping horizontal positioning (left becomes
           right, margin-left becomes margin-right). <strong>CSS logical
@@ -66,7 +67,7 @@ export default function RTLSupportArticle() {
           (English words in Arabic text, numbers, URLs). <strong>Icon
           flipping</strong> — directional icons (arrows, chevrons) need to
           mirror, but non-directional icons (close, search) should not.
-        </p>
+        </HighlightBlock>
         <p>
           The business case for RTL support is clear: Middle Eastern markets
           (Saudi Arabia, UAE, Israel) represent significant revenue
@@ -82,7 +83,7 @@ export default function RTLSupportArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Direction (dir attribute):</strong> HTML{" "}
             <code>dir</code> attribute sets base direction:{" "}
             <code>dir=&quot;ltr&quot;</code> (default) or{" "}
@@ -90,23 +91,23 @@ export default function RTLSupportArticle() {
             scrollbar position, and CSS logical property resolution. Set on{" "}
             <code>&lt;html&gt;</code> for page-level, or on any element for
             section-level direction.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>CSS Logical Properties:</strong> Direction-aware CSS
             properties that automatically adapt to LTR/RTL. Examples:{" "}
             <code>margin-inline-start</code> (left in LTR, right in RTL),{" "}
             <code>padding-inline-end</code>, <code>inset-inline-start</code>,{" "}
             <code>border-block-start</code>. Modern browsers have excellent
             support; use with autoprefixer for older browser fallbacks.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Bidirectional Algorithm (Unicode Bidi):</strong> Unicode
             defines how mixed LTR/RTL text is displayed. Numbers and Latin text
             embedded in Arabic are displayed LTR within the RTL flow. The
             algorithm handles complex cases like nested directions. CSS{" "}
             <code>unicode-bidi</code> and <code>direction</code> properties
             control this behavior.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Icon Flipping:</strong> Directional icons (arrows,
             chevrons, back buttons) should mirror in RTL. Non-directional icons
@@ -141,14 +142,14 @@ export default function RTLSupportArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           RTL architecture consists of a direction detection mechanism (from
           locale or user preference), CSS strategy (logical properties or
           directional classes), component patterns (direction-agnostic design),
           and testing infrastructure (visual regression for both directions).
           The architecture must handle dynamic direction switching and ensure
           consistent behavior across all components.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/internationalization-i18n-localization-l10n/css-logical-properties.svg"
@@ -159,19 +160,19 @@ export default function RTLSupportArticle() {
         />
 
         <h3>CSS Strategy Comparison</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Logical Properties (Recommended):</strong> Use{" "}
           <code>margin-inline-start</code>, <code>padding-inline-end</code>,{" "}
           <code>inset-inline-start</code>. Advantages: automatic RTL handling,
           cleaner CSS, future-proof. Limitations: requires PostCSS autoprefixer
           for older browsers, learning curve for team.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Directional Classes:</strong> Use{" "}
           <code>.ltr .ml-4</code> and <code>.rtl .mr-4</code> patterns.
           Advantages: explicit control, works everywhere. Limitations: doubles
           CSS rules, error-prone, harder to maintain.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>CSS-in-JS Solutions:</strong> Libraries like styled-components
           with RTL plugins. Advantages: automatic mirroring, collocated styles.
@@ -190,10 +191,10 @@ export default function RTLSupportArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           RTL implementation involves trade-offs between automation, control,
           and browser support.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/internationalization-i18n-localization-l10n/bidirectional-text-handling.svg"
@@ -204,17 +205,17 @@ export default function RTLSupportArticle() {
         />
 
         <h3>Icon Flipping Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>CSS Transform:</strong>{" "}
           <code>[dir=&quot;rtl&quot;] .arrow {`{ transform: scaleX(-1); }`}</code>.
           Advantages: simple, no asset duplication. Limitations: affects all
           children, may break complex icons.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Separate Assets:</strong> Different icon files for LTR/RTL.
           Advantages: precise control, optimized icons. Limitations: doubles
           asset count, harder to maintain.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Icon Library Support:</strong> Libraries like Lucide, Heroicons
           with RTL-aware components. Advantages: built-in handling, consistent.
@@ -243,25 +244,25 @@ export default function RTLSupportArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use Logical Properties from Start:</strong>{" "}
             <code>margin-inline-start</code> not <code>margin-left</code>,{" "}
             <code>padding-inline-end</code> not <code>padding-right</code>. This
             makes RTL support automatic — just change <code>dir</code> attribute.
             Use PostCSS autoprefixer for browser fallbacks.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Set HTML Direction Attribute:</strong>{" "}
             <code>&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;</code>.
             This sets base direction for entire page. For mixed-direction
             pages, set <code>dir</code> on section-level containers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Flip Directional Icons Only:</strong> Arrows, chevrons, and
             navigation icons should flip. Close buttons, search icons, and
             decorative icons should not. Create a list of &quot;flip&quot; vs
             &quot;no-flip&quot; icons for consistency.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Test with Real RTL Content:</strong> Don&apos;t test with
             &quot;Lorem ipsum&quot; in RTL mode — use actual Arabic or Hebrew
@@ -286,22 +287,22 @@ export default function RTLSupportArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Forgetting to Flip Icons:</strong> Back arrows pointing
             wrong direction confuse RTL users. Audit all icons — create a
             checklist of directional vs. non-directional icons.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Hardcoded Left/Right Values:</strong>{" "}
             <code>left: 0</code>, <code>right: 16px</code> break in RTL. Use
             logical properties (<code>inset-inline-start</code>) or CSS
             variables that flip based on direction.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Scrollbar Position:</strong> RTL scrollbars are on
             the left, affecting fixed elements and layout calculations. Test
             fixed headers, sidebars, and modals in RTL.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Mixed Direction Content Issues:</strong> English words in
             Arabic text can display incorrectly. Use{" "}
@@ -326,29 +327,29 @@ export default function RTLSupportArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>E-Commerce for Middle Eastern Markets</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           E-commerce sites targeting Saudi Arabia, UAE, and Egypt require full
           RTL support. Product pages, checkout flow, and account management must
           all mirror correctly. Critical: payment forms, address fields, and
           order confirmations must handle Arabic text and RTL formatting.
           Currency displays (SAR, AED, EGP) must align correctly with RTL text.
-        </p>
+        </HighlightBlock>
 
         <h3>Government and Enterprise Applications</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Government portals in Israel, Arab nations, and Pakistan require RTL
           for citizen services. Enterprise applications for multinational
           companies need RTL for regional offices. Compliance requirements often
           mandate RTL support for procurement eligibility.
-        </p>
+        </HighlightBlock>
 
         <h3>News and Media Websites</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           News sites like Al Jazeera, Haaretz, and Dawn serve RTL audiences.
           Articles mix RTL text with LTR elements (quotes, embedded tweets,
           video players). Complex layouts with sidebars, related articles, and
           comments must all mirror correctly.
-        </p>
+        </HighlightBlock>
 
         <h3>Social Media Platforms</h3>
         <p>
@@ -365,10 +366,10 @@ export default function RTLSupportArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: How do you implement RTL support in a React application?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Set up direction at the root level: detect locale, map to
               direction (ar, he, fa → rtl), set{" "}
               <code>&lt;html dir=&quot;rtl&quot; lang=&quot;ar&quot;&gt;</code>.
@@ -377,13 +378,13 @@ export default function RTLSupportArticle() {
               like postcss-rtl to auto-convert. Test with real RTL content, not
               just mirrored LTR. Handle icon flipping via CSS or component
               props.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: What are CSS logical properties and why should you use them?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Logical properties replace physical directions (left/right)
               with flow-relative terms (inline-start/inline-end,

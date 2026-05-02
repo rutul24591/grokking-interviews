@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function PersonalizedRecommendationsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Personalized Recommendations enable platforms to provide personalized content recommendations to users. Users can receive recommendations (get personalized recommendations), manage preferences (set recommendation preferences), provide feedback (feedback on recommendations), and control personalization (control personalization level). Personalized recommendations are fundamental to user engagement (engage users with relevant content), discovery (help users discover content), and user satisfaction (users appreciate relevant recommendations). For platforms with content discovery, effective personalized recommendations are essential for user engagement, discovery, and satisfaction.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, personalized recommendations architecture involves recommendation algorithms (generate recommendations), user preferences (manage user preferences), personalization strategies (personalize recommendations), recommendation diversity (ensure diverse recommendations), and recommendation management (manage recommendations). The implementation must balance personalization (relevant recommendations) with diversity (diverse recommendations) and privacy (respect user privacy). Poor personalized recommendations lead to user disengagement, poor discovery, and user dissatisfaction.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of personalized recommendations extends beyond simple recommendation engine. Recommendation algorithms (generate recommendations). User preferences (manage preferences). Personalization strategies (personalize recommendations). Recommendation diversity (ensure diverse recommendations). Privacy considerations (respect user privacy). For staff engineers, personalized recommendations are a user engagement infrastructure decision affecting user engagement, discovery, and satisfaction.
         </p>
@@ -46,13 +50,16 @@ export default function PersonalizedRecommendationsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Recommendation Algorithms</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Collaborative filtering recommends based on similar users. User similarity (find similar users). Item similarity (find similar items). Recommendation generation (generate recommendations). Collaborative filtering enables user-based recommendations. Benefits include personalization (personalized recommendations), discovery (discover new content). Drawbacks includes cold start (cold start problem), scalability (scalability issues).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content-based filtering recommends based on content similarity. Content analysis (analyze content). Similarity calculation (calculate similarity). Recommendation generation (generate recommendations). Content-based filtering enables content-based recommendations. Benefits include personalization (personalized recommendations), no cold start (no cold start problem). Drawbacks includes limited discovery (limited discovery), content analysis (content analysis overhead).
-        </p>
+        </HighlightBlock>
         <p>
           Hybrid filtering combines collaborative and content-based. Collaborative component (collaborative filtering). Content-based component (content-based filtering). Combination (combine recommendations). Hybrid filtering enables hybrid recommendations. Benefits include best of both (best of both approaches), improved accuracy (improved accuracy). Drawbacks includes complexity (complex implementation), computation overhead (computation overhead).
         </p>
@@ -104,9 +111,12 @@ export default function PersonalizedRecommendationsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Personalized recommendations architecture spans recommendation service, preference service, personalization service, and diversity service. Recommendation service manages recommendations. Preference service manages preferences. Personalization service manages personalization. Diversity service manages diversity. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/personalized-recommendations/recommendations-architecture.svg"
@@ -117,9 +127,9 @@ export default function PersonalizedRecommendationsArticle() {
         />
 
         <h3>Recommendation Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Recommendation service manages user recommendations. Recommendation storage (store recommendations). Recommendation retrieval (retrieve recommendations). Recommendation update (update recommendations). Recommendation service is the core of personalized recommendations. Benefits include centralization (one place for recommendations), consistency (same recommendations everywhere). Drawbacks includes complexity (manage recommendations), coupling (services depend on recommendation service).
-        </p>
+        </HighlightBlock>
         <p>
           Recommendation policies define recommendation rules. Default recommendations (default recommendations). Recommendation validation (validate recommendations). Recommendation sync (sync recommendations). Recommendation policies automate recommendation management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function PersonalizedRecommendationsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Personalized recommendations design involves trade-offs between collaborative and content-based filtering, explicit and implicit preferences, and personalization and diversity. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Filtering: Collaborative vs. Content-based</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Collaborative filtering (recommend based on similar users). Pros: Personalization (personalized recommendations), discovery (discover new content), user satisfaction (user satisfaction). Cons: Cold start (cold start problem), scalability (scalability issues), sparse data (sparse data problem). Best for: Large user base, user interactions.
-        </p>
+        </HighlightBlock>
         <p>
           Content-based filtering (recommend based on content similarity). Pros: No cold start (no cold start problem), interpretable (interpretable recommendations), user-specific (user-specific recommendations). Cons: Limited discovery (limited discovery), content analysis (content analysis overhead), overspecialization (overspecialization problem). Best for: Content-rich platforms, content metadata.
         </p>
@@ -207,13 +220,16 @@ export default function PersonalizedRecommendationsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide recommendation algorithms:</strong> Collaborative filtering. Content-based filtering. Hybrid filtering. Let users choose.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enable user preferences:</strong> Explicit preferences. Implicit preferences. Preference management. Let users choose.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Personalize recommendations:</strong> User-based personalization. Context-based personalization. Time-based personalization.
           </li>
@@ -243,13 +259,16 @@ export default function PersonalizedRecommendationsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No recommendation algorithms:</strong> No recommendations. <strong>Solution:</strong> Provide recommendation algorithms.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No user preferences:</strong> Can&apos;t set preferences. <strong>Solution:</strong> Enable user preferences.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No personalization:</strong> No personalized recommendations. <strong>Solution:</strong> Personalize recommendations.
           </li>
@@ -279,16 +298,19 @@ export default function PersonalizedRecommendationsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-commerce Recommendations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms provide recommendations. Product recommendations (recommend products). Collaborative filtering (recommend based on similar users). Content-based filtering (recommend based on product similarity). Users receive e-commerce recommendations.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Streaming Service Recommendations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Streaming services provide recommendations. Content recommendations (recommend content). Collaborative filtering (recommend based on similar users). Content-based filtering (recommend based on content similarity). Users receive streaming service recommendations.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Social Media Recommendations</h3>
         <p>
@@ -308,12 +330,15 @@ export default function PersonalizedRecommendationsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design personalized recommendations that balance personalization with diversity?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design personalized recommendations that balance personalization with diversity?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement personalized recommendations with diversity because users want personalization (relevant recommendations) but want diversity (not echo chamber, discover new things). Personalize recommendations: personalize for user (based on history, preferences, behavior, similar users)—relevant recommendations, user engagement. Ensure diversity: ensure diverse recommendations (diverse content types, diverse sources, diverse viewpoints, serendipitous discoveries)—avoid filter bubble, expose to new things. Provide control: let users control (adjust personalization level, request more diversity, reset recommendations)—user agency, can tune personalization. Monitor diversity: monitor diversity (track diversity metrics, detect filter bubbles, alert on low diversity)—ensure diversity maintained over time. The diversity insight: users want personalization but want diversity—provide personalization (relevant, engaging) with diversity (content, sources, viewpoints, serendipity), control (user tuning), monitor (metrics, alerts), and avoid filter bubbles while maintaining relevance.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

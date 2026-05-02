@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,21 +34,24 @@ export default function QueryProcessingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Query Processing</strong> is the pipeline that transforms raw user search
           input into optimized queries that retrieve relevant results. It is the critical
           first step in search—garbage in, garbage out. Even the best ranking algorithms
           cannot recover from poor query understanding. Query processing handles tokenization,
           normalization, expansion, spelling correction, and intent detection to maximize
           result relevance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Modern query processing goes beyond simple keyword matching. It handles typos
           ("iphne" → "iphone"), synonyms ("laptop" OR "notebook"), query intent
           (navigational vs informational vs transactional), and context (user location,
           search history). Google processes 8.5B searches per day, each going through
           sophisticated query understanding pipelines that run in &lt;100ms.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, query processing involves NLP techniques (tokenization,
           stemming, entity recognition), spelling correction algorithms (edit distance,
@@ -59,10 +63,13 @@ export default function QueryProcessingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Tokenization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tokenization splits query text into searchable terms (tokens):
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Whitespace Tokenization:</strong> Split on spaces. Simple but fails
@@ -84,9 +91,9 @@ export default function QueryProcessingArticle() {
         </ul>
 
         <h3 className="mt-6">Normalization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Normalization transforms tokens to canonical form for matching:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Lowercasing:</strong> Convert to lowercase. "iPhone" → "iphone".
@@ -187,10 +194,13 @@ export default function QueryProcessingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production query processing pipeline involves multiple stages transforming
           raw query into optimized search.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery-search-feed-browsing/query-processing/query-processing-pipeline.svg"
@@ -233,9 +243,9 @@ export default function QueryProcessingArticle() {
         </ul>
 
         <h3 className="mt-6">Query Optimization Techniques</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Optimizing queries for efficient execution:
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -333,9 +343,12 @@ export default function QueryProcessingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Query processing design involves balancing precision, recall, and performance.
-        </p>
+        </HighlightBlock>
 
         <h3>Stemming vs Lemmatization</h3>
         <div className="overflow-x-auto">
@@ -384,10 +397,10 @@ export default function QueryProcessingArticle() {
         />
 
         <h3 className="mt-6">Query Expansion Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>No Expansion:</strong> Highest precision, lowest recall. User must know
           exact terms. Good for expert users, technical search.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Moderate Expansion:</strong> Add 2-3 synonyms per term. Balanced
           precision/recall. Most production systems use this.
@@ -414,17 +427,20 @@ export default function QueryProcessingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Log All Queries:</strong> Store raw queries, processed queries, clicked
             results. Use for synonym discovery, spelling correction training, query
             understanding improvement.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Query Caching:</strong> Cache normalized query results. Set
             appropriate TTL based on content freshness. Monitor cache hit rate (target:
             30-50%).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement Spelling Correction:</strong> Use edit distance for small
             dictionaries, n-gram for large. Learn common corrections from query logs.
@@ -454,15 +470,18 @@ export default function QueryProcessingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-correction:</strong> Correcting intentional queries (brand names,
             technical terms). Solution: Whitelist known brands, use confidence threshold.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Query Drift:</strong> Expansion adds off-topic terms. Solution: Limit
             expansion count, use query-independent scoring for expansion candidates.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Stop Word Removal Hurting Phrases:</strong> "To Be or Not to Be"
             becomes meaningless. Solution: Don't remove stop words in phrase queries.
@@ -488,18 +507,21 @@ export default function QueryProcessingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Google Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google processes 8.5B searches daily with sophisticated query understanding.
           Handles spelling correction ("iphne" → "iphone"), synonym expansion ("laptop"
           → "notebook"), intent detection (navigational vs informational), and context
           (location, search history).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> BERT integration (2019) for query understanding.
           Understands context ("can you get medicine for someone pharmacy").
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Amazon Product Search</h3>
         <p>
@@ -537,17 +559,20 @@ export default function QueryProcessingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle spelling correction?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle spelling correction?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use edit distance (Levenshtein) for small dictionaries,
               n-gram matching for large. Learn common corrections from query logs (users
               searching X then clicking results for Y). Use phonetic matching (Soundex,
               Metaphone) for names. For production, use ML-based sequence-to-sequence
               models trained on query logs. Apply correction only if confidence &gt;
               threshold (90%+). Show "Did you mean..." for medium confidence.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

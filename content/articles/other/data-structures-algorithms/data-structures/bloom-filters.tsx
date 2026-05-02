@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function BloomFiltersArticle() {
     <ArticleLayout metadata={metadata}>
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition & Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A Bloom filter is a space-efficient probabilistic data structure that answers the question &quot;is x a member of this set?&quot; with two possible verdicts: <strong>definitely not</strong>, or <strong>probably yes</strong>. False positives occur with a tunable rate p; false negatives never occur. The structure uses a bit array of m bits and k independent hash functions, requiring roughly 1.44 · log₂(1/p) bits per element — about 10 bits per element for a 1% false-positive rate, regardless of element size.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Burton Howard Bloom introduced the structure in 1970 to solve a hyphenation lookup problem at Bell Labs: a 500KB dictionary did not fit in 1960s memory, but a Bloom filter approximating it did, with rare misses falling through to disk. The pattern — use a small probabilistic structure to filter expensive exact lookups — is the canonical Bloom filter use case to this day.
-        </p>
+        </HighlightBlock>
         <p>
           Today Bloom filters are everywhere in storage systems and distributed databases. RocksDB, Cassandra, HBase, LevelDB, and BigTable all embed per-SSTable Bloom filters to skip disk seeks for absent keys. CDNs use them to dedupe cache lookups. Web browsers use them for malicious-URL screening. The structure is so foundational to LSM-tree storage that disabling it can degrade point-read latency by 10×.
         </p>
@@ -36,12 +40,15 @@ export default function BloomFiltersArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The Bloom filter consists of two things: an m-bit array (initially all zero) and k independent hash functions h₁, h₂, …, hₖ, each mapping elements to indices in [0, m). <strong>Insert(x):</strong> compute h₁(x), …, hₖ(x), and set those k bits to 1. <strong>Contains(x):</strong> check those same k bits — if all are 1, return &quot;probably yes&quot;; if any is 0, return &quot;definitely no&quot;.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The two-sided semantics fall directly out of the operation. If x was inserted, the bits at h₁(x)…hₖ(x) were definitely set, so contains(x) returns true — no false negative is possible. Conversely, if contains(x) returns true, it could be because x was inserted, or because k <em>different</em> elements collectively set those bits — that&apos;s the false positive.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           The false-positive rate after inserting n elements into an m-bit array with k hashes is approximately p ≈ (1 − e^(−kn/m))^k. Three knobs trade off space, accuracy, and CPU: m (bits), k (hashes per operation), and n (load). The optimum k for a given m and n is k* = (m/n) ln 2; common production tuning fixes p (e.g., 1%) and derives m and k from it.
         </p>
@@ -57,12 +64,15 @@ export default function BloomFiltersArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture & Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Production implementations rarely use k actually-independent hash functions; instead they use a technique from Kirsch &amp; Mitzenmacher (2006): compute two strong hashes h_a and h_b, then derive the k indices as h_a + i · h_b mod m for i = 0…k−1. This delivers the same false-positive rate as k independent functions but at the cost of two hashes per operation. MurmurHash3, xxHash, and SipHash are common choices for h_a and h_b.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Sizing for a target false-positive rate p with n expected elements: m = −n · ln(p) / (ln 2)² and k = (m/n) · ln 2. For 1M elements at p = 0.01: m ≈ 9.6M bits (~1.2MB) and k = 7. For p = 0.001: m ≈ 14.4M bits and k = 10. A hash set storing 1M 32-byte strings would consume 32MB+ — Bloom filter is 25× smaller for the equivalent membership query.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Memory layout matters. A simple bit array indexed by hash mod m has poor cache behavior — k random hashes touch k different cache lines. The <em>blocked Bloom filter</em> partitions the bit array into 64-byte (cacheline-sized) blocks and confines all k bit-sets for a given key to a single block, reducing the operation to one cache miss instead of k. RocksDB uses this variant exclusively.
         </p>
@@ -81,12 +91,15 @@ export default function BloomFiltersArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Trade-offs & Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Bloom filter vs hash set.</strong> Hash set is exact (no false positives); Bloom filter is probabilistic. Hash set memory grows linearly with element size (8 bytes minimum per entry, more for the keys themselves); Bloom filter memory depends only on n and p, not on key size. For small sets where memory is not constrained, use a hash set. For 1M+ elements where you can tolerate occasional false positives, Bloom filter is 10–50× smaller.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Bloom filter vs cuckoo filter.</strong> Cuckoo filter offers similar space efficiency, better false-positive rate at high load (because it stores fingerprints rather than just bits), and native deletion support. Bloom filter is simpler, has a longer track record, and has more stable performance during inserts. New systems should default to cuckoo; legacy systems mostly stick with Bloom.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Bloom filter vs Counting Bloom filter.</strong> Counting variant supports deletion at 4–8× space cost (each &quot;bit&quot; becomes a 4-bit or 8-bit counter to absorb collisions). Use only when deletion is required; the space penalty is significant.
         </p>
@@ -100,9 +113,12 @@ export default function BloomFiltersArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li><strong>Size for target false-positive rate.</strong> Pick p first (typically 0.01 or 0.001), then derive m and k from n. Don&apos;t pick m and k arbitrarily — you&apos;ll either over-allocate or hit unacceptable FPR.</li>
-          <li><strong>Use double-hashing.</strong> Computing k independent hashes is wasteful. Two strong hashes plus the Kirsch-Mitzenmacher derivation gets equivalent FPR at half the work.</li>
+          <HighlightBlock as="li" tier="important"><strong>Size for target false-positive rate.</strong> Pick p first (typically 0.01 or 0.001), then derive m and k from n. Don&apos;t pick m and k arbitrarily — you&apos;ll either over-allocate or hit unacceptable FPR.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Use double-hashing.</strong> Computing k independent hashes is wasteful. Two strong hashes plus the Kirsch-Mitzenmacher derivation gets equivalent FPR at half the work.</HighlightBlock>
           <li><strong>Pick non-cryptographic, fast hashes.</strong> MurmurHash3, xxHash, and CityHash are 10× faster than SHA-256 and just as good for Bloom filter purposes (no adversarial input concern in most cases).</li>
           <li><strong>Use blocked Bloom filters for hot paths.</strong> A single cache miss per operation instead of k matters when querying millions of times per second.</li>
           <li><strong>Always pair with the exact source.</strong> Bloom filter says &quot;probably yes&quot; — confirm with the actual lookup. The structure is a filter, not a verdict.</li>
@@ -113,9 +129,12 @@ export default function BloomFiltersArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li><strong>Treating &quot;maybe&quot; as &quot;yes&quot;.</strong> Acting on a Bloom positive without confirming with the exact source produces incorrect behavior on every false positive. Always treat positive as &quot;needs verification&quot;.</li>
-          <li><strong>Deleting elements from a standard Bloom.</strong> Clearing the k bits for a deletion may clear bits that other elements depend on — silently introducing false negatives. Use a counting Bloom filter if deletion is required.</li>
+          <HighlightBlock as="li" tier="important"><strong>Treating &quot;maybe&quot; as &quot;yes&quot;.</strong> Acting on a Bloom positive without confirming with the exact source produces incorrect behavior on every false positive. Always treat positive as &quot;needs verification&quot;.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Deleting elements from a standard Bloom.</strong> Clearing the k bits for a deletion may clear bits that other elements depend on — silently introducing false negatives. Use a counting Bloom filter if deletion is required.</HighlightBlock>
           <li><strong>Underestimating n.</strong> If you size for n = 1M but actually insert 10M, the false-positive rate explodes from 1% to ~50%. Either over-provision or use a scaled Bloom filter that grows.</li>
           <li><strong>Using cryptographic hashes for performance-critical paths.</strong> SHA-256 is wasteful. The hash family doesn&apos;t need cryptographic strength — only good distribution.</li>
           <li><strong>Using fewer than the optimum k.</strong> Too few hashes → many bits unset → fewer false positives but lower load capacity. Too many hashes → bit array saturates → false positives spike. Stick to k* = (m/n) ln 2.</li>
@@ -126,12 +145,15 @@ export default function BloomFiltersArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>LSM-tree storage engines.</strong> RocksDB, LevelDB, Cassandra, HBase, and ScyllaDB attach a Bloom filter to every SSTable. On a point read for key k, the engine checks each level&apos;s SSTables; the Bloom filter quickly excludes SSTables that don&apos;t contain k, reducing disk seeks dramatically. For workloads with many missing keys (Cassandra rows that don&apos;t exist), Bloom filters can reduce read latency by 10× or more.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>CDN cache deduplication.</strong> Akamai, Cloudflare, and similar CDNs use Bloom filters to track which URLs have been seen recently across edge nodes, deduping requests to origin. The &quot;probably seen&quot; verdict suppresses redundant origin fetches; the rare false positive falls back to a confirmed lookup.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Browser malware screening.</strong> Google Safe Browsing distributes a compact Bloom-filter-like structure (actually a more sophisticated variant) of malicious URLs to Chrome and Firefox. Most navigations get a clean &quot;not in set&quot; verdict instantly; the rare positive falls through to a Google API lookup for confirmation.
         </p>
@@ -150,10 +172,13 @@ export default function BloomFiltersArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why doesn&apos;t a standard Bloom filter support deletion?</p>
-            <p className="mt-2 text-sm">A: Bits are shared across elements — multiple elements can hash to the same bit. Clearing a bit on delete might break some other element&apos;s membership claim, introducing false negatives (the structure&apos;s one guarantee). The counting Bloom filter replaces each bit with a small counter (4-8 bits) that&apos;s incremented on insert and decremented on delete, supporting deletion at higher space cost.</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Why doesn&apos;t a standard Bloom filter support deletion?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">A: Bits are shared across elements — multiple elements can hash to the same bit. Clearing a bit on delete might break some other element&apos;s membership claim, introducing false negatives (the structure&apos;s one guarantee). The counting Bloom filter replaces each bit with a small counter (4-8 bits) that&apos;s incremented on insert and decremented on delete, supporting deletion at higher space cost.</HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How would you size a Bloom filter for 10M elements at 0.1% false-positive rate?</p>

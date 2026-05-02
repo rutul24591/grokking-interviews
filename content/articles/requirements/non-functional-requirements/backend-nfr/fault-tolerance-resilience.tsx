@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -25,13 +26,16 @@ export default function FaultToleranceResilienceArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Fault tolerance</strong> is the ability of a system to continue operating correctly in the
           presence of component failures. <strong>Resilience</strong> is the broader discipline of anticipating,
           withstanding, recovering from, and adapting to failures and disruptions. Fault tolerance is a property
           of the system&apos;s architecture; resilience is a property of the system&apos;s engineering culture.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In distributed systems, failures are not a matter of &quot;if&quot; but &quot;when.&quot; At scale,
           you must design for hardware failures (disk crashes, memory corruption, network card failures),
           network failures (packet loss, partitions, DNS failures), software failures (bugs, memory leaks,
@@ -39,7 +43,7 @@ export default function FaultToleranceResilienceArticle() {
           cache cluster failures), and human errors (misconfigurations, accidental deletions, deployment
           mistakes). The systems that survive are not the ones that never fail — they are the ones that fail
           gracefully and recover quickly.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, fault tolerance architecture is a core competency.
           Interviewers expect you to articulate failure scenarios before they are mentioned, design containment
@@ -74,19 +78,22 @@ export default function FaultToleranceResilienceArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding fault tolerance requires grasping several foundational concepts that govern how systems
           behave when components fail. These concepts form the vocabulary of resilience discussions in both
           production architecture and system design interviews.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Failure Domains and Blast Radius</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A failure domain is the set of components affected by a single failure. A disk failure affects one
           server. A rack power failure affects forty servers. A region-wide network partition affects thousands.
           Resilient systems minimize blast radius by isolating failure domains — using availability zones,
           bulkhead patterns, and circuit breakers to contain failures before they cascade.
-        </p>
+        </HighlightBlock>
         <p>
           The blast radius is the actual impact of a failure. A well-designed system has small blast radii even
           for large failure domains — a region going dark should not bring down the global system, because
@@ -116,11 +123,14 @@ export default function FaultToleranceResilienceArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Fault tolerance is implemented through a layered defense strategy — each layer provides a different
           mechanism for preventing, detecting, containing, or recovering from failures. The layers work
           together to create a system that degrades gracefully under stress and recovers quickly after failure.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/fault-tolerance-resilience-patterns.svg"
@@ -129,12 +139,12 @@ export default function FaultToleranceResilienceArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Circuit Breaker Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The circuit breaker pattern prevents cascading failures by stopping requests to a failing service.
           It operates as a state machine with three states: CLOSED (normal operation, all requests flow
           through), OPEN (failures detected, all requests rejected immediately), and HALF-OPEN (testing
           recovery, limited requests allowed through).
-        </p>
+        </HighlightBlock>
         <p>
           In the CLOSED state, the breaker monitors failures — timeouts, exceptions, 5xx errors. When failures
           exceed a configured threshold within a time window (e.g., 5 failures within 10 seconds), the breaker
@@ -189,22 +199,25 @@ export default function FaultToleranceResilienceArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Every fault tolerance mechanism involves trade-offs between resilience, latency, resource efficiency,
           and operational complexity. Understanding these trade-offs is essential for making informed
           architectural decisions.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Pattern</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Pattern</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Circuit Breaker</strong></td>
               <td className="p-3">
                 Prevents cascading failures. Gives failing services time to recover. Provides fast failure to callers rather than slow timeouts.
@@ -212,8 +225,8 @@ export default function FaultToleranceResilienceArticle() {
               <td className="p-3">
                 Adds latency to failure detection. Requires careful threshold tuning. May reject requests prematurely during transient spikes.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Retry with Backoff</strong></td>
               <td className="p-3">
                 Handles transient failures automatically. Improves success rate for network-dependent operations. Simple to implement.
@@ -221,7 +234,7 @@ export default function FaultToleranceResilienceArticle() {
               <td className="p-3">
                 Can amplify failures if unbounded. Increases latency for callers waiting on retries. Non-idempotent retries cause data corruption.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Bulkhead Isolation</strong></td>
               <td className="p-3">
@@ -256,26 +269,29 @@ export default function FaultToleranceResilienceArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Set Timeouts on Every External Call</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Timeouts are the most basic yet critical resilience pattern. Without timeouts, a single slow or
           unresponsive dependency can hang your entire system. Set connection timeouts, read timeouts, and
           end-to-end timeouts for every external call — database queries, API calls, file system operations,
           and third-party integrations. Base timeout values on observed P99 latency plus a 50% buffer. If a
           database query has a P99 of 100ms, set the timeout at 150ms. If an external API has a P99 of
           500ms, set the timeout at 750ms. Never use infinite timeouts.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Implement Circuit Breakers for All Dependencies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every downstream dependency should be protected by a circuit breaker. Configure failure thresholds
           based on the dependency&apos;s historical error rate — a dependency with a 0.1% error rate should
           trip the breaker after 5-10 consecutive failures, while a less reliable dependency may need a
           higher threshold. Implement fallback responses for each dependency: cached data, default values,
           or graceful error messages. Test circuit breaker behavior regularly by injecting failures into
           downstream services.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Use Exponential Backoff with Jitter</h3>
         <p>
@@ -309,25 +325,28 @@ export default function FaultToleranceResilienceArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Retrying Non-Idempotent Operations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most destructive pitfall is retrying operations that are not idempotent. Charging a credit card,
           decrementing inventory, sending an email — these operations cause real-world effects when duplicated.
           A retry that charges a customer twice is a production incident that requires manual refunds and
           customer communication. Always verify idempotency before implementing retries. For non-idempotent
           operations, use idempotency keys (unique identifiers that the downstream service uses to deduplicate
           requests) or compensating transactions (undo operations that reverse the effect of a duplicate).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Missing Timeouts on Default Clients</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Many HTTP client libraries and database drivers have infinite default timeouts. The Go http.Client
           has no default timeout. The Python requests library has no default timeout. The Node.js http module
           has no default timeout. If you do not explicitly configure timeouts, your system will hang
           indefinitely when a dependency becomes unresponsive. Always configure timeouts explicitly and
           verify them in integration tests.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Circuit Breaker Threshold Misconfiguration</h3>
         <p>
@@ -360,9 +379,12 @@ export default function FaultToleranceResilienceArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Netflix — Chaos Engineering and Resilience</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix pioneered chaos engineering with tools like Chaos Monkey, which randomly terminates
           production instances to validate that the system can tolerate instance failures without user impact.
           Netflix&apos;s architecture uses circuit breakers (Hystrix, now Resilience4j) for every inter-service
@@ -370,10 +392,10 @@ export default function FaultToleranceResilienceArticle() {
           features during outages. When a recommendation service fails, the homepage continues operating with
           cached or default recommendations. When a video encoding service fails, users can still stream
           previously encoded content.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Amazon — Circuit Breakers at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon&apos;s microservices architecture relies heavily on circuit breakers to prevent cascading
           failures across hundreds of services. Each service call is wrapped in a circuit breaker with
           automatically tuned thresholds based on historical performance. When a downstream service degrades,
@@ -381,7 +403,7 @@ export default function FaultToleranceResilienceArticle() {
           its fallback logic. Amazon&apos;s retail platform degrades gracefully during peak events —
           recommendations, reviews, and personalized content may be disabled, but the core shopping and
           checkout flow remains operational.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Google — Graceful Degradation in Search</h3>
         <p>
@@ -405,19 +427,22 @@ export default function FaultToleranceResilienceArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Fault tolerance mechanisms can be exploited by attackers to cause denial-of-service, data corruption, or unauthorized access.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Retry-Based Denial of Service</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Amplification Attacks:</strong> Attackers trigger retry logic by sending malformed requests that cause downstream failures, amplifying their attack traffic through retries. Mitigation: implement retry budgets per client IP, rate limit retry attempts, use exponential backoff with jitter to reduce amplification.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Circuit Breaker Manipulation:</strong> Attackers intentionally trigger circuit breakers by sending requests that cause failures, denying service to legitimate users. Mitigation: distinguish between client errors (4xx) and server errors (5xx) for circuit breaker triggering, use per-client circuit breakers to isolate malicious traffic.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -449,19 +474,22 @@ export default function FaultToleranceResilienceArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Fault tolerance must be validated through systematic testing — resilience mechanisms that work in theory often fail in practice due to configuration errors, timing issues, or unexpected interactions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Fault Injection Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Network Failures:</strong> Simulate network partitions, packet loss, and high latency between services. Verify that circuit breakers trip, retries execute with backoff, and fallback responses activate. Tools: Toxiproxy, Chaos Mesh, tc (traffic control).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Service Failures:</strong> Terminate downstream services, return error responses, and introduce slow responses. Verify that the calling service handles each failure mode correctly — circuit breaker opens, fallback executes, bulkhead isolates the failure.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Resource Exhaustion:</strong> Exhaust thread pools, connection pools, and memory. Verify that bulkhead isolation prevents cascade to other services. Verify that the system degrades gracefully rather than crashing.
             </li>

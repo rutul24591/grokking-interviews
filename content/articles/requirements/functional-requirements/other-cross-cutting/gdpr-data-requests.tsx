@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function GDPRDataRequestsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           GDPR Data Requests enable users to exercise their GDPR data rights. Users can submit access requests (request data access), submit erasure requests (request data deletion), submit rectification requests (request data correction), submit portability requests (request data portability), and track requests (track request status). GDPR data requests are fundamental to regulatory compliance (meet GDPR requirements), user rights (users have GDPR rights), and legal protection (protect from legal liability). For platforms with EU users, effective GDPR data requests are essential for regulatory compliance, user rights, and legal protection.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, GDPR data requests architecture involves request management (manage GDPR requests), request validation (validate GDPR requests), request processing (process GDPR requests), compliance tracking (track compliance), and legal protection (protect from legal liability). The implementation must balance compliance (meet GDPR requirements) with operational efficiency (process requests efficiently) and legal protection (protect from legal liability). Poor GDPR data requests lead to compliance violations, legal liability, and regulatory fines.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of GDPR data requests extends beyond simple data requests. Right to access (users can access data). Right to erasure (users can delete data). Right to rectification (users can correct data). Right to portability (users can port data). Request management (manage GDPR requests). For staff engineers, GDPR data requests are a regulatory compliance infrastructure decision affecting regulatory compliance, user rights, and legal protection.
         </p>
@@ -46,13 +50,16 @@ export default function GDPRDataRequestsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Right to Access</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Access request enables users to request access. Request submission (submit access request). Request validation (validate access request). Request processing (process access request). Access request enables access requests. Benefits include user rights (users can access data), regulatory compliance (meet legal requirements). Drawbacks includes request overhead (processing costs), implementation complexity (request system).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Access response provides access response. Data collection (collect data). Data preparation (prepare data). Data delivery (deliver data). Access response enables access response. Benefits include user access (users get data), regulatory compliance (meet requirements). Drawbacks includes response overhead (response costs), implementation complexity (response system).
-        </p>
+        </HighlightBlock>
         <p>
           Access tracking tracks access requests. Request status (track request status). Response status (track response status). Compliance status (track compliance status). Access tracking enables access tracking. Benefits include transparency (visible request status), compliance tracking (track compliance). Drawbacks includes tracking overhead (tracking costs), implementation complexity (tracking system).
         </p>
@@ -104,9 +111,12 @@ export default function GDPRDataRequestsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           GDPR data requests architecture spans request service, access service, erasure service, and compliance service. Request service manages requests. Access service manages access requests. Erasure service manages erasure requests. Compliance service manages compliance. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/gdpr-data-requests/gdpr-architecture.svg"
@@ -117,9 +127,9 @@ export default function GDPRDataRequestsArticle() {
         />
 
         <h3>Request Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Request service manages GDPR requests. Request storage (store requests). Request retrieval (retrieve requests). Request update (update requests). Request service is the core of GDPR data requests. Benefits include centralization (one place for requests), consistency (same requests everywhere). Drawbacks includes complexity (manage requests), coupling (services depend on request service).
-        </p>
+        </HighlightBlock>
         <p>
           Request policies define request rules. Default requests (default requests). Request validation (validate requests). Request sync (sync requests). Request policies automate request management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function GDPRDataRequestsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           GDPR data requests design involves trade-offs between comprehensive and limited rights, automatic and manual processing, and strict and lenient validation. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Rights: Comprehensive vs. Limited</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comprehensive rights (support all GDPR rights). Pros: Full compliance (full compliance), user rights (user rights), legal protection (legal protection). Cons: Complexity (complexity), operational overhead (operational overhead), cost (cost). Best for: Full compliance, legal protection.
-        </p>
+        </HighlightBlock>
         <p>
           Limited rights (support limited GDPR rights). Pros: Simplicity (simplicity), lower overhead (lower overhead), lower cost (lower cost). Cons: Compliance issues (compliance issues), user rights issues (user rights issues), legal risk (legal risk). Best for: Simplicity, lower cost.
         </p>
@@ -207,13 +220,16 @@ export default function GDPRDataRequestsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide request management:</strong> Request submission. Request validation. Request tracking. Let users request.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Support all rights:</strong> Right to access. Right to erasure. Right to rectification. Right to portability.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Validate requests:</strong> Identity validation. Request validation. Rate limiting.
           </li>
@@ -243,13 +259,16 @@ export default function GDPRDataRequestsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No request management:</strong> Can&apos;t request GDPR. <strong>Solution:</strong> Provide request management.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No rights support:</strong> Can&apos;t exercise rights. <strong>Solution:</strong> Support all rights.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No request validation:</strong> Can&apos;t validate request. <strong>Solution:</strong> Validate requests.
           </li>
@@ -279,16 +298,19 @@ export default function GDPRDataRequestsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Social Media GDPR</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms provide GDPR. Access request (request data access). Erasure request (request data erasure). Portability request (request data portability). Users control social media GDPR.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">E-commerce GDPR</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms provide GDPR. Access request (request data access). Erasure request (request data erasure). Rectification request (request data rectification). Users control e-commerce GDPR.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Cloud Service GDPR</h3>
         <p>
@@ -308,12 +330,15 @@ export default function GDPRDataRequestsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design GDPR data requests that balances compliance with operational efficiency?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design GDPR data requests that balances compliance with operational efficiency?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement GDPR with efficiency because compliance is mandatory (legal requirement, fines for non-compliance) but must be operationally efficient (not overwhelm team). Process requests: process GDPR requests (access requests, erasure requests, rectification, portability)—handle all GDPR rights, complete processing. Automate processing: automate processing (automated data retrieval, automated deletion, automated responses)—reduce manual work, faster response, consistent handling. Monitor compliance: monitor compliance (track response times, verify compliance, audit processing)—ensure compliance maintained, identify issues. The efficiency insight: users want compliance but want efficiency—provide GDPR (all rights, complete) with automation (retrieval, deletion, responses), monitoring (times, verify, audit), and balance legal compliance with operational efficiency.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

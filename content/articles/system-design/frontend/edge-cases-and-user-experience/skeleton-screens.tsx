@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,12 +37,15 @@ export default function SkeletonScreensArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Skeleton screens</strong> are placeholder UI elements that mirror the layout and shape of content before the actual data arrives, creating an impression that the page is loading progressively rather than appearing all at once. Unlike spinners or loading bars that communicate &ldquo;wait, something is happening,&rdquo; skeleton screens communicate &ldquo;content is coming and will look like this&rdquo; — a subtle but powerful difference in user perception. The technique was popularized by Facebook in 2014 and has since become a standard loading pattern adopted by virtually every major consumer application, from LinkedIn and YouTube to Slack and Notion.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The psychological foundation of skeleton screens rests on the concept of perceived duration. Research by Viget and Google has demonstrated that users perceive loading times as shorter when they can see the outline of incoming content compared to blank screens or isolated spinners. This works because skeleton screens engage the brain&apos;s pattern completion mechanisms — the visual system starts processing the page layout even before content arrives, reducing the cognitive work needed once real content appears. The effect is most pronounced for familiar interfaces where users can predict what will fill each placeholder, making skeleton screens most effective for applications with consistent, predictable layouts.
-        </p>
+        </HighlightBlock>
         <p>
           At the staff and principal engineer level, skeleton screens are a design system concern that intersects performance, accessibility, and architectural boundaries. A skeleton screen strategy must address several cross-cutting questions: which components should have skeletons (not all of them should), how skeletons are generated and maintained in sync with their corresponding loaded components, how skeletons interact with server-side rendering and streaming, how they affect Cumulative Layout Shift metrics, and how they are perceived by assistive technologies. A poorly implemented skeleton screen strategy can actually hurt performance perception if skeletons cause layout shifts when content arrives, if they persist too long for fast connections, or if they flash briefly on cached content loads.
         </p>
@@ -52,13 +56,16 @@ export default function SkeletonScreensArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Content Placeholder:</strong> A neutral-colored shape (typically light gray rectangles, circles, or rounded blocks) that approximates the dimensions and position of the actual content it represents. Text placeholders use multiple horizontal bars of varying widths to suggest paragraph structure. Image placeholders use rectangles matching the expected aspect ratio. Avatar placeholders use circles. The shapes must closely match the final content dimensions to avoid layout shift when data arrives.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Shimmer Animation:</strong> A subtle gradient animation that sweeps across skeleton placeholders to indicate loading activity. The shimmer typically moves from left to right using a CSS gradient that transitions from the skeleton base color through a slightly lighter highlight and back. This animation serves the same psychological purpose as a progress bar — it shows that the system is active rather than frozen. The animation should be smooth (60fps), subtle (not distracting), and respect reduced motion preferences via the prefers-reduced-motion media query.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Pulse Animation:</strong> An alternative to shimmer that uses opacity oscillation to create a breathing or pulsing effect on skeleton elements. Pulse animations are simpler to implement than shimmer gradients and can be less distracting in dense interfaces. The choice between shimmer and pulse is often a design system decision — shimmer conveys directional progress while pulse conveys ambient activity.
           </li>
@@ -85,18 +92,21 @@ export default function SkeletonScreensArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The first diagram illustrates the skeleton screen rendering pipeline and decision flow. When a component mounts and initiates a data fetch, the system checks whether data is available in cache. If cached data exists and is fresh, the component renders immediately with no skeleton. If cached data exists but is stale, the component renders with stale data and shows a subtle refresh indicator while revalidating in the background. If no cache exists, the system starts a loading threshold timer. If data arrives before the threshold (fast network), the component renders directly. If the threshold elapses, the skeleton appears and persists until data arrives, at which point a smooth transition animation replaces the skeleton with content. This multi-path approach ensures that skeletons only appear when they genuinely improve the user experience.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/edge-cases-and-user-experience/skeleton-screens-diagram-1.svg"
           alt="Skeleton screen rendering decision flow showing cache check, loading threshold timer, and content transition paths"
           width={900}
           height={500}
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The second diagram shows the skeleton component architecture within a design system. At the base layer, atomic skeleton primitives (SkeletonLine, SkeletonCircle, SkeletonRect, SkeletonBlock) provide configurable shapes with width, height, border-radius, and animation type properties. The composition layer combines primitives into commonly used patterns — SkeletonCard (image rect + title line + description lines), SkeletonListItem (avatar circle + two text lines), SkeletonProfile (large circle + name line + bio lines). The page layer assembles compositions to create full page skeletons that match the application&apos;s grid layout. Each layer builds on the one below, enabling consistent skeleton styles while reducing duplication. When a loaded component&apos;s layout changes, only its corresponding skeleton composition needs updating rather than rebuilding the entire page skeleton.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/edge-cases-and-user-experience/skeleton-screens-diagram-2.svg"
           alt="Skeleton component architecture showing atomic primitives, composition layer, and page assembly with design system integration"
@@ -116,6 +126,9 @@ export default function SkeletonScreensArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -125,16 +138,16 @@ export default function SkeletonScreensArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="important">
               <td className="px-4 py-2 font-medium">Skeleton Screens</td>
               <td className="px-4 py-2">Reduce perceived loading time, prevent layout shift when well-designed, provide spatial context for incoming content, work well for predictable layouts, feel modern and polished</td>
               <td className="px-4 py-2">Require maintenance to stay in sync with component layouts, can mislead users about content structure if inaccurate, add complexity to the component library, may flash briefly on fast connections without threshold logic</td>
-            </tr>
-            <tr className="border-b border-theme">
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="px-4 py-2 font-medium">Spinner / Loading Indicator</td>
               <td className="px-4 py-2">Simple to implement, universally understood, no maintenance burden from layout changes, appropriate for indeterminate loading where content shape is unknown</td>
               <td className="px-4 py-2">Cause layout shift when content appears, provide no spatial context, feel slower than skeleton screens in perception studies, centered spinners create blank space that feels empty</td>
-            </tr>
+            </HighlightBlock>
             <tr className="border-b border-theme">
               <td className="px-4 py-2 font-medium">Progressive Loading</td>
               <td className="px-4 py-2">Shows real content immediately as it becomes available, reduces time to first meaningful content, naturally handles variable loading times per section, no maintenance of placeholder components</td>
@@ -156,13 +169,16 @@ export default function SkeletonScreensArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Match skeleton dimensions to loaded content precisely.</strong> Measure actual content dimensions from production data or design specifications and ensure skeleton placeholders use the same width, height, and spacing. Mismatched dimensions cause Cumulative Layout Shift when content replaces skeletons, negating the primary benefit. For dynamic content like text of variable length, use reasonable estimates based on average content dimensions and constrain the loaded content to the same boundaries.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use a loading threshold to prevent skeleton flashing.</strong> Implement a delay of 200-500 milliseconds before showing skeleton screens. If data arrives within this window, render content directly without the skeleton intermediate state. This prevents the jarring experience of a skeleton appearing for a fraction of a second on fast connections. The threshold can be tuned based on analytics — measure the distribution of load times and set the threshold at the point where most fast loads complete.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Build composable skeleton primitives in the design system.</strong> Instead of creating bespoke skeleton components for every loaded component, provide a small set of configurable primitives (text line, circle, rectangle, block) that can be composed to match any layout. This reduces the skeleton maintenance burden from N components to a handful of primitives and ensures visual consistency across all loading states.
           </li>
@@ -183,13 +199,16 @@ export default function SkeletonScreensArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Skeleton shapes that do not match loaded content.</strong> The most common skeleton screen failure is a mismatch between placeholder dimensions and actual content dimensions. A skeleton that shows three lines of text replacing with a single line, or a square image placeholder for a landscape image, causes jarring layout shifts that undermine the entire purpose of the skeleton. Regular audits should compare skeleton layouts against production content to catch drift.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Showing skeletons on every load including cache hits.</strong> If data is available in cache or was preloaded, showing a skeleton creates unnecessary loading friction. The skeleton should only appear when there is a genuine wait — cache-first strategies should render cached content immediately and update in the background. Skeleton-on-cache is a common bug that makes cached navigation feel slower than fresh navigation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Skeleton screens that persist indefinitely on error.</strong> If a data fetch fails, the skeleton must transition to an error state rather than continuing to show loading placeholders forever. A perpetual skeleton gives the false impression that content is still loading when in fact it has failed. Always pair skeleton loading states with timeout logic and error handling that replaces the skeleton with an appropriate error message and recovery action.
           </li>
@@ -204,12 +223,15 @@ export default function SkeletonScreensArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>LinkedIn</strong> is one of the most recognized implementors of skeleton screens, applying them consistently across the feed, profile pages, messaging, and notifications. Their feed skeleton shows the exact layout of a post — avatar circle, name lines, content area, engagement bar — enabling the brain to start processing the page layout before content arrives. LinkedIn&apos;s skeletons use a subtle shimmer animation that sweeps left to right, and they implement a loading threshold that prevents skeleton flashing on fast connections. The consistency of skeletons across all LinkedIn surfaces creates a predictable loading experience that users learn to expect and process efficiently.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>YouTube</strong> uses content-aware skeletons that adapt to the video grid layout. Thumbnail placeholders use the 16:9 aspect ratio that matches actual video thumbnails, preventing layout shift when images load. The skeleton grid respects the responsive column count — showing more skeleton cards on wider screens — so the skeleton-to-content transition preserves the grid structure exactly. YouTube also uses skeleton screens during search, showing placeholder results immediately after the search is submitted to maintain the perception of speed even when search results take a moment to compute.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Slack</strong> applies skeleton screens to message history loading, showing channel-shaped placeholders with message-shaped blocks of varying heights to simulate the natural variation of real messages. When switching channels, Slack checks the message cache first and shows cached messages immediately if available, only falling back to skeletons when cache is empty. This tiered approach means that frequently visited channels feel instant while rarely visited channels show brief skeletons — matching user expectations about loading behavior for familiar versus unfamiliar content.
         </p>
@@ -220,15 +242,18 @@ export default function SkeletonScreensArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">
-          <p className="font-medium">
+          <HighlightBlock as="p" tier="important" className="font-medium">
             Q: When should you use skeleton screens versus spinners or other
             loading indicators?
-          </p>
-          <p className="mt-2">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-2">
             A: Skeleton screens are most effective when the content layout is predictable and consistent — feeds, product listings, profiles, dashboards — because the placeholder shapes accurately preview the incoming content structure. Use spinners when the content shape is unknown or highly variable (search results with mixed content types, dynamic form generation), when loading is expected to be very brief (under 300ms), or when the operation is indeterminate (file processing with unknown completion time). Progress bars are appropriate when you can estimate completion percentage (file uploads, multi-step processes). The key insight is that skeletons optimize perceived performance by giving the brain a head start on layout processing, so they only help when the skeleton accurately represents what will appear. An inaccurate skeleton is worse than a spinner because it creates false expectations that are then violated.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">

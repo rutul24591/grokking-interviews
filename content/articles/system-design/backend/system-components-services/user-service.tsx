@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,12 +40,15 @@ export default function UserServiceArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>User service</strong> is the system of record for user identity and profile data — it manages the creation, storage, retrieval, update, and deletion of user accounts, along with their associated profile information (name, email, phone number, preferences, avatar, timezone, locale). The user service is the foundational service in any multi-tenant application — every other service (authentication, authorization, session management, billing, notification, analytics) depends on the user service for accurate, available, and consistent user data. When a user signs up, the user service creates their account; when they log in, the authentication service validates their credentials against the user service; when they update their profile, the user service persists the change and publishes an event that downstream services (session, billing, notification) consume to update their local copies of user data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, designing a user service is a data architecture and compliance challenge that spans relational data modeling (designing a schema that supports efficient lookups by ID, email, and phone number, with unique constraints and soft delete support), caching strategies (multi-layer caching with in-process, Redis, and database tiers to achieve sub-10ms read latency for the most frequently accessed user profiles), distributed data management (sharding the user database by user ID hash for horizontal scaling, maintaining global lookup indexes for email and phone uniqueness, and replicating data across regions for low-latency reads), event-driven architecture (publishing user lifecycle events — created, updated, deactivated, deleted — to a message bus so that downstream services can react asynchronously), and regulatory compliance (GDPR data export and erasure, consent tracking, audit logging for SOC 2 and HIPAA).
-        </p>
+        </HighlightBlock>
         <p>
           User service design involves several technical considerations. Data model design (core fields: id, email, phone, name, status (active, suspended, deleted), created_at, updated_at; profile fields: preferences (JSONB for flexible schema), avatar_url, timezone, locale; linked accounts: OAuth/OIDC providers (Google, Apple, GitHub) with provider-specific IDs; credentials: password hash (bcrypt or argon2), MFA secret (TOTP), recovery codes). Caching strategy (multi-layer caching: L1 in-process cache for user profiles with 5-minute TTL, L2 Redis cache for all user fields with 30-minute TTL, L3 PostgreSQL as system of record; cache invalidation on user update events). Database sharding (partitioning users across database shards by user ID hash using consistent hashing, maintaining a global lookup table for email and phone uniqueness, avoiding cross-shard queries by denormalizing data into the appropriate shard). Multi-region deployment (active-active architecture where reads are served from the local region&apos;s replica, writes are routed to the primary region, and data is replicated asynchronously to read regions with eventual consistency).
         </p>
@@ -56,14 +60,17 @@ export default function UserServiceArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>User Data Model and Schema Design</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The user data model consists of core identity fields (immutable or rarely changed: user ID (UUID), email (unique), phone number (unique), created_at), mutable profile fields (name, avatar_url, timezone, locale), status fields (active, suspended, deleted — with soft delete support where deleted records are retained for a grace period before hard deletion), and a flexible preferences field (JSONB in PostgreSQL, allowing applications to store arbitrary key-value pairs without schema migrations). The schema enforces unique constraints on email and phone number at the database level (not just the application level) to prevent duplicate account creation through race conditions. Soft delete is implemented via a deleted_at timestamp (NULL for active users, timestamp for deleted users) rather than hard deletion, enabling user recovery (undeleting within a grace period) and maintaining referential integrity with dependent records (sessions, billing records, audit logs that reference the user ID).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Linked accounts (OAuth/OIDC providers) are stored in a separate table (user_id, provider (google, apple, github), provider_user_id, linked_at) with a unique constraint on (provider, provider_user_id) to prevent the same external account from being linked to multiple internal users. Credential data (password hashes, MFA secrets, recovery codes) is stored in a separate, access-controlled table — the user service&apos;s read API never returns credential data, and credential updates require additional authorization (current password verification for password changes, MFA verification for MFA changes).
-        </p>
+        </HighlightBlock>
 
         <h3>Multi-Layer Caching Strategy</h3>
         <p>
@@ -95,9 +102,12 @@ export default function UserServiceArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The user service architecture consists of the API layer (RESTful or GraphQL endpoints for user CRUD operations, search, and bulk operations), the data access layer (PostgreSQL primary database, Redis cache, Elasticsearch for user search), the event publisher (Kafka producer publishing user lifecycle events), and the compliance manager (GDPR data export and erasure orchestrator, consent tracker, audit logger). The flow for a user lookup request begins with the API layer receiving a GET /users/&#123;id&#125; request. The data access layer checks the L1 in-process cache (if the user is cached, return it immediately), then the L2 Redis cache (if the user is cached in Redis, populate L1 and return), then the PostgreSQL database (if the user is not cached, load from the database, populate L2 and L1, and return). The entire lookup completes in under 10ms for cached users and under 50ms for cache misses.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/system-components-services/user-architecture.svg"
@@ -107,9 +117,9 @@ export default function UserServiceArticle() {
           height={550}
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For a user creation request (POST /users), the API layer validates the request (email format, phone format, required fields, no duplicate email/phone via the global lookup index), creates the user record in the appropriate database shard (based on the hashed user ID), creates the credential record (password hash), creates the global lookup index entries (email &#8594; user ID, phone &#8594; user ID), publishes a user_created event to the message bus, and returns the created user. The entire creation flow is wrapped in a distributed transaction (or saga) to ensure consistency — if any step fails, the entire operation is rolled back (user record deleted, lookup index entries removed, event not published).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/system-components-services/user-data-model.svg"
@@ -149,14 +159,17 @@ export default function UserServiceArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User service design involves trade-offs between monolithic and sharded databases, strong and eventual consistency for user data, and self-managed and managed identity platforms. Understanding these trade-offs is essential for designing user services that match your application&apos;s scale, consistency requirements, and compliance obligations.
-        </p>
+        </HighlightBlock>
 
         <h3>Monolithic Versus Sharded Database</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Monolithic Database:</strong> All user data in a single PostgreSQL instance. Advantages: simple architecture (no sharding logic, no cross-shard query handling), strong consistency (all reads and writes go through the same database, no replication lag), and easy to manage (one database to back up, monitor, and maintain). Limitations: limited scalability (single instance has maximum read/write throughput, storage capacity, and connection limits), single point of failure (if the database fails, the entire user service is down), and performance degradation at scale (as the user table grows to hundreds of millions of rows, query performance degrades even with proper indexing). Best for: applications with fewer than 10 million users, organizations prioritizing simplicity over scalability, early-stage applications where sharding would be premature optimization.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Sharded Database:</strong> User data partitioned across multiple PostgreSQL instances (shards) by user ID hash. Advantages: horizontal scalability (adding shards increases total read/write throughput and storage capacity linearly), fault isolation (if one shard fails, only users on that shard are affected, not all users), and consistent performance (each shard maintains a manageable data size, so query performance remains stable as the total user base grows). Limitations: complex architecture (sharding logic, global lookup indexes for email/phone uniqueness, cross-shard query avoidance), eventual consistency for global lookups (the global lookup index may be briefly out of sync with the shards during failover), and operational overhead (managing multiple database instances, monitoring each shard&apos;s health, rebalancing shards when the shard count changes). Best for: applications with tens of millions or more users, organizations expecting rapid user growth, applications requiring 99.99% availability (fault isolation reduces blast radius).
         </p>
@@ -189,16 +202,19 @@ export default function UserServiceArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Use UUIDs for User IDs and Enforce Unique Constraints at the Database Level</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use UUIDs (v4, cryptographically random) for user IDs — they are globally unique (no coordination needed across shards or regions), non-sequential (preventing enumeration attacks where an attacker increments user IDs to discover other users), and cannot be guessed (unlike auto-incrementing integers). Enforce unique constraints on email and phone number at the database level (unique indexes in PostgreSQL) — not just at the application level — to prevent duplicate account creation through race conditions (two concurrent signup requests with the same email both pass the application-level check and both attempt to create the user). Use advisory locks (PostgreSQL pg_advisory_xact_lock) during user creation to serialize concurrent signups with the same email, ensuring that only one signup succeeds.
-        </p>
+        </HighlightBlock>
 
         <h3>Implement Multi-Layer Caching With Stampede Prevention</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement three caching layers: L1 in-process cache (5-minute TTL, 10,000 entries max, LRU eviction), L2 Redis cache (30-minute TTL, all users), L3 PostgreSQL (system of record). On a cache miss in L1, check L2; on a cache miss in L2, load from L3 and populate both L2 and L1. On user update, invalidate the user&apos;s entries in both L1 and L2. Implement cache stampede prevention using probabilistic early expiration — when a cache entry is within 10% of its TTL expiration, one request (selected probabilistically) is designated to refresh the cache while other requests serve the stale value. This prevents cache stampedes where hundreds of concurrent requests hit the database simultaneously when a popular user&apos;s cache entry expires.
-        </p>
+        </HighlightBlock>
 
         <h3>Use the Outbox Pattern for Event Publishing</h3>
         <p>
@@ -224,16 +240,19 @@ export default function UserServiceArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Allowing Duplicate User Creation Through Race Conditions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Without proper concurrency control, two concurrent signup requests with the same email can both pass the application-level uniqueness check and both attempt to create the user, resulting in duplicate accounts. The mitigation is to enforce unique constraints at the database level (unique index on email) and to use advisory locks (PostgreSQL pg_advisory_xact_lock) during user creation to serialize concurrent signups with the same email. The advisory lock is acquired at the start of the transaction (blocking concurrent signups with the same email), the uniqueness check is performed within the lock, and the user is created (or the duplicate is rejected) before the lock is released at transaction commit or rollback.
-        </p>
+        </HighlightBlock>
 
         <h3>Not Invalidating Cache on User Updates</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a user updates their profile (e.g., changes their email address or name), failing to invalidate the cached entries in L1 and L2 means that subsequent reads return stale data (the old email or name). This causes inconsistencies across the application — the user sees their old profile information even after updating it, and downstream services that rely on the user service&apos;s cached data receive outdated information. The mitigation is to invalidate the user&apos;s cache entries in both L1 and L2 on every user update, and to publish a user_updated event to the message bus so that downstream services can invalidate their local caches as well.
-        </p>
+        </HighlightBlock>
 
         <h3>Storing Passwords in Plain Text or With Weak Hashing</h3>
         <p>
@@ -259,16 +278,19 @@ export default function UserServiceArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Multi-Tenant SaaS User Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SaaS platforms (Slack, Salesforce, HubSpot) use user services to manage millions of user accounts across thousands of tenant organizations. Each user belongs to a tenant (organization), and the user service enforces tenant isolation (users from one tenant cannot access another tenant&apos;s data). The user service supports user provisioning (creating users manually, importing via CSV, or automatically via SCIM/SAML integration with the tenant&apos;s identity provider), user lifecycle management (activation, suspension, deletion), and role-based access control (assigning users to roles with specific permissions within their tenant). Multi-tenant user services typically shard the database by tenant ID for isolation (all users from the same tenant are on the same shard), with global lookup indexes for email uniqueness across all tenants.
-        </p>
+        </HighlightBlock>
 
         <h3>Consumer Social Platform User Profiles</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social platforms (Facebook, Instagram, TikTok, Twitter/X) use user services to manage billions of user accounts with rich profile data (name, username, bio, avatar, cover photo, linked social accounts, privacy settings). The user service handles extremely high read throughput (billions of profile reads per day — every page load involves profile lookups) and moderate write throughput (profile updates, avatar changes, privacy setting changes). The caching strategy is critical — L1 in-process cache for the most active users (celebrities, influencers, frequent users), L2 Redis cache for all active users, and L3 database for the full user base. Profile updates are propagated through a pub/sub mechanism (Redis Pub/Sub or Kafka) to invalidate caches across all service nodes within seconds.
-        </p>
+        </HighlightBlock>
 
         <h3>Enterprise Identity and Access Management</h3>
         <p>
@@ -284,15 +306,18 @@ export default function UserServiceArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you prevent duplicate user creation when two concurrent signup requests use the same email?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Enforce unique constraints at the database level (unique index on email in PostgreSQL) and use advisory locks (pg_advisory_xact_lock) during user creation. The advisory lock is acquired at the start of the transaction using the email hash as the lock key — this serializes concurrent signups with the same email, ensuring that only one signup proceeds at a time. Within the lock, the uniqueness check is performed (SELECT 1 FROM users WHERE email = ?), and if no existing user is found, the user is created. If a concurrent signup already created the user, the uniqueness check finds the existing user and the second signup is rejected. The lock is released at transaction commit or rollback.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

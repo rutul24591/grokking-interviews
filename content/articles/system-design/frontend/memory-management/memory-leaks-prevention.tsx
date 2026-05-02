@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>frontend memory leak</strong> is memory that remains reachable longer than intended due to unintended references. In a browser, leaks are particularly damaging because the application is typically single-threaded for UI work and the runtime uses garbage collection (GC). As retained memory grows, GC work grows, which increases pause time and degrades responsiveness. Eventually the tab may crash or be discarded under memory pressure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Memory leaks are often framed as "bugs" in isolated components. In practice, preventing leaks at scale is a <strong>systems problem</strong>: you need consistent lifecycle discipline, bounded caches, predictable teardown patterns, and guardrails that keep the codebase safe as teams and features grow.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, the most important shift is to treat memory as a <strong>budget with lifetimes</strong>. Every long-lived reference must have an explicit reason to exist and an explicit policy for when it goes away. If the policy is "never", you must cap it.
         </p>
@@ -62,6 +66,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/memory-management/memory-leaks-prevention-architecture.svg"
@@ -70,12 +77,12 @@ export default function ArticlePage() {
         />
 
         <h3>Leak Patterns Are Reference Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           GC does not collect objects that are still reachable from roots. Leaks are therefore <strong>retainer chains</strong> that shouldn't exist: global maps that accumulate entries, event listeners that never detach, timers that continue firing after navigation, observers that keep DOM nodes alive, and closures that capture large state in long-lived callbacks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding reachability is fundamental: an object is reachable if there exists any path from a root (global scope, active stack frame, pending callback) to that object. The leak is not the object itself — it's the unintended reference chain keeping it alive.
-        </p>
+        </HighlightBlock>
 
         <h3>Bounded vs. Unbounded Structures</h3>
         <p>
@@ -171,9 +178,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A scalable leak-prevention architecture is a set of patterns and guardrails that make the safe path the default.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/memory-management/memory-leaks-prevention-detection.svg"
@@ -182,9 +192,9 @@ export default function ArticlePage() {
         />
 
         <h3>1) Establish Explicit Lifetimes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every resource should have an owner and a lifetime: event listeners belong to a component/view, timers belong to an interaction or polling loop, caches belong to a feature boundary. If you can't name the owner, the resource will outlive its usefulness.
-        </p>
+        </HighlightBlock>
         <p>
           In React, this maps to component lifetime by default. But be careful: closures can extend lifetime beyond the component if they capture references that escape the component scope.
         </p>
@@ -272,9 +282,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Many leaks are the unintended consequence of legitimate performance optimizations. The staff-level skill is to evaluate performance wins against retention risk and operational cost.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -317,9 +330,9 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A useful heuristic: if a pattern improves performance by holding onto data longer, it must come with an explicit eviction policy and a way to validate memory stability over time.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -327,13 +340,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Prefer Bounded-by-Default Designs:</strong> Limit cache sizes, buffer lengths, and registry cardinality; use eviction policies. Unbounded structures should require explicit justification and review.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Make Teardown a Contract:</strong> Define how subscriptions, listeners, observers, and timers are owned and cleaned up. Document the teardown story for every long-lived resource.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Introduce a "Session Reset" Boundary:</strong> On sign-out or tenant switch, clear caches, cancel in-flight work, and release references. This prevents cross-session contamination.
           </li>
@@ -360,13 +376,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Unbounded Maps and Arrays:</strong> Dedupe registries and caches that never evict are the most common slow leaks. Always add eviction policies.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing Teardown on Route Transitions:</strong> Listeners and subscriptions survive navigation and keep state alive. Always clean up in useEffect return or componentWillUnmount.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Detached DOM Retention:</strong> Holding DOM references after removal keeps the entire subtree alive. Clear refs in cleanup.
           </li>
@@ -390,14 +409,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Customer Support Dashboards</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Problem:</strong> Support agents keep tabs open for hours, navigating between dozens of customer records. Memory grew unbounded, causing tab crashes after 2-3 hours.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Root Cause:</strong> Query result cache stored full customer records without eviction. Each navigation added ~500KB to cache.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Implemented LRU cache with 50-record cap and 10-minute TTL. Added session reset on agent switch. Memory stabilized at ~50MB regardless of session length.
         </p>
@@ -441,14 +463,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is a memory leak in a garbage-collected language like JavaScript?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               A memory leak in JavaScript is memory that remains reachable longer than intended due to unintended references. Unlike languages like C++, JavaScript has automatic garbage collection — but GC can only reclaim objects that are unreachable from the root set.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               Leaks occur when objects that should be collectible remain reachable through reference chains: global caches that accumulate entries, event listeners that never detach, timers that continue after navigation, or closures that capture large state in long-lived callbacks.
             </p>

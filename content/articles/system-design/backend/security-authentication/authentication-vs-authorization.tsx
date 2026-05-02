@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,19 +28,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Authentication</strong> (AuthN) is the process of verifying the identity of a user, service, or
           system attempting to access a resource. It answers the question &quot;Who are you?&quot; through credential
           validation — passwords, tokens, certificates, biometric data, or security keys. Authentication establishes
           a principal identity that can be referenced in subsequent access decisions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Authorization</strong> (AuthZ) is the process of determining what an authenticated principal is
           permitted to do. It answers the question &quot;What can you do?&quot; through policy evaluation — role-based
           access control (RBAC), attribute-based access control (ABAC), access control lists (ACLs), or relationship-based
           access control (ReBAC). Authorization enforces permissions on each request, ensuring that even an authenticated
           principal cannot access resources or perform actions outside their granted permissions.
-        </p>
+        </HighlightBlock>
         <p>
           The distinction between authentication and authorization is fundamental but frequently misunderstood.
           Authentication is a prerequisite for authorization — you cannot determine what someone is allowed to do
@@ -77,7 +81,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The trust boundary between authentication and authorization is the most important security boundary in any
           system. Authentication occurs at the boundary — the identity provider verifies credentials and issues a
           token. Authorization occurs within the boundary — each service evaluates the token and enforces permissions
@@ -85,8 +92,8 @@ export default function ArticlePage() {
           gateway&apos;s authentication without performing its own authorization check — the system is vulnerable to
           lateral movement attacks, where an authenticated but unauthorized principal can access resources they should
           not.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authentication methods span a spectrum of security strength. Passwords are the weakest — vulnerable to brute
           force, phishing, credential stuffing, and reuse attacks. Multi-factor authentication (MFA) adds a second
           factor (something you have, such as a TOTP code or security key), significantly reducing the risk of
@@ -94,7 +101,7 @@ export default function ArticlePage() {
           identity provider, reducing the attack surface by eliminating local password storage. Security keys and
           passkeys (WebAuthn) are the strongest — phishing-resistant, hardware-backed, and immune to credential
           theft attacks.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/authentication-vs-authorization-diagram-1.svg"
           alt="Authentication and authorization flow showing identity verification followed by permission enforcement"
@@ -145,7 +152,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The authentication and authorization architecture consists of four components: the identity provider (IdP),
           the API gateway, the service layer, and the policy engine. The IdP manages user identities, verifies
           credentials, issues tokens, and handles lifecycle events (password resets, MFA enrollment, account
@@ -153,15 +163,15 @@ export default function ArticlePage() {
           appropriate service. The service layer implements business logic and enforces authorization policies on
           each request. The policy engine evaluates access policies and returns allow/deny decisions to the service
           layer.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The request flow begins with the client presenting credentials to the IdP (username/password, MFA code, or
           federated identity). The IdP verifies the credentials and issues an identity token (JWT or session cookie).
           The client includes the token in each subsequent request (Authorization: Bearer header or cookie). The API
           gateway validates the token&apos;s signature, expiration, and issuer, and forwards the request to the appropriate
           service. The service extracts the principal identity from the token, evaluates the authorization policy for
           the requested action, and processes or rejects the request based on the policy decision.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/authentication-vs-authorization-diagram-3.svg"
           alt="Authorization enforcement at API gateway, service layer, and data layer showing defense-in-depth approach"
@@ -201,7 +211,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           JWT versus opaque tokens is the primary trade-off in token-based authentication. JWTs are self-contained —
           they carry claims (user identity, roles, scopes) that the resource server can read without calling the
           identity provider. This enables stateless authentication, which is simpler to scale and operate. However,
@@ -210,8 +223,8 @@ export default function ArticlePage() {
           provider to validate the token and retrieve the claims. This enables immediate revocation (the identity
           provider can delete the session record, making the token invalid), but introduces a network dependency and
           latency on each request.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           RBAC versus ABAC is the primary trade-off in authorization design. RBAC is simple — permissions are
           assigned to roles, and roles are assigned to users. It is easy to understand, audit, and manage. However,
           it is coarse-grained — a role grants the same permissions to all users who have that role, regardless of
@@ -219,7 +232,7 @@ export default function ArticlePage() {
           (for example, &quot;users can access documents they own, but only during business hours, and only from the
           corporate network&quot;). However, ABAC is complex to manage — policies can become numerous and difficult to
           audit, and policy evaluation is slower than RBAC role lookup.
-        </p>
+        </HighlightBlock>
         <p>
           Centralized versus decentralized policy evaluation is a trade-off between consistency and resilience.
           Centralized policy engines ensure that all services enforce the same policies, making auditing and
@@ -244,18 +257,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enforce authorization at every layer — the API gateway, the service layer, and the data access layer. Do
           not trust the gateway&apos;s authentication without performing your own authorization check. Do not trust the
           service layer&apos;s authorization without enforcing row-level security in the database. Defense-in-depth is the
           only reliable approach to authorization — a single enforcement point is a single point of failure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use short-lived tokens with refresh rotation. Access tokens should expire in 5-15 minutes, limiting the
           window of opportunity if a token is compromised. Refresh tokens should be rotated on each use — the old
           refresh token is invalidated when a new one is issued, so that if a refresh token is stolen and used, the
           system can detect the reuse and revoke the entire token family.
-        </p>
+        </HighlightBlock>
         <p>
           Implement the principle of least privilege at every level. Users should have only the permissions necessary
           for their role. Services should have only the permissions necessary for their function. API scopes should
@@ -290,18 +306,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Treating authentication as authorization is the most common pitfall. Many systems authenticate users
           (verify their identity) and then assume that authenticated users are authorized to perform any action. This
           is equivalent to having no authorization at all. The fix is to implement authorization checks on every
           request, verifying that the authenticated principal has the necessary permissions for the requested action.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing authorization only at the API gateway is a dangerous pitfall. The gateway may validate tokens
           and enforce rate limits, but if the service layer does not perform its own authorization check, a request
           that bypasses the gateway (through a direct service-to-service call or a misconfigured route) will not be
           authorized. The fix is to enforce authorization at every layer — the gateway, the service, and the database.
-        </p>
+        </HighlightBlock>
         <p>
           Using long-lived tokens without revocation is a common operational pitfall. If an access token has a
           24-hour expiration and is compromised, the attacker has 24 hours of access. The fix is to use short-lived
@@ -331,7 +350,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses OIDC for authentication and RBAC for authorization. Users authenticate
           through the platform&apos;s identity provider (which supports passwords, MFA, and federated identity through
           Google and Apple). The identity provider issues JWTs with short expiration (15 minutes) and refresh tokens
@@ -339,8 +361,8 @@ export default function ArticlePage() {
           policies (admin, manager, customer roles) to determine what actions each user can perform. The database
           enforces row-level security to ensure that customers can only access their own orders. The platform logs
           all authentication and authorization events for audit and incident response.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses mTLS for service-to-service authentication and ABAC for authorization.
           Services authenticate to each other using mutual TLS, where both the client and server present certificates.
           The policy engine (OPA) evaluates ABAC policies based on attributes of the service (its identity, its
@@ -348,7 +370,7 @@ export default function ArticlePage() {
           service accessing customer data must be running in a production environment, must have a valid security
           certificate, and must have the &quot;customer-data&quot; scope. The policy engine returns an allow/deny decision,
           which the service enforces before processing the request.
-        </p>
+        </HighlightBlock>
         <p>
           A healthcare organization uses SAML for federated authentication and ReBAC for authorization. Healthcare
           providers authenticate through their organization&apos;s identity provider (Active Directory, Okta) using SAML.
@@ -374,14 +396,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between authentication and authorization, and why must they be implemented separately?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Authentication verifies identity — it answers &quot;Who are you?&quot; through credential validation (passwords, tokens, certificates). Authorization enforces permissions — it answers &quot;What can you do?&quot; through policy evaluation (RBAC, ABAC, ACL). They must be implemented separately because authentication alone is insufficient for security — an authenticated user with unrestricted access is equivalent to no access control at all.
-            </p>
+            </HighlightBlock>
             <p>
               The separation also enables independent evolution — you can change your authentication method (passwords to passkeys) without changing your authorization policies, and vice versa. It also enables defense-in-depth — if authentication is compromised, authorization still limits what the attacker can do.
             </p>

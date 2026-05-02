@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function SubscriptionManagementUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Subscription management UI enables customers to self-serve their subscription: view current plan, upgrade or downgrade, manage billing, and cancel. A well-designed subscription management UI reduces support tickets (customers can help themselves), improves retention (easy upgrades, frictionless downgrades), and builds trust (transparent pricing, no hidden fees). For staff and principal engineers, subscription management UI involves pricing complexity (proration, effective dates), billing integration (payment method updates, invoice access), and retention strategy (cancellation flow with save offers).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of subscription management UI extends beyond simple plan display. Proration calculation must be transparent (show credit for unused time, charge for new plan). Effective date must be clear (change now vs. next billing cycle). Billing management requires secure payment method updates (PCI compliance), invoice access (download PDF), and billing history (past charges). Cancellation flow requires retention offers (discount, pause, feature downgrade) without dark patterns (no guilt trips, no hidden cancellation). The UI must handle edge cases (mid-cycle changes, annual to monthly switch, team seat changes) gracefully with clear communication.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, subscription management UI architecture involves backend integration (subscription API, billing API), state management (current plan, pending changes, billing status), and retention logic (cancellation survey, save offers, win-back). The UI must support multiple subscription types (individual, team, enterprise), billing frequencies (monthly, annual), and add-ons (extra seats, premium features). Analytics track plan changes (upgrade rate, downgrade rate, churn), cancellation reasons (too expensive, not using, switched competitor), and retention effectiveness (save offer acceptance rate).
         </p>
@@ -47,13 +51,16 @@ export default function SubscriptionManagementUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Plan Display and Comparison</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Current plan display shows active subscription details. Plan name (Pro, Business, Enterprise), price ($29/month), billing frequency (monthly, annual), next billing date (Dec 15, 2024), features included (10 seats, 100GB storage, priority support). Status indicators: active (green), past_due (yellow), cancelled (gray, ends on date). Action buttons: upgrade (move to higher plan), downgrade (move to lower plan), cancel (end subscription).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Plan comparison shows available plans side-by-side. Columns: plan name, price, features, action (select). Features listed: seats, storage, support level, advanced features (SSO, API access, custom branding). Highlight current plan (border, &quot;Current&quot; badge). Highlight recommended plan (&quot;Most Popular&quot; badge). Price display: monthly price, annual price (show savings, &quot;Save 20% with annual&quot;). Feature comparison: checkmarks for included, X for not included, tooltip for feature details.
-        </p>
+        </HighlightBlock>
         <p>
           Feature gating shows what&apos;s included vs. upgrade required. Included features: full access (click to use). Upgrade features: locked icon, &quot;Upgrade to access&quot; tooltip. Usage limits: progress bar (8/10 seats used, 80GB/100GB storage used), &quot;Upgrade for more&quot; link. Feature previews: show locked features with description (&quot;SSO: Enable single sign-on for your team&quot;), upgrade CTA.
         </p>
@@ -105,9 +112,12 @@ export default function SubscriptionManagementUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Subscription management UI architecture spans plan display, upgrade/downgrade flows, billing management, and cancellation. Plan display fetches current plan, available plans, features. Upgrade/downgrade flows handle plan changes, proration, effective dates. Billing management handles payment methods, invoices, billing history. Cancellation handles reason survey, retention offers, subscription end.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/subscription-management-ui/subscription-management-architecture.svg"
@@ -118,9 +128,9 @@ export default function SubscriptionManagementUIArticle() {
         />
 
         <h3>Plan Display Component</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Current plan card displays active subscription. Plan name, price, billing frequency, next billing date. Status badge (active, past_due, cancelled). Feature list: included features (checkmarks), usage (seats used, storage used). Action buttons: upgrade, downgrade, cancel, manage billing. Loading state: skeleton loader (plan details loading). Error state: &quot;Failed to load plan, retry&quot; (API failure).
-        </p>
+        </HighlightBlock>
         <p>
           Plan comparison table shows available plans. Columns: plan name, price, features, action. Rows: each available plan (Free, Pro, Business, Enterprise). Highlighting: current plan (border, &quot;Current&quot; badge), recommended plan (&quot;Most Popular&quot; badge). Feature toggle: show all features vs. key features only. Mobile: stacked cards (swipe horizontally), collapsed features (expand for details).
         </p>
@@ -180,14 +190,17 @@ export default function SubscriptionManagementUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Subscription management UI design involves trade-offs between flexibility, simplicity, retention, and customer experience. Understanding these trade-offs enables informed decisions aligned with business model and customer expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Effective Date: Immediate vs. End of Period</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Immediate effective date (change now). Pros: Customer gets access now (upgrade), credit applied now (downgrade), clear billing (charged now). Cons: Disruption (downgrade loses features now), proration complexity (calculate credit/charge), support tickets (&quot;Why did I lose features?&quot;). Best for: Upgrades (customer wants access now), simple plans (no proration).
-        </p>
+        </HighlightBlock>
         <p>
           End of period effective date (change at next billing). Pros: No disruption (keep paid features until period end), no proration (simpler billing), fewer support tickets (clear timing). Cons: Delayed access (upgrade waits), delayed savings (downgrade waits), customer confusion (&quot;When does change take effect?&quot;). Best for: Downgrades (customer keeps paid features), most production systems.
         </p>
@@ -239,13 +252,16 @@ export default function SubscriptionManagementUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Make plan comparison clear:</strong> Side-by-side comparison, highlight current plan, highlight recommended plan. Show features with checkmarks/X, tooltips for details. Price display: monthly and annual (show savings).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Show proration transparently:</strong> Breakdown: credit (unused time), charge (new plan), net (due today). Effective date: immediate or end of period (customer choice for upgrades). Tooltip: &quot;How calculated&quot; (detailed breakdown).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Warn about feature loss:</strong> Downgrade: list lost features, usage impact (remove seats, delete data). Acknowledgment: checkbox (&quot;I understand&quot;). Effective date: end of period (keep paid features).
           </li>
@@ -275,13 +291,16 @@ export default function SubscriptionManagementUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Hidden cancellation:</strong> Hard to find, multiple steps, requires call. Solution: Clear entry point, self-service, no dark patterns.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Unclear proration:</strong> Customer doesn&apos;t understand charge. Solution: Transparent breakdown, tooltip (&quot;How calculated&quot;), effective date clear.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No feature loss warning:</strong> Customer downgrades, loses data. Solution: Warning before downgrade, usage impact, acknowledgment required.
           </li>
@@ -311,16 +330,19 @@ export default function SubscriptionManagementUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Stripe Billing Customer Portal</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe Customer Portal: self-service subscription management. Features: view current plan, upgrade/downgrade, update payment method, view billing history, download invoices, cancel subscription. Proration: transparent breakdown, effective date choice. Retention: customizable save offers. Localization: multiple currencies, languages, payment methods.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Netflix Plan Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix plan management: simple upgrade/downgrade. Features: view current plan (Basic, Standard, Premium), upgrade (more screens, better quality), downgrade (end of period), update payment method, view billing history. No proration (changes at period end). Cancellation: easy (few steps), effective date (end of period), win-back (email offers).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Slack Workspace Management</h3>
         <p>
@@ -340,12 +362,15 @@ export default function SubscriptionManagementUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle proration for plan changes?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle proration for plan changes?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Calculate credit (unused time on current plan) and charge (new plan remaining time). Display: credit ($14.50), charge ($49.50), net ($35.00 due today). Effective date: immediate (charged now, access now) or end of period (charged next cycle, access next cycle). Tooltip: &quot;How calculated&quot; (detailed breakdown). Invoice: line item for proration charge.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

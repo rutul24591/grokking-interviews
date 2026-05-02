@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,7 @@ export default function ServerSentEventsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           <strong>Server-Sent Events (SSE)</strong> are a browser-native
           technology defined in the HTML Living Standard that enables a server
           to push data to a client over a persistent HTTP connection using the{" "}
@@ -50,8 +51,8 @@ export default function ServerSentEventsArticle() {
           perfectly with the most common real-time web pattern: the server has
           data updates that the client needs to receive, while the client
           communicates back to the server through standard HTTP requests.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The elegance of SSE lies in what it provides for free. The{" "}
           <code>EventSource</code> API handles automatic reconnection with
           configurable retry intervals, last-event-ID tracking for resuming
@@ -64,8 +65,8 @@ export default function ServerSentEventsArticle() {
           resilience makes SSE significantly simpler to implement correctly for
           the many use cases where server-to-client streaming is the primary
           communication pattern.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SSE operates over standard HTTP, which gives it substantial
           operational advantages over WebSockets. SSE connections traverse
           corporate firewalls and proxies without issue (they are just
@@ -78,7 +79,7 @@ export default function ServerSentEventsArticle() {
           HTTP/1.1 (which meant six SSE streams consumed all available
           connections) is eliminated by HTTP/2&apos;s stream multiplexing,
           where hundreds of SSE streams share a single TCP connection.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, the decision between SSE and
           WebSockets is a systems design question about operational complexity
@@ -111,7 +112,7 @@ export default function ServerSentEventsArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           The EventSource API
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           The browser&apos;s <code>EventSource</code> interface creates a
           persistent connection to an HTTP server endpoint. Instantiation is
           minimal: <code>new EventSource(&apos;/api/events&apos;)</code>. The
@@ -125,12 +126,12 @@ export default function ServerSentEventsArticle() {
           method terminates the connection and prevents automatic reconnection.
           The <code>withCredentials</code> option on the constructor enables
           cross-origin SSE with cookies.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           The text/event-stream Protocol
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           The server responds with <code>Content-Type: text/event-stream</code>{" "}
           and sends events as plain text lines. Each event consists of one or
           more field-value pairs separated by newlines, with events separated
@@ -143,12 +144,12 @@ export default function ServerSentEventsArticle() {
           connection. The simplicity of this text-based protocol means that
           SSE endpoints can be debugged by simply curling the URL — no special
           tooling required.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Automatic Reconnection and Event ID Tracking
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           When an SSE connection drops, the <code>EventSource</code>{" "}
           automatically attempts to reconnect after the retry interval (default
           varies by browser, typically 3 seconds, overridable by the{" "}
@@ -163,7 +164,7 @@ export default function ServerSentEventsArticle() {
           aspects of real-time systems — state synchronization after
           disconnection — and is a major advantage over WebSockets, which
           provide no such mechanism.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Named Events and Stream Multiplexing
@@ -204,13 +205,18 @@ export default function ServerSentEventsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Production SSE architectures typically follow a fan-out pattern where
           backend services publish events to a message broker, and SSE gateway
           servers subscribe to relevant topics and stream events to connected
           clients. This decouples event production from delivery and enables
           horizontal scaling of the SSE tier independently.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The key reliability mechanism is replay: stable event IDs plus
+          `Last-Event-ID` (and broker retention) let clients reconnect without
+          missing or duplicating updates.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/real-time-features/server-sent-events-diagram-2.svg"
@@ -218,7 +224,7 @@ export default function ServerSentEventsArticle() {
           caption="Figure 2: SSE fan-out architecture with message broker and gateway servers"
         />
 
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           In this architecture, application services emit events to a message
           broker (Redis Streams, Kafka, or NATS) when state changes occur. SSE
           gateway servers subscribe to topics based on the connections they
@@ -232,7 +238,7 @@ export default function ServerSentEventsArticle() {
           broker provides event buffering for reconnection: when a client sends{" "}
           <code>Last-Event-ID</code>, the gateway queries the broker for events
           after that ID and replays them before resuming live streaming.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -242,15 +248,15 @@ export default function ServerSentEventsArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           SSE and WebSockets serve overlapping but distinct use cases. The
           following comparison highlights the key trade-offs across operational,
           protocol, and capability dimensions.
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-theme text-sm">
             <thead>
-              <tr className="bg-panel">
+              <HighlightBlock as="tr" tier="important">
                 <th className="border border-theme px-4 py-2 text-left">
                   Dimension
                 </th>
@@ -260,10 +266,10 @@ export default function ServerSentEventsArticle() {
                 <th className="border border-theme px-4 py-2 text-left">
                   SSE Limitation
                 </th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody>
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="border border-theme px-4 py-2 font-medium">
                   Reconnection
                 </td>
@@ -273,7 +279,7 @@ export default function ServerSentEventsArticle() {
                 <td className="border border-theme px-4 py-2">
                   Server must maintain event buffer for replay
                 </td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="border border-theme px-4 py-2 font-medium">
                   Infrastructure
@@ -340,22 +346,22 @@ export default function ServerSentEventsArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Always include an <code>id</code> field with every event — this
             enables the automatic reconnection and replay mechanism that is
             SSE&apos;s most powerful feature. Use monotonically increasing
             values (timestamps or sequence numbers)
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Send comment lines (<code>: keepalive</code>) every 15-30 seconds
             to prevent intermediary proxies and load balancers from closing
             idle connections due to inactivity timeouts
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Serve SSE over HTTP/2 to eliminate the six-connection-per-origin
             limit that makes SSE impractical under HTTP/1.1 for applications
             with multiple streams or API requests
-          </li>
+          </HighlightBlock>
           <li>
             Use named events (<code>event:</code> field) to multiplex different
             data types over a single connection rather than opening separate
@@ -393,27 +399,27 @@ export default function ServerSentEventsArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Proxy buffering swallowing events</strong> — Nginx and many
             CDNs buffer responses by default. SSE events accumulate in the
             buffer and are delivered in bulk rather than as they arrive,
             destroying the real-time behavior. Disable buffering with{" "}
             <code>proxy_buffering off</code> or{" "}
             <code>X-Accel-Buffering: no</code>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>HTTP/1.1 connection exhaustion</strong> — opening multiple
             SSE connections under HTTP/1.1 consumes the browser&apos;s
             per-origin connection pool, starving regular API requests. This
             manifests as mysteriously slow API calls that resolve when the SSE
             connection is closed
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing event IDs</strong> — without IDs, automatic
             reconnection re-establishes the connection but the server cannot
             determine which events the client has already received, leading to
             either duplicates or gaps in the event stream
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No graceful close signaling</strong> — when the server
             needs to terminate an SSE connection (user logged out, server
@@ -447,7 +453,7 @@ export default function ServerSentEventsArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           ChatGPT and AI Streaming Responses
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           OpenAI&apos;s ChatGPT interface uses SSE to stream token-by-token
           responses from the language model. When a user sends a prompt, the
           server begins generating tokens and sends each token (or small group
@@ -461,12 +467,12 @@ export default function ServerSentEventsArticle() {
           <code>[DONE]</code> sentinel to signal the end of the stream. This
           pattern has become the de facto standard for all LLM-powered chat
           interfaces.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           GitHub: Live Build and CI Status Updates
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           GitHub uses SSE to push real-time updates for pull request status
           checks, Actions workflow runs, and deployment status. When a
           developer opens a pull request page, the browser establishes an SSE
@@ -477,12 +483,12 @@ export default function ServerSentEventsArticle() {
           show the status of the latest commit. GitHub&apos;s implementation
           leverages HTTP/2 multiplexing to maintain these SSE streams alongside
           regular API requests without connection pool contention.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Vercel: Real-Time Deployment Logs
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Vercel&apos;s deployment dashboard uses SSE to stream build logs in
           real-time as a deployment progresses. Each log line is sent as an SSE
           event with a timestamp ID, allowing the dashboard to resume from the
@@ -494,7 +500,7 @@ export default function ServerSentEventsArticle() {
           failure, and the client terminates the connection. This approach
           provides the live-tailing experience of watching a terminal while
           using the most operationally simple server-push technology available.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/real-time-features/server-sent-events-diagram-3.svg"
@@ -508,14 +514,17 @@ export default function ServerSentEventsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How does SSE handle reconnection differently from WebSockets,
               and what are the implications for application architecture?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               SSE provides built-in automatic reconnection via the{" "}
               <code>EventSource</code> API. When a connection drops, the browser
               automatically reconnects after the retry interval and sends the{" "}
@@ -526,14 +535,14 @@ export default function ServerSentEventsArticle() {
               must maintain an event buffer for replay, while WebSocket servers
               need client-side reconnection logic and a separate mechanism for
               gap detection.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: Why does HTTP/2 significantly improve SSE, and what problems
               does HTTP/1.1 cause?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               HTTP/1.1 limits browsers to six concurrent connections per origin.
               Each SSE connection consumes one of these slots permanently,

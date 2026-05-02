@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function TransactionFraudDetectionArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Transaction fraud detection identifies and prevents fraudulent transactions through risk scoring, pattern detection, and machine learning models. Fraud costs merchants billions annually—chargebacks, fees, lost merchandise, and reputational damage. For staff and principal engineers, fraud detection involves balancing fraud prevention (block fraudulent transactions) with customer experience (don&apos;t block legitimate transactions). False positives (legitimate transactions blocked) cost sales and customer trust. False negatives (fraudulent transactions approved) cost chargebacks and merchandise. The system must detect fraud in real-time (&lt;500ms for checkout), adapt to evolving fraud patterns, and comply with regulations (GDPR for data usage, PSD2 for SCA exemptions).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of fraud detection extends beyond simple rule-based systems. Fraud signals include velocity (multiple transactions in short time), location (mismatch between billing/shipping/IP), amount (unusual for customer/product), device (new device, suspicious fingerprint), and behavior (rush shipping, high-value items). Machine learning models analyze historical fraud data to identify patterns humans miss. Rule engines encode business knowledge (block transactions over $X from high-risk countries). The system must handle concept drift (fraud patterns change over time), adversarial attacks (fraudsters adapt to detection), and data quality issues (incomplete signals, noisy labels).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, fraud detection architecture involves distributed systems patterns. Real-time scoring requires low-latency feature computation (aggregate transaction history in &lt;100ms). Model serving requires high availability (fraud scoring can&apos;t fail open). Feedback loops capture fraud outcomes (chargeback, confirmed fraud) to retrain models. The system must support multiple risk thresholds (auto-approve &lt;30, review 30-70, decline &gt;70), manual review workflows (fraud analyst queue), and integration with payment gateways (3D Secure for high-risk transactions).
         </p>
@@ -47,13 +51,16 @@ export default function TransactionFraudDetectionArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Fraud Signals and Features</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Transaction features capture fraud indicators. Amount: absolute amount, relative to customer history (unusual high amount), relative to product (high-value items targeted). Velocity: transactions per hour/day, amount per hour/day, failed attempts before success. Location: billing vs. shipping mismatch, IP geolocation vs. billing address, proxy/VPN detection, high-risk country. Device: new device (first seen), device fingerprint (browser, OS, screen resolution), device velocity (same device, multiple accounts).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Customer history features capture behavioral patterns. Account age (new accounts higher risk), purchase history (first purchase vs. repeat customer), average order value (current vs. historical), typical shipping address (new address vs. saved), typical payment method (new card vs. saved card). Behavioral biometrics: typing speed, mouse movements, copy-paste usage (fraudsters copy card numbers). Session data: time on page (rush checkout), navigation pattern (direct to checkout vs. browsing).
-        </p>
+        </HighlightBlock>
         <p>
           Network features capture relationships between entities. Email velocity (same email, multiple accounts), phone velocity (same phone, multiple accounts), address velocity (same address, multiple accounts), card velocity (same card, multiple accounts). Graph features: connected components (fraud rings), centrality (hub accounts), community detection (fraud clusters). Network features require graph database or specialized feature store for real-time computation.
         </p>
@@ -105,9 +112,12 @@ export default function TransactionFraudDetectionArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Fraud detection architecture spans feature computation, rule engine, ML scoring, and decision orchestration. Feature computation aggregates transaction history, computes velocity features, enriches with external data (IP geolocation, device reputation). Rule engine evaluates business rules (clear fraud patterns). ML scoring computes risk score (probability of fraud). Decision orchestration combines rules + score → decision (approve, decline, review).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/transaction-fraud-detection/fraud-detection-architecture.svg"
@@ -118,9 +128,9 @@ export default function TransactionFraudDetectionArticle() {
         />
 
         <h3>Feature Computation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Real-time feature computation aggregates transaction data. Transaction features: amount, currency, product category, shipping method. Customer features: account age, purchase count, total spend, average order value. Velocity features: transactions last hour/day, amount last hour/day, failed attempts last hour. Computation: stream processing (Flink, Kafka Streams) for low-latency, or pre-computed aggregates (Redis) for fast lookup.
-        </p>
+        </HighlightBlock>
         <p>
           Feature enrichment adds external data. IP geolocation: country, city, ISP, proxy/VPN detection (MaxMind, IPQualityScore). Device fingerprint: browser, OS, device ID (FingerprintJS, ThreatMetrix). Email validation: valid domain, disposable email, email age (ZeroBounce, Kickbox). Phone validation: valid number, VOIP vs. mobile, phone risk score (Twilio, Telesign).
         </p>
@@ -180,14 +190,17 @@ export default function TransactionFraudDetectionArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Fraud detection design involves trade-offs between fraud prevention, customer experience, operational cost, and complexity. Understanding these trade-offs enables informed decisions aligned with business risk tolerance and customer expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Thresholds: Strict vs. Lenient</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Strict thresholds (low decline threshold, e.g., &gt;50 decline). Pros: Lower fraud rate (more fraud caught), lower chargebacks. Cons: Higher false positives (legitimate transactions declined), lost sales, customer frustration. Best for: High-risk industries (electronics, gift cards), new merchants (building fraud baseline), high chargeback fees.
-        </p>
+        </HighlightBlock>
         <p>
           Lenient thresholds (high decline threshold, e.g., &gt;80 decline). Pros: Lower false positives (fewer legitimate declines), higher conversion, better customer experience. Cons: Higher fraud rate (more fraud slips through), higher chargebacks, potential brand damage. Best for: Low-risk industries (digital goods, subscriptions), established merchants (known customer base), low chargeback fees.
         </p>
@@ -239,13 +252,16 @@ export default function TransactionFraudDetectionArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Start with rules, add ML:</strong> Rules catch clear fraud (card testing, high-risk patterns). ML catches complex patterns (fraud rings, account takeover). Hybrid approach: rules first, then ML score remaining.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement velocity checks:</strong> Transactions per hour/day, amount per hour/day, failed attempts. Multiple windows (1 min, 1 hour, 1 day). Per customer, per card, per device, per IP.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use device fingerprinting:</strong> Identify devices across sessions. Detect device velocity (same device, multiple accounts). Link fraudulent sessions. Respect privacy (GDPR consent, browser restrictions).
           </li>
@@ -275,13 +291,16 @@ export default function TransactionFraudDetectionArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No velocity checks:</strong> Fraudsters test cards rapidly. Solution: Velocity limits (transactions/hour, amount/day), block on exceed.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Thresholds not tuned:</strong> Too strict (high false positives), too lenient (high fraud). Solution: Monitor precision/recall, adjust based on business tolerance.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No manual review:</strong> All auto-decisions, no human override. Solution: Review queue for medium-risk, analyst feedback for learning.
           </li>
@@ -311,16 +330,19 @@ export default function TransactionFraudDetectionArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Stripe Radar Fraud Detection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe Radar: ML-powered fraud detection. Features: transaction history, device fingerprint, network analysis. Models: gradient boosting (XGBoost), neural networks. Rules: custom rules (block high-risk countries, velocity limits). Manual review: review queue for medium-risk. Feedback: chargeback labels for retraining. 3D Secure: step-up for high-risk (liability shift).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">PayPal Fraud Detection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           PayPal fraud detection: decades of fraud data. Features: transaction history, device fingerprint, network graph (email, phone, address). Models: ensemble (multiple models), deep learning. Rules: clear fraud patterns (card testing, account takeover). Manual review: large analyst team. Feedback: chargeback data, customer reports. Step-up: SMS verification for suspicious transactions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Amazon Fraud Detection</h3>
         <p>
@@ -340,12 +362,15 @@ export default function TransactionFraudDetectionArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you balance fraud prevention with customer experience?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you balance fraud prevention with customer experience?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Dynamic thresholds based on risk context. Stricter for new customers, high amounts, high-risk countries. Lenient for repeat customers, low amounts, low-risk countries. Step-up authentication (3D Secure, SMS) for medium-risk (verify, don&apos;t block). Manual review for edge cases (human judgment). Monitor false positive rate (legitimate declines), adjust thresholds to minimize customer friction while keeping fraud acceptable.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

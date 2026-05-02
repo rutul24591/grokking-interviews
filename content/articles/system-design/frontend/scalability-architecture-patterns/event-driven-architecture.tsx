@@ -687,27 +687,31 @@ export default function EventDrivenArchitectureArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Event-driven architecture is interview-relevant on the frontend as “event contracts at scale”: typed
+          events, backpressure (bursty producers), and avoiding hidden coupling through global event buses.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://martinfowler.com/articles/201701-event-driven.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Martin Fowler — What do you mean by &quot;Event-Driven&quot;?
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN — Introduction to Events
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://martinfowler.com/eaaDev/EventSourcing.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Martin Fowler — Event Sourcing
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://xstate.js.org/docs/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               XState Documentation — State Machines and Statecharts
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

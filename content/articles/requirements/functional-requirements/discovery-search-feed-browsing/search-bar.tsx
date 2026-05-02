@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,20 +34,23 @@ export default function SearchBarArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Search Bar</strong> is the primary entry point for users to find content
           through active search. It is often the most visible and frequently used feature
           on content platforms, e-commerce sites, and documentation portals. A well-designed
           search bar reduces user friction, accelerates discovery, and directly impacts
           conversion rates and user satisfaction.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Modern search bars are sophisticated components that go far beyond a simple text
           input. They provide real-time autocomplete suggestions, display recent searches,
           surface trending queries, handle voice input, and support keyboard navigation.
           Performance is critical—users expect suggestions to appear within 100-200ms of
           typing, and any lag directly impacts search engagement.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, search bar implementation involves balancing multiple
           concerns: latency vs. accuracy (how fast to show suggestions), client-side vs.
@@ -58,11 +62,14 @@ export default function SearchBarArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Autocomplete/Suggestions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Autocomplete predicts what the user is typing and shows suggestions before they
           finish. This accelerates search and helps users formulate better queries.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Query Autocomplete:</strong> Complete the query itself ("mac" → "machine learning", "macos", "macbook").
@@ -76,10 +83,10 @@ export default function SearchBarArticle() {
         </ul>
 
         <h3 className="mt-6">Debouncing and Throttling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every keystroke shouldn't trigger an API call. Debouncing and throttling reduce
           server load while maintaining responsiveness.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Debouncing:</strong> Wait for user to stop typing (e.g., 200-300ms pause) before sending request. Prevents requests for intermediate queries.
@@ -145,10 +152,13 @@ export default function SearchBarArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production search bar involves multiple components working together to deliver
           fast, relevant suggestions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery/search-bar/autocomplete-architecture.svg"
@@ -214,9 +224,9 @@ export default function SearchBarArticle() {
         />
 
         <h3 className="mt-6">Backend Autocomplete API</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The backend service powering autocomplete must be fast (&lt;50ms p99) and relevant.
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -274,10 +284,13 @@ export default function SearchBarArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Search bar implementation involves balancing speed, accuracy, privacy, and
           resource usage.
-        </p>
+        </HighlightBlock>
 
         <h3>Client-Side vs Server-Side Autocomplete</h3>
         <div className="overflow-x-auto">
@@ -326,11 +339,11 @@ export default function SearchBarArticle() {
         />
 
         <h3 className="mt-6">Debounce Delay Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Short Delay (100-150ms):</strong> Suggestions appear quickly, feels
           responsive. Higher server load (more requests), more likely to show intermediate
           results user didn't intend.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Medium Delay (200-300ms):</strong> Balanced approach. Most production
           systems use this range. Good responsiveness with reasonable server load.
@@ -360,15 +373,18 @@ export default function SearchBarArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounce at 200-300ms:</strong> Balance responsiveness with server load.
             Use leading edge (immediate first request) for empty → non-empty transitions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cache Aggressively:</strong> Client-side cache for common queries.
             Cache popular queries at CDN edge. Use stale-while-revalidate for cached responses.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Limit Suggestions:</strong> Show 5-10 suggestions maximum. Too many
             overwhelms users. Group by type if needed (queries, results, categories).
@@ -406,15 +422,18 @@ export default function SearchBarArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No Debouncing:</strong> API call on every keystroke overwhelms server.
             Solution: Implement 200-300ms debounce with request cancellation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Stale Results:</strong> Old request completes after new request,
             showing wrong suggestions. Solution: Use AbortController to cancel stale requests.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring Accessibility:</strong> Keyboard-only users can't navigate,
             screen readers can't announce suggestions. Solution: Implement ARIA attributes,
@@ -446,17 +465,20 @@ export default function SearchBarArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Google Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google's autocomplete shows query suggestions based on popular searches, user
           history (if signed in), and trending topics. Updates in real-time as user types.
           Includes "People also ask" and related searches.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Personalization based on search history,
           location, and language. Privacy controls to disable search history.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Amazon Product Search</h3>
         <p>
@@ -494,17 +516,20 @@ export default function SearchBarArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you optimize autocomplete performance?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you optimize autocomplete performance?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement client-side debouncing (200-300ms) to reduce
               API calls. Use client-side cache (Map/WeakMap) for common queries. For
               client-side prefix matching, build a trie from popular queries. Cancel
               stale requests using AbortController. Limit suggestions to 5-10 items.
               Pre-fetch trending queries on page load. Use CDN edge caching for popular
               queries. Target &lt;100ms end-to-end latency.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

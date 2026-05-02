@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function IdempotencyGuaranteesArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Idempotency</strong> is the property that an operation can be performed multiple
           times without changing the result beyond the initial application. In HTTP, GET, PUT, and
           DELETE are idempotent — calling them multiple times produces the same result as calling them
@@ -32,15 +36,15 @@ export default function IdempotencyGuaranteesArticle() {
           distributed systems, idempotency is essential for safe retries — if a request fails after
           the server processes it but before the response reaches the client, the client can safely
           retry without duplicating the effect.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Idempotency is a critical non-functional requirement for APIs, message processing, and
           distributed transactions. Without idempotency, network failures cause data corruption —
           a payment request that times out may have been processed by the server, and retrying it
           will charge the customer twice. With idempotency, the same request can be retried safely
           — the server detects the duplicate request (via an idempotency key) and returns the same
           result without reprocessing.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, idempotency architecture demonstrates
           understanding of distributed systems failure modes, the ability to design APIs that are
@@ -73,13 +77,16 @@ export default function IdempotencyGuaranteesArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding idempotency requires grasping several foundational concepts about idempotent
           operations, deduplication mechanisms, idempotency key management, and retry safety.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">HTTP Idempotency</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           HTTP methods have defined idempotency semantics. GET, HEAD, PUT, and DELETE are idempotent
           by specification — calling them multiple times produces the same result. POST and PATCH are
           not idempotent — calling them multiple times may create multiple resources or apply multiple
@@ -87,7 +94,7 @@ export default function IdempotencyGuaranteesArticle() {
           (a unique identifier for the request) in the request headers. The server stores the
           idempotency key with the result — if the same key is received again, the server returns
           the cached result without reprocessing.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Deduplication Strategies</h3>
         <p>
@@ -115,10 +122,13 @@ export default function IdempotencyGuaranteesArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Idempotency architecture spans idempotency key generation, deduplication storage, request
           processing, and result caching.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/idempotency-patterns.svg"
@@ -127,7 +137,7 @@ export default function IdempotencyGuaranteesArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Idempotent Request Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a client sends a request with an idempotency key, the server first checks the
           deduplication store — if the key exists, the cached result is returned immediately without
           processing. If the key does not exist, the request is processed, the result is stored in
@@ -135,7 +145,7 @@ export default function IdempotencyGuaranteesArticle() {
           client retries the request (due to timeout or network failure), the server detects the
           duplicate key and returns the cached result, ensuring that the request is not processed
           twice.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Deduplication Store Design</h3>
         <p>
@@ -163,25 +173,28 @@ export default function IdempotencyGuaranteesArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Approach</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Approach</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Idempotency Key + Dedup Store</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>Idempotency Key + Dedup Store</strong></td>
               <td className="p-3">
                 Simple to implement. Safe retries. Works for any operation. Cache duplicate responses.
               </td>
               <td className="p-3">
                 Storage cost for dedup store. TTL management required. Client must generate keys.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Conditional Updates</strong></td>
               <td className="p-3">
                 No additional storage. Natural idempotency. Works with existing data store.
@@ -189,8 +202,8 @@ export default function IdempotencyGuaranteesArticle() {
               <td className="p-3">
                 Complex for non-idempotent operations. Requires version tracking. Not universal.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Compensating Actions</strong></td>
               <td className="p-3">
                 Handles non-idempotent operations. Reversible. Audit trail of compensations.
@@ -198,7 +211,7 @@ export default function IdempotencyGuaranteesArticle() {
               <td className="p-3">
                 Complex to implement. Compensation may fail. Requires idempotent compensations.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Resource-Based Idempotency</strong></td>
               <td className="p-3">
@@ -215,26 +228,29 @@ export default function IdempotencyGuaranteesArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Require Idempotency Keys for Non-Idempotent Operations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every non-idempotent operation (POST, PATCH) should require an idempotency key from the
           client. The server validates the idempotency key — if missing, the request is rejected
           with a 400 error. If present, the server checks the deduplication store — if the key exists,
           the cached result is returned. If the key does not exist, the request is processed and the
           result is stored with the key. This ensures that all non-idempotent operations are safe to
           retry.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Set Appropriate Idempotency Key Retention</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Idempotency keys must be retained long enough to detect retries — if a key expires before
           the client retries, the retry will be processed as a new request, causing duplication. Set
           the retention period based on the maximum expected retry delay — minimum 24 hours for
           standard operations, 7+ days for payment operations (clients may retry for days after a
           network failure). Monitor deduplication store size and adjust retention to balance safety
           with storage cost.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Make Deduplication Atomic with Processing</h3>
         <p>
@@ -259,25 +275,28 @@ export default function IdempotencyGuaranteesArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Server-Generated Idempotency Keys</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Idempotency keys must be generated by the client, not the server. If the server generates
           the idempotency key, the client cannot include it in the retry request, and the server
           cannot detect the duplicate. The client generates a UUID for each request and includes it
           in the Idempotency-Key header — this ensures that the same key is sent with the original
           request and all retries.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Non-Atomic Deduplication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           If the deduplication check (check if key exists) and the request processing are not atomic,
           a race condition can cause duplicate processing — two concurrent requests with the same key
           both pass the deduplication check (key does not exist), both process the request, and both
           store the key. The result is that the request is processed twice. Use a transaction or
           atomic upsert (INSERT ... ON CONFLICT DO NOTHING) to ensure that only one request is
           processed per idempotency key.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Insufficient Idempotency Key Retention</h3>
         <p>
@@ -303,26 +322,29 @@ export default function IdempotencyGuaranteesArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Stripe — Idempotent Payment API</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe&apos;s payment API requires an idempotency key for every payment request. The client
           generates a UUID and includes it in the Idempotency-Key header. Stripe stores the idempotency
           key with the payment result for 24 hours — if the same key is received again, Stripe returns
           the cached payment result without processing the payment again. Stripe&apos;s idempotent
           payment API ensures that payment requests can be retried safely after network failures without
           double-charging the customer.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">AWS — Idempotent API Operations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Many AWS API operations are idempotent — CreateInstance, CreateBucket, and SendMessage
           accept a client token (idempotency key) that ensures the operation is not duplicated if
           retried. AWS stores the client token with the operation result for a configurable period —
           if the same token is received again, AWS returns the cached result. AWS&apos;s idempotent
           API operations enable safe retries in the AWS SDK, which automatically retries failed
           requests with the same client token.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Kafka — Exactly-Once Processing via Idempotent Producers</h3>
         <p>
@@ -348,19 +370,22 @@ export default function IdempotencyGuaranteesArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Idempotency mechanisms involve security risks — idempotency keys may be guessed or reused, deduplication stores may contain sensitive data, and idempotent APIs may be abused for denial-of-service.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Idempotency Key Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Idempotency Key Prediction:</strong> If idempotency keys are predictable (sequential IDs, timestamps), attackers can guess keys and retrieve cached results. Mitigation: use UUIDs (random, unpredictable) for idempotency keys, do not expose idempotency keys in responses, rotate idempotency key generation algorithms periodically.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Idempotency Key Reuse:</strong> If a client reuses an idempotency key for different requests, the server will return the cached result for the first request, silently ignoring the second request. Mitigation: validate that the request body matches the cached request body when a duplicate key is detected, reject requests with mismatched bodies.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -380,19 +405,22 @@ export default function IdempotencyGuaranteesArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Idempotency guarantees must be validated through systematic testing — duplicate request handling, concurrent request handling, and deduplication store failures must all be tested.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Idempotency Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Duplicate Request Test:</strong> Send the same request (same idempotency key) multiple times and verify that only the first request is processed and all retries return the same response. Verify that the deduplication store contains the idempotency key with the cached result.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Concurrent Request Test:</strong> Send the same request (same idempotency key) concurrently from multiple clients and verify that only one request is processed and all clients receive the same response. Verify that the deduplication store handles concurrent requests atomically.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Deduplication Store Failure Test:</strong> Simulate deduplication store failure (unavailable, slow, corrupted) and verify that the server handles the failure gracefully — either processing the request without deduplication (with a warning) or rejecting the request with a 503 error. Verify that the server recovers when the deduplication store is restored.
             </li>

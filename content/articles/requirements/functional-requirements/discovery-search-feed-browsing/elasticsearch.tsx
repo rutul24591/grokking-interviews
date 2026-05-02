@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,22 +34,25 @@ export default function ElasticsearchArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Elasticsearch</strong> is a distributed, RESTful search and analytics
           engine built on Apache Lucene. It is the industry-standard for full-text search,
           powering use cases from application search (e-commerce, content discovery) to
           log analytics (ELK stack) to observability (metrics, APM). Elasticsearch handles
           schema-free JSON documents, scales horizontally across clusters, and provides
           near-real-time search capabilities.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Major companies rely on Elasticsearch: Netflix uses it for content discovery
           across 200M+ subscribers, Uber uses it for real-time trip search and analytics,
           Slack uses it for message search across billions of messages. The engine's
           strength lies in its inverted index (fast full-text search), distributed
           architecture (automatic sharding and replication), and rich query DSL (domain
           specific language).
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, Elasticsearch expertise involves cluster architecture
           (node roles, shard allocation), index design (mappings, analyzers, templates),
@@ -61,10 +65,13 @@ export default function ElasticsearchArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Cluster Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Elasticsearch cluster is a collection of nodes working together:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Master Node:</strong> Manages cluster state (indices, shards, nodes).
@@ -87,9 +94,9 @@ export default function ElasticsearchArticle() {
         </ul>
 
         <h3 className="mt-6">Shards and Replicas</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Elasticsearch distributes data across shards for horizontal scaling:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Primary Shard:</strong> Stores subset of documents. Number of primary
@@ -160,10 +167,13 @@ export default function ElasticsearchArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production Elasticsearch deployment involves multiple components working together
           for scalable, reliable search.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery-search-feed-browsing/elasticsearch/cluster-architecture.svg"
@@ -240,9 +250,9 @@ export default function ElasticsearchArticle() {
         />
 
         <h3 className="mt-6">Query Execution Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding how Elasticsearch executes queries is critical for optimization:
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -307,10 +317,13 @@ export default function ElasticsearchArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Elasticsearch design involves balancing performance, cost, and operational
           complexity.
-        </p>
+        </HighlightBlock>
 
         <h3>Replica Count Trade-offs</h3>
         <div className="overflow-x-auto">
@@ -359,11 +372,11 @@ export default function ElasticsearchArticle() {
         />
 
         <h3 className="mt-6">Filter Context vs Query Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Query Context:</strong> Computes relevance score (_score). Results
           ordered by relevance. NOT cached. Use for full-text search where ranking
           matters.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Filter Context:</strong> Binary match (yes/no). No scoring. Results
           NOT ordered. CACHED automatically. Use for structured data (category, date
@@ -411,15 +424,18 @@ export default function ElasticsearchArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Dedicated Master Nodes:</strong> 3 master-eligible nodes for
             production. Prevents split-brain. Do NOT handle search traffic on masters.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Plan Shard Count:</strong> Target 10-50GB per shard. Estimate growth
             for 1-2 years. Cannot reduce primary shards without reindex.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Index Templates:</strong> Define mappings, settings, analyzers
             in templates. Apply to index patterns (logs-*, products-*).
@@ -458,17 +474,20 @@ export default function ElasticsearchArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Too Many Shards:</strong> Each shard consumes memory/file handles.
             1000+ shards causes cluster instability. Solution: Plan shard count, use
             rollover with appropriate thresholds.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Deep Pagination:</strong> from + size &gt; 10000 causes memory
             issues. Solution: Use search_after for deep pagination, limit to first
             100 pages.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Wildcard Queries:</strong> Leading wildcard (*term) forces full
             index scan. Solution: Use ngram analyzer for prefix search, avoid leading
@@ -496,17 +515,20 @@ export default function ElasticsearchArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Netflix Content Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix uses Elasticsearch for content discovery across 200M+ subscribers.
           Searches titles, descriptions, cast, genres. Personalizes results based on
           viewing history. Handles 1B+ searches per day.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Custom analyzers for title matching (handles
           accents, special characters). Per-user boosting based on viewing preferences.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Uber Real-Time Trip Search</h3>
         <p>
@@ -544,16 +566,19 @@ export default function ElasticsearchArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you optimize Elasticsearch queries?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you optimize Elasticsearch queries?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use filter context for structured data (automatically
               cached). Limit returned fields with _source filtering. Use size parameter
               to limit results. Avoid leading wildcards (*term). Use routing to target
               specific shards. For aggregations, use composite aggregation for pagination.
               Monitor slow query log to identify problematic queries.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

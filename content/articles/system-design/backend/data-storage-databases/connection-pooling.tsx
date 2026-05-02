@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -78,24 +79,27 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Pool Architecture &amp; Lifecycle</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Connection Pool Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Connection pool</strong> maintains a set of open database connections.
           Applications <strong>borrow</strong> connections from pool (fast—connection already
           open), <strong>execute queries</strong>, then <strong>return</strong> connections
           to pool (not close). Pool manages connection lifecycle: create initial connections,
           grow on demand (up to max), shrink when idle, validate before lending, close stale
           connections.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Without pooling: each request creates new connection (TCP handshake: 3 packets,
           authentication: username/password, SSL handshake: certificates, session setup:
           timezone, locale). Total: 50-100ms latency, database resources per connection
           (memory, threads). With pooling: connection already open, borrow is O(1) operation
           (1-5ms), database resources fixed (pool size).
-        </p>
+        </HighlightBlock>
 
         <p>
           Pool components: <strong>Idle connections</strong> (available for borrowing),
@@ -150,22 +154,25 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Issues &amp; Solutions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Connection Leaks</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Connection leak</strong> occurs when application borrows connection but never
           returns it (exception without finally, forgotten close). Leaks accumulate: pool
           exhausts (no idle connections), new requests wait or fail. Symptoms: pool exhaustion,
           increasing wait times, database shows fewer active connections than pool size
           (connections borrowed but idle in app).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Prevention: <strong>Try-finally</strong> (always return in finally block),
           <strong>Try-with-resources</strong> (Java, Python—auto-close),
           <strong>Connection timeout</strong> (pool forcibly returns after timeout),
           <strong>Leak detection</strong> (pool logs leaked connections, stack trace).
-        </p>
+        </HighlightBlock>
 
         <p>
           Example (Java): <code className="inline-code">try (Connection conn = pool.getConnection())
@@ -229,19 +236,22 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Pooling vs No Pooling</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Connection pooling is standard practice for database access. Understanding the
           trade-offs helps you configure pools correctly and avoid common pitfalls.
-        </p>
+        </HighlightBlock>
 
         <h3>Connection Pooling Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Low latency</strong> is the primary advantage. Borrowing connection is
           1-5ms vs 50-100ms for new connection (TCP handshake, auth, session setup). For
           high-concurrency apps (100+ requests/sec), pooling reduces total latency by
           90-99%.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Throughput scaling</strong>—pooling enables 10-100x more requests with
@@ -317,20 +327,23 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Connection Pooling</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Size pools correctly.</strong> Start with formula:
           <code className="inline-code">(CPU Cores × 2) + 1</code>. Monitor pool metrics
           (active, idle, waiting), adjust based on load. Pool exhaustion = increase size
           (if database has capacity). Database overload = decrease size.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Enable connection validation.</strong> Configure test-on-borrow or
           test-while-idle. Modern pools (HikariCP) use keepalive + max lifetime (lower
           overhead than validation). Never disable validation (stale connections cause
           intermittent failures).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Set appropriate timeouts.</strong> Connection timeout (wait for connection):
@@ -370,19 +383,22 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Connection leaks.</strong> Most common issue. Applications borrow connections,
           don't return (exception without finally, forgotten close). Solution: Use
           try-with-resources (Java, Python), always return in finally block, enable leak
           detection (pool logs leaked connections).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>No connection validation.</strong> Pool lends stale connections (database
           closed), queries fail intermittently. Solution: Enable validation (test-on-borrow
           or test-while-idle), configure keepalive, set max lifetime.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Pool too large.</strong> Each pool uses database resources. Too many pools
@@ -413,21 +429,24 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Web Applications (E-commerce, SaaS)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Web apps use connection pooling for database access. Each HTTP request borrows
           connection, executes queries (user lookup, product fetch, order create), returns
           connection. Benefits: low latency (1-5ms vs 50-100ms per connection), high
           throughput (10-100x more requests), controlled database load (pool size limits
           connections).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This pattern works because web requests are short-lived (100-500ms), high-concurrency
           (100+ concurrent requests), and benefit from connection reuse (same database,
           repeated requests).
-        </p>
+        </HighlightBlock>
 
         <h3>Microservices Architecture</h3>
         <p>
@@ -477,14 +496,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: When would you use connection pooling? What are the signs that pooling is
               needed?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Use connection pooling for any database-intensive
               application. Signs pooling is needed: (1) High connection overhead (50-100ms
               per connection), (2) Database connection limit reached (connection refused
@@ -493,7 +515,7 @@ export default function ArticlePage() {
               Don't use pooling for: single-connection workloads (CLI tools, scripts),
               serverless (Lambda—short-lived, pooling less beneficial), long-lived
               connections (WebSocket with database).
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What's the performance improvement? Answer:
               Latency: 50-100ms → 1-5ms (10-50x improvement). Throughput: 10-100x more

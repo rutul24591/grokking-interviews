@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,12 +28,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Unit of Work</strong> pattern maintains a list of objects affected by a business transaction and coordinates the writing out of changes and the resolution of concurrency problems. Formally introduced by Martin Fowler in &quot;Patterns of Enterprise Application Architecture,&quot; the Unit of Work acts as an in-memory transaction coordinator that tracks every insert, update, and delete operation performed within a logical business operation and commits them all atomically when the operation completes successfully, or rolls them all back if any step fails.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental problem the Unit of Work solves is making transaction scope explicit rather than implicit. Without a Unit of Work, each repository or data-access component manages its own transaction boundaries, which leads to partial commits when multi-step workflows fail midway. Consider an e-commerce order creation flow that must insert an order record, insert line items, update customer balance, and publish an &quot;OrderCreated&quot; event. If each step commits independently and the customer balance update fails, the system is left with orphaned order records that require manual cleanup. The Unit of Work ensures that either all of these changes become durable together or none of them do.
-        </p>
+        </HighlightBlock>
         <p>
           The pattern operates on three core responsibilities. First, it maintains an <strong>identity map</strong> that ensures each domain object is loaded only once within the scope of the unit, preventing duplicate representations of the same database row. Second, it performs <strong>change tracking</strong> by comparing the current state of loaded objects against their original state to determine what SQL statements need to be executed at commit time. Third, it acts as a <strong>commit coordinator</strong> that orders operations correctly (inserts before updates, parent records before children), wraps them in a single database transaction, and handles concurrency conflict resolution at commit time.
         </p>
@@ -49,6 +53,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/unit-of-work-pattern-diagram-1.svg"
@@ -57,12 +64,12 @@ export default function ArticlePage() {
         />
 
         <h3>Identity Map</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The identity map is a registry that ensures each domain object is instantiated only once per Unit of Work scope. When the application requests a customer with ID 42, the Unit of Work checks its identity map first. If the customer is already loaded, it returns the existing instance rather than executing another database query. This prevents a subtle but dangerous problem where two different in-memory representations of the same row could be modified independently, leading to lost updates when both are flushed to the database.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The identity map also serves as a first-level cache. Within a single Unit of Work, repeated queries for the same entity hit the map rather than the database, reducing query count and ensuring that all parts of the application see the same object instance with the same modifications. This is distinct from a second-level cache, which spans multiple Unit of Work instances and requires careful invalidation strategy. The identity map is always consistent because it lives within a single transaction boundary.
-        </p>
+        </HighlightBlock>
 
         <h3>Change Tracking</h3>
         <p>
@@ -122,12 +129,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A well-architected Unit of Work implementation follows a clear flow from application service initiation through repository coordination to database commit. The application service is the owner of the Unit of Work lifecycle. It creates the Unit of Work at the start of the operation, performs domain operations through repositories that participate in the Unit of Work, writes outbox records for any events that must be published, and then calls commit or rollback based on whether the operation succeeded or failed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The flow begins when the application service receives a command or request. It instantiates a new Unit of Work, which also creates a new database connection and begins a transaction. The service then calls repository methods to load the necessary domain objects. Each repository receives the Unit of Work (or its underlying transaction context) so that its queries participate in the same transaction. The Unit of Work&apos;s identity map tracks every loaded object to prevent duplicate queries and maintain a single in-memory representation.
-        </p>
+        </HighlightBlock>
         <p>
           As the service performs domain operations, the Unit of Work tracks all changes through its chosen tracking mechanism. When the service is ready to commit, the Unit of Work performs a sequence of steps in a specific order. It first validates all pending changes against domain invariants and business rules. It then orders the SQL operations to respect referential integrity, inserting parent records before children, and generating parameterized SQL for each operation. It writes any outbox event records that need to be published. Finally, it wraps all of these operations in a single database transaction and executes them atomically.
         </p>
@@ -160,12 +170,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Unit of Work pattern involves fundamental trade-offs between consistency, performance, and operational complexity that must be evaluated for each system&apos;s workload characteristics. Understanding these trade-offs is critical for making the right architectural choices at scale.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Strong consistency versus throughput</strong> represents the most significant trade-off. A large Unit of Work that encompasses many operations within a single database transaction provides strong consistency guarantees, meaning either all changes are visible together or none are. This is ideal for financial transactions and inventory reservations where partial visibility is incorrect. However, larger transactions hold locks longer, increase deadlock probability, and reduce overall throughput under concurrent load. Smaller Units of Work commit faster, release locks sooner, and support higher concurrency, but require application-level compensation logic when operations must be rolled back across multiple small commits.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Change tracking overhead versus developer productivity</strong> is another important consideration. Snapshot-based change tracking, used by most ORMs by default, carries memory cost proportional to the number of tracked objects and CPU cost for deep comparison at commit time. For workflows that modify a small fraction of loaded objects, most of this comparison work is wasted. Explicit tracking eliminates this overhead but requires developers to correctly identify and mark every change. The staff-level decision is to use ORM-based tracking for standard CRUD workflows where developer velocity matters and to use explicit or repository-level tracking for high-throughput batch processing where tracking overhead becomes a bottleneck.
         </p>
@@ -188,12 +201,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Scope the Unit of Work to the smallest coherent operation that requires atomicity. For web applications, this is typically per-command rather than per-request, because a single request may contain multiple independent operations that should not share a transaction. For background jobs, scope the Unit of Work to each batch item or logical chunk rather than processing the entire job in one transaction. Narrow scoping reduces lock contention, memory usage, and the blast radius of any single transaction failure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Keep the Unit of Work free of slow operations. Database queries within a transaction should be indexed and fast. External service calls, file I/O, and email sending must never occur within a Unit of Work transaction because they extend the transaction duration and hold locks while waiting for external systems. Move all external calls to occur either before the Unit of Work begins (for data the transaction needs) or after the Unit of Work commits (for notifications and events, using the outbox pattern for reliability).
-        </p>
+        </HighlightBlock>
         <p>
           Always write event records to an outbox table within the same database transaction as the domain data changes. This guarantees that committed data changes and their associated events share the same atomicity. A separate publisher process should read the outbox table and deliver events to the message broker with retry logic. Without the outbox, a crash between data commit and event publication creates permanent inconsistency that is extremely difficult to detect and repair.
         </p>
@@ -213,12 +229,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is allowing the Unit of Work to grow beyond its intended scope. This happens gradually as developers add new operations to existing workflows without reconsidering the transaction boundary. A Unit of Work that originally updated a single table grows to update five tables, emit three events, and call two external services. The transaction duration increases from milliseconds to seconds, lock contention rises, deadlocks become frequent, and under load the system experiences cascading timeouts that take down the entire request processing pipeline.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another frequent mistake is mixing read and write operations in the same Unit of Work when they do not need to be in the same transaction. Loading reference data for validation and then writing changes can often be split into a read operation outside any transaction followed by a write-only Unit of Work that contains only the actual data modifications. This reduces the transaction footprint and eliminates unnecessary lock holding for read operations.
-        </p>
+        </HighlightBlock>
         <p>
           Inconsistent Unit of Work usage across a codebase creates subtle correctness bugs that are nearly impossible to reproduce locally. When some request handlers properly use a Unit of Work and others manage transactions ad hoc, the system exhibits correct behavior under light load but develops data inconsistencies under concurrent access. The solution is to enforce Unit of Work usage at the infrastructure level through middleware, base classes, or dependency injection scopes that make it the default behavior and require explicit opt-out with justification.
         </p>
@@ -238,16 +257,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Financial Services: Payment Processing with Audit Trail</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A payment processing system needed to atomically debit a sender&apos;s account, credit a recipient&apos;s account, write an audit log entry, and publish a payment confirmation event. The Unit of Work scoped to the single payment command ensured that all four operations succeeded or failed together within one database transaction. The outbox table captured the confirmation event within the same transaction, guaranteeing no payment completed without a corresponding notification. Optimistic concurrency control on account balance prevented double-spend when two payment requests targeted the same account simultaneously. This design processed over 10,000 payments per second with sub-100ms transaction times and zero data inconsistencies over 18 months of operation.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce: Order Fulfillment with Inventory Reservation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce platform&apos;s order placement flow needed to create an order, reserve inventory items, update customer purchase history, and emit events for the fulfillment and recommendation systems. The initial implementation used separate transactions for each step, which led to orders being created without inventory reserved during high-traffic sales events. The redesign scoped the entire order placement to a single Unit of Work within the order service, including inventory reservation writes and outbox event records. For the cross-service step of notifying the warehouse, an outbox record triggered an asynchronous saga that coordinated with the warehouse service. This eliminated overselling during peak traffic and reduced order-fulfillment inconsistencies from 2% of orders to near zero.
-        </p>
+        </HighlightBlock>
 
         <h3>Healthcare: Patient Record Updates with Compliance</h3>
         <p>
@@ -265,14 +287,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What problem does the Unit of Work pattern solve that individual repository transactions cannot?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Individual repository transactions commit each operation independently. When a business workflow requires multiple repository operations to either all succeed or all fail, repository-level transactions cannot provide that guarantee. If the first repository commits successfully and the second fails, the first change is already durable and must be manually rolled back or compensated.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               The Unit of Work pattern solves this by deferring all commits until the entire workflow completes. It tracks every change made through repositories, and at commit time, it wraps all database operations in a single transaction. If any operation fails, the entire transaction is rolled back and no partial changes persist. This makes multi-step workflows atomic and eliminates the partial-commit problem entirely.
             </p>

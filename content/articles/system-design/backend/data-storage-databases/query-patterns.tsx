@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -79,9 +80,12 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Common Patterns &amp; Anti-Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Master-Detail (Header-Line) Pattern</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Master-detail</strong> is the most common pattern: one master record
           (order, invoice, shipment) has many detail records (order items, invoice lines,
           shipment items). Schema: <code className="inline-code">orders(id, customer_id,
@@ -91,13 +95,13 @@ export default function ArticlePage() {
           details (<code className="inline-code">SELECT * FROM order_items WHERE order_id
           = ?</code>). Or use JOIN: <code className="inline-code">SELECT o.*, oi.* FROM
           orders o JOIN order_items oi ON o.id = oi.order_id WHERE o.id = ?</code>.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use cases: e-commerce (orders), accounting (invoices), logistics (shipments),
           any header-line structure. Benefits: normalized (no data duplication), efficient
           (index on order_id), clear semantics (foreign key relationship).
-        </p>
+        </HighlightBlock>
 
         <h3>Hierarchical (Tree) Pattern</h3>
         <p>
@@ -199,11 +203,14 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Hierarchical Queries &amp; Solutions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Recursive CTEs for Hierarchical Data</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Recursive CTEs</strong> enable tree traversal in SQL:
-        </p>
+        </HighlightBlock>
 
         <pre className="bg-code text-code p-4 rounded-lg overflow-x-auto text-sm">
 {`WITH RECURSIVE tree AS (
@@ -223,12 +230,12 @@ export default function ArticlePage() {
 SELECT * FROM tree ORDER BY depth, name;`}
         </pre>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This fetches entire subtree from root (id=1). Base case: select root node.
           Recursive case: join children of current nodes. UNION ALL combines base and
           recursive results. WHERE t.depth &lt; 10 prevents infinite loops (always use
           LIMIT or depth check).
-        </p>
+        </HighlightBlock>
 
         <p>
           Use cases: category trees, org charts, bill of materials, comment threads
@@ -291,19 +298,22 @@ SELECT * FROM tree ORDER BY depth, name;`}
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Pattern Selection</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Different patterns have trade-offs. Understanding them helps you choose the
           right pattern for each use case.
-        </p>
+        </HighlightBlock>
 
         <h3>Hierarchical Models Comparison</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Adjacency list</strong>: Simplest (parent_id column), intuitive, easy
           to maintain. Trade-offs: recursive queries for tree traversal (slow for deep
           trees). Best for: shallow trees (2-3 levels), simple applications, frequent
           restructuring.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Path enumeration</strong>: Fast reads (LIKE '1/5/%'), no recursion
@@ -370,19 +380,22 @@ SELECT * FROM tree ORDER BY depth, name;`}
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Query Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use master-detail for header-line structures.</strong> Orders, invoices,
           shipments all follow this pattern. Normalize (separate tables), index foreign
           keys (order_id), use transactions (insert master + details atomically).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Choose hierarchical model based on access patterns.</strong> Read-heavy
           → path enumeration or nested sets. Write-heavy → adjacency list. Complex
           queries → closure table. Always use LIMIT in recursive queries (prevent
           infinite loops).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Index junction tables on both foreign keys.</strong>
@@ -420,18 +433,21 @@ SELECT * FROM tree ORDER BY depth, name;`}
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Using EAV for known attributes.</strong> EAV is tempting for flexibility,
           but query complexity and performance issues aren't worth it. Solution: use
           fixed columns for known attributes, JSON columns for dynamic attributes.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>N+1 queries in ORMs.</strong> ORMs make N+1 easy (lazy loading).
           Solution: enable query logging (see N+1 patterns), use eager loading
           (includes, select_related), add tests that assert query count.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Unlimited recursive queries.</strong> Recursive CTEs without LIMIT
@@ -465,26 +481,29 @@ SELECT * FROM tree ORDER BY depth, name;`}
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce uses all patterns: <strong>Master-detail</strong> (orders → order
           items), <strong>Hierarchical</strong> (categories → subcategories—path
           enumeration for fast filtering), <strong>Many-to-many</strong> (products ↔
           tags via product_tags), <strong>Polymorphic</strong> (reviews on products,
           sellers, categories). Benefits: normalized schema, efficient queries, flexible
           for new features.
-        </p>
+        </HighlightBlock>
 
         <h3>Social Media Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media uses: <strong>Master-detail</strong> (users → posts),
           <strong>Polymorphic</strong> (comments on posts, comments, users),
           <strong>Many-to-many</strong> (users ↔ users for follows—self-referencing
           junction table), <strong>Hierarchical</strong> (nested comments—adjacency
           list with recursive CTE). Benefits: flexible content model, efficient feed
           generation, supports nested discussions.
-        </p>
+        </HighlightBlock>
 
         <h3>Enterprise RBAC System</h3>
         <p>
@@ -509,13 +528,16 @@ SELECT * FROM tree ORDER BY depth, name;`}
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: What is the N+1 query problem? How do you identify and fix it?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> N+1 pattern: fetch N parent records (1 query),
               then fetch children for each parent (N queries). Example: fetch 100
               users (1 query), then fetch orders for each user (100 queries) = 101
@@ -527,7 +549,7 @@ SELECT * FROM tree ORDER BY depth, name;`}
               (<code className="inline-code">SELECT * FROM orders WHERE user_id IN
               (1,2,3,...)</code>), (3) ORM-specific (Rails: includes, Django:
               select_related/prefetch_related). Benefit: 1-2 queries instead of N+1.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> When would you NOT fix N+1? Answer: When N
               is small (1-10), overhead of eager loading may exceed N+1 cost. Or when

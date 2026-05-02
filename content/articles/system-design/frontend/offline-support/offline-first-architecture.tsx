@@ -155,11 +155,21 @@ export default function OfflineFirstArchitectureConciseArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Offline-first is a consistency model: local state is the UX source of truth, and the system converges to
+          server truth via sync. Your design must specify conflict resolution, idempotency, and recovery after data
+          loss/eviction.
+        </HighlightBlock>
         <p>
           The offline-first architecture is organized as a layered system where
           each layer has a clear responsibility and communicates with adjacent
           layers through well-defined interfaces.
         </p>
+
+        <HighlightBlock as="p" tier="important">
+          A good interview answer explicitly separates: read model (local DB), write model (outbox queue),
+          reconciliation (pull/push), and “source of truth” decisions for each field (client-generated vs server).
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Layered Architecture</h3>
@@ -239,6 +249,14 @@ export default function OfflineFirstArchitectureConciseArticle() {
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The core trade-off is correctness vs. UX. Offline-first optimizes for responsiveness, but you pay in sync,
+          conflict handling, and ensuring users understand when their view is provisional.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Interview-ready trade-offs to name: conflict frequency, storage quotas/eviction, security of local data,
+          and operational complexity (telemetry and replay tooling for outbox failures).
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -401,10 +419,10 @@ export default function OfflineFirstArchitectureConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These pitfalls represent the most frequent failure modes observed in
           offline-first implementations:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Assuming localStorage Is Sufficient:</strong> Teams often
@@ -414,7 +432,7 @@ export default function OfflineFirstArchitectureConciseArticle() {
             migration to IndexedDB later is painful because the data access
             patterns are fundamentally different.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Conflict Resolution Until It Is Too Late:</strong>{" "}
             Conflict resolution is not a feature you bolt on after launch. It
             must be designed into the data model from the start. Retrofitting
@@ -422,15 +440,15 @@ export default function OfflineFirstArchitectureConciseArticle() {
             single-writer semantics requires significant rearchitecture. Decide
             early: last-write-wins, operational transforms, CRDTs, or manual
             user resolution.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not Handling Storage Eviction:</strong> Browsers can and do
             evict IndexedDB data when the device is under storage pressure,
             especially if the user has not recently visited the origin. If your
             application assumes IndexedDB data is permanent without requesting
             persistent storage, users will lose unsynced data.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Building Sync Logic from Scratch:</strong> A
             production-grade sync engine handles partial failures, ordering,
             idempotency, conflict detection, batching, compression, retry logic,
@@ -438,7 +456,7 @@ export default function OfflineFirstArchitectureConciseArticle() {
             consistently underestimate the effort by 3-5x. Evaluate Replicache,
             ElectricSQL, PowerSync, or Automerge before committing to a custom
             implementation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Forgetting the First Load Case:</strong> On first visit, the
             local store is empty. If the application assumes data is always
@@ -466,20 +484,20 @@ export default function OfflineFirstArchitectureConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Offline-first architecture delivers the most value in environments
           where connectivity is unreliable or user expectations demand instant
           responsiveness:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Field Service Applications:</strong> Technicians working in
             basements, server rooms, and industrial facilities with no cellular
             coverage need to access equipment manuals, log inspections, and
             submit work orders. Applications like ServiceMax and FieldWire are
             built offline-first because connectivity cannot be guaranteed at the
             point of work.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Travel Applications:</strong> Users on flights, in tunnels,
             or in foreign countries with limited data plans need access to
@@ -487,19 +505,19 @@ export default function OfflineFirstArchitectureConciseArticle() {
             Maps' offline maps and Airbnb's offline trip details demonstrate
             this pattern.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Collaborative Editors:</strong> Google Docs, Notion, and
             Figma allow users to continue editing while offline, queuing changes
             and merging them when connectivity returns. The sync complexity is
             highest here because multiple users may edit the same content
             simultaneously while disconnected.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Point-of-Sale Systems:</strong> Retail POS systems cannot
             afford to stop processing transactions when the network drops.
             Square and Toast maintain local transaction logs and sync when
             connectivity resumes, ensuring business continuity.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Healthcare Applications:</strong> Clinicians in hospitals
             with unreliable WiFi, rural health workers, and emergency responders

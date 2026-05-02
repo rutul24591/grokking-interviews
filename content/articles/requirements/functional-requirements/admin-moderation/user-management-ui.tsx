@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,10 @@ export default function UserManagementUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User management UI enables administrators and support teams to search,
           view, and manage user accounts including suspensions, bans,
           restorations, role assignments, and bulk operations. The interface is
@@ -50,8 +54,8 @@ export default function UserManagementUIArticle() {
           actions), audit logging (all admin actions logged), and integration
           with backend services (user service, authentication service,
           notification service).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of user management UI extends beyond simple CRUD
           operations. Search must handle multiple search criteria (email,
           username, user ID, phone, signup date) with fuzzy matching and
@@ -62,7 +66,7 @@ export default function UserManagementUIArticle() {
           of RBAC hierarchy (roles, permissions, inheritance). The UI must
           prevent errors (confirmation dialogs, permission checks) while
           enabling efficient operations (keyboard shortcuts, bulk actions).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, user management UI architecture
           involves security (MFA required, session management), compliance
@@ -78,22 +82,25 @@ export default function UserManagementUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>User Search and Discovery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Search criteria support multiple search types. Email search (exact
           match, partial match). Username search (exact match, partial match).
           User ID search (exact match). Phone number search (formatted,
           unformatted). Advanced filters (signup date range, last active date,
           account status, role, risk score). Search results display user summary
           (avatar, username, email, status, signup date, last active).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Search performance optimization handles large user bases. Indexing
           (database indexes on search fields). Caching (cache frequent searches,
           cache user profiles). Pagination (server-side pagination, lazy
           loading). Search suggestions (autocomplete for email, username).
           Search history (recent searches, saved searches).
-        </p>
+        </HighlightBlock>
         <p>
           Search result actions enable quick operations. View profile (full user
           details). Quick actions (suspend, ban, send email). Bulk selection
@@ -189,14 +196,17 @@ export default function UserManagementUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User management UI architecture spans search interface, profile view,
           action workflows, and audit logging. Search interface enables user
           discovery (search, filters, results). Profile view displays user
           details (account info, activity, related data). Action workflows
           execute account actions (suspend, ban, restore) with approvals. Audit
           logging tracks all admin actions for compliance.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/admin-moderation/user-management-ui/user-management-architecture.svg"
@@ -207,12 +217,12 @@ export default function UserManagementUIArticle() {
         />
 
         <h3>Search Interface</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Search input supports multiple search types. Text input (email,
           username, user ID). Advanced filters (date range, status, role).
           Search suggestions (autocomplete). Recent searches (quick access to
           recent searches). Saved searches (save frequent searches).
-        </p>
+        </HighlightBlock>
         <p>
           Search results display user information. User card (avatar, username,
           email, status). Quick actions (view profile, suspend, ban). Bulk
@@ -308,20 +318,23 @@ export default function UserManagementUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User management UI design involves trade-offs between power and
           safety, efficiency and error-prevention, and flexibility and
           complexity. Understanding these trade-offs enables informed decisions
           aligned with operational requirements and risk tolerance.
-        </p>
+        </HighlightBlock>
 
         <h3>Bulk Operations: Power vs. Safety</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Unrestricted bulk operations (no approval required). Pros: Efficient
           (quick bulk actions), flexible (admins can act quickly). Cons: High
           risk (accidental bulk bans), no safety net. Best for: Small teams
           (high trust), low-risk actions (bulk email).
-        </p>
+        </HighlightBlock>
         <p>
           Approval-based bulk operations (require approval). Pros: Safe
           (prevents accidents), audit trail (approval logged). Cons: Slower
@@ -407,17 +420,20 @@ export default function UserManagementUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement powerful search:</strong> Multiple search criteria
             (email, username, ID, phone). Advanced filters (date, status, role).
             Autocomplete suggestions. Saved searches for frequent queries.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Design comprehensive profiles:</strong> All user info in one
             place (account, activity, moderation, support). Tabbed sections for
             organization. Quick actions from profile.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement approval workflows:</strong> Approval for
             high-risk actions (bans, permanent suspensions). Risk-based approval
@@ -461,16 +477,19 @@ export default function UserManagementUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Weak search:</strong> Can&apos;t find users efficiently.
             Solution: Multiple search criteria, advanced filters, autocomplete.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No approval workflows:</strong> Accidental bans, no
             oversight. Solution: Approval for high-risk actions, risk-based
             approval.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No bulk operations:</strong> Can&apos;t manage users at
             scale. Solution: Bulk selection, bulk actions, confirmation dialogs.
@@ -509,26 +528,29 @@ export default function UserManagementUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Facebook User Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook user management for trust and safety teams. Search users
           (email, username, ID, phone). Profile view (account info, activity,
           reports, moderation history). Actions (suspend, ban, restrict,
           verify). Bulk operations (bulk suspend, bulk ban). Approval workflows
           (auto-approve low-risk, legal review for bans). Audit logging (all
           actions logged). MFA required for admin access.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Uber Support Tools</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uber support tools for rider and driver support. Search users (email,
           phone, user ID). Profile view (account info, trip history, support
           tickets). Actions (refund, credit, suspend, ban). Bulk operations
           (bulk credits, bulk emails). Approval workflows (manager approval for
           large refunds). Audit logging (all support actions logged). Role-based
           access (support agents, managers, admins).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Airbnb Trust and Safety</h3>
         <p>
@@ -563,14 +585,17 @@ export default function UserManagementUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you design user search for large user bases (millions of users), and what are the performance considerations?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement multi-layer search strategy. For exact lookups (user ID, email), use database indexes with direct queries. For fuzzy search (username, partial matches), use dedicated search infrastructure (Elasticsearch, Algolia) rather than database LIKE queries. Implement server-side pagination—never load all results at once. Add client-side caching for repeated searches and user profiles. Provide autocomplete suggestions to reduce typos and guide users. The key trade-off is between search flexibility and performance—fuzzy search is expensive at scale. Consider search relevance scoring for large result sets. For very large datasets, implement search result limits with "refine your search" prompts.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,20 +24,23 @@ export default function TwoPointerArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The two-pointer pattern uses two indices that walk through a sequence (or two sequences) to solve a problem in
         linear time and constant extra space, replacing what would otherwise be a nested-loop O(n²) brute force. It is
         the single most common pattern at the &quot;easy-to-medium&quot; bar of Leetcode arrays and strings, and a
         prerequisite for understanding sliding-window, fast/slow pointers, and many partitioning routines.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The pattern shows up in two main forms. <strong>Convergent two-pointer</strong> places one pointer at each end
         of a sorted or symmetric input and walks them toward each other, using a comparison against a target to decide
         which side advances. <strong>Parallel two-pointer</strong> places both pointers at the start and walks them in
         the same direction at different speeds — typically a &quot;slow&quot; write head and a &quot;fast&quot; read
         head — to compact, partition, or rewrite the array in place. A third sub-flavour, <em>fast-and-slow</em>
         pointers on linked lists (Floyd&apos;s tortoise and hare), is common enough that it gets its own article.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Recognition signals are concrete. Sorted array plus a pair / triple condition (&quot;find two numbers that sum
         to k&quot;, &quot;count triples below threshold&quot;) is convergent. In-place compaction, partition, or
@@ -53,21 +57,24 @@ export default function TwoPointerArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Convergent invariant.</strong> Given a sorted array A and target T, place L = 0, R = n - 1, and consider
         the candidate pair (A[L], A[R]). If A[L] + A[R] &lt; T, no pair (L, k) with k &lt; R can sum to T because A[k]
         ≤ A[R], so we can safely advance L without missing a solution. Symmetrically, if A[L] + A[R] &gt; T, no pair
         (k, R) with k &gt; L can sum to T, so we retreat R. Each iteration eliminates at least one element from
         consideration, so the loop runs at most n times.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         That argument generalises. Any monotone predicate p(L, R) — where increasing L makes p more likely true and
         decreasing R makes p more likely false (or vice versa) — admits a two-pointer sweep. &quot;Container with most
         water&quot; replaces sum with min(A[L], A[R]) × (R - L); the same logic applies because the only way to
         possibly increase the area is to move the shorter wall inward. &quot;Trapping rain water&quot; uses the
         invariant that water at index i is bounded by min(maxLeft, maxRight), and advancing whichever side has the
         smaller running max preserves this.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Parallel invariant.</strong> Slow pointer s is the next write index; fast pointer f is the read head.
         At every iteration A[0..s-1] holds the validated prefix and A[f..n-1] is unprocessed. The work performed at
@@ -97,20 +104,23 @@ export default function TwoPointerArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The convergent template walks two pointers L and R from opposite ends of the array. While L &lt; R, evaluate a
         comparison between A[L] and A[R] (or some derived quantity), and decide which side to advance. On a match,
         record the result and either advance both pointers (when duplicates must be skipped) or terminate (when only
         one solution is needed). The duplicate-skipping step is what makes 3Sum and 4Sum return distinct triples
         without a hash set.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         For k-Sum problems with k ≥ 3, the standard reduction is &quot;sort the array, fix the outer indices with
         nested loops, and two-pointer the innermost pair&quot;. 3Sum becomes O(n²) — outer loop fixes A[i], inner two
         pointers sweep A[i+1..n-1] for the complement -A[i]. 4Sum nests two outer loops and remains O(n³). The fixed
         indices must skip duplicates (if (i &gt; 0 and A[i] == A[i-1]) continue) to avoid duplicate result tuples; the
         inner two-pointer must skip duplicates after recording a match for the same reason.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         The parallel template walks slow and fast from index 0. Fast scans every element; slow advances only when fast
         finds a value worth keeping. The exact predicate depends on the problem: &quot;not equal to previous
@@ -136,19 +146,22 @@ export default function TwoPointerArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Two-pointer vs. <strong>hash set</strong> on Two Sum: hash set is O(n) time and O(n) space, works on unsorted
         input, returns indices. Two-pointer (after sorting) is O(n log n) time but O(1) extra space and returns
         values, not indices. Pick based on whether the input is sorted, whether you need indices, and whether
         space-vs-time matters. Leetcode 1 (Two Sum) wants indices on unsorted input, so the hash set wins; Leetcode
         167 (Two Sum II — Input Array Is Sorted) is the canonical two-pointer problem.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Two-pointer vs. <strong>sliding window</strong>: sliding window is just &quot;parallel two-pointer where the
         window contents matter&quot;. The decision is whether the predicate involves a window (count of distinct
         characters, sum, max) or a pointwise condition. If the predicate depends on the entire range A[L..R], it&apos;s
         sliding window. If it depends only on A[L] and A[R], it&apos;s convergent two-pointer.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Two-pointer vs. <strong>binary search</strong>: both exploit sortedness, but two-pointer answers
         relational-pair questions in one pass; binary search answers point-lookup or boundary questions. For Two Sum
@@ -167,16 +180,19 @@ export default function TwoPointerArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         State the invariant out loud before writing code. &quot;A[L] + A[R] &lt; target ⟹ no valid pair uses A[R]
         with any L&apos; ≥ L&quot; — that one sentence is the entire correctness argument. Interviewers want to hear
         it; write it down or recite it before touching the keyboard.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Sort first, then dedup. For 3Sum and 4Sum, sorting is the precondition that makes two-pointer safe. The
         dedup step (skip identical neighbours after a match) is what makes the result set canonical without a hash
         set. Forgetting dedup is the #1 reason 3Sum submissions fail.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Pick the right loop bound. <code>while L &lt; R</code> avoids the case L = R (a single element pair, which is
         usually undefined for sum problems). <code>while L &lt;= R</code> is rare for two-pointer and almost always
@@ -197,16 +213,19 @@ export default function TwoPointerArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Applying two-pointer to unsorted input.</strong> Without monotonicity, the &quot;advance L if sum &lt;
         target&quot; rule is unjustified — moving L could discard the solution. Either sort first or use a different
         pattern (hash set).
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Forgetting dedup in k-Sum.</strong> 3Sum on [-1,-1,-1,2,2] without dedup returns [[-1,-1,2]] three
         times. The grader accepts unordered output but rejects duplicate triples. Skip identical neighbours after each
         match.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Off-by-one on the loop bound.</strong> &quot;While L &lt;= R&quot; for sum problems can read A[L] +
         A[L] when L == R, which usually isn&apos;t a valid pair. The bound must be L &lt; R for distinct-pair
@@ -232,17 +251,20 @@ export default function TwoPointerArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Beyond Leetcode, the two-pointer pattern is the foundation of several production algorithms.
         <strong> Quicksort&apos;s partition step</strong> is parallel two-pointer (Lomuto) or convergent (Hoare).
         <strong> Mergesort&apos;s merge phase</strong> is two-pointer over two sorted runs. <strong>String diff
         algorithms</strong> like Myers diff use a two-pointer common-prefix / common-suffix sweep before doing the
         expensive middle-snake search. <strong>Streaming dedup</strong> in log pipelines often uses a slow/fast
         pointer over a windowed buffer.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Below are the canonical Leetcode problems that map to this pattern. Each tests a slightly different invariant.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>1 / 167. Two Sum / Two Sum II.</strong> Problem 1 is unsorted (hash-set canonical); 167 is sorted and
         is the textbook convergent two-pointer.
@@ -289,16 +311,19 @@ export default function TwoPointerArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why is moving the shorter wall in Container With Most Water correct?</strong> Because the area is
+        <HighlightBlock as="li" tier="important"><strong>Why is moving the shorter wall in Container With Most Water correct?</strong> Because the area is
         bounded by min(left, right) × width. Moving the taller wall keeps that bound the same (still capped by the
         shorter wall) but reduces the width — strict decrease. Moving the shorter wall might find a taller one and
         increase the area despite the width decrease. Therefore the only direction that can possibly improve the
-        result is to move the shorter wall.</li>
-        <li><strong>Walk through 3Sum and explain dedup.</strong> Sort. For each i in 0..n-3, two-pointer the suffix
+        result is to move the shorter wall.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Walk through 3Sum and explain dedup.</strong> Sort. For each i in 0..n-3, two-pointer the suffix
         looking for -A[i]. If i &gt; 0 and A[i] == A[i-1], skip — same outer index produces the same triples. After a
         match, advance L and R past their duplicates: while (L &lt; R and A[L] == A[L+1]) L++. This keeps the result
-        list canonical without needing a hash set.</li>
+        list canonical without needing a hash set.</HighlightBlock>
         <li><strong>How would you solve 3Sum without sorting?</strong> Use a hash set per outer index — O(n²) time, O(n)
         space, and dedup via a result set keyed on sorted triples. Sorting is cleaner but if the input must be
         preserved, hashing wins.</li>

@@ -528,25 +528,29 @@ export default function AriaAttributesArticle() {
       {/* ─────────────────── 9. References & Further Reading ─────────────────── */}
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: ARIA is for semantics and interaction, not styling. Your best answers cite APG patterns
+          and the accessible name computation rules when explaining why something is or is not announced correctly.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.w3.org/TR/wai-aria-1.2/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               WAI-ARIA 1.2 Specification (W3C Recommendation)
             </a>
             &mdash; The definitive specification for all ARIA roles, states, and properties.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               ARIA Authoring Practices Guide (APG)
             </a>
             &mdash; Pattern-by-pattern implementation guides for accordions, carousels, comboboxes, dialogs, grids, menus, tabs, and more.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.w3.org/TR/accname-1.2/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               Accessible Name and Description Computation 1.2
             </a>
             &mdash; How browsers compute the accessible name from aria-label, aria-labelledby, native labels, and text content.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://react-spectrum.adobe.com/react-aria/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               React Aria by Adobe
@@ -565,12 +569,12 @@ export default function AriaAttributesArticle() {
             </a>
             &mdash; Community-driven database of screen reader support for ARIA roles and attributes across browser/AT combinations.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               MDN ARIA Documentation
             </a>
             &mdash; Practical guides and reference documentation for every ARIA role and attribute.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

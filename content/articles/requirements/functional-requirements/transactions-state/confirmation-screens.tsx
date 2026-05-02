@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function ConfirmationScreensArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Confirmation screens provide post-purchase/post-booking confirmation: order confirmed, booking confirmed, payment successful. This is the final step in the transaction flow and sets the tone for the customer relationship. A well-designed confirmation screen reduces anxiety (confirmation received), sets expectations (what happens next), and drives engagement (what to do next). For staff and principal engineers, confirmation screens involve order/booking data display, next steps communication (shipping, preparation), receipt delivery (email, download), and post-purchase engagement (account creation, related products, referral programs).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of confirmation screens extends beyond simple &quot;Thank You&quot; message. Order details must be accurate (items, quantities, prices, shipping address). Next steps must be clear (when ships, when arrives, how to track). Receipt must be accessible (email, download, print). Post-purchase engagement must be relevant (related products, account creation, referral program) without being pushy. The screen must handle edge cases (payment pending, out of stock items, booking waitlist) gracefully with clear messaging.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, confirmation screen architecture involves data aggregation (order/booking details, customer info, payment info), notification triggering (confirmation email, SMS), and analytics tracking (conversion completed, revenue tracked). The system must support multiple confirmation types (order confirmation, booking confirmation, payment confirmation, subscription confirmation), multiple delivery methods (email, SMS, push), and multiple post-purchase actions (track order, modify booking, download receipt, create account).
         </p>
@@ -47,13 +51,16 @@ export default function ConfirmationScreensArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Confirmation Message</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Confirmation headline confirms transaction success. Message: &quot;Order Confirmed&quot; (e-commerce), &quot;Booking Confirmed&quot; (services), &quot;Payment Successful&quot; (payments). Tone: celebratory (&quot;Thank you!&quot;), reassuring (&quot;You&apos;re all set&quot;), professional (&quot;Confirmation received&quot;). Display: large heading (top of page), checkmark icon (green, success), order/booking number (prominent, copyable).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Order/booking summary shows what was purchased/booked. Order: items (thumbnail, name, quantity, price), subtotal, shipping, tax, total. Booking: service (name, description), date/time, location, staff, price, duration. Display: table (order items), list (booking details), collapsible (show/hide details). Actions: view details (expand), print (print receipt), download (PDF receipt).
-        </p>
+        </HighlightBlock>
         <p>
           Confirmation number provides reference for support. Format: alphanumeric (ABC123), numeric (123456), with check digit (prevent typos). Display: prominent (top of page), copyable (click to copy), searchable (in order history). Use cases: customer support (&quot;What&apos;s your order number?&quot;), in-store pickup (&quot;Show confirmation number&quot;), returns (&quot;Enter order number&quot;).
         </p>
@@ -105,9 +112,12 @@ export default function ConfirmationScreensArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Confirmation screen architecture spans data display, next steps communication, receipt delivery, and post-purchase engagement. Data display shows order/booking details (items, prices, shipping). Next steps communication sets expectations (shipping timeline, preparation). Receipt delivery provides receipt (email, download). Post-purchase engagement drives engagement (account creation, related products, referrals).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/confirmation-screens/confirmation-architecture.svg"
@@ -118,9 +128,9 @@ export default function ConfirmationScreensArticle() {
         />
 
         <h3>Data Display Component</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Order summary displays order details. Data source: order API (fetch order, items, shipping, payment). Display: order number (prominent, copyable), items (thumbnail, name, quantity, price), shipping (address, method, ETA), payment (method, last 4, amount), totals (subtotal, shipping, tax, total). Actions: view details (expand), print (print receipt), download (PDF receipt).
-        </p>
+        </HighlightBlock>
         <p>
           Booking summary displays booking details. Data source: booking API (fetch booking, service, staff, location). Display: booking number (prominent, copyable), service (name, description, duration), date/time (start, end, timezone), location (address, room, map link), staff (name, photo, specialty), price (service, tax, tip, total). Actions: view details (expand), add to calendar (calendar invite), modify booking (change date/time).
         </p>
@@ -180,14 +190,17 @@ export default function ConfirmationScreensArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Confirmation screen design involves trade-offs between information density, engagement, simplicity, and conversion. Understanding these trade-offs enables informed decisions aligned with business model and customer expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Information Density: Detailed vs. Minimal</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Detailed confirmation (all info on page). Pros: Customer has all info (no need to check email), reduces support tickets (answers questions), printable (one-page receipt). Cons: Overwhelming (too much info), long page (scroll to see all), slow load (more data). Best for: High-value orders (customers want details), B2B (need all info), complex orders (multiple items, shipping).
-        </p>
+        </HighlightBlock>
         <p>
           Minimal confirmation (key info only). Pros: Clean (easy to scan), fast load (less data), mobile-friendly (short page). Cons: Missing info (check email for details), may increase support tickets (where&apos;s my receipt?), less printable (need email). Best for: Low-value orders (simple purchase), mobile-first (fast load), repeat customers (already know process).
         </p>
@@ -239,13 +252,16 @@ export default function ConfirmationScreensArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Show clear confirmation:</strong> Large heading (&quot;Order Confirmed&quot;), checkmark icon (green, success), order/booking number (prominent, copyable). Reassure (&quot;You&apos;re all set&quot;, &quot;Thank you for your order&quot;).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Display order/booking summary:</strong> Items (thumbnail, name, quantity, price), service (name, description, duration), totals (subtotal, shipping, tax, total). Collapsible (show/hide details), printable (print receipt).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Set clear expectations:</strong> Shipping timeline (&quot;Ships by Dec 20, arrives Dec 22-24&quot;), preparation instructions (&quot;Fast for 8 hours&quot;, &quot;Bring ID&quot;), contact info (email, phone, hours).
           </li>
@@ -275,13 +291,16 @@ export default function ConfirmationScreensArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Unclear confirmation:</strong> Customer unsure if order went through. Solution: Large heading, checkmark icon, order number, &quot;Thank you&quot; message.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing order details:</strong> Customer doesn&apos;t know what they ordered. Solution: Display items (thumbnail, name, quantity, price), totals, shipping address.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No next steps:</strong> Customer doesn&apos;t know what happens next. Solution: Shipping timeline, preparation instructions, tracking link, contact info.
           </li>
@@ -311,16 +330,19 @@ export default function ConfirmationScreensArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Amazon Order Confirmation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon order confirmation: comprehensive order details. Features: order number, items (thumbnails, names, quantities), prices, shipping address, payment method, totals. Next steps: &quot;Arrives by [date]&quot;, &quot;Track package&quot; link, &quot;View order details&quot; link. Receipt: email receipt, download invoice, account order history. Engagement: &quot;Buy again&quot;, &quot;Related products&quot;, &quot;Write a review&quot; (after delivery).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">OpenTable Booking Confirmation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           OpenTable booking confirmation: restaurant reservation details. Features: booking number, restaurant (name, address, map), date/time, party size, confirmation code. Next steps: &quot;We&apos;ll remind you 24 hours before&quot;, &quot;Add to calendar&quot;, &quot;Get directions&quot;. Receipt: email confirmation, download confirmation. Engagement: &quot;Book another restaurant&quot;, &quot;Leave a review&quot; (after dining), referral program.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Stripe Payment Confirmation</h3>
         <p>
@@ -340,12 +362,15 @@ export default function ConfirmationScreensArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What should be on a confirmation screen?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What should be on a confirmation screen?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Confirmation message (&quot;Order Confirmed&quot;, checkmark), order/booking summary (items, prices, totals), confirmation number (copyable), next steps (shipping timeline, preparation), contact info (support channels), receipt access (email, download), post-purchase engagement (account creation, related products, referrals). Prioritize: confirmation first, details second, engagement last.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

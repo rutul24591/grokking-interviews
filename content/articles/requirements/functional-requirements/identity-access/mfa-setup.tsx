@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,14 +35,17 @@ export default function MFASetupArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Multi-Factor Authentication (MFA) Setup</strong> is the enrollment flow that
           allows users to configure additional authentication factors beyond password. MFA
           significantly improves account security by requiring something the user knows (password)
           plus something they have (phone, hardware key) or are (biometric). According to Microsoft,
           MFA blocks 99.9% of automated attacks — it is the single most effective security measure
           for consumer accounts.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/mfa-setup-flow.svg"
@@ -49,7 +53,7 @@ export default function MFASetupArticle() {
           caption="MFA Setup Flow — showing method selection, QR code generation, verification, and backup codes"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing MFA setup requires deep understanding of
           different MFA methods (TOTP authenticator apps, SMS, WebAuthn/passkeys, backup codes),
           secure enrollment flows (secret generation, QR code display, verification), recovery
@@ -57,7 +61,7 @@ export default function MFASetupArticle() {
           that encourage adoption while preventing lockout. The implementation must balance security
           (strong methods like WebAuthn) with accessibility (methods available to all users like
           SMS).
-        </p>
+        </HighlightBlock>
         <p>
           Modern MFA has evolved from SMS-only to diverse authentication factors: TOTP
           (time-based one-time passwords via Google Authenticator, Authy), WebAuthn/passkeys
@@ -70,19 +74,22 @@ export default function MFASetupArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           MFA setup is built on fundamental concepts that determine how authentication factors are
           enrolled, verified, and managed. Understanding these concepts is essential for designing
           effective MFA systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>TOTP Authenticator Apps:</strong> Time-based One-Time Password algorithm for
           authenticator apps (Google Authenticator, Microsoft Authenticator, Authy, 1Password).
           Setup flow: generate 32-byte cryptographically secure secret, display as QR code
           (otpauth:// URL), user scans with app, enters first code to verify. Security: works
           offline, no SMS interception risk. Limitation: device loss = account loss (mitigate with
           backup codes). Most secure consumer option after WebAuthn.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>SMS/Phone MFA:</strong> Setup: enter phone number, receive SMS code, verify code,
           store verified phone. Security: vulnerable to SIM swapping, SS7 attacks — less secure
@@ -107,11 +114,14 @@ export default function MFASetupArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           MFA setup architecture separates method enrollment from verification, enabling multiple
           MFA methods with centralized management. This architecture is critical for supporting
           diverse authentication factors while maintaining security.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/mfa-methods.svg"
@@ -119,7 +129,7 @@ export default function MFASetupArticle() {
           caption="MFA Methods Comparison — showing TOTP, SMS, WebAuthn, backup codes with security ranking and use cases"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           MFA enrollment flow: User navigates to security settings, selects MFA method. For TOTP:
           backend generates secret (crypto.randomBytes(32)), creates QR code (otpauth:// URL),
           displays to user. User scans QR code with authenticator app, enters first code. Backend
@@ -127,7 +137,7 @@ export default function MFASetupArticle() {
           backup codes. For SMS: user enters phone number, backend sends SMS code, user verifies
           code, stores verified phone. For WebAuthn: browser registers device via
           navigator.credentials.create(), stores public key, enables MFA.
-        </p>
+        </HighlightBlock>
         <p>
           Recovery architecture includes: backup codes (primary recovery — one-time use codes),
           recovery email (send reset link to backup email), recovery phone (SMS code to backup
@@ -154,24 +164,27 @@ export default function MFASetupArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing MFA setup involves trade-offs between security, accessibility, and user
           experience. Understanding these trade-offs is essential for making informed architecture
           decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">TOTP vs SMS vs WebAuthn</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>TOTP:</strong> Most secure consumer option (after WebAuthn), works offline,
               no SMS risk. Limitation: requires smartphone, device loss = account loss (mitigate
               with backup codes).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>SMS:</strong> Works on any phone, familiar to users. Limitation: vulnerable
               to SIM swapping, SS7 attacks, toll fraud. Use as fallback only.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>WebAuthn:</strong> Strongest option, phishing-resistant, best UX (one-tap).
               Limitation: requires compatible device/browser, device loss = account loss.
@@ -219,20 +232,23 @@ export default function MFASetupArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing MFA setup requires following established best practices to ensure security,
           usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Require password confirmation before enabling MFA — verify user identity. Generate
           cryptographically secure secrets (32 bytes) — crypto.randomBytes(32), not Math.random().
           Store secret hashes, not plaintext — bcrypt hash of TOTP secret, prevents exposure in
           database breach. Require verification code before enabling — user must enter valid code
           from authenticator app. Provide backup codes for recovery — force download before
           enabling MFA.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
         <p>
@@ -262,20 +278,23 @@ export default function MFASetupArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing MFA setup to ensure secure, usable, and
           maintainable MFA systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No backup codes:</strong> Users locked out if they lose phone, support
             tickets. <strong>Fix:</strong> Force backup code download during setup. Store hashes
             securely.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Weak secret generation:</strong> Predictable secrets enable TOTP guessing
             attacks. <strong>Fix:</strong> Use crypto.randomBytes(32) for 256-bit secrets.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Storing plaintext secrets:</strong> Database breach exposes all TOTP secrets,
             attackers can generate codes. <strong>Fix:</strong> Store bcrypt hash of secret, not
@@ -315,16 +334,19 @@ export default function MFASetupArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           MFA is critical for account security. Here are real-world implementations from production
           systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer App (Twitter)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Low MFA adoption (5%). Users find MFA cumbersome. High-value
           accounts (celebrities, politicians) targeted for takeover.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Progressive enrollment: prompt after signup, show security
           benefits, offer multiple methods (TOTP, SMS, WebAuthn), skip for trusted devices.
@@ -416,14 +438,17 @@ export default function MFASetupArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of MFA setup design, implementation, and operational
           concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What MFA methods do you support and why?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What MFA methods do you support and why?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Support multiple methods for accessibility: (1) TOTP authenticator apps (Google
               Authenticator, Authy) — most secure consumer option, works offline. (2) SMS — less

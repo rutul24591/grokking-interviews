@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Apache Kafka</strong> is a distributed, log-based event streaming platform that provides ordered,
           durable, and replayable message storage with publish-subscribe semantics. At its core, Kafka stores streams of
           records in categories called topics, where each topic is split into partitions that act as append-only,
@@ -32,8 +36,8 @@ export default function ArticlePage() {
           manages storage, replication, and delivery guarantees. Kafka&apos;s design enables multiple independent
           consumer groups to read the same topic at their own pace, each maintaining its own offset position — a
           fundamentally different model from traditional message queues where consumption removes the message.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The log-based architecture is Kafka&apos;s defining characteristic. Unlike message queues that deliver and
           delete messages, Kafka retains records for a configurable retention period (by time or size) regardless of
           whether they have been consumed. This enables replays, backfills, and reprocessing — capabilities that are
@@ -41,7 +45,7 @@ export default function ArticlePage() {
           failures. The log is partitioned for horizontal scalability: each partition is an ordered, immutable sequence
           of records identified by a monotonically increasing offset, and each partition is assigned to exactly one
           broker as its leader.
-        </p>
+        </HighlightBlock>
         <p>
           Kafka has evolved from a simple message broker into a complete streaming platform. The core broker handles
           storage, replication, and delivery. Kafka Connect provides connectors for integrating with external systems
@@ -72,22 +76,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Partitioning is the mechanism by which Kafka achieves horizontal scalability and ordering guarantees. Each
           topic has a fixed number of partitions set at creation time, and this number cannot be changed without
           reassigning records (though new partitions can be added, which only affects future records). When a producer
           sends a record to a topic, the partition is determined by the record&apos;s key: if a key is present, the
           partition is computed as the hash of the key modulo the number of partitions; if no key is present, the
           producer uses round-robin or sticky partitioning to distribute records across partitions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The key-based partitioning strategy provides ordering guarantees: all records with the same key are written to
           the same partition, and within that partition, they are strictly ordered by offset. This is essential for
           use cases such as processing all events for a single user or account in order. However, it also creates the
           potential for partition skew: if one key produces significantly more records than others, its partition
           becomes a hotspot that receives disproportionate write and read load, while other partitions remain
           underutilized.
-        </p>
+        </HighlightBlock>
         <p>
           Replication provides durability and fault tolerance. Each partition has a configurable replication factor,
           meaning its records are stored on multiple brokers. One broker is the leader for the partition, handling all
@@ -147,21 +154,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Kafka architecture follows a producer-broker-consumer model with a log-based storage layer. Producers
           batch records and send them to the broker cluster, which appends them to the appropriate partition log. The
           broker acknowledges the write to the producer according to the configured acknowledgment level. Consumers
           poll records from partitions, processing them in offset order within each partition, and periodically commit
           their offset positions back to the broker.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The producer&apos;s write path is optimized for throughput through batching and compression. The producer
           collects records in memory buffers per partition, and when a batch reaches a configured size or time
           threshold, it is sent to the broker as a single request. This reduces the per-record overhead of network
           round trips and allows the broker to write records in large, sequential I/O operations. Compression —
           typically using Snappy, LZ4, or Zstandard — is applied to the batch before transmission, reducing network
           bandwidth and broker storage cost at the expense of CPU cycles on the producer and consumer sides.
-        </p>
+        </HighlightBlock>
         <p>
           The broker&apos;s storage path is designed around sequential I/O and page cache utilization. Each partition
           is stored as a series of segment files on disk, and new records are appended to the active segment. The
@@ -206,7 +216,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice of partition count is the most consequential architectural decision in Kafka because it determines
           the maximum consumer parallelism, the ordering granularity, and the rebalancing cost. More partitions enable
           more consumers to process records in parallel, which is essential for high-throughput topics. However, more
@@ -214,8 +227,8 @@ export default function ArticlePage() {
           cost of rebalancing. Each partition requires file handles, memory for segment management, and metadata tracking
           on the broker. A cluster with tens of thousands of partitions will experience slower leader elections, longer
           recovery times after broker failures, and more expensive rebalances.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The recommended approach is to estimate the maximum throughput per partition (typically ten to one hundred
           megabytes per second for a well-sized broker) and the maximum consumer parallelism needed, then set the
           partition count to satisfy both constraints with headroom for growth. Over-partitioning — creating far more
@@ -223,7 +236,7 @@ export default function ArticlePage() {
           Under-partitioning — creating too few partitions to support the required consumer parallelism — is harder to
           fix because adding partitions does not redistribute existing records and changes the partitioning function,
           which breaks key-based ordering for future records.
-        </p>
+        </HighlightBlock>
         <p>
           The acknowledgment level trade-off between latency and durability is central to Kafka operational decisions.
           Acks zero provides the lowest latency but risks silent data loss if the broker fails between receiving the
@@ -258,22 +271,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Set partition count based on maximum throughput and consumer parallelism requirements with headroom for
           growth. Estimate the throughput per partition that your broker hardware can sustain, the maximum number of
           consumers that will need to process the topic in parallel, and the expected growth over the next twelve to
           eighteen months. Set the partition count to satisfy the maximum of these constraints, and avoid changing it
           after the topic is in production because adding partitions changes the partitioning function and breaks
           key-based ordering for future records.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use acks all with min.insync.replicas set to two or more for topics where data loss is unacceptable. This
           combination ensures that records are acknowledged only after they have been written to at least two brokers,
           so the loss of a single broker cannot cause data loss. For topics where occasional data loss is acceptable —
           such as metrics or log aggregation — acks one provides a reasonable default with lower latency. Acks zero
           should be used sparingly, only for data where the producer can regenerate the records or where loss is
           genuinely inconsequential.
-        </p>
+        </HighlightBlock>
         <p>
           Enable idempotent producers (enable.idempotence equals true) to prevent duplicate records during retries.
           Without idempotence, a producer that retries after a transient error may write the same record twice, causing
@@ -306,7 +322,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Underestimating partition count and being unable to increase it without breaking ordering is the most common
           Kafka capacity planning failure. The partition count determines maximum consumer parallelism, and adding
           partitions after records exist changes the partition assignment for future keyed records, breaking the
@@ -314,15 +333,15 @@ export default function ArticlePage() {
           consumers that rely on key-based ordering will see records for the same key arriving from different partitions
           in potentially inconsistent order. The fix is to plan partition count conservatively and to create new topics
           with the correct partition count when re-partitioning is needed, migrating consumers to the new topic.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Ignoring consumer lag until it causes processing delays is a common operational failure. Consumer lag grows
           silently when the consumer processing rate falls below the production rate, and it may not be noticed until
           the lag is large enough to cause downstream issues — such as stale data in materialized views, delayed
           alerting, or exceeded retention causing records to be deleted before the consumer processes them. The fix is
           continuous consumer lag monitoring with alerts at defined thresholds, and auto-scaling consumer instances
           when lag exceeds a target.
-        </p>
+        </HighlightBlock>
         <p>
           Setting acks one without understanding the data loss risk during leader failure is a durability pitfall.
           With acks one, the producer receives acknowledgment after the leader writes the record, but before followers
@@ -350,7 +369,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses Kafka as the central event backbone for its order processing pipeline. When
           an order is placed, the order service publishes an OrderCreated event to the orders topic, partitioned by
           customer ID. The payment service consumes this event, processes the payment, and publishes a PaymentCompleted
@@ -360,8 +382,8 @@ export default function ArticlePage() {
           parallelism needed during peak events, with a replication factor of three and acks all for durability. The
           consumer lag for the payment service is monitored continuously, and the platform auto-scales payment service
           consumers when lag exceeds five thousand records.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses Kafka for change data capture, streaming database changes from its core
           transactional databases to downstream systems including data warehouses, search indices, and cache layers.
           Debezium connectors read the database transaction log and publish change events to Kafka topics, one per
@@ -370,7 +392,7 @@ export default function ArticlePage() {
           The CDC pipeline uses acks all with min.insync.replicas of three to ensure that no database change is lost
           during broker failures, and the consumer lag is monitored with alerts at one thousand records to ensure that
           downstream systems do not fall significantly behind the source database.
-        </p>
+        </HighlightBlock>
         <p>
           A ride-sharing platform uses Kafka for real-time location streaming, where driver and rider location updates
           are published to a location-events topic at a rate of millions of events per minute. The topic has one
@@ -396,26 +418,29 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How does Kafka guarantee ordering within a partition, and why does ordering not hold across partitions?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Kafka guarantees strict ordering within a partition because each partition is an append-only log with
             monotonically increasing offsets. When a producer writes records to a partition, the broker appends them
             sequentially and assigns consecutive offsets. Consumers read records from the partition in offset order,
             so they see records in the exact order they were written. This ordering guarantee is fundamental to
             Kafka&apos;s design and is enforced by the fact that each partition has a single leader that handles all
             writes — there is no concurrent writing to the same partition from multiple brokers.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Ordering does not hold across partitions because each partition is an independent log managed by a
             potentially different broker. There is no global coordination of offsets across partitions, and no
             mechanism to establish a total order of records written to different partitions simultaneously. Two
             records written to different partitions at the same time may be observed in different orders by different
             consumers, depending on the relative timing of their reads from each partition.
-          </p>
+          </HighlightBlock>
           <p>
             The practical implication is that if ordering matters for a set of records, they must share the same
             partition key so that they are written to the same partition. This is why Kafka&apos;s partitioning

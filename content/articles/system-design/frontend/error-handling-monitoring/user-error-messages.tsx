@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,7 @@ export default function UserErrorMessagesArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           <strong>User error messages</strong> are the textual and visual
           communication surfaces through which an application informs users that
           something has gone wrong and guides them toward resolution. Unlike
@@ -52,8 +53,8 @@ export default function UserErrorMessagesArticle() {
           of waiting. The quality of these messages directly determines whether
           the user persists or abandons the flow, making error message design one
           of the highest-leverage UX investments a team can make.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The gap between what an application knows internally and what it
           communicates externally is often vast. A server returning a{" "}
           <code>503 Service Unavailable</code> response with a JSON body
@@ -69,8 +70,8 @@ export default function UserErrorMessagesArticle() {
           &ldquo;Please wait a moment and try again&rdquo; message in another
           (user-initiated search). Staff-level engineers own the architecture of
           this mapping, not just individual message strings.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Well-crafted error messages build trust. When an application honestly
           communicates that it encountered a problem, explains the situation in
           plain terms, and offers a clear path forward, users develop confidence
@@ -83,7 +84,7 @@ export default function UserErrorMessagesArticle() {
           shows that unclear error messages during checkout are among the top
           reasons for cart abandonment, directly connecting error message quality
           to revenue outcomes.
-        </p>
+        </HighlightBlock>
         <p>
           The modern approach to error communication has shifted from reactive,
           generic messaging toward proactive, contextual, and recoverable error
@@ -112,7 +113,7 @@ export default function UserErrorMessagesArticle() {
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Error Taxonomy</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Not all errors are created equal, and a staff-level engineer must
           establish a clear taxonomy that determines how each category of error
           is communicated. <strong>Validation errors</strong> occur when user
@@ -124,8 +125,8 @@ export default function UserErrorMessagesArticle() {
           input&rdquo; is nearly useless; one that says &ldquo;Password must
           include at least one number and one special character&rdquo; gives the
           user exactly what they need to succeed.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Network errors</strong> encompass timeouts, connection
           failures, DNS resolution problems, and offline states. The user cannot
           fix the underlying cause, so the message must focus on what the
@@ -141,8 +142,8 @@ export default function UserErrorMessagesArticle() {
           expose the technical mechanism — &ldquo;Your session has expired,
           please sign in again&rdquo; is appropriate; &ldquo;JWT token
           validation failed&rdquo; is not.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Business logic errors</strong> represent domain-specific
           constraints: an item is out of stock, a username is already taken, a
           transfer amount exceeds the account balance, a booking conflicts with
@@ -159,7 +160,7 @@ export default function UserErrorMessagesArticle() {
           causing alarm, provide a recovery path (refresh, try again later,
           contact support), and log sufficient diagnostic detail on the backend
           to enable rapid investigation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Message Writing Principles
@@ -344,11 +345,15 @@ export default function UserErrorMessagesArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           The following diagrams illustrate the structural relationships between
           error types, presentation patterns, and recovery flows that form the
           architecture of a well-designed error message system.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          In interviews, connect this to product outcomes: clear escalation paths prevent alert fatigue,
+          reduce support load, and preserve user trust by pairing each error with an actionable recovery.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/user-error-messages-diagram-2.svg"
@@ -356,7 +361,7 @@ export default function UserErrorMessagesArticle() {
           caption="Figure 2: Error presentation escalation hierarchy"
         />
 
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           The escalation hierarchy shows how error severity determines
           presentation. At the lowest level, inline errors appear next to the
           source of the problem with minimal disruption. As severity increases,
@@ -367,7 +372,7 @@ export default function UserErrorMessagesArticle() {
           multiple errors of the same type should be consolidated — multiple
           inline validation errors are summarized in a single error summary
           component rather than generating multiple toast notifications.
-        </p>
+        </HighlightBlock>
 
       </section>
 
@@ -378,23 +383,23 @@ export default function UserErrorMessagesArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Each error presentation pattern carries distinct trade-offs that
           influence when it should be used. The following comparison table
           evaluates the four primary patterns across key dimensions that affect
           user experience, accessibility, and implementation complexity.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 overflow-x-auto rounded-lg border border-theme">
           <table className="min-w-full text-sm">
             <thead className="bg-panel-soft">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <th className="px-4 py-2 text-left font-semibold">Dimension</th>
                 <th className="px-4 py-2 text-left font-semibold">Inline</th>
                 <th className="px-4 py-2 text-left font-semibold">Toast</th>
                 <th className="px-4 py-2 text-left font-semibold">Modal</th>
                 <th className="px-4 py-2 text-left font-semibold">Page-Level</th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody className="divide-y divide-theme">
               <tr>
@@ -450,7 +455,7 @@ export default function UserErrorMessagesArticle() {
           </table>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The critical insight for staff-level engineers is that these patterns
           are not mutually exclusive — they form a layered system. A robust
           application will use all four patterns, with clear rules governing
@@ -458,7 +463,7 @@ export default function UserErrorMessagesArticle() {
           danger lies in defaulting to a single pattern (typically toasts)
           for all errors, which results in critical failures being presented
           with the same visual weight as trivial warnings.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -467,7 +472,7 @@ export default function UserErrorMessagesArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Write error messages in plain, human language.</strong> Every
             error message should be understandable by someone with no technical
             background. Replace &ldquo;Request failed with status 422&rdquo;
@@ -475,16 +480,16 @@ export default function UserErrorMessagesArticle() {
             the highlighted fields and try again.&rdquo; Establish a content
             style guide for error messages that defines voice, tone, and
             vocabulary to ensure consistency across the entire application.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Always provide a recovery action.</strong> Every error
             message should include at least one concrete next step: a retry
             button, a link to an alternative, a suggestion to modify input, or
             contact information for support. Messages that describe a problem
             without offering a path forward create a dead-end experience that
             increases bounce rates and support ticket volume.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Preserve user input across all error states.</strong> When a
             form submission fails, all entered data must survive the error. This
             includes not just the current form state but also file uploads,
@@ -492,7 +497,7 @@ export default function UserErrorMessagesArticle() {
             auto-saving to local storage or session storage so that even browser
             crashes do not result in total data loss. For multi-step forms,
             persist each step independently.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use ARIA live regions and proper focus management.</strong>{" "}
             Dynamic error messages must be announced to screen readers via{" "}
@@ -554,7 +559,7 @@ export default function UserErrorMessagesArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Exposing raw API error responses to users.</strong> Passing
             server error messages directly to the UI is one of the most common
             and damaging mistakes. API error messages are written for developers,
@@ -564,8 +569,8 @@ export default function UserErrorMessagesArticle() {
             information such as table names, query structures, or internal
             service identifiers. Always maintain a client-side error mapping
             layer that translates API error codes into user-appropriate messages.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>&ldquo;Something went wrong&rdquo; as the only error
             message.</strong> This catch-all message tells the user nothing
             useful and signals that error handling was not designed intentionally.
@@ -574,8 +579,8 @@ export default function UserErrorMessagesArticle() {
             action to take. At minimum, differentiate between client-side errors,
             network errors, and server errors with distinct messages that guide
             the user toward appropriate recovery.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Error messages that blame the user.</strong> Phrases like
             &ldquo;You entered an incorrect value,&rdquo; &ldquo;You failed to
             provide required information,&rdquo; or &ldquo;Your request was
@@ -584,7 +589,7 @@ export default function UserErrorMessagesArticle() {
             enter a value between 1 and 100,&rdquo; &ldquo;A phone number is
             required to complete your order,&rdquo; or &ldquo;We couldn&apos;t
             process that request — here&apos;s what to try.&rdquo;
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Using toast notifications for critical failures.</strong>{" "}
             Toasts auto-dismiss, which means users may never read them if they
@@ -639,7 +644,7 @@ export default function UserErrorMessagesArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Stripe&apos;s Payment Form Error Handling
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Stripe&apos;s embedded payment form (Stripe Elements) is widely
           regarded as a benchmark for error message design in high-stakes
           contexts. Every validation error is inline, appearing directly below
@@ -658,12 +663,12 @@ export default function UserErrorMessagesArticle() {
           card brand detection with visual feedback, reducing errors before they
           happen by showing the detected card type icon and formatting the number
           according to the brand&apos;s pattern.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           GitHub&apos;s 500 Page and Error Personality
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           GitHub&apos;s 500 error page features a custom illustration of the
           Octocat in an unfortunate situation, combined with a brief, honest
           message acknowledging the error and a link to GitHub&apos;s status
@@ -680,12 +685,12 @@ export default function UserErrorMessagesArticle() {
           design system. The humor is calibrated: it lightens the mood without
           minimizing the frustration, and it applies only to server errors
           where the user&apos;s data is not at risk.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Slack&apos;s Connection Lost Banner and Auto-Reconnect
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Slack&apos;s handling of network disconnection is a masterclass in
           transparent, non-blocking error communication with automatic recovery.
           When the WebSocket connection drops, Slack immediately displays a
@@ -704,7 +709,7 @@ export default function UserErrorMessagesArticle() {
           then user-directed troubleshooting — demonstrates how error severity
           and recovery options should evolve over time based on the persistence
           of the failure condition.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/user-error-messages-diagram-3.svg"
@@ -718,13 +723,16 @@ export default function UserErrorMessagesArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="mb-2 font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: What are the key principles for writing effective user-facing
               error messages?
-            </p>
-            <p>
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Effective error messages follow four core principles. First,
               specificity: every message should explain what happened, why, and
               what to do next, avoiding generic phrasing like &ldquo;Something
@@ -742,14 +750,14 @@ export default function UserErrorMessagesArticle() {
               guide for errors and reviewing error copy with the same rigor as
               marketing copy, because errors are high-emotion touchpoints that
               disproportionately influence user perception of product quality.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="mb-2 font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: When should you use inline errors versus toasts versus modals
               for displaying errors?
-            </p>
+            </HighlightBlock>
             <p>
               A: The choice depends on error severity, user context, and
               required response. Inline errors are optimal for validation —

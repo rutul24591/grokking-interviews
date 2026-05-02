@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 const BASE_PATH = "/diagrams/system-design-concepts/backend/network-communication";
@@ -38,7 +39,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Remote Procedure Call (RPC) is a communication paradigm that allows a
           program executing on one machine to invoke a procedure or function on
           another machine as though it were a local call. The fundamental
@@ -50,8 +54,8 @@ export default function ArticlePage() {
           first formalized by Bruce Jay Nelson in 1984 at Xerox PARC, and it has
           since become one of the most influential patterns in distributed
           systems design.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The critical insight that every staff-level engineer must internalize
           is that RPC deliberately obscures the network boundary, and that
           concealment is both its greatest strength and its most dangerous
@@ -63,7 +67,7 @@ export default function ArticlePage() {
           local invocation. A mature RPC system does not hide these realities;
           it makes them explicit through typed error models, configurable
           timeout budgets, and observable failure boundaries.
-        </p>
+        </HighlightBlock>
         <p>
           In modern microservice architectures, RPC manifests in several forms.
           gRPC has become the dominant RPC framework in production environments,
@@ -82,7 +86,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the heart of any RPC system lies the interface definition language
           (IDL), a formal specification that describes the procedures a service
           exposes, their typed parameters, and their return types. The IDL is
@@ -97,8 +104,8 @@ export default function ArticlePage() {
           generated server stub performs the inverse operation: it receives the
           wire-format message, unmarshals it, invokes the actual implementation,
           and marshals the result back.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Serialization is the process of converting in-memory data structures
           into a byte sequence suitable for transmission and then reconstructing
           them at the destination. The choice of serialization format has
@@ -116,7 +123,7 @@ export default function ArticlePage() {
           schema resolution. The selection criteria should consider payload size,
           serialization/deserialization latency, language ecosystem support, and
           schema evolution guarantees.
-        </p>
+        </HighlightBlock>
         <p>
           The transport layer determines how bytes move between client and
           server. gRPC mandates HTTP/2, which provides multiplexed streams over
@@ -157,7 +164,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The RPC call lifecycle involves multiple components working in concert
           to bridge the local-remote divide. The process begins at the client
           side, where application code invokes a method on the generated client
@@ -170,7 +180,7 @@ export default function ArticlePage() {
           manages the connection pool, performs load balancing (either
           client-side or via an external proxy), and transmits the bytes over the
           network.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/rpc-call-steps.svg`}
@@ -178,7 +188,7 @@ export default function ArticlePage() {
           caption="RPC architecture — client stub marshals the call, the transport carries it across the network, and the server stub unmarshals and dispatches to the implementation"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           On the server side, the transport layer receives the bytes and hands
           them to the server stub (sometimes called the skeleton). The stub
           deserializes the message, validates it against the schema, and invokes
@@ -193,7 +203,7 @@ export default function ArticlePage() {
           RESOURCE_EXHAUSTED, FAILED_PRECONDITION, ABORTED, OUT_OF_RANGE,
           UNIMPLEMENTED, INTERNAL, UNAVAILABLE, DATA_LOSS) and returns it to the
           caller.
-        </p>
+        </HighlightBlock>
 
         <p>
           The distinction between synchronous and asynchronous RPC is
@@ -248,13 +258,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The decision to use RPC over REST, or to use gRPC over Thrift, or to
           use synchronous RPC over asynchronous messaging is not a technical
           preference but an architectural commitment that constrains everything
           from developer experience to operational overhead. Each option carries
           distinct trade-offs that become more pronounced at production scale.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -343,7 +356,7 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fundamental tension is between coupling and decoupling. RPC
           creates tight temporal coupling: the caller must be running when the
           callee processes the request. This coupling makes the system simpler to
@@ -356,12 +369,15 @@ export default function ArticlePage() {
           typically use both: RPC for the request path where a response is needed
           synchronously, and async messaging for background processing, event
           propagation, and cross-domain communication.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Always enforce per-call deadlines (timeouts) with explicit budget
           allocation across the call chain. When a request traverses multiple
           services, each hop consumes a portion of the total deadline budget. The
@@ -372,8 +388,8 @@ export default function ArticlePage() {
           receive a request with an already-expired deadline should fail fast
           rather than waste resources processing a request that the caller will
           never receive.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design all mutating operations (those that change state) to be
           idempotent or to carry explicit idempotency keys. Since the caller
           cannot distinguish between a lost response and a slow response, it may
@@ -383,7 +399,7 @@ export default function ArticlePage() {
           processing, or by designing the operation itself to be idempotent (for
           example, using PUT semantics instead of POST, or using a database
           upsert instead of an insert).
-        </p>
+        </HighlightBlock>
         <p>
           Use code-generated stubs exclusively and never hand-write RPC client
           code. The generated stubs encode the contract, enforce type safety, and
@@ -419,7 +435,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is treating RPC calls as if they were local
           function calls. This manifests in several ways: not setting timeouts
           (allowing a slow service to exhaust the caller&apos;s thread pool), not
@@ -430,8 +449,8 @@ export default function ArticlePage() {
           ofacies of distributed computing apply directly to RPC: the network is
           not reliable, latency is not zero, bandwidth is not infinite, and the
           topology does not change.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Schema evolution without compatibility guarantees creates silent data
           corruption. When a server adds a new required field to a message type,
           older clients that do not know about this field will send messages
@@ -444,7 +463,7 @@ export default function ArticlePage() {
           fields) are safe to deploy, while breaking changes (changing field
           types, reusing field numbers, changing field names in ways that affect
           JSON serialization) require a new API version and a migration plan.
-        </p>
+        </HighlightBlock>
         <p>
           Exposing internal RPC services directly to external clients creates
           security and versioning liabilities. Internal services often lack
@@ -474,7 +493,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Google uses gRPC extensively across its internal infrastructure, where
           it serves as the primary communication mechanism between microservices
           within a datacenter. Google&apos;s Stubby RPC system, the predecessor
@@ -486,8 +508,8 @@ export default function ArticlePage() {
           at a scale where even small inefficiencies in RPC handling compound
           into significant resource waste, which is why gRPC&apos;s performance
           characteristics are a primary reason for its adoption.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Netflix uses a hybrid approach where internal service-to-service
           communication uses gRPC for low-latency, high-throughput scenarios
           (such as recommendation engine queries and content metadata lookups),
@@ -497,7 +519,7 @@ export default function ArticlePage() {
           organizations: gRPC for the hot path, REST for the public API, and
           async messaging (via Kafka) for event propagation and stream
           processing.
-        </p>
+        </HighlightBlock>
         <p>
           Uber migrated from a REST-based internal API architecture to gRPC to
           reduce latency and improve type safety across their polyglot
@@ -521,13 +543,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg bg-panel-soft p-6">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the fundamental problem with treating RPC calls like
               local function calls, and how should an RPC framework address it?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The fundamental problem is that RPC calls cross an unreliable
               network boundary, introducing failure modes that local calls do not
               have. A local call either succeeds or throws an exception
@@ -541,7 +566,7 @@ export default function ArticlePage() {
               keys for safe retries, (4) exposing observability hooks for tracing
               and metrics, and (5) supporting streaming modes so that partial
               results can be returned even when the full operation cannot complete.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg bg-panel-soft p-6">

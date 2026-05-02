@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,12 +37,15 @@ export default function InfrastructureAsCodeArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Infrastructure as Code (IaC)</strong> is the practice of managing infrastructure (servers, networks, databases, load balancers, storage) through declarative configuration files stored in version control, rather than through manual processes (clicking through cloud console UIs, running imperative commands). IaC tools (Terraform, CloudFormation, Pulumi, CDK) read declarative specifications (desired infrastructure state — how many servers, what instance type, what networking, what security rules) and automatically provision, update, or destroy infrastructure to match the desired state. This eliminates manual infrastructure management, ensures reproducibility, and enables infrastructure changes to be reviewed, tested, and tracked like code changes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, IaC represents a fundamental shift from manual infrastructure management to automated, version-controlled infrastructure. Before IaC, infrastructure was provisioned manually (cloud console clicks, SSH commands), which was error-prone (manual mistakes, inconsistent configurations), non-reproducible (different environments had different configurations), and untrackable (no record of who changed what and when). IaC solves all of these problems — infrastructure is defined declaratively (the desired state), applied automatically (IaC tools make the necessary changes), version-controlled (changes are tracked in Git), and reviewable (changes are reviewed through pull requests before applying).
-        </p>
+        </HighlightBlock>
         <p>
           IaC involves several technical considerations. Declarative vs. imperative (declarative — you specify the desired state, the tool figures out how to achieve it; imperative — you specify the steps to achieve the desired state — declarative is preferred because it is simpler, more robust, and handles drift automatically). State management (IaC tools track the current state of infrastructure — Terraform uses state files, CloudFormation uses stack state — state files must be stored securely, backed up, and shared among team members). Drift detection (detecting when actual infrastructure differs from the desired state — caused by manual changes, automated processes, or external events — IaC tools detect and correct drift). Module reuse (packaging common infrastructure patterns into reusable modules — VPC module, database module, load balancer module — modules reduce duplication and ensure consistency across environments).
         </p>
@@ -53,12 +57,15 @@ export default function InfrastructureAsCodeArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Declarative Configuration:</strong> You specify the desired infrastructure state such as three web servers, one database, and one load balancer, and the IaC tool figures out how to achieve it by creating, updating, or destroying resources. Declarative configuration is simpler than imperative configuration because you do not specify the steps — the tool does. It is more robust because the tool handles dependencies, ordering, and error recovery. It handles drift automatically because if actual infrastructure differs from desired state, the tool corrects it. Terraform, CloudFormation, and Pulumi all use declarative configuration as their fundamental paradigm.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>State Management:</strong> IaC tools track the current state of infrastructure including what resources exist, their configuration, and their dependencies. Terraform stores state in state files which are JSON files mapping resource IDs to configuration, while CloudFormation stores state in stack state managed by AWS. State files must be stored securely because they contain sensitive information such as resource IDs and sometimes secrets, backed up because losing state files means losing track of infrastructure, and shared among team members so that all team members apply changes to the same state. Remote state backends like Terraform Cloud or AWS S3 with DynamoDB provide secure, shared state management with locking to prevent concurrent modifications.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Drift Detection:</strong> Drift detection identifies when actual infrastructure differs from the desired state defined in IaC configuration. Drift is caused by manual changes such as someone clicking through the cloud console to change a security group, automated processes like auto-scaling groups creating or destroying instances, or external events such as cloud provider updates to resource configuration. IaC tools detect drift by comparing actual state queried from cloud provider APIs with desired state defined in IaC configuration. Drift is corrected by applying the IaC configuration, which recreates or updates resources to match the desired state. Automating drift detection in CI/CD pipelines ensures that manual infrastructure changes are identified and corrected promptly.
         </p>
@@ -84,12 +91,15 @@ export default function InfrastructureAsCodeArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           IaC architecture consists of the configuration files (declarative specifications of infrastructure), the IaC tool (Terraform, CloudFormation, Pulumi — reads configuration, interacts with cloud provider APIs, manages state), the state store (remote backend — Terraform Cloud, AWS S3 + DynamoDB — stores state securely, shared among team members), and the cloud provider APIs (AWS, GCP, Azure — provision and manage infrastructure resources). The flow begins with developers writing IaC configuration (declarative specifications for infrastructure), committing the configuration to version control (Git), opening a pull request for review, the IaC tool running a plan (showing what changes will be made), reviewers reviewing the plan (approving or requesting changes), and the IaC tool applying the plan (provisioning or updating infrastructure).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For production deployments, the IaC workflow is integrated into CI/CD pipelines — the pipeline runs the plan on every pull request (showing changes for review), runs the apply on merge (applying approved changes to production), and runs drift detection periodically (detecting and correcting manual changes to infrastructure). This ensures that all infrastructure changes are reviewed, approved, tracked, and automated.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/terraform-architecture.svg"
@@ -122,14 +132,17 @@ export default function InfrastructureAsCodeArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           IaC involves trade-offs between declarative and imperative configuration, multi-cloud and cloud-native tools, and IaC and manual management. Understanding these trade-offs is essential for choosing the right IaC strategy.
-        </p>
+        </HighlightBlock>
 
         <h3>Declarative vs. Imperative Configuration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Declarative:</strong> You specify the desired state (3 web servers, 1 database, 1 load balancer), and the tool figures out how to achieve it. Advantages: simpler (you do not specify the steps), more robust (the tool handles dependencies, ordering, error recovery), handles drift automatically (if actual infrastructure differs from desired state, the tool corrects it). Limitations: less control (you cannot specify the exact steps — the tool decides), can be difficult to debug (if the tool fails, it may not be clear why). Best for: most use cases — declarative is the industry standard for IaC.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Imperative:</strong> You specify the steps to achieve the desired state (create VPC, create subnets, create route tables, create NAT gateway, create security groups, create EC2 instances). Advantages: full control (you specify the exact steps), easier to debug (you know exactly what steps are executed). Limitations: more complex (you must specify all steps, handle dependencies, ordering, error recovery), does not handle drift automatically (if actual infrastructure differs from desired state, you must manually correct it), harder to maintain (steps must be updated when infrastructure changes). Best for: rare use cases — one-off scripts, custom infrastructure automation that declarative tools cannot handle.
         </p>
@@ -154,12 +167,15 @@ export default function InfrastructureAsCodeArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Store State Remotely:</strong> Store IaC state files in a remote backend such as Terraform Cloud, AWS S3 with DynamoDB, or GCP Cloud Storage, never locally. Remote backends provide secure storage with encryption at rest and access control, shared access so team members apply changes to the same state, and locking to prevent concurrent modifications that can corrupt state. Local state files are a single point of failure because they are lost if the local machine fails, they are not shared so team members have different state, and they are not locked so concurrent modifications corrupt state. Always store state remotely for any team-based IaC workflow.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Version IaC Configuration:</strong> Store IaC configuration in version control using Git, not in local files or cloud provider consoles. Version control enables change tracking by recording who changed what, when, and why. It enables code review by requiring review of changes before applying them. It enables rollback by reverting to previous versions if changes cause issues, and it enables branching by developing new infrastructure changes in branches and merging to main when ready. Never apply unversioned IaC configuration to production infrastructure under any circumstances.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Use Modules:</strong> Package common infrastructure patterns into reusable modules for VPCs, databases, and load balancers. Modules reduce duplication by using the same module across environments, ensure consistency by guaranteeing all environments use the same configuration, and simplify configuration by using the module rather than writing configuration from scratch. Modules should be parameterized with inputs for customization such as CIDR blocks, instance types, and environment names, and they should output values such as resource IDs, endpoints, and DNS names for use by other modules.
         </p>
@@ -177,12 +193,15 @@ export default function InfrastructureAsCodeArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Local State Files:</strong> Storing IaC state files locally on developer machines creates a single point of failure because state is lost if the local machine fails. Local state files are not shared so team members have different state causing conflicts, and they are not locked so concurrent modifications corrupt state. Always store state remotely using Terraform Cloud, AWS S3 with DynamoDB, or equivalent remote backends. Local state management is acceptable only for personal experimentation, never for team-based or production infrastructure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Manual Infrastructure Changes:</strong> Making manual changes to infrastructure through the cloud console or imperative commands outside of IaC causes drift where actual infrastructure differs from desired state. Manual changes are difficult to detect and correct, are not tracked with any record of who changed what and when, are not reviewable before applying, and are not reproducible in other environments. Always make infrastructure changes through IaC, and treat any manual infrastructure change as a process failure that must be corrected by reconciling the actual state with the IaC configuration.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Monolithic IaC Configuration:</strong> Writing all infrastructure configuration in a single file with hundreds or thousands of lines creates configuration that is difficult to read, maintain, review, and reuse. Break configuration into modules for reusable packages, separate environments with separate configurations for development, staging, and production, and separate concerns by keeping networking configuration separate from compute configuration and database configuration. Modular IaC is essential for maintainability at scale.
         </p>
@@ -200,16 +219,19 @@ export default function InfrastructureAsCodeArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Multi-Environment Infrastructure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Organizations use IaC to manage identical infrastructure across multiple environments (development, staging, production). The same IaC configuration (with environment-specific parameters — instance sizes, database sizes, scaling limits) is applied to each environment, ensuring consistency. Changes are tested in development, validated in staging, and deployed to production — with the same configuration, eliminating environment-specific infrastructure bugs. This pattern is used by organizations of all sizes to maintain consistent, reproducible environments.
-        </p>
+        </HighlightBlock>
 
         <h3>Multi-Cloud Infrastructure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Organizations running multi-cloud strategies (AWS + GCP + Azure) use Terraform to manage infrastructure across all clouds with a single tool (consistent configuration language, workflow, and tooling). Terraform modules are used for common patterns (VPC, database, load balancer) that work across clouds (with cloud-specific parameterization). This pattern is used by organizations avoiding cloud lock-in, leveraging cloud-specific strengths (AWS for compute, GCP for ML, Azure for enterprise integration), and meeting regulatory requirements (data residency in specific cloud regions).
-        </p>
+        </HighlightBlock>
 
         <h3>Disaster Recovery Infrastructure</h3>
         <p>
@@ -225,15 +247,18 @@ export default function InfrastructureAsCodeArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is Infrastructure as Code and why is it important?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: IaC is the practice of managing infrastructure through declarative configuration files stored in version control, rather than through manual processes. IaC eliminates manual infrastructure management (reducing operational overhead and human error), ensures environment consistency (development, staging, production are identical), enables rapid provisioning (new environments in minutes, not days), and provides auditability (all changes are tracked in version control). IaC is essential for modern infrastructure management — organizations practicing continuous deployment cannot manage infrastructure manually at scale.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

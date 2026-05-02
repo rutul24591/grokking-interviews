@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,13 +34,16 @@ export default function AuthenticationServiceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Authentication Service</strong> is the core backend component responsible for
           verifying user credentials and issuing authentication tokens. It is the security gateway
           for the entire platform and must be designed for high security, high availability, and
           horizontal scalability. Authentication services handle millions of requests daily while
           maintaining sub-100ms latency and 99.99% availability.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/authentication-service-architecture.svg"
@@ -47,14 +51,14 @@ export default function AuthenticationServiceArticle() {
           caption="Authentication Service Architecture — showing service components, data flow, integrations, and scaling patterns"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, building an authentication service requires deep
           knowledge of cryptographic protocols (bcrypt, Argon2, RS256), token standards (JWT,
           OAuth), session management patterns, security threats (credential stuffing, replay
           attacks, token theft, timing attacks), and operational concerns (key rotation, audit
           logging, compliance). The service must handle millions of authentication requests daily
           while maintaining sub-100ms latency and 99.99% availability.
-        </p>
+        </HighlightBlock>
         <p>
           Modern authentication services have evolved from simple username/password validation to
           supporting multiple authentication methods (password, OTP, WebAuthn, SSO), multi-factor
@@ -67,17 +71,20 @@ export default function AuthenticationServiceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authentication service is built on fundamental concepts that determine how credentials
           are validated, tokens are issued, and sessions are managed. Understanding these concepts
           is essential for designing effective authentication systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Credential Validator:</strong> Verifies passwords against stored hashes using
           constant-time comparison (prevent timing attacks). Supports multiple hash algorithms
           (bcrypt, Argon2id) for gradual migration. Implements account lockout after N failures
           (prevent brute force). Rate limits validation attempts (per IP, per account).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Token Issuer:</strong> Generates JWT access tokens and opaque refresh tokens.
           Signs with RS256 (asymmetric) for distributed validation. Includes minimal claims (sub,
@@ -100,11 +107,14 @@ export default function AuthenticationServiceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authentication service architecture separates credential validation from token issuance,
           enabling horizontal scaling with centralized session management. This architecture is
           critical for handling millions of authentication requests while maintaining security.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/token-management.svg"
@@ -112,14 +122,14 @@ export default function AuthenticationServiceArticle() {
           caption="Token Management — showing JWT structure, refresh token rotation, token validation, and revocation flow"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Authentication flow: User submits credentials (email + password). Backend validates
           format, checks rate limits, retrieves user from database (cached in Redis), validates
           password (constant-time comparison), checks MFA status, evaluates risk score. If
           low-risk: issue tokens directly. If medium-risk: require MFA challenge. If high-risk:
           block and alert. On success: generate JWT access token (RS256 signed), generate refresh
           token (opaque, stored in database), create session in Redis, return tokens to client.
-        </p>
+        </HighlightBlock>
         <p>
           Token management architecture includes: JWT access tokens (stateless validation, short
           expiry), refresh token rotation (issue new on each use, invalidate old), token revocation
@@ -145,23 +155,26 @@ export default function AuthenticationServiceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing authentication service involves trade-offs between security, user experience,
           and operational complexity. Understanding these trade-offs is essential for making
           informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">JWT vs Opaque Access Tokens</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>JWT:</strong> Stateless validation (no database lookup), fast, scalable.
               Limitation: can't revoke immediately (must wait for expiry), larger token size.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Opaque:</strong> Immediate revocation (delete from database), smaller token
               size. Limitation: requires database lookup on every request, slower.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Hybrid — JWT access tokens (short expiry 15-60
               min) + opaque refresh tokens (revocable, long expiry 7-30 days). Best of both
@@ -212,20 +225,23 @@ export default function AuthenticationServiceArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing authentication service requires following established best practices to
           ensure security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use constant-time comparison for all credential validation — prevent timing attacks
           (crypto.timingSafeEqual). Implement rate limiting at multiple levels (IP, account,
           endpoint) — prevent brute force and credential stuffing. Log all authentication events
           for audit trails — detect fraud patterns. Use secure password hashing (Argon2id, bcrypt
           with cost 12+) — protect against database breach. Implement account lockout with
           progressive delays — prevent automated attacks.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Token Management</h3>
         <p>
@@ -257,21 +273,24 @@ export default function AuthenticationServiceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing authentication service to ensure secure,
           usable, and maintainable authentication systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Timing attacks on password validation:</strong> Non-constant-time comparison
             leaks password information. <strong>Fix:</strong> Use crypto.timingSafeEqual or
             framework-provided constant-time comparison.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Storing tokens in localStorage:</strong> XSS attacks can steal tokens.{" "}
             <strong>Fix:</strong> Store access tokens in memory, refresh tokens in HttpOnly,
             Secure, SameSite cookies.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Long-lived access tokens:</strong> Extended exposure window if token is
             compromised. <strong>Fix:</strong> Keep access tokens short (15-60 min). Use refresh
@@ -316,16 +335,19 @@ export default function AuthenticationServiceArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authentication service is critical for platform security. Here are real-world
           implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer Platform (Google)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Billions of users, diverse authentication methods. Need to
           balance security with UX. Credential stuffing attacks at scale.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Risk-based authentication (device trust, location, behavior).
           Multiple auth methods (password, 2FA, WebAuthn, backup codes). Adaptive step-up (require
@@ -417,14 +439,17 @@ export default function AuthenticationServiceArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of authentication service design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design an authentication service for 100M users?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design an authentication service for 100M users?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Stateless JWT validation (any instance can validate any token), Redis Cluster for
               sessions (sharded by user_id), database read replicas for user lookup, cache user

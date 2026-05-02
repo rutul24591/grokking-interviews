@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function LoggingStrategiesArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Frontend logging</strong> is the disciplined practice of
           capturing, structuring, transporting, and analyzing runtime
           information from client-side applications to support debugging,
@@ -50,8 +51,8 @@ export default function LoggingStrategiesArticle() {
           every architectural decision — from what you log and how you
           structure it to how you transport it off-device and how long you
           retain it.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Historically, frontend &quot;logging&quot; meant sprinkling{" "}
           <code>console.log</code> statements during development and removing
           them before shipping. This ad-hoc approach is inadequate for modern
@@ -63,8 +64,8 @@ export default function LoggingStrategiesArticle() {
           cannot correlate a backend 500 response with the exact client-side
           state that triggered the request, nor can they reconstruct the
           sequence of user actions that led to the failure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The shift toward structured observability in the frontend mirrors a
           broader industry movement. Distributed tracing standards like
           OpenTelemetry now include browser instrumentation, enabling a single
@@ -77,7 +78,7 @@ export default function LoggingStrategiesArticle() {
           produced it. This level of correlation transforms incident response
           from hours of guesswork into minutes of deterministic root-cause
           analysis.
-        </p>
+        </HighlightBlock>
         <p>
           However, this observability comes at a cost. Every log entry
           consumes CPU cycles to construct, memory to buffer, and bandwidth to
@@ -111,7 +112,7 @@ export default function LoggingStrategiesArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Log Levels: DEBUG, INFO, WARN, ERROR, FATAL
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Log levels impose a severity hierarchy that governs both what gets
           recorded and what gets transmitted. In the frontend context, each
           level serves a distinct purpose. <strong>DEBUG</strong> captures
@@ -134,8 +135,8 @@ export default function LoggingStrategiesArticle() {
           leave the application in an unusable state — a chunk load failure
           that prevents the app shell from rendering, a critical third-party
           SDK that failed to initialize.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Runtime level configuration is essential. A static build-time
           setting is insufficient because you often need to increase verbosity
           for a specific user segment without redeploying. The recommended
@@ -147,12 +148,12 @@ export default function LoggingStrategiesArticle() {
           customer to append <code>?logLevel=debug</code> to their URL and
           then inspect the resulting logs in the aggregation backend without
           any code change or deployment.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Structured Logging
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The difference between a string message like{" "}
           <code>&quot;API call failed&quot;</code> and a structured log entry
           is the difference between a post-it note and a database record. A
@@ -168,7 +169,7 @@ export default function LoggingStrategiesArticle() {
           <code>errorCode</code> is <code>PAYMENT_DECLINED</code> and the user
           was on iOS Safari&quot; — a query that is impossible with
           unstructured string messages.
-        </p>
+        </HighlightBlock>
         <p>
           Correlation IDs are the linchpin of distributed tracing. When the
           frontend initiates an HTTP request, it generates a{" "}
@@ -305,19 +306,24 @@ export default function LoggingStrategiesArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A well-designed frontend logging architecture is a pipeline with
           distinct stages: creation, enrichment, filtering, buffering,
           transport, and aggregation. Each stage has specific responsibilities
           and failure modes that must be addressed independently.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The system-design goal is to preserve debuggability while controlling cost:
+          sample intelligently, avoid PII, and make logs correlate to a user session,
+          route transition, and release so you can reconstruct timelines.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/logging-strategies-diagram-2.svg"
           alt="Log level hierarchy showing filtering at client and server with sampling rates"
           caption="Figure 2: Log level filtering and sampling strategy"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           Log level filtering operates at two tiers. Client-side filtering
           prevents low-priority entries from consuming buffer space and
           bandwidth. Server-side filtering provides a safety net — if the
@@ -328,7 +334,7 @@ export default function LoggingStrategiesArticle() {
           applies to all entries at that level, preserving the coherence
           needed for debugging. This dual-tier approach prevents runaway costs
           while maintaining diagnostic coverage.
-        </p>
+        </HighlightBlock>
 
       </section>
 
@@ -339,16 +345,16 @@ export default function LoggingStrategiesArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Different logging approaches serve different organizational
           maturity levels and application requirements. The following
           comparison highlights the key dimensions that drive the decision.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 overflow-x-auto rounded-lg border border-theme">
           <table className="min-w-full text-sm">
             <thead className="bg-panel-soft">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <th className="px-4 py-3 text-left font-semibold">
                   Dimension
                 </th>
@@ -361,7 +367,7 @@ export default function LoggingStrategiesArticle() {
                 <th className="px-4 py-3 text-left font-semibold">
                   Session Replay + Logging
                 </th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody className="divide-y divide-theme">
               <tr>
@@ -455,14 +461,14 @@ export default function LoggingStrategiesArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Most mature organizations adopt a layered strategy: structured
           remote logging as the universal baseline for all sessions, with
           session replay enabled for a sampled subset or triggered on-demand
           when an error is detected. This approach maximizes debuggability for
           critical issues while keeping costs and performance impact bounded
           for the majority of sessions.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -471,29 +477,29 @@ export default function LoggingStrategiesArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Adopt structured logging from day one.</strong> Retrofitting
             structure onto an existing codebase full of string-based{" "}
             <code>console.log</code> calls is expensive and error-prone. Define
             a logging interface with mandatory fields (level, message,
             timestamp) and optional contextual fields from the start. Even a
             small team benefits from queryable logs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Batch and compress before sending.</strong> Never send
             individual log entries as separate HTTP requests. Buffer entries in
             memory, serialize the batch as a JSON array, and compress with gzip
             before transmitting. This reduces request count by 10-50x and
             payload size by 60-80%. Use <code>sendBeacon</code> for the final
             flush on page unload.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement sampling for high-traffic applications.</strong>{" "}
             At scale, ingesting every log from every session is
             cost-prohibitive. Use session-based deterministic sampling so that
             selected sessions have complete logs. Maintain 100% capture for
             ERROR and FATAL regardless of sampling.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scrub PII at the source.</strong> Redact sensitive data in
             the logging library before entries enter the buffer, not at the
@@ -541,7 +547,7 @@ export default function LoggingStrategiesArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Logging PII, passwords, and tokens.</strong> This is the
             most dangerous and common mistake. A single log entry containing
             a JWT, a session cookie, or a user&apos;s email address can
@@ -550,8 +556,8 @@ export default function LoggingStrategiesArticle() {
             reports a problem. The exposure is only discovered during a
             security audit or, worse, after a breach. Automated PII scanning
             in CI/CD pipelines, combined with runtime scrubbing, is essential.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Leaving <code>console.log</code> in production bundles.
             </strong>{" "}
@@ -564,8 +570,8 @@ export default function LoggingStrategiesArticle() {
             plugin) to strip console calls from production builds, or route
             all logging through a centralized logger that no-ops console
             output in production.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Synchronous logging blocking the main thread.</strong>{" "}
             JSON serialization of large objects, regex-based PII scrubbing,
             and synchronous writes to IndexedDB can all block the main thread
@@ -573,7 +579,7 @@ export default function LoggingStrategiesArticle() {
             Worker or use <code>requestIdleCallback</code> for non-critical
             log processing. The logging system should never be the cause of
             jank.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Unbounded log buffers.</strong> If the transport layer
             fails (network outage, blocked by ad blocker, backend downtime),
@@ -613,7 +619,7 @@ export default function LoggingStrategiesArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Stripe: Frontend Observability for Payment Flows
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Stripe&apos;s frontend observability system is built around the
           principle that every payment interaction must be fully
           reconstructible from logs alone. Their JavaScript SDK (Stripe.js)
@@ -629,12 +635,12 @@ export default function LoggingStrategiesArticle() {
           scrubbing (card numbers are never logged, even in truncated form)
           and consent-aware session replay for their Dashboard application,
           where internal engineers debug merchant-facing issues.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Datadog Real User Monitoring (RUM): Log Aggregation at Scale
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Datadog&apos;s RUM product demonstrates how a logging platform
           handles the scale challenge. Their browser SDK collects performance
           metrics, user actions, errors, and custom log entries, batching them
@@ -652,12 +658,12 @@ export default function LoggingStrategiesArticle() {
           the power of structured logging at scale: the same log entries
           support debugging individual incidents, monitoring aggregate error
           rates, and identifying emerging patterns.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           LinkedIn: Client-Side Logging at Billion-User Scale
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           LinkedIn&apos;s frontend logging system processes logs from over
           900 million users across web, mobile web, and embedded webviews.
           Their architecture addresses the volume challenge through aggressive
@@ -676,7 +682,7 @@ export default function LoggingStrategiesArticle() {
           client-side buffering in a ring buffer that holds the last 200
           events, flushing via <code>sendBeacon</code> on page transitions
           and via periodic <code>fetch</code> calls during active sessions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/logging-strategies-diagram-3.svg"
@@ -692,15 +698,18 @@ export default function LoggingStrategiesArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Common Interview Questions
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="mb-2 font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: What are the key differences between structured and
               unstructured logging, and why does structure matter for frontend
               applications?
-            </p>
-            <p>
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               <strong>A:</strong> Unstructured logging produces free-form
               string messages that are human-readable but machine-hostile.
               Searching for specific error patterns requires regex matching
@@ -716,14 +725,14 @@ export default function LoggingStrategiesArticle() {
               log entry carries this context natively, while an unstructured
               message forces engineers to manually correlate timestamps across
               multiple systems.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="mb-2 font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How would you design a logging system that prevents PII from
               ever leaving the browser?
-            </p>
+            </HighlightBlock>
             <p>
               <strong>A:</strong> The architecture requires defense in depth.
               First, use an allowlist-based approach: the logger only

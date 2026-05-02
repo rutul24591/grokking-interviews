@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,20 +34,23 @@ export default function SearchRankingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Search Ranking</strong> is the process of ordering search results by
           their estimated relevance to a user's query. It is the core intelligence layer
           of any search system, determining which results users see first and directly
           impacting user satisfaction, engagement, and trust in the platform.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Modern search ranking has evolved far beyond simple keyword matching. Production
           systems at Google, Amazon, Netflix, and LinkedIn combine hundreds of signals
           through sophisticated ML models: text relevance (BM25, TF-IDF), content quality
           scores, user personalization, freshness, popularity, and business rules. The
           ranking system must balance accuracy with latency—users expect sub-100ms search
           response times even when running complex neural ranking models.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, understanding ranking architecture is critical. You'll
           design two-stage ranking pipelines (fast retrieval + expensive re-ranking),
@@ -58,11 +62,14 @@ export default function SearchRankingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Text Relevance Algorithms</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Text matching remains the foundation of search ranking. Understanding these
           algorithms is essential:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>TF-IDF (Term Frequency-Inverse Document Frequency):</strong> Scores
@@ -84,9 +91,9 @@ export default function SearchRankingArticle() {
         </ul>
 
         <h3 className="mt-6">Learning-to-Rank Approaches</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           ML-based ranking learns from historical user behavior to predict relevance:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Pointwise:</strong> Treats ranking as regression/classification. Predict
@@ -125,10 +132,13 @@ export default function SearchRankingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production search ranking system consists of multiple components working
           together to deliver relevant results at scale.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery/search-ranking/ranking-architecture.svg"
@@ -173,7 +183,7 @@ export default function SearchRankingArticle() {
         </ul>
 
         <h3 className="mt-6">Ranking Signal Categories</h3>
-        <p>Production ranking systems use 100-500+ features across categories:</p>
+        <HighlightBlock as="p" tier="important">Production ranking systems use 100-500+ features across categories:</HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -254,10 +264,13 @@ export default function SearchRankingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Search ranking requires balancing competing concerns. Understanding these
           trade-offs is critical for system design decisions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery/search-ranking/ab-testing-architecture.svg"
@@ -313,13 +326,13 @@ export default function SearchRankingArticle() {
         </div>
 
         <h3 className="mt-6">Retrieval Strategy Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Dense Retrieval (Vector Search):</strong> Uses neural embeddings (BERT,
           Sentence Transformers) to capture semantic meaning. Finds relevant documents
           even without keyword overlap. Excellent for conceptual queries. Limitations:
           expensive embedding computation, requires approximate nearest neighbors (FAISS,
           Annoy) for scale, may miss exact keyword matches.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Sparse Retrieval (BM25):</strong> Traditional keyword-based search. Fast,
           interpretable, excellent for exact match queries. Limitations: vocabulary mismatch
@@ -352,17 +365,20 @@ export default function SearchRankingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Two-Stage Ranking:</strong> Always use retrieval + re-ranking
             architecture. Retrieval should be sub-50ms with BM25/ANN. Re-ranking can be
             more expensive (ML model) since it operates on smaller candidate set.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cache Top Queries:</strong> Cache results for popular queries with TTL.
             Use query normalization (lowercase, remove stop words) for cache key. Invalidate
             cache on significant content updates.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Learning-to-Rank:</strong> Train LambdaMART or XGBoost model on
             historical click data. Use pairwise loss functions. Retrain weekly with fresh
@@ -398,17 +414,20 @@ export default function SearchRankingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Overfitting to Historical Data:</strong> Model learns past patterns but
             fails on new content or queries. Solution: Regularization, cross-validation,
             online learning to adapt to recent trends.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Cold Start:</strong> New content never ranked highly without
             engagement history. Solution: Boost new content temporarily, use content-based
             features (quality, author reputation) until engagement data available.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Feedback Loops:</strong> Highly-ranked content gets more clicks,
             reinforcing its position regardless of quality. Solution: Inject exploration
@@ -440,20 +459,23 @@ export default function SearchRankingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Google Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google uses a multi-stage ranking pipeline with hundreds of signals. BERT
           integration (2019) enables neural understanding of query context and document
           semantics. E-A-T signals (Expertise, Authoritativeness, Trustworthiness) weight
           content quality. PageRank remains a foundational signal. Real-time updates
           incorporate freshness for breaking news.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Google's &quot;Helpful Content Update&quot; uses
           neural classifiers to identify content created for search engines vs humans,
           demoting SEO-optimized low-quality content.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Amazon Product Search</h3>
         <p>
@@ -495,10 +517,13 @@ export default function SearchRankingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you optimize ranking at scale?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you optimize ranking at scale?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement two-stage ranking architecture. Stage 1
               (retrieval): Use BM25 with inverted index to fetch 1000 candidates in
               &lt;50ms. Apply field boosting (title 2x, body 1x). Stage 2 (re-ranking):
@@ -506,7 +531,7 @@ export default function SearchRankingArticle() {
               top candidates. Cache top 1000 queries with TTL. Use approximate nearest
               neighbors (FAISS) for vector search. Deploy ranking model as microservice
               with auto-scaling. Monitor p99 latency and set SLOs (&lt;100ms).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

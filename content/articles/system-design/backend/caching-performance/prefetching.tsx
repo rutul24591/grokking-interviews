@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 const BASE_PATH = "/diagrams/system-design-concepts/backend/caching-performance";
@@ -38,7 +39,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Prefetching</strong> is the practice of proactively fetching
           and caching data before it is explicitly requested, with the goal of
           reducing the perceived latency when the request eventually arrives.
@@ -50,8 +54,8 @@ export default function ArticlePage() {
           response because the data is already cached. When the prediction is
           wrong, the system has wasted bandwidth, CPU, and downstream resources
           fetching data that was never used.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Prefetching is fundamentally a prediction problem, and the quality of
           the predictions determines whether prefetching is a performance
           optimization or a performance liability. The prediction can be based on
@@ -63,7 +67,7 @@ export default function ArticlePage() {
           data predicts the next three pages a user is likely to visit). Each
           approach has different accuracy characteristics, implementation
           complexity, and operational cost.
-        </p>
+        </HighlightBlock>
         <p>
           The central tension in prefetching design is the trade-off between
           <strong>accuracy</strong> and <strong>waste</strong>. Every prefetched
@@ -98,8 +102,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Hint-based prefetching</strong> is the simplest and most
           reliable prefetch strategy. It uses explicit signals from the user
           interface or the application logic to determine what to prefetch. The
@@ -118,9 +125,9 @@ export default function ArticlePage() {
           because the signals are directly tied to user intent, and it is
           relatively simple to implement because the prediction logic is
           rule-based rather than model-based.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>User-driven prefetching</strong> gives the user explicit
           control over what is prefetched. The application presents a list of
           items that the user can prefetch (e.g., &quot;Download offline&quot;
@@ -136,7 +143,7 @@ export default function ArticlePage() {
           be generated and cached at a specific time) and pre-computed
           analytics (a user triggers a dashboard refresh that precomputes
           aggregated metrics for the next few hours).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>ML-based prefetching</strong> uses machine learning models to
@@ -190,8 +197,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           A production prefetching system is composed of four interconnected
           components: the prediction engine (which determines what to prefetch),
           the budget controller (which determines whether prefetching is allowed
@@ -201,9 +211,9 @@ export default function ArticlePage() {
           Understanding how these components interact and how data flows between
           them is essential for designing a prefetching system that improves
           latency without degrading the primary user experience.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>prediction engine</strong> is the intelligence layer that
           generates prefetch candidates. In a hint-based system, the prediction
           engine is a set of rules that map UI events (hover, scroll, focus) to
@@ -218,7 +228,7 @@ export default function ArticlePage() {
           inference service. The prediction engine&apos;s output is a list of
           prefetch candidates, each with a confidence score that the budget
           controller uses to prioritize prefetching.
-        </p>
+        </HighlightBlock>
 
         <p>
           The <strong>budget controller</strong> evaluates each prefetch candidate
@@ -300,8 +310,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Prefetching strategies sit on a spectrum from conservative (prefetch
           only when the user has given an explicit signal) to aggressive (prefetch
           broadly based on probabilistic predictions). The choice of strategy
@@ -310,7 +323,7 @@ export default function ArticlePage() {
           is willing to manage. Understanding the trade-offs between different
           prefetch strategies is essential for selecting the right approach for a
           given application.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -409,7 +422,7 @@ export default function ArticlePage() {
           </tbody>
         </table>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The choice between prefetching and lazy loading (fetching data only when
           it is explicitly requested) is not binary but complementary. Prefetching
           is effective for predictable, high-confidence requests (the next page in
@@ -423,7 +436,7 @@ export default function ArticlePage() {
           accuracy threshold: if a prediction source consistently achieves accuracy
           above the threshold (typically 50-60%), prefetching is justified; if it
           falls below, lazy loading is the better choice.
-        </p>
+        </HighlightBlock>
 
         <p>
           The trade-off between prefetch aggressiveness and resource waste is
@@ -447,8 +460,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Start with hint-based prefetching and only introduce ML-based
           prefetching if hint-based signals do not cover enough of the user
           journey to provide meaningful latency benefit. Hint-based prefetching
@@ -463,9 +479,9 @@ export default function ArticlePage() {
           (model training, deployment, monitoring, retraining) and should be
           justified by a measurable improvement in accuracy or coverage that
           hint-based prefetching cannot achieve.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement explicit prefetch budgets at every level: per-user,
           per-service, and per-system. The per-user budget limits how many
           prefetch requests a single user can trigger within a time window
@@ -481,7 +497,7 @@ export default function ArticlePage() {
           configurable at runtime and should automatically tighten when the
           system is under load (detected via increased latency, error rates, or
           resource utilization) and relax when the system has spare capacity.
-        </p>
+        </HighlightBlock>
 
         <p>
           Prioritize prefetch requests below user-initiated requests at every
@@ -533,8 +549,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Aggressive prefetching under low accuracy is the most common pitfall
           and the most damaging. When the prediction model or the hint-based
           rules have low accuracy (below 40%), the system wastes more resources
@@ -548,9 +567,9 @@ export default function ArticlePage() {
           The prevention is strict accuracy monitoring with automatic disable
           thresholds: if accuracy falls below 40%, prefetching is automatically
           reduced or disabled until the prediction source is improved.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cache pollution from prefetching is a subtle pitfall that degrades
           overall system performance. When prefetched data fills the cache, it
           displaces entries that were fetched in response to actual user requests
@@ -564,7 +583,7 @@ export default function ArticlePage() {
           separate cache region with its own eviction policy or by tagging
           prefetch entries with a lower eviction priority so that they are
           evicted before user-fetched entries.
-        </p>
+        </HighlightBlock>
 
         <p>
           Prefetching during incidents or high-load periods is a pitfall that
@@ -619,8 +638,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Search result pagination</strong> is one of the most effective
           and widely used prefetching scenarios. When a user views page 1 of
           search results, the system prefetches page 2 (and sometimes page 3)
@@ -636,9 +658,9 @@ export default function ArticlePage() {
           requests can be issued at low priority during the user&apos;s review of
           page 1. This pattern is used by Google Search, Bing, Amazon product
           search, and virtually every paginated search interface at scale.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Video streaming content prefetching</strong> is a critical
           component of the viewing experience on platforms like Netflix, YouTube,
           and Disney+. When a user starts watching an episode of a series, the
@@ -655,7 +677,7 @@ export default function ArticlePage() {
           so the prefetch budget is carefully managed: only the next episode is
           prefetched, not the entire season, and the prefetch is cancelled if the
           user stops watching or navigates away.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>E-commerce product detail navigation</strong> uses hint-based
@@ -715,14 +737,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you determine the right accuracy threshold for enabling
               or disabling prefetching?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The accuracy threshold is determined by the cost asymmetry
               between a successful prefetch and a wasted prefetch. If a prefetch
               costs the same as a normal fetch (same bandwidth, same downstream
@@ -743,7 +768,7 @@ export default function ArticlePage() {
               and should automatically increase when the system is under load
               (making waste more costly) and decrease when the system has spare
               capacity (making waste less costly).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

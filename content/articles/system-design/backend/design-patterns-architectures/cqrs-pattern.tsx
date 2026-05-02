@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,12 +28,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>CQRS</strong> (Command Query Responsibility Segregation) is an architectural pattern that splits a system into two distinct models: a <strong>command model</strong> that handles all state-changing operations (writes) and a <strong>query model</strong> that handles all data-retrieval operations (reads). The command side focuses on enforcing business invariants, validating rules, and processing state transitions. The query side focuses on answering queries efficiently, often using a data model that is denormalized, precomputed, and optimized for the specific read patterns the application requires.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The pattern was first articulated by Greg Young around 2010, building on Bertrand Meyer&apos;s Command-Query Separation principle from object-oriented design. Meyer&apos;s principle stated that a method should either change state or return data, but not both. CQRS extends this idea from the method level to the entire system architecture, creating physically or logically separate models for writes and reads.
-        </p>
+        </HighlightBlock>
         <p>
           It is important to distinguish CQRS from CRUD-based architectures. In a traditional CRUD system, a single data model serves both purposes: the same relational tables that enforce transactional integrity on writes are also queried for reads. This works well when read and write patterns are symmetric and the system operates at modest scale. However, when read volume dwarfs write volume, when query shapes are diverse and complex, or when the domain logic on the write side requires deep workflows that do not map to any single query, forcing one model to serve both concerns creates friction. CQRS removes that friction by allowing each model to evolve independently.
         </p>
@@ -57,14 +61,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Command Model vs. Query Model</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The command model is responsible for processing state changes. It receives commands such as CreateOrder, UpdateInventory, or ApprovePayment, validates them against business rules, and persists the resulting state. The command model is typically normalized, enforces strong consistency within its transactional boundary, and is designed to protect invariants. It should be as simple as possible, containing only the data needed to make decisions and enforce rules.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The query model is responsible for serving read requests. It is denormalized, precomputed, and shaped around the specific queries the application needs. A single command-side state change may update multiple query-side views. For example, placing an order might update an order summary view, a customer history view, and a dashboard aggregation view. The query model is a derived artifact—it is always computable from the command model, even if the computation path is indirect.
-        </p>
+        </HighlightBlock>
         <p>
           The separation means that schema changes on the write side do not force changes on the read side and vice versa. Teams can optimize read models independently, use different storage technologies for each side, and scale them based on their respective load profiles.
         </p>
@@ -116,14 +123,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Read Model Update Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Keeping read models synchronized with the command model is the central engineering challenge of CQRS. There are three primary approaches, each with distinct trade-offs. The event-driven approach publishes domain events from the command side, and consumer processes project those events into read models. This approach is natural when the system already uses event-driven architecture and provides low-latency updates. The consumer must handle events idempotently, manage its own position in the event stream, and cope with event ordering and potential duplicates.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The CDC (Change Data Capture) approach reads the transaction log of the write store and projects those changes into read stores. Tools like Debezium, Maxwell, or cloud-native CDC services capture row-level changes and stream them to consumers. CDC has the advantage of being transparent to the application—the command model does not need to publish events explicitly. However, CDC captures physical changes rather than semantic events, so the projection logic must interpret raw database mutations into meaningful read-model updates.
-        </p>
+        </HighlightBlock>
         <p>
           The batch approach periodically recomputes read models from the command model. This is the simplest approach operationally and is sufficient when read-model freshness requirements are relaxed—for example, daily reporting dashboards or nightly search-index rebuilds. The drawback is that the read model can be significantly stale, and batch windows must be managed carefully to avoid contention with the write workload.
         </p>
@@ -158,14 +168,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>CQRS vs. CRUD Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In a CRUD architecture, a single data model serves both reads and writes. This simplicity is its greatest strength for systems that do not have divergent read and write concerns. CRUD systems are easier to understand, easier to operate, and have fewer moving parts. Transactions are straightforward because there is only one source of truth and consistency is immediate.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CQRS introduces complexity in exchange for flexibility and performance. The write model and read model are separate, which means there are two systems to deploy, monitor, and scale. Consistency is eventual rather than immediate, which requires explicit staleness budgets and user-experience considerations. Projection pipelines add operational overhead. The benefit is that each model can be independently optimized: the write model can focus on invariants and workflows, while the read model can be denormalized, cached, and indexed for specific query patterns. The decision to adopt CQRS should be driven by genuine divergence between read and write concerns, not by a desire to use a pattern.
-        </p>
+        </HighlightBlock>
 
         <h3>When CQRS Is Overkill</h3>
         <p>
@@ -200,13 +213,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Adopt CQRS only when read and write concerns genuinely diverge and query optimization requires a model that is structurally different from the write model. The pattern adds operational complexity, and that cost should be justified by measurable benefits in performance, flexibility, or team autonomy. Define read-model freshness as an explicit contract and monitor projection lag as an operational signal. The staleness budget should be a product decision, not an engineering afterthought, because it directly affects user experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Choose an update strategy that matches your consistency requirements and operational capacity. Event-driven updates are appropriate when low-latency read-model synchronization is needed and the team can manage event consumers. CDC is appropriate when the command model cannot or should not publish events explicitly. Batch updates are appropriate when freshness requirements are relaxed and simplicity is valued. Regardless of the strategy, ensure that all read models are rebuildable from the source of truth.
-        </p>
+        </HighlightBlock>
         <p>
           Treat projections as production workloads with monitoring, alerting, runbooks, and capacity planning. A read model that silently falls behind is a correctness incident. Implement drift detection by periodically reconciling aggregate totals between the command and read models. Semantic mismatches are harder to detect than pipeline failures and require active validation.
         </p>
@@ -223,13 +239,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is adopting CQRS for a system that does not need it. Simple CRUD applications with symmetric read and write patterns gain nothing from the added complexity. Teams sometimes adopt CQRS because it sounds architecturally sophisticated, only to find themselves managing projection pipelines, rebuild workflows, and eventual consistency incidents for a system that a well-tuned relational database could have handled. The pattern should be a response to genuine divergence between read and write concerns, not a default architectural choice.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another pitfall is treating the read model as an afterthought. The query side of CQRS is a production system with its own lifecycle, failure modes, and scaling requirements. Teams that focus all their engineering rigor on the command side while treating projections as simple event consumers end up with unreliable read models, undetected drift, and production incidents that are difficult to diagnose. Projections deserve the same engineering discipline as the command side.
-        </p>
+        </HighlightBlock>
         <p>
           Failing to plan for rebuilds is a critical mistake. Read models will need to change—query shapes evolve, new views are required, and projection logic must adapt to domain changes. If the system cannot rebuild a read model from the source of truth without downtime, the team is locked into the current schema and cannot evolve. Rebuildability is not optional; it is a prerequisite for long-term viability.
         </p>
@@ -249,16 +268,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Event-Sourced Financial Ledgers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Financial systems are among the most common real-world applications of CQRS combined with event sourcing. A banking ledger is naturally an event-sourced system: every transaction is an immutable event that changes account balances, and the current balance is derived by summing all transactions. The command side enforces business rules such as sufficient funds, regulatory compliance, and fraud detection. The query side maintains materialized views for account summaries, transaction histories, regulatory reports, and customer dashboards. The separation is essential because the write model must be strongly consistent and auditable, while the read model must support diverse query patterns including time-range queries, category aggregations, and cross-account rollups. Financial systems also require complete audit trails, which event sourcing provides naturally through the immutable event log. Projection lag is tightly monitored because regulatory reports must reflect accurate balances within defined time windows.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce Product Catalog and Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce platform maintains a product catalog where write operations (adding products, updating prices, managing inventory) are relatively infrequent but read operations (searching, filtering, browsing categories, viewing product details) are extremely high volume and latency-sensitive. Implementing faceted search, full-text search, and personalized recommendations directly on the transactional catalog database becomes prohibitively expensive as the catalog grows. CQRS solves this by maintaining the authoritative catalog in a relational store on the write side while projecting products into search indexes, category caches, and recommendation engines on the read side. When product data changes, events flow through the projection pipeline to update all read models. Search index lag is typically acceptable within a few seconds, and the user experience is designed accordingly. When prices change, a synchronous update may be used for price-sensitive views to avoid showing stale prices to users.
-        </p>
+        </HighlightBlock>
 
         <h3>Analytics and Reporting Systems</h3>
         <p>
@@ -281,14 +303,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What problem does CQRS solve, and when should you use it?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               CQRS solves the problem of forcing a single data model to serve both transactional correctness on writes and efficient, flexible queries on reads. When read and write concerns diverge significantly—such as when read volume far exceeds write volume, when query shapes are diverse and complex, or when the domain logic on the write side requires a model that is poorly suited to query patterns—CQRS allows each model to evolve independently. The command side focuses on invariants and workflows, while the query side is denormalized and optimized for specific read patterns.
-            </p>
+            </HighlightBlock>
             <p>
               You should use CQRS when the operational cost of managing two models is justified by measurable benefits in performance, flexibility, or team autonomy. For simple CRUD applications with symmetric read and write patterns, CQRS adds unnecessary complexity. The decision should be driven by genuine divergence between read and write concerns, not by architectural fashion.
             </p>

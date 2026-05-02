@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,7 @@ export default function XmlSitemapsArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           An <strong>XML sitemap</strong> is a machine-readable file that lists
           URLs on a website along with optional metadata — last modification
           date, change frequency, and relative priority — to help search engines
@@ -42,8 +43,8 @@ export default function XmlSitemapsArticle() {
           as a roadmap for search engine crawlers, ensuring that important pages
           are discovered even if they lack strong internal linking or are deeply
           nested in the site architecture.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           While search engines can discover pages through following links, XML
           sitemaps provide an authoritative, comprehensive list of URLs the site
           owner considers important. For large sites with millions of pages —
@@ -52,8 +53,8 @@ export default function XmlSitemapsArticle() {
           processes billions of URLs from sitemaps daily, and for new sites or
           newly published pages, sitemaps are often the fastest path to
           indexation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the staff/principal engineer level, sitemap strategy involves
           architectural decisions about generation pipelines (build-time vs
           runtime), segmentation strategies (organizing millions of URLs across
@@ -62,14 +63,14 @@ export default function XmlSitemapsArticle() {
           coverage). A poorly managed sitemap — containing stale URLs, noindexed
           pages, or inaccurate lastmod dates — actively wastes crawl budget and
           erodes Google&apos;s trust in the sitemap as a reliable signal.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Sitemap XML Format:</strong> A sitemap file contains a{" "}
             <code>&lt;urlset&gt;</code> root element with individual{" "}
             <code>&lt;url&gt;</code> entries, each containing a required{" "}
@@ -78,8 +79,8 @@ export default function XmlSitemapsArticle() {
             <code>&lt;priority&gt;</code> elements. The file must be UTF-8
             encoded and cannot exceed 50MB uncompressed or contain more than
             50,000 URLs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Sitemap Index:</strong> A meta-sitemap that references
             multiple individual sitemap files, enabling organization of large
             URL sets. The sitemap index uses a <code>&lt;sitemapindex&gt;</code>{" "}
@@ -87,8 +88,8 @@ export default function XmlSitemapsArticle() {
             individual sitemap files. Each referenced sitemap can contain up to
             50,000 URLs, allowing a single sitemap index to reference thousands
             of sub-sitemaps covering millions of URLs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>lastmod (Last Modified):</strong> The most actionable
             metadata field for search engines. When accurate, lastmod tells
             crawlers which pages have changed since the last crawl, enabling
@@ -97,7 +98,7 @@ export default function XmlSitemapsArticle() {
             Inaccurate dates (setting all pages to &quot;today&quot; on every
             build) destroy the signal&apos;s value and may cause Google to
             ignore lastmod entirely for the site.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>changefreq (Change Frequency):</strong> A hint about how
             often a page&apos;s content changes (always, hourly, daily, weekly,
@@ -155,28 +156,28 @@ export default function XmlSitemapsArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Sitemap architecture must balance completeness (listing all indexable
           URLs) with accuracy (reflecting current site state) and scalability
           (handling millions of URLs efficiently).
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/xml-sitemaps-diagram-1.svg"
           alt="Sitemap architecture showing sitemap index file referencing multiple sub-sitemaps organized by content type and section"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The sitemap index architecture segments URLs by content type —
           products, categories, blog posts, static pages — each in their own
           sitemap file. This segmentation enables independent update cycles
           (product sitemaps regenerate when catalog changes, blog sitemaps when
           new posts publish) and makes monitoring easier (you can track crawl
           rates per content type in Search Console).
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/xml-sitemaps-diagram-2.svg"
           alt="Crawl budget optimization flow showing how sitemaps guide crawler prioritization and efficient resource allocation"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           Sitemaps directly influence crawl budget allocation. When a sitemap
           accurately reflects which pages are new or updated (via lastmod),
           Googlebot can prioritize crawling changed content rather than
@@ -184,7 +185,7 @@ export default function XmlSitemapsArticle() {
           1,000 change daily, accurate lastmod dates reduce unnecessary crawl
           requests by 99.99%, dramatically improving crawl efficiency and
           ensuring new content is indexed faster.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/xml-sitemaps-diagram-3.svg"
           alt="Dynamic sitemap generation pipeline showing build-time generation, runtime API-driven generation, and hybrid approaches"
@@ -203,16 +204,19 @@ export default function XmlSitemapsArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="important">
               <th className="p-3 text-left">Approach</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
+            </HighlightBlock>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">Build-Time Generation</td>
               <td className="p-3">
                 No runtime overhead; predictable output; easy to validate before
@@ -222,8 +226,8 @@ export default function XmlSitemapsArticle() {
                 Stale between builds; build time scales with URL count;
                 impractical for real-time content; requires rebuild for updates
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">Runtime Generation</td>
               <td className="p-3">
                 Always reflects current state; handles dynamic content; no build
@@ -233,7 +237,7 @@ export default function XmlSitemapsArticle() {
                 Database query overhead per request; requires caching strategy;
                 risk of timeout for large sitemaps; server infrastructure needed
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3 font-medium">Single Sitemap</td>
               <td className="p-3">
@@ -264,26 +268,26 @@ export default function XmlSitemapsArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Only Include Indexable, Canonical URLs:</strong> Every URL
             in the sitemap should return a 200 status code, not be blocked by
             robots.txt, not have a noindex meta tag, and self-canonicalize.
             Including non-indexable URLs wastes crawl budget and reduces
             Google&apos;s trust in the sitemap.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Accurate lastmod Dates:</strong> Only update lastmod
             when the page content meaningfully changes — not when a template or
             footer updates. Reflect the actual content modification date from
             your CMS or database. Never set all lastmod values to the current
             build date.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Segment Sitemaps by Content Type:</strong> Create separate
             sitemaps for products, categories, blog posts, and static pages.
             This enables independent regeneration cycles and per-segment
             monitoring in Search Console.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Declare Sitemaps in robots.txt:</strong> Add{" "}
             <code>Sitemap: https://example.com/sitemap.xml</code> to your
@@ -316,24 +320,24 @@ export default function XmlSitemapsArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Including Non-Canonical URLs:</strong> Listing URLs with
             tracking parameters, filter variants, or non-canonical versions in
             the sitemap contradicts canonical declarations and confuses crawlers
             about which URL to index.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Setting All lastmod to Current Date:</strong> This
             &quot;crying wolf&quot; pattern causes Google to ignore lastmod for
             the entire site. If every page appears to change on every build, the
             signal provides no value for crawl prioritization.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Exceeding Size Limits:</strong> A sitemap file with more
             than 50,000 URLs or exceeding 50MB is invalid and will be rejected
             by search engines. Large sites must use sitemap index files to
             segment URLs.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Including Blocked or Noindexed URLs:</strong> URLs blocked
             by robots.txt or marked with noindex meta tags in the sitemap send
@@ -360,27 +364,27 @@ export default function XmlSitemapsArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Amazon:</strong> Manages millions of product URLs across
             thousands of category sitemaps organized by a sitemap index
             hierarchy. Product sitemaps are regenerated as catalog changes
             occur, with lastmod reflecting actual product data updates. Image
             sitemaps accompany product sitemaps to ensure product photography is
             indexed in Google Images.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>CNN/BBC:</strong> News sitemaps are critical for Google News
             inclusion. Article sitemaps are generated in near-real-time as
             stories publish, with the news sitemap extension providing
             publication dates and titles. Older articles rotate out of the news
             sitemap (48-hour window) into the standard article sitemap.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Airbnb:</strong> Manages sitemaps for millions of property
             listings across hundreds of cities in dozens of languages. Hreflang
             sitemaps declare international targeting for each listing. Sitemaps
             are segmented by geography and property type for monitoring.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Next.js Applications:</strong> Next.js App Router provides a
             sitemap.ts convention for generating sitemaps as part of the build
@@ -394,13 +398,16 @@ export default function XmlSitemapsArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: What are the size limits for XML sitemaps and how do you handle
               sites with millions of URLs?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Individual sitemaps are limited to 50,000 URLs and 50MB
               uncompressed. For sites exceeding these limits, use a sitemap
               index file that references multiple individual sitemaps. The
@@ -410,12 +417,12 @@ export default function XmlSitemapsArticle() {
               reduce transfer size. A site with 10 million URLs might have 200
               product sitemaps, 50 category sitemaps, and 100 content sitemaps,
               all referenced by a single sitemap index.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How does the lastmod field affect crawl behavior?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: When lastmod is accurate, Google uses it to prioritize
               re-crawling of recently changed pages. This is especially
@@ -483,7 +490,7 @@ export default function XmlSitemapsArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://www.sitemaps.org/protocol.html"
               target="_blank"
@@ -492,8 +499,8 @@ export default function XmlSitemapsArticle() {
             >
               Sitemaps.org — Sitemaps XML Protocol
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview"
               target="_blank"
@@ -502,8 +509,8 @@ export default function XmlSitemapsArticle() {
             >
               Google Search Central — Sitemaps Overview
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developers.google.com/search/docs/crawling-indexing/sitemaps/news-sitemap"
               target="_blank"
@@ -512,7 +519,7 @@ export default function XmlSitemapsArticle() {
             >
               Google — News Sitemaps
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://www.indexnow.org/"

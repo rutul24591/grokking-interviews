@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Page view tracking</strong> is the systematic capture and recording of user navigation through a web application. Each page view represents a user visiting a distinct URL or route, and tracking these views forms the foundation of web analytics—enabling measurement of traffic, engagement, content performance, and user behavior patterns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           While conceptually simple ("record when a user loads a page"), page view tracking becomes complex in modern web applications. Single-page applications (SPAs) don't trigger full page reloads, requiring manual route change detection. Privacy regulations (GDPR, CCPA) require consent before tracking. Ad blockers and browser privacy features (ITP, ETP) block or limit tracking. High-traffic sites need sampling to manage data volume and cost.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, page view tracking requires balancing four competing concerns. <strong>Data Accuracy</strong> means tracking all page views reliably without duplicates or gaps. <strong>Performance</strong> means tracking must not impact page load or user experience. <strong>Privacy Compliance</strong> means respecting user consent and regulatory requirements. <strong>Cost Management</strong> means high-traffic sites need sampling to control analytics costs.
         </p>
@@ -48,6 +52,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/analytics-tracking/spa-vs-mpa-tracking.svg"
@@ -56,12 +63,12 @@ export default function ArticlePage() {
         />
 
         <h3>Page View vs. Session</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding the distinction between page views and sessions is fundamental to analytics. A <strong>page view</strong> is a single instance of a user loading a specific page or URL—each navigation creates a new page view. A <strong>session</strong> is a continuous period of user activity, where multiple page views belong to one session. Sessions expire after inactivity, typically 30 minutes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For example, a user visits the homepage (1 page view), clicks to an article (2 page views), reads for 5 minutes, then clicks to another article (3 page views). This is 3 page views in 1 session. Understanding this distinction matters because session-level metrics (bounce rate, pages per session, session duration) behave differently from page-level metrics (page views, unique page views, time on page).
-        </p>
+        </HighlightBlock>
 
         <h3>SPA vs. MPA Tracking</h3>
         <p>
@@ -119,14 +126,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust page view tracking architecture treats tracking as a first-class system with proper error handling, monitoring, and privacy controls.
-        </p>
+        </HighlightBlock>
 
         <h3>SPA Page View Tracking Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For single-page applications, implement tracking by hooking into router navigation events. In React Router, use a useEffect hook that depends on the location object. In Next.js, use router.events.on('routeChangeComplete'). In Vue Router, use router.afterEach(). Fire the page view event on each navigation with the new path and page title.
-        </p>
+        </HighlightBlock>
         <p>
           Track the initial page view on app mount separately from route changes to avoid duplicate tracking. Debounce rapid navigation to prevent tracking intermediate states when users navigate quickly. Wrap tracking in try-catch to ensure tracking errors never break the application.
         </p>
@@ -164,12 +174,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Page view tracking involves trade-offs between accuracy, performance, and cost. Tracking 100% of page views provides the best accuracy but incurs the highest cost and more requests impacting performance. Sampled tracking at 10% provides good statistical accuracy at much lower cost. Consent-gated tracking provides fair accuracy depending on consent rate, with variable cost based on how many users consent.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that sampling is often necessary for high-traffic sites. A 10% sample rate provides statistically accurate data at 10% of the cost. For sites with millions of page views per month, this trade-off is essential for cost management while maintaining analytical value.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -177,12 +190,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Create a tracking utility that abstracts the analytics provider, making it easy to switch providers later. Hook into the router for SPAs to detect route changes automatically. Don't forget to track the initial page view on app mount—this is a common oversight.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement proper session management with timeout and ID persistence. Check consent before tracking and queue events until consent is given. For high-traffic sites, sample page views to control costs while maintaining statistical accuracy.
-        </p>
+        </HighlightBlock>
         <p>
           Wrap tracking in try-catch so tracking errors never break the application. Track page view volume over time and alert on sudden drops or spikes. Filter out internal and developer traffic from analytics to keep data clean. Document the tracking implementation for team reference and onboarding.
         </p>
@@ -193,12 +209,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is not tracking SPA routes—only tracking the initial load and missing all route changes. This results in massive undercounting of page views. Another common issue is duplicate tracking, where both the initial load and first route change are tracked, resulting in double-counting.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Missing session management causes each page view to be counted as a new session, inflating session count and breaking metrics like bounce rate and pages per session. Not checking consent before tracking violates GDPR and CCPA, risking significant fines.
-        </p>
+        </HighlightBlock>
         <p>
           Synchronous tracking that blocks page render hurts performance—always track asynchronously. Not monitoring tracking health means you won't know when tracking breaks. Without monitoring, tracking failures can go undetected for weeks or months.
         </p>
@@ -209,16 +228,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>News Site: SPA Migration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A news site migrated from MPA to Next.js SPA, and page view tracking broke—only the initial load was tracked. The solution was implementing router-based tracking using Next.js router events, tracking initial load separately from route changes, and adding debounce to prevent duplicates. Page view tracking was restored to 100% accuracy with no duplicates, and historical comparisons remained valid.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce: Session Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce site had inflated session counts because each page view was counted as a new session. The solution was implementing a session ID stored in a cookie with a 30-minute timeout. The session ID persisted across page views, grouping related page views into sessions. Session count dropped 80% (becoming accurate), and metrics like bounce rate and pages per session became meaningful.
-        </p>
+        </HighlightBlock>
 
         <h3>Media Site: GDPR Compliance</h3>
         <p>
@@ -236,14 +258,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How do you track page views in a single-page application (SPA)?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               SPA page view tracking requires manual instrumentation because route changes don't trigger page reloads. Hook into the router's navigation events—for React Router, use a useEffect hook on location change; for Next.js, use router.events; for Vue Router, use router.afterEach(). Track the initial page view on app mount separately from route changes to avoid double-counting. Fire the page view event on each navigation with the new path and title. Debounce rapid navigation to prevent tracking intermediate states.
-            </p>
+            </HighlightBlock>
             <p>
               The key insight is that SPA tracking requires explicit instrumentation. The analytics script loads once, but must be notified of each route change.
             </p>

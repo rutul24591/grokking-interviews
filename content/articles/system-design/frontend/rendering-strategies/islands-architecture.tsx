@@ -45,7 +45,7 @@ export default function IslandsArchitectureConciseArticle() {
           hydrates independently and progressively, rather than requiring the
           entire page to become interactive at once.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The term was coined by <strong>Jason Miller</strong> (creator of
           Preact) in his influential 2019 blog post "Islands Architecture."
           Miller observed that most web pages consist primarily of static
@@ -54,8 +54,8 @@ export default function IslandsArchitectureConciseArticle() {
           page with JavaScript, even when 90% of the page is static. Islands
           Architecture challenges this approach by hydrating only what needs to
           be interactive.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The pattern gained mainstream adoption with frameworks like{" "}
           <strong>Astro</strong> (2021), <strong>Fresh</strong>
           (Deno's framework, 2022), <strong>Marko</strong> (eBay's framework),{" "}
@@ -66,7 +66,7 @@ export default function IslandsArchitectureConciseArticle() {
           Architecture represents a fundamental shift: instead of shipping
           JavaScript by default and opting out, you ship static HTML by default
           and opt in to interactivity only where needed.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -82,27 +82,27 @@ export default function IslandsArchitectureConciseArticle() {
             unless explicitly requested. This is the opposite of traditional
             SPAs where everything is JavaScript-driven by default.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Islands of Interactivity:</strong> Interactive components
             (React, Vue, Svelte, Solid, etc.) are designated as "islands." These
             islands are embedded within static HTML and hydrate independently
             when needed. An island might be a search bar, product carousel,
             comment form, or live chart.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Component-Level Hydration:</strong> Unlike full-page
             hydration where the entire React tree hydrates, islands hydrate one
             component at a time. If a page has 3 islands, each hydrates
             independently with its own JavaScript bundle. Islands can even use
             different frameworks (React island + Vue island).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Partial Hydration:</strong> Islands Architecture is a form
             of partial hydration—only portions of the page become interactive.
             The static HTML remains static, reducing JavaScript execution time,
             memory usage, and bundle size. This is fundamentally different from
             progressive hydration which hydrates the entire tree in stages.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Isolation & Encapsulation:</strong> Each island is isolated
             with its own state, props, and lifecycle. Islands don't share a
@@ -131,7 +131,11 @@ export default function IslandsArchitectureConciseArticle() {
         <h2>Architecture & Flow</h2>
         <p>The Islands Architecture follows this build and runtime pattern:</p>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
+        <HighlightBlock
+          as="div"
+          tier="important"
+          className="my-6 rounded-lg bg-panel-soft p-6"
+        >
           <h3 className="mb-4 text-lg font-semibold">
             Islands Build & Runtime Flow
           </h3>
@@ -205,7 +209,7 @@ export default function IslandsArchitectureConciseArticle() {
               </li>
             </ol>
           </div>
-        </div>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/rendering-strategies/islands-architecture-concept.svg"
@@ -213,12 +217,29 @@ export default function IslandsArchitectureConciseArticle() {
           caption="Islands Architecture Concept - Interactive islands (purple) embedded in static HTML (gray)"
         />
 
+        <HighlightBlock as="p" tier="important">
+          Interview framing: islands are an explicit{" "}
+          <strong>packaging boundary</strong>. You decide which components
+          become islands, what triggers hydration, and how data/state crosses
+          islands (URL state, server endpoints, events, shared stores). The
+          design goal is to keep the <strong>default path static</strong> and
+          make interactivity opt-in.
+        </HighlightBlock>
+
         <HighlightBlock as="p" tier="crucial">
           This architecture provides the best of both worlds: instant content
           display from static HTML plus interactive features where needed.
           Unlike traditional SPAs that ship 500KB+ of JavaScript to make
           everything interactive, Islands might ship{" "}
           <Highlight tier="important">50-100KB total across all islands</Highlight>.
+        </HighlightBlock>
+
+        <HighlightBlock as="p" tier="important">
+          A common staff-level trade-off discussion is whether to accept more
+          complexity in build/runtime orchestration to get{" "}
+          <strong>measurable wins</strong> on low-end mobile: fewer JS bytes,
+          lower TBT, better INP, and less long-task risk from third-party
+          scripts.
         </HighlightBlock>
 
         <ArticleImage
@@ -230,10 +251,10 @@ export default function IslandsArchitectureConciseArticle() {
 
       <section>
         <h2>Hydration Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Islands Architecture supports multiple hydration strategies to
           optimize when islands become interactive:
-        </p>
+        </HighlightBlock>
 
         <table className="w-full">
           <thead>
@@ -245,7 +266,7 @@ export default function IslandsArchitectureConciseArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td>
                 <strong>Load</strong>
               </td>
@@ -254,8 +275,8 @@ export default function IslandsArchitectureConciseArticle() {
               <td>
                 <code>client:load</code>
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td>
                 <strong>Idle</strong>
               </td>
@@ -266,8 +287,8 @@ export default function IslandsArchitectureConciseArticle() {
               <td>
                 <code>client:idle</code>
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td>
                 <strong>Visible</strong>
               </td>
@@ -278,7 +299,7 @@ export default function IslandsArchitectureConciseArticle() {
               <td>
                 <code>client:visible</code>
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td>
                 <strong>Media</strong>
@@ -302,6 +323,14 @@ export default function IslandsArchitectureConciseArticle() {
           </tbody>
         </table>
 
+        <HighlightBlock as="p" tier="crucial" className="mt-4">
+          Hydration strategy selection is where most of the performance wins
+          happen. For staff-level design discussions, you should be able to
+          explain which islands hydrate on load (revenue-critical flows) versus
+          idle/visible (nice-to-have UI), and how you measure outcomes (JS
+          bytes, TBT, INP, long tasks, and conversion).
+        </HighlightBlock>
+
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/rendering-strategies/islands-hydration-timeline.svg"
           alt="Island Hydration Timeline"
@@ -321,30 +350,30 @@ export default function IslandsArchitectureConciseArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td>
                 <strong>JavaScript Shipped</strong>
               </td>
               <td>50-150KB (only islands)</td>
               <td>300KB-2MB (entire app)</td>
               <td>300KB-2MB (entire app)</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td>
                 <strong>First Contentful Paint</strong>
               </td>
               <td>Excellent (100-300ms)</td>
               <td>Poor (2-5s blank screen)</td>
               <td>Good (500ms-1s)</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td>
                 <strong>Time to Interactive</strong>
               </td>
               <td>Progressive (800ms-3s per island)</td>
               <td>Slow (3-10s for everything)</td>
               <td>Slow (3-10s for everything)</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td>
                 <strong>SEO</strong>
@@ -361,14 +390,14 @@ export default function IslandsArchitectureConciseArticle() {
               <td>Familiar (everything interactive)</td>
               <td>Familiar (React as usual)</td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td>
                 <strong>State Management</strong>
               </td>
               <td>Complex (islands are isolated)</td>
               <td>Simple (global state tree)</td>
               <td>Simple (global state tree)</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td>
                 <strong>Framework Flexibility</strong>
@@ -396,16 +425,16 @@ export default function IslandsArchitectureConciseArticle() {
           these practices:
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Island Identification:</strong> Treat islands as the
           exception, not the rule. Start with static HTML and only add islands
           for truly interactive components. Ask: "Does this component need to
           respond to user input or change dynamically?" If no, keep it static. A
           blog post with 5,000 words of text should have 0 islands—it{"'"}s just
           HTML.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Choose the Right Hydration Strategy:</strong> Don{"'"}t
           default to <code>client:load</code> for everything. Use{" "}
           <code>client:visible</code> for below-the-fold components (carousels,
@@ -413,7 +442,7 @@ export default function IslandsArchitectureConciseArticle() {
           for low-priority features (social sharing, comment forms). Reserve{" "}
           <code>client:load</code> for critical interactive elements (search,
           navigation, checkout).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Minimize Island Dependencies:</strong> Each island ships its
@@ -423,22 +452,22 @@ export default function IslandsArchitectureConciseArticle() {
           enhancement, or use a lighter alternative.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Optimize Island Communication:</strong> Islands are isolated,
           so inter-island communication requires intentional design. Options
           include: URL state (query params), custom events (EventTarget /
           CustomEvent), shared state managers (nano-stores, Zustand with
           persistence), or Web Components with attributes. Avoid coupling
           islands tightly—they should work independently.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Progressive Enhancement:</strong> Design islands to degrade
           gracefully. A search island might render a static form that submits to
           the server if JavaScript fails. A carousel could display all images
           vertically without JavaScript, then enhance with swipe gestures once
           hydrated. Never rely solely on JavaScript for core functionality.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Framework Selection:</strong> Islands Architecture lets you
@@ -449,13 +478,13 @@ export default function IslandsArchitectureConciseArticle() {
           when beneficial (e.g., Svelte for tiny animations).
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Measure Performance:</strong> Use Lighthouse, WebPageTest, and
           Core Web Vitals to validate improvements. Track JavaScript bytes
           shipped, TTI per island, and Total Blocking Time. Islands should
           reduce total JS by 60-80% compared to traditional SPAs. If you{"'"}re
           not seeing dramatic improvements, you may be over-using islands.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -465,19 +494,19 @@ export default function IslandsArchitectureConciseArticle() {
         </p>
 
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Over-Islanding:</strong> Marking every component as an
             island defeats the purpose. If 80% of your page is islands, you{"'"}
             ve recreated a SPA with extra complexity. Islands should represent{" "}
             {"&lt;"}20% of page content. Be selective.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Tight Island Coupling:</strong> Designing islands that
             depend on each other{"'"}s internal state creates fragile
             architectures. If Island A can{"'"}t function without Island B, they
             should probably be one island. Use event-driven communication or
             shared external state.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring Accessibility:</strong> Static HTML is naturally
             accessible, but islands may not be. Ensure islands have proper ARIA
@@ -485,25 +514,25 @@ export default function IslandsArchitectureConciseArticle() {
             readers. Just because it{"'"}s static doesn{"'"}t mean it{"'"}s
             accessible.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Client:Load Everything:</strong> Defaulting all islands to{" "}
             <code>client:load</code> means they all download and hydrate
             immediately, negating performance benefits. Use lazy strategies (
             <code>client:visible</code>, <code>client:idle</code>) for
             non-critical islands.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Forgetting Mobile:</strong> Islands Architecture shines on
             mobile where JavaScript execution is slower. But downloading 5
             island bundles on 3G is still slow. Bundle carefully, use
             code-splitting, and test on real devices with network throttling.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No Fallback for Failed Hydration:</strong> If island
             JavaScript fails to load (CDN down, ad blocker, CSP violation), the
             island becomes non-interactive. Design islands with server-side
             fallbacks or show error states to users.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -512,39 +541,39 @@ export default function IslandsArchitectureConciseArticle() {
         <p>Islands Architecture excels in specific scenarios:</p>
 
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Content-Heavy Sites:</strong> Blogs, documentation sites,
             marketing pages, news sites—anywhere content dominates over
             interactivity. The New York Times article page is 95% text and
             images; only the comment section, share buttons, and related
             articles widget need JavaScript.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>E-Commerce Product Pages:</strong> Product descriptions,
             specifications, reviews (pre-rendered) are static. Islands handle
             add-to-cart button, size selector, image carousel, and live
             inventory. This reduces JavaScript from 800KB to 80KB while keeping
             critical interactions fast.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Documentation Sites:</strong> Docs are mostly static
             markdown. Islands power search bars, code playgrounds, version
             switchers, and theme toggles. Examples: Astro docs, Fresh docs, Deno
             docs—all use Islands Architecture.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Landing Pages:</strong> Marketing landing pages need fast
             FCP for SEO and conversions. Static hero sections, feature lists,
             testimonials—only the signup form, demo video player, or chatbot are
             islands. This achieves Lighthouse scores of 95-100.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Media Sites:</strong> News, video platforms,
             podcasts—content is king. Islands handle video players, comment
             threads, subscription prompts, and recommendation widgets. The BBC
             and CNN could benefit from Islands Architecture to reduce mobile
             page weight.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <p>
@@ -563,50 +592,50 @@ export default function IslandsArchitectureConciseArticle() {
         </p>
 
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Astro:</strong> The most popular Islands framework. Supports
             React, Vue, Svelte, Solid, Preact, Lit, Alpine—all as islands.
             Features flexible hydration directives (<code>client:load</code>,{" "}
             <code>client:visible</code>, etc.) and excellent DX. Used by Google,
             Firebase, and The Guardian.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Fresh:</strong> Deno{"'"}s Islands framework.
             Convention-based (components in <code>islands/</code> folder
             auto-hydrate). Uses Preact for small runtime. Zero build step,
             instant refresh. Ideal for Deno Deploy edge deployments.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Marko:</strong> eBay{"'"}s framework with Islands-like
             partial hydration. Fine-grained reactivity with resumability
             (hydration-free approach). Used in production at eBay for years.
             Less known but highly optimized.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Qwik:</strong> Takes Islands further with "resumability"—no
             hydration at all. Serializes application state and listeners to
             HTML, resumes execution without re-running JavaScript. Still
             experimental but promising.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>11ty + is-land:</strong> Static site generator 11ty paired
             with <code>is-land</code> web component. Manually mark islands with{" "}
             <code>{"<is-land>"}</code> tags. Good for adding Islands to existing
             11ty sites.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Next.js Server Components:</strong> Not pure Islands but
             similar philosophy. Server Components are static by default; Client
             Components (marked with <code>{"'use client'"}</code>) act as
             islands. Hybrid approach with streaming SSR.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>References & Further Reading</h2>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://jasonformat.com/islands-architecture/"
               target="_blank"
@@ -615,8 +644,8 @@ export default function IslandsArchitectureConciseArticle() {
               Islands Architecture (Jason Miller, 2019)
             </a>{" "}
             - Original blog post introducing the concept
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://docs.astro.build/en/concepts/islands/"
               target="_blank"
@@ -625,8 +654,8 @@ export default function IslandsArchitectureConciseArticle() {
               Astro Islands Documentation
             </a>{" "}
             - Official guide to implementing Islands in Astro
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://fresh.deno.dev/docs/concepts/islands"
               target="_blank"
@@ -635,7 +664,7 @@ export default function IslandsArchitectureConciseArticle() {
               Fresh Islands Concepts
             </a>{" "}
             - Fresh framework{"'"}s approach to Islands
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://www.patterns.dev/posts/islands-architecture"
@@ -646,7 +675,7 @@ export default function IslandsArchitectureConciseArticle() {
             </a>{" "}
             - Comprehensive guide with examples and case studies
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://docs.astro.build/en/guides/server-side-rendering/"
               target="_blank"
@@ -655,7 +684,7 @@ export default function IslandsArchitectureConciseArticle() {
               Astro SSR + Islands Hybrid
             </a>{" "}
             - Combining server-side rendering with Islands for dynamic content
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

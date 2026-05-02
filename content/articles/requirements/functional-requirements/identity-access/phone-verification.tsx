@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,13 +34,16 @@ export default function PhoneVerificationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Phone Verification</strong> is the process of confirming that a user owns and has
           access to the phone number they provided. It is used for account security (2FA, MFA),
           password recovery, and as an alternative to email for regions with low email penetration.
           Phone verification adds a layer of security — unlike email, phone numbers are harder to
           create in bulk and are typically tied to a real identity.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/phone-verification-flow.svg"
@@ -47,7 +51,7 @@ export default function PhoneVerificationArticle() {
           caption="Phone Verification Flow — showing OTP generation, SMS delivery, validation, and account linking"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing phone verification requires deep
           understanding of SMS delivery challenges (delayed SMS, carrier filtering), OTP security
           (cryptographic generation, hash storage, timing-safe comparison), rate limiting (per
@@ -55,7 +59,7 @@ export default function PhoneVerificationArticle() {
           global considerations (different countries, carriers, regulations like GDPR/TCPA). The
           implementation must handle edge cases (delayed SMS, wrong numbers, roaming) while
           preventing abuse (SMS pumping, toll fraud, SIM swap attacks).
-        </p>
+        </HighlightBlock>
         <p>
           Modern phone verification has evolved from simple SMS OTP to multi-channel verification
           (SMS, voice call, WhatsApp). Organizations like Twilio, Vonage, and AWS SNS provide
@@ -68,18 +72,21 @@ export default function PhoneVerificationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Phone verification is built on fundamental concepts that determine how OTPs are
           generated, delivered, and verified. Understanding these concepts is essential for
           designing effective phone verification systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>SMS OTP:</strong> Most common verification method. 4-6 digit numeric code sent
           via SMS. 6 digits recommended for security (1 million combinations vs 10,000 for 4
           digits). Short expiry (5-10 minutes) limits brute force window. Auto-read via SMS
           Retriever API (Android) improves UX — no manual entry needed. Cost: $0.005-$0.05 per SMS
           depending on country.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Voice Call OTP:</strong> Automated voice call reads code. Used as fallback when
           SMS fails or user prefers voice. Slower than SMS but more reliable in some regions
@@ -103,11 +110,14 @@ export default function PhoneVerificationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Phone verification architecture separates OTP generation from delivery, enabling
           multi-channel verification (SMS, voice, WhatsApp) with centralized OTP management. This
           architecture is critical for handling delivery failures and optimizing costs.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/phone-verification-methods.svg"
@@ -115,14 +125,14 @@ export default function PhoneVerificationArticle() {
           caption="Verification Methods — comparing SMS, voice call, and WhatsApp with cost, reliability, and use cases"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Phone verification flow: User enters phone number (with country code). Client validates
           format (using libphonenumber), sends to backend. Backend generates OTP (6-digit random
           number), stores hash (bcrypt) with expiry (5-10 minutes), sends OTP via SMS gateway
           (Twilio, Vonage, AWS SNS). SMS gateway delivers to carrier, carrier delivers to phone.
           User enters OTP (or auto-read via SMS Retriever API). Client sends OTP to backend.
           Backend validates (constant-time comparison), invalidates OTP, marks phone as verified.
-        </p>
+        </HighlightBlock>
         <p>
           Multi-channel architecture includes: primary channel (SMS), fallback channels (voice,
           WhatsApp), delivery tracking (track delivery status from provider), retry logic (retry
@@ -148,24 +158,27 @@ export default function PhoneVerificationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing phone verification involves trade-offs between security, cost, and user
           experience. Understanding these trade-offs is essential for making informed architecture
           decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">SMS vs Voice vs WhatsApp</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>SMS:</strong> Universal (works on all phones), reliable, expected by users.
               Limitation: cost varies by country, delivery delays in some regions, vulnerable to
               SIM swap attacks.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Voice:</strong> More reliable than SMS in poor coverage areas, accessible for
               visually impaired. Limitation: higher cost, slower, users must answer call.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>WhatsApp:</strong> Lower cost, works on data, popular in emerging markets.
               Limitation: requires WhatsApp installed, not universal.
@@ -212,19 +225,22 @@ export default function PhoneVerificationArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing phone verification requires following established best practices to ensure
           security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use cryptographically secure OTP generation — crypto.randomBytes() for random OTP, not
           Math.random(). Store OTP hashes, not plaintext — bcrypt hash of OTP, prevents OTP
           exposure in database breach. Set short OTP expiry (5-10 minutes) — limits brute force
           window. Rate limit OTP requests — per phone (3/hour), per IP (10/hour). Invalidate OTP
           after use — prevent reuse.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
         <p>
@@ -256,20 +272,23 @@ export default function PhoneVerificationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing phone verification to ensure secure,
           usable, and maintainable verification systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No rate limiting:</strong> SMS pumping attacks, toll fraud, thousands of
             dollars in minutes. <strong>Fix:</strong> Rate limit per phone (3/hour), per IP
             (10/hour), block known fraud numbers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Storing plaintext OTPs:</strong> Database breach exposes all OTPs, attackers
             can verify any phone. <strong>Fix:</strong> Store bcrypt hash of OTP, not plaintext.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Long OTP expiry:</strong> Extended window for brute force attacks.{" "}
             <strong>Fix:</strong> Set short expiry (5-10 minutes).
@@ -308,16 +327,19 @@ export default function PhoneVerificationArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Phone verification is critical for security and fraud prevention. Here are real-world
           implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Platform (Shopify)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Fraudulent orders with fake phones. International customers
           (different carriers). SMS delivery delays during peak (Black Friday).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Phone verification for high-value orders. Carrier-specific
           routing (optimize delivery). Queue-based SMS during peak. Voice call fallback for
@@ -410,14 +432,17 @@ export default function PhoneVerificationArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of phone verification design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you generate and store OTPs securely?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you generate and store OTPs securely?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Generate 6-digit OTP using crypto.randomBytes() — not Math.random() (not
               cryptographically secure). Store bcrypt hash of OTP (not plaintext) in database —

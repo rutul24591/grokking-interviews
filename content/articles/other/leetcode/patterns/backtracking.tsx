@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,22 +24,25 @@ export default function BacktrackingArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Backtracking is depth-first search over a state space with the discipline of choose,
         explore, un-choose. At each level the algorithm tries every valid choice, recursively
         explores the resulting state, and on return undoes the choice so the next sibling
         branch starts from the same baseline. Combined with pruning — abandoning branches that
         cannot lead to a valid solution — backtracking turns naively exponential search spaces
         into tractable computations for problem sizes up to roughly n = 20.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Recognition signals: enumerate all subsets / permutations / combinations; place items
         subject to constraints (N-queens, sudoku); split a string into valid parts (palindrome
         partition); generate all valid configurations of some structure (parentheses,
         expressions). Whenever the answer is &quot;a list of all X that satisfy Y&quot; or
         &quot;a single X that satisfies Y when one exists&quot;, backtracking is the canonical
         engine.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         The pattern matters because it formalises the intuitive &quot;try every option, undo
         on dead end&quot; thinking. The interview test is whether you can write the skeleton
@@ -54,15 +58,18 @@ export default function BacktrackingArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>State.</strong> The current partial solution being built. For subsets, a list
         of selected elements; for N-queens, a list of column placements per row; for sudoku, a
         partially filled grid. The state evolves as the recursion descends.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Choose.</strong> Apply a valid choice to the state — append an element, place
         a queen, write a digit. The choice mutates the shared state.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Explore.</strong> Recurse with the updated state. The recursion handles
         everything below this point; the current frame waits.
@@ -105,18 +112,21 @@ export default function BacktrackingArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/backtracking-diagram-1.svg" alt="Backtracking choose-explore-unchoose" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The subsets template (Leetcode 78): function backtrack(idx, current): emit
         current.copy() (every node is a valid solution); for i from idx to n - 1:
         current.add(nums[i]); backtrack(i + 1, current); current.removeLast(). Time O(n *
         2^n) — 2^n nodes, each emit costs O(n).
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The permutations template using a used-set (Leetcode 46): function backtrack(current):
         if current.size == n: emit current.copy(); return; for i from 0 to n - 1: if
         used[i] continue; used[i] = true; current.add(nums[i]); backtrack(current); used[i] =
         false; current.removeLast(). The used-set tracks which elements are already placed.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         The combination-sum template (Leetcode 39): function backtrack(idx, current, target):
         if target == 0: emit current.copy(); return; for i from idx to n - 1: if
@@ -154,18 +164,21 @@ export default function BacktrackingArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Backtracking vs. iterative bitmask enumeration.</strong> For small n,
         iterating masks 0 to 2^n - 1 produces all subsets without recursion. Backtracking
         wins when pruning eliminates most branches; bitmask wins when no pruning is possible
         and the structure is simple.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Backtracking vs. DP.</strong> DP shines when subproblems repeat. Backtracking
         shines when the answer is a list of solutions, not a single optimum. Sometimes both
         apply: top-down DP with memoisation is recursion that prunes by remembering computed
         subproblems.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Pruning vs. brute force.</strong> Naive backtracking explores the full tree.
         Pruning collapses branches early. The asymptotic complexity may stay exponential but
@@ -190,15 +203,18 @@ export default function BacktrackingArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/backtracking-diagram-2.svg" alt="Pruning and state management" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Always pair choose with un-choose.</strong> Even if it looks redundant in a
         specific branch, the discipline prevents bugs as the code grows.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Snapshot the mutable buffer when emitting.</strong> Storing the live reference
         means all stored solutions point to the same array, which gets cleared by the time
         you read it.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Sort first to handle duplicates.</strong> Skipping same-value-at-same-depth
         relies on the input being sorted.
@@ -223,14 +239,17 @@ export default function BacktrackingArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Forgetting to un-choose.</strong> The state corrupts; sibling branches see
         elements from previous branches. The most common bug.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Storing live references in the result.</strong> All emitted solutions point
         to the same mutating list. Snapshot at emit time.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Wrong duplicate-skip condition.</strong> Skipping when nums[i] == nums[i - 1]
         unconditionally removes valid solutions. The correct rule requires that i - 1 is not
@@ -256,14 +275,17 @@ export default function BacktrackingArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>78. Subsets / 90. Subsets II.</strong> The canonical enumeration. II adds
         duplicate-skip.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>46. Permutations / 47. Permutations II.</strong> Used-set or swap. II adds
         duplicate-skip.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>39. Combination Sum / 40. Combination Sum II.</strong> Reuse vs. no reuse, idx
         and i + 1 distinction.
@@ -306,11 +328,14 @@ export default function BacktrackingArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/backtracking-diagram-3.svg" alt="Canonical backtracking Leetcode problems" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>What is the choose-explore-un-choose skeleton?</strong> Apply a choice,
-        recurse, undo. The undo is what makes backtracking different from blind DFS.</li>
-        <li><strong>Why snapshot the mutable list before emitting?</strong> Otherwise all stored
-        solutions reference the same buffer, which gets mutated by subsequent recursion.</li>
+        <HighlightBlock as="li" tier="important"><strong>What is the choose-explore-un-choose skeleton?</strong> Apply a choice,
+        recurse, undo. The undo is what makes backtracking different from blind DFS.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Why snapshot the mutable list before emitting?</strong> Otherwise all stored
+        solutions reference the same buffer, which gets mutated by subsequent recursion.</HighlightBlock>
         <li><strong>How do you avoid duplicate solutions when input has duplicates?</strong> Sort
         the input. At each depth, skip nums[i] if nums[i] == nums[i - 1] and i - 1 is not
         currently chosen.</li>

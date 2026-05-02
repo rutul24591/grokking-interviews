@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Saga pattern</strong> is a design pattern for managing distributed transactions across multiple independent services by decomposing a multi-step business workflow into a sequence of local transactions. Each local transaction updates the state of a single service and publishes an event or signals completion. If any step fails, the saga executes <strong>compensating transactions</strong>&mdash;explicit, domain-specific undo operations&mdash;to reverse or mitigate the effects of previously completed steps. The result is <em>eventual business consistency</em> without requiring a single two-phase commit (2PC) ACID transaction spanning multiple databases.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Sagas were first introduced by Hector Garcia-Molina and Kenneth Salem in 1987 as a mechanism for managing long-lived transactions (LLTs) in distributed database systems. The original paper recognized that traditional ACID transactions, with their short duration and strict locking semantics, were unsuitable for workflows that span minutes, hours, or even days. In the context of microservices, sagas solve an identical problem: when each service owns its database, cross-service ACID transactions become prohibitively expensive in terms of latency, lock contention, and operational coupling.
-        </p>
+        </HighlightBlock>
         <p>
           The fundamental insight behind sagas is that <em>atomicity</em> can be replaced with <em>explicit compensation</em>. Instead of relying on the database rollback guarantee, saga designers must explicitly define what it means to &quot;undo&quot; each step in business terms. This shifts complexity from the infrastructure layer (distributed lock management) to the domain layer (compensation semantics), which is where it belongs: only the domain experts know whether a &quot;refund&quot; is the correct compensation for a &quot;charge&quot; or whether &quot;release inventory reservation&quot; is the correct compensation for &quot;reserve inventory.&quot;
         </p>
@@ -61,14 +65,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Orchestration vs Choreography</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The two primary implementation styles for sagas are <strong>orchestration</strong> and <strong>choreography</strong>. In an orchestrated saga, a central <strong>saga orchestrator</strong> (sometimes called a saga coordinator or workflow engine) maintains the workflow state machine and explicitly commands each participant service to execute its step. The orchestrator tracks which steps have completed, which are pending, and which compensations need to run. Services are passive: they receive commands, execute their local transaction, and return a result. The orchestrator decides the next action based on the result.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In a choreographed saga, there is no central coordinator. Instead, each service listens for events emitted by other services and decides independently whether to act. The workflow emerges from the event flow: Service A completes its step and emits an event, Service B listens for that event, executes its step, and emits its own event, and so on. Compensation works similarly: if a step fails, the failing service emits a failure event, and each previously-completed service listens for that event and runs its own compensation.
-        </p>
+        </HighlightBlock>
         <p>
           Orchestration provides a single point of truth for workflow state, making it easier to monitor, debug, and retry failed sagas. The orchestrator knows the complete workflow topology and can enforce ordering constraints, implement timeouts, and provide a dashboard of saga health. The trade-off is that the orchestrator becomes a central coupling point and a potential single point of failure (though it can be made highly available through state persistence and leader election).
         </p>
@@ -133,14 +140,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Order Placement Saga Walkthrough</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Consider an e-commerce order placement workflow that spans four services: the Order Service, the Inventory Service, the Payment Service, and the Shipping Service. The saga begins when the Order Service receives a POST /orders request and creates an order in a &quot;pending&quot; state. This is the first local transaction. The orchestrator then commands the Inventory Service to reserve stock for the order. The Inventory Service checks availability, reserves the items, and responds with success. This is the second local transaction.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The orchestrator then commands the Payment Service to charge the customer&apos;s payment method. The Payment Service processes the charge through a payment gateway and responds with success. This is the third local transaction. Finally, the orchestrator commands the Shipping Service to create a shipment. The Shipping Service creates the shipment record, assigns a carrier, and responds with success. The orchestrator marks the saga as complete and the Order Service transitions the order to &quot;confirmed.&quot;
-        </p>
+        </HighlightBlock>
         <p>
           Now consider the failure path. If the Payment Service declines the charge (insufficient funds, expired card, fraud detection), it responds with failure. The orchestrator initiates compensation in reverse order. The Inventory Service has already reserved stock, so the orchestrator commands it to release the reservation. The Inventory Service releases the stock and confirms. There is no need to compensate the Order Service&apos;s &quot;pending&quot; order because no external effect has occurred yet. The saga reaches a &quot;compensated&quot; terminal state, and the order is marked &quot;cancelled - payment declined.&quot;
         </p>
@@ -185,14 +195,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>Saga vs Two-Phase Commit (2PC)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most fundamental trade-off is between sagas and traditional distributed transactions using two-phase commit (2PC) or XA transactions. 2PC provides strong consistency: either all participants commit or all abort, with no intermediate states visible to other transactions. Sagas provide eventual consistency: intermediate states are visible and may be observed by other transactions or users, and the final outcome is guaranteed only after all steps (or compensations) complete.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           2PC is rarely used in production microservices for several reasons. It requires all participating databases to support the XA protocol, which is not true for many modern databases (DynamoDB, Cassandra, MongoDB). It holds locks across all participants for the duration of the transaction, which creates severe performance bottlenecks under contention. The coordinator is a single point of failure: if it crashes during the prepare phase, participants may hold locks indefinitely. And 2PC does not work across service boundaries where each service owns its own database and exposes only an API.
-        </p>
+        </HighlightBlock>
         <p>
           Sagas, by contrast, work with any database because each step is a local transaction. They do not hold long-lived locks because each step commits independently. They work across service boundaries because coordination happens at the API or event level. The trade-off is that sagas expose intermediate states and require explicit compensation design. The choice between 2PC and saga is not a technical preference but a <em>business requirement</em>: if the business cannot tolerate intermediate states (e.g., a funds transfer where the source account must not be debited until the destination account is credited), 2PC or a synchronous compensating design is necessary. If the business can tolerate brief intermediate states with explicit compensation (e.g., an order that is &quot;pending payment&quot; for a few seconds), sagas are the appropriate choice.
         </p>
@@ -222,14 +235,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Define clear saga boundaries that align with business transactions. A saga should represent a single business workflow with a well-defined start and end. Do not embed multiple unrelated workflows within a single saga, and do not split a single business workflow across multiple sagas. The saga boundary determines what gets compensated and what intermediate states are acceptable.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Prefer orchestration for any saga with more than three steps, cross-domain coordination, or complex error handling. Orchestration provides a single source of truth for workflow state, making it easier to monitor, debug, and repair. Reserve choreography for simple, intra-domain workflows with mature event contracts and a small blast radius.
-        </p>
+        </HighlightBlock>
 
         <p>
           Make every saga step and every compensation <strong>idempotent</strong> by default. Use idempotency keys derived from the saga ID and step identifier. Implement inbox tables in each service to deduplicate incoming commands. Never assume a step will execute exactly once; design for at-least-once delivery and handle duplicate detection at the service boundary.
@@ -261,14 +277,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is treating compensations as database rollbacks. Compensations operate at the business logic level and must account for real-world constraints: refunds take time to settle, emails cannot be un-sent, and notifications cannot be retracted. When teams design compensations as simple state reversals, they leave the system in a business-inconsistent state where the data is technically correct but the business reality is wrong.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Another frequent error is <strong>missing idempotency</strong> in saga step handlers. Teams assume that retries will not happen or that their message broker guarantees exactly-once delivery. In practice, exactly-once delivery is extremely difficult to achieve in distributed systems, and at-least-once is the realistic baseline. Without idempotency, retries create duplicate charges, double inventory reservations, and inconsistent state that is extremely difficult to reconcile after the fact.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Choreography spaghetti</strong> emerges when teams use choreography for complex workflows without adequate event governance. Each service emits events and reacts to events from other services, but no one has a complete picture of the workflow. When a workflow fails, debugging requires tracing events across multiple services, message queues, and log files. The solution is either to introduce an orchestrator or to implement rigorous event documentation and a centralized event registry.
@@ -296,14 +315,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Order Fulfillment at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform processes hundreds of thousands of orders per day across multiple warehouses, payment providers, and shipping carriers. The order fulfillment saga touches the Order Service (create order), the Inventory Service (reserve items across one or more warehouses), the Payment Service (charge via Stripe or PayPal), the Fraud Detection Service (run risk scoring), the Shipping Service (create shipment and assign carrier), and the Notification Service (send order confirmation email).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The platform uses an orchestrated saga with AWS Step Functions as the coordinator. Each step has an explicit timeout: 10 seconds for inventory reservation, 30 seconds for payment, 5 seconds for fraud scoring, 60 seconds for shipping creation. If the fraud detection step flags the order as high-risk, the saga branches to a manual review workflow instead of proceeding to shipping. If the payment step fails, the saga compensates by releasing the inventory reservation. If the shipping step fails after payment, the saga issues a refund and releases the reservation.
-        </p>
+        </HighlightBlock>
         <p>
           The platform processes approximately 200,000 sagas per day with a 99.7% success rate. The remaining 0.3% (approximately 600 sagas) are either compensated automatically or flagged for manual review. The reconciliation job runs every 15 minutes and has caught approximately 50 sagas per month where the automated compensation failed to fully restore business invariants.
         </p>
@@ -347,14 +369,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What problem does the Saga pattern solve, and why not use two-phase commit (2PC)?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               The Saga pattern solves the problem of maintaining business consistency across multiple services that each own their own database, without requiring a distributed ACID transaction. It decomposes a multi-step workflow into local transactions, each of which commits independently, and uses compensating transactions to reverse earlier steps if a later step fails.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               Two-phase commit (2PC) provides strong consistency but is rarely used in production microservices for several reasons. It requires all participating databases to support the XA protocol, which many modern databases like DynamoDB, Cassandra, and MongoDB do not support. It holds locks across all participants for the duration of the transaction, creating severe performance bottlenecks under contention. The coordinator is a single point of failure: if it crashes during the prepare phase, participants may hold locks indefinitely.
             </p>

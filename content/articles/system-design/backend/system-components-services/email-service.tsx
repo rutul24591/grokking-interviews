@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,12 +40,15 @@ export default function EmailServiceArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Email service</strong> is the infrastructure that generates, formats, delivers, and tracks email communications from an application to end users. It handles two fundamentally different categories of email: transactional email (triggered by user actions — password resets, order confirmations, account notifications — which require immediate delivery with high reliability) and bulk/marketing email (newsletters, promotional campaigns, product announcements — which require high throughput, deliverability optimization, and unsubscribe management). The email service sits between the application layer and external SMTP providers (SendGrid, Amazon SES, Mailgun, Postmark), managing queuing, prioritization, template rendering, authentication (SPF, DKIM, DMARC), bounce processing, and sender reputation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, designing an email service is a distributed systems challenge that spans reliability engineering, DNS infrastructure, reputation management, and regulatory compliance. The technical difficulty lies not in sending individual emails (any SMTP library can do that) but in building a reliable pipeline that handles millions of emails per day with differentiated priorities (transactional emails must arrive within minutes, marketing emails can be batched), maintains sender reputation across multiple ISPs (Gmail, Outlook, Yahoo each have different filtering rules), handles bounce and complaint feedback loops (to suppress invalid addresses and avoid blacklisting), and manages DNS authentication records (SPF, DKIM, DMARC) that determine whether receiving servers accept or reject the emails.
-        </p>
+        </HighlightBlock>
         <p>
           Email service design involves several technical considerations. Queue management (prioritizing transactional emails over marketing emails, retrying failed deliveries with exponential backoff, implementing dead-letter queues for permanently undeliverable emails). Template rendering (generating personalized HTML and plain-text email bodies from templates with variable substitution, supporting multiple languages, testing rendering across email clients). SMTP delivery (connecting to external providers via SMTP or API, handling rate limits, managing connection pools, implementing failover between providers). Authentication (configuring SPF records to authorize sending IPs, signing emails with DKIM private keys, publishing DMARC policies that instruct receivers how to handle authentication failures). Bounce handling (processing hard bounces — permanent delivery failures like invalid addresses — by suppressing the recipient, and soft bounces — temporary failures like full mailboxes — by retrying). Sender reputation (monitoring bounce rates, complaint rates, and engagement metrics across ISPs, maintaining dedicated IP addresses for different email types, implementing IP warm-up schedules for new sending infrastructure).
         </p>
@@ -56,14 +60,17 @@ export default function EmailServiceArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Transactional Versus Bulk Email</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Transactional email is triggered by specific user actions or system events — password reset requests, account verification emails, order confirmations, shipping notifications, payment receipts, and security alerts. These emails have strict delivery requirements (they must arrive within minutes, not hours), high deliverability expectations (users expect them and actively look for them), and regulatory exemptions (in many jurisdictions, transactional emails are exempt from consent requirements that apply to marketing emails). The volume of transactional email is proportional to user activity — more user actions generate more transactional emails.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Bulk email (marketing, newsletters, promotional campaigns) is sent to large audiences based on user segments, preferences, and consent status. These emails have relaxed delivery requirements (they can be batched and sent over hours or days), variable deliverability expectations (users may or may not open them), and strict regulatory requirements (GDPR, CAN-SPAM, and CASL require explicit consent, easy unsubscribe mechanisms, and accurate sender identification). The volume of bulk email is driven by marketing calendar events, not user activity. The email service must separate these two categories into different queues, different sending infrastructure (different IP addresses), and different monitoring dashboards, because their failure modes and reputational impacts are fundamentally different.
-        </p>
+        </HighlightBlock>
 
         <h3>SPF, DKIM, and DMARC Authentication</h3>
         <p>
@@ -101,9 +108,12 @@ export default function EmailServiceArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The email service architecture consists of four major components: the application layer (generating email requests with recipient, template ID, and variables), the message queue (prioritizing transactional over marketing emails, managing retry logic, and implementing dead-letter queues), the email processor (rendering templates, applying authentication signatures, and submitting to SMTP providers), and the feedback handler (processing bounces, complaints, opens, and clicks to update suppression lists and analytics). The flow begins with the application submitting an email request — specifying the recipient, template ID, template variables, and email category (transactional or marketing). The request is validated (recipient is not suppressed, template exists, variables match the template schema) and enqueued to the appropriate priority queue.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/system-components-services/email-architecture.svg"
@@ -113,9 +123,9 @@ export default function EmailServiceArticle() {
           height={550}
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The message queue maintains separate queues for transactional and marketing emails, with transactional emails having higher priority. The queue implements rate limiting per recipient (a single recipient should not receive more than a defined number of emails per hour, to prevent email fatigue), retry logic with exponential backoff (failed deliveries are retried at increasing intervals), and a dead-letter queue (emails that fail permanently are moved here for investigation). The email processor dequeues requests, renders the template with the provided variables, generates HTML and plain-text versions, applies DKIM signatures, and submits the email to an SMTP provider (SendGrid, SES, Mailgun, or a direct SMTP relay). The provider selection is based on the email category, cost, and current provider health — if the primary provider is experiencing issues, the processor fails over to a backup provider.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/system-components-services/email-deliverability.svg"
@@ -154,14 +164,17 @@ export default function EmailServiceArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Email service design involves trade-offs between building in-house versus using managed services, single-provider versus multi-provider architectures, and API-based versus SMTP-based delivery. Understanding these trade-offs is essential for designing email infrastructure that matches your organization&apos;s volume requirements, deliverability needs, and operational capacity.
-        </p>
+        </HighlightBlock>
 
         <h3>In-House SMTP Versus Managed Email Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Managed Email Service (SendGrid, SES, Mailgun):</strong> The provider handles SMTP delivery, bounce processing, complaint handling, and reputation management. Advantages: no infrastructure to manage (the provider handles scaling, reliability, and deliverability optimization), established sender reputation (providers have existing relationships with ISPs), built-in analytics (delivery rates, bounce rates, open rates, click-through rates), and compliance support (unsubscribe management, suppression list handling). Limitations: per-email cost (which adds up at high volume), less control over delivery behavior (the provider manages the sending infrastructure, not you), and potential vendor lock-in (migrating to another provider requires reconfiguring DNS records and rebuilding reputation). Best for: most organizations, especially those sending fewer than 10 million emails per month.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>In-House SMTP Server:</strong> You operate your own SMTP infrastructure (Postfix, Exim, or a custom mail transfer agent) and manage DNS records, reputation, and deliverability directly. Advantages: no per-email cost (only infrastructure costs), full control over delivery behavior (you manage connection pooling, retry logic, and throttling), and no vendor lock-in (you own the entire pipeline). Limitations: high operational overhead (managing SMTP infrastructure, DNS records, reputation monitoring, ISP relationships, spam filter evasion), long time to establish reputation (new IPs must be warmed up over weeks), and deliverability risk (if your reputation degrades, you must diagnose and fix the issue yourself). Best for: very high-volume senders (hundreds of millions of emails per month) where per-email costs are prohibitive, organizations with strict data sovereignty requirements.
         </p>
@@ -194,16 +207,19 @@ export default function EmailServiceArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Prioritize Transactional Emails Over Marketing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Maintain separate queues for transactional and marketing emails, with transactional emails having absolute priority. Transactional emails (password resets, order confirmations, security alerts) are time-sensitive and user-expected — delays in delivery directly impact user experience and trust. Marketing emails are not time-sensitive and can be batched and sent over extended periods. The queue should process all pending transactional emails before processing marketing emails, and rate limiting should apply separately to each category (transactional emails should not be delayed because marketing emails are consuming the provider&apos;s rate limit). Implement per-recipient rate limiting (a single recipient should not receive more than a defined number of marketing emails per hour) but exempt transactional emails from this limit.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintain SPF, DKIM, and DMARC Records Correctly</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Configure SPF records to authorize all sending IPs (your own infrastructure and your providers&apos; IPs), with a soft fail (~all) during the transition period and a hard fail (-all) once all sending sources are confirmed. Publish DKIM public keys in DNS records for each sending domain and configure the email processor to sign all outgoing emails with the appropriate DKIM private key. Publish a DMARC policy starting with `p=none` (monitoring only) and gradually increasing to `p=quarantine` and then `p=reject` as SPF and DKIM pass rates improve. Monitor DMARC aggregate reports to identify unauthorized senders using your domain and to verify that all legitimate senders are passing authentication.
-        </p>
+        </HighlightBlock>
 
         <h3>Implement Comprehensive Suppression Management</h3>
         <p>
@@ -229,16 +245,19 @@ export default function EmailServiceArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Not Separating Transactional and Marketing Queues</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mixing transactional and marketing emails in the same queue causes transactional emails to be delayed when the queue backs up during high-volume marketing campaigns. A marketing campaign sending 1 million emails can saturate the provider&apos;s rate limit, causing password reset emails (which should arrive within minutes) to be queued behind marketing emails for hours. The mitigation is to maintain separate queues with different priorities — the transactional queue is always processed first, and rate limiting applies separately to each queue. Additionally, use different IP addresses for transactional and marketing emails to ensure that marketing reputation issues do not affect transactional deliverability.
-        </p>
+        </HighlightBlock>
 
         <h3>Ignoring Bounce and Complaint Feedback Loops</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Failing to process bounce messages and complaint feedback loops leads to continued sending to invalid addresses and unengaged recipients, which damages sender reputation and can result in blacklisting. Hard bounces (permanent delivery failures) must result in immediate suppression of the recipient, and complaint feedback loops (from ISPs) must result in immediate suppression and investigation of the email content and targeting. The mitigation is to implement a feedback handler that processes bounce and complaint webhooks from all providers, updates the suppression list immediately, and alerts the email operations team when bounce or complaint rates exceed thresholds.
-        </p>
+        </HighlightBlock>
 
         <h3>Sending Without Proper Authentication</h3>
         <p>
@@ -264,16 +283,19 @@ export default function EmailServiceArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Order and Shipping Notifications</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms (Amazon, Shopify stores) use email services to send order confirmations, shipping notifications, delivery confirmations, and return processing emails. Each order triggers a sequence of transactional emails (order confirmation immediately, shipping notification when the order ships, delivery confirmation when the order arrives) that must arrive reliably and promptly. Marketing emails (promotional offers, product recommendations, abandoned cart reminders) are sent separately on a different IP pool with different rate limits. Bounce handling ensures that invalid customer addresses are suppressed, and complaint monitoring ensures that marketing emails do not generate excessive spam reports. Companies like Amazon send hundreds of millions of transactional emails per day and rely on email deliverability to keep customers informed about their orders.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Account Lifecycle Communication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SaaS products (Slack, Notion, Figma) use email services for account lifecycle communication — welcome emails (onboarding guides, feature introductions), password resets (time-sensitive, must arrive within minutes), account verification (email confirmation for new signups), billing notifications (invoices, payment failures, subscription changes), and security alerts (unusual login activity, password changes). These emails are predominantly transactional and require high deliverability and low latency. The email service must integrate with the authentication system (for password resets), the billing system (for invoices), and the security system (for alerts), with each category having its own template, priority, and delivery SLA.
-        </p>
+        </HighlightBlock>
 
         <h3>Marketing Campaign Management</h3>
         <p>
@@ -289,15 +311,18 @@ export default function EmailServiceArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you ensure transactional emails are delivered before marketing emails?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Maintain separate queues for transactional and marketing emails with strict priority ordering. The queue processor always drains the transactional queue before processing marketing emails. Additionally, use dedicated IP addresses for each category so that marketing volume does not consume the transactional IP&apos;s rate limit. Implement per-recipient rate limiting for marketing emails (e.g., max 2 marketing emails per recipient per day) but exempt transactional emails from rate limits. Monitor queue depth for both categories and alert if the transactional queue grows beyond a threshold.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

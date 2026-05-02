@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,12 +37,15 @@ export default function RollingDeploymentArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Rolling deployment</strong> is a release strategy where instances are updated sequentially (one at a time or in batches), replacing old instances with new instances until all instances are running the new version. During the rollout, a mix of old and new instances serve traffic simultaneously, ensuring that the application remains available throughout the deployment. If issues are detected at any stage, the rollout is halted and rolled back (replacing new instances with old instances until all instances are running the previous version).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, rolling deployment represents the balance between deployment speed and infrastructure cost. Unlike blue-green deployment (which requires double the infrastructure — two full environments), rolling deployment updates instances in-place, requiring only enough capacity for one additional batch of instances (or even zero additional capacity if instances are replaced one at a time). Unlike canary deployment (which routes traffic based on percentage), rolling deployment routes traffic based on instance count (old instances serve most traffic initially, new instances serve increasing traffic as the rollout progresses). This makes rolling deployment ideal for large-scale applications where infrastructure cost is a concern.
-        </p>
+        </HighlightBlock>
         <p>
           Rolling deployment involves several technical considerations. Batch size (how many instances are updated simultaneously — one at a time for minimal risk, in batches for faster rollout), health checks (verifying that new instances are healthy before proceeding to the next batch), rollback strategy (replacing new instances with old instances if issues are detected), and traffic routing (load balancer routes traffic to healthy instances — old instances are removed from the pool as they are updated, new instances are added to the pool as they become healthy).
         </p>
@@ -53,12 +57,15 @@ export default function RollingDeploymentArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Sequential Updates</strong> form the foundation of rolling deployment. Instances are updated one at a time or in batches, with the batch size representing a critical trade-off between speed and risk. One-at-a-time updates minimize risk because only a single instance is updated at any given moment — if that instance fails, the blast radius is limited to that one instance. However, this approach is slow when dealing with hundreds or thousands of instances. Batch updates (for example, updating 25% of instances simultaneously) accelerate the rollout but increase risk, since a failed batch affects a larger portion of the infrastructure. Staff engineers must calibrate batch size based on the criticality of the service, the reliability of the new version, and the acceptable window for deployment.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Health Checks</strong> are the gatekeepers that prevent broken instances from entering the traffic pool. After updating each instance or batch, health checks verify that the new instance is operating correctly — HTTP endpoints respond with expected status codes, error rates remain within normal thresholds, and performance metrics stay within acceptable bounds. Only when health checks pass does the rollout proceed to the next instance or batch. Health checks serve multiple purposes: they catch deployment failures early (a misconfigured environment variable, a missing dependency, a broken migration), they prevent user-facing errors (unhealthy instances are never added to the traffic pool), and they provide a natural pause point for operators to review deployment metrics before proceeding.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Traffic Routing</strong> during a rolling deployment is managed by the load balancer, which dynamically adjusts its backend pool as instances are updated. Old instances are gracefully drained (existing connections are allowed to complete) and removed from the pool as they are taken down for update. New instances are added to the pool only after passing health checks, at which point they begin receiving traffic. During the rollout, traffic is served by a heterogeneous mix of old and new versions — old instances handle the majority of traffic early in the rollout, while new instances handle an increasing proportion as the rollout progresses. This gradual traffic shift is both a feature and a risk: it limits the blast radius of a bad deployment, but it also means that mixed-version behavior must be carefully considered.
         </p>
@@ -84,12 +91,15 @@ export default function RollingDeploymentArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rolling deployment architecture consists of the instance pool (running instances — old and new versions), the deployment controller (orchestrating the rollout — updating instances one at a time or in batches, running health checks, managing traffic routing), and the load balancer (routing traffic to healthy instances — old instances are removed from the pool as they are updated, new instances are added to the pool as they become healthy). The flow begins with all instances running the old version. The deployment controller updates the first instance (or batch), runs health checks, and if health checks pass, adds the new instance to the traffic pool. The process repeats until all instances are running the new version.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For production deployments, the rolling deployment is integrated into the CI/CD pipeline — the pipeline builds the new version, deploys it to instances one at a time (or in batches), runs health checks after each update, and proceeds to the next instance (or batch) if health checks pass. If health checks fail, the pipeline halts the rollout and rolls back (replacing new instances with old instances).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/rolling-health-checks.svg"
@@ -122,14 +132,17 @@ export default function RollingDeploymentArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rolling deployment involves trade-offs between deployment speed, infrastructure cost, rollback speed, and risk. Understanding these trade-offs is essential for deciding when to use rolling deployment versus other deployment strategies.
-        </p>
+        </HighlightBlock>
 
         <h3>Rolling vs. Blue-Green</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Rolling:</strong> Update instances in-place, one at a time or in batches. Advantages: lower infrastructure cost (only need capacity for one additional batch), gradual exposure (issues affect only a subset of instances). Limitations: slower rollback (must roll back instance by instance), potential for mixed-version requests (some requests hit old instances, some hit new). Best for: large-scale applications where double infrastructure cost is prohibitive.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Blue-Green:</strong> Two full environments, instant traffic switch. Advantages: instant rollback (switch back instantly), simple deployment logic (all-or-nothing switch), no mixed-version requests (all instances run the same version). Limitations: double infrastructure cost. Best for: applications requiring instant rollback, teams wanting simple deployment logic.
         </p>
@@ -154,12 +167,15 @@ export default function RollingDeploymentArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Health checks must be comprehensive and blocking.</strong> Run health checks after updating each instance or batch, covering HTTP endpoint availability (the instance responds to requests), functional correctness (key features operate as expected), and performance characteristics (response times and resource utilization remain within acceptable bounds). Only proceed to the next instance or batch when all health checks pass. Health checks are the primary mechanism that prevents broken instances from entering the traffic pool and causing user-facing errors. A well-designed health check suite includes both shallow checks (is the process running, is the port open) and deep checks (can the instance connect to its dependencies, can it serve a representative request end-to-end).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Automate rollback to minimize incident duration.</strong> Configure the deployment pipeline to automatically trigger rollback when health checks fail — replacing new instances with old instances without requiring manual intervention. Automated rollback ensures that production remains in a working state at all times. If an instance update introduces a bug, the pipeline detects the failure through health checks, halts forward progress, and reverts to the previous version. This automated approach is both faster and more reliable than manual rollback, which depends on on-call engineers correctly diagnosing the issue and executing the rollback procedure under pressure. The rollback trigger should be sensitive enough to catch real failures but not so sensitive that transient issues (a brief network hiccup, a slow-starting process) cause unnecessary rollbacks.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Use surge capacity to maintain full service levels during rollout.</strong> Create new instances before removing old ones, temporarily running more instances than the steady-state target. This surge capacity ensures that the application maintains full processing power throughout the deployment — old instances continue serving traffic until new instances are verified healthy and actively receiving requests. Without surge capacity, the rollout temporarily reduces capacity (old instances are terminated before new instances are fully operational), which can cause performance degradation, increased response times, and in extreme cases, service outages under heavy load. The cost of surge capacity is typically modest compared to the cost of a degraded user experience during deployment.
         </p>
@@ -177,12 +193,15 @@ export default function RollingDeploymentArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Skipping health checks entirely</strong> is the most dangerous pitfall in rolling deployment. Updating instances without running health checks means that broken instances are silently added to the traffic pool, causing user-facing errors that may go undetected until users begin reporting them. Every rolling deployment must include health checks after each instance or batch update, and the deployment must not proceed to the next instance until those checks pass. Health checks should be treated as a non-negotiable gate — they are the difference between a controlled deployment failure (one bad instance is caught and replaced before receiving traffic) and a user-impacting incident (multiple bad instances serve errors to users).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Slow or manual rollback processes</strong> extend the duration of user impact when a deployment goes wrong. A rollback that requires manual intervention (an on-call engineer diagnosing the issue, logging into the deployment tool, and manually triggering the rollback) introduces minutes or hours of delay during which users continue to experience errors. Slow automated rollbacks that replace instances one at a time (mirroring the forward rollout speed) also extend impact duration unnecessarily. Rollback should be automated and, where possible, accelerated — replacing multiple instances in parallel rather than sequentially — to minimize the window during which users are affected.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Reduced capacity during rollout</strong> occurs when old instances are removed before new instances are healthy and serving traffic. This temporary capacity reduction means fewer instances are available to handle the same traffic load, resulting in increased response times, request queuing, and in severe cases, cascading failures as overloaded instances begin to fail. The solution is surge capacity — provisioning new instances before decommissioning old ones, ensuring that the total instance count never drops below the steady-state target during the rollout. While surge capacity incurs a modest additional cost (temporarily running extra instances), it is far cheaper than the cost of a degraded or unavailable service.
         </p>
@@ -200,16 +219,19 @@ export default function RollingDeploymentArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Large-Scale Microservices Deployment</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Organizations running large-scale microservices architectures (hundreds or thousands of instances) use rolling deployment to update instances in-place, avoiding the double infrastructure cost of blue-green deployment. Instances are updated in batches (e.g., 25% at a time), with health checks after each batch. This pattern is used by companies like Netflix, Airbnb, and Pinterest to manage large-scale microservices deployments while minimizing infrastructure cost.
-        </p>
+        </HighlightBlock>
 
         <h3>Kubernetes Deployment Updates</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Kubernetes uses rolling deployment by default (RollingUpdate strategy). When a Deployment is updated, Kubernetes creates new pods one at a time (or in batches), waits for them to become ready (readiness probe passes), then deletes old pods. This ensures zero-downtime deployments — traffic is always routed to healthy pods (old pods until new pods are ready, new pods after they are ready). Kubernetes rolling deployment is the standard approach for stateless application updates in Kubernetes.
-        </p>
+        </HighlightBlock>
 
         <h3>Cloud Auto-Scaling Group Updates</h3>
         <p>
@@ -225,15 +247,18 @@ export default function RollingDeploymentArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How does rolling deployment work?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Rolling deployment updates instances sequentially (one at a time or in batches), replacing old instances with new instances until all instances are running the new version. During the rollout, a mix of old and new instances serve traffic simultaneously, ensuring that the application remains available. After updating each instance (or batch), health checks verify that the new instance is healthy. Only after health checks pass does the rollout proceed to the next instance (or batch). If issues are detected, the rollout is halted and rolled back (replacing new instances with old instances).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

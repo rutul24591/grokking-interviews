@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function PolyfillsAndTranspilationArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Polyfills</strong> are runtime patches that provide
           implementations of web platform APIs in environments where those APIs
           are not natively available. A polyfill for Array.prototype.includes,
@@ -51,8 +55,8 @@ export default function PolyfillsAndTranspilationArticle() {
           can execute. Together, polyfills and transpilation form the
           compatibility layer that enables teams to write modern JavaScript
           while serving users across a wide spectrum of browser capabilities.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The distinction between polyfills and transpilation is fundamental:
           transpilation handles syntax differences (language features that
           change how code is written), while polyfills handle API differences
@@ -63,7 +67,7 @@ export default function PolyfillsAndTranspilationArticle() {
           — async functions need transpilation of the syntax into generator
           functions or state machines, plus polyfilling of the Promise API that
           the transpiled output depends on.
-        </p>
+        </HighlightBlock>
         <p>
           At the staff and principal engineer level, polyfills and transpilation
           are not simply build configuration concerns — they are architectural
@@ -94,8 +98,11 @@ export default function PolyfillsAndTranspilationArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Polyfill:</strong> A runtime script that implements a web
             platform API (DOM method, JavaScript built-in, CSS property
             behavior) in browsers that do not natively support it. Polyfills
@@ -105,8 +112,8 @@ export default function PolyfillsAndTranspilationArticle() {
             for DOM APIs). Non-conformant polyfills that only implement the
             happy path can introduce subtle bugs when application code relies on
             specification-defined edge case behavior.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Transpiler:</strong> A build tool that transforms source
             code from one language version to another. Babel is the canonical
             JavaScript transpiler, converting modern ECMAScript syntax (ES2015
@@ -114,7 +121,7 @@ export default function PolyfillsAndTranspilationArticle() {
             newer alternatives offering significantly faster compilation.
             Transpilers use abstract syntax tree (AST) manipulation to rewrite
             code patterns while preserving semantics.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Browserslist:</strong> A standard configuration format that
             specifies target browser environments using queries like &quot;last
@@ -175,19 +182,22 @@ export default function PolyfillsAndTranspilationArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The polyfill and transpilation pipeline spans build time and runtime,
           involving toolchain configuration, bundle generation, deployment
           strategies, and runtime patching. The following diagrams illustrate
           the key architectural patterns.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/web-standards-and-compatibility/polyfills-and-transpilation-diagram-1.svg"
           alt="Build pipeline showing source code flowing through transpiler, polyfill injection, and differential bundle generation"
           caption="Figure 1: Transpilation and polyfill build pipeline — from source code through AST transformation to differential bundles."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The build pipeline begins with source code written in modern
           JavaScript or TypeScript. The transpiler (Babel, SWC, or esbuild)
           parses the source into an AST, applies transformation plugins based on
@@ -202,7 +212,7 @@ export default function PolyfillsAndTranspilationArticle() {
           legacy set for older environments. The HTML template includes both
           bundles using the module/nomodule pattern, ensuring each browser loads
           only the appropriate set.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/web-standards-and-compatibility/polyfills-and-transpilation-diagram-2.svg"
@@ -251,6 +261,9 @@ export default function PolyfillsAndTranspilationArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr>
@@ -266,7 +279,7 @@ export default function PolyfillsAndTranspilationArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2">Bundled polyfills</td>
               <td className="border border-theme p-2">
                 Zero external dependencies, predictable loading behavior, works
@@ -278,8 +291,8 @@ export default function PolyfillsAndTranspilationArticle() {
                 size grows with each additional polyfill. Modern browsers pay a
                 performance tax for code they never execute.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2">Polyfill service</td>
               <td className="border border-theme p-2">
                 Optimal payload per browser — each user receives only what they
@@ -292,7 +305,7 @@ export default function PolyfillsAndTranspilationArticle() {
                 increasingly restricted. Self-hosting the service adds
                 infrastructure complexity.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="border border-theme p-2">Transpilation (Babel)</td>
               <td className="border border-theme p-2">
@@ -342,8 +355,11 @@ export default function PolyfillsAndTranspilationArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Align browserslist with analytics data, not aspirational targets:
             </strong>{" "}
@@ -354,8 +370,8 @@ export default function PolyfillsAndTranspilationArticle() {
             with significant traffic from specific regions or demographics.
             Review and update browserslist quarterly alongside the compatibility
             contract.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Use preset-env with useBuiltIns &quot;usage&quot; for automatic
               polyfill injection:
@@ -366,7 +382,7 @@ export default function PolyfillsAndTranspilationArticle() {
             polyfill tracking and ensures no unnecessary polyfills are bundled.
             Pair this with corejs version specification to ensure the correct
             polyfill implementations are used.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Implement differential serving for significant bundle size
@@ -417,8 +433,11 @@ export default function PolyfillsAndTranspilationArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Including the entire core-js library:</strong> Importing
             core-js without granular configuration adds 80 to 150 KB (minified
             and gzipped) to the bundle, polyfilling hundreds of APIs that the
@@ -427,8 +446,8 @@ export default function PolyfillsAndTranspilationArticle() {
             modules needed. Regularly audit which core-js modules are being
             included and whether they are still necessary given current
             browserslist targets.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Assuming transpilation guarantees identical behavior:
             </strong>{" "}
@@ -439,7 +458,7 @@ export default function PolyfillsAndTranspilationArticle() {
             enumeration behavior. These differences are usually harmless but can
             cause hard-to-debug issues in code that depends on specification
             edge cases.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Neglecting CSS polyfilling and prefixing:</strong> Teams
             that meticulously polyfill JavaScript often neglect CSS
@@ -487,7 +506,10 @@ export default function PolyfillsAndTranspilationArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Next.js automatic polyfilling:</strong> Next.js includes
           automatic polyfill management as part of its build pipeline. The
           framework detects API usage and injects polyfills for features like
@@ -498,8 +520,8 @@ export default function PolyfillsAndTranspilationArticle() {
           from optimized polyfill delivery without manual configuration, while
           the framework team centrally manages polyfill strategy updates across
           thousands of applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Airbnb&apos;s migration from Babel to SWC:</strong> Airbnb
           migrated their large monorepo from Babel to SWC for transpilation,
           reducing build times by over 60 percent. The migration involved
@@ -509,7 +531,7 @@ export default function PolyfillsAndTranspilationArticle() {
           per-package while keeping Babel as a fallback. The migration
           demonstrated that for large codebases, transpiler performance directly
           impacts developer productivity and CI costs.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Shopify&apos;s polyfill service architecture:</strong> Shopify
           operates a self-hosted polyfill service that analyzes merchant store
@@ -537,28 +559,34 @@ export default function PolyfillsAndTranspilationArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Polyfills and Transpilation introduce security considerations around third-party code execution, polyfill supply chain security, and ensuring transpiled code maintains security properties.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Polyfill Security Patterns</h3>
-          <ul className="space-y-2">
-            <li>
-              <strong>Polyfill Supply Chain:</strong> Third-party polyfills can introduce vulnerabilities. Mitigation: use trusted polyfill sources (polyfill.io, core-js), pin exact versions, audit polyfill code, implement Content Security Policy.
-            </li>
-            <li>
-              <strong>Transpilation Security:</strong> Transpiled code must maintain security properties. Mitigation: test transpiled output for security issues, validate that security-critical code isn't weakened by transpilation.
-            </li>
-          </ul>
-        </div>
+	          <h3 className="mb-4 text-lg font-semibold">Polyfill Security Patterns</h3>
+	          <ul className="space-y-2">
+	            <HighlightBlock as="li" tier="important">
+	              <strong>Polyfill Supply Chain:</strong> Third-party polyfills can introduce vulnerabilities. Mitigation: use trusted polyfill sources (polyfill.io, core-js), pin exact versions, audit polyfill code, implement Content Security Policy.
+	            </HighlightBlock>
+	            <HighlightBlock as="li" tier="important">
+	              <strong>Transpilation Security:</strong> Transpiled code must maintain security properties. Mitigation: test transpiled output for security issues, validate that security-critical code isn't weakened by transpilation.
+	            </HighlightBlock>
+	          </ul>
+	        </div>
       </section>
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Polyfills and Transpilation performance depends on polyfill size, transpilation overhead, and loading strategy.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -571,16 +599,16 @@ export default function PolyfillsAndTranspilationArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Polyfill Size</td>
                 <td className="p-2">&lt;50KB gzipped</td>
                 <td className="p-2">Webpack Bundle Analyzer</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Transpilation Overhead</td>
                 <td className="p-2">&lt;10% bundle increase</td>
                 <td className="p-2">Bundle comparison</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Runtime Polyfill Cost</td>
                 <td className="p-2">&lt;1ms per polyfill</td>
@@ -593,9 +621,12 @@ export default function PolyfillsAndTranspilationArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Polyfills and Transpilation have infrastructure and development costs but provide significant benefits for browser compatibility.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
@@ -611,22 +642,25 @@ export default function PolyfillsAndTranspilationArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">When to Use Polyfills and Transpilation</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Use polyfills when: (1) you need to support older browsers, (2) you want to use modern JavaScript features, (3) you serve users with varying browser capabilities. Use transpilation when: (1) you need to support ES5 browsers, (2) you want to use modern syntax.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between a polyfill and a transpiler, and
               when do you need both?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: A transpiler converts newer syntax into older syntax at build
               time — it rewrites code structure. A polyfill provides runtime
               implementations of APIs that browsers lack. You need both when a
@@ -636,7 +670,7 @@ export default function PolyfillsAndTranspilationArticle() {
               Symbol.iterator for transpiled for-of loops). Transpilation alone
               handles syntax; polyfills alone handle APIs; many features span
               both categories.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

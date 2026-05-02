@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -32,7 +33,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Versioning &amp; Backward Compatibility</strong> encompass the
           strategies and practices for evolving distributed systems without
           breaking existing clients. In any architecture where you do not control
@@ -44,8 +48,8 @@ export default function ArticlePage() {
           not yet upgraded. Forward compatibility ensures that older servers can
           gracefully handle requests from newer clients, typically by ignoring
           unknown fields.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental challenge is balancing evolution with stability.
           Systems must evolve to add features, fix architectural flaws, improve
           performance, and respond to changing business requirements. Yet every
@@ -55,7 +59,7 @@ export default function ArticlePage() {
           structured framework for managing this tension, allowing you to
           introduce breaking changes under a new version identifier while
           maintaining the old version for clients that have not migrated.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, versioning strategy is a critical
           architectural concern that affects developer experience, operational
@@ -72,7 +76,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Versioning applies to multiple surface areas within a system. API
           versioning governs how clients specify which interface contract they
           expect. Schema versioning governs how data structures evolve in
@@ -81,8 +88,8 @@ export default function ArticlePage() {
           Each area has its own considerations but shares the core principle that
           changes should not break existing consumers without an explicit,
           well-communicated migration path.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Backward compatibility is the property that a new version of a system
           works correctly with clients built against an older version. When you
           deploy version 2 of an API, any client written for version 1 should
@@ -90,7 +97,7 @@ export default function ArticlePage() {
           additive changes — adding optional fields, adding new endpoints, adding
           enum values — and through compatibility layers that translate between
           old and new formats when breaking changes are unavoidable.
-        </p>
+        </HighlightBlock>
         <p>
           Forward compatibility is the complementary property that an older
           version of a system can handle data from a newer version by gracefully
@@ -121,15 +128,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The architecture of a versioned system involves multiple layers working
           together to route requests to the correct handler, translate between
           versions when necessary, and manage the lifecycle from active support
           through deprecation to sunset. Understanding this flow is essential for
           designing systems that can evolve without disruption.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           API versioning strategies determine how clients specify their desired
           version. URL versioning embeds the version in the path — such as{" "}
           <code className="mx-1 rounded bg-panel-soft px-1">
@@ -158,7 +168,7 @@ export default function ArticlePage() {
           , providing clear timelines for deprecation since &quot;versions older
           than one year&quot; is unambiguous, though it does not convey whether a
           change is breaking or non-breaking.
-        </p>
+        </HighlightBlock>
 
         <p>
           The request flow through a versioned API typically begins at the edge
@@ -229,17 +239,20 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Aspect</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Aspect</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3">
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3">
                 <strong>URL Versioning</strong>
               </td>
               <td className="p-3">
@@ -251,8 +264,8 @@ export default function ArticlePage() {
                 Violates REST purity principles since the same resource has
                 multiple URLs, creates URL proliferation as versions accumulate.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Header Versioning</strong>
               </td>
@@ -265,8 +278,8 @@ export default function ArticlePage() {
                 header value complicating CDN configuration, not testable in
                 browser address bar.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Date-Based Versioning</strong>
               </td>
@@ -279,7 +292,7 @@ export default function ArticlePage() {
                 breaking versus non-breaking distinction, clients may not
                 understand which date to pin.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Parallel Run Migration</strong>
@@ -314,7 +327,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design for backward compatibility from the outset by making fields
           optional by default, avoiding required fields unless absolutely
           necessary, and ensuring clients ignore unknown fields in responses.
@@ -324,8 +340,8 @@ export default function ArticlePage() {
           migration path before introducing it — determine how clients will
           migrate, what tooling you can provide, whether the migration can be
           incremental, and what the rollback plan is if issues arise.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Maintain a strict limit on concurrent versions, typically supporting
           only the current version and the immediately preceding version, with a
           possible third version for enterprise customers under special
@@ -335,7 +351,7 @@ export default function ArticlePage() {
           cognitive load on the engineering team grows with each additional
           surface area. A clear deprecation policy with firm timelines prevents
           version accumulation from becoming unmanageable.
-        </p>
+        </HighlightBlock>
         <p>
           Provide automated migration tooling such as codemods that transform
           consumer code from the old interface to the new one. When a breaking
@@ -361,7 +377,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most pervasive pitfall is designing schemas with required fields
           that later turn out to be unnecessary, forcing a breaking change to
           make them optional. The discipline of starting every field as optional
@@ -371,8 +390,8 @@ export default function ArticlePage() {
           frequent source of breakage — clients using strict JSON parsers or
           code-generated deserializers will fail on unknown fields unless
           explicitly configured to be lenient.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common mistake is accumulating versions without a deprecation
           strategy, resulting in a system that supports five or more concurrent
           API versions. Each additional version multiplies the testing matrix,
@@ -381,7 +400,7 @@ export default function ArticlePage() {
           deprecation timeline and the organizational discipline to enforce it,
           version accumulation becomes a form of technical debt that eventually
           paralyzes the team.
-        </p>
+        </HighlightBlock>
         <p>
           Changing the semantics of an existing field without creating a new
           field is a subtle but destructive breaking change. When a field called{" "}
@@ -408,7 +427,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Stripe&apos;s API versioning is a canonical example of URL-based
           versioning done at scale. Stripe pins each API key to a specific
           version, meaning that existing integrations continue to work on their
@@ -418,8 +440,8 @@ export default function ArticlePage() {
           warnings, and one-click upgrade buttons. This approach balances
           stability for existing integrations with easy migration paths for
           developers who want new features.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           GitHub&apos;s REST API uses URL versioning with a clear lifecycle. The
           v3 API has been in production for years while GitHub developed the
           GraphQL API as a parallel surface. Rather than forcing migration,
@@ -429,7 +451,7 @@ export default function ArticlePage() {
           deprecation directives on fields rather than version numbers,
           demonstrating how different interface types within the same product
           require different versioning approaches.
-        </p>
+        </HighlightBlock>
         <p>
           Amazon Web Services uses date-based versioning across its API surface,
           with each service publishing its API version as a date string like{" "}
@@ -456,12 +478,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What makes a schema change backward compatible versus breaking?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: A backward compatible change is one that existing consumers can
               handle without modification. Adding optional fields is safe because
               old consumers simply ignore the new field. Adding enum values is
@@ -479,7 +504,7 @@ export default function ArticlePage() {
               design schemas expecting change — use optional fields, avoid
               required fields unless truly necessary, and ensure consumers ignore
               unknown fields.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

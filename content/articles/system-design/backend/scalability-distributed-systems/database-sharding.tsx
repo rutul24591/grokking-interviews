@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Database sharding</strong> is a horizontal partitioning
           strategy that distributes data across multiple independent database
           instances (called <em>shards</em>), where each shard contains a
@@ -49,8 +53,8 @@ export default function ArticlePage() {
           nodes), sharding splits <em>rows</em> — each row exists on exactly one
           shard (ignoring replication for fault tolerance), and the assignment
           of rows to shards is determined by a <em>shard key</em>.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental motivation for sharding is the limitation of vertical
           scaling. A single database server has finite CPU, memory, disk I/O,
           and network bandwidth. Once these resources are exhausted, the only
@@ -63,7 +67,7 @@ export default function ArticlePage() {
           shard (by splitting the data in half) reduces each shard to 50 GB and
           approximately 500 writes per second — effectively doubling the
           system&apos;s write capacity.
-        </p>
+        </HighlightBlock>
         <p>
           The term &quot;shard&quot; was popularized by the MMORPG Ultima
           Online, where the game world was split across multiple server
@@ -92,8 +96,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>shard key</strong> is the single most important design
           decision in a sharding architecture. It is the attribute (or composite
           of attributes) used to determine which shard a row belongs to. Every
@@ -103,9 +110,9 @@ export default function ArticlePage() {
           a <em>scatter-gather query</em>). The choice of shard key therefore
           determines both the distribution of data across shards and the
           efficiency of the most common query patterns.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           There are four primary shard key strategies, each with distinct
           trade-offs. <strong>Range-based sharding</strong> assigns rows to
           shards based on which range the shard key falls into — for example,
@@ -131,7 +138,7 @@ export default function ArticlePage() {
           on US shards, EU users on EU shards. This satisfies data sovereignty
           requirements (GDPR, CCPA) and reduces latency by serving users from
           nearby data centers, but cross-region queries become expensive.
-        </p>
+        </HighlightBlock>
 
         <p>
           The <strong>shard router</strong> (also called a shard map, config
@@ -171,6 +178,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/database-sharding-diagram-1.svg"
@@ -178,7 +188,7 @@ export default function ArticlePage() {
           caption="Sharded database architecture — a shard router maps shard keys to independent database instances, each handling a disjoint data subset"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The request flow in a sharded database begins with the application
           issuing a query that includes a shard key. The shard router receives
           the query, extracts the shard key value, and performs a lookup to
@@ -193,9 +203,9 @@ export default function ArticlePage() {
           latency, but the shard itself experiences no additional latency from
           the sharding — it processes the query as if it were a standalone
           database.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Within each shard, the database operates independently. Each shard
           maintains its own connection pool, its own buffer pool, its own write
           ahead log (WAL), and its own set of indexes. This independence is the
@@ -208,7 +218,7 @@ export default function ArticlePage() {
           Each shard can also be tuned independently: hot shards can be deployed
           on faster hardware, and cold shards can be consolidated onto shared
           infrastructure to reduce costs.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/database-sharding-diagram-2.svg"
@@ -261,8 +271,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Sharding must be compared against the alternatives for scaling
           databases. <strong>Read replicas</strong> are the simplest scaling
           strategy — they replicate the entire dataset to multiple nodes and
@@ -277,7 +290,7 @@ export default function ArticlePage() {
           (Redis, Memcached) can absorb read traffic and reduce database load,
           but they do not help with write-heavy workloads or large datasets that
           exceed cache capacity.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -351,7 +364,7 @@ export default function ArticlePage() {
           </tbody>
         </table>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The decision to shard should not be taken lightly. Sharding introduces
           permanent operational complexity: cross-shard queries are slow,
           distributed transactions across shards require two-phase commit (or
@@ -364,14 +377,17 @@ export default function ArticlePage() {
           replicas, caching, and query optimization to extend the life of a
           single-node or replicated architecture — and only shard when write
           throughput or dataset size makes it unavoidable.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choose the shard key based on your most common query pattern, not on
           theoretical distribution quality. The ideal shard key is one that
           appears in the WHERE clause of 90%+ of queries, has high cardinality
@@ -386,9 +402,9 @@ export default function ArticlePage() {
           sharding, as they concentrate all new writes on the last shard — a
           classic &quot;write hot spot&quot; anti-pattern. If you must use a
           timestamp-based key, use hash-based sharding to distribute the writes.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Design your application to minimize cross-shard queries from the
           outset. The most effective strategy is <em>colocation</em> — ensuring
           that data that is frequently queried together lives on the same shard.
@@ -402,7 +418,7 @@ export default function ArticlePage() {
           store a copy of the frequently joined data on each relevant shard,
           accepting the write amplification cost to avoid the cross-shard read
           penalty.
-        </p>
+        </HighlightBlock>
 
         <p>
           Implement automated shard monitoring with per-shard metrics. Monitor
@@ -442,8 +458,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing a shard key that creates write hot spots is the most common
           and damaging mistake. A monotonically increasing shard key (such as an
           auto-increment ID or a timestamp) with range-based sharding causes all
@@ -454,9 +473,9 @@ export default function ArticlePage() {
           either use hash-based sharding (which distributes sequential keys
           across shards) or to use a composite shard key that includes a random
           component (e.g., <code>hash(user_id + timestamp)</code>).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Underestimating cross-shard JOIN cost is another common error. In a
           non-sharded database, a JOIN between two tables is a single operation
           executed by the database engine using optimized algorithms (nested loop,
@@ -470,7 +489,7 @@ export default function ArticlePage() {
           feasible, consider using a data warehouse (which is designed for
           cross-partition queries) for analytical queries and keep the sharded
           database for transactional queries.
-        </p>
+        </HighlightBlock>
 
         <p>
           Neglecting shard rebalancing until it becomes a crisis. As data grows,
@@ -519,8 +538,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           GitHub sharded its MySQL databases early in its growth, using{" "}
           <code>user_id</code> as the shard key. Each shard contains a subset of
           users, and all tables that are scoped to a user (repositories, issues,
@@ -532,9 +554,9 @@ export default function ArticlePage() {
           automated splitting, and connection pooling. This architecture enabled
           GitHub to scale from a single MySQL instance to hundreds of shards
           serving millions of developers.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pinterest uses sharded MySQL for its social graph data, with{" "}
           <code>user_id</code> as the shard key across 4,000+ shards. Pinterest&apos;s
           sharding system, called &quot;Pinlater,&quot; uses a directory-based
@@ -546,7 +568,7 @@ export default function ArticlePage() {
           challenge of handling celebrity users whose data generates
           disproportionate read traffic (solved with a per-user read cache) and
           the complexity of migrating data during shard splits.
-        </p>
+        </HighlightBlock>
 
         <p>
           Uber&apos;s initial sharding architecture used a range-based approach
@@ -581,6 +603,9 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
@@ -589,7 +614,7 @@ export default function ArticlePage() {
             would you handle a user&apos;s feed, which aggregates posts from
             thousands of followed users who may be on different shards?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The shard key should be <code>user_id</code> with hash-based
             partitioning. Hash-based ensures uniform distribution — even if user
             IDs are assigned sequentially, the hash function scatters them
@@ -598,8 +623,8 @@ export default function ArticlePage() {
             user-scoped: fetch a user&apos;s profile, their posts, their
             followers, their notifications. By sharding on <code>user_id</code>,
             all of these queries are targeted to a single shard.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The feed problem is more nuanced. A user&apos;s feed aggregates posts
             from all users they follow, and those followed users are distributed
             across shards. A naive approach — fan out a query to all shards,
@@ -616,7 +641,7 @@ export default function ArticlePage() {
             feed, the application reads the precomputed list of post IDs from
             the feed cache and fetches the full post content from the respective
             shards in a batch request.
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             For celebrity users with millions of followers, the push model
             creates a write amplification problem — a single post generates

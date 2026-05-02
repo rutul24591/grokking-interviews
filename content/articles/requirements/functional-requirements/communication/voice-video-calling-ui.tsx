@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function VoiceVideoCallingUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Voice/Video calling UI enables real-time audio/video communication with call controls, quality indicators, and collaboration features. Users make 1:1 calls for personal conversations, group calls for team meetings, and large calls for webinars. The UI must handle call establishment, media rendering, controls (mute, video toggle, end), quality feedback, and additional features like screen sharing and chat. Call quality directly impacts user satisfaction—choppy audio or frozen video frustrates users.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of calling UI stems from real-time media handling. Audio/video streams must render smoothly with minimal latency. Network conditions vary—UI must adapt quality dynamically. Multiple participants require grid layouts that scale. Screen sharing needs secure capture and display. Call controls must be accessible during the call without obscuring video. Background processes (noise suppression, echo cancellation) run without user intervention.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, calling UI implementation involves WebRTC integration, media stream management, and real-time state synchronization. The UI must handle call states (ringing, connected, ended), participant states (joined, left, muted), and network states (good, poor, disconnected). Error handling for failed calls, reconnection logic, and fallback options are critical. The architecture must support multiple platforms (web, iOS, Android) with consistent UX.
         </p>
@@ -47,13 +51,16 @@ export default function VoiceVideoCallingUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Call States</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Idle: No active call. Show call initiation UI (contact list, dial pad, new call button). Background state: check for incoming calls. Battery efficient—no media processing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Ringing (Outgoing): Call initiated, waiting for recipient. Show caller info, call status ("Calling..."), cancel button. Play ringback tone (optional). Handle no answer timeout (30-60 seconds).
-        </p>
+        </HighlightBlock>
         <p>
           Ringing (Incoming): Incoming call notification. Full-screen takeover (mobile) or modal (desktop). Show caller info, answer/decline buttons. Play ringtone. Handle timeout (auto-decline after 30-60 seconds).
         </p>
@@ -126,9 +133,12 @@ export default function VoiceVideoCallingUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Calling UI architecture spans call management, media rendering, controls, and state synchronization. Call manager handles call lifecycle (start, answer, end). Media renderer displays audio/video streams. Controls overlay provides user interaction. State sync keeps all participants synchronized.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/voice-video-calling-ui/calling-ui-architecture.svg"
@@ -139,9 +149,9 @@ export default function VoiceVideoCallingUIArticle() {
         />
 
         <h3>Call Manager</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Call initialization: select contact, choose call type (audio/video), initiate WebRTC connection. Signal to recipient (push notification for background). Handle incoming call (ring, answer/decline).
-        </p>
+        </HighlightBlock>
         <p>
           Media stream management: request camera/microphone permissions. Handle permission denied (fallback to audio-only). Switch cameras (front/back on mobile). Adjust camera settings (resolution, frame rate).
         </p>
@@ -212,14 +222,17 @@ export default function VoiceVideoCallingUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Calling UI design involves trade-offs between quality, performance, features, and complexity. Understanding these trade-offs enables informed decisions aligned with use case and platform constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Video Quality vs Bandwidth</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           High quality (1080p, 30fps): Pros: Best visual experience. Cons: High bandwidth (4+ Mbps), battery drain. Best for: WiFi, desktop, important calls.
-        </p>
+        </HighlightBlock>
         <p>
           Balanced (720p, 30fps): Pros: Good quality, reasonable bandwidth (1-2 Mbps). Cons: Some quality loss. Best for: Most consumer calls.
         </p>
@@ -274,13 +287,16 @@ export default function VoiceVideoCallingUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Request permissions early:</strong> Ask for camera/mic permissions before call starts. Explain why needed. Handle denial gracefully (audio-only fallback).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Auto-hide controls:</strong> Hide controls after 3-5 seconds inactivity. Tap to show. End call always visible. Maximizes video space.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Show quality indicators:</strong> Network quality icon (color-coded). Tooltip with details. Suggest fixes on poor quality.
           </li>
@@ -310,13 +326,16 @@ export default function VoiceVideoCallingUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No permission handling:</strong> App crashes on permission denial. Solution: Graceful fallback to audio-only, explain why needed.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Controls always visible:</strong> Obscures video. Solution: Auto-hide after inactivity, tap to show.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No quality feedback:</strong> Users don't know why call is choppy. Solution: Show network quality, suggest fixes.
           </li>
@@ -346,16 +365,19 @@ export default function VoiceVideoCallingUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>FaceTime</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Apple's FaceTime: 1:1 and group calls (up to 32). Grid view with active speaker highlight. Portrait/landscape support. Screen share (iOS 15+). SharePlay for synchronized viewing. End-to-end encrypted.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Zoom</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Zoom: Large group calls (100-1000 participants). Gallery view (49 participants), speaker view. Screen share with annotation. Virtual backgrounds. Recording, transcription. Breakout rooms.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Google Meet</h3>
         <p>
@@ -375,12 +397,15 @@ export default function VoiceVideoCallingUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle video layout for N participants?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle video layout for N participants?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Grid layout with dynamic columns: 1 participant (full), 2 (side-by-side), 3-4 (2x2), 5-9 (3x3), 9-16 (4x4). Max visible 16, overflow in pagination. Active speaker highlighted (border, slightly larger). Smooth animations on join/leave using FLIP technique.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

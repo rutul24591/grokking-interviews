@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function TermsAcceptanceTrackingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Terms Acceptance Tracking enables tracking and managing user acceptance of terms of service, privacy policies, and other legal agreements. Users can view terms (read terms of service), accept terms (agree to terms), track acceptance (see acceptance history), and re-accept terms (accept updated terms). Terms acceptance tracking is fundamental to legal compliance (prove users accepted terms), user awareness (users know what they accepted), and risk mitigation (protect from legal liability). For platforms with legal agreements, effective terms acceptance tracking is essential for compliance, legal protection, and user transparency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, terms acceptance tracking architecture involves terms presentation (present terms to users), acceptance recording (record user acceptance), version tracking (track terms versions), re-acceptance requirements (require re-acceptance for updates), and compliance tracking (track compliance). The implementation must balance compliance (prove acceptance) with user experience (don&apos;t frustrate users) and legal requirements (meet legal standards). Poor terms acceptance tracking leads to compliance violations, legal liability, and inability to prove acceptance.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of terms acceptance tracking extends beyond simple checkbox. Terms presentation (how to present terms). Acceptance recording (how to record acceptance). Version tracking (track which version accepted). Re-acceptance (when to require re-acceptance). Compliance tracking (track compliance). For staff engineers, terms acceptance tracking is a legal compliance infrastructure decision affecting legal protection, compliance, and user transparency.
         </p>
@@ -46,13 +50,16 @@ export default function TermsAcceptanceTrackingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Terms Presentation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Terms display presents terms to users. Full terms (display full terms). Summary (display summary of terms). Key points (highlight key points). Terms display enables users to read terms. Benefits include user awareness (users know what accepting), compliance (users can read terms). Drawbacks includes length (terms are long), user fatigue (users don&apos;t read).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Acceptance interface enables users to accept terms. Checkbox (checkbox to accept). Button (button to accept). Signature (electronic signature). Acceptance interface enables recording acceptance. Benefits include clear acceptance (users explicitly accept), compliance (prove acceptance). Drawbacks includes friction (users must accept), may block usage.
-        </p>
+        </HighlightBlock>
         <p>
           Terms timing determines when to present terms. On signup (present on signup). On update (present on terms update). Periodic (present periodically). Terms timing affects compliance. Benefits include compliance (accept before use), user awareness (know what accepting). Drawbacks includes friction (must accept to use), may lose users.
         </p>
@@ -104,9 +111,12 @@ export default function TermsAcceptanceTrackingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Terms acceptance tracking architecture spans terms service, acceptance service, version service, and compliance service. Terms service manages terms. Acceptance service manages acceptance. Version service manages versions. Compliance service manages compliance. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/terms-acceptance-tracking/tracking-architecture.svg"
@@ -117,9 +127,9 @@ export default function TermsAcceptanceTrackingArticle() {
         />
 
         <h3>Terms Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Terms service manages terms. Terms storage (store terms). Terms retrieval (retrieve terms). Terms update (update terms). Terms service is the core of terms management. Benefits include centralization (one place for terms), consistency (same terms everywhere). Drawbacks includes complexity (manage terms), coupling (services depend on terms service).
-        </p>
+        </HighlightBlock>
         <p>
           Terms policies define terms rules. Presentation rules (how to present terms). Acceptance rules (how to accept terms). Re-acceptance rules (when to re-accept). Terms policies automate terms management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function TermsAcceptanceTrackingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Terms acceptance tracking design involves trade-offs between compliance and user experience, explicit and implicit acceptance, and frequent and infrequent re-acceptance. Understanding these trade-offs enables informed decisions aligned with legal requirements and user needs.
-        </p>
+        </HighlightBlock>
 
         <h3>Acceptance: Explicit vs. Implicit</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Explicit acceptance (user explicitly accepts). Pros: Clear acceptance (user explicitly agrees), compliance proof (can prove acceptance), legal protection (protect from liability). Cons: User friction (must explicitly accept), may lose users (users don&apos;t accept), blocks usage (can&apos;t use until accept). Best for: Legal compliance, important terms.
-        </p>
+        </HighlightBlock>
         <p>
           Implicit acceptance (user accepts by using). Pros: Less friction (no explicit action), don&apos;t lose users (users can use), don&apos;t block usage. Cons: Unclear acceptance (user may not know), compliance risk (may not prove acceptance), legal risk (may not protect). Best for: Minor terms, low-risk terms.
         </p>
@@ -207,13 +220,16 @@ export default function TermsAcceptanceTrackingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Present terms clearly:</strong> Full terms available. Summary of key points. Highlight important terms. Easy to read.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Record acceptance:</strong> Record user acceptance. Store timestamp. Store user identity. Store terms version.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Track versions:</strong> Track terms versions. Version metadata. Version history. Version comparison.
           </li>
@@ -243,13 +259,16 @@ export default function TermsAcceptanceTrackingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No acceptance recording:</strong> Can&apos;t prove acceptance. <strong>Solution:</strong> Record all acceptances with details.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No version tracking:</strong> Don&apos;t know which version accepted. <strong>Solution:</strong> Track terms versions.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No re-acceptance:</strong> Users don&apos;t accept updates. <strong>Solution:</strong> Require re-acceptance for updates.
           </li>
@@ -279,16 +298,19 @@ export default function TermsAcceptanceTrackingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>SaaS Terms Acceptance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SaaS platforms implement terms acceptance. Terms on signup (accept on signup). Version tracking (track version accepted). Re-acceptance on update (re-accept on major updates). Compliance monitoring (monitor compliance). SaaS must track terms acceptance for legal compliance.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">E-commerce Terms Acceptance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms implement terms acceptance. Terms on purchase (accept on purchase). Version tracking (track version accepted). Re-acceptance on update (re-accept on updates). Compliance monitoring (monitor compliance). E-commerce must track terms acceptance for legal protection.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Mobile App Terms Acceptance</h3>
         <p>
@@ -308,12 +330,15 @@ export default function TermsAcceptanceTrackingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you implement terms acceptance tracking that proves legal compliance?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you implement terms acceptance tracking that proves legal compliance?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement comprehensive acceptance tracking because legal disputes require proof that user accepted specific terms version. Record acceptance: capture user ID (who accepted), timestamp (when accepted), IP address (where from), terms version (which version accepted), acceptance method (checkbox, clickwrap, signature)—complete audit trail. Store records: secure storage (encrypted database, access controls, audit logging)—protect records from tampering, unauthorized access. Track versions: track which version each user accepted (version number, effective date, content hash)—know exactly what user agreed to. Verify compliance: verify acceptance before allowing access (check user accepted current version, flag if re-acceptance needed)—enforce compliance at access time. The compliance insight: must prove acceptance—record everything (who, when, where, which version, how), store securely (encrypted, access controlled), track versions (exact version accepted), verify compliance (check before access), and maintain audit trail for legal disputes.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

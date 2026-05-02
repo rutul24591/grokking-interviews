@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ContentArchivingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content Archiving enables long-term preservation of content that is no longer actively used but must be retained for compliance, historical, or reference purposes. Users can archive content (move to archive storage), retrieve archived content (access archived content), manage archive lifecycle (when to archive, when to delete), and comply with archive requirements (meet compliance retention). Content archiving is fundamental to compliance (meet retention requirements), cost management (move old content to cheaper storage), and historical preservation (preserve content for future reference). For platforms with regulatory requirements (financial, healthcare, legal) or large content volumes, effective content archiving is essential for compliance, cost control, and content preservation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, content archiving architecture involves archive policies (when to archive, what to archive), archive storage (where archived content is stored), archive retrieval (how to access archived content), archive lifecycle (manage archive from creation to deletion), and compliance archiving (meet regulatory requirements). The implementation must balance cost (archive storage is cheaper) with accessibility (archived content must be retrievable) and compliance (meet retention requirements). Poor content archiving leads to compliance violations, excessive storage costs, and inability to retrieve historical content.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of content archiving extends beyond simple storage movement. Archive policies (determine what to archive and when). Archive storage (choose appropriate storage tier). Archive retrieval (enable access to archived content). Archive lifecycle (manage archive from creation to deletion). Compliance requirements (meet regulatory retention). For staff engineers, content archiving is a content lifecycle infrastructure decision affecting compliance, storage costs, and content accessibility.
         </p>
@@ -46,13 +50,16 @@ export default function ContentArchivingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Archive Policies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Archive triggers determine when content is archived. Time-based (archive after X time inactive). Event-based (archive on specific event). Manual (user triggers archive). Archive triggers automate archiving. Benefits include automation (don&apos;t have to manually archive), consistency (same rules for all content). Drawbacks includes complexity (define triggers), may archive prematurely.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Archive selection determines what content to archive. By age (archive old content). By type (archive specific content types). By status (archive completed content). Archive selection ensures appropriate content is archived. Benefits include targeted archiving (archive what matters), storage efficiency (don&apos;t archive everything). Drawbacks includes complexity (define selection), may miss important content.
-        </p>
+        </HighlightBlock>
         <p>
           Archive retention determines how long to keep archived content. Compliance retention (keep for regulatory period). Business retention (keep for business need). Indefinite retention (keep forever). Archive retention balances compliance with storage. Benefits include compliance (meet requirements), storage management (delete when no longer needed). Drawbacks includes complexity (manage retention), may delete important content.
         </p>
@@ -104,9 +111,12 @@ export default function ContentArchivingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content archiving architecture spans archive service, archive storage, retrieval service, and compliance management. Archive service manages archive policies and lifecycle. Archive storage persists archived content. Retrieval service enables accessing archived content. Compliance management ensures compliance requirements are met. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/content-archiving/archiving-architecture.svg"
@@ -117,9 +127,9 @@ export default function ContentArchivingArticle() {
         />
 
         <h3>Archive Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Archive service manages archive policies and lifecycle. Policy management (manage archive policies). Lifecycle management (manage archive lifecycle). Archive scheduling (schedule archiving). Archive service is the core of content archiving. Benefits include centralization (one place for archiving), consistency (same archiving everywhere). Drawbacks includes complexity (manage archiving), coupling (services depend on archive service).
-        </p>
+        </HighlightBlock>
         <p>
           Archive policies define archiving rules. Archive triggers (when to archive). Archive selection (what to archive). Archive retention (how long to keep). Archive policies automate archiving. Benefits include automation (automatic archiving), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function ContentArchivingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content archiving design involves trade-offs between cost and accessibility, automation and control, and retention and storage. Understanding these trade-offs enables informed decisions aligned with compliance requirements and business needs.
-        </p>
+        </HighlightBlock>
 
         <h3>Storage: Cost vs. Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Low-cost storage (deep archive, coldest storage). Pros: Maximum cost savings (cheapest storage), compliance (meet retention cheaply), environmental (less energy). Cons: High retrieval latency (hours to days), high retrieval cost (expensive to retrieve), limited access (may not be immediately accessible). Best for: Long-term retention, rarely accessed archives.
-        </p>
+        </HighlightBlock>
         <p>
           High-accessibility storage (hot archive, fast storage). Pros: Fast retrieval (immediate access), low retrieval cost (cheap to retrieve), full access (immediately accessible). Cons: High storage cost (expensive storage), less cost savings, more energy. Best for: Frequently accessed archives, important archives.
         </p>
@@ -207,13 +220,16 @@ export default function ContentArchivingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Define archive policies:</strong> When to archive. What to archive. How long to keep. Automate archiving.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use tiered storage:</strong> Hot archive for frequent access. Cold archive for rare access. Deep archive for long-term. Move between tiers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ensure archive integrity:</strong> Checksums for verification. Regular integrity checks. Corruption detection. Integrity reports.
           </li>
@@ -243,13 +259,16 @@ export default function ContentArchivingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No archive policies:</strong> Archive ad-hoc, inconsistent. <strong>Solution:</strong> Define policies, automate archiving.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Wrong storage tier:</strong> Expensive storage for archives. <strong>Solution:</strong> Use tiered storage, appropriate tier.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No integrity checks:</strong> Corrupted archives undetected. <strong>Solution:</strong> Checksums, regular verification.
           </li>
@@ -279,16 +298,19 @@ export default function ContentArchivingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Financial Services Compliance Archiving</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Financial services implement compliance archiving. Regulatory retention (keep for 7+ years). Compliance audit (audit trail for regulators). Legal holds (don&apos;t delete if under legal hold). Compliance export (export for regulators). Financial services must meet strict compliance requirements for content retention.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Healthcare Records Archiving</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Healthcare platforms implement records archiving. HIPAA retention (keep medical records for 6+ years). Patient access (patients can access archived records). Security (secure archived records). Compliance audit (audit for HIPAA compliance). Healthcare must meet HIPAA requirements for medical records retention.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Legal Document Archiving</h3>
         <p>
@@ -308,12 +330,15 @@ export default function ContentArchivingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design archive policies that balance cost with accessibility?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design archive policies that balance cost with accessibility?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement tiered archive storage that matches storage cost to access patterns. Hot archive: for frequently accessed content (last 30 days, accessed &gt;1x/week)—fast retrieval (seconds), more expensive storage (SSD, hot storage tier). Cold archive: for rarely accessed content (30-365 days old, accessed &lt;1x/month)—slower retrieval (minutes-hours), cheaper storage (HDD, cold storage tier). Deep archive: for long-term retention (&gt;1 year, compliance archives)—slowest retrieval (hours-days), cheapest storage (tape, glacier, deep archive tier). Move content between tiers based on access patterns: automatic tiering (content moves to cold after 30 days of no access), manual tiering (user explicitly moves content), policy-based tiering (content type determines tier). The cost insight: not all archives need same accessibility—tier storage based on access patterns, move as patterns change, optimize cost by storing rarely-accessed content on cheap storage while keeping frequently-accessed content on fast storage.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -41,7 +42,10 @@ export default function ArticlePage() {
       {/* Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Logging</strong> is the practice of emitting discrete, timestamped events from application code,
           infrastructure components, and platform services to record state transitions, errors, unexpected conditions,
           and significant decisions made by the system. Logs serve as the primary evidentiary record for diagnosing
@@ -49,8 +53,8 @@ export default function ArticlePage() {
           not anticipated during design. Unlike metrics, which provide aggregated numerical signals about system health,
           and unlike traces, which map the path of a single request across service boundaries, logs deliver the
           contextual narrative that explains why a failure occurred and what precise sequence of events led to it.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In a distributed system composed of dozens or hundreds of microservices, each running multiple replicas across
           availability zones and geographic regions, the diagnostic surface area expands exponentially. A single user
           request may traverse five to fifteen services, each of which may interact with databases, caches, message
@@ -58,7 +62,7 @@ export default function ArticlePage() {
           Logging is the mechanism by which each component contributes its portion of the diagnostic picture. Without
           well-designed logging, incident responders are left to infer system state from metrics alone, which indicates
           that something is wrong but rarely reveals what exactly broke or why.
-        </p>
+        </HighlightBlock>
         <p>
           The central challenge in logging is not volume but signal quality. A naive approach of logging every function
           entry, exit, and intermediate state produces terabytes of data daily while providing minimal diagnostic value.
@@ -82,7 +86,10 @@ export default function ArticlePage() {
       {/* Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of production-grade logging is <strong>structured logging</strong>. When services emit logs
           as free-form text strings, operators are forced to rely on brittle pattern matching and regular expressions
           that break whenever log message formats change. Structured logging solves this by emitting each event as a
@@ -92,8 +99,8 @@ export default function ArticlePage() {
           field <code>http.status_code</code> equals <code>503</code> and the field <code>service_name</code> equals
           <code>payment-service</code> returns exactly the relevant records without false positives from unrelated text
           that happens to contain matching substrings.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Structured logging requires a shared schema that defines which fields are mandatory for every log entry and
           which fields are optional or domain-specific. The mandatory fields form the correlation backbone: they ensure
           that every log event can be linked to the service that emitted it, the deployment version that was running,
@@ -103,7 +110,7 @@ export default function ArticlePage() {
           downstream dependency that was called, the tenant or organization affected, and the specific error type that
           occurred. Optional fields must be bounded by cardinality constraints and privacy policies to prevent the
           schema from becoming a vector for cost explosions or data leakage.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/logging-diagram-1.svg"
@@ -166,7 +173,10 @@ export default function ArticlePage() {
       {/* Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production logging architecture operates as a pipeline with distinct stages, each introducing its own
           reliability characteristics and failure modes. The pipeline begins at the emission point, where application
           code writes structured log events to standard output, a local log file, or a syslog daemon. The emission
@@ -175,8 +185,8 @@ export default function ArticlePage() {
           User-facing request latency always takes priority over observability data. A logging library that blocks
           application threads waiting for a saturated downstream buffer turns an observability problem into an
           availability problem.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The collection layer consists of lightweight agents running on each host or as sidecar containers in
           orchestrated environments. These agents tail log files, read from standard output streams, batch-ship events
           to the next stage, and handle backpressure gracefully. The collector must implement bounded memory buffers,
@@ -184,7 +194,7 @@ export default function ArticlePage() {
           prioritize recent events over stale ones when buffers fill. The collector is also the appropriate layer to
           perform initial enrichment, adding fields such as the host identifier, the container image digest, and the
           node availability zone that the application process may not have direct access to.
-        </p>
+        </HighlightBlock>
         <p>
           The buffering layer introduces durability and decoupling between collection and processing. A message queue
           such as Kafka or a disk-backed queue absorbs bursts of log volume that would otherwise overwhelm downstream
@@ -258,7 +268,10 @@ export default function ArticlePage() {
       {/* Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most consequential trade-off in logging design is between diagnostic completeness and operational cost.
           Preserving every log event at full fidelity provides maximum diagnostic power but is financially
           unsustainable for production systems handling significant traffic. A service processing five hundred thousand
@@ -268,8 +281,8 @@ export default function ArticlePage() {
           day. Storing and indexing this volume indefinitely is cost-prohibitive for most organizations, making sampling
           not an optimization but a necessity. The engineering question is how to sample intelligently so that the
           events most valuable for diagnosis are preserved while high-volume, low-signal events are reduced.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice between structured and semi-structured log storage presents another trade-off. Fully structured
           storage, where every log event is validated against a schema and stored with named fields, enables precise
           querying, efficient aggregation, and automated anomaly detection based on field value patterns. However,
@@ -280,7 +293,7 @@ export default function ArticlePage() {
           production systems is hybrid: attempt to parse and validate each event against the schema, but fall back to
           raw text storage with a parse-failure flag when validation fails, ensuring that no diagnostic evidence is
           lost due to schema mismatch while still providing structured querying for the majority of well-formed events.
-        </p>
+        </HighlightBlock>
         <p>
           The trade-off between log verbosity and signal-to-noise ratio requires continuous calibration. Verbose logging
           provides rich context for debugging but increases storage costs, ingestion pipeline load, query latency, and
@@ -320,7 +333,10 @@ export default function ArticlePage() {
       {/* Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Adopt a shared structured logging schema across all services and enforce it through automated validation in
           the continuous integration pipeline. The schema should define mandatory fields including a precise timestamp
           using ISO 8601 format with timezone information, the log level using consistent semantics, the service name
@@ -330,8 +346,8 @@ export default function ArticlePage() {
           prevents the gradual drift that occurs when teams independently add fields, change naming conventions, or
           omit critical identifiers, all of which degrade the quality of aggregated log data over time and undermine
           the correlation capabilities that make logging valuable at scale.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Log at boundaries and decision points rather than at every internal step. The most valuable log events occur
           at service entry and exit points, at dependency call boundaries including both the request and the response,
           at retry attempts with the attempt number and the backoff delay, at state machine transitions, at feature
@@ -339,7 +355,7 @@ export default function ArticlePage() {
           boundaries where exceptions are caught and handled. Logging inside tight computational loops or recursive
           functions is rarely useful and often harmful, producing high-volume, low-signal events that consume storage
           budget and obscure the diagnostic evidence that responders actually need.
-        </p>
+        </HighlightBlock>
         <p>
           Implement sampling and rate limiting as explicit policies rather than leaving volume control to individual
           team discretion. Error and warning events should be preserved at full fidelity regardless of volume, because
@@ -386,7 +402,10 @@ export default function ArticlePage() {
       {/* Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most prevalent pitfall is the <strong>log storm</strong>, where retry loops, cascading failures, or
           misconfigured debug logging produce millions of identical or near-identical log events within minutes. Log
           storms overwhelm ingestion pipelines, saturate storage quotas, and render search interfaces unusable at the
@@ -396,8 +415,8 @@ export default function ArticlePage() {
           discipline, such as mandatory exponential backoff with jitter, and pipeline-level controls, such as rate
           limiting on repeated identical event patterns and automatic sampling escalation when ingestion volume exceeds
           baseline thresholds.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Schema drift</strong> occurs when field names, types, or required field sets change across service
           deployments without coordinated schema versioning. A field named <code>trace_id</code> becomes
           <code>traceId</code> in one service and <code>requestId</code> in another, breaking saved queries and
@@ -406,7 +425,7 @@ export default function ArticlePage() {
           cross-service queries produce inconsistent results and responders cannot trust the data. The mitigation
           requires a schema registry with versioned contracts, automated validation in CI pipelines, and backward
           compatibility requirements that prevent breaking changes to mandatory fields.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Missing correlation identifiers</strong> render logs useless for cross-service investigation. This
           occurs when asynchronous code paths, background workers, scheduled tasks, or message consumers fail to
@@ -451,7 +470,10 @@ export default function ArticlePage() {
       {/* Real-world Use Cases */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In a financial services platform processing payment transactions, structured logging with consistent
           correlation identifiers enabled rapid diagnosis of intermittent transaction failures that affected a subset
           of merchants in a specific geographic region. Metrics showed a slight increase in error rates but could not
@@ -463,8 +485,8 @@ export default function ArticlePage() {
           logic for the degraded dependency. The entire investigation took approximately fifteen minutes because the
           log schema included all required correlation fields: trace ID, service name, deployment version, region,
           dependency name, and error fingerprint.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In a multi-tenant SaaS application, logging was instrumental in diagnosing a data isolation failure where
           one tenant's requests were occasionally served data belonging to another tenant. The incident was detected
           through a user report rather than a metric alert, making logs the primary diagnostic tool. By filtering logs
@@ -475,7 +497,7 @@ export default function ArticlePage() {
           The root cause was a cache key that did not include the tenant identifier, allowing cross-tenant data
           leakage. The fix involved correcting the cache key generation and adding a mandatory tenant ID field to all
           log events to enable faster tenant-scoped investigation in the future.
-        </p>
+        </HighlightBlock>
         <p>
           In a large-scale e-commerce platform during a peak shopping event, log storms threatened to overwhelm the
           logging infrastructure when a dependency failure triggered retry loops across hundreds of service instances.
@@ -492,12 +514,15 @@ export default function ArticlePage() {
       {/* Interview Q&A */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: What fields do you standardize in every log event for cross-service correlation and diagnosis?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Every log event should include a mandatory set of correlation fields that enable fast filtering and
             cross-service pivoting during incident response. The mandatory fields are: a precise timestamp using ISO 8601
             format with timezone information, because ambiguous timestamps make timeline reconstruction unreliable and
@@ -508,14 +533,14 @@ export default function ArticlePage() {
             deployment context; and a correlation identifier such as a trace ID following the W3C Trace Context
             specification, to link the log event to the distributed trace of the request it belongs to. These fields
             form the minimum schema that makes correlation possible.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Optional fields such as the HTTP route, the downstream dependency called, the tenant identifier, the region,
             and the error type and fingerprint add diagnostic context but must be bounded by cardinality constraints and
             privacy policies. The key insight is that mandatory fields are what make logs queryable and correlatable
             across services, while optional fields add depth to individual investigations. Without mandatory correlation
             fields, logs are isolated data points that cannot contribute to a coherent diagnostic narrative.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

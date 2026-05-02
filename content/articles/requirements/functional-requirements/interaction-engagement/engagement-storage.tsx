@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function EngagementStorageArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Engagement Storage</strong> persists user interactions—likes, comments, shares, views, saves—efficiently while enabling fast count retrieval and aggregation for analytics. This is a fundamental backend challenge: how to store billions of interactions while supporting both high-velocity writes (during viral events) and low-latency reads (for display to millions of users).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Engagement data has unique characteristics: it is write-heavy (every interaction creates a record), read-heavy (counts displayed on every page view), time-series (interactions arrive in chronological order), and requires both real-time counts and historical analytics. The storage architecture must balance consistency (accurate counts) with availability (fast reads) and partition tolerance (handling viral traffic spikes).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, engagement storage involves database schema design optimized for interaction patterns, counter caching strategies using Redis, sharding approaches for viral content, write optimization through batching and async processing, and analytics aggregation for creator dashboards. The architecture must handle 10x traffic spikes during viral events without degradation.
         </p>
@@ -47,10 +51,13 @@ export default function EngagementStorageArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Storage Requirements</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Engagement storage must satisfy multiple requirements:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Write Throughput:</strong> Handle thousands of interactions per second during normal operation, millions during viral events. Write path must be optimized for append-only workloads.
@@ -70,9 +77,9 @@ export default function EngagementStorageArticle() {
         </ul>
 
         <h3 className="mt-6">Data Model</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Engagement data typically uses two complementary models:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Event Stream:</strong> Each interaction is an immutable event (user_id, content_id, type, timestamp). Append-only, time-ordered. Used for analytics and audit trails. Query pattern: "Show all interactions for content X" or "Show user Y's interaction history".
@@ -139,9 +146,12 @@ export default function EngagementStorageArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Engagement storage architecture involves write path optimization, counter caching, and analytics aggregation.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/interaction-engagement/engagement-storage/storage-architecture.svg"
@@ -152,9 +162,9 @@ export default function EngagementStorageArticle() {
         />
 
         <h3>Write Path Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Optimized for high-throughput interaction storage:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>API Layer:</strong> Validates interaction (user authenticated, content exists, not duplicate). Returns immediately after queueing.
@@ -238,9 +248,12 @@ export default function EngagementStorageArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Engagement storage design involves balancing consistency, availability, and complexity.
-        </p>
+        </HighlightBlock>
 
         <h3>Database Selection</h3>
         <div className="overflow-x-auto">
@@ -291,9 +304,9 @@ export default function EngagementStorageArticle() {
         />
 
         <h3 className="mt-6">Consistency vs Availability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Strong Consistency:</strong> Count always accurate. Requires synchronous writes. Risk: Higher latency, lower availability during partitions. Best for: User's own interaction state.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Eventual Consistency:</strong> Count may lag. Async writes, high availability. Risk: Users see stale counts briefly. Best for: Public display counts.
         </p>
@@ -318,13 +331,16 @@ export default function EngagementStorageArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Redis for counters:</strong> INCR/DECR are atomic and fast. Async flush to database for durability.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement idempotency:</strong> Unique interaction IDs prevent duplicates on retry. Critical for network failures.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Shard viral content:</strong> Detect high-velocity content, automatically shard counters. Prevents Redis bottleneck.
           </li>
@@ -348,13 +364,16 @@ export default function EngagementStorageArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Direct database writes:</strong> Writing every interaction directly to database. Solution: Use message queue for buffering and async processing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No counter caching:</strong> Counting from database on every request. Solution: Redis counters with async flush.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring viral content:</strong> Single counter key for all content. Solution: Automatic sharding for high-velocity content.
           </li>
@@ -372,14 +391,17 @@ export default function EngagementStorageArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Instagram Like Storage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Instagram stores likes in Cassandra partitioned by media_id. Counter cache in Redis with async flush. Handles billions of likes per day. Uses eventual consistency for public like counts.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Time-series partitioning—each month is a separate table, enabling efficient archival of old data.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">YouTube View Counting</h3>
         <p>
@@ -408,12 +430,15 @@ export default function EngagementStorageArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you count likes at scale?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you count likes at scale?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use Redis for counter cache with INCR/DECR operations. Async flush to database every 1-5 minutes for durability. Accept eventual consistency for public counts (slight delay acceptable). For viral content, shard counters across multiple Redis keys (content:ID:likes:shard0-9) and aggregate for total. This handles millions of likes per minute.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

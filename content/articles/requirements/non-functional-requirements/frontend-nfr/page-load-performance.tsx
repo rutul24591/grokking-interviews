@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,10 @@ export default function PageLoadPerformanceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Page Load Performance</strong> measures the speed at which a
           web page becomes fully interactive and usable for the end user,
           encompassing the entire journey from navigation initiation (typing a
@@ -51,8 +55,8 @@ export default function PageLoadPerformanceArticle() {
           engagement, and revenue. Walmart found that every 1 second improvement
           increased conversions by 2%. Pinterest reduced perceived wait time by
           40% and saw a 15% increase in SEO traffic and 10% increase in signups.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Page load performance has evolved significantly. In the early 2010s,
           pages were relatively simple and load times under 3 seconds were
           acceptable. Today, with complex single-page applications, JavaScript
@@ -63,7 +67,7 @@ export default function PageLoadPerformanceArticle() {
           milliseconds, and Cumulative Layout Shift (CLS) under 0.1. These
           thresholds are not arbitrary — they represent the point at which users
           perceive the experience as fast and responsive.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, understanding page load performance
           requires a holistic view spanning multiple layers: network protocols
@@ -79,7 +83,10 @@ export default function PageLoadPerformanceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Critical Rendering Path (CRP) is the sequence of steps the
           browser takes to convert HTML, CSS, and JavaScript into pixels on the
           screen. Understanding the CRP is fundamental to performance
@@ -93,8 +100,8 @@ export default function PageLoadPerformanceArticle() {
           in the pixels, and composite layers are combined for the final frame.
           The goal of optimization is to minimize the time spent in each stage
           and eliminate unnecessary blocking.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Page load metrics quantify the user&apos;s experience at different
           stages of the loading process. Time to First Byte (TTFB) measures
           server responsiveness — the time from navigation until the first byte
@@ -107,7 +114,7 @@ export default function PageLoadPerformanceArticle() {
           Cumulative Layout Shift (CLS) measures unexpected layout movements
           during page load (target under 0.1). Time to Interactive (TTI)
           measures when the page becomes fully responsive (target under 3.8s).
-        </p>
+        </HighlightBlock>
         <p>
           The Navigation Timing API provides high-resolution timestamps for
           every stage of page loading, forming the basis for all derived
@@ -135,7 +142,10 @@ export default function PageLoadPerformanceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Page load optimization is a multi-layered effort organized by the
           layer each strategy targets. At the network layer, CDNs reduce latency
           by serving assets from edge locations close to users, HTTP/2
@@ -147,8 +157,8 @@ export default function PageLoadPerformanceArticle() {
           Rendering (SSR) and Static Site Generation (SSG) send pre-rendered
           HTML, improving FCP and LCP compared to Client-Side Rendering which
           must download and execute JavaScript before displaying content.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the HTML layer, inlining critical CSS (the CSS required for
           above-the-fold content) in the <code>&lt;head&gt;</code> eliminates
           render-blocking for critical styles, while deferring non-critical CSS
@@ -159,7 +169,7 @@ export default function PageLoadPerformanceArticle() {
           critical JavaScript bundles) with <code>&lt;link rel=&quot;preload&quot;&gt;</code>{" "}
           hints the browser to download them early, before they are discovered
           naturally during parsing.
-        </p>
+        </HighlightBlock>
         <p>
           At the JavaScript layer, code splitting divides the application into
           multiple chunks loaded on demand — route-based splitting loads page
@@ -180,7 +190,10 @@ export default function PageLoadPerformanceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rendering strategy selection is the most impactful architectural
           decision for page load performance. Server-Side Rendering sends fully
           rendered HTML for fast FCP and excellent SEO but increases server load
@@ -193,8 +206,8 @@ export default function PageLoadPerformanceArticle() {
           subsequent navigation. Incremental Static Regeneration (ISR) combines
           SSG performance with dynamic updates — pages are statically generated
           but regenerated in the background after a revalidation period.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Code splitting granularity involves a trade-off between initial load
           size and navigation latency. Fine-grained splitting (individual
           components as separate chunks) minimizes the initial bundle but
@@ -205,7 +218,7 @@ export default function PageLoadPerformanceArticle() {
           the user does not interact with. The sweet spot is route-level
           splitting combined with selective component splitting for truly heavy
           components (charting libraries, rich text editors, video players).
-        </p>
+        </HighlightBlock>
         <p>
           Performance optimization investment must be prioritized by impact.
           Rendering strategy changes (SSR, SSG, ISR) provide the largest
@@ -224,7 +237,10 @@ export default function PageLoadPerformanceArticle() {
 
       <section>
         <h2>HTTP/3 QUIC Impact on Performance</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           HTTP/3, built on the QUIC transport protocol, represents the most
           significant advancement in web transport since HTTP/2 multiplexing.
           Unlike HTTP/2, which runs over TCP, QUIC operates over UDP and
@@ -237,8 +253,8 @@ export default function PageLoadPerformanceArticle() {
           concurrent resource requests (typical for modern SPAs), this
           independence reduces tail latency significantly under real-world
           network conditions where packet loss is common.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Connection establishment is dramatically faster with QUIC because it
           combines the transport handshake and TLS 1.3 negotiation into a
           single round trip (1-RTT) rather than the separate TCP handshake (1
@@ -250,7 +266,7 @@ export default function PageLoadPerformanceArticle() {
           milliseconds. A user on a 3G connection with 300ms RTT saves 600-900ms
           on connection setup alone, which directly improves TTFB and
           consequently LCP.
-        </p>
+        </HighlightBlock>
         <p>
           QUIC&apos;s connection migration capability addresses a common mobile
           performance problem — when a user switches from WiFi to cellular or
@@ -284,7 +300,10 @@ export default function PageLoadPerformanceArticle() {
 
       <section>
         <h2>Streaming SSR Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Streaming Server-Side Rendering, enabled by React 18&apos;s Suspense
           architecture, fundamentally changes how SSR content is delivered to
           the browser. Traditional SSR waits for the entire page to render on
@@ -296,8 +315,8 @@ export default function PageLoadPerformanceArticle() {
           as they become available. The browser begins rendering the shell while
           waiting for remaining content, significantly improving perceived
           performance and FCP.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The architecture relies on React Suspense boundaries to define
           streaming granularity. Each Suspense boundary acts as an independent
           rendering unit — when the server encounters a suspended component
@@ -309,7 +328,7 @@ export default function PageLoadPerformanceArticle() {
           product recommendation widget does not block the fast-rendering
           product details, reviews, and images — users see meaningful content
           sooner even when some parts of the page are still loading.
-        </p>
+        </HighlightBlock>
         <p>
           Selective hydration complements streaming SSR on the client side. When
           the HTML arrives in chunks, React begins hydrating (attaching event
@@ -341,7 +360,10 @@ export default function PageLoadPerformanceArticle() {
 
       <section>
         <h2>Performance Budget Enforcement in CI</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Performance budgets are quantitative limits on metrics that affect page
           load performance, enforced as automated gates in the CI/CD pipeline.
           Without enforcement, performance budgets are aspirational documents
@@ -353,8 +375,8 @@ export default function PageLoadPerformanceArticle() {
           including all resources), LCP threshold (e.g., under 2.5s on simulated
           4G mobile), INP threshold (e.g., under 200ms), and third-party script
           budget (e.g., no more than 5 third-party domains, 100KB total).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Lighthouse CI is the most widely adopted tool for performance budget
           enforcement in CI pipelines. It runs Lighthouse on the built
           application (either against a static build output or a running preview
@@ -368,7 +390,7 @@ export default function PageLoadPerformanceArticle() {
           threshold enforcement, <code>assert</code> for CI failures, and{" "}
           <code>warn</code> for non-blocking alerts that inform developers
           without blocking deployment.
-        </p>
+        </HighlightBlock>
         <p>
           Bundle size budgets require separate tooling focused specifically on
           JavaScript output. webpack-bundle-analyzer generates visual treemaps
@@ -402,7 +424,10 @@ export default function PageLoadPerformanceArticle() {
 
       <section>
         <h2>RUM Data Analysis Patterns</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real User Monitoring data provides the only accurate picture of how
           users experience the application in production, but analyzing RUM data
           effectively requires understanding statistical patterns, segmentation
@@ -416,8 +441,8 @@ export default function PageLoadPerformanceArticle() {
           percentiles to understand the full distribution. A page with p75 LCP
           of 2.0s but p95 LCP of 6.0s indicates a significant long tail of poor
           experiences that the p75 metric alone would not reveal.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Segmentation is the most powerful RUM analysis technique. Aggregate
           metrics across all users obscure dramatic variations between user
           cohorts. Segmenting by device class (desktop, tablet, mobile, low-end
@@ -432,7 +457,7 @@ export default function PageLoadPerformanceArticle() {
           caching effectiveness — returning visitors should see significantly
           faster load times due to cached resources and service worker
           pre-caching.
-        </p>
+        </HighlightBlock>
         <p>
           Correlation analysis between performance metrics and business outcomes
           provides the quantitative justification for optimization investment.
@@ -465,7 +490,10 @@ export default function PageLoadPerformanceArticle() {
 
       <section>
         <h2>Core Web Vitals Optimization Per Metric</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Largest Contentful Paint optimization requires identifying the LCP
           element for each page (usually the hero image, main heading, or
           featured content), ensuring it is not lazy-loaded, preloading it with{" "}
@@ -483,8 +511,8 @@ export default function PageLoadPerformanceArticle() {
           render-blocking resources that delay the browser from reaching the LCP
           element — every stylesheet and script that blocks rendering adds its
           download and parse time to LCP.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Interaction to Next Paint optimization targets the main thread
           workload, because INP measures the delay between a user interaction
           (click, tap, keypress) and the next visual update. Long tasks
@@ -501,7 +529,7 @@ export default function PageLoadPerformanceArticle() {
           dispatch before the handler even executes — reducing the number of
           event listeners through delegation and removing unnecessary handlers
           from non-visible elements directly improves INP.
-        </p>
+        </HighlightBlock>
         <p>
           Cumulative Layout Shift prevention focuses on reserving space for
           dynamic content before it loads. Images and videos must have explicit
@@ -523,7 +551,10 @@ export default function PageLoadPerformanceArticle() {
 
       <section>
         <h2>Resource Hint Optimization</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Resource hints are browser directives that influence how and when
           resources are fetched, providing a mechanism for the application to
           communicate its loading priorities to the browser. The{" "}
@@ -538,8 +569,8 @@ export default function PageLoadPerformanceArticle() {
           arrives. The hint requires the <code>as</code> attribute to specify
           the resource type (image, font, script, style) so the browser can
           apply correct priority and security policies.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <code>prefetch</code> hint (<code>&lt;link rel=&quot;prefetch&quot;&gt;</code>)
           instructs the browser to download resources that will likely be needed
           for future navigation, using idle bandwidth after critical resources
@@ -555,7 +586,7 @@ export default function PageLoadPerformanceArticle() {
           the Speculation Rules API support this capability with configurable
           eagerness (conservative for prefetch, eager for prerender based on
           hover or pointer proximity).
-        </p>
+        </HighlightBlock>
         <p>
           The <code>preconnect</code> and <code>dns-prefetch</code> hints
           accelerate third-party resource loading by establishing the network
@@ -577,7 +608,10 @@ export default function PageLoadPerformanceArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Measure performance continuously with Real User Monitoring (RUM). Lab
           tools (Lighthouse, WebPageTest) are essential for debugging and CI
           gates, but they measure synthetic performance in controlled
@@ -589,8 +623,8 @@ export default function PageLoadPerformanceArticle() {
           and geography, and set up alerts when metrics cross thresholds.
           Correlate performance metrics with business outcomes (conversion rate,
           bounce rate) to make the business case for optimization investment.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Set performance budgets and enforce them in CI/CD. A performance
           budget defines maximum allowable values for key metrics — initial
           JavaScript bundle under 200KB gzipped, total page weight under 1MB,
@@ -600,7 +634,7 @@ export default function PageLoadPerformanceArticle() {
           gradual performance degradation that occurs when each PR adds a small
           amount of JavaScript, images, or third-party scripts — individually
           insignificant but collectively devastating.
-        </p>
+        </HighlightBlock>
         <p>
           Optimize the Largest Contentful Paint element specifically, as it is
           the primary determinant of perceived load speed. Identify the LCP
@@ -617,7 +651,10 @@ export default function PageLoadPerformanceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Shipping unoptimized JavaScript bundles is the most common performance
           mistake. Development builds include the entire framework, all
           component libraries, and debug tooling — often 2-5MB of JavaScript.
@@ -629,8 +666,8 @@ export default function PageLoadPerformanceArticle() {
           largest contributors. Replace heavy dependencies (moment.js with
           day.js, full lodash with specific imports) and lazy-load components
           not needed for initial render.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Render-blocking CSS delays the first paint because the browser waits
           for all stylesheets to arrive before rendering anything. A single
           large CSS file (500KB+) can add 1-2 seconds to FCP on slow networks.
@@ -641,7 +678,7 @@ export default function PageLoadPerformanceArticle() {
           to make it non-blocking. For component-based frameworks, use CSS-in-JS
           libraries that extract critical CSS automatically or configure the
           build tool to split CSS by route.
-        </p>
+        </HighlightBlock>
         <p>
           Third-party scripts (analytics, ads, chat widgets, A/B testing) are a
           leading cause of performance regressions because they are outside the
@@ -661,7 +698,10 @@ export default function PageLoadPerformanceArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms optimize page load performance because it
           directly impacts revenue. Amazon found that every 100ms of latency
           cost 1% in sales. The optimization strategy includes: SSR for product
@@ -673,8 +713,8 @@ export default function PageLoadPerformanceArticle() {
           unused code, replacing heavy libraries). The result is product pages
           that load in under 2 seconds on 4G mobile, meeting Google&apos;s
           &quot;good&quot; LCP threshold.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           News websites face unique performance challenges — articles must load
           quickly for SEO and reader retention, but they contain many images,
           ads, and third-party embeds (social media, videos). The Guardian and
@@ -685,7 +725,7 @@ export default function PageLoadPerformanceArticle() {
           optimization for responsive image delivery. These optimizations enable
           article pages to load in under 1.5 seconds despite containing 20+
           images and multiple third-party scripts.
-        </p>
+        </HighlightBlock>
         <p>
           Single-page applications (SPAs) historically suffered from poor
           initial load performance because the entire application was delivered
@@ -701,12 +741,15 @@ export default function PageLoadPerformanceArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What are Core Web Vitals and why do they matter?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Core Web Vitals are Google&apos;s user experience metrics: LCP
               (Largest Contentful Paint, target under 2.5s) measures loading,
               INP (Interaction to Next Paint, target under 200ms) measures
@@ -716,7 +759,7 @@ export default function PageLoadPerformanceArticle() {
               traffic. They also correlate with user experience — users abandon
               pages that load slowly, respond sluggishly, or shift unexpectedly.
               In interviews, connect technical metrics to business impact.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

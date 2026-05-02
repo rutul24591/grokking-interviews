@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -86,9 +87,12 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Content Distribution and Edge Caching</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Push vs Pull CDN Models</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The push CDN model requires the origin to proactively upload content to the CDN&apos;s
           edge servers before users request it. Content is &quot;pushed&quot; to the CDN via an
           upload API or a synchronization tool, and the CDN distributes it to all edge POPs.
@@ -98,9 +102,9 @@ export default function ArticlePage() {
           from the cache (no cold-start cache misses), and the origin is never hit for content
           delivery. The disadvantage is operational overhead: the origin must manage the upload
           pipeline, handle upload failures, and ensure that all edge POPs have the latest version.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The pull CDN model fetches content from the origin on-demand when a user requests it
           and the edge POP does not have it cached. This is the most common CDN model because it
           requires no changes to the origin&apos;s deployment pipeline: the origin serves content
@@ -112,7 +116,7 @@ export default function ArticlePage() {
           the first user. For content with predictable access patterns (new product launches,
           blog posts published at a known time), this can be mitigated with cache warming
           (pre-fetching content into the CDN before users request it).
-        </p>
+        </HighlightBlock>
 
         <h3>Cache Key Design</h3>
         <p>
@@ -203,18 +207,21 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Cache Invalidation Mechanisms</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cache invalidation is the process of removing or updating cached content before its
           TTL expires. It is one of the most challenging aspects of CDN architecture because
           invalidation must propagate across hundreds of edge POPs quickly and consistently,
           and an invalidation storm (purging thousands of entries simultaneously) can overwhelm
           the origin with re-fetch requests. There are four primary invalidation strategies,
           each with different trade-offs.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The purge API sends an explicit invalidation request to the CDN, which removes the
           cached entry from all edge POPs. The next request for that URL triggers a cache miss
           and a fetch from the origin. Purge APIs are fast (propagation completes in seconds to
@@ -223,7 +230,7 @@ export default function ArticlePage() {
           hit the origin. To mitigate this, purge APIs should be used sparingly (for urgent
           content corrections) and should be batched (purge multiple URLs in a single API call
           rather than individual purge requests).
-        </p>
+        </HighlightBlock>
 
         <p>
           Versioned URLs avoid the invalidation problem entirely by embedding the content version
@@ -329,8 +336,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           CDN architecture involves a fundamental trade-off between cache efficiency and content
           freshness. Longer TTLs improve cache hit ratios and reduce origin load but increase
           the window during which stale content is served. Shorter TTLs ensure freshness but
@@ -339,10 +349,10 @@ export default function ArticlePage() {
           (especially with versioned URLs), dynamic content (API responses, personalized pages)
           may require TTLs of seconds or minutes, and highly dynamic content (real-time data,
           user-specific dashboards) may not be cacheable at all.
-        </p>
+        </HighlightBlock>
 
         <h3>Versioned URLs vs Purge APIs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Versioned URLs provide instant consistency and eliminate invalidation complexity but
           accumulate stale cache entries and require the origin to serve multiple versions
           simultaneously. Purge APIs provide clean invalidation (old entries are removed, freeing
@@ -352,7 +362,7 @@ export default function ArticlePage() {
           APIs for mutable assets (product pages, API responses, CMS content) where instant
           consistency is not required. This hybrid approach leverages the strengths of both
           strategies while avoiding their weaknesses.
-        </p>
+        </HighlightBlock>
 
         <h3>Single CDN vs Multi-CDN Strategy</h3>
         <p>
@@ -388,8 +398,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for CDN Architecture</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use versioned URLs for immutable assets.</strong> JavaScript bundles, CSS files,
           fonts, and images that are built as part of your deployment pipeline should include a
           content hash or version identifier in the filename
@@ -401,9 +414,9 @@ export default function ArticlePage() {
           small fraction of total traffic. This pattern is used by every major framework
           (Webpack, Vite, esbuild) and is the single most effective way to maximize CDN cache
           efficiency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Enable stale-if-error for all cacheable content.</strong> The
           <code className="inline-code">stale-if-error</code> directive is one of the most
           powerful resilience features available in CDN architecture. It instructs the CDN to
@@ -413,7 +426,7 @@ export default function ArticlePage() {
           data, 5 minutes for inventory counts. This ensures that even a complete origin outage
           does not result in a complete user-facing outage: users see slightly stale content
           rather than error pages.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Implement origin shielding for any CDN with more than a handful of POPs.</strong>
@@ -464,8 +477,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Cache fragmentation due to overly variable cache keys.</strong> When the cache
           key includes dimensions that do not actually affect the response content, the same
           logical resource is cached multiple times under different keys, reducing the cache hit
@@ -475,9 +491,9 @@ export default function ArticlePage() {
           key configuration periodically to ensure that only response-affecting dimensions are
           included. Monitor the cache hit ratio by URL pattern and investigate patterns with
           unexpectedly low hit ratios, which often indicate cache key fragmentation.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Purge storms that overload the origin.</strong> Purging thousands of cache
           entries simultaneously causes a spike in origin requests as the CDN re-fetches all
           purged content. This is particularly problematic when a large content update (a CMS
@@ -488,7 +504,7 @@ export default function ArticlePage() {
           content with new URLs and let the old URLs expire naturally. For urgent invalidations,
           use soft purges (mark entries as stale but continue serving them while re-fetching in
           the background) to avoid the origin spike.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Caching personalized content at the edge.</strong> Personalized content
@@ -548,9 +564,12 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Fastly: Real-Time Cache Invalidation and Edge Compute</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Fastly differentiates itself through sub-second cache purge propagation and a powerful
           edge compute platform (Fastly Compute). While most CDNs take 30 seconds to 2 minutes
           for purge requests to propagate across all edge POPs, Fastly completes purges in
@@ -563,10 +582,10 @@ export default function ArticlePage() {
           (built on WebAssembly) enables request processing logic at the edge: A/B test
           assignment, request authentication, response transformation, and image optimization
           all run at edge POPs, reducing origin load and latency.
-        </p>
+        </HighlightBlock>
 
         <h3>Cloudflare: Multi-Layer Caching and DDoS Protection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cloudflare operates one of the largest CDN networks with 300+ edge POPs and provides
           a multi-layer caching architecture: the edge cache at each POP, a regional tier
           (Cloudflare&apos;s &quot;reserve&quot; cache), and the origin. Cloudflare&apos;s CDN
@@ -578,7 +597,7 @@ export default function ArticlePage() {
           Cloudflare&apos;s Argo Smart Routing provides dynamic content acceleration by
           optimizing the route between the edge and the origin, reducing latency for non-cacheable
           requests by 30% or more.
-        </p>
+        </HighlightBlock>
 
         <h3>Netflix: Open Connect Custom CDN</h3>
         <p>
@@ -600,11 +619,14 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg bg-panel-soft p-6">
-            <p className="font-semibold">Q1: How does a CDN work, and what are its primary benefits?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: How does a CDN work, and what are its primary benefits?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> A CDN is a geographically distributed network of edge
               servers that cache and deliver content to users from the location nearest to them.
               When a user requests a resource, DNS routes the request to the closest edge POP
@@ -616,7 +638,7 @@ export default function ArticlePage() {
               improved availability (the CDN absorbs traffic spikes and DDoS attacks), and
               global reach (content is delivered efficiently to users worldwide regardless of
               origin server location).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg bg-panel-soft p-6">

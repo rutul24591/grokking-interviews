@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -41,12 +42,15 @@ export default function ServiceRegistryArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>service registry</strong> is a control-plane system that maintains a real-time catalog of service instances, their network locations, health status, and operational metadata in a distributed architecture. It is the authoritative source of truth for &quot;who exists, where are they, and can they serve traffic right now.&quot; The service registry is distinct from <strong>service discovery</strong>: the registry is the data store (the source of truth), while discovery is the mechanism by which clients or proxies query that data store to resolve a logical service name into a set of concrete network endpoints. This distinction is subtle but critical — confusing the two leads to architectural decisions that conflate storage consistency with resolution latency, which have fundamentally different trade-offs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In a monolithic architecture, service endpoints are statically configured (DNS entries, hardcoded addresses, or configuration files). In a microservices or cloud-native architecture, instances are ephemeral — they start, stop, scale, and crash dynamically. Autoscaling groups launch and terminate instances based on demand. Container orchestrators reschedule pods across nodes. Deployments replace old instances with new ones. In this environment, static configuration is impossible to maintain. The service registry fills this gap by providing a dynamic, queryable membership database that reflects the current state of the fleet.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, the service registry is a foundational infrastructure decision with system-wide consequences. The registry&apos;s consistency model determines whether clients see stale data during partitions. Its registration model determines how much burden is placed on individual services. Its health semantics determine whether degraded instances continue receiving traffic. Its replication strategy determines availability during network partitions. Getting the service registry wrong does not cause a single service to fail — it causes the entire service mesh to lose its ability to route traffic correctly, creating a platform-wide incident generator.
         </p>
@@ -58,14 +62,17 @@ export default function ServiceRegistryArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Service Registry Versus Service Discovery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The service registry is the persistent (or semi-persistent) data store that holds the mapping between logical service names and their concrete network endpoints, along with health status and metadata. Service discovery is the process by which a client, sidecar proxy, or load balancer queries the registry to obtain the current set of endpoints for a given service name. This separation matters because the registry and the discovery mechanism can be operated and scaled independently. For example, clients may cache discovery results locally for several seconds to reduce registry query load, meaning the discovery layer introduces a staleness window even when the registry itself is strongly consistent. The registry answers &quot;what is the current state&quot; while discovery answers &quot;how do I find and use that state.&quot;
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Client-side discovery occurs when the application client itself queries the registry (or a local cache of registry data) to obtain the list of service endpoints and then makes direct connections to those endpoints. This approach eliminates the need for an intermediate load balancer but requires every client to implement discovery logic, handle caching, and manage endpoint health tracking. Server-side discovery occurs when a client sends requests to a load balancer or proxy, which in turn queries the registry to determine which backend to forward the request to. The client is unaware of individual instances — it simply addresses the logical service name. The load balancer or proxy handles membership changes transparently. Each model has operational implications: client-side discovery gives clients full control over endpoint selection and failover but requires discovery logic in every language and framework; server-side discovery centralizes discovery logic in the proxy layer but introduces an additional network hop and a dependency on the proxy&apos;s health.
-        </p>
+        </HighlightBlock>
 
         <h3>Registration Models: Self-Registration Versus External Registration</h3>
         <p>
@@ -117,12 +124,15 @@ export default function ServiceRegistryArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production service registry is a distributed system that must handle concurrent registrations from hundreds or thousands of instances, serve discovery queries from many clients, replicate data across multiple nodes for fault tolerance, and maintain consistency guarantees under network partition. The architecture varies significantly based on the consistency model chosen — CP registries (Consul, etcd, ZooKeeper) prioritize strong consistency and may become unavailable during partitions, while AP registries (Eureka) prioritize availability and may serve stale data during partitions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The request flow for a typical service lifecycle begins with instance startup. When a new service instance starts, it (or its registrar) sends a registration request to the registry, including its service name, network address (IP and port), health check configuration, and optional metadata (version, region, availability zone, deployment group). The registry persists this registration, propagates it to other registry nodes according to its replication protocol, and makes it available for discovery queries. The instance then begins sending periodic heartbeats to maintain its registration. When a client needs to discover endpoints for a service, it queries the registry (or its local cache) with the service name, receives the current set of healthy endpoints, and establishes connections to those endpoints. When the instance shuts down gracefully, it sends a deregistration request to the registry, which removes it from the endpoint set immediately. If the instance crashes without deregistering, the registry detects the missing heartbeats, waits for the TTL to expire, and then removes the stale registration automatically.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/service-registry-diagram-3.svg"
@@ -166,14 +176,17 @@ export default function ServiceRegistryArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Service registry design involves fundamental trade-offs between consistency and availability, registration burden and accuracy, cache freshness and load, and metadata richness and replication overhead. Understanding these trade-offs is essential for selecting the right registry architecture for a given system&apos;s reliability requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>CP Versus AP Registries: Consistency Versus Availability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>CP Registries (etcd, Consul, ZooKeeper):</strong> Use consensus protocols (Raft, Zab) to ensure all nodes agree on registration state. Advantages: any client reading from any node gets the same endpoint set (strong consistency), preventing the scenario where different clients route to different endpoint sets for the same service. This is important for systems where routing to a dead instance causes cascading failures (e.g., distributed transactions, where a failed backend may leave partial state). Limitations: during a network partition, the minority partition cannot serve writes (cannot achieve quorum), and if no majority exists, the entire registry becomes unavailable for writes. Best for: systems where routing correctness is more critical than continuous availability, environments with reliable network infrastructure where partitions are rare.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>AP Registries (Eureka):</strong> Each node operates independently, accepting writes and serving reads without inter-node coordination. Advantages: the registry remains available during network partitions (all nodes continue to serve discovery queries), clients always receive some endpoint set even during infrastructure issues. Limitations: different nodes may have divergent views of registration state during partitions, meaning different clients may receive different endpoint sets. Dead instances deregistered on one partition may remain listed on another until the partition heals and anti-entropy reconciles the views. Best for: systems where serving potentially stale endpoint data is preferable to serving no data at all, environments with unreliable network infrastructure where partitions are expected.
         </p>
@@ -206,16 +219,19 @@ export default function ServiceRegistryArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Design Health Semantics That Reflect Production Reality</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Health checks should verify that an instance can serve actual production traffic, not merely that the process is listening on a port. A TCP connection check is the shallowest possible check — it verifies that something is listening but says nothing about whether the application can process requests. A deep health check that queries all downstream dependencies is comprehensive but dangerous — if a downstream database is slow, every instance fails its deep health check, and the registry removes all instances simultaneously, eliminating all serving capacity for that service. The recommended approach is a moderate health check that verifies the application process is running, the HTTP server is responding, and critical in-process resources (thread pools, connection pools, memory usage) are within operational bounds. Downstream dependency health should be evaluated at the application level through circuit breakers and traffic-shedding mechanisms, not through registry-level health check ejection. This preserves capacity during transient dependency slowdowns while still removing instances that are genuinely unable to serve traffic.
-        </p>
+        </HighlightBlock>
 
         <h3>Tune TTL and Heartbeat to Your Failure Environment</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The TTL and heartbeat interval should be calibrated based on the observed failure characteristics of your deployment environment. Measure the frequency and duration of transient network failures (brief TCP timeouts, DNS resolution delays, GC pauses) and set the heartbeat interval to tolerate these transients without triggering premature removal. A common pattern is to set the heartbeat interval to one-third of the TTL, allowing two consecutive missed heartbeats before expiry. If your environment experiences transient network blips lasting up to 10 seconds, a 30-second heartbeat with a 90-second TTL provides reasonable tolerance. If your instances are in a container environment with frequent rescheduling and shorter lifespans, a 10-second heartbeat with a 30-second TTL may be more appropriate to maintain accurate membership. Regularly review TTL effectiveness by measuring the time between instance crash and removal from the registry — this metric should align with your service-level objectives for discovery freshness.
-        </p>
+        </HighlightBlock>
 
         <h3>Implement Client-Side Caching With Watch-Based Invalidation</h3>
         <p>
@@ -236,16 +252,19 @@ export default function ServiceRegistryArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Stale Endpoint Data Creating Silent Failures</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most insidious registry failure mode is when dead instances remain listed in the registry and clients continue to route traffic to them. This can happen due to long TTLs (the instance crashed but has not expired yet), heartbeat delivery failures (the instance is alive but heartbeats are not reaching the registry due to network issues), or replication lag (the instance was deregistered on one registry node but the change has not propagated to the node serving the client&apos;s query). The symptoms are intermittent connection errors, elevated tail latency (clients retrying against dead endpoints), and confusing error messages that look like network issues rather than registry problems. The mitigation is to implement explicit staleness monitoring — track the age of each registration and alert when registrations exceed an expected age threshold. Clients should also track the success rate of connections to each endpoint and locally eject endpoints that consistently fail, independent of the registry&apos;s health status.
-        </p>
+        </HighlightBlock>
 
         <h3>Health Check Flapping Causing Traffic Instability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When health checks are too aggressive (short TTL, low failure threshold), transient network issues cause healthy instances to be repeatedly ejected and re-added to the registry. Each ejection causes clients to stop routing to the ejected instance, concentrating traffic on remaining instances. When the instance is re-added, clients resume routing to it. This cycle — eject, concentrate traffic, re-add, redistribute traffic — creates traffic instability that manifests as periodic latency spikes and error rate oscillations. During the concentration phase, the remaining instances may be pushed over capacity, triggering their own health check failures and creating a cascade. The mitigation is to increase the TTL, increase the failure threshold (require multiple consecutive failures before ejection), and implement hysteresis in the health check logic (an instance must be healthy for a sustained period before being re-added to the endpoint set).
-        </p>
+        </HighlightBlock>
 
         <h3>Split-Brain Scenarios During Network Partitions</h3>
         <p>
@@ -271,16 +290,19 @@ export default function ServiceRegistryArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Netflix Eureka: AP Registry for Resilient Microservices</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix built Eureka as an AP-biased service registry specifically designed for their cloud environment, where network partitions and instance failures are routine. Eureka&apos;s design philosophy is that serving potentially stale endpoint data is preferable to serving no data during infrastructure issues. Each Eureka server node operates independently — it accepts registrations and serves discovery queries without requiring coordination with other nodes. During a network partition, all nodes continue to operate, even if their views of the registration state diverge. Netflix pairs Eureka with Ribbon (a client-side load balancer) that caches endpoint data locally and uses the cached data when Eureka is unavailable. This design has proven resilient at Netflix&apos;s scale, where thousands of microservices depend on continuous service discovery even during AWS infrastructure disruptions. The trade-off is that Eureka clients may occasionally route to dead instances, but this is handled by client-side retry and circuit breakers, which are already part of Netflix&apos;s resilience toolkit.
-        </p>
+        </HighlightBlock>
 
         <h3>Kubernetes Service Registry: Orchestrator-Managed Membership</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Kubernetes embeds service registry functionality into its core API. When pods are created, the kubelet reports their status to the API server, which maintains Endpoints (or EndpointSlice for larger clusters) objects that map service names to pod IP addresses. The kube-proxy component on each node watches these Endpoints objects and configures iptables or IPVS rules to route traffic to the current set of healthy pods. Services in Kubernetes are completely unaware of the registry — they simply listen on their configured ports, and the orchestrator handles all membership tracking. This external registration model is powerful because it works for any containerized application regardless of language or framework, but it requires that the Kubernetes API server (backed by etcd) remain highly available. If etcd becomes unavailable, the control plane cannot update Endpoints, and kube-proxy&apos;s cached routing rules become stale until etcd recovers.
-        </p>
+        </HighlightBlock>
 
         <h3>HashiCorp Consul: Multi-Datacenter Service Mesh</h3>
         <p>
@@ -301,15 +323,18 @@ export default function ServiceRegistryArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between a service registry and service discovery, and why does this distinction matter in system design?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The service registry is the data store — the authoritative source of truth that maintains the mapping between logical service names and their concrete network endpoints, health status, and metadata. Service discovery is the mechanism by which clients, proxies, or load balancers query that data store to resolve a service name into a set of endpoints. This distinction matters because the registry and discovery mechanism have different scaling characteristics, failure modes, and tuning parameters. The registry must handle concurrent writes (registrations and heartbeats) and reads (discovery queries) while maintaining consistency guarantees. The discovery mechanism must handle caching, staleness tolerance, and fallback behavior during registry outages. Conflating the two leads to designs that fail to address either concern adequately — for example, designing a registry with strong consistency but no caching strategy, which means every discovery query hits the registry directly, creating unbounded load at scale.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

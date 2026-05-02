@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,12 +36,15 @@ export default function PushNotificationServiceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Push notification service delivers notifications to user devices via platform-specific providers: APNs (Apple Push Notification service) for iOS, FCM (Firebase Cloud Messaging) for Android, and Web Push for browsers. Push notifications enable re-engagement with users even when the app is closed, driving retention and timely user actions. The service must handle platform differences, token management, delivery optimization, and rate limiting while respecting user preferences.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of push notifications stems from platform fragmentation. iOS uses APNs with HTTP/2 protocol, strict rate limits (~2-3 notifications/hour for non-urgent), and requires device tokens. Android uses FCM with more flexible limits, topic subscriptions, and registration tokens. Web Push uses VAPID keys with browser-specific implementations. Each platform has different payload formats, delivery guarantees, and feedback mechanisms. The service must abstract these differences while optimizing for each platform's strengths.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, push notification service implementation involves distributed systems challenges. Token management must handle token refresh, invalidation, and multi-device users. Delivery optimization balances immediacy with rate limits. Feedback handling processes delivery failures, bounces, and opt-outs. Analytics tracks open rates, click-through rates, and engagement. The architecture must scale to millions of notifications per day with high delivery success rates.
         </p>
@@ -48,13 +52,16 @@ export default function PushNotificationServiceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Platform Providers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           APNs (Apple Push Notification service) delivers notifications to iOS, macOS, watchOS, and tvOS devices. Uses HTTP/2 protocol with JWT authentication (provider token). Payload limit: 4KB. Rate limits: ~2-3 notifications/hour for non-urgent, higher for urgent. Delivery: best-effort, no delivery confirmation. Feedback: token invalidation via separate API.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           FCM (Firebase Cloud Messaging) delivers to Android, web, and other platforms. Uses HTTP v1 API with OAuth 2.0 authentication. Payload limit: 4KB. Rate limits: more flexible than APNs, ~100 notifications/minute per project. Delivery: best-effort with optional delivery receipts. Feedback: token registration/deregistration events.
-        </p>
+        </HighlightBlock>
         <p>
           Web Push delivers to browsers (Chrome, Firefox, Safari, Edge). Uses VAPID (Voluntary Application Server Identification) for authentication. Payload limit: 4KB. Rate limits: browser-dependent, generally permissive. Delivery: requires browser to be running. Feedback: push subscription expiration events.
         </p>
@@ -106,9 +113,12 @@ export default function PushNotificationServiceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Push notification service architecture spans token management, payload construction, platform delivery, and feedback handling. Token service manages device tokens. Payload service constructs platform-specific payloads. Delivery service sends to APNs/FCM/Web Push. Feedback service processes delivery failures and token invalidations.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/push-notification-service/push-architecture.svg"
@@ -119,9 +129,9 @@ export default function PushNotificationServiceArticle() {
         />
 
         <h3>Token Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Token registration endpoint accepts device_token, platform, device_info from client. Validates token format (64 hex chars for iOS, variable for FCM). Stores in token table with user_id (from auth context). Returns success. Client calls on app install, token refresh.
-        </p>
+        </HighlightBlock>
         <p>
           Token lookup retrieves user's devices for notification delivery. Query: SELECT * FROM tokens WHERE user_id = ?. Returns all devices. Filter by platform if needed (iOS-only notification). Handle users with 10+ devices (tablet, phone, desktop, watch).
         </p>
@@ -181,14 +191,17 @@ export default function PushNotificationServiceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Push notification design involves trade-offs between delivery reliability, user experience, platform constraints, and operational complexity. Understanding these trade-offs enables informed decisions aligned with engagement goals and platform requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>APNs vs FCM vs Web Push</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           APNs (iOS): most restrictive, strict rate limits, no delivery confirmation. Pros: reliable delivery to iOS devices, silent push capability. Cons: rate limits, token management complexity, no delivery receipt. Best for: iOS apps with moderate notification volume.
-        </p>
+        </HighlightBlock>
         <p>
           FCM (Android): flexible, higher rate limits, optional delivery receipts. Pros: reliable delivery, topic subscriptions, analytics. Cons: Google dependency, battery impact concerns. Best for: Android apps with high notification volume.
         </p>
@@ -240,13 +253,16 @@ export default function PushNotificationServiceArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Handle token refresh properly:</strong> iOS tokens refresh periodically. App receives new token, sends to server. Server updates mapping, keeps old token valid during transition. Atomic updates prevent lost notifications.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Respect platform rate limits:</strong> APNs ~2-3/hour for non-urgent. Track per-device send rates. Queue excess, deliver when limit resets. Urgent notifications exempt but use sparingly.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement feedback handling:</strong> Process APNs feedback daily. Remove invalid tokens immediately. Handle FCM error responses (UNREGISTERED, INVALID_ARGUMENT). Web Push 410/404 means subscription expired.
           </li>
@@ -276,13 +292,16 @@ export default function PushNotificationServiceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Not handling token refresh:</strong> iOS tokens change, old tokens stop working. Solution: Update token on refresh, keep old token valid during transition.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring rate limits:</strong> Exceeding APNs limits results in throttling. Solution: Track send rates, queue excess, respect platform limits.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No feedback handling:</strong> Sending to invalid tokens wastes quota. Solution: Process feedback daily, remove invalid tokens immediately.
           </li>
@@ -312,16 +331,19 @@ export default function PushNotificationServiceArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>WhatsApp Push Notifications</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WhatsApp uses push for new message notifications. Silent push wakes app for background message sync. Rich notifications show sender name, message preview. Group messages collapsed by group. Call notifications use high priority. Delivery optimized for low bandwidth regions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Uber Ride Updates</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uber sends push for driver assigned, driver arrived, trip completed. Location-based triggers (driver nearby). High priority for time-sensitive updates. Collapsed notifications for driver location updates. Deep link to trip screen. SMS fallback for critical updates.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Instagram Social Notifications</h3>
         <p>
@@ -341,12 +363,15 @@ export default function PushNotificationServiceArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle iOS token refresh?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle iOS token refresh?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> iOS refreshes tokens periodically and on app reinstall. App receives new token via didRegisterForRemoteNotificationsWithDeviceToken delegate method. App sends new token to server. Server updates token mapping atomically—keep old token valid during transition (up to 24 hours). This prevents lost notifications during token transition. Log token changes for debugging.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

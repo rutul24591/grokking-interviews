@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -84,9 +85,12 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Topics, Subscriptions, and Delivery</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Topic-Based Routing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In a pub-sub system, messages are published to named topics rather than addressed to
           specific consumers. A topic is a logical channel that groups related messages together.
           Publishers choose which topic to publish to based on the message&apos;s semantic
@@ -95,9 +99,9 @@ export default function ArticlePage() {
           <code className="inline-code">payment-events</code>). Subscribers express interest in
           topics by creating subscriptions, and the broker delivers all messages published to
           subscribed topics to those subscribers.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Topic hierarchies allow fine-grained subscription control. Topics can be organized in a
           tree structure (<code className="inline-code">events.user.created</code>,
           <code className="inline-code">events.user.updated</code>,
@@ -108,7 +112,7 @@ export default function ArticlePage() {
           to choose their level of granularity: a service that needs all user events subscribes
           to <code className="inline-code">events.user.*</code>, while a service that only needs
           creation events subscribes to <code className="inline-code">events.user.created</code>.
-        </p>
+        </HighlightBlock>
 
         <h3>Durable vs Transient Subscriptions</h3>
         <p>
@@ -173,18 +177,21 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Push vs Pull Delivery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pub-sub systems support two delivery models for sending messages from the broker to
           subscribers. In push delivery, the broker actively sends messages to subscriber
           endpoints (typically HTTP POST to a webhook URL). This provides low latency because
           messages are delivered immediately upon publication. However, push delivery requires
           subscribers to be reachable (public endpoints or VPC-integrated endpoints) and to
           handle backpressure (the broker must retry if the subscriber is slow or unavailable).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           In pull delivery, subscribers request messages from the broker at their own pace. This
           provides natural backpressure: slow subscribers pull fewer messages, and the broker
           buffers the excess. Pull delivery is more resilient because subscribers do not need
@@ -192,7 +199,7 @@ export default function ArticlePage() {
           delivered until the next poll cycle). Most modern pub-sub systems support both models:
           push for low-latency subscribers with public endpoints, and pull for subscribers that
           control their own consumption rate.
-        </p>
+        </HighlightBlock>
 
         <h3>Message Retention and Acknowledgment</h3>
         <p>
@@ -248,22 +255,25 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing a pub-sub system involves trade-offs between delivery guarantees, scalability,
           message ordering, and operational complexity. Each system is optimized for different
           use cases, and the right choice depends on the specific requirements of the workload.
-        </p>
+        </HighlightBlock>
 
         <h3>Google Cloud Pub/Sub vs Amazon SNS/SQS vs Apache Kafka</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Cloud Pub/Sub is a fully managed, globally distributed pub-sub service optimized
           for high-throughput, low-latency message delivery. It provides at-least-once delivery,
           exactly-once delivery (through exactly-once subscriptions), ordered delivery per
           ordering key, and automatic scaling to millions of topics and subscriptions. Pub/Sub
           is best for Google Cloud-native applications, global fan-out requirements, and workloads
           that need automatic scaling without operational management.
-        </p>
+        </HighlightBlock>
 
         <p>
           Amazon SNS (Simple Notification Service) combined with SQS (Simple Queue Service)
@@ -288,8 +298,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Pub-Sub System Design</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Design topics with semantic naming.</strong> Topic names should clearly indicate
           the domain and event type they carry. Use a hierarchical naming convention
           (<code className="inline-code">domain.entity.action</code>, e.g.,
@@ -299,9 +312,9 @@ export default function ArticlePage() {
           fine-grained subscriptions (<code className="inline-code">user.profile.updated</code>).
           Avoid generic topic names like <code className="inline-code">events</code> or
           <code className="inline-code">messages</code> that do not convey semantic meaning.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Include rich metadata in message attributes.</strong> Pub-sub systems support
           message attributes (key-value pairs) that are evaluated by the broker for filtering
           without requiring subscribers to parse the message body. Include metadata such as event
@@ -309,7 +322,7 @@ export default function ArticlePage() {
           efficient filter-based delivery (subscribers receive only messages matching their
           attribute filters) and allows monitoring systems to track message flow without
           deserializing message bodies.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Implement message schema evolution.</strong> As pub-sub systems mature, message
@@ -343,8 +356,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Unbounded message retention.</strong> When using acknowledgment-based retention,
           messages are retained until all subscribers acknowledge them. If a subscriber becomes
           inactive (crashes, is decommissioned, or has a bug that prevents acknowledgment), its
@@ -353,9 +369,9 @@ export default function ArticlePage() {
           pure acknowledgment-based retention. This ensures that messages expire even if a
           subscriber never acknowledges them. Monitor the age of unacknowledged messages and alert
           when messages approach the retention deadline.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Over-subscribing to topics.</strong> When too many services subscribe to the
           same topic, each message is faned out to a large number of subscribers, increasing
           broker load and delivery latency. If a topic has 500 subscribers and the publisher
@@ -367,7 +383,7 @@ export default function ArticlePage() {
           <code className="inline-code">events.user.created</code>,
           <code className="inline-code">events.user.updated</code>, and
           <code className="inline-code">events.user.deleted</code> separately).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Non-idempotent subscribers.</strong> When at-least-once delivery causes duplicate
@@ -407,9 +423,12 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Spotify: Event-Driven Architecture with Pub-Sub</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Spotify uses pub-sub extensively for its event-driven microservices architecture. Every
           significant event in the platform (song played, playlist created, user follow, artist
           follow, search query) is published to a topic, and downstream services subscribe to
@@ -421,15 +440,15 @@ export default function ArticlePage() {
           <code className="inline-code">playlist.created</code> events to populate followers&apos;
           activity feeds. The analytics pipeline subscribes to all events to generate usage
           reports and A/B test results.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Spotify&apos;s pub-sub infrastructure handles millions of events per second with
           sub-second delivery latency. Consumer groups are used to parallelize processing across
           hundreds of service instances, and filter-based delivery ensures that each service
           receives only the events relevant to its domain. Dead letter topics capture failed
           deliveries for investigation and reprocessing.
-        </p>
+        </HighlightBlock>
 
         <h3>Slack: Real-Time Notification Delivery</h3>
         <p>
@@ -475,11 +494,14 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg bg-panel-soft p-6">
-            <p className="font-semibold">Q1: What is the publish-subscribe pattern, and how does it differ from a message queue?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: What is the publish-subscribe pattern, and how does it differ from a message queue?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> The publish-subscribe (pub-sub) pattern enables one-to-many
               message distribution: a message published to a topic is delivered to all subscribers
               of that topic. A message queue enables one-to-one distribution: each message is
@@ -489,7 +511,7 @@ export default function ArticlePage() {
               workload). Pub-sub is used for event broadcasting (notify all interested services),
               while message queues are used for workload distribution (share processing across
               consumer instances).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg bg-panel-soft p-6">

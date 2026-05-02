@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function DataLineageAuditabilityArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Data Lineage</strong> tracks the flow of data through systems — where data originates,
           how it transforms, where it moves, and where it ends up. <strong>Auditability</strong> is the
           ability to reconstruct who accessed or modified data, when, and why. Together, these capabilities
           enable organizations to answer critical questions about data provenance, quality, and compliance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In modern data-intensive architectures, data rarely flows in a straight line from source to
           destination. It passes through multiple ingestion pipelines, transformation layers, aggregation
           jobs, materialized views, and downstream consumers. When a number on an executive dashboard looks
           wrong, the team must be able to trace that metric back through every transformation to identify
           where the discrepancy originated. Similarly, when regulators ask who accessed personal data during
           a specific time window, the organization must produce an immutable, verifiable record.
-        </p>
+        </HighlightBlock>
         <p>
           Data lineage is fundamentally a graph problem: nodes represent datasets, tables, or columns, while
           edges represent transformations and data flows. Understanding this structure enables powerful
@@ -58,7 +62,10 @@ export default function DataLineageAuditabilityArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data lineage operates at multiple granularity levels, each serving different purposes and carrying
           different overhead costs. <strong>Table-level lineage</strong> tracks which tables feed which other
           tables, providing coarse-grained visibility suitable for high-level impact analysis and system
@@ -66,15 +73,15 @@ export default function DataLineageAuditabilityArticle() {
           and target table relationships. While easier to implement, table-level lineage cannot show
           column-level dependencies, which limits its usefulness for precise impact analysis or GDPR data
           subject requests.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Column-level lineage</strong> tracks which columns feed which other columns, enabling
           precise impact analysis and compliance workflows. This requires parsing SQL SELECT and INSERT
           statements to analyze transformations at the column level. The additional granularity comes with
           increased complexity in both capture and storage, as the lineage graph grows significantly larger
           when tracking individual column relationships across hundreds of tables and thousands of
           transformation jobs.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Field-level lineage</strong> goes further to track individual data elements through
           transformations, capturing row-level transformations for debugging data quality issues and
@@ -120,7 +127,10 @@ export default function DataLineageAuditabilityArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing a comprehensive audit trail requires careful consideration of what events to capture,
           how to structure audit records, where to store them, and how to prevent tampering. The events
           that should be audited include data access operations recording who queried what data and when,
@@ -128,8 +138,8 @@ export default function DataLineageAuditabilityArticle() {
           schema changes tracking ALTER TABLE, CREATE, and DROP operations, access control changes logging
           GRANT, REVOKE, and role assignment operations, and authentication events recording login attempts
           and privilege escalations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A standard audit record includes several critical fields. The timestamp records when the event
           occurred using UTC with high precision. The user identifier captures who performed the action,
           linked to an identity management system. The action field records what operation was performed,
@@ -139,7 +149,7 @@ export default function DataLineageAuditabilityArticle() {
           including success status, failure reasons, and rows affected. For modifications, before and after
           values are captured to enable reconstruction of historical state. A correlation ID links the audit
           record to a broader transaction or request for end-to-end traceability.
-        </p>
+        </HighlightBlock>
         <p>
           Storage considerations for audit trails emphasize separation, immutability, and performance.
           Audit data should be stored in a separate database from operational data to prevent tampering and
@@ -170,7 +180,10 @@ export default function DataLineageAuditabilityArticle() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The decision of how much lineage granularity to implement involves a fundamental trade-off between
           visibility and overhead. Column-level lineage provides precise impact analysis and supports GDPR
           data subject requests, but the lineage graph grows orders of magnitude larger compared to
@@ -178,8 +191,8 @@ export default function DataLineageAuditabilityArticle() {
           jobs, table-level lineage might track a few thousand edges, while column-level lineage could
           track hundreds of thousands. This affects storage costs, query performance for lineage traversals,
           and the complexity of maintaining accurate lineage as schemas evolve.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice of lineage capture technique similarly involves trade-offs. SQL parsing is automatic
           but misses application-level transformations that occur in code before data reaches the database.
           Query log analysis captures everything that hits the database but generates enormous log volumes
@@ -188,7 +201,7 @@ export default function DataLineageAuditabilityArticle() {
           the data stack, and custom code embedded in pipeline steps may still be invisible. Application
           instrumentation provides the most complete picture but requires developer effort to adopt and
           maintain, which is often the biggest barrier in large organizations.
-        </p>
+        </HighlightBlock>
         <p>
           Audit trail storage design presents another set of trade-offs. Storing full before and after
           values for every modification provides complete reconstruction capability but consumes enormous
@@ -216,7 +229,10 @@ export default function DataLineageAuditabilityArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Building effective data governance programs requires a combination of technical infrastructure
           and organizational processes. A centralized data catalog serves as the metadata repository
           containing table and column descriptions, ownership information, lineage data, and usage
@@ -224,15 +240,15 @@ export default function DataLineageAuditabilityArticle() {
           documentation, and governance capabilities. The catalog should be automatically populated from
           lineage capture systems rather than relying on manual documentation, which quickly becomes stale
           in active data environments.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data stewardship assigns clear ownership for data domains across the organization. Data owners
           are business leaders accountable for data quality within their domain. Data stewards have
           operational responsibility for data quality and definitions, serving as the subject matter experts
           for their data. Data custodians handle technical responsibility for data storage and security.
           This three-tier model ensures that accountability, operational knowledge, and technical expertise
           are all represented in data governance decisions.
-        </p>
+        </HighlightBlock>
         <p>
           Policy enforcement should be automated wherever possible to reduce reliance on human processes.
           Access control enforcement implements least-privilege access based on data classification,
@@ -254,22 +270,25 @@ export default function DataLineageAuditabilityArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           One of the most common pitfalls in data lineage implementation is assuming that automated capture
           alone is sufficient. SQL parsers and ETL integrations capture structural lineage but miss the
           semantic meaning of transformations. A column may be named the same in source and target while
           its definition has fundamentally changed due to business logic modifications. Organizations must
           complement automated lineage with business glossary definitions and stewardship processes to
           ensure that the semantic meaning of data transformations is documented and understood.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another frequent mistake is treating audit trails as an afterthought rather than designing them
           into the system architecture from the beginning. Adding audit capabilities to an existing system
           often requires retrofitting instrumentation across multiple services, which is significantly more
           expensive and error-prone than building audit support into the initial design. Audit requirements
           should be part of the non-functional requirements specification for any system that handles
           regulated or sensitive data.
-        </p>
+        </HighlightBlock>
         <p>
           Organizations also commonly underestimate the storage and performance overhead of comprehensive
           auditing. Capturing before and after values for every update on high-transaction tables can
@@ -296,7 +315,10 @@ export default function DataLineageAuditabilityArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In financial services, data lineage is critical for regulatory reporting under Basel III,
           Dodd-Frank, and SOX. Financial institutions must demonstrate that the numbers in their regulatory
           submissions can be traced back to source systems through every transformation and aggregation
@@ -306,8 +328,8 @@ export default function DataLineageAuditabilityArticle() {
           retention, and automated policy enforcement for access control. The audit system captured over
           fifty million events per day across hundreds of financial systems, with hash-chain tamper
           prevention and real-time streaming to a SIEM platform.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In healthcare, HIPAA compliance requires audit controls that record and examine access to
           Protected Health Information. A healthcare provider needed to track every access to patient
           records, including who viewed the record, when, and from which system. The audit system stored
@@ -315,7 +337,7 @@ export default function DataLineageAuditabilityArticle() {
           prevention. Data lineage was used to track how patient data flowed from electronic health record
           systems through analytics pipelines to research databases, ensuring that de-identification
           transformations were correctly applied and auditable.
-        </p>
+        </HighlightBlock>
         <p>
           Technology companies face GDPR requirements for data lineage when processing personal data of EU
           residents. A social media company needed to support Right to Access and Right to Erasure
@@ -337,10 +359,13 @@ export default function DataLineageAuditabilityArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is data lineage and why is it important for large-scale systems?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What is data lineage and why is it important for large-scale systems?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Data lineage tracks the flow of data from source to destination, capturing where data
               originates, how it transforms, where it moves, and where it ends up. It is important for
               several reasons. Root cause analysis becomes tractable because when a data quality issue is
@@ -350,7 +375,7 @@ export default function DataLineageAuditabilityArticle() {
               Compliance workflows for GDPR, HIPAA, and SOX require knowing where data is stored and how it
               flows through systems. Finally, lineage builds organizational trust in data-driven decisions
               by providing transparency about data provenance and transformation history.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

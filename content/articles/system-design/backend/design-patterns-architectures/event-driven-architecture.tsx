@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Event-driven architecture (EDA)</strong> is a software design paradigm in which components communicate by emitting and reacting to events. An <em>event</em> is an immutable statement of fact about something that happened in the past: &quot;OrderPlaced&quot;, &quot;PaymentCaptured&quot;, &quot;UserSignedUp&quot;. Producers publish events to an event bus or log; consumers subscribe to topics or streams and perform actions, update derived state, or trigger downstream workflows. Unlike request-response patterns where a caller directly invokes a callee, EDA enables asynchronous, decoupled communication where the producer has no knowledge of which consumers exist or how many there are.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The core benefit is decoupling. Producers do not need to know which consumers exist, what technology they use, or how they scale. Consumers can be added, removed, and scaled independently without modifying the producer. New capabilities can be introduced by simply subscribing to existing event streams. The trade-off is distributed-systems reality: delivery is not guaranteed, ordering is limited to a partition or key scope, and correctness depends on idempotency, schema governance, dead-letter handling, and operational replay.
-        </p>
+        </HighlightBlock>
         <p>
           Event-driven architecture has become the backbone of modern distributed systems at scale. Companies like Netflix process trillions of events per day through their event backbone. Uber handles millions of ride-related events per second across geographically distributed microservices. Amazon built much of its platform on event-driven patterns including event sourcing and CQRS. The architectural shift from synchronous RPC to asynchronous event-based communication is what enables these organizations to deploy thousands of times per day without cascading failures.
         </p>
@@ -55,6 +59,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/event-driven-architecture-diagram-1.svg"
@@ -63,12 +70,12 @@ export default function ArticlePage() {
         />
 
         <h3>Events vs Commands vs State</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Clarity about semantics is the first correctness requirement in any event-driven system. Many failures in EDA come from mixing these three distinct concepts and treating them interchangeably. A <strong>command</strong> is a request to perform an action, such as &quot;ChargeCard&quot; or &quot;ReserveInventory&quot;. Commands can be accepted or rejected, and they represent intent rather than fact. Commands are directed at a specific handler and carry an expectation of a response. An <strong>event</strong> is a statement that something already happened, such as &quot;CardCharged&quot; or &quot;InventoryReserved&quot;. Events are immutable facts about the past. They cannot be rejected, only reacted to. <strong>State</strong> is the current view of reality—the result of applying a sequence of events. State can be rebuilt from events through replay, or it can be maintained in a database, depending on the design choice.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           If you publish commands as if they were facts, downstream systems will act on work that may never succeed, creating cascading incorrect assumptions. If you publish facts too early, before the underlying state change has been committed, downstream views will drift from the system of record and produce incorrect behavior. This is why patterns like the transactional outbox exist: they align published events with committed database state by writing the event record in the same database transaction as the state change, then relaying it to the event broker asynchronously. The outbox pattern ensures that if the transaction rolls back, the event is never published, preserving consistency between state and published facts.
-        </p>
+        </HighlightBlock>
         <p>
           The distinction between events and commands also matters for replay. Events can be replayed because they are immutable facts. Commands cannot be replayed because re-executing a request may produce a different result or violate business invariants. A well-designed event stream contains only facts, never requests, so that any consumer can rebuild its state by replaying history from any point in time.
         </p>
@@ -114,6 +121,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/event-driven-architecture-diagram-2.svg"
@@ -122,12 +132,12 @@ export default function ArticlePage() {
         />
 
         <h3>Event Backbone Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The event backbone is the central nervous system of an event-driven architecture. It consists of an event broker such as Apache Kafka, Amazon Kinesis, or RabbitMQ, which receives events from producers and delivers them to consumers. Producers serialize events into the broker using a client library, specifying the topic and partition key. The broker persists the event to durable storage and acknowledges receipt. Consumers poll the broker for new events, deserialize them, process them, and commit their offset to indicate progress. The broker retains events for a configurable retention period, allowing consumers to replay historical events.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The flow of an event through the system follows a well-defined lifecycle. The producer creates the event, validates it against the schema, writes it to the database in a transactional outbox, and the outbox relay publishes it to the broker. The broker assigns the event to a partition based on the key, persists it to disk, and makes it available to consumers. Each consumer group maintains its own offset, so multiple consumers can independently process the same event stream at their own pace. When a consumer processes an event, it applies business logic, updates its local state, and commits the offset. If processing fails, the consumer can retry or send the event to a dead letter queue.
-        </p>
+        </HighlightBlock>
 
         <h3>Delivery Semantics: At-Least-Once vs Exactly-Once</h3>
         <p>
@@ -162,6 +172,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/event-driven-architecture-diagram-3.svg"
@@ -169,12 +182,12 @@ export default function ArticlePage() {
           caption="EDA failures are correctness and operability failures: duplicates, drift, and lag. Design for safe reprocessing and idempotent consumers."
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing between event-driven architecture and synchronous request-response patterns involves fundamental trade-offs. Event-driven systems provide loose coupling, independent deployment, and fault isolation at the cost of eventual consistency, operational complexity, and debugging difficulty. Synchronous systems provide strong consistency, simple debugging, and immediate feedback at the cost of tight coupling, cascading failures, and deployment coordination.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The delivery semantics trade-off is between simplicity and correctness. At-most-once delivery is the simplest to implement but loses data on failure. At-least-once delivery guarantees no data loss but requires consumers to handle duplicates through idempotency. Exactly-once delivery protocols like Kafka&apos;s transactional API reduce application complexity but add broker overhead, reduce throughput, and do not eliminate the need for idempotency at the effect boundary. The practical recommendation is at-least-once delivery with idempotent consumers, which provides the same correctness guarantees as exactly-once with simpler infrastructure and higher throughput.
-        </p>
+        </HighlightBlock>
         <p>
           The partitioning trade-off is between ordering and parallelism. More partitions enable more consumer parallelism and higher throughput but weaken ordering guarantees because events are only ordered within a partition. Fewer partitions provide stronger ordering but limit consumer parallelism. The correct partition count balances expected peak throughput, consumer parallelism needs, and ordering requirements. For most systems, starting with a moderate number of partitions and increasing based on measured throughput is the right approach.
         </p>
@@ -191,12 +204,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Define clear semantics from the start. Events are immutable facts about the past; commands are requests that can be rejected. Never publish events before the underlying state change has been committed. Use the transactional outbox pattern to ensure events and state changes are atomic. This single practice prevents the most common source of data inconsistency in event-driven systems: publishing events for transactions that were subsequently rolled back.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design every consumer for duplicates and replays. Assume at-least-once delivery and make every consumer idempotent. Use idempotency keys, deduplication tables, or upsert operations to ensure that processing the same event twice produces the same result as processing it once. Test consumers by replaying events and verifying that the output is correct and unchanged on subsequent replays.
-        </p>
+        </HighlightBlock>
         <p>
           Choose partition keys that align with ordering needs. The partition key should be the entity ID for which ordered state transitions matter. For an order processing system, partition by order ID. For a user profile system, partition by user ID. Define a correction policy for late or out-of-order events, including how windows are computed and how corrections are emitted.
         </p>
@@ -216,12 +232,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall in event-driven architecture is mixing events and commands. When teams publish commands as events, downstream systems act on work that may never succeed, creating cascading incorrect behavior. The transactional outbox pattern exists specifically to prevent this by ensuring events are only published after the corresponding state change has been committed to the database.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Assuming exactly-once delivery from the broker is another frequent mistake. Even with exactly-once protocols enabled, the effect boundary in the consumer application still requires idempotency. A consumer that writes to a database must handle the case where the event was processed but the offset commit failed, resulting in redelivery. Building idempotency into every consumer from the start is simpler and more reliable than retrofitting it after duplicates cause data corruption.
-        </p>
+        </HighlightBlock>
         <p>
           Ignoring schema governance leads to silent breaking changes that corrupt consumer data. When a producer adds a field, renames a field, or changes the semantics of a field without notifying consumers, the downstream systems produce incorrect results that are difficult to trace back to the schema change. A schema registry with compatibility enforcement prevents these changes from entering the event stream in the first place.
         </p>
@@ -241,16 +260,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Netflix: Event Backbone for Content Delivery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix processes trillions of events per day through its event backbone, which powers content recommendations, playback analytics, and operational monitoring. Every interaction from play, pause, seek, and stop generates events that flow through Kafka clusters to downstream consumers. The recommendation engine consumes these events in real time to update personalized content suggestions. The operational monitoring system consumes the same events to detect playback quality issues and trigger alerts. Netflix uses event sourcing for its content metadata, allowing any historical state to be reconstructed and audited. The event backbone enables independent scaling of each consumer: the recommendation engine scales independently of the monitoring system, and both scale independently of the event producers in the playback clients.
-        </p>
+        </HighlightBlock>
 
         <h3>Uber: Real-Time Event Processing for Ride Matching</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uber&apos;s ride-matching system is fundamentally event-driven. When a rider requests a trip, the request is published as an event to the event backbone. Multiple consumers react to this event: the matching service finds nearby drivers, the pricing service calculates the fare, the notification service sends push notifications, and the analytics service records the request for business intelligence. Each consumer operates independently and can be scaled, updated, or replaced without affecting the others. During peak hours, the event backbone absorbs the surge in request volume and consumers process events at their own pace. Uber uses Kafka Streams for real-time event processing, enabling complex event patterns like matching riders to drivers based on real-time location updates streamed as events.
-        </p>
+        </HighlightBlock>
 
         <h3>Amazon: Event Sourcing for Order Management</h3>
         <p>
@@ -268,14 +290,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between an event, a command, and state in an event-driven system?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               A command is a request to perform an action, such as &quot;ChargeCard&quot; or &quot;ReserveInventory&quot;. Commands can be accepted or rejected and represent intent rather than fact. They are directed at a specific handler and carry an expectation of a response. An event is an immutable statement that something already happened, such as &quot;CardCharged&quot; or &quot;InventoryReserved&quot;. Events are facts about the past, cannot be rejected, and can be replayed by any consumer at any time. State is the current view of reality, derived by applying a sequence of events in order. State can be rebuilt from events through replay or maintained in a database.
-            </p>
+            </HighlightBlock>
             <p>
               The critical distinction is that events can be replayed because they are immutable facts, while commands cannot be replayed because re-executing a request may produce a different result. Mixing events and commands in the same stream leads to incorrect behavior when consumers replay history and accidentally re-execute requests.
             </p>

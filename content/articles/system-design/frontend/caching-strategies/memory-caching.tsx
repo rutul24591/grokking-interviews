@@ -506,22 +506,26 @@ export default function MemoryCachingConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: in-memory caches trade latency for memory and correctness risk. Use these references to
+          reason about cache invalidation in client state libraries and how to debug memory/perf regressions.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://tanstack.com/query/latest/docs/framework/react/overview" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               TanStack Query (React Query) Documentation - Official Guide
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://swr.vercel.app/docs/getting-started" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               SWR Documentation - React Hooks for Data Fetching
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.apollographql.com/docs/react/caching/overview" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Apollo Client Caching - Normalized Cache Architecture
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://tkdodo.eu/blog/practical-react-query" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Practical React Query - TkDodo's Blog (Community Best Practices)

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Multi-level caching is an architectural pattern that organizes cache storage into a hierarchy of tiers, each with distinct latency, capacity, and cost characteristics. The hierarchy is designed so that the most frequently accessed data resides in the fastest and smallest cache tier closest to the consumer, while less frequently accessed data is stored in progressively larger and slower tiers further from the consumer. This structure mirrors the cache hierarchy in computer architecture, where L1 and L2 CPU caches feed into main memory, which in turn feeds into disk storage, but applies it to distributed system design where the tiers span application process memory, shared network-attached cache clusters, and geographically distributed edge cache networks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The motivation for multi-level caching is fundamentally economic. No single cache technology provides both low latency and large capacity at acceptable cost. In-process memory caches offer sub-microsecond access latency but are constrained by the heap size of each application process and duplicate data across every instance in the fleet. Distributed cache clusters such as Redis or Memcached provide large shared capacity accessible by all application instances but introduce network latency of one to ten milliseconds per round trip. Edge caches such as CDN networks push cached content to geographically distributed points of presence close to end users, reducing wide-area network latency but introducing cache coherence challenges across hundreds of edge locations. Each tier fills a gap that the others cannot address, and the combination provides a better latency-capacity-cost profile than any single tier alone.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of multi-level caching scales non-linearly with the number of tiers. Each additional tier introduces new invalidation paths, new consistency boundaries, new failure modes, and new operational monitoring surfaces. A single-tier cache has one invalidation mechanism and one consistency boundary. A three-tier cache has three invalidation mechanisms that must coordinate, three consistency boundaries that can diverge independently, and the possibility that one tier serves stale data while the others are fresh. Managing this complexity requires rigorous design around cache coherence protocols, invalidation propagation, and observability across all tiers. For staff and principal engineers, the decision to introduce multiple cache tiers is not a simple performance optimization. It is an architectural commitment that shapes the system correctness guarantees, operational burden, and failure mode analysis for the lifetime of the service.
         </p>
@@ -42,12 +46,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The cache hierarchy is typically organized into three tiers designated as L1, L2, and L3. L1 is the in-process memory cache within each application instance, providing the lowest latency access, typically sub-microsecond, but with capacity limited by the application heap or memory allocation. L1 caches are local to each process and therefore duplicate data across all instances in the fleet. An L1 cache of one hundred megabytes in each of fifty application instances consumes five gigabytes of total memory, with each instance holding its own copy of the same cached data. L1 caches are best suited for hot keys that are accessed frequently by the specific instance holding them, such as session state, configuration values, and frequently accessed entity data for the current request context. The eviction policy for L1 is typically LRU or a variant such as TinyLFU, which approximates LFU behavior with bounded memory overhead and adapts well to shifting access patterns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           L2 is the distributed cache tier, typically implemented with Redis Cluster, Memcached, or a managed service such as AWS ElastiCache or Google Cloud Memorystore. L2 provides larger capacity, tens to hundreds of gigabytes, that is shared across all application instances, eliminating the data duplication of L1. Access latency is higher than L1, typically one to five milliseconds for a network round trip within the same data center, but the shared capacity means that the working set is stored once, not once per instance. L2 caches serve as the authoritative source for cached data in most multi-level architectures. When a key is invalidated, L2 is the coordination point that ensures all L1 caches are notified, and when a key is populated on a cache miss, L2 stores it for all instances to access. The distributed cache tier is also where cache coherence mechanisms are anchored, through pub/sub invalidation broadcasts, versioned key lookups, or lease-based coherence protocols.
-        </p>
+        </HighlightBlock>
         <p>
           L3 is the edge cache tier, typically implemented with a CDN such as CloudFront, Fastly, or Cloudflare. L3 pushes cached content to geographically distributed points of presence close to end users, reducing the wide-area network latency that would otherwise be incurred by routing every request to the origin data center. L3 caches are appropriate for content that is globally distributed and read-heavy, such as static assets, API responses for public data, and pre-rendered pages, where the content does not change frequently and can tolerate the propagation delay of invalidation events across hundreds of edge locations. L3 caches have the highest latency of the three tiers, typically tens of milliseconds for a cache miss that must reach the origin, but for cache hits at the edge, the latency is determined by the user proximity to the nearest edge location, which is often faster than reaching the origin data center. The L3 tier operates on HTTP caching semantics, using Cache-Control headers, ETag revalidation, and CDN-specific purge APIs to manage cache lifecycle.
         </p>
@@ -64,9 +71,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production multi-level caching architecture consists of interconnected components that manage data placement, lookup, population, invalidation, and coherence across the cache hierarchy. The architecture must handle the normal flow of reads and writes efficiently while also managing failure scenarios such as cache tier outages, invalidation event loss, and coherence violations. The design decisions around inclusive versus exclusive caching, invalidation propagation strategy, and cache warmup behavior determine the system performance characteristics, correctness guarantees, and operational complexity. Understanding how these components interact under both normal and degraded conditions is essential for designing a system that remains available and correct when individual cache tiers fail.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/multi-level-hierarchy.svg`}
@@ -74,9 +84,9 @@ export default function ArticlePage() {
           caption="Multi-level cache hierarchy spanning L1 in-process cache with sub-microsecond latency and per-instance limited capacity, L2 distributed shared cache with one to five millisecond latency and large shared capacity, and L3 edge-distributed CDN cache with geographic proximity and highest aggregate capacity"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The read path architecture determines how data flows from the cache hierarchy to the application. In a sequential lookup architecture, the application checks each tier in order from fastest to slowest, stopping at the first hit. This is simple to implement but has a performance cost on misses. If L1 and L2 both miss, the application has incurred two cache lookup latencies before reaching the origin. In a parallel lookup architecture, the application sends lookup requests to L1 and L2 simultaneously and uses the first result that arrives. This reduces miss latency but increases complexity and network load. In practice, sequential lookup is the dominant pattern because the L1 hit rate is typically high enough that the miss penalty is acceptable, and parallel lookups add unnecessary network load for marginal benefit. Some systems implement an adaptive lookup strategy where the application tracks recent hit rates and skips tiers that have consistently missed, but this adds heuristic complexity that is rarely justified in production systems.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/multi-level-read.svg`}
@@ -113,17 +123,20 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Multi-level caching introduces a series of interconnected trade-offs that must be carefully evaluated for each workload. The decision to add a cache tier is never purely a performance decision. It is a systems engineering decision that affects consistency guarantees, operational complexity, memory costs, and failure mode analysis. Each tier added to the hierarchy increases the surface area for coherence violations, the operational burden of monitoring and debugging, and the cognitive load on the engineering team that must understand and maintain the system. Before committing to a multi-tier architecture, it is essential to rigorously evaluate whether the latency benefit justifies these costs.
-        </p>
+        </HighlightBlock>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4">
           <h3 className="mb-4 text-lg font-semibold">
             Inclusive vs. Exclusive Caching
           </h3>
-          <p className="mt-2 text-sm">
+          <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
             In inclusive caching, data is stored in all tiers through which it passes. When a key is fetched from L2, it is stored in both L2 and L1. When a key is invalidated, it is removed from all tiers. The advantage is simplicity. The same key exists in all tiers, and invalidation removes it from all tiers uniformly. Debugging is straightforward because a key presence is predictable across tiers. The disadvantage is memory duplication. The same data is stored in L1 across every application instance and in L2, consuming N plus one times the memory where N is the number of instances. For a fleet of fifty instances with a two-gigabyte L1 cache each, the total L1 memory consumption is one hundred gigabytes, with each instance holding a copy of overlapping data.
-          </p>
+          </HighlightBlock>
           <p className="mt-2 text-sm">
             In exclusive caching, data is stored in only one tier at a time. When a key is fetched from L2, it is removed from L2 and stored only in L1. When the L1 entry is evicted, it is re-fetched from the origin, not from L2, because it was removed. The advantage is memory efficiency. Each key is stored exactly once across the entire cache hierarchy. The disadvantage is complexity. Promotion logic, which moves data from L2 to L1, demotion logic, which moves data back to L2 when L1 evicts, and invalidation logic, which removes data from whichever tier holds it, are all significantly more complex than inclusive caching. Exclusive caching also introduces a performance penalty on L1 eviction, because the evicted key must be re-fetched from the origin rather than from L2, adding latency to what would otherwise be an L2 hit.
           </p>
@@ -205,12 +218,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p className="mt-2 text-sm">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           Start with a single distributed cache tier and add complexity only when measurement demonstrates that additional tiers provide meaningful benefit. Begin with a single distributed cache tier, typically L2, and measure its hit rate, latency contribution, and operational burden. Add an L1 in-process cache only if the L2 latency is a meaningful fraction of the end-to-end latency budget and the access pattern exhibits sufficient per-instance locality for L1 to achieve a hit rate above sixty percent. Add an L3 edge cache only if the application serves globally distributed users and the content is read-heavy and stable enough to tolerate edge cache propagation delays. Each tier addition should be justified by measured data, not by architectural preference. The single-tier cache should be properly sized, properly configured with appropriate eviction policies and TTLs, and still insufficient for the latency requirements before considering multi-tier additions.
-        </p>
-        <p className="mt-2 text-sm">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           Define a coherence budget for each data class that the cache serves. Not all data requires the same coherence guarantees. Define a coherence budget for each class of cached data, which represents the maximum acceptable time between a data change and all cache tiers reflecting that change. For correctness-critical data such as user permissions, financial balances, or access control lists, the coherence budget should be sub-second, achieved through write-through invalidation with versioned keys as a safety net. For data where staleness is acceptable, such as analytics aggregates, product listings, or social media feed positions, the coherence budget can be minutes, achieved through TTL-based expiration with event-driven invalidation as an optimization that reduces the average staleness window. The coherence budget should be documented alongside the cache configuration so that engineers understand the consistency guarantees for each data class.
-        </p>
+        </HighlightBlock>
         <p className="mt-2 text-sm">
           Implement per-tier observability with metrics for hit rate, miss rate, latency contribution, error rate, eviction rate, and memory utilization for each cache tier independently. Correlate these metrics with end-to-end request latency to understand the actual impact of each tier on user-facing performance. Set alerts for per-tier degradation, such as L1 hit rate dropping below its expected baseline, L2 latency spiking above its p99 threshold, or L3 purge failures indicating edge cache invalidation issues. Per-tier observability is essential for diagnosing issues because a degradation in one tier may not be visible in aggregate metrics. An L1 hit rate drop from eighty percent to fifty percent doubles the fraction of requests that incur the L2 network latency, which may be a significant user-facing regression even though the overall cache hit rate appears acceptable.
         </p>
@@ -227,12 +243,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p className="mt-2 text-sm">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           The most common pitfall in multi-level caching is adding tiers without measuring whether they provide meaningful benefit. Engineers add an L1 in-process cache because it seems like a good optimization, but if the L1 hit rate is only thirty percent, seventy percent of requests still incur the L2 network latency, and the thirty percent that hit L1 save a few milliseconds at the cost of memory duplication and coherence complexity. Before adding a tier, measure the access pattern carefully. What fraction of reads access the same keys repeatedly within the lifetime of an application instance? If this fraction is low, the additional tier will not provide meaningful benefit. The L1 hit rate should exceed sixty percent to justify the memory and complexity cost of maintaining an additional tier. This measurement should be taken from production traffic, not from synthetic benchmarks, because production access patterns often exhibit different locality characteristics than synthetic workloads.
-        </p>
-        <p className="mt-2 text-sm">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           Cache coherence violations are a persistent source of subtle production bugs that are difficult to detect and diagnose. When an invalidation event is lost due to a network partition, a pub/sub subscriber crash, or a race condition, one L1 cache continues serving stale data while all other caches are fresh. This bug is difficult to detect because it affects only a subset of users, specifically those routed to the instance with the stale L1 cache, and manifests as incorrect data rather than a performance degradation. Users may not report the issue immediately, and when they do, the bug is difficult to reproduce because the stale data is transient and instance-specific. The mitigation is to implement versioned keys as a coherence safety net. Even if an invalidation event is lost, the version check on the next access detects the stale data and refreshes it. Combined with TTL-based expiration, this provides multiple layers of defense against coherence violations, reducing the maximum staleness window from indefinite to the TTL duration or the version check interval, whichever is shorter.
-        </p>
+        </HighlightBlock>
         <p className="mt-2 text-sm">
           Sequential cache lookups on multi-tier misses can add more latency than a single-tier architecture. If a request misses in L1, which takes sub-microsecond, misses in L2, which takes five milliseconds, and misses in L3, which takes an additional edge cache check, it has incurred the cost of three cache lookups before reaching the origin. If the overall miss rate across all tiers is high, say above forty percent, the average request latency may be worse than if the application read directly from L2 without the L1 and L3 tiers. The solution is to monitor the per-tier miss rate and the latency contribution of each tier, and to bypass tiers that are not providing sufficient hit rate to justify their lookup cost. A well-instrumented system should be able to detect when a tier is contributing more latency on misses than it saves on hits, and either alert operators or automatically bypass the degraded tier.
         </p>
@@ -256,12 +275,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p className="mt-2 text-sm">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           A global social media platform uses a three-tier cache hierarchy to serve user profile data to two hundred million daily active users. L1 is an in-process cache in each application instance, holding the profiles of users currently being viewed by that instance active requests, typically two thousand to five thousand profiles per instance with a TTL of sixty seconds. L2 is a Redis Cluster with five hundred gigabytes of capacity, holding all active user profiles with a TTL of five minutes. L3 is a CDN edge cache holding profile data for the most popular users, verified accounts and influencers, with a TTL of fifteen minutes. When a user profile is updated, the update is written to the database, the L2 key is invalidated, and an invalidation event is broadcast to all L1 caches via Redis Pub/Sub. The CDN edge cache is purged for that user profile URL via the CDN API. The three-tier hierarchy ensures that profile reads for the most active users hit L1 with sub-microsecond latency, reads for less active users hit L2 at two milliseconds, and reads for globally popular users from distant geographic locations hit L3 at ten to thirty milliseconds depending on edge proximity. The platform measured that eighty-five percent of profile reads hit L1, twelve percent hit L2, two percent hit L3, and one percent missed all tiers and fell through to the database. The L1 tier reduced the average profile read latency from three milliseconds to sub-millisecond, which was critical for the platform user experience metrics.
-        </p>
-        <p className="mt-2 text-sm">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           A financial trading platform uses a two-tier cache consisting of L1 and L2 for market data feeds. L1 holds the current bid-ask spread and last trade price for the stocks currently displayed on the user watchlist, with a TTL of one second. L2 holds market data for all tradable instruments, with a TTL of five seconds. The platform uses write-through invalidation. When a new trade executes, the L2 key is updated, and an invalidation event is broadcast to all L1 caches. The one-second L1 TTL serves as a safety net for any missed invalidation events. The platform measured that ninety-five percent of user requests hit L1 because users primarily watch a small set of stocks, four percent hit L2, and one percent missed both tiers and fell through to the market data feed API. The L1 tier reduced the average market data latency from three milliseconds, which was the L2 round trip, to sub-microsecond, which was critical for the platform sub-ten-millisecond end-to-end latency SLA. The platform implemented versioned keys as a coherence safety net, with the version metadata cached in L1 with a five-hundred-millisecond TTL to minimize the version-check overhead.
-        </p>
+        </HighlightBlock>
         <p className="mt-2 text-sm">
           An e-commerce platform experienced a recurring issue during deployment rollouts where L1 cache flushes caused a surge in L2 requests that overwhelmed the Redis Cluster, leading to increased latency for all cached data across the platform. The root cause was that all application instances flushed their L1 caches simultaneously during the deployment, causing a concentrated wave of L2 lookups that exceeded the Redis Cluster throughput capacity. The fix involved multiple coordinated changes. New instances pre-populated their L1 caches from L2 during startup, fetching the top one thousand most-accessed keys before serving traffic. The deployment rollout was staggered across availability zones, ensuring that only a fraction of instances flushed their L1 caches at any given time. The L2 Redis Cluster was also resized to handle the peak warmup load, and lock-based stampede prevention was implemented to ensure that only one request populated each key after an L1 flush. These changes reduced the L2 load during deployments from a ten-fold spike to a manageable twenty percent increase, eliminating the deployment-related latency incidents.
         </p>
@@ -275,13 +297,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q1: You have an L1 in-process cache and an L2 distributed Redis cache. An invalidation event is published to a Redis Pub/Sub channel when data changes, but one L1 instance misses the event due to a transient network partition. How do you ensure that instance does not serve stale data indefinitely, and how do you detect that a coherence violation has occurred?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: You have an L1 in-process cache and an L2 distributed Redis cache. An invalidation event is published to a Redis Pub/Sub channel when data changes, but one L1 instance misses the event due to a transient network partition. How do you ensure that instance does not serve stale data indefinitely, and how do you detect that a coherence violation has occurred?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               This is a classic cache coherence violation in a multi-level architecture. The instance that missed the invalidation event will continue serving its stale L1 entry until something forces it to refresh. The primary and simplest defense is TTL. Every L1 entry should have a TTL that limits the maximum staleness window. If the TTL is sixty seconds, the stale entry will expire within sixty seconds and be re-fetched from L2, which has the fresh data. The TTL should be set based on the coherence budget for the data class, with shorter TTLs for correctness-critical data and longer TTLs for data where staleness is acceptable.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A stronger defense that reduces the staleness window from the TTL duration to the time between accesses is versioned keys. Each cached value includes a version number, and the current version is stored in L2 as metadata. When the L1 instance accesses a key, it compares its local version to the current version in L2. If they differ, the L1 entry is stale and must be refreshed from L2. This approach detects stale data on every access, not just on TTL expiration, and does not rely on reliable event delivery for coherence. The version check adds a small overhead to each L1 access, but this overhead is typically negligible compared to the L2 round trip that would be required on an L1 miss anyway. The version metadata can itself be cached in L1 with a short TTL to avoid repeated L2 lookups for the same key.
             </p>

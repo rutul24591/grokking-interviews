@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,15 +25,18 @@ export default function BatteryCpuEfficiencyArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Battery &amp; CPU Efficiency</strong> refers to the systematic optimization of
           application behavior to minimize power consumption and CPU usage, particularly critical for
           mobile devices where battery life represents a primary user concern and a hard constraint on
           application design. Unlike desktop applications where power is often assumed to be effectively
           unlimited through mains connection, mobile applications must operate within strict energy budgets
           defined by battery capacities typically ranging from 2,000 to 5,000 milliamp-hours.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Battery drain ranks among the top reasons users uninstall mobile applications. Research from
           Greenlytics found that poorly optimized applications can consume up to 30% of daily battery
           capacity. Users expect their devices to last a full day on a single charge, and applications
@@ -42,7 +46,7 @@ export default function BatteryCpuEfficiencyArticle() {
           throttling that reduces performance, janky animations, slow interactions, device warmth that
           signals poor optimization to users, and aggressive background resource termination by both
           iOS and Android platforms.
-        </p>
+        </HighlightBlock>
         <p>
           Power efficiency is not an optional optimization but a core quality metric that directly impacts
           user retention, app store ratings, and platform compliance. Both Apple and Google enforce
@@ -64,7 +68,10 @@ export default function BatteryCpuEfficiencyArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding how mobile devices consume power is essential before attempting optimization. A
           typical smartphone power budget breaks down across several major consumers. The display accounts
           for 30-40% of total power consumption, making it the single largest consumer. The CPU consumes
@@ -72,8 +79,8 @@ export default function BatteryCpuEfficiencyArticle() {
           The GPU uses 10-15% and sensors such as GPS consume 5-10% of the total power budget. These
           proportions vary based on usage patterns, but the display and CPU consistently dominate the
           energy profile.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Modern mobile CPUs use dynamic voltage and frequency scaling (DVFS) to balance performance and
           power consumption. When idle, CPU cores enter progressively deeper sleep states known as C-states,
           where C0 represents active operation and C1 through C6 represent increasingly deep sleep states
@@ -83,7 +90,7 @@ export default function BatteryCpuEfficiencyArticle() {
           Modern system-on-chips use Big.LITTLE architecture with heterogeneous processing, deploying
           high-efficiency cores for light tasks and high-performance cores for demanding workloads,
           automatically migrating threads between core types based on load.
-        </p>
+        </HighlightBlock>
         <p>
           Tail energy represents a frequently overlooked but critical concept in mobile power consumption.
           Tail energy is the power consumed after an operation completes while the radio or CPU returns to
@@ -104,7 +111,10 @@ export default function BatteryCpuEfficiencyArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Reducing CPU usage represents the most impactful approach to improving battery efficiency. The
           main thread handles UI rendering, user input, and JavaScript execution in web applications.
           Blocking the main thread causes visible jank and forces the CPU to remain in high-power states
@@ -114,8 +124,8 @@ export default function BatteryCpuEfficiencyArticle() {
           deferring non-critical work using requestIdleCallback to schedule processing during idle periods,
           and virtualizing long lists to render only visible items, thereby reducing DOM manipulation and
           layout calculations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Animations constitute a major source of CPU and GPU usage, and poorly optimized animations cause
           frame drops and excessive power consumption. The correct approach uses CSS transform and opacity
           properties exclusively for animations because these are GPU-accelerated and avoid expensive layout
@@ -125,7 +135,7 @@ export default function BatteryCpuEfficiencyArticle() {
           usage and can negate performance benefits. On low-end devices, animation complexity should be
           reduced using the prefers-reduced-motion media query to respect user preferences and device
           capabilities.
-        </p>
+        </HighlightBlock>
         <p>
           Event listeners can cause excessive CPU wakeups if not implemented carefully. Scroll, resize, and
           input handlers fire frequently and must be controlled through debouncing, which waits for a pause
@@ -154,7 +164,10 @@ export default function BatteryCpuEfficiencyArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Network operations rank among the most power-intensive tasks a mobile application performs. The
           radio subsystem consumes significant power during transmission and has substantial tail energy
           costs. Cellular radios operate in multiple states with different power consumption levels. The
@@ -162,8 +175,8 @@ export default function BatteryCpuEfficiencyArticle() {
           data transfer. The FACH state consumes medium power at 200-400 milliwatts for low-rate data
           during a short tail period after transfer. The IDLE state, also known as PCH, consumes low
           power at 5-20 milliwatts with no active transfer but periodic paging checks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The tail energy problem manifests when data transfer completes but the radio remains in the FACH
           state for 5-12 seconds before transitioning to IDLE. Making multiple small requests within this
           window is efficient because the radio is already active, but spreading requests out beyond the
@@ -173,7 +186,7 @@ export default function BatteryCpuEfficiencyArticle() {
           TCP connection, caches responses aggressively using ETag and conditional requests, prefetches
           data when the radio is already active after user actions, and reduces payload size through
           compression with Brotli or gzip and efficient formats like Protocol Buffers.
-        </p>
+        </HighlightBlock>
         <p>
           WiFi proves significantly more power-efficient than cellular for data transfers. WiFi consumes
           approximately 100-300 milliwatts during transfer with fast tail decay, while cellular on 4G or
@@ -209,7 +222,10 @@ export default function BatteryCpuEfficiencyArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CPU efficiency requires breaking long tasks into chunks under 50 milliseconds to allow idle
           periods between processing bursts. Web Workers should handle heavy computations that would
           otherwise block the main thread and prevent user interaction. Animations should use only
@@ -220,8 +236,8 @@ export default function BatteryCpuEfficiencyArticle() {
           IntersectionObserver and MutationObserver wherever possible. Long lists must be virtualized
           to render only the items visible in the viewport, and requestIdleCallback should schedule
           deferrable work during browser idle periods.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Network efficiency depends on batching API requests together to amortize tail energy costs
           across multiple logical operations. HTTP/2 connection multiplexing reduces connection setup
           overhead for multiple concurrent requests. Aggressive caching using ETag headers and
@@ -231,7 +247,7 @@ export default function BatteryCpuEfficiencyArticle() {
           Non-urgent transfers like analytics and backups should be deferred until WiFi is available,
           and binary data formats like Protocol Buffers should replace JSON for large payloads where
           the size difference justifies the encoding overhead.
-        </p>
+        </HighlightBlock>
         <p>
           Background task management requires using platform-appropriate scheduling mechanisms —
           WorkManager on Android and BGTaskScheduler on iOS — rather than ad-hoc background execution.
@@ -255,21 +271,24 @@ export default function BatteryCpuEfficiencyArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           One of the most pervasive pitfalls is ignoring tail energy costs by making many small,
           unbatched network requests. Each request forces the radio through a complete high-power cycle
           including the tail period, and the cumulative energy waste can reach 30-50% of total radio
           energy consumption. Developers often focus on reducing individual request latency without
           considering the aggregate energy cost of request frequency, which is the dominant factor in
           radio power consumption.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common pitfall is blocking the main thread with synchronous computations or large DOM
           operations. When the main thread is blocked, the browser cannot process user input, paint
           frames, or enter idle power states. The result is both poor perceived performance and excessive
           battery drain. Developers must profile their applications to identify long tasks and
           systematically break them into smaller chunks or offload them to Web Workers.
-        </p>
+        </HighlightBlock>
         <p>
           Excessive polling represents a third major pitfall. Many applications poll for updates at
           fixed intervals even when no changes have occurred, keeping the CPU awake and preventing
@@ -296,7 +315,10 @@ export default function BatteryCpuEfficiencyArticle() {
 
       <section>
         <h2>Real-world use cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Navigation and ride-sharing applications face extreme battery efficiency challenges because
           they require continuous GPS tracking, network communication, and screen-on time. A leading
           ride-sharing company optimized their driver application by using adaptive location accuracy,
@@ -305,8 +327,8 @@ export default function BatteryCpuEfficiencyArticle() {
           uploads to occur every 30 seconds rather than on every location update, reducing radio active
           time by 60%. Dark mode implementation on OLED displays provided additional display power
           savings during night driving when drivers predominantly used the application.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Social media applications with infinite scroll feeds face CPU efficiency challenges from
           continuous DOM growth as users scroll. A major social platform implemented aggressive list
           virtualization, maintaining only the visible items plus a small buffer in the DOM while
@@ -314,7 +336,7 @@ export default function BatteryCpuEfficiencyArticle() {
           WebSocket-based push notifications for new content, eliminating the CPU wakeups from
           periodic feed polling. Image processing for filters and transformations was offloaded to
           Web Workers, keeping the main thread responsive for user interactions.
-        </p>
+        </HighlightBlock>
         <p>
           Fitness tracking applications must balance accurate data collection with battery preservation
           during extended activities like marathons or multi-day hikes. A fitness application optimized
@@ -337,10 +359,13 @@ export default function BatteryCpuEfficiencyArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How does tail energy impact mobile battery life?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How does tail energy impact mobile battery life?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Tail energy is the power consumed after a data transfer completes while the radio
               returns to an idle state. Cellular radios remain in the high-power FACH state for 5-12
               seconds after a transfer finishes before transitioning to the low-power IDLE state. Making
@@ -349,7 +374,7 @@ export default function BatteryCpuEfficiencyArticle() {
               requests together so they all execute within a single radio active period, amortizing the
               tail energy overhead across all batched operations. This principle applies to any operation
               with warm-up and cool-down energy costs.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

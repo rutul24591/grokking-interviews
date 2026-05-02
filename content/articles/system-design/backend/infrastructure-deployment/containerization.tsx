@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,12 +37,15 @@ export default function ContainerizationArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Containerization</strong> is the practice of packaging applications and their dependencies into lightweight, portable, isolated units called containers. Unlike virtual machines that virtualize the entire operating system (including kernel, system libraries, and user space), containers virtualize only the user space — they share the host OS kernel while maintaining isolated file systems, network interfaces, process trees, and resource limits. This makes containers significantly lighter than VMs (megabytes instead of gigabytes), faster to start (seconds instead of minutes), and more resource-efficient (higher density per host).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, containerization represents a fundamental shift from infrastructure-centric to application-centric deployment. Before containers, deployments required provisioning VMs, installing dependencies, configuring environments, and managing drift between environments (development, staging, production). Containers solve this by packaging the application and its dependencies into a single, immutable artifact (the container image) that runs identically across all environments. This eliminates &quot;works on my machine&quot; problems, enables reproducible builds, and simplifies deployment pipelines.
-        </p>
+        </HighlightBlock>
         <p>
           Containerization involves several technical considerations. Container images (layered file system snapshots that define the container&apos;s contents, built from Dockerfiles using a layered build process). Container isolation (namespaces for process, network, file system isolation; cgroups for resource limits — CPU, memory, disk I/O). Container registries (centralized storage for container images — Docker Hub, Amazon ECR, Google Container Registry, GitHub Container Registry). Multi-stage builds (building images in multiple stages to minimize final image size — compile in one stage, copy artifacts to a minimal runtime stage). Security (container escape vulnerabilities, image vulnerability scanning, least-privilege containers, non-root users, read-only file systems).
         </p>
@@ -53,12 +57,15 @@ export default function ContainerizationArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Container Images</strong> are layered file system snapshots that define the container&apos;s contents. They are built from Dockerfiles, which are text files containing build instructions such as base image, dependencies, application code, configuration, and startup command. Each Dockerfile instruction creates a layer (file system diff), and layers are cached for efficient rebuilds where unchanged layers are reused from cache. Images are immutable — once built, they do not change. Running a container creates a writable layer on top of the image, but the image itself remains unchanged.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Container Runtime</strong> is the software that runs containers on a host. Docker is the most popular container runtime, providing CLI, daemon, and image building, and is the dominant choice. Alternatives exist including containerd (the industry-standard container runtime used by Kubernetes), CRI-O (a lightweight container runtime designed specifically for Kubernetes), and Podman (a daemonless container runtime compatible with Docker CLI). The container runtime is responsible for pulling images, creating containers, managing isolation through namespaces and cgroups, and executing the container&apos;s startup command.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Namespaces</strong> are a Linux kernel feature that provides isolation for containers. Each container runs in its own set of namespaces — process namespace where containers see only their own processes not host processes, network namespace where containers have their own network interfaces, IP addresses, and routing tables, file system namespace where containers have their own root file system isolated from the host, user namespace where containers map container users to different host users preventing privilege escalation, and IPC namespace where containers have their own inter-process communication resources. Namespaces ensure that containers cannot see or interfere with each other or the host.
         </p>
@@ -84,12 +91,15 @@ export default function ContainerizationArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Containerization architecture consists of the build pipeline (creating container images from source code), the registry (storing and distributing images), the runtime (executing containers on hosts), and the orchestration layer (managing multiple containers across multiple hosts — covered in the Container Orchestration article). The flow begins with developers writing a Dockerfile (defining the base image, dependencies, application code, configuration, and startup command). The build pipeline builds the image (executing Dockerfile instructions, creating layers, caching unchanged layers), pushes the image to the registry, and the deployment system pulls the image from the registry and runs it on container hosts.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For production deployments, the container image is built once (with a unique tag — git SHA, semantic version, or build number) and promoted through environments (development, staging, production). The same image runs in all environments, ensuring consistency. Environment-specific configuration (API endpoints, feature flags, database URLs) is injected at runtime (environment variables, mounted configuration files, secret management systems), not baked into the image. This ensures that the image is immutable (same code, same dependencies) across all environments, with only configuration varying.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/container-build-pipeline.svg"
@@ -119,14 +129,17 @@ export default function ContainerizationArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Containerization involves trade-offs between image size and build time, isolation and performance, and convenience and security. Understanding these trade-offs is essential for designing effective containerization strategies.
-        </p>
+        </HighlightBlock>
 
         <h3>Base Image Selection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Full OS Images (Ubuntu, Debian, CentOS):</strong> Include complete OS user space (package managers, system libraries, utilities). Advantages: convenient (familiar OS environment, easy debugging with standard tools). Limitations: large image size (hundreds of MB), large attack surface (many packages = many vulnerabilities). Best for: development images (where debugging convenience is prioritized), applications requiring specific OS packages.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Minimal Images (Alpine):</strong> Include minimal OS user space (musl libc, busybox utilities). Advantages: small image size (5-10 MB), small attack surface (fewer packages = fewer vulnerabilities). Limitations: compatibility issues (musl libc is not fully compatible with glibc, some applications do not work on Alpine), debugging challenges (limited tools available in the image). Best for: production images where size and security are prioritized.
         </p>
@@ -154,12 +167,15 @@ export default function ContainerizationArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use Multi-Stage Builds.</strong> Build in one stage, run in another. Install build tools and compile source code in the build stage, then copy only the compiled artifacts to a minimal runtime stage such as Alpine or distroless. This reduces final image size by 80-90 percent, speeds up image pulls, reduces storage costs, and minimizes the attack surface. Multi-stage builds are the single most impactful optimization for container images.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Run as Non-Root User.</strong> By default, containers run as the root user (UID 0). If an attacker escapes the container via a container escape vulnerability, they gain root access to the host. Running containers as a non-root user limits the damage of a container escape because the attacker gains only non-root access to the host. Use the USER instruction in Dockerfiles to set a non-root user, and ensure that the application does not require root privileges.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Use Read-Only File Systems.</strong> Mount the container&apos;s root file system as read-only using the docker run --read-only flag or Kubernetes securityContext.readOnlyRootFilesystem. This prevents attackers from writing malicious files to the container&apos;s file system, even if they escape the container. Applications that need to write data should use mounted volumes such as tmpfs, host paths, or persistent volumes instead of the root file system.
         </p>
@@ -177,12 +193,15 @@ export default function ContainerizationArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Running as Root.</strong> Containers running as the root user (UID 0) by default is one of the most common and critical container security mistakes. If an attacker escapes the container, they gain root access to the host. Always run containers as non-root users using the USER instruction in Dockerfiles, and ensure that the application does not require root privileges.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Using Latest Tag.</strong> Using the latest tag for base images such as node:latest or python:latest instead of pinned versions causes non-reproducible builds because the latest tag changes over time, meaning the same Dockerfile produces different images on different days. It also prevents debugging because you do not know which version was used to build the image. Always pin base image versions such as node:20.11-alpine or python:3.12-slim.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Large Images.</strong> Building images that include build tools, source code, and development dependencies results in images hundreds of MB in size. Large images are slow to pull which slows deployments, expensive to store, and have large attack surfaces because more packages mean more vulnerabilities. Use multi-stage builds to minimize final image size — build in one stage, run in another, copying only compiled artifacts.
         </p>
@@ -200,16 +219,19 @@ export default function ContainerizationArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Microservices Deployment</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Microservices architectures use containerization to deploy each service as an independent container. Each service has its own Dockerfile, is built into its own image, and runs in its own container with isolated dependencies. Containers enable independent scaling (scale individual services based on demand), independent deployment (deploy one service without affecting others), and technology diversity (different services use different languages, frameworks, dependencies — all isolated in their own containers). This is the dominant use case for containerization in modern application architectures.
-        </p>
+        </HighlightBlock>
 
         <h3>CI/CD Pipeline Environments</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CI/CD pipelines use containerization to provide consistent build environments. Each build runs in a fresh container with known dependencies, eliminating environment-specific build failures (&quot;works on my machine&quot;). Build containers are discarded after each build (clean state for the next build), ensuring that builds are reproducible (same dependencies, same tools, same configuration). This pattern is used by GitHub Actions, GitLab CI, CircleCI, and Jenkins (Docker agents).
-        </p>
+        </HighlightBlock>
 
         <h3>Development Environments</h3>
         <p>
@@ -225,15 +247,18 @@ export default function ContainerizationArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between containers and virtual machines?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Virtual machines virtualize the entire operating system — each VM runs its own OS kernel, has its own system libraries, and requires a hypervisor. Containers virtualize only the user space — they share the host OS kernel while maintaining isolated file systems, network interfaces, process trees, and resource limits. VMs are heavier (gigabytes per VM), slower to start (minutes), and provide stronger isolation (each VM has its own kernel). Containers are lighter (megabytes per container), faster to start (seconds), and provide weaker isolation (containers share the host kernel). VMs are best for running different OS kernels on the same host or strong isolation requirements. Containers are best for application deployment, microservices, and CI/CD pipelines.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

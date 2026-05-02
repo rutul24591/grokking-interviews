@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 const BASE_PATH = "/diagrams/system-design-concepts/backend/caching-performance";
@@ -39,7 +40,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Page caching</strong> is the practice of storing the complete
           rendered response of a web request -- typically an HTML page or a JSON
           payload that represents a full page -- so that subsequent requests for
@@ -51,8 +55,8 @@ export default function ArticlePage() {
           the client, bypassing every layer of computation, database query,
           template rendering, and serialization that would normally be required
           to produce that output.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Page caching is most effective for content-heavy pages where the
           rendering cost is dominated by aggregating data from multiple sources
           (database queries, API calls, template rendering) and where the content
@@ -65,7 +69,7 @@ export default function ArticlePage() {
           concerns. The performance benefit is dramatic: serving a cached HTML
           page takes sub-millisecond time from the cache layer, compared to
           tens or hundreds of milliseconds for the full rendering pipeline.
-        </p>
+        </HighlightBlock>
         <p>
           The fundamental challenge of page caching is <strong>personalization</strong>.
           Modern web applications rarely serve identical pages to all users.
@@ -100,8 +104,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Full-page caching</strong> is the simplest form of page caching:
           the entire rendered response is stored in a cache and served to all
           requests that match the cache key. The cache key is typically derived
@@ -114,9 +121,9 @@ export default function ArticlePage() {
           Any dimension of personalization invalidates full-page caching for that
           page unless the system is willing to cache a separate version for every
           personalization combination, which is rarely practical.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Fragment caching</strong> addresses the personalization problem
           by caching individual sections of a page independently. The page is
           decomposed into fragments -- the header, the main content area, the
@@ -131,7 +138,7 @@ export default function ArticlePage() {
           trade-off is increased assembly complexity and the risk that the
           composition overhead negates the caching benefit if too many fragments
           must be rendered per request.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Edge-side includes (ESI)</strong> is a specification, originally
@@ -183,8 +190,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           A production page caching architecture is a multi-layer system where
           caching occurs at the CDN edge, the reverse proxy, and the application
           server, each layer serving a different purpose and operating with
@@ -192,9 +202,9 @@ export default function ArticlePage() {
           cache keys flow through them, and how invalidation propagates across
           them is essential for designing a system that delivers low latency,
           high cache hit ratios, and correct content delivery.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>CDN edge layer</strong> is the outermost cache layer and
           the first point of contact for client requests. CDNs like Cloudflare,
           Fastly, AWS CloudFront, and Akamai operate thousands of edge nodes
@@ -209,7 +219,7 @@ export default function ArticlePage() {
           nodes, minimizing network latency. CDN caches are typically configured
           with HTTP cache headers (Cache-Control, Vary, ETag) that the origin
           server sets to communicate caching instructions to the CDN.
-        </p>
+        </HighlightBlock>
 
         <p>
           The <strong>reverse proxy layer</strong> (NGINX, Varnish, Envoy, HAProxy)
@@ -297,8 +307,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Page caching strategies exist on a spectrum from maximum caching with
           no personalization to maximum personalization with minimal caching. The
           choice of strategy depends on the proportion of the page that is
@@ -308,7 +321,7 @@ export default function ArticlePage() {
           the trade-offs between full-page caching, fragment caching, ESI
           composition, and client-side assembly is essential for selecting the
           right approach for a given application.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -397,7 +410,7 @@ export default function ArticlePage() {
           </tbody>
         </table>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The personalization problem has driven the industry toward a hybrid
           approach that combines a cacheable page shell with dynamically injected
           personalized content. In this pattern, the server renders a page
@@ -413,7 +426,7 @@ export default function ArticlePage() {
           maximizes the cacheable surface area of the page while preserving the
           ability to serve personalized content, and it is the dominant pattern
           in modern web architecture.
-        </p>
+        </HighlightBlock>
 
         <p>
           The trade-off between TTL-based and event-driven invalidation is
@@ -435,8 +448,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Design cache keys with the minimum set of dimensions necessary to
           ensure content correctness. Start with the normalized URL, then add
           each dimension (locale, device class, authentication state, A/B variant)
@@ -450,9 +466,9 @@ export default function ArticlePage() {
           unnecessarily. Implement URL normalization as a middleware layer that
           runs before cache key construction, stripping or normalizing parameters
           that do not affect content.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use tag-based invalidation for all content changes and assign tags
           systematically. Every cached page should have at least three tags: a
           content-specific tag (identifying the primary entity on the page, such
@@ -467,7 +483,7 @@ export default function ArticlePage() {
           pages that reference the changed content are purged) without being
           overly broad (pages that do not reference the changed content remain
           cached).
-        </p>
+        </HighlightBlock>
 
         <p>
           Implement stale-while-revalidate (stale-while-revalidate and
@@ -517,8 +533,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Serving personalized content to the wrong user due to incorrect cache
           keys is the most dangerous pitfall of page caching. This occurs when
           the cache key omits a dimension that affects the page content, causing
@@ -532,9 +551,9 @@ export default function ArticlePage() {
           responses differ. Automated tests should run as part of the CI/CD
           pipeline, simulating requests from anonymous, logged-in, and
           admin-level users and asserting that the cache keys differ.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cache fragmentation from overly granular keys is the flip side of the
           key design problem. If the cache key includes too many dimensions
           (every query parameter, every cookie, every header value), each unique
@@ -551,7 +570,7 @@ export default function ArticlePage() {
           cardinality (the number of distinct keys observed over time) to detect
           fragmentation: a rapidly growing cardinality indicates that the key
           construction is too granular and needs to be simplified.
-        </p>
+        </HighlightBlock>
 
         <p>
           Thundering herd after bulk invalidation occurs when a large number of
@@ -590,8 +609,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>News and media websites</strong> are among the most common and
           demanding users of page caching. A major news site like The New York
           Times, The Guardian, or CNN serves millions of concurrent readers,
@@ -609,9 +631,9 @@ export default function ArticlePage() {
           invalidation with staggered purges to manage this, purging the most
           critical pages first and allowing less-accessed pages to refresh
           naturally via TTL expiration.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>E-commerce product pages</strong> combine static content
           (product descriptions, specifications, images, reviews) with dynamic
           content (pricing, availability, personalized recommendations, cart
@@ -630,7 +652,7 @@ export default function ArticlePage() {
           is changed, the category listing page is purged; when a product goes
           out of stock, only the availability fragment is updated (not the entire
           page), avoiding a full page purge.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Documentation and knowledge-base sites</strong> like Stripe
@@ -687,14 +709,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you handle page caching for a page that has both public
               content and user-specific elements?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The standard approach is the cacheable shell pattern: cache the
               public portion of the page (article body, navigation, footer,
               metadata) at the CDN with a key based on the URL and locale only,
@@ -713,7 +738,7 @@ export default function ArticlePage() {
               compute functions is preferred because it ensures the fully
               assembled page (including personalized elements for logged-in users
               with crawler access) is served to search engines.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

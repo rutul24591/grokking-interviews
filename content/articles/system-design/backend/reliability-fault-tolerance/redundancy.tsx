@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Redundancy</strong> is the deliberate duplication of critical components or data so that a failure of one instance does not end service. It is the simplest reliability primitive and the foundation upon which high availability, failover, and disaster recovery are built. Without redundancy, every component is a single point of failure, and the system's availability is the product of every component's individual availability—which is always worse than any single component.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Redundancy is not just "having two of everything." Redundancy must be aligned to failure domains. Duplicating servers within the same power rack does not protect against rack power failure. Duplicating racks within the same data center does not protect against data center fire. Duplicating data centers within the same region does not protect against regional network outage. Redundancy only reduces risk if redundant components are in different failure domains, and the remaining capacity can carry the full load when one component fails.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, redundancy requires balancing four competing concerns. <strong>Coverage</strong> means redundancy must protect against the failure modes that matter—compute, network, data, and control plane. <strong>Headroom</strong> means redundant capacity must be sufficient to handle the full load when a component fails—N+1 redundancy is meaningless if N instances run at 95 percent utilization. <strong>Cost</strong> means that every redundant component increases infrastructure spend, operational overhead, and debugging complexity. <strong>Common-mode prevention</strong> means redundant components must not share dependencies that can fail simultaneously—a shared configuration pipeline, identity provider, or CI/CD system can take down all redundant instances at once.
         </p>
@@ -48,6 +52,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/reliability-fault-tolerance/redundancy-patterns.svg"
@@ -56,12 +63,12 @@ export default function ArticlePage() {
         />
 
         <h3>N+1 Redundancy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           N+1 redundancy is the simplest form of redundancy: if you need N instances to handle peak load, you provision N+1 instances so that losing one leaves N still capable of handling the load. N+1 is the baseline for production systems and the minimum redundancy for any service with an availability target above 99 percent.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The critical design decision is defining N correctly. N should be based on peak load, not average load. If the system needs 5 instances to handle peak traffic, N is 5, and you need 6 instances total. If the system runs 5 instances at 95 percent utilization during average load, losing one instance means the remaining 4 must handle 119 percent of their capacity—which is impossible. The system would degrade or fail even with N+1 redundancy because N was defined incorrectly.
-        </p>
+        </HighlightBlock>
         <p>
           N+1 protects against a single instance failure. For higher availability, you may need N+2 (protects against two simultaneous failures) or zone-level redundancy where losing an entire availability zone still leaves sufficient capacity. The level of redundancy should match the availability target and the probability of correlated failures.
         </p>
@@ -128,14 +135,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust redundancy architecture maps redundancy to failure domains, ensures sufficient headroom for loss scenarios, and maintains redundancy through regular rotation and validation. The flow begins with identifying critical components and their failure modes, designing redundancy for each component at the appropriate level, ensuring that redundant capacity can carry the full load, and implementing monitoring that shows capacity, health, and readiness of all redundant components—not just the active ones.
-        </p>
+        </HighlightBlock>
 
         <h3>Failure Domain Mapping</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Map redundancy to failure domains explicitly. For each critical component, identify what can cause it to fail and what failure domain that failure belongs to. A server can fail due to hardware issues (instance-level failure), a power rack can fail due to PDU failure (rack-level failure), a data center can fail due to fire or flood (facility-level failure), and a region can fail due to network outage (regional failure). Each failure domain requires redundancy at a different geographic level.
-        </p>
+        </HighlightBlock>
         <p>
           Enumerate common-mode dependencies—shared control planes, shared identity providers, shared CI/CD pipelines, shared configuration systems—that can take down all redundant instances simultaneously. Decide which common-mode dependencies require diversity (multiple providers, multiple routes, multiple credential paths) and which are acceptable risks.
         </p>
@@ -162,12 +172,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Redundancy increases cost and operational complexity. The right level depends on business impact. For services with low downtime tolerance, redundancy is mandatory. For low-impact internal tools, lighter redundancy is acceptable. The trade-off is not binary—it is a spectrum from no redundancy (single instance, single point of failure) to full geographic redundancy (multi-region, multi-provider), with many intermediate points.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Excessive redundancy can complicate debugging and deployment. More nodes and paths mean more variables to control during incidents. A system with 20 redundant instances across 4 regions is harder to debug than a system with 3 instances in 1 region. The marginal reliability improvement of each additional redundant instance decreases as redundancy increases, while the marginal complexity increases. Find the point where additional redundancy provides diminishing returns relative to the added complexity.
-        </p>
+        </HighlightBlock>
         <p>
           Shared standby capacity across services can reduce cost but creates coupling. If services A and B share a standby database, a failure in service A can affect service B's standby. Decide explicitly which services can share redundant capacity and which need dedicated headroom. Revenue-critical services should have dedicated redundancy; internal tools can share.
         </p>
@@ -178,12 +191,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Identify critical components and replicate across fault domains. Ensure redundant systems can take traffic at any time—standby instances should be tested regularly, data replicas should be verified for consistency, and network paths should be validated. Redundancy that has not been tested is not redundancy; it is hope.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Maintain redundancy with regular rotation. Exercise standby capacity with periodic traffic or shadow reads. Validate that redundant paths are usable and monitored. Redundancy must be visible—observability should show capacity, health, and readiness of all redundant components, not just the active ones.
-        </p>
+        </HighlightBlock>
         <p>
           Plan for N+1 capacity at minimum, and plan for larger loss events if your availability target requires it. Define the loss event (N+1, N+2, zone loss, region loss), quantify steady-state utilization, test under removal, and watch for second-order effects like retries and failover amplifying load on databases and queues.
         </p>
@@ -197,12 +213,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Redundancy can create hidden coupling through shared dependencies. If redundant systems share a configuration pipeline, a bad deployment can break them all at once. Similarly, shared secrets, identical dependencies, or common CI/CD pipelines can lead to common-mode failure. Redundancy planning should explicitly list common-mode dependencies and decide whether any require diversity—multiple providers, multiple routes, multiple credential paths.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Stale redundancy is another failure. If standby nodes are not exercised, configuration drift or data staleness can make failover unreliable. A standby database replica that has not been validated for weeks may have replication lag, schema differences, or permission issues that prevent promotion. The most common standby failure is not that the standby does not exist, but that it does not work when needed.
-        </p>
+        </HighlightBlock>
         <p>
           Another subtle failure is assuming that two regions are independent when they share the same external provider, identity system, or deployment pipeline. If the shared dependency fails, redundant compute does not help. Redundancy planning should explicitly enumerate common-mode dependencies and decide whether any require diversity. Two regions using the same identity provider are not truly independent.
         </p>
@@ -216,16 +235,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>API Platform: N+1 with Zone-Level Redundancy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An API platform serving 1,000 requests per second needed 99.95 percent availability. The team deployed 8 instances across 3 availability zones (3, 3, 2 distribution). Each zone could handle the full load independently. When one zone experienced a network partition, the remaining two zones absorbed all traffic automatically through load balancer health check failover. The platform maintained sub-100ms p99 latency during the zone outage because each zone had sufficient headroom.
-        </p>
+        </HighlightBlock>
 
         <h3>Database: Active-Passive with Warm Standby</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A financial services database used active-passive redundancy with a warm standby in a different availability zone. The standby received asynchronous replication with less than 1 second lag and processed 5 percent of read traffic for validation. When the primary experienced disk corruption, the standby was promoted within 30 seconds with zero data loss (the last transaction was confirmed on the standby before the primary failure was detected). The warm standby approach reduced failover time from 5 minutes (cold standby) to 30 seconds.
-        </p>
+        </HighlightBlock>
 
         <h3>CDN: Geographic Redundancy at Global Scale</h3>
         <p>
@@ -243,14 +265,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What redundancy matters most for a user-facing API?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Redundant compute plus redundant data paths. Multiple API instances behind a load balancer are necessary but not sufficient. The database, identity provider, config pipeline, and message queue must also be redundant. A common failure pattern is redundant API instances with a single shared database—the system appears redundant but has a critical single point of failure.
-            </p>
+            </HighlightBlock>
             <p>
               The redundancy plan should cover all layers: compute (N+1 instances across zones), network (multi-path routing), storage (replicated data across zones), and control plane (redundant deployment and configuration systems). Each layer should be able to survive the loss of its largest credible failure domain.
             </p>

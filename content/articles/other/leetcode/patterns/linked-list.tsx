@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,22 +24,25 @@ export default function LinkedListArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The linked list pattern groups all problems whose central operation is pointer surgery on a chain
         of nodes — splicing, splitting, merging, reversing, partitioning, and finding by traversal. The
         data structure trades O(1) random access for O(1) head insert / delete and O(1) splice given a
         node reference. The interview value is not the algorithmic content — most problems are O(n)
         single-pass — but the pointer discipline. One-character bugs in next-pointer assignments break
         chains, leak memory, or create cycles.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Five micro-techniques cover most of the syllabus. <strong>Dummy head</strong> eliminates the
         special case for operations that may modify the head itself. <strong>Fast / slow pointers</strong>
         find the middle, the k-th-from-end, or detect cycles in one pass. <strong>Iterative
         reversal</strong> uses a prev / curr / next triple-step (its own pattern). <strong>Splice</strong>
         connects two chains by reassigning two pointers in O(1). <strong>Partition into two dummies</strong>
         sorts a list into two output lists by predicate without allocation.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Recognition signals are explicit. The problem statement passes a ListNode head — the data
         structure is a linked list. Operations are typically &quot;reverse a sub-range&quot;, &quot;remove
@@ -55,19 +59,22 @@ export default function LinkedListArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Dummy head.</strong> Allocate a sentinel node whose next points at the real head. All
         traversal and modification proceed from the dummy. Operations that would otherwise need to
         special-case &quot;is the head being deleted / replaced?&quot; become uniform — the dummy is
         always there to be modified. Return dummy.next at the end. The cost is one extra allocation per
         problem; the savings are dozens of branches.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Two-pointer (fast / slow).</strong> The fast pointer moves twice (or k times) per slow
         step. To find the middle: when fast.next or fast.next.next is null, slow is at the middle. To
         find k-th-from-end: advance fast k steps first, then move both until fast hits the end. To
         detect a cycle: fast and slow meet inside the cycle if one exists.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Splice.</strong> To insert node n between a and b: n.next = b; a.next = n. To remove n
         between a and b: a.next = n.next (singly) or a.next = n.next; n.next.prev = a (doubly). The
@@ -103,17 +110,20 @@ export default function LinkedListArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Merge two sorted lists (21).</strong> Allocate a dummy head; walk a tail pointer from
         dummy. While both inputs non-empty, splice the smaller head into tail.next, advance that input
         pointer and the tail. After the loop, splice whichever input is non-empty. Return dummy.next.
         Pure splicing — no allocation per node.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Remove Nth from end (19).</strong> Dummy head; fast pointer advances n + 1 steps. Then
         fast and slow move together until fast hits null. slow.next is the node to remove; slow.next =
         slow.next.next. Return dummy.next. The +1 lead places slow at the predecessor of the target.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Find middle (876).</strong> fast = slow = head. While fast and fast.next, advance both.
         Slow ends at floor((n + 1) / 2) — the right of two middles for even-length lists. Variant:
@@ -149,18 +159,21 @@ export default function LinkedListArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Linked list vs. dynamic array.</strong> Array gives O(1) random access; list does not.
         Array gives amortised O(1) push-back; list gives O(1) push-anywhere given a reference. Use a
         list when you need O(1) splice or move-to-front given a handle (LRU). Use an array when index
         access dominates and reallocation cost is acceptable.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Singly vs. doubly linked.</strong> Doubly is twice the memory but supports O(1) deletion
         given a reference, O(1) reverse traversal. Singly is enough for forward-only algorithms (merge,
         split, reverse). Use doubly when the design problem requires arbitrary node deletion (LRU, LFU,
         skip-list).
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Iterative vs. recursive linked-list code.</strong> Recursion is shorter for reversal,
         merge, and reverse-pairs. It is also stack-bounded — Java overflows around 10⁴, Python defaults
@@ -185,15 +198,18 @@ export default function LinkedListArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Always start with a dummy when the head may change.</strong> Removing the first node,
         inserting before the head, partitioning — any operation that might modify head should use a
         dummy. The branch elimination is worth the allocation.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Save next before mutating curr.next.</strong> next = curr.next is the first line of
         every reversal-style loop. Mutating curr.next first loses the rest of the list.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Use sentinels at both ends in doubly linked lists.</strong> Head and tail sentinels
         remove the &quot;is this the first / last node?&quot; checks. Every real insertion is between
@@ -215,14 +231,17 @@ export default function LinkedListArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Forgetting to save next before re-pointing curr.next.</strong> The classic reversal bug:
         curr.next = prev loses curr&apos;s old next. Save it first.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Returning the original head after head modification.</strong> If the head was deleted
         or replaced, the original head pointer is stale. Use a dummy and return dummy.next.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Failing to null the tail after split.</strong> Reorder List (143) needs slow.next = null
         after slow lands at the middle; otherwise the reversed second half still points back at the
@@ -249,14 +268,17 @@ export default function LinkedListArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode Problems)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>21. Merge Two Sorted Lists.</strong> Dummy head + tail pointer; splice the smaller head.
         The base linked-list pattern.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>23. Merge k Sorted Lists.</strong> Heap of (value, list-pointer); pop and splice. O(N
         log k) where N is total nodes. Or pairwise merge for O(N log k) without a heap.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>19. Remove Nth From End.</strong> Dummy + fast / slow with n + 1 lead. Slow ends at the
         predecessor of the target.
@@ -297,11 +319,14 @@ export default function LinkedListArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why use a dummy head?</strong> To eliminate the &quot;is this the head?&quot; branch on
-        every insert / delete. The cost is one allocation; the benefit is uniform code paths.</li>
-        <li><strong>How does fast / slow find the middle in one pass?</strong> Fast moves twice per slow
-        step. After fast traverses n nodes, slow has traversed n / 2.</li>
+        <HighlightBlock as="li" tier="important"><strong>Why use a dummy head?</strong> To eliminate the &quot;is this the head?&quot; branch on
+        every insert / delete. The cost is one allocation; the benefit is uniform code paths.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>How does fast / slow find the middle in one pass?</strong> Fast moves twice per slow
+        step. After fast traverses n nodes, slow has traversed n / 2.</HighlightBlock>
         <li><strong>Why does Floyd&apos;s cycle detection work?</strong> If a cycle exists, fast eventually
         catches up to slow inside it because the gap closes by one node per iteration. The proof is
         modular arithmetic on the cycle length.</li>

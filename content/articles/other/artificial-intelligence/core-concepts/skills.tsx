@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In the context of LLM agents, a <strong>skill</strong> is a
           self-contained, discoverable capability that an agent can invoke to
           accomplish a specific task. Skills are the atomic units of agent
@@ -33,8 +37,8 @@ export default function ArticlePage() {
           MCP sense (which are primarily API-like operations), skills are
           higher-level abstractions that may combine multiple tool calls,
           reasoning steps, and external resources into a single invocable unit.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The concept of skills addresses a fundamental scaling problem in agent
           design: as an agent&apos;s capabilities grow, the number of available
           tools becomes too large for the LLM to effectively choose from. A
@@ -47,7 +51,7 @@ export default function ArticlePage() {
           &quot;generate_chart&quot;, and &quot;send_email&quot;, the agent
           chooses a single &quot;generate_report&quot; skill that internally
           orchestrates those steps.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, skill systems represent an architectural
           pattern for building composable, maintainable agent applications.
@@ -62,7 +66,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A skill is defined by several key attributes. The <strong>skill
           signature</strong> includes the name, a natural language description,
           input schema (JSON Schema or Pydantic model), output schema, and a
@@ -74,8 +81,8 @@ export default function ArticlePage() {
           <strong>skill metadata</strong> includes tags, confidence scores,
           cost estimates, latency expectations, and version information that
           help the agent decide whether and how to use the skill.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Skill registration</strong> is the process by which skills
           are added to the agent&apos;s skill registry. Skills can be
           registered statically (at application startup, from a configuration
@@ -86,7 +93,7 @@ export default function ArticlePage() {
           might discover skills specific to the project&apos;s tech stack,
           registered by a project-level configuration file that the agent reads
           at startup.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Capability discovery</strong> is how the LLM learns what
           skills are available and when to use them. The skill registry
@@ -142,7 +149,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The skill system architecture consists of a <strong>skill registry</strong>
           that maintains the catalog of available skills, a <strong>skill
           executor</strong> that runs skill implementations, a{" "}
@@ -152,8 +162,8 @@ export default function ArticlePage() {
           coordination point — it tracks which skills are available, their
           metadata, their dependencies, and their current status (healthy,
           degraded, unavailable).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           When a request arrives, the flow is: the router selects the
           appropriate skill based on the request and the skill catalog, the
           executor validates the inputs against the skill&apos;s input schema,
@@ -164,7 +174,7 @@ export default function ArticlePage() {
           the executor returns a structured error that the LLM can use to
           decide whether to retry with different inputs, try an alternative
           skill, or escalate to a human.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/skill-composition-hierarchy.svg"
@@ -197,7 +207,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Skills vs. tools</strong> is the primary architectural
           decision. Tools are low-level operations — single API calls, database
           queries, or function invocations. Skills are higher-level capabilities
@@ -210,8 +223,8 @@ export default function ArticlePage() {
           as the system scales. The recommended approach is to provide both:
           skills for common workflows (the 80% case) and tools for the
           remaining 20% where the LLM needs flexibility.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Static vs. dynamic skill registration</strong> presents
           another trade-off. Static registration (all skills known at startup)
           is simple, predictable, and easy to test, but cannot adapt to
@@ -223,7 +236,7 @@ export default function ArticlePage() {
           unregister, how to handle skill failures during discovery). The
           pragmatic approach is hybrid: a core set of static skills always
           available, with dynamic skills registered based on context.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Single-agent skills vs. multi-agent skill distribution</strong>{" "}
           determines how skills are allocated across agents. In a single-agent
@@ -245,7 +258,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design skills at the <strong>right level of abstraction</strong>. A
           skill should represent a meaningful capability from the user&apos;s
           perspective, not an implementation detail. &quot;Send a follow-up
@@ -254,8 +270,8 @@ export default function ArticlePage() {
           the result as JSON&quot; is a tool, not a skill. The test is: can a
           non-technical user describe what they want using the skill&apos;s
           name and description? If yes, the abstraction level is right.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement <strong>skill-level observability</strong> — every skill
           invocation should be logged with the skill name, version, inputs,
           outputs, latency, cost, and success/failure status. This enables
@@ -264,7 +280,7 @@ export default function ArticlePage() {
           skill optimization: frequently used skills should be optimized for
           speed and cost, rarely used skills may be candidates for removal or
           consolidation, and frequently failing skills need debugging attention.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Validate skill inputs and outputs</strong> at the executor
           level, not just in the skill implementation. Input validation
@@ -288,7 +304,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>skill description ambiguity</strong>.
           When two skills have overlapping descriptions (&quot;search for
           information&quot; vs. &quot;find relevant data&quot;), the LLM
@@ -298,8 +317,8 @@ export default function ArticlePage() {
           documents&quot; vs. &quot;query the production database for records&quot;
           is better than &quot;search for information&quot; vs.
           &quot;find data.&quot;
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Skill coupling</strong> — composite skills that are tightly
           coupled to their sub-skills become fragile. If the
           &quot;deploy_application&quot; skill hard-codes the specific
@@ -308,7 +327,7 @@ export default function ArticlePage() {
           alternative sub-skills are available. Instead, composite skills should
           accept sub-skills as parameters or discover them dynamically from the
           registry, enabling flexible composition.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Ignoring skill preconditions</strong> leads to runtime
           failures. Skills often have requirements that must be met before
@@ -333,7 +352,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Developer assistant skills</strong> — a coding agent with
           skills like &quot;explain_code&quot;, &quot;refactor_function&quot;,
           &quot;write_unit_tests&quot;, &quot;find_bugs&quot;,
@@ -342,8 +364,8 @@ export default function ArticlePage() {
           test execution, LLM analysis) into a coherent capability. The user
           selects the appropriate skill for their need, and the agent executes
           it with minimal additional prompting.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Customer operations skills</strong> — a support agent with
           skills like &quot;check_order_status&quot;, &quot;process_refund&quot;,
           &quot;escalate_to_human&quot;, &quot;update_shipping_address&quot;,
@@ -352,7 +374,7 @@ export default function ArticlePage() {
           the database, checking logistics APIs, formatting the response, and
           determining if additional action is needed. The agent routes customer
           requests to the appropriate skill based on intent classification.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Research assistant skills</strong> — a research agent with
           skills like &quot;literature_search&quot;, &quot;summarize_paper&quot;,
@@ -366,13 +388,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: What is the difference between a skill and a tool in an AI agent
             system, and when should you use each?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A tool is a low-level operation — a single API call, database query,
             or function invocation. It has a name, description, input schema,
             and implementation. A skill is a higher-level capability that may
@@ -381,8 +406,8 @@ export default function ArticlePage() {
             query. A &quot;generate_monthly_report&quot; skill queries the
             database, analyzes trends, generates visualizations, writes a
             summary, and emails it to stakeholders.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             Use tools when the LLM needs fine-grained control over individual
             operations — debugging, exploration, or tasks where the sequence of
             steps is not predetermined. Use skills when there are common
@@ -390,7 +415,7 @@ export default function ArticlePage() {
             load on the LLM (fewer options to choose from), provide consistent
             execution of established patterns, and make the agent&apos;s
             capabilities more discoverable to users.
-          </p>
+          </HighlightBlock>
           <p>
             The recommended architecture provides both: a set of tools for
             flexible, ad-hoc operations, and a set of skills for common,

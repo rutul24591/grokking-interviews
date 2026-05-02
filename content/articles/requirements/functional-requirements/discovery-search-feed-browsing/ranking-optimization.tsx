@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,22 +35,25 @@ export default function RankingOptimizationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Ranking Optimization</strong> is the continuous process of improving
           search and recommendation result ordering through experimentation, feature
           engineering, model refinement, and user feedback analysis. It is never "done"—
           user behavior changes, content evolves, and business goals shift. Ranking
           optimization balances multiple objectives: relevance, engagement, diversity,
           freshness, and business metrics (revenue, retention).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Modern ranking systems use machine learning models trained on historical user
           interactions (clicks, dwell time, conversions). The optimization loop involves:
           feature engineering (creating predictive signals), model training (learning
           feature weights), A/B testing (validating improvements), and deployment
           (rolling out to production). This cycle runs continuously—Netflix retrain
           models daily, Google updates ranking algorithms thousands of times per year.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, ranking optimization requires expertise in ML
           (feature engineering, model selection, training pipelines), experimentation
@@ -62,10 +66,13 @@ export default function RankingOptimizationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Feature Engineering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Features are signals used by the ranking model to predict relevance:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Content Features:</strong> Describe the item being ranked. Text
@@ -95,9 +102,9 @@ export default function RankingOptimizationArticle() {
         </ul>
 
         <h3 className="mt-6">Model Training</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Training ranking models from historical data:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Training Data:</strong> Historical impressions (what was shown)
@@ -189,10 +196,13 @@ export default function RankingOptimizationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production ranking optimization involves multiple components working together
           for continuous improvement.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery-search-feed-browsing/ranking-optimization/ranking-optimization-loop.svg"
@@ -263,9 +273,9 @@ export default function RankingOptimizationArticle() {
         />
 
         <h3 className="mt-6">A/B Testing Infrastructure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Infrastructure for running ranking experiments:
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -323,10 +333,13 @@ export default function RankingOptimizationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Ranking optimization involves balancing competing objectives and choosing
           appropriate techniques.
-        </p>
+        </HighlightBlock>
 
         <h3>Model Complexity Trade-offs</h3>
         <div className="overflow-x-auto">
@@ -382,11 +395,11 @@ export default function RankingOptimizationArticle() {
         />
 
         <h3 className="mt-6">Offline vs Online Metrics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Offline Metrics:</strong> Computed on held-out test set. NDCG@10,
           MRR, precision@K. Fast to compute, good for iteration. Limitation: May not
           correlate with user satisfaction.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Online Metrics:</strong> Computed from live user interactions. CTR,
           conversion rate, watch time, retention. Ground truth for user satisfaction.
@@ -417,17 +430,20 @@ export default function RankingOptimizationArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Start Simple:</strong> Begin with logistic regression baseline.
             Add complexity only if it improves metrics. Simple models are easier to
             debug and maintain.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Feature Validation:</strong> Check feature distributions before
             and after deployment. Alert on drift. Features that change distribution
             indicate pipeline issues.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>A/B Test Everything:</strong> Never deploy ranking changes without
             A/B testing. Even "obvious" improvements can have unintended consequences.
@@ -458,15 +474,18 @@ export default function RankingOptimizationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Data Leakage:</strong> Using future data in training. Solution:
             Time-based train/validation split, careful feature engineering.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Overfitting:</strong> Model performs well offline but poorly
             online. Solution: Regularization, cross-validation, simpler models.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring Guardrail Metrics:</strong> Primary metric improves but
             latency explodes. Solution: Always track guardrail metrics, set SLOs.
@@ -494,17 +513,20 @@ export default function RankingOptimizationArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Netflix Ranking Optimization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix optimizes video ranking for watch time. Features: viewing history,
             time of day, device, content metadata. A/B tests run for 1-2 weeks with
           millions of users. Primary metric: watch time, guardrail: diversity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Personalized artwork ranking—different
           thumbnails for same title based on predicted appeal. Increased CTR by 5-10%.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Amazon Product Ranking</h3>
         <p>
@@ -542,10 +564,13 @@ export default function RankingOptimizationArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you A/B test ranking changes?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you A/B test ranking changes?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Randomize users to control (current ranking) and
               treatment (new ranking) using consistent hashing on user_id. Define
               primary metric (CTR@10, conversion) and guardrail metrics (latency,
@@ -553,7 +578,7 @@ export default function RankingOptimizationArticle() {
               (p-value &lt; 0.05). Use power analysis to determine sample size.
               Analyze segment-level effects. If test wins, roll out gradually
               (10% → 50% → 100%).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

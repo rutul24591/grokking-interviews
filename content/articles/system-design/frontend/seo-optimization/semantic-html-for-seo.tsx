@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function SemanticHtmlForSeoArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Semantic HTML</strong> is the practice of using HTML elements
           that convey meaning about the content they contain, rather than
           relying solely on generic containers like <code>&lt;div&gt;</code> and{" "}
@@ -49,8 +50,8 @@ export default function SemanticHtmlForSeoArticle() {
           the role and relationship of content to machines (search engines,
           screen readers, assistive technologies) without requiring visual
           interpretation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For SEO, semantic HTML is foundational. Search engines parse HTML to
           build a structural model of the page — determining what the main
           content is (vs navigation, sidebars, footers), how content sections
@@ -60,8 +61,8 @@ export default function SemanticHtmlForSeoArticle() {
           engines clear signals about content hierarchy and importance, while a
           &quot;div soup&quot; page forces the crawler to infer structure from
           visual layout cues, which is less reliable and less efficient.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the staff/principal engineer level, semantic HTML is both an
           accessibility mandate and an SEO optimization lever. The overlap is
           significant — the same semantic structures that help screen readers
@@ -70,37 +71,37 @@ export default function SemanticHtmlForSeoArticle() {
           semantic elements are used correctly at the system level, not left to
           individual developers to remember. A design system that renders every
           section as a div with className loses semantic value at scale.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>&lt;article&gt;:</strong> Represents a self-contained
             composition that could be independently distributed or syndicated —
             blog posts, news articles, forum posts, product cards. Search
             engines use article boundaries to understand where one piece of
             content ends and another begins, particularly important on pages
             with multiple content items (feeds, search results).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>&lt;section&gt;:</strong> Represents a thematic grouping of
             content, typically with a heading. Sections communicate that content
             within them shares a common theme. Unlike article, a section is not
             independently meaningful — it is a structural division within a
             larger document. Each section should ideally have a heading element
             as its first child.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>&lt;nav&gt;:</strong> Identifies major navigation blocks —
             primary menu, breadcrumbs, pagination, table of contents. Search
             engines use nav to distinguish navigational links from content
             links, which helps in understanding the site&apos;s information
             architecture and may reduce the weight given to navigational link
             text in content analysis.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>&lt;aside&gt;:</strong> Represents content tangentially
             related to the surrounding content — sidebars, pull quotes, related
@@ -159,15 +160,15 @@ export default function SemanticHtmlForSeoArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Understanding how search engines parse semantic HTML reveals why
           element choice matters for content ranking and snippet generation.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/semantic-html-for-seo-diagram-1.svg"
           alt="Semantic HTML document outline showing the structural relationship between header, nav, main, article, section, aside, and footer elements"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The semantic document outline above shows how elements create a
           content hierarchy. The <code>&lt;main&gt;</code> element isolates
           primary content from site-wide chrome (header, footer, nav). Within
@@ -175,12 +176,12 @@ export default function SemanticHtmlForSeoArticle() {
           content units, and <code>&lt;section&gt;</code> elements divide
           articles into thematic groups. This structure gives search engines a
           clear map of what to prioritize for indexing and snippet generation.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/semantic-html-for-seo-diagram-2.svg"
           alt="Search engine content parsing pipeline showing how the DOM is processed into a semantic tree for content extraction and ranking"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           Search engines build a semantic model from the HTML DOM. First, they
           identify the main content area (via the main element or content
           heuristics). Then they extract the heading hierarchy to understand
@@ -189,7 +190,7 @@ export default function SemanticHtmlForSeoArticle() {
           The final content model informs both ranking (which topics the page
           covers) and snippet generation (which text best answers the
           user&apos;s query).
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/semantic-html-for-seo-diagram-3.svg"
           alt="Heading hierarchy and content weight distribution showing how h1 through h6 elements affect content importance signals"
@@ -207,16 +208,19 @@ export default function SemanticHtmlForSeoArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="important">
               <th className="p-3 text-left">Approach</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
+            </HighlightBlock>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">Semantic HTML Elements</td>
               <td className="p-3">
                 Native browser support; implicit ARIA roles; search engine
@@ -228,8 +232,8 @@ export default function SemanticHtmlForSeoArticle() {
                 some content types; no visual difference from divs (styling
                 still required)
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">Div with ARIA Roles</td>
               <td className="p-3">
                 More granular role vocabulary; works for custom components;
@@ -240,7 +244,7 @@ export default function SemanticHtmlForSeoArticle() {
                 div duplicates nav); requires manual maintenance; search engines
                 may not process ARIA roles for SEO signals
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3 font-medium">Div Soup (No Semantics)</td>
               <td className="p-3">
@@ -273,27 +277,27 @@ export default function SemanticHtmlForSeoArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use Exactly One h1 Per Page:</strong> The h1 should clearly
             state the page&apos;s primary topic and align semantically with the
             title tag. While Google has said multiple h1s are technically fine,
             a single h1 provides the clearest topical signal and avoids diluting
             the primary heading.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Maintain a Logical Heading Hierarchy:</strong> Never skip
             heading levels — go from h1 to h2 to h3, not h1 to h3. The heading
             outline should read like a table of contents for the page. Screen
             readers and search engines use this hierarchy to navigate and
             understand content structure.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Wrap Primary Content in main:</strong> Every page should
             have exactly one visible <code>&lt;main&gt;</code> element
             containing the page&apos;s unique content. This element is the
             strongest signal to search engines about where primary content
             begins and ends, filtering out repeated page chrome.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use article for Standalone Content:</strong> Blog posts,
             news articles, product cards in a listing, and forum posts should
@@ -330,26 +334,26 @@ export default function SemanticHtmlForSeoArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Using Headings for Styling:</strong> Choosing h3 over h2
             because it &quot;looks right&quot; breaks the document outline. Use
             CSS for visual styling and HTML heading levels for semantic
             hierarchy. The heading level should reflect content structure, not
             desired font size.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Nesting article Inside article Incorrectly:</strong> While
             valid HTML, nested articles indicate that the inner article is a
             comment or response to the outer article. Misusing this pattern
             (nesting unrelated articles) confuses the content relationship
             signal.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Omitting main Element:</strong> Without a main element,
             search engines must use heuristics to determine where primary
             content begins — a process that can misidentify navigation or
             sidebar content as the main topic, especially on complex layouts.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Wrapping Everything in section:</strong> Using section as a
             generic wrapper (like div) dilutes its semantic meaning. Section
@@ -369,29 +373,29 @@ export default function SemanticHtmlForSeoArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Wikipedia:</strong> Uses semantic HTML extensively — each
             article page has a clear heading hierarchy (h1 for article title, h2
             for major sections, h3 for subsections), article elements for
             content, nav for table of contents, and figure/figcaption for
             images. This semantic structure is a key factor in Wikipedia&apos;s
             consistently high search rankings.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>MDN Web Docs:</strong> Mozilla&apos;s documentation uses
             semantic elements as a reference implementation — article for each
             doc page, nav for sidebar navigation, section for content divisions,
             and a strict heading hierarchy. Their featured snippets in Google
             often pull directly from well-structured heading and paragraph
             combinations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>E-Commerce Product Listings:</strong> Sites like Best Buy
             use article elements for each product card in category listings,
             with figure/figcaption for product images, and semantic headings for
             product names. This structure helps Google understand individual
             products within a listing page.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>News Aggregators:</strong> Google News and Apple News
             parsers rely heavily on semantic structure to extract article
@@ -405,12 +409,15 @@ export default function SemanticHtmlForSeoArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How does semantic HTML improve SEO beyond accessibility?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Semantic HTML gives search engines explicit structural signals.
               The main element identifies primary content for ranking and
               snippet generation. The heading hierarchy reveals topic
@@ -421,12 +428,12 @@ export default function SemanticHtmlForSeoArticle() {
               Without these signals, search engines must infer structure from
               visual layout — a less reliable process that can misidentify
               content importance.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: Should you have multiple h1 tags on a single page?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: While the HTML5 spec technically allows multiple h1 elements
               within different sectioning elements, and Google has confirmed it
@@ -492,7 +499,7 @@ export default function SemanticHtmlForSeoArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://html.spec.whatwg.org/multipage/sections.html"
               target="_blank"
@@ -501,8 +508,8 @@ export default function SemanticHtmlForSeoArticle() {
             >
               WHATWG HTML Spec — Sections
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developers.google.com/search/docs/appearance/google-discover"
               target="_blank"
@@ -511,8 +518,8 @@ export default function SemanticHtmlForSeoArticle() {
             >
               Google Search Central — Discover Content Guidelines
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://web.dev/learn/html/semantic-html/"
               target="_blank"
@@ -521,7 +528,7 @@ export default function SemanticHtmlForSeoArticle() {
             >
               web.dev — Semantic HTML
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://www.w3.org/WAI/ARIA/apg/patterns/landmarks/examples/general-principles.html"

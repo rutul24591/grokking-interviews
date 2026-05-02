@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Repository pattern</strong> mediates between the domain and data-mapping layers using a collection-like interface for accessing domain objects. Coined by Martin Fowler and popularized within Domain-Driven Design (DDD) by Eric Evans, the repository abstracts away the mechanics of storage, retrieval, and query construction so that application services can operate in terms of domain concepts rather than database primitives.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At its core, a repository behaves like an in-memory collection of aggregate roots. It exposes methods such as <code>findById</code>, <code>save</code>, <code>remove</code>, and domain-specific queries like <code>findActiveSubscriptions</code> or <code>findOrdersAwaitingPayment</code>. The calling code should not know whether the underlying persistence mechanism is PostgreSQL, MongoDB, an external REST API, or an in-memory store for testing.
-        </p>
+        </HighlightBlock>
         <p>
           The repository pattern addresses a fundamental tension in backend architecture: domain logic needs to express business invariants and workflows, while persistence logic must handle schema mapping, query optimization, connection pooling, and transaction management. Without a repository, these concerns interleave throughout service layers, making code harder to test, harder to reason about, and harder to evolve when storage requirements change.
         </p>
@@ -55,6 +59,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/repository-pattern-diagram-1.svg"
@@ -63,12 +70,12 @@ export default function ArticlePage() {
         />
 
         <h3>Aggregate-Centric Repositories</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most critical design decision in repository design is whether repositories are defined around individual aggregate roots or are generic catch-all abstractions. An aggregate-centric approach creates one repository per aggregate root, exposing only the operations that make sense for that specific domain concept. An <code>OrderRepository</code> exposes methods like <code>findPendingOrders</code>, <code>findOrdersByCustomer</code>, and <code>save</code>. An <code>InventoryRepository</code> exposes <code>findAvailableStock</code>, <code>reserveStock</code>, and <code>releaseStock</code>.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This approach enforces the Single Responsibility Principle at the repository level. Each repository understands its aggregate&apos;s invariants, consistency requirements, and query patterns. It also prevents the common failure mode where a generic repository accumulates dozens of unrelated query methods and becomes a god object that no one can reason about. When a new query requirement emerges, the team adds a method to the relevant aggregate&apos;s repository rather than extending a generic query surface.
-        </p>
+        </HighlightBlock>
         <p>
           Aggregate-centric repositories also align naturally with bounded contexts in DDD. Each bounded context owns its repositories, and cross-context communication happens through domain events or published APIs rather than shared repository access. This prevents the shared-database anti-pattern where multiple services directly manipulate each other&apos;s tables through a common data-access layer.
         </p>
@@ -140,14 +147,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production-grade repository architecture separates concerns across multiple layers, each with well-defined responsibilities and clear interfaces between them.
-        </p>
+        </HighlightBlock>
 
         <h3>Layered Repository Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The domain layer defines repository interfaces that express domain intent. An <code>OrderRepository</code> interface declares methods like <code>findById</code>, <code>save</code>, <code>findPendingOrders</code>, and <code>findOrdersByCustomer</code>. These interfaces live alongside domain entities and value objects, forming the core of the bounded context. They know nothing about databases, ORMs, or connection strings.
-        </p>
+        </HighlightBlock>
         <p>
           The application layer orchestrates domain operations. Application services inject repository interfaces, load aggregates, apply domain logic, and persist changes through a Unit of Work. The application layer does not construct queries or manage connections. It expresses workflows in terms of domain operations and relies on the repository to handle persistence mechanics.
         </p>
@@ -186,12 +196,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The repository pattern is not universally appropriate. Understanding when it adds value and when it introduces unnecessary complexity is a key staff-level judgment. The decision depends on domain complexity, query patterns, team size, and the expected lifespan of the system.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Repository pattern excels when the system has rich domain logic with meaningful invariants, when multiple teams need consistent data-access patterns, and when the persistence technology might change over the system&apos;s lifespan. It provides clear testing boundaries, enforces separation of concerns, and expresses data access in domain language. The cost is additional abstraction layers, mapping complexity, and the discipline required to keep repositories from becoming leaky.
-        </p>
+        </HighlightBlock>
         <p>
           Direct data access through ORM in services works well for CRUD-heavy applications with simple domain logic and a stable schema. It has lower abstraction overhead, faster development velocity for simple features, and fewer layers to navigate. The cost is that domain logic and persistence logic interleave, making the code harder to test in isolation, harder to understand for new team members, and harder to migrate when storage requirements change.
         </p>
@@ -208,12 +221,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Define repositories around aggregate roots, not individual entities. Each repository should manage the lifecycle of a single aggregate root and any entities that belong to that aggregate. This aligns with DDD principles and ensures that invariants are enforced at the aggregate boundary rather than scattered across individual entity repositories.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Name repository methods to express domain intent rather than database mechanics. A method called <code>findActiveSubscriptions</code> communicates business meaning, while <code>findByStatusEqualsActive</code> exposes persistence mechanics. The former is stable even if the underlying query changes from a simple filter to a complex join; the latter couples callers to the query structure.
-        </p>
+        </HighlightBlock>
         <p>
           Keep repository interfaces minimal and purposeful. Each method should have a clear caller and a specific domain purpose. Resist the temptation to add generic query methods that expose query builders, criteria APIs, or raw SQL construction. When a new query requirement emerges, add a specific method that reflects the domain intent rather than a general-purpose query mechanism.
         </p>
@@ -236,12 +252,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most pervasive pitfall is the leaky repository abstraction. This occurs when repositories expose persistence-specific concepts like query builders, entity framework includes, or database-specific filter syntax. Callers then write persistence-aware code that is tightly coupled to the underlying technology, defeating the purpose of the abstraction. The signal is that callers contain branching logic based on database states or construct raw queries using repository-exposed primitives. The mitigation is to keep repositories aggregate-focused and ensure they return domain objects, not persistence-layer query primitives.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           N+1 query explosions are a frequent performance problem in repository-based systems. When an application service loads an aggregate through a repository and then accesses related entities through lazy loading, each access triggers a separate database query. At small data volumes, this is invisible. At production scale, it creates hundreds of small queries per request, driving up latency and database load. The mitigation is to implement explicit loading strategies within the repository, where the repository method loads the entire aggregate graph in a single query or a bounded number of queries.
-        </p>
+        </HighlightBlock>
         <p>
           Transaction boundary confusion creates correctness bugs that appear only under concurrency. Some application services use a Unit of Work, others call repository methods that commit independently, and still others bypass repositories entirely for raw queries. The result is partial commits, race conditions, and invariant violations that are extremely difficult to reproduce and debug. The mitigation is to define a per-request transaction scope policy and enforce it consistently across all application services, with architectural tests that detect violations.
         </p>
@@ -258,14 +277,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Order Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce platform manages orders that transition through multiple states: created, payment pending, payment captured, inventory reserved, shipped, and delivered. Each transition enforces invariants: an order cannot ship without captured payment, inventory reservations must not go negative, and shipping addresses cannot change after the order ships. Without repositories, these invariants were enforced through scattered SQL queries in multiple service handlers, leading to inconsistent enforcement and data corruption during peak traffic.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Introducing an <code>OrderRepository</code> and an <code>InventoryRepository</code>, coordinated by a Unit of Work, centralized invariant enforcement. The application service loads the order aggregate through the repository, applies the domain transition, and persists changes atomically. The repository handles optimistic concurrency checks to prevent conflicting updates, and the Unit of Work ensures that order state changes and inventory reservations commit together. The result was a 60% reduction in order-related data corruption incidents and a significant improvement in code maintainability.
-        </p>
+        </HighlightBlock>
 
         <h3>Subscription Billing System</h3>
         <p>
@@ -297,14 +319,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the Repository pattern and how does it differ from Active Record and Data Mapper?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               The Repository pattern provides a collection-like interface for accessing and persisting domain objects. It mediates between the domain and data-mapping layers, presenting domain objects as if they were in-memory collections. The calling code uses methods like <code>findById</code>, <code>save</code>, and <code>findAll</code> without knowing the underlying storage mechanism.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               Active Record embeds persistence methods directly into domain objects. An Order class has methods like <code>order.save()</code> and <code>Order.findWhere()</code>. This is simple but tightly couples domain objects to the database schema. Data Mapper introduces a separate mapper layer that translates between domain objects and database records, keeping domain objects persistence-ignorant but adding mapping complexity.
             </p>

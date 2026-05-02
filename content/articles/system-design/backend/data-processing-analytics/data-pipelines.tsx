@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Data pipelines</strong> are the engineered systems that move and transform data from source systems
           to destination systems, applying business logic, quality controls, and operational safeguards along the way.
           A data pipeline is not just a script that reads from one database and writes to another — it is a production
           system with reliability requirements, SLAs, monitoring, alerting, retry logic, backfill capability, and
           explicit contracts about what it guarantees to downstream consumers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data pipelines exist at the intersection of software engineering and data engineering. They must be built
           with the same rigor as any production service — version control, testing, CI/CD, monitoring, incident
           response — while also addressing data-specific concerns: schema evolution, data quality, idempotency,
           backfill capability, partition management, and the correctness guarantees that downstream consumers depend
           on. A pipeline that silently produces incorrect data is more dangerous than a pipeline that fails loudly,
           because incorrect data propagates through downstream systems and erodes trust in the entire data platform.
-        </p>
+        </HighlightBlock>
         <p>
           The modern data pipeline ecosystem includes batch pipelines (scheduled ETL/ELT jobs that process data in
           discrete chunks), streaming pipelines (always-on processors that handle events as they arrive), CDC pipelines
@@ -78,21 +82,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The DAG (Directed Acyclic Graph) execution model is the foundation of batch pipeline orchestration. Each
           node in the DAG represents a task (ingest, validate, transform, aggregate, write), and each edge represents
           a dependency (task B cannot start until task A has succeeded). The acyclic property ensures that there are
           no circular dependencies, which would create infinite loops. The orchestrator executes tasks in
           topological order — tasks with no unmet dependencies are eligible to run, and tasks run in parallel when
           their dependencies are independent.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Task idempotency is the most critical property of a production pipeline. An idempotent task produces the
           same output regardless of how many times it is executed with the same input. This property is essential for
           retry logic (if a task fails and is retried, the retry does not corrupt the output), backfill capability
           (rerunning the pipeline on historical data does not duplicate or corrupt existing output), and operational
           safety (operators can rerun tasks manually without worrying about side effects).
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/data-pipelines-diagram-1.svg"
           alt="Four pipeline patterns: ETL, ELT, CDC, and stream processing, with pipeline orchestration and dependency management overview"
@@ -138,21 +145,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A data pipeline follows a consistent flow: ingest, validate, transform, aggregate, validate again, and
           publish. The ingest stage reads data from source systems — databases, APIs, message queues, file stores —
           and writes it to the pipeline&apos;s working storage in a consistent, partitioned format. The ingest stage
           performs initial schema validation and data quality checks, rejecting or quarantining records that do not
           meet the expected standards.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The validate stage runs a comprehensive suite of data quality checks on the ingested data: row count
           verification (does the input have the expected number of rows?), schema validation (does the input match
           the expected schema?), null checks (are required columns non-null?), range checks (are numeric values
           within expected ranges?), and referential integrity checks (do foreign keys reference valid primary keys?).
           When validation fails, the pipeline alerts the operations team and halts, preventing incorrect data from
           propagating through the pipeline.
-        </p>
+        </HighlightBlock>
         <p>
           The transform stage applies business logic to the validated data: filtering out invalid records,
           normalizing formats, enriching with reference data from dimension tables, joining across multiple sources,
@@ -191,21 +201,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Batch versus streaming pipelines is the primary trade-off between simplicity and latency. Batch pipelines
           are simpler to design, debug, and operate because they process a complete, bounded dataset with
           deterministic results. They support easy backfills, reproducible outputs, and natural checkpointing (each
           batch run is a checkpoint). However, batch pipelines have inherent latency — the data is only as fresh as
           the last batch run, which is typically hours or days old.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Streaming pipelines provide low-latency data (seconds to milliseconds old) but are more complex to design,
           debug, and operate. They require managing state, handling late data, dealing with ordering guarantees, and
           operating always-on infrastructure. Backfills are more complex because the pipeline&apos;s state must be
           reconstructed from historical data. The recommended approach for most organizations is to use batch
           pipelines for the authoritative data layer (the &quot;source of truth&quot;) and streaming pipelines for operational
           visibility on top of it, with a reconciliation layer that ensures the two agree.
-        </p>
+        </HighlightBlock>
         <p>
           ETL versus ELT is a trade-off between where transformations run. ETL (Extract-Transform-Load) transforms
           data before loading it into the destination, typically using a dedicated processing engine (Spark, Flink).
@@ -234,19 +247,22 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Define an explicit pipeline contract with downstream consumers that covers data schema, freshness SLA,
           correctness guarantee, backfill policy, and deprecation policy. The contract should be versioned and
           published alongside the pipeline code, and changes to the contract should go through a review process with
           downstream consumer representatives. The contract is the foundation of trust between the pipeline team and
           the consumers who depend on the pipeline&apos;s output.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Make every task in the pipeline idempotent. Write output to a temporary location and atomically swap it
           into the production location after validation. This pattern ensures that rerunning the pipeline — whether
           due to a failure, a bug fix, or a backfill — does not duplicate or corrupt data. Idempotency should be
           tested explicitly: run each task twice on the same input and verify that the output is identical.
-        </p>
+        </HighlightBlock>
         <p>
           Validate data quality at multiple points in the pipeline: at ingestion (checking schema and volume), after
           transformation (checking business invariants), and before publication (checking completeness and
@@ -277,22 +293,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Non-idempotent writes causing data corruption on rerun is the most dangerous pipeline design failure. If a
           pipeline writes output directly to the production location without using a temporary location and atomic
           swap, a rerun after a partial failure may produce a mix of old and new records, or duplicate records if the
           pipeline appends rather than overwrites. The fix is to redesign the pipeline to use temporary output and
           atomic publication, and to test idempotency by running the pipeline multiple times on the same input and
           verifying identical output.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Missing validation checks allowing incorrect data to propagate downstream is a quality failure that erodes
           trust in the data platform. Without validation, a pipeline can produce output that is technically correct
           — the pipeline ran without errors — but semantically wrong — the output does not match reality. This happens
           when source data contains unexpected values, joins produce cartesian products due to duplicate keys, or
           transformation logic has a bug that is not caught by the pipeline&apos;s error handling. The fix is a
           comprehensive validation suite that checks output quality against known invariants and expected ranges.
-        </p>
+        </HighlightBlock>
         <p>
           Pipeline runs overlapping because task duration exceeds the scheduled interval is a capacity planning
           failure. If a daily pipeline takes 26 hours to complete, it overlaps with the next day&apos;s run, causing
@@ -319,7 +338,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large retail company runs a daily data pipeline that processes all sales, inventory, and customer
           transactions from the previous day to produce the company&apos;s authoritative financial and operational reports.
           The pipeline ingests approximately 500 GB of data from 20 source systems, applies 150 transformation steps
@@ -328,8 +350,8 @@ export default function ArticlePage() {
           with a freshness SLA of 6 AM. Key design decisions include idempotent writes with atomic partition swap,
           schema validation at ingestion for all 20 sources, and a 50-check validation suite that verifies output
           correctness before publication.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company runs an hourly batch pipeline that processes trading activity, market data, and
           risk metrics to produce compliance reports required by regulatory authorities. The pipeline must be
           reproducible and auditable — every output must be traceable to the specific input data, code version, and
@@ -338,7 +360,7 @@ export default function ArticlePage() {
           maintains a versioned code repository with the pipeline logic and schema definitions. The hourly schedule
           ensures that compliance reports are no more than one hour stale, meeting regulatory requirements while
           keeping compute costs manageable.
-        </p>
+        </HighlightBlock>
         <p>
           A technology company runs a real-time streaming pipeline that processes application events (clicks, page
           views, API calls) to power operational dashboards and alerting. The pipeline consumes events from Kafka
@@ -361,24 +383,27 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How do you design a data pipeline to be idempotent and support backfills?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Idempotency starts with the output publication pattern: write output to a temporary location, validate
             it, and atomically swap it into the production location. This ensures that rerunning the pipeline on the
             same input produces the same output, because the swap replaces any existing output rather than appending
             to it. For file-based outputs, this is a RENAME operation. For table-based outputs, this is a partition
             swap or snapshot commit in a table format like Iceberg or Delta Lake.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Backfill capability requires two things: idempotent writes (so that rerunning the pipeline on a historical
             date range does not corrupt existing output) and access to historical source data (so that the pipeline
             can be rerun on any date range). Historical source data is typically stored in a data lake where raw
             source data is archived indefinitely, or in a source system that retains historical data.
-          </p>
+          </HighlightBlock>
           <p>
             Testing idempotency and backfill capability is essential. Run the pipeline twice on the same input and
             verify that the output is identical. Then run the pipeline on a historical date range and verify that the

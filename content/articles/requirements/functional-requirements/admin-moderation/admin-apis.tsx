@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function AdminAPIsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Admin APIs enable administrative operations through programmatic interfaces. The admin API system is the primary tool for administrators, operations teams, and automated systems to perform administrative operations, manage users, configure systems, and monitor platform health. For staff and principal engineers, admin APIs involve API authentication (authenticate API requests), API authorization (authorize API requests), rate limiting (limit API requests), audit logging (log API requests), API versioning (version APIs), and API security (secure APIs).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of admin APIs extends beyond simple API endpoints. API authentication must authenticate API requests (authenticate API requests). API authorization must authorize API requests (authorize API requests). Rate limiting must limit API requests (limit API requests). Audit logging must log API requests (log API requests). API versioning must version APIs (version APIs). API security must secure APIs (secure APIs).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, admin APIs architecture involves API authentication (authenticate API requests), API authorization (authorize API requests), rate limiting (limit API requests), audit logging (log API requests), API versioning (version APIs), and API security (secure APIs). The system must support multiple authentication types (API keys, OAuth, JWT), multiple authorization types (RBAC, permissions), and multiple rate limiting types (per-user, per-IP, per-endpoint). Performance is important—admin APIs must be fast and reliable.
         </p>
@@ -47,13 +51,16 @@ export default function AdminAPIsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>API Authentication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           API keys authenticate API requests. API keys (authenticate API requests). API key management (manage API keys). API key rotation (rotate API keys). API key revocation (revoke API keys).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           OAuth authenticates API requests. OAuth (authenticate API requests). OAuth management (manage OAuth). OAuth rotation (rotate OAuth). OAuth revocation (revoke OAuth).
-        </p>
+        </HighlightBlock>
         <p>
           JWT authenticates API requests. JWT (authenticate API requests). JWT management (manage JWT). JWT rotation (rotate JWT). JWT revocation (revoke JWT).
         </p>
@@ -116,9 +123,12 @@ export default function AdminAPIsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Admin APIs architecture spans API authentication, API authorization, rate limiting, and audit logging. API authentication authenticates API requests. API authorization authorizes API requests. Rate limiting limits API requests. Audit logging logs API requests.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/admin-moderation/admin-apis/admin-apis-architecture.svg"
@@ -129,9 +139,9 @@ export default function AdminAPIsArticle() {
         />
 
         <h3>API Authentication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           API authentication authenticates API requests. API authentication (authenticate API requests). API authentication enforcement (enforce API authentication). API authentication verification (verify API authentication). API authentication reporting (report on API authentication).
-        </p>
+        </HighlightBlock>
         <p>
           API key management manages API keys. API key management (manage API keys). API key rotation (rotate API keys). API key revocation (revoke API keys). API key reporting (report on API keys).
         </p>
@@ -191,14 +201,17 @@ export default function AdminAPIsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Admin APIs design involves trade-offs between security and usability, rate limiting and availability, and logging and performance. Understanding these trade-offs enables informed decisions aligned with security needs and platform constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Authentication: API Keys vs. OAuth vs. JWT</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           API keys authenticate API requests. Pros: Simple (simple authentication), easy to implement. Cons: Less secure (less secure authentication), limited features. Best for: Simple APIs, internal APIs.
-        </p>
+        </HighlightBlock>
         <p>
           OAuth authenticates API requests. Pros: Secure (secure authentication), feature-rich. Cons: Complex (complex authentication), hard to implement. Best for: Complex APIs, external APIs.
         </p>
@@ -250,13 +263,16 @@ export default function AdminAPIsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement API authentication:</strong> API keys, OAuth, JWT. API authentication management. API authentication enforcement.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement API authorization:</strong> RBAC, permissions, scope. API authorization management. API authorization enforcement.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement rate limiting:</strong> Per-user, per-IP, per-endpoint. Rate limiting management. Rate limiting enforcement.
           </li>
@@ -286,13 +302,16 @@ export default function AdminAPIsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No API authentication:</strong> Don&apos;t authenticate API requests. Solution: API authentication (API keys, OAuth, JWT).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No API authorization:</strong> Don&apos; authorize API requests. Solution: API authorization (RBAC, permissions, scope).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No rate limiting:</strong> Don&apos; limit API requests. Solution: Rate limiting (per-user, per-IP, per-endpoint).
           </li>
@@ -322,16 +341,19 @@ export default function AdminAPIsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>API Authentication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           API authentication for API authentication. API keys (authenticate API requests). OAuth (authenticate API requests). JWT (authenticate API requests). API authentication management (manage API authentication).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">API Authorization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           API authorization for API authorization. RBAC (authorize API requests). Permissions (authorize API requests). Scope (authorize API requests). API authorization management (manage API authorization).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Rate Limiting</h3>
         <p>
@@ -351,12 +373,15 @@ export default function AdminAPIsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you authenticate and authorize admin API requests securely?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you authenticate and authorize admin API requests securely?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement multi-layer authentication strategy. API keys for service-to-service communication—rotate keys regularly, use separate keys per environment. OAuth 2.0 for user-facing admin tools with PKCE for public clients. JWT for stateless authentication with short expiration (15-30 minutes) and refresh tokens. The critical security requirement: never trust client-side authentication—always verify on backend. Implement authorization with RBAC (role-based access control) for most cases—define roles (admin, moderator, support) with specific permissions. For fine-grained access, use ABAC (attribute-based access control) considering user attributes, resource attributes, and context. Implement principle of least privilege—admin APIs should only have access needed for their function. Audit all authentication and authorization decisions. The key trade-off: security vs. usability—more security layers create friction but protect against compromise. Implement MFA for sensitive admin operations.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

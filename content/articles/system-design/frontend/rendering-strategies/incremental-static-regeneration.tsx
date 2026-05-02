@@ -39,15 +39,15 @@ export default function IncrementalStaticRegenerationConciseArticle() {
           cache, and regenerated in the background when stale or triggered
           explicitly.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           ISR emerged in 2020 with Next.js 9.5 as a solution to SSG&apos;s
           fundamental limitation: the need to rebuild the entire site for
           content updates. Traditional SSG forces a choice between stale content
           or frequent expensive rebuilds. ISR introduces a middle ground: serve
           static pages instantly (SSG benefits) while automatically updating
           them in the background as content changes (SSR-like freshness).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The pattern implements a <strong>stale-while-revalidate</strong>{" "}
           strategy: when a page becomes stale (exceeds revalidation time), the
           next visitor receives the cached (stale) version immediately while the
@@ -56,34 +56,41 @@ export default function IncrementalStaticRegenerationConciseArticle() {
           times while keeping content reasonably fresh. ISR has become the
           default rendering strategy for content-driven applications that need
           both performance and up-to-date content.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Interview framing: ISR is the “shared content” answer when you need
+          CDN-level performance but can tolerate <strong>bounded staleness</strong>{" "}
+          and can build a reliable invalidation story (webhooks, tags, or
+          on-demand revalidate). Your decision hinges on update frequency,
+          cache coherence needs, and operational constraints.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
         <p>Understanding ISR requires grasping several fundamental concepts:</p>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Time-Based Revalidation:</strong> Pages are marked with a
             revalidation period (e.g., 60 seconds). After this time expires, the
             next request triggers background regeneration. The stale page is
             served immediately, then replaced with fresh content for future
             requests.
-          </li>
-          <HighlightBlock as="li" tier="important">
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Stale-While-Revalidate Pattern:</strong> Inspired by HTTP
             caching, this strategy serves stale content instantly (avoiding TTFB
             delays) while asynchronously fetching fresh data and regenerating
             the page. Users never wait for regeneration—they always get instant
             responses.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>On-Demand Revalidation:</strong> Instead of waiting for
             time-based revalidation, you can explicitly trigger page
             regeneration via API calls (webhooks from CMS, admin actions). This
             provides near-instant content updates without polling or short
             revalidation periods.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Background Regeneration:</strong> When revalidation
             triggers, page regeneration happens asynchronously in a separate
@@ -96,13 +103,13 @@ export default function IncrementalStaticRegenerationConciseArticle() {
             generating (fallback: true), generate on first request with blocking
             (fallback: &apos;blocking&apos;), or return 404 (fallback: false).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Cache Invalidation:</strong> ISR manages a persistent cache
             of generated pages. Cache entries are updated on revalidation,
             purged on-demand, or expire based on configuration. Platforms like
             Vercel and Netlify provide globally distributed cache
             infrastructure.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -144,7 +151,11 @@ export default function IncrementalStaticRegenerationConciseArticle() {
           </ol>
         </div>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
+        <HighlightBlock
+          as="div"
+          tier="important"
+          className="my-6 rounded-lg bg-panel-soft p-6"
+        >
           <h3 className="mb-4 text-lg font-semibold">
             ISR Request Flow (Stale Cache)
           </h3>
@@ -177,9 +188,13 @@ export default function IncrementalStaticRegenerationConciseArticle() {
               <strong>7. Next Visitor:</strong> Gets updated content from cache
             </li>
           </ol>
-        </div>
+        </HighlightBlock>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
+        <HighlightBlock
+          as="div"
+          tier="important"
+          className="my-6 rounded-lg bg-panel-soft p-6"
+        >
           <h3 className="mb-4 text-lg font-semibold">
             On-Demand Revalidation Flow
           </h3>
@@ -213,11 +228,25 @@ export default function IncrementalStaticRegenerationConciseArticle() {
               seconds
             </li>
           </ol>
-        </div>
+        </HighlightBlock>
+
+        <HighlightBlock as="p" tier="crucial">
+          In interview terms, ISR gives you a predictable UX contract: requests
+          are almost always fast because users get cached HTML, and freshness
+          improves asynchronously. The system design challenge is picking
+          revalidation triggers and managing consistency across related pages.
+        </HighlightBlock>
+
+        <HighlightBlock as="p" tier="important">
+          Operational nuance: on-demand invalidation needs auth, rate limits,
+          retries, and monitoring. If webhooks fail silently, you can serve stale
+          content indefinitely, so you typically alert on revalidation failures
+          and track “age of served content” for critical routes.
+        </HighlightBlock>
 
         <HighlightBlock
           className="mt-6 rounded-lg border border-theme bg-panel-soft p-4"
-          tier="crucial"
+          tier="important"
         >
           <h3 className="mb-2 font-semibold">Performance Characteristics</h3>
           <ul className="space-y-2 text-sm">
@@ -284,7 +313,7 @@ export default function IncrementalStaticRegenerationConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Performance</strong>
               </td>
@@ -302,8 +331,8 @@ export default function IncrementalStaticRegenerationConciseArticle() {
                 • Background regeneration uses server resources
                 <br />• Cache storage overhead
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Content Freshness</strong>
               </td>
@@ -321,8 +350,8 @@ export default function IncrementalStaticRegenerationConciseArticle() {
                 • Time-based revalidation has lag window
                 <br />• Requires webhook setup for instant updates
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Build Time</strong>
               </td>
@@ -340,8 +369,8 @@ export default function IncrementalStaticRegenerationConciseArticle() {
                 • Fallback modes add complexity
                 <br />• Cold start latency for unpopular pages
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Infrastructure</strong>
               </td>
@@ -361,7 +390,7 @@ export default function IncrementalStaticRegenerationConciseArticle() {
                 • Not all hosts support ISR well
                 <br />• Platform-specific implementations
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Developer Experience</strong>
@@ -449,21 +478,21 @@ export default function IncrementalStaticRegenerationConciseArticle() {
         <h2>Best Practices</h2>
         <p>To build performant ISR applications, follow these practices:</p>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Choose Appropriate Revalidation Times:</strong> Set
             revalidation based on content update frequency. Use 60s for
             frequently updated content (news), 3600s (1 hour) for semi-static
             content (product pages), 86400s (1 day) for rarely changing content
             (documentation). Don&apos;t use very short times (&lt;10s) as it
             wastes server resources.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement On-Demand Revalidation:</strong> Set up webhooks
             from CMS for instant updates on content changes. Use secure tokens
             to prevent unauthorized revalidation. Revalidate related pages
             (e.g., list pages when item changes). This is more efficient than
             short time-based revalidation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Pre-render Critical Pages:</strong> Use getStaticPaths to
             pre-render popular pages (top 100-1000 products, recent articles).
@@ -477,12 +506,12 @@ export default function IncrementalStaticRegenerationConciseArticle() {
             loading state). Avoid fallback: false unless you&apos;re certain all
             paths are pre-rendered.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Monitor Cache Performance:</strong> Track cache hit rates,
             revalidation frequency, and regeneration failures. Use analytics to
             identify pages that should be pre-rendered. Monitor TTFB to ensure
             cache is working effectively. Alert on failed revalidations.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement Cache Tags:</strong> Use cache tags (App Router)
             to group related pages for bulk revalidation. For example, tag all
@@ -490,13 +519,13 @@ export default function IncrementalStaticRegenerationConciseArticle() {
             pricing changes. This is more efficient than path-based
             revalidation.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Combine with Client-Side Updates:</strong> Use ISR for
             stable content (product details) and client-side fetching for
             rapidly changing data (inventory, prices). This hybrid approach
             balances performance with freshness. Cache static data, fetch
             dynamic data.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle Revalidation Errors:</strong> Implement graceful
             degradation when revalidation fails (API timeout, server error).
@@ -522,33 +551,33 @@ export default function IncrementalStaticRegenerationConciseArticle() {
         <h2>Common Pitfalls</h2>
         <p>Avoid these common mistakes when building ISR applications:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Over-Revalidating:</strong> Setting revalidate to very short
             times (5-10 seconds) defeats ISR benefits. Every request triggers
             regeneration, wasting server resources. Use on-demand revalidation
             instead for frequently changing content. Reserve time-based
             revalidation for reasonable intervals (60s+).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Forgetting Related Pages:</strong> Updating a product but
             not revalidating the product list page, category page, or search
             results. Always identify and revalidate dependent pages. Consider
             using cache tags to group related pages for bulk invalidation.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Slow Revalidation Requests:</strong> If background
             regeneration takes 10+ seconds due to slow API calls, it creates
             server load and delays updates. Optimize data fetching, use caching
             layers, or consider SSR for truly dynamic content. Target &lt;2s
             regeneration time.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Securing Revalidation Endpoints:</strong> Exposing
             /api/revalidate without authentication allows anyone to trigger
             costly regenerations. Always verify webhook secrets, use environment
             variables, and implement rate limiting. Consider IP allowlists for
             known webhook sources.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Assuming Instant Updates:</strong> Even with on-demand
             revalidation, there&apos;s a 2-10 second delay for cache purge
@@ -576,13 +605,13 @@ export default function IncrementalStaticRegenerationConciseArticle() {
             ISR works best for content with shared state. Use SSR or CSR for
             user-specific data. Consider hybrid approaches.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Cache Stampede:</strong> When a popular page expires,
             multiple concurrent requests can trigger duplicate regenerations,
             overwhelming the server. Next.js deduplicates regeneration requests,
             but ensure your data sources can handle load spikes. Use caching
             layers and rate limiting.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Inconsistent State Across Pages:</strong> Regenerating pages
             independently can create temporary inconsistencies. A product page
@@ -597,27 +626,27 @@ export default function IncrementalStaticRegenerationConciseArticle() {
         <h2>Real-World Use Cases</h2>
         <p>ISR excels in these scenarios:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>E-commerce Product Catalogs:</strong> Large online stores
             (Shopify, WooCommerce) use ISR for product pages. Static product
             details (description, images) served instantly, while inventory and
             pricing can revalidate every 60 seconds or on-demand via CMS
             webhooks. Build time stays reasonable even with 100,000+ products.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>News &amp; Media Sites:</strong> News sites use ISR with
             short revalidation (60-300 seconds) for article pages and on-demand
             revalidation for breaking news. Homepage and section pages
             revalidate frequently while article content stays cached longer.
             Examples: TechCrunch-style sites, content platforms.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>CMS-Driven Marketing Sites:</strong> Corporate websites,
             SaaS marketing sites with headless CMS (Contentful, Sanity, Strapi).
             Editors update content, webhook triggers revalidation, content
             appears live in seconds. Perfect for marketing teams who need fast
             iteration without developer involvement.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Documentation Sites:</strong> Product docs and API
             references where content updates weekly but needs search,
@@ -686,7 +715,7 @@ export default function IncrementalStaticRegenerationConciseArticle() {
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div>
+          <HighlightBlock as="div" tier="crucial">
             <h3 className="font-semibold text-sm">
               Q: How does ISR handle high traffic during regeneration?
             </h3>
@@ -696,8 +725,8 @@ export default function IncrementalStaticRegenerationConciseArticle() {
               requests (cache stampede prevention). Only one regeneration runs
               per page even with 1000s of requests. Users never wait.
             </p>
-          </div>
-          <div>
+          </HighlightBlock>
+          <HighlightBlock as="div" tier="important">
             <h3 className="font-semibold text-sm">
               Q: What happens if revalidation fails (API error)?
             </h3>
@@ -707,8 +736,8 @@ export default function IncrementalStaticRegenerationConciseArticle() {
               monitoring. Consider retry logic or fallback data. Show content
               freshness timestamps to users if critical.
             </p>
-          </div>
-          <div>
+          </HighlightBlock>
+          <HighlightBlock as="div" tier="important">
             <h3 className="font-semibold text-sm">
               Q: ISR vs ISG vs SSG with cache - what&apos;s the difference?
             </h3>
@@ -718,14 +747,14 @@ export default function IncrementalStaticRegenerationConciseArticle() {
               with cache = static files + CDN caching only (no background
               regeneration). ISR adds automatic background updates.
             </p>
-          </div>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://nextjs.org/docs/pages/building-your-application/data-fetching/incremental-static-regeneration"
               className="text-accent hover:underline"
@@ -734,8 +763,8 @@ export default function IncrementalStaticRegenerationConciseArticle() {
             >
               Next.js Documentation - Incremental Static Regeneration
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating"
               className="text-accent hover:underline"
@@ -744,8 +773,8 @@ export default function IncrementalStaticRegenerationConciseArticle() {
             >
               Next.js App Router - Data Fetching, Caching, and Revalidating
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://vercel.com/docs/incremental-static-regeneration"
               className="text-accent hover:underline"
@@ -754,8 +783,8 @@ export default function IncrementalStaticRegenerationConciseArticle() {
             >
               Vercel - ISR Documentation
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://web.dev/stale-while-revalidate/"
               className="text-accent hover:underline"
@@ -764,7 +793,7 @@ export default function IncrementalStaticRegenerationConciseArticle() {
             >
               web.dev - Keeping things fresh with stale-while-revalidate
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://www.patterns.dev/posts/incremental-static-rendering"

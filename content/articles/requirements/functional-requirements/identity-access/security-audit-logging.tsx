@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,13 +34,16 @@ export default function SecurityAuditLoggingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Security Audit Logging</strong> is the systematic recording of security-relevant
           events for compliance, forensics, and threat detection. It provides an immutable trail of
           who did what, when, and from where — essential for incident response and regulatory
           compliance (SOC 2, GDPR, HIPAA, PCI-DSS). Without audit logs, you can't investigate
           security incidents, prove compliance, or detect ongoing attacks.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/security-audit-logging.svg"
@@ -47,14 +51,14 @@ export default function SecurityAuditLoggingArticle() {
           caption="Security Audit Logging — showing event capture, immutable storage, compliance mapping, and real-time alerting"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing audit logging requires deep understanding
           of event schemas (authentication, authorization, account events), immutable storage
           (write-once, append-only), retention policies (compliance requirements), compliance
           requirements (SOC 2, GDPR, HIPAA), and analysis patterns (real-time alerting, forensic
           analysis). The implementation must capture comprehensive events without impacting
           performance or exposing sensitive data.
-        </p>
+        </HighlightBlock>
         <p>
           Modern audit logging has evolved from simple log files to sophisticated SIEM (Security
           Information and Event Management) systems with real-time alerting, machine learning
@@ -66,19 +70,22 @@ export default function SecurityAuditLoggingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Security audit logging is built on fundamental concepts that determine how events are
           captured, stored, and analyzed. Understanding these concepts is essential for designing
           effective audit systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Audit Events:</strong> Authentication events (login success/failure, logout, MFA
           challenge/verify, password reset), account events (account created, email/phone changed,
           password changed, MFA enabled/disabled, account deleted), authorization events (role
           assigned/removed, permission granted/revoked, access denied, privileged action). Each
           event includes: timestamp, user_id, actor_id (who performed action), action, resource,
           outcome, IP address, device info.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Immutable Storage:</strong> Write-once, append-only storage (can't modify/delete
           events). Encryption at rest (AES-256). Access controls (only security team can read).
@@ -101,11 +108,14 @@ export default function SecurityAuditLoggingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Audit logging architecture separates event capture from storage, enabling high-throughput
           logging with durable storage. This architecture is critical for compliance and security
           monitoring.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/audit-event-schema.svg"
@@ -113,14 +123,14 @@ export default function SecurityAuditLoggingArticle() {
           caption="Audit Event Schema — showing standardized event structure with timestamp, user, actor, action, resource, outcome, and context fields"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Audit flow: Security-relevant event occurs (login, password change, role assignment).
           Application captures event (standardized schema), publishes to message queue (Kafka —
           durable, high-throughput). Audit service consumes events, validates schema, enriches with
           context (geolocation from IP, device info), writes to immutable storage (S3 with
           object lock, write-once database). Real-time alerting: stream to SIEM (Splunk, Datadog),
           detect patterns, alert security team.
-        </p>
+        </HighlightBlock>
         <p>
           Storage architecture includes: hot storage (recent events in Elasticsearch — fast
           queries, 30 days), warm storage (older events in S3 — cheaper, 1 year), cold storage
@@ -145,22 +155,25 @@ export default function SecurityAuditLoggingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing audit logging involves trade-offs between completeness, performance, and cost.
           Understanding these trade-offs is essential for making informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Synchronous vs Asynchronous Logging</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Synchronous:</strong> Log before responding to user. Guaranteed durability.
               Limitation: impacts latency (wait for log write).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Asynchronous:</strong> Log after responding (via message queue). No latency
               impact. Limitation: potential log loss if crash before write.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Asynchronous for most events (login, page view).
               Synchronous for critical events (password change, role assignment) — can't afford to
@@ -208,18 +221,21 @@ export default function SecurityAuditLoggingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing audit logging requires following established best practices to ensure
           compliance, security, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Event Schema</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use standardized schema — timestamp (ISO 8601), user_id (who the event is about),
           actor_id (who performed action — may be same as user_id), action (what happened),
           resource (what was accessed/modified), outcome (success/failure), IP address, device info
           (user agent, device fingerprint). Include context (request_id, session_id) for tracing.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Immutable Storage</h3>
         <p>
@@ -248,20 +264,23 @@ export default function SecurityAuditLoggingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing audit logging to ensure compliant, secure,
           and maintainable audit systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Logging sensitive data:</strong> Passwords, tokens, PII in logs, compliance
             violation. <strong>Fix:</strong> Never log passwords, tokens. Mask PII (show last 4
             digits only).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Mutable logs:</strong> Logs can be modified/deleted, can't trust for
             forensics. <strong>Fix:</strong> Write-once, append-only storage. Object lock (S3).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No retention policy:</strong> Logs accumulate forever, cost explosion,
             compliance risk. <strong>Fix:</strong> Automated deletion after retention period (7
@@ -304,16 +323,19 @@ export default function SecurityAuditLoggingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Security audit logging is critical for compliance and security. Here are real-world
           implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS (Salesforce)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> SOC 2 compliance requires comprehensive audit trails.
           Enterprise customers need audit reports. High-volume logging (billions of events/day).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Standardized event schema. Kafka for high-throughput. S3 with
           object lock for immutable storage. Elasticsearch for recent queries. Automated compliance
@@ -398,14 +420,17 @@ export default function SecurityAuditLoggingArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of audit logging design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What events should you audit?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What events should you audit?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Authentication (login success/failure, logout, MFA), account (created, email
               changed, password changed, MFA enabled/disabled, deleted), authorization (role

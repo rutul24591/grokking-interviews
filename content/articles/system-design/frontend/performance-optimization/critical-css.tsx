@@ -319,7 +319,7 @@ export default function CriticalCssArticle() {
       <section>
         <h2>Trade-offs & Comparison</h2>
 
-        <HighlightBlock as="p" tier="crucial">
+        <HighlightBlock as="p" tier="important">
           Critical CSS is an{" "}
           <Highlight tier="important">availability-of-styles</Highlight> tactic: you are paying build and caching
           complexity to guarantee above-the-fold pixels render without waiting for a stylesheet RTT. In interviews,
@@ -635,10 +635,10 @@ export default function CriticalCssArticle() {
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is critical CSS and why does it improve performance?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="important" className="mb-3">
+            <p className="mb-3">
               Critical CSS is the minimum CSS needed to render above-the-fold content, inlined directly in the 
               HTML <code>&lt;head&gt;</code> to eliminate render-blocking stylesheet downloads.
-            </HighlightBlock>
+            </p>
             <p className="mb-3">
               It improves performance because:
             </p>
@@ -646,14 +646,14 @@ export default function CriticalCssArticle() {
               <li>• <strong>Eliminates render-blocking:</strong> Browsers normally wait for all CSS to download 
               before rendering. Critical CSS removes this blocking for above-the-fold content.</li>
               <li>• <strong>Reduces round-trips:</strong> The CSS is available immediately with no network request.</li>
-              <HighlightBlock as="li" tier="important">
+              <li>
                 • <strong>Single TCP window:</strong> If HTML + critical CSS fits in ~14 KB, the browser can 
                 render after one network round-trip.
-              </HighlightBlock>
+              </li>
             </ul>
-            <HighlightBlock as="p" tier="important" className="mt-3">
+            <p className="mt-3">
               Typical improvement: FCP improves by 500ms-1.5s on 3G connections.
-            </HighlightBlock>
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
@@ -762,8 +762,13 @@ export default function CriticalCssArticle() {
           ============================================================ */}
       <section>
         <h2>References</h2>
+        <HighlightBlock as="p" tier="crucial">
+          For interview prep, treat critical CSS as a rendering-pipeline lever: you are buying earlier paint at the cost
+          of caching efficiency and build complexity. These references help you reason about extraction tooling,
+          safe async loading, and font/layout stability.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://web.dev/extract-critical-css/" 
               className="text-accent hover:underline" 
@@ -775,7 +780,7 @@ export default function CriticalCssArticle() {
             <p className="text-sm text-muted mt-1">
               Google&apos;s guide on critical CSS extraction techniques and tools.
             </p>
-          </li>
+          </HighlightBlock>
           <li>
             <a 
               href="https://github.com/addyosmani/critical" 
@@ -789,7 +794,7 @@ export default function CriticalCssArticle() {
               Popular Node.js tool for automating critical CSS extraction with Puppeteer.
             </p>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://github.com/GoogleChromeLabs/critters" 
               className="text-accent hover:underline" 
@@ -801,7 +806,7 @@ export default function CriticalCssArticle() {
             <p className="text-sm text-muted mt-1">
               Webpack plugin for critical CSS extraction used by Next.js.
             </p>
-          </li>
+          </HighlightBlock>
           <li>
             <a 
               href="https://developer.mozilla.org/en-US/docs/Web/CSS/@font-display" 
@@ -828,7 +833,7 @@ export default function CriticalCssArticle() {
               Comprehensive guide to critical CSS concepts and implementation.
             </p>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://nextjs.org/docs/app/api-reference/next-config-js/optimizePackageImports" 
               className="text-accent hover:underline" 
@@ -840,7 +845,7 @@ export default function CriticalCssArticle() {
             <p className="text-sm text-muted mt-1">
               Next.js documentation on CSS optimization including critical CSS.
             </p>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

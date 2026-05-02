@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>Count-Min Sketch (CMS)</strong> is a probabilistic data structure for estimating the frequency of items in a data stream using bounded memory. It supports two operations: <strong>update(item, count)</strong> increments the estimated frequency of an item, and <strong>query(item)</strong> returns the estimated frequency. The defining guarantee is that CMS <strong>never underestimates</strong> the true count—it may overestimate due to hash collisions, but the estimate is always at least the actual frequency. This one-sided error bound is what makes CMS useful in production systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The structure consists of a two-dimensional array of counters: d rows (depth) by w columns (width). Each row has an independent hash function that maps an item to a column index in that row. On update, each of the d hash functions computes a column index, and the corresponding counter in each row is incremented. On query, the same d hash functions compute d column indices, and the estimate is the <strong>minimum</strong> counter value across all d rows. Taking the minimum is the critical insight: while individual rows may have collision-inflated counts, the minimum across rows is the least affected by collisions and provides the tightest upper bound on the true count.
-        </p>
+        </HighlightBlock>
         <p>
           The memory footprint is fixed at d * w counters, regardless of the number of distinct items in the stream. This is fundamentally different from a hash map, which grows linearly with the number of distinct keys. For high-cardinality streams with billions of distinct items, a CMS can provide useful frequency estimates using only kilobytes or megabytes of memory, whereas a hash map would require gigabytes or more.
         </p>
@@ -48,6 +52,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/advanced-topics/count-min-sketch-structure.svg"
@@ -56,12 +63,12 @@ export default function ArticlePage() {
         />
 
         <h3>The Update and Query Process</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The update operation is O(d) time where d is the number of rows (hash functions). For each row i, compute h_i(item) mod w to get the column index, then increment counters[i][column_index] by the item's count (typically 1 for frequency counting). The operation is extremely fast: a few hash computations and counter increments, with no memory allocation or data structure traversal.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The query operation is also O(d) time. Compute the same d hash functions to get d column indices, read the d counter values, and return the minimum. The minimum is the key design decision: hash collisions cause individual counters to be inflated by other items that hash to the same position. However, for a specific item, the probability that all d rows suffer significant collision inflation simultaneously is exponentially small in d. By taking the minimum, we select the row with the least collision interference, providing the tightest upper bound on the true count.
-        </p>
+        </HighlightBlock>
         <p>
           The overestimation guarantee can be quantified. With probability at least 1 - delta, the estimate exceeds the true count by at most epsilon times the total stream count, where w = ceil(e / epsilon) and d = ceil(ln(1 / delta)). For example, with w = 2048 and d = 7, the estimate is within 0.1% of the true count with 99.9% confidence. The error bound is relative to the total stream size, not the individual item count, meaning the absolute error grows with stream volume but the relative error for heavy hitters remains small.
         </p>
@@ -100,14 +107,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Distributed Telemetry with Sketch Merging</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Count-Min Sketch is highly mergeable: two sketches with the same dimensions and hash functions can be combined by element-wise counter addition. The merged sketch provides frequency estimates for the union of both streams, with error bounds that follow from the individual sketches' guarantees. This mergeability is the foundation of distributed frequency tracking.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In a typical architecture, each service instance or gateway node maintains a local CMS, updating it for every request it handles. Periodically (e.g., every minute), each node sends its sketch to an aggregator, which merges all received sketches into a global view. The global sketch provides frequency estimates across the entire fleet, enabling detection of fleet-wide heavy hitters like abusive API keys, popular endpoints, or emerging error patterns.
-        </p>
+        </HighlightBlock>
         <p>
           The bandwidth cost of shipping sketches is constant and small: a sketch with d = 7 and w = 2048 using 4-byte counters is approximately 56 KB, regardless of the number of distinct items processed. For a fleet of 1000 nodes shipping sketches every minute, the total bandwidth is approximately 56 MB per minute—trivial compared to shipping raw event logs.
         </p>
@@ -146,12 +156,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Count-Min Sketch occupies a specific point in the accuracy-resource trade-off spectrum. An exact hash map provides precise counts but requires O(n) memory where n is the number of distinct items. For high-cardinality streams with millions of distinct items, this is prohibitive. CMS provides approximate counts with O(1) memory (fixed size determined by error bounds, not cardinality), accepting bounded overestimation for massive memory savings.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice between CMS and alternative frequency estimation structures depends on the use case. For heavy hitter detection where you need to identify the most frequent items, pairing CMS with Space-Saving or a min-heap is the standard approach. For pure frequency estimation of known items, CMS alone is sufficient. For cardinality estimation (counting distinct items rather than their frequencies), HyperLogLog is the appropriate tool—it uses even less memory than CMS but answers a different question.
-        </p>
+        </HighlightBlock>
         <p>
           The overestimation guarantee is one-sided: CMS never underestimates. This is a critical property for use cases where missing a heavy hitter is worse than falsely flagging a non-heavy-hitter. For rate limiting and abuse detection, one-sided error is the right choice: it's better to investigate a false positive than to miss an actual abuser. For use cases where overestimation causes harm (e.g., billing decisions based on approximate counts), CMS is inappropriate and exact counting is required.
         </p>
@@ -165,12 +178,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Size your Count-Min Sketch based on explicit error requirements, not arbitrary defaults. Determine the minimum frequency you need to detect (epsilon) and the acceptable failure probability (delta), then compute w = e / epsilon and d = ln(1 / delta). For example, detecting items representing 0.1% of traffic with 99% confidence requires w = 2718 and d = 5, using approximately 54 KB with 4-byte counters. Validate these parameters on production-like traffic distributions, as the theoretical bounds assume uniform hash distribution and may be conservative or optimistic depending on actual data skew.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use strong, well-tested hash functions to minimize collision patterns. MurmurHash3, xxHash3, or SipHash with different seeds per row provide excellent distribution for CMS purposes. The double-hashing optimization (h(i) = h1(x) + i * h2(x) mod w) reduces the number of hash computations from d to 2 while maintaining near-equivalent collision properties. Avoid simple hash functions like FNV or truncated MD5 without verifying distribution on your actual data, as poor hash distribution inflates actual error above theoretical bounds.
-        </p>
+        </HighlightBlock>
         <p>
           Implement explicit windowing strategy from the beginning. The simplest approach is rotating sketches: maintain N sketches covering consecutive time windows, merge the relevant windows for queries, and discard expired windows. Define the window size based on your detection latency requirements (smaller windows for faster detection) and the retention period based on your analysis needs. Monitor the transition between windows to detect trend changes that span window boundaries.
         </p>
@@ -184,12 +200,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>misinterpreting approximate counts as exact</strong>. CMS estimates are upper bounds that may overestimate the true count. Teams that use CMS estimates for billing, quota enforcement, or user-facing metrics create errors and disputes. The fix is to use CMS for ranking and detection ("this key is among the most frequent") and confirm with exact counting for enforcement ("this key exceeded the limit by X requests"). This two-stage pattern is standard in production systems but requires discipline to implement correctly.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Collision-driven overestimation on skewed distributions</strong> can make CMS estimates unreliable for specific items. When a small number of items dominate the stream (power-law distribution), these heavy hitters consume a disproportionate share of counter space through collisions, inflating estimates for other items. The theoretical error bound is relative to the total stream count, meaning heavy hitters' collisions disproportionately affect light items. If you need accurate estimates for light items in a skewed stream, increase the sketch width significantly or use a separate sketch for different item classes.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Stale windows hiding trends</strong> occurs when a long-lived CMS accumulates so much history that recent changes are invisible in the estimates. An item that was heavy-hitting last week but not today may still appear prominent because its historical count dominates the sketch. The fix is to use rotating or decay-based windowing with a window size matched to your detection latency requirements. Define what "current" means for your use case (last minute, last hour, last day) and ensure the sketch's effective window aligns with that definition.
         </p>
@@ -203,16 +222,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>API Gateway: Heavy Hitter Detection for Rate Limiting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An API gateway serving 100,000 requests per second needed to identify API keys driving disproportionate traffic for fairness enforcement. Exact counting per key was too expensive due to the high cardinality of active keys. The solution was a per-gateway CMS (d = 7, w = 4096, approximately 112 KB) updated for every request, with sketches merged at a central aggregator every minute. Heavy hitters were identified from the merged sketch, confirmed with sampled exact logs, and rate-limited. The system detected abuse within 2 minutes of onset while using less than 1 MB of memory across the entire gateway fleet.
-        </p>
+        </HighlightBlock>
 
         <h3>Network Monitoring: Traffic Anomaly Detection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A network operations team needed to detect traffic anomalies (DDoS attacks, misconfigured clients, routing loops) in real time across multiple network links. Each link router maintained a CMS tracking source IP frequencies. Sketches were shipped to a central collector every 30 seconds and merged. The merged sketch identified IPs whose frequency exceeded historical baselines by more than 3x, triggering investigation workflows. The system detected a DDoS attack within 90 seconds of onset, compared to 15 minutes with the previous polling-based approach.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce: Trending Product Detection</h3>
         <p>
@@ -230,14 +252,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: Why does Count-Min Sketch overestimate counts?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Count-Min Sketch overestimates because of hash collisions. Multiple distinct items can hash to the same counter position in a given row. When this happens, the counter at that position accumulates counts from all items that map to it, not just the queried item. Since each row is an independent hash projection, different items collide with the queried item in different rows.
-            </p>
+            </HighlightBlock>
             <p>
               Taking the minimum across all d rows mitigates this: the minimum selects the row with the least collision interference for the queried item. However, the minimum is still an upper bound because even the least-collided row may have some collision inflation. The guarantee is that the estimate is never less than the true count—it is either exact (no collisions in the minimum row) or overestimated (collisions present in all rows).
             </p>

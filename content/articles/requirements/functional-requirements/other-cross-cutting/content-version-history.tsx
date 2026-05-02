@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ContentVersionHistoryArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content Version History enables tracking and managing different versions of content over time. Users can view version history (see all versions of content), compare versions (see differences between versions), restore previous versions (revert to previous version), and branch versions (create variations). Content version history is fundamental to content editing (track changes over time), collaboration (multiple users can edit), and error recovery (revert mistakes). For platforms with content editing (documents, posts, products, code), effective version history is essential for editing confidence, collaboration, and content quality.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, content version history architecture involves version tracking (track each version), version storage (store version data), version comparison (compare versions), version restoration (restore previous versions), and version branching (create branches). The implementation must balance completeness (track all changes) with storage (versions consume storage) and performance (version operations must be fast). Poor version history leads to data loss (can&apos;t recover changes), collaboration issues (can&apos;t merge changes), and user frustration (can&apos;t revert mistakes).
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of content version history extends beyond simple version storage. Version tracking (when to create versions). Version metadata (store version information). Version comparison (show differences). Version restoration (restore previous version). Version branching (create variations). For staff engineers, content version history is a content editing infrastructure decision affecting editing confidence, collaboration, and content quality.
         </p>
@@ -46,13 +50,16 @@ export default function ContentVersionHistoryArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Version Tracking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Version creation creates new versions. Manual versioning (user creates version). Auto versioning (automatically create versions). Event-based versioning (create on specific events). Version creation enables tracking changes. Benefits include change tracking (track all changes), recovery (can revert changes). Drawbacks includes storage overhead (store multiple versions), complexity (manage versions).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Version metadata stores version information. Version number (identify version). Timestamp (when version created). Author (who created version). Change summary (what changed). Version metadata enables understanding versions. Benefits include context (understand versions), search (find specific versions). Drawbacks includes storage (store metadata), complexity (manage metadata).
-        </p>
+        </HighlightBlock>
         <p>
           Version organization organizes versions. Chronological order (order by time). Branch organization (organize by branch). Tag organization (tag important versions). Version organization enables finding versions. Benefits include findability (find versions easily), understanding (understand version relationships). Drawbacks includes complexity (organize versions), storage (store organization data).
         </p>
@@ -104,9 +111,12 @@ export default function ContentVersionHistoryArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content version history architecture spans version service, version storage, comparison service, and restoration service. Version service manages version tracking. Version storage persists version data. Comparison service compares versions. Restoration service restores versions. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/content-version-history/version-history-architecture.svg"
@@ -117,9 +127,9 @@ export default function ContentVersionHistoryArticle() {
         />
 
         <h3>Version Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Version service manages version tracking. Version creation (create new versions). Version metadata (store version metadata). Version organization (organize versions). Version service is the core of version history. Benefits include centralization (one place for versions), consistency (same versioning everywhere). Drawbacks includes complexity (manage versioning), coupling (services depend on version service).
-        </p>
+        </HighlightBlock>
         <p>
           Version policies define versioning rules. Version triggers (when to create versions). Version retention (how long to keep versions). Version limits (maximum versions). Version policies automate versioning. Benefits include automation (automatic versioning), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function ContentVersionHistoryArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content version history design involves trade-offs between completeness and storage, automatic and manual versioning, and full and delta storage. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Versioning: Complete vs. Selective</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Complete versioning (track all changes). Pros: Maximum recovery (can restore any change), complete audit trail (track all changes), user confidence (know all changes tracked). Cons: Storage cost (many versions), management overhead (manage many versions), search complexity (find right version). Best for: Important content, compliance requirements.
-        </p>
+        </HighlightBlock>
         <p>
           Selective versioning (track important changes). Pros: Lower storage cost (fewer versions), simpler management (fewer versions), faster search (fewer versions). Cons: Limited recovery (can&apos;t restore all changes), incomplete audit trail, user frustration (can&apos;t restore). Best for: Casual content, storage-constrained environments.
         </p>
@@ -207,13 +220,16 @@ export default function ContentVersionHistoryArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Track versions automatically:</strong> Auto-version on save. Version on significant changes. Version on user action. Don&apos;t rely on manual versioning.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Store version metadata:</strong> Version number. Timestamp. Author. Change summary. Enable version understanding.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Enable version comparison:</strong> Side-by-side view. Inline diff. Change summary. Visual diff.
           </li>
@@ -243,13 +259,16 @@ export default function ContentVersionHistoryArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No auto-versioning:</strong> Users must manually version. <strong>Solution:</strong> Auto-version on save and changes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No version metadata:</strong> Don&apos;t know version details. <strong>Solution:</strong> Store timestamp, author, summary.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Can&apos;t compare versions:</strong> Don&apos;t know differences. <strong>Solution:</strong> Enable version comparison, diff view.
           </li>
@@ -279,16 +298,19 @@ export default function ContentVersionHistoryArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Google Docs Version History</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Docs provides comprehensive version history. Auto-versioning (version on every change). Version list (see all versions). Version comparison (see changes). Version restoration (restore previous version). Named versions (name important versions). Users can track all changes and restore any version.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">GitHub Code Version History</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           GitHub provides code version history. Commit history (track all commits). Diff view (see code changes). Branch management (manage branches). Merge conflicts (resolve conflicts). Version restoration (revert commits). Developers can track all code changes and collaborate effectively.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">WordPress Post Revisions</h3>
         <p>
@@ -308,12 +330,15 @@ export default function ContentVersionHistoryArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you implement version tracking that doesn&apos;t consume excessive storage?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you implement version tracking that doesn&apos;t consume excessive storage?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement delta storage because storing full versions consumes excessive storage, especially for frequently edited content. Store only changes: instead of storing full document for each version, store delta (what changed from previous version)—&quot;added paragraph 3,&quot; &quot;deleted line 5,&quot; &quot;modified image&quot;—reduces storage by 90%+ for text content. Compress version data: gzip deltas, compress images, optimize storage format—further reduces storage by 60-80%. Deduplicate common content: same images, templates, repeated phrases stored once, referenced multiple times—eliminates redundant storage. Retention policy: delete old versions (keep last 50 versions, or versions from last 90 days)—storage management, most recovery needs are recent. The storage insight: versions can consume lots of storage—optimize with delta storage (store changes not full versions), compression (gzip, image optimization), deduplication (store once, reference multiple), retention (delete old versions), and continuously monitor storage growth.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

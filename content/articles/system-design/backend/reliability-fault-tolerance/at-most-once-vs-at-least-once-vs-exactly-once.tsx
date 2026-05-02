@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -42,7 +43,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Delivery semantics</strong> define the guarantee a messaging system provides about
           how many times a message will be processed by its consumer. There are three levels of
           guarantee. <strong>At-most-once</strong> means a message is delivered zero or one times —
@@ -52,8 +56,8 @@ export default function ArticlePage() {
           duplication. These semantics are not interchangeable: choosing the wrong one for your
           workload causes either data loss (at-most-once for financial transactions) or data
           corruption (at-least-once without idempotent consumers).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider a payment processing pipeline. When a customer submits a payment, the payment
           service publishes a <code>PaymentSubmitted</code> event to a message broker. The
           fraud-checking service consumes this event and either approves or flags the payment. If
@@ -64,7 +68,7 @@ export default function ArticlePage() {
           alerts that waste investigator time. If the system uses exactly-once delivery, the payment
           is checked exactly once — the correct behavior. The choice of delivery semantic directly
           affects the correctness and cost of the system.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, understanding delivery semantics requires balancing three
           competing concerns. <strong>Reliability</strong> means messages are never lost — at-least-once
@@ -99,6 +103,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/delivery-semantics-comparison.svg`}
@@ -107,22 +114,22 @@ export default function ArticlePage() {
         />
 
         <h3>At-Most-Once Delivery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           At-most-once delivery means the system makes no guarantee that a message will be
           processed. The producer sends the message to the broker, the broker delivers it to the
           consumer, and if the consumer crashes before or during processing, the message is lost.
           The broker considers the message delivered once it has been handed off to the consumer and
           does not retain it for retry. This is the simplest delivery semantic because it requires
           no acknowledgment protocol and no retry logic.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At-most-once is appropriate for workloads where occasional data loss is acceptable and
           duplicates would be harmful. Metrics and logging are the canonical examples: if a single
           metrics data point is lost, the aggregate statistics are still accurate. If the same data
           point were delivered twice, it would inflate the metric and produce incorrect dashboards
           and alerts. Similarly, log aggregation systems prefer to lose a few log lines rather than
           risk duplicate entries that would distort error rates and event counts.
-        </p>
+        </HighlightBlock>
 
         <h3>At-Least-Once Delivery</h3>
         <p>
@@ -183,9 +190,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>At-Most-Once Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           At-most-once is implemented by delivering the message to the consumer without waiting for
           an acknowledgment. The broker removes the message from its queue as soon as it has been
           handed off to the consumer&apos;s network buffer. If the consumer crashes before
@@ -194,10 +204,10 @@ export default function ArticlePage() {
           tracking delivery status. Fire-and-forget messaging is the purest form of at-most-once:
           the producer sends the message and immediately forgets about it, with no concern for
           whether it was received or processed.
-        </p>
+        </HighlightBlock>
 
         <h3>At-Least-Once Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           At-least-once is implemented using an acknowledgment protocol. The broker delivers the
           message to the consumer and starts a visibility timer. The consumer processes the message
           and sends an ACK. The broker removes the message from its queue. If the visibility timer
@@ -205,7 +215,7 @@ export default function ArticlePage() {
           different consumer. The visibility timeout must be set carefully: too short and the
           message may be redelivered before processing is complete (causing duplicates); too long
           and a crashed consumer holds the message hostage for the full timeout duration.
-        </p>
+        </HighlightBlock>
         <p>
           The idempotent consumer pattern is the standard way to handle duplicate messages from
           at-least-once delivery. The consumer maintains a deduplication store (typically a Redis
@@ -243,7 +253,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice of delivery semantic is a trade-off between reliability, correctness, and
           performance. At-most-once provides the best performance (lowest latency, highest
           throughput) but the weakest reliability guarantee. It is suitable for workloads where
@@ -253,8 +266,8 @@ export default function ArticlePage() {
           workloads. Exactly-once provides the strongest guarantee (no loss, no duplicates) but
           the worst performance due to transactional overhead. It is reserved for the most critical
           workloads where even idempotent retries are unacceptable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that at-least-once with idempotent consumers provides the same
           effective guarantee as exactly-once for most workloads, with significantly better
           performance. The cost of implementing idempotent consumers (a deduplication store and
@@ -263,7 +276,7 @@ export default function ArticlePage() {
           mitigated by idempotency — for example, when processing a message triggers an irreversible
           external action (sending a payment to a bank, ordering physical goods) that cannot be
           undone or deduplicated after the fact.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -271,7 +284,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Choose at-most-once for metrics, logging, and monitoring data where occasional loss is
           acceptable and duplicates would distort the data. Choose at-least-once as the default for
           all business-critical workloads, and implement idempotent consumers using a deduplication
@@ -279,8 +295,8 @@ export default function ArticlePage() {
           for workloads where the cost of a duplicate is catastrophic and cannot be mitigated by
           idempotency — financial settlements, inventory deductions for unique items, and
           irreversible external actions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Always make consumers idempotent, even when using exactly-once semantics. Defensive
           programming against duplicates protects against broker bugs, configuration errors, and
           edge cases where the exactly-once guarantee may be violated. Monitor delivery metrics:
@@ -289,7 +305,7 @@ export default function ArticlePage() {
           messages within the visibility timeout. Track the deduplication rate (duplicate messages
           skipped as a percentage of total messages received) to understand how often the
           idempotent consumer is actually preventing duplicate processing.
-        </p>
+        </HighlightBlock>
         <p>
           Set the visibility timeout carefully: it should be longer than the maximum expected
           processing time plus a safety margin, but short enough that crashed consumers do not
@@ -305,19 +321,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is using at-least-once delivery without idempotent consumers.
           When the broker redelivers a message because the consumer crashed before sending the ACK,
           the consumer processes the message twice, causing duplicate side effects (duplicate orders,
           duplicate charges, duplicate notifications). The fix is to implement idempotent consumers
           with a deduplication store that records processed message IDs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common pitfall is setting the visibility timeout too short. If the timeout is
           shorter than the consumer&apos;s processing time, the broker will redeliver the message
           while the consumer is still processing it, causing a duplicate. The fix is to set the
           timeout to at least 2-3x the P99 processing time of the consumer.
-        </p>
+        </HighlightBlock>
         <p>
           Using exactly-once semantics for all workloads is a performance anti-pattern. Exactly-once
           introduces significant overhead due to transactional coordination, reducing throughput by
@@ -337,9 +356,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Stripe: Exactly-Once for Payment Settlements</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe uses exactly-once semantics for payment settlements because a duplicate settlement
           would result in a customer being charged twice for the same transaction. Stripe&apos;s
           payment processing pipeline uses Kafka transactions to ensure that each payment intent is
@@ -347,17 +369,17 @@ export default function ArticlePage() {
           output topic in the same transaction as the payment intent is consumed. This guarantees
           that no payment is settled twice, even in the face of broker failures, consumer crashes,
           or network partitions.
-        </p>
+        </HighlightBlock>
 
         <h3>Uber: At-Least-Once with Idempotent Consumers for Ride Events</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uber uses at-least-once delivery for ride lifecycle events (ride requested, driver
           matched, trip started, trip completed) with idempotent consumers. Each ride event has a
           unique event ID, and the consumer maintains a deduplication store in Redis that records
           processed event IDs. If an event is redelivered, the consumer skips it. This approach
           provides no data loss (critical for ride accounting and driver payouts) with minimal
           performance overhead compared to exactly-once transactions.
-        </p>
+        </HighlightBlock>
 
         <h3>Datadog: At-Most-Once for Metrics Ingestion</h3>
         <p>
@@ -375,6 +397,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
@@ -382,15 +407,15 @@ export default function ArticlePage() {
               Question 1: Explain the difference between at-most-once, at-least-once, and
               exactly-once delivery semantics.
             </h3>
-            <p className="text-muted mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3">
               <strong>Answer:</strong>
-            </p>
-            <p className="mb-3">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               At-most-once means a message is delivered zero or one times — it may be lost but
               never duplicated. At-least-once means a message is delivered one or more times — it
               will never be lost but may be duplicated. Exactly-once means a message is processed
               exactly once — no loss and no duplication.
-            </p>
+            </HighlightBlock>
             <p>
               At-most-once is fastest but least reliable. At-least-once requires idempotent
               consumers to handle duplicates. Exactly-once requires transactional support and is

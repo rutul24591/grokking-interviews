@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function RateLimitingAbuseProtectionArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Rate limiting</strong> is the practice of limiting the number of requests a client
           can make within a time window — it protects services from overload (accidental or malicious),
           ensures fair resource allocation across clients, and prevents abuse (credential stuffing,
           scraping, DDoS). Rate limiting is a critical non-functional requirement for any
           internet-facing service — without rate limiting, a single client can overwhelm a service
           with requests, causing degraded performance or outage for all clients.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rate limiting algorithms determine how requests are counted and limited — token bucket
           (tokens are added at a fixed rate, each request consumes a token), leaky bucket (requests
           are queued and processed at a fixed rate), and sliding window (requests are counted within
           a rolling time window). Each algorithm has trade-offs in accuracy, memory usage, and
           behavior under burst traffic.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, rate limiting architecture demonstrates
           understanding of service protection, the ability to design rate limiting systems that
@@ -72,13 +76,16 @@ export default function RateLimitingAbuseProtectionArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding rate limiting requires grasping several foundational concepts about rate
           limiting algorithms, distributed rate limiting, abuse detection, and rate limit enforcement.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Rate Limiting Algorithms</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Token bucket is the most common rate limiting algorithm — tokens are added to a bucket at
           a fixed rate (e.g., 10 tokens per second), and each request consumes one token. If the
           bucket is empty, the request is rejected. Token bucket allows bursts (if the bucket has
@@ -88,7 +95,7 @@ export default function RateLimitingAbuseProtectionArticle() {
           not allow bursts. Sliding window counts requests within a rolling time window (e.g., 100
           requests per minute) — it is more accurate than token bucket but requires more memory to
           track individual request timestamps.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Distributed Rate Limiting</h3>
         <p>
@@ -118,10 +125,13 @@ export default function RateLimitingAbuseProtectionArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rate limiting architecture spans rate limiting algorithms, distributed rate limiting
           infrastructure, abuse detection systems, and rate limit enforcement.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/rate-limiting-algorithms.svg"
@@ -130,7 +140,7 @@ export default function RateLimitingAbuseProtectionArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Rate Limit Enforcement Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a request arrives, the rate limiter checks the client&apos;s request count (per-user,
           per-IP, or per-endpoint) against the configured limit. If the limit is not exceeded, the
           request is processed and the counter is incremented. If the limit is exceeded, the request
@@ -138,7 +148,7 @@ export default function RateLimitingAbuseProtectionArticle() {
           the client can retry. The rate limiter uses a shared data store (Redis) for distributed
           rate limiting — each service instance increments the counter in Redis and checks if the
           limit is exceeded.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Abuse Detection and Response</h3>
         <p>
@@ -166,25 +176,28 @@ export default function RateLimitingAbuseProtectionArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Algorithm</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Algorithm</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Token Bucket</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>Token Bucket</strong></td>
               <td className="p-3">
                 Allows bursts. Simple to implement. Low memory usage (counter + timestamp).
               </td>
               <td className="p-3">
                 Approximate (not exact). Burst may exceed average rate. Requires careful tuning.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Leaky Bucket</strong></td>
               <td className="p-3">
                 Smooths traffic. Exact rate limit. Predictable processing rate.
@@ -192,8 +205,8 @@ export default function RateLimitingAbuseProtectionArticle() {
               <td className="p-3">
                 No bursts. Queue adds latency. Queue overflow causes request loss.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Sliding Window</strong></td>
               <td className="p-3">
                 Exact rate limit. Flexible window size. No burst issues.
@@ -201,7 +214,7 @@ export default function RateLimitingAbuseProtectionArticle() {
               <td className="p-3">
                 High memory usage (stores timestamps). Complex distributed implementation.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Fixed Window</strong></td>
               <td className="p-3">
@@ -218,26 +231,29 @@ export default function RateLimitingAbuseProtectionArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Use Token Bucket for Most Use Cases</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Token bucket is the best general-purpose rate limiting algorithm — it allows bursts
           (which are normal for user behavior) while maintaining the average rate limit, and it
           is simple to implement with low memory usage (a single counter and timestamp per client).
           Use sliding window for exact rate limiting when burst tolerance is not acceptable (e.g.,
           billing-related rate limits). Use leaky bucket for traffic smoothing when you need to
           protect downstream services from traffic spikes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Implement Multi-Level Rate Limiting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Multi-level rate limiting protects against different types of overload — per-IP rate
           limiting protects against DDoS (limits total requests from a single IP), per-user rate
           limiting protects against abuse (limits requests from a single user account), and
           per-endpoint rate limiting protects against endpoint-specific overload (limits requests
           to expensive endpoints). Multi-level rate limiting ensures that different types of overload
           are detected and mitigated appropriately.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Fail Open on Rate Limiter Failure</h3>
         <p>
@@ -262,23 +278,26 @@ export default function RateLimitingAbuseProtectionArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Rate Limiting Behind a Load Balancer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Rate limiting based on client IP behind a load balancer is ineffective — the load balancer&apos;s
           IP is the source IP for all requests, so all requests appear to come from the same IP. Use
           the X-Forwarded-For header to get the original client IP, or use per-user rate limiting
           (based on authenticated user ID) instead of per-IP rate limiting.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Fixed Window Boundary Issue</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Fixed window rate limiting has a boundary issue — if a client sends requests at the end
           of one window and the beginning of the next window, it can send 2× the rate limit in a
           short period (e.g., 100 requests at 11:59 and 100 requests at 12:00 for a 100/minute
           limit). Use sliding window rate limiting to avoid the boundary issue — it counts requests
           within a rolling window (e.g., the last 60 seconds) regardless of window boundaries.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Not Monitoring Rate Limit Effectiveness</h3>
         <p>
@@ -302,19 +321,22 @@ export default function RateLimitingAbuseProtectionArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Twitter — API Rate Limiting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter&apos;s API uses per-user and per-endpoint rate limiting — each user has a rate limit
           for each endpoint (e.g., 300 requests per 15 minutes for the tweet lookup endpoint).
           Twitter uses token bucket rate limiting with Redis for distributed rate limiting across
           API instances. When a user exceeds their rate limit, Twitter returns a 429 response with
           X-RateLimit-Remaining and X-RateLimit-Reset headers, enabling clients to adjust their
           request rate.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Stripe — Abuse Detection and Rate Limiting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe uses rate limiting to protect against abuse (credential stuffing, scraping, DDoS) —
           per-IP rate limiting for unauthenticated requests, per-account rate limiting for
           authenticated requests, and per-endpoint rate limiting for expensive operations. Stripe&apos;s
@@ -322,7 +344,7 @@ export default function RateLimitingAbuseProtectionArticle() {
           sequential account enumeration, credential stuffing patterns) and blocks abusive clients
           automatically. Stripe&apos;s rate limiting is enforced at the API gateway level, before
           requests reach the service layer.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">GitHub — Rate Limiting with Secondary Limits</h3>
         <p>
@@ -348,19 +370,22 @@ export default function RateLimitingAbuseProtectionArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rate limiting is a security control — it protects against DDoS, credential stuffing, and API abuse. However, rate limiting itself may be targeted by attackers.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Rate Limiting Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Rate Limit Bypass:</strong> Attackers may bypass rate limiting by using multiple IPs (botnet), rotating user agents, or exploiting proxy headers (X-Forwarded-For spoofing). Mitigation: use per-user rate limiting (based on authenticated user ID), validate proxy headers against trusted proxy list, use CAPTCHA challenges for suspicious patterns.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Rate Limiter DoS:</strong> Attackers may flood the rate limiter&apos;s shared data store (Redis) with requests, causing it to become unavailable and fail open. Mitigation: use dedicated Redis instances for rate limiting, monitor Redis performance, implement circuit breakers for rate limiter failures, use in-memory rate limiting as a fallback.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Rate Limit Information Leakage:</strong> Rate limit headers (X-RateLimit-Remaining, X-RateLimit-Reset) may reveal information about the rate limit configuration to attackers. Mitigation: use generic rate limit headers that do not reveal the exact limit, or omit rate limit headers for unauthenticated requests.
             </li>
@@ -371,19 +396,22 @@ export default function RateLimitingAbuseProtectionArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rate limiting must be validated through systematic testing — rate limit accuracy, distributed rate limiting consistency, abuse detection effectiveness, and fail-open behavior must all be tested.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Rate Limiting Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Rate Limit Accuracy Test:</strong> Send requests at the rate limit rate and verify that the rate limiter allows requests up to the limit and rejects requests above the limit. Verify that the 429 response includes correct rate limit headers (X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Distributed Rate Limiting Test:</strong> Send requests to multiple service instances and verify that the total request count across all instances is counted against the rate limit. Verify that the rate limiter uses the shared data store correctly and that rate limiting is consistent across instances.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Abuse Detection Test:</strong> Simulate abuse patterns (credential stuffing, scraping, DDoS) and verify that the abuse detection system identifies the pattern and blocks the abusive client. Verify that legitimate users are not affected by abuse blocking.
             </li>

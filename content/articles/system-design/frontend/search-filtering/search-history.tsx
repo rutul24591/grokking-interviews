@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function SearchHistoryArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Search history</strong> (also called recent searches or search
           history) stores a user&apos;s past search queries to enable quick
           re-search and provide context for autocomplete suggestions. When users
@@ -44,8 +48,8 @@ export default function SearchHistoryArticle() {
           click to re-execute them without retyping. This is especially valuable
           for complex queries users run frequently (e.g., &quot;react hooks
           tutorial&quot;, &quot;price:50-100 brand:nike&quot;).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Search history serves multiple purposes. <strong>Convenience</strong>{" "}
           — users can quickly re-run common searches. <strong>Context</strong>{" "}
           — history informs autocomplete suggestions (personalize based on what
@@ -53,7 +57,7 @@ export default function SearchHistoryArticle() {
           history reveals user behavior patterns. <strong>Session
           continuity</strong> — users can resume searches across sessions or
           devices (if synced).
-        </p>
+        </HighlightBlock>
         <p>
           Implementation involves several considerations. <strong>Storage</strong>{" "}
           — where to store history (localStorage, IndexedDB, server).{" "}
@@ -76,8 +80,11 @@ export default function SearchHistoryArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Storage Location:</strong> Where history is stored.{" "}
             <strong>localStorage</strong> — simple, synchronous, 5-10MB limit,
             per-origin. <strong>IndexedDB</strong> — async, larger storage,
@@ -85,14 +92,14 @@ export default function SearchHistoryArticle() {
             requires authentication, privacy considerations. Many implementations
             use hybrid — localStorage for recent history, server for full
             history.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>History Entry:</strong> What to store for each search.
             Minimum: query string, timestamp. Recommended: query, timestamp,
             result count (did search return results?), engagement (did user click
             results?), context (which page/section was searched). Avoid storing
             sensitive data (PII, payment info).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>History Limit:</strong> Maximum number of history entries to
             retain. Typical: 10-50 recent searches. Too few loses useful history,
@@ -131,13 +138,16 @@ export default function SearchHistoryArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Search history architecture consists of a history manager that handles
           storage operations, a ranking engine that orders history entries, and
           a UI component that displays history with management controls. The
           architecture must handle concurrent access (multiple tabs), privacy
           controls, and synchronization.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/search-filtering/search-history/history-lifecycle.svg"
@@ -148,13 +158,13 @@ export default function SearchHistoryArticle() {
         />
 
         <h3>History Ranking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When displaying history, order entries by predicted usefulness. Simple:
           sort by timestamp (most recent first). Better: combine recency with
           frequency (searches run multiple times rank higher). Best: add
           engagement signal (searches where user clicked results rank higher than
           zero-result searches).
-        </p>
+        </HighlightBlock>
         <p>
           Ranking formula example: <code>score = (recency_weight × days_ago) +
           (frequency_weight × search_count) + (engagement_weight × click_rate)</code>.
@@ -166,10 +176,13 @@ export default function SearchHistoryArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Search history implementation involves trade-offs between convenience,
           privacy, and complexity.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/search-filtering/search-history/history-ranking-factors.svg"
@@ -179,13 +192,13 @@ export default function SearchHistoryArticle() {
           height={500}
         />
 
-        <p className="mt-4">
+        <HighlightBlock as="p" tier="important" className="mt-4">
           The ranking factors diagram shows how history entries are scored.
           Recency is typically weighted highest (50%) since recent searches are
           most likely to be re-run. Frequency (30%) boosts searches run multiple
           times. Engagement (20%) boosts searches where users clicked results.
           Tune these weights based on your users&apos; behavior patterns.
-        </p>
+        </HighlightBlock>
 
         <h3>Client-Side vs Server-Side History</h3>
         <p>
@@ -227,17 +240,20 @@ export default function SearchHistoryArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Limit to 10-20 Recent Searches:</strong> Show only most
             relevant history inline. Too many entries overwhelm users. Provide
             &quot;View all history&quot; link for full history page.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Deduplicate on Re-search:</strong> When user re-runs same
             search, update timestamp instead of adding duplicate. Keeps history
             clean and ensures accurate recency ranking.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Provide Clear Delete Controls:</strong> Each history entry
             should have delete button (× icon). Include &quot;Clear all&quot;
@@ -271,18 +287,21 @@ export default function SearchHistoryArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Storing Sensitive Data:</strong> Don&apos;t store searches
             containing PII, payment info, or passwords. Filter or hash sensitive
             queries before storing. Better: don&apos;t store history for
             sensitive sections (account settings, checkout).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No Delete Option:</strong> Users must be able to delete
             history. Not providing this violates privacy expectations and may
             violate regulations (GDPR right to erasure).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Unlimited History Growth:</strong> Without limits, history
             grows indefinitely. This wastes storage and makes history less
@@ -311,22 +330,25 @@ export default function SearchHistoryArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Recent Searches</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon, eBay show recent searches when user focuses search bar.
           History includes product searches, category browses, and filtered
           searches. Clicking history item re-runs search with all filters.
           History synced across devices for logged-in users.
-        </p>
+        </HighlightBlock>
 
         <h3>Documentation Search History</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Documentation sites (React, MDN) store recent page searches. Helps
           developers return to previously viewed docs. History often includes
             section context (&quot;Hooks → useEffect&quot;). Stored in
           localStorage, expires after 30 days.
-        </p>
+        </HighlightBlock>
 
         <h3>Job Search History</h3>
         <p>
@@ -348,20 +370,23 @@ export default function SearchHistoryArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you implement search history with localStorage?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Store history as JSON array in localStorage. On search: parse
               existing history, check if query already exists (deduplicate),
               update timestamp or add new entry, limit to max entries (remove
               oldest), stringify and save. On load: parse from localStorage,
               sort by timestamp, return recent entries. Handle errors
               (localStorage may be unavailable in private browsing).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

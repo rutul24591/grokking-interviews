@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,20 +30,23 @@ export default function DpOnTreesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">DP on trees</span> is dynamic programming whose state
           is indexed by a node (or a (node, auxiliary) pair), whose transitions aggregate
           values from children into parents, and whose computation order is a post-order DFS.
           The dependency DAG of the DP is the tree itself — children before parents — so there
           is no scheduling complexity: a single DFS fills the table.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Tree DP sits between array DP (one-dimensional) and DAG DP (arbitrary topology). The
           tree structure buys us two guarantees: linear-sized state (usually Θ(n) cells) and a
           natural traversal order. That combination makes tree DP the default tool for any
           problem where the input is a tree and the answer is an aggregate — independent set,
           vertex cover, diameter, sum of distances, counting matchings.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           The &ldquo;rerooting&rdquo; technique extends subtree DP to compute, for every node
           simultaneously, the answer as if that node were the root — all in linear time. It
@@ -54,19 +58,22 @@ export default function DpOnTreesArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Subtree DP skeleton.</span> Root the tree at an
           arbitrary node (usually 0). Perform DFS. When returning from node u, combine values
           reported by u&rsquo;s children to produce dp[u]. The combine step is problem-specific
           — sum, min/max, convolution. Leaves are the base case.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Maximum Independent Set on a tree.</span> Two-state
           per node: dp[u][0] = best MIS in subtree(u) with u <em>not</em> chosen, dp[u][1] =
           best MIS with u chosen. Recurrences: dp[u][0] = Σ over children c of max(dp[c][0],
           dp[c][1]); dp[u][1] = w[u] + Σ over children c of dp[c][0]. Answer: max(dp[root][0],
           dp[root][1]). Linear time, constant state per node.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Tree diameter.</span> At each node u, the longest
           path passing through u is the sum of u&rsquo;s two deepest child-depths (plus 2 for
@@ -95,21 +102,24 @@ export default function DpOnTreesArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Canonical implementation.</span> Read the tree into an
           adjacency list. Pick root = 0. Call dfs(0, parent = −1). Inside dfs, recurse into each
           neighbor != parent, combine their returned values, then emit dp[u]. For N up to ~10⁵
           this is fine; for larger N or on languages with small stack limits, convert to
           iterative DFS using an explicit stack to avoid overflow.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Rerooting, step by step.</span> Pass 1: standard DFS
           computes subtree[u] for every u. Pass 2: a second DFS that starts at the root with
           outside[root] = identity, and when descending to a child v computes outside[v] from
           outside[u] and the siblings of v. The exact formula depends on the problem — for sum-
           of-distances, outside contributes &ldquo;n − size(v)&rdquo; steps across the edge
           (u, v).
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Multiple children, non-associative combine.</span> If
           the merge is not freely associative/commutative (e.g. you need to exclude one
@@ -144,17 +154,20 @@ export default function DpOnTreesArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Subtree DP vs naive recompute.</span> A naive
           &ldquo;for each node, scan the whole subtree&rdquo; is Θ(n²). Subtree DP is Θ(n).
           For n = 10⁵, that is a 10⁵× speedup — the difference between feasible and timeout.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Rerooting vs Θ(n²) brute.</span> &ldquo;Run subtree
           DP rooted at each node&rdquo; is Θ(n²). Rerooting gives Θ(n) for a linear multi-root
           output, but it costs implementation complexity — two DFS passes and careful handling
           of the outside[u] recurrence.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Recursive vs iterative DFS.</span> Recursive is
           shorter to write. Iterative with explicit stack is slower (by a small constant) but
@@ -185,18 +198,21 @@ export default function DpOnTreesArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Always pass the parent in DFS.</span> Tree DFS
           frequently visits each neighbor including the parent and recurses, creating an
           infinite loop. Pass parent as a DFS argument; skip it when iterating neighbors. No
           visited array needed on trees.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Lift the stack limit when recursive.</span> In
           Python, sys.setrecursionlimit(2 * 10⁵) for n up to 10⁵. In C++, compile with
           larger stack or use iterative DFS. In JavaScript, no reliable way to lift; use
           iterative.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Define dp[u] in terms of subtree(u) only.</span>
           Including &ldquo;outside&rdquo; information in dp[u] is the classic rerooting mistake
@@ -226,17 +242,20 @@ export default function DpOnTreesArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Revisiting the parent.</span> If you iterate
           neighbors without skipping the parent, you recurse back up and loop forever. This
           shows up the first time you implement tree DFS without reading the pattern carefully.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Stack overflow on deep trees.</span> A path-shaped
           tree with 10⁵ nodes has recursion depth 10⁵. Python&rsquo;s default limit (1000) and
           JavaScript&rsquo;s engine-dependent limit (~10k) both die. Iterative DFS or
           sys.setrecursionlimit are mandatory.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Assuming the input tree is rooted.</span> Interview
           tree problems often give an edge list, not a parent array. You have to root it
@@ -269,19 +288,22 @@ export default function DpOnTreesArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Network infrastructure planning.</span> Trees model
           hierarchical networks (access → aggregation → core). Max-independent-set computes
           the minimum set of routers whose failure disconnects the tree; vertex cover computes
           the minimum monitoring deployment. Both are Θ(n) on trees but NP-hard on general
           graphs.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">File system and configuration propagation.</span>
           Linux cgroups, Kubernetes namespaces, and GitHub org/team hierarchies are trees.
           Summing quota, counting active workloads, or propagating policy default values
           reduces to subtree DP running as a single DFS at admin time.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Phylogenetic tree analysis.</span> The Fitch
           algorithm for parsimonious ancestral-state reconstruction and the Felsenstein
@@ -327,15 +349,18 @@ export default function DpOnTreesArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">LeetCode 337 — House Robber III.</span> Max
           independent set on a binary tree. Expected answer: two-state subtree DP, Θ(n).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">LeetCode 543 — Diameter of Binary Tree.</span>
           Longest edge path. Expected answer: post-order DFS tracking depth, updating a global
           best with the sum of the two deepest child depths.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">LeetCode 124 — Maximum Path Sum.</span> Like
           diameter but with weighted nodes (which can be negative). Tests careful handling of

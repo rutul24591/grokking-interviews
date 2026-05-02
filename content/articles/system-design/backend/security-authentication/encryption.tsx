@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,19 +28,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Encryption</strong> is the process of transforming plaintext data into ciphertext that can only be
           read by parties who possess the decryption key. Encryption protects data confidentiality — even if an
           attacker obtains the encrypted data, they cannot read it without the key. Encryption is the foundation of
           data security and is required by all major compliance standards (HIPAA, PCI-DSS, SOC 2, GDPR).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           There are three scopes of encryption: encryption at rest (data encrypted when stored — on disk, in
           databases, in backups), encryption in transit (data encrypted during transfer — between client and server,
           between services), and end-to-end encryption (data encrypted at the source and decrypted only at the
           destination — the server never sees plaintext). Each scope protects data at a different stage of its
           lifecycle, and a comprehensive security strategy implements all three.
-        </p>
+        </HighlightBlock>
         <p>
           The evolution of encryption has been shaped by the arms race between cryptographers and attackers. Early
           encryption (DES, 56-bit keys) was broken by brute force, leading to stronger algorithms (AES, 256-bit
@@ -76,7 +80,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Symmetric encryption uses the same key for both encryption and decryption. The most widely used symmetric
           algorithm is AES (Advanced Encryption Standard) with 256-bit keys (AES-256). AES-256 is considered
           computationally infeasible to break with current technology — it would take billions of years to brute
@@ -85,8 +92,8 @@ export default function ArticlePage() {
           (Galois/Counter Mode — authenticated encryption, recommended), and CTR (Counter Mode — parallelizable,
           used in some protocols). AES-GCM is the recommended mode for all production systems — it provides both
           confidentiality and integrity (authenticated encryption).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Asymmetric encryption uses a pair of keys — a public key (shared openly) and a private key (kept secret).
           Data encrypted with the public key can only be decrypted with the private key, and vice versa. Asymmetric
           encryption is slower than symmetric encryption (100-1000x slower) and is not suitable for bulk data
@@ -96,7 +103,7 @@ export default function ArticlePage() {
           ECDSA (Elliptic Curve Digital Signature Algorithm, smaller key sizes — 256-521 bits, preferred for new
           systems), and Ed25519 (Edwards-curve Digital Signature Algorithm, fastest, used in SSH and modern
           protocols).
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/encryption-diagram-1.svg"
           alt="Comparison of symmetric, asymmetric, and envelope encryption patterns"
@@ -148,7 +155,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The encryption architecture consists of the KMS (which manages encryption keys), the application (which
           encrypts and decrypts data), and the storage layer (which stores encrypted data). The KMS generates and
           stores encryption keys (KEKs), encrypts and decrypts DEKs on behalf of the application, enforces access
@@ -156,14 +166,14 @@ export default function ArticlePage() {
           DEKs, encrypts data with DEKs, encrypts DEKs with KEKs via the KMS, and stores the encrypted data and
           encrypted DEKs together. The storage layer stores encrypted data and encrypted DEKs — it does not need to
           understand encryption, as the data is already encrypted by the application.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The encryption flow begins with the application generating a random DEK (256-bit, using a CSPRNG). The
           application encrypts the data with the DEK using AES-256-GCM, producing ciphertext and an authentication
           tag. The application sends the DEK to the KMS, which encrypts it with the KEK and returns the encrypted
           DEK. The application stores the ciphertext and encrypted DEK together (e.g., in S3, a database, or a
           file). The plaintext DEK is discarded from memory after encryption.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/encryption-diagram-3.svg"
           alt="Encryption coverage showing at-rest, in-transit, and end-to-end encryption scopes"
@@ -207,15 +217,18 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At-rest versus in-transit versus end-to-end encryption is a trade-off between coverage and complexity.
           At-rest encryption protects data when stored but not when transferred or in memory. In-transit encryption
           protects data during transfer but not when stored or in memory. End-to-end encryption protects data from
           source to destination but requires client-side key management and is incompatible with server-side
           processing (search, indexing, analytics). A comprehensive security strategy implements all three — at-rest
           and in-transit are the minimum, and end-to-end is added for the highest security requirements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Envelope encryption versus direct encryption is a trade-off between operational complexity and security.
           Envelope encryption (data encrypted with DEK, DEK encrypted with KEK) provides fine-grained key management
           — each piece of data has its own DEK, and the KEK is managed by the KMS. This enables key rotation (rotate
@@ -223,7 +236,7 @@ export default function ArticlePage() {
           applications can use which KEKs), and audit logging (all KMS operations are logged). Direct encryption
           (data encrypted directly with the key) is simpler but requires re-encrypting all data to rotate the key,
           does not support fine-grained access control, and does not provide audit logging.
-        </p>
+        </HighlightBlock>
         <p>
           AES-256 versus AES-128 is a trade-off between security margin and performance. AES-256 uses 256-bit keys
           and provides a larger security margin against brute force attacks (2^256 possible keys vs 2^128 for
@@ -250,18 +263,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use AES-256-GCM for all symmetric encryption. AES-256-GCM provides authenticated encryption — it ensures
           both confidentiality (the ciphertext cannot be read without the key) and integrity (the ciphertext has not
           been tampered with). Do not use ECB mode (insecure, identical plaintext blocks produce identical
           ciphertext blocks) or CBC mode without proper padding validation (vulnerable to padding oracle attacks).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use envelope encryption for all production data encryption. Envelope encryption combines the speed of
           symmetric encryption with the security of centralized key management. Each piece of data gets its own DEK,
           and the DEK is encrypted with the KEK managed by the KMS. This enables key rotation, fine-grained access
           control, and audit logging without re-encrypting all data.
-        </p>
+        </HighlightBlock>
         <p>
           Rotate encryption keys regularly — KEKs every 90 days (or sooner if compromise is suspected), DEKs for
           each new piece of data. Key rotation limits the window of opportunity if a key is compromised — data
@@ -292,20 +308,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using ECB mode for AES encryption is a critical vulnerability. ECB mode encrypts each block independently
           — identical plaintext blocks produce identical ciphertext blocks, revealing patterns in the data. The
           famous &quot;ECB penguin&quot; image (an encrypted image where the outline of the penguin is still visible)
           demonstrates this vulnerability. The fix is to use AES-GCM — it provides both confidentiality and
           integrity, and identical plaintext blocks produce different ciphertext blocks due to the unique nonce.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not using authenticated encryption (GCM) is a common pitfall. Unauthenticated encryption (CBC, CTR)
           provides confidentiality but not integrity — an attacker can modify the ciphertext, and the decryption
           will produce modified plaintext without detection. Authenticated encryption (GCM) includes an
           authentication tag that verifies the ciphertext has not been tampered with. The fix is to use AES-256-GCM
           for all encryption.
-        </p>
+        </HighlightBlock>
         <p>
           Hardcoding encryption keys in source code or configuration files is a critical security failure.
           Hardcoded keys are exposed to anyone with access to the code repository, and they cannot be rotated
@@ -332,21 +351,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses envelope encryption for all customer data — each customer record is
           encrypted with a unique DEK (AES-256-GCM), and the DEK is encrypted with a KEK managed by AWS KMS. The
           encrypted data and encrypted DEK are stored in the database. The KMS enforces access policies (only the
           application server&apos;s IAM role can decrypt KEKs), and all KMS operations are logged and audited. The
           company rotates KEKs every 90 days and monitors KMS usage for anomalous patterns. The company has had
           zero data breaches since implementing envelope encryption.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A healthcare organization uses end-to-end encryption for patient messaging — messages are encrypted on the
           sender&apos;s device using the recipient&apos;s public key (X25519 key exchange), and the server stores and forwards
           the encrypted messages without ever seeing the plaintext. The recipient decrypts the message on their
           device using their private key. The organization uses the Signal Protocol (double ratchet algorithm) for
           forward secrecy — even if a key is compromised, past messages cannot be decrypted.
-        </p>
+        </HighlightBlock>
         <p>
           A large e-commerce platform uses TLS 1.3 for all customer-facing communication — HTTPS for the website,
           TLS for API communication, and mTLS for service-to-service communication. The platform uses AWS Certificate
@@ -368,14 +390,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is envelope encryption, and why is it preferred over direct encryption?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Envelope encryption encrypts data with a data encryption key (DEK, symmetric), and encrypts the DEK with a key encryption key (KEK, managed by KMS). The encrypted data and encrypted DEK are stored together. The KEK never leaves the KMS.
-            </p>
+            </HighlightBlock>
             <p>
               Envelope encryption is preferred over direct encryption because it enables key rotation without re-encrypting all data (rotate the KEK, and all DEKs are effectively rotated), fine-grained access control (KMS policies control which applications can use which KEKs), and audit logging (all KMS operations are logged). Direct encryption requires re-encrypting all data to rotate the key and does not support access control or auditing.
             </p>

@@ -580,27 +580,31 @@ export default function FeatureFlagsToggleArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: feature flags are a delivery and risk-control system. You should discuss evaluation
+          consistency (client/server), kill switches, and the operational cost of “flag debt”.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://martinfowler.com/articles/feature-toggles.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Pete Hodgson — Feature Toggles (Feature Flags) on martinfowler.com
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://launchdarkly.com/blog/what-are-feature-flags/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               LaunchDarkly — What Are Feature Flags?
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://trunkbaseddevelopment.com/feature-flags/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Trunk Based Development — Feature Flags
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://openfeature.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               OpenFeature — Open Standard for Feature Flagging
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

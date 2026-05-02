@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -76,23 +77,26 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Measurements, Tags, &amp; Fields</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>The Time Series Data Model</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Time series databases use a specialized data model optimized for metrics. A
           <strong>measurement</strong> is the metric name (cpu_usage, memory_used, request_latency).
           <strong>Tags</strong> are indexed metadata for filtering (host=server1, region=us-east,
           environment=production). <strong>Fields</strong> are the actual metric values
           (value=75.5, count=1)—not indexed, just stored. <strong>Timestamps</strong> are
           nanosecond-precision integers providing sort order.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This model enables efficient queries: "CPU usage for host=server1 last hour" filters by
           tag (indexed, fast), scans the time range (efficient), and returns field values. Tags
           are indexed because you filter by them; fields are not indexed because you rarely filter
           by value ("find all readings where CPU &gt; 90%" is expensive and uncommon).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Series</strong> are unique combinations of measurement + tags. cpu_usage with
@@ -152,22 +156,25 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Write &amp; Query Optimization</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Write-Optimized Design</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Time series databases are fundamentally write-optimized. Writes are
           <strong>append-only</strong>: new data points are appended to the end of a time-ordered
           log. There are no in-place updates—time series data is immutable (a CPU reading at 10:00
           doesn't change). This design converts random writes (slow) into sequential writes (fast).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Writes flow through: <strong>WAL (Write-Ahead Log)</strong> for durability (crash
           recovery), <strong>in-memory buffer</strong> for batching (group writes together), then
           <strong>flush to storage</strong> in time order. Batching is critical—writing 1000 points
           in one I/O is far more efficient than 1000 individual writes. Acknowledgments happen
           after WAL (durability) or after flush (persistence), depending on consistency requirements.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Time-based partitioning</strong> organizes data by time range (one partition per
@@ -235,22 +242,25 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: TSDB vs Column-Family Stores</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Time series databases and column-family stores (Cassandra, HBase) share characteristics:
           write-optimized, time-ordered data, horizontal scaling. But TSDBs are specialized for
           time series workloads, while column-family stores are more general-purpose. Understanding
           the differences helps you choose the right tool.
-        </p>
+        </HighlightBlock>
 
         <h3>Time Series Database Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Built-in time functions</strong> are the primary advantage. TSDBs provide
           native support for time-based aggregations (AVG over 5-minute windows), downsampling
           (aggregate 1-second data to 1-minute), interpolation (fill gaps), and time-based
           retention (delete data older than 30 days). Column-family stores require implementing
           these in application code.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Compression</strong> is superior in TSDBs. Specialized algorithms (delta
@@ -318,20 +328,23 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Time Series Databases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Design tag schemas carefully.</strong> Tags determine query patterns and
           cardinality. Use low-cardinality tags (host, region, environment) for filtering.
           Avoid high-cardinality tags (user_id, request_id)—use fields instead. Document tag
           conventions and enforce them in instrumentation code.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Set appropriate retention policies.</strong> Define retention based on use
           case: raw data for alerting (7-30 days), downsampled data for trends (1-2 years),
           long-term aggregates for compliance (5+ years). Automate retention—don't let data
           accumulate indefinitely.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Configure downsampling strategically.</strong> Downsample based on query
@@ -363,18 +376,21 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>High cardinality from unique IDs.</strong> Using user_id, session_id, or
           request_id as tags creates one series per unique value. Solution: Use these as fields
           (not indexed), or aggregate before writing (count per minute, not individual events).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>No retention policies.</strong> Data accumulates indefinitely, filling disk
           and degrading performance. Solution: Set retention policies from day one. Define
           retention based on compliance requirements and query needs. Automate expiration.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Querying raw data for long ranges.</strong> Querying "last year" at 1-second
@@ -405,21 +421,24 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Infrastructure Monitoring (Netflix, Grafana Cloud)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix uses Prometheus and Atlas (their TSDB) for infrastructure monitoring. Every
           server reports CPU, memory, disk, network, and application metrics every 10 seconds.
           Queries like "CPU usage for service X last hour" power Grafana dashboards. Alerts
           trigger on threshold breaches (CPU &gt; 90% for 5 minutes). Downsampling enables
           long-term trend analysis (capacity planning).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This pattern scales to millions of metrics per second. Writes are high-throughput
           (sequential appends), queries are time-range scans (efficient), and retention policies
           manage storage costs (raw data 7 days, downsampled 1 year).
-        </p>
+        </HighlightBlock>
 
         <h3>IoT Sensor Networks (Industrial Monitoring, Smart Cities)</h3>
         <p>
@@ -468,14 +487,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: When would you choose a time series database over a column-family or relational
               database? Give a concrete example.
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Choose time series databases for time-ordered data with
               high write throughput and time-range queries. Example: Infrastructure monitoring
               where servers report CPU, memory, and disk metrics every 10 seconds. In a relational
@@ -486,7 +508,7 @@ export default function ArticlePage() {
               queries are time-range scans (efficient), and downsampling/retention are automatic.
               Choose relational for: transactions, complex queries. Choose column-family for:
               messaging, sparse data. Choose time series for: metrics, IoT, events.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What if you need to query by non-time fields (e.g.,
               "all servers with CPU &gt; 90%")? Answer: Time series databases support tag-based

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,15 +25,18 @@ export default function MessageOrderingGuaranteesArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Message ordering guarantees</strong> define the extent to which a messaging system
           preserves the order in which messages are sent. In distributed systems, message ordering is
           critical for correctness — if a &quot;create account&quot; message is processed after a
           &quot;delete account&quot; message, the account is deleted instead of created. If an
           &quot;update balance +$100&quot; message is processed before an &quot;update balance -$50&quot;
           message, the balance is incorrect during the window between the two updates.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Message ordering is challenging in distributed systems because messages may take different
           paths through the network, be processed by different consumers in parallel, or be retried
           after failures — all of which can cause reordering. Messaging systems provide different
@@ -40,7 +44,7 @@ export default function MessageOrderingGuaranteesArticle() {
           (messages within the same partition are ordered, but messages across partitions are not),
           and global ordering (all messages are ordered, regardless of partition). Each guarantee
           has trade-offs in performance, scalability, and availability.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, message ordering architecture demonstrates
           understanding of distributed systems ordering challenges, the ability to design systems
@@ -72,13 +76,16 @@ export default function MessageOrderingGuaranteesArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding message ordering requires grasping several foundational concepts about
           partition-based ordering, sequence numbers, causal ordering, and ordering trade-offs.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Partition-Based Ordering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Partition-based ordering is the most common ordering guarantee in distributed messaging
           systems (Kafka, Pulsar, Kinesis). Messages are assigned to partitions based on a key (e.g.,
           user ID, order ID) — all messages with the same key go to the same partition, and messages
@@ -86,7 +93,7 @@ export default function MessageOrderingGuaranteesArticle() {
           partitions and be processed in parallel, providing scalability while maintaining ordering
           for related messages. Partition-based ordering provides ordering for messages that share a
           key, but not global ordering across all messages.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Sequence Numbers and Ordering Detection</h3>
         <p>
@@ -112,10 +119,13 @@ export default function MessageOrderingGuaranteesArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Message ordering architecture spans partition assignment, sequence number management,
           consumer ordering enforcement, and out-of-order message handling.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/message-ordering.svg"
@@ -124,13 +134,13 @@ export default function MessageOrderingGuaranteesArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Partition Assignment and Ordering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Messages are assigned to partitions based on a key — the key is hashed and the hash is
           mapped to a partition. All messages with the same key go to the same partition, ensuring
           that they are processed in order. The number of partitions determines the maximum
           parallelism — with N partitions, N consumers can process messages in parallel, each
           processing messages from one partition in order.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Out-of-Order Message Handling</h3>
         <p>
@@ -158,25 +168,28 @@ export default function MessageOrderingGuaranteesArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Ordering Guarantee</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Ordering Guarantee</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>No Ordering</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>No Ordering</strong></td>
               <td className="p-3">
                 Maximum parallelism. Lowest latency. Simplest implementation.
               </td>
               <td className="p-3">
                 Messages may arrive out of order. Consumer must handle reordering. Not suitable for stateful processing.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Partition Ordering</strong></td>
               <td className="p-3">
                 Ordering for related messages. Scalable (N partitions = N parallel consumers). Kafka standard.
@@ -184,8 +197,8 @@ export default function MessageOrderingGuaranteesArticle() {
               <td className="p-3">
                 No global ordering. Partition rebalancing causes temporary reordering. Hot partitions limit throughput.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Causal Ordering</strong></td>
               <td className="p-3">
                 Preserves causal relationships. More parallelism than total ordering. Correct for dependent messages.
@@ -193,7 +206,7 @@ export default function MessageOrderingGuaranteesArticle() {
               <td className="p-3">
                 Complex implementation (vector clocks). Buffering adds latency. Requires dependency tracking.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Total Ordering</strong></td>
               <td className="p-3">
@@ -210,26 +223,29 @@ export default function MessageOrderingGuaranteesArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Use Partition Ordering for Most Use Cases</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Partition ordering provides the best balance of ordering, scalability, and performance for
           most use cases. Messages with the same key (user ID, order ID, session ID) go to the same
           partition and are processed in order. Messages with different keys go to different partitions
           and are processed in parallel. Choose the key carefully — it should group related messages
           (messages that must be processed in order) while distributing messages evenly across
           partitions (to avoid hot partitions).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Handle Partition Rebalancing Gracefully</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Partition rebalancing (when consumers join or leave the consumer group) causes temporary
           reordering — messages that were being processed by one consumer may be reassigned to another
           consumer, and the new consumer may process messages out of order. Handle rebalancing by
           committing offsets before rebalancing, flushing buffers before rebalancing, and detecting
           out-of-order messages after rebalancing. Use cooperative rebalancing (Kafka&apos;s incremental
           cooperative rebalancing) to minimize rebalancing impact.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Use Sequence Numbers for Ordering Detection</h3>
         <p>
@@ -254,25 +270,28 @@ export default function MessageOrderingGuaranteesArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Assuming Global Ordering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Most messaging systems (Kafka, Pulsar, Kinesis) provide partition ordering, not global
           ordering. Assuming global ordering when the system only provides partition ordering causes
           out-of-order processing — messages with different keys may be processed out of order,
           causing incorrect state. Verify the ordering guarantee of the messaging system and design
           the consumer to handle the actual guarantee, not the assumed guarantee.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Hot Partitions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           If a single key generates most messages (e.g., a popular user ID), all messages go to the
           same partition, creating a hot partition that limits throughput. The hot partition becomes
           a bottleneck — the consumer for that partition cannot keep up, causing lag. Mitigate hot
           partitions by choosing a key that distributes messages evenly across partitions, or by
           using a composite key (user ID + timestamp) that distributes messages for the same user
           across multiple partitions while maintaining ordering within a time window.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Not Handling Rebalancing</h3>
         <p>
@@ -296,26 +315,29 @@ export default function MessageOrderingGuaranteesArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">LinkedIn — Kafka Partition Ordering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           LinkedIn uses Kafka for activity tracking — user activities (page views, likes, shares) are
           sent to Kafka and processed by analytics consumers. LinkedIn uses partition ordering with
           user ID as the key — all activities for the same user go to the same partition and are
           processed in order. This ensures that a user&apos;s activity timeline is correct (page view
           before like before share), while activities for different users are processed in parallel
           for scalability.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Uber — Causal Ordering for Ride Events</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uber&apos;s ride processing involves a sequence of causally related events — ride requested,
           driver assigned, driver arrived, ride started, ride ended, payment processed. Uber uses
           causal ordering to ensure that causally related events are processed in order — the payment
           event is not processed until the ride ended event has been processed. Uber implements causal
           ordering through dependency tracking — each event includes the IDs of its causal dependencies,
           and the consumer processes events only after their dependencies have been processed.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Netflix — Sequence Numbers for Ordering Detection</h3>
         <p>
@@ -341,19 +363,22 @@ export default function MessageOrderingGuaranteesArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Message ordering involves security risks — out-of-order messages may cause incorrect authorization decisions, and ordering guarantees may be exploited for denial-of-service.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Ordering and Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Out-of-Order Authorization:</strong> If a &quot;revoke access&quot; message is processed before a &quot;grant access&quot; message, access may be incorrectly granted. Mitigation: use sequence numbers to detect out-of-order messages, buffer out-of-order messages until missing messages arrive, use causal ordering for authorization-related messages.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Hot Partition DoS:</strong> An attacker can send many messages with the same key, creating a hot partition that causes lag for all messages in that partition. Mitigation: rate limit messages per key, monitor partition lag and alert on hot partitions, use composite keys to distribute messages for the same entity across multiple partitions.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
       </section>
@@ -361,19 +386,22 @@ export default function MessageOrderingGuaranteesArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Message ordering guarantees must be validated through systematic testing — partition ordering, out-of-order message handling, rebalancing behavior, and sequence number detection must all be tested.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Ordering Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Partition Ordering Test:</strong> Send messages with the same key to different partitions and verify that messages within each partition are processed in order. Verify that messages with different keys may be processed out of order (expected behavior for partition ordering).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Out-of-Order Message Test:</strong> Deliver messages to the consumer out of order and verify that the consumer detects out-of-order messages (via sequence numbers) and handles them correctly (buffer, warning, or dead letter queue).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Rebalancing Test:</strong> Simulate consumer group rebalancing (add or remove consumers) and verify that messages are not lost, duplicated, or processed out of order after rebalancing. Verify that offsets are committed before rebalancing and buffers are flushed.
             </li>

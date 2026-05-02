@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Data serialization</strong> is the process of converting structured data — objects, records, trees —
           into a byte sequence that can be stored, transmitted across a network, or reconstructed later. Deserialization
           is the reverse process: converting a byte sequence back into structured data. Serialization is a foundational
@@ -33,8 +37,8 @@ export default function ArticlePage() {
           application caches). The choice of serialization format affects storage cost, network bandwidth, processing
           speed, schema evolution capability, and interoperability between systems written in different programming
           languages.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Serialization formats exist on a spectrum between two competing goals: human readability and efficiency.
           Human-readable formats (JSON, XML, YAML) are text-based, can be inspected and edited with a text editor, and
           are widely supported across programming languages and tools. But they are verbose — a JSON record can be 3-5x
@@ -43,7 +47,7 @@ export default function ArticlePage() {
           humans. The choice between human-readable and binary formats depends on the use case: APIs and configuration
           files benefit from human readability, while high-throughput event streams and analytical storage benefit
           from binary efficiency.
-        </p>
+        </HighlightBlock>
         <p>
           Schema evolution is the most critical operational concern in serialization. As systems evolve, the structure
           of the data they produce and consumes changes — fields are added, removed, renamed, or have their types
@@ -86,7 +90,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Schema definition is the foundation of any serialization format that supports schema evolution. A schema
           defines the structure of the data: the fields, their types, their nullability, and their default values. In
           Avro, the schema is defined as JSON and embedded in the file or message header. In Protobuf, the schema is
@@ -95,8 +102,8 @@ export default function ArticlePage() {
           write time (ensuring that the data conforms to the expected structure), guides serialization and
           deserialization (telling the encoder which fields to write and the decoder which fields to read), and enables
           compatibility checking (ensuring that a new schema is compatible with the old schema before it is deployed).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compatibility checking is the mechanism by which schema evolution is managed safely. When a producer wants
           to write data with a new schema, the schema registry (or compatibility engine) checks whether the new schema
           is compatible with the old schema according to the configured compatibility mode. Backward compatibility
@@ -105,7 +112,7 @@ export default function ArticlePage() {
           schema can read data written with the new schema — this is achieved by allowing new fields to be added as
           optional fields that old readers can ignore. Full compatibility means both backward and forward
           compatibility, enabling rolling upgrades where producers and consumers are upgraded independently.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/data-serialization-diagram-1.svg"
           alt="Comparison of JSON, Avro, Protobuf, and Parquet serialization formats with their characteristics and use cases"
@@ -157,7 +164,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The serialization architecture in a data processing pipeline determines how data is encoded at each stage:
           when it is written by the producer, when it is stored in the message broker or file system, and when it is
           read by the consumer. The producer encodes the data using the configured serialization format and writes the
@@ -165,15 +175,15 @@ export default function ArticlePage() {
           the encoded bytes without interpreting them — it does not need to know the schema or the format. The consumer
           reads the encoded bytes, fetches the schema (from the schema registry or the file footer), and decodes the
           bytes into structured data using the schema.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In Kafka, the serialization format is configured per topic. The producer serializes the record key and value
           using the configured serializers (for example, KafkaAvroSerializer for Avro, or StringSerializer for JSON
           strings) and writes the serialized bytes to the topic. The serialized message includes the schema ID (for
           Avro and Protobuf with Schema Registry) so that the consumer can fetch the correct schema from the registry.
           The consumer fetches the schema by ID, deserializes the bytes using the schema, and processes the resulting
           structured data.
-        </p>
+        </HighlightBlock>
         <p>
           In data lakes, the serialization format is configured per table or directory. Parquet files store the schema
           in the file footer, so readers can discover the schema from the file itself without an external registry.
@@ -217,7 +227,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           JSON versus Avro versus Protobuf is the most common serialization format choice for event-driven
           architectures. JSON is human-readable, widely supported, and easy to debug, but it is verbose (3-5x larger
           than binary formats), slow to parse and serialize, and has no schema enforcement or compatibility checking.
@@ -226,14 +239,14 @@ export default function ArticlePage() {
           most compact format, with type-safe code generation and backward compatibility, but it requires a separate
           schema file (.proto) and does not embed the schema in the message, so consumers must have access to the
           schema to deserialize the data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice between these formats depends on the use case. For APIs and web services where human readability
           and wide interoperability are important, JSON is the standard format. For event streaming (Kafka) where
           schema evolution and compatibility checking are essential, Avro is the preferred format. For microservice
           RPC (gRPC) where low latency and type safety are critical, Protobuf is the standard format. For analytical
           storage where column-level access and predicate pushdown are essential, Parquet is the standard format.
-        </p>
+        </HighlightBlock>
         <p>
           Row-oriented versus columnar serialization is a fundamental trade-off between transactional and analytical
           workloads. Row-oriented formats (JSON, Avro, Protobuf) store all fields of a record together, which is
@@ -258,20 +271,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use a schema registry with backward compatibility as the default for all event streaming systems. The schema
           registry enforces compatibility rules that prevent producers from deploying schema changes that would break
           existing consumers. Backward compatibility is the safest default because it allows new producers to write
           data that old consumers can still read — consumers can be upgraded at their own pace without being blocked
           by producer schema changes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Choose the serialization format based on the workload, not on team familiarity. For high-throughput event
           streams, use Avro or Protobuf — the performance and schema evolution benefits far outweigh the learning
           curve. For analytical storage, use Parquet — the columnar layout and predicate pushdown provide order-of-magnitude
           query performance improvements over row-oriented formats. For APIs and configuration files, use JSON — the
           human readability and wide support are more valuable than the performance benefits of binary formats.
-        </p>
+        </HighlightBlock>
         <p>
           Never reuse field IDs or field numbers when removing fields from a schema. When a field is removed, its
           field ID should be retired permanently — not reused for a new field. Reusing a field ID causes old data that
@@ -303,21 +319,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Schema changes breaking consumers because compatibility is not enforced is the most common serialization
           failure. When a producer deploys a new schema without checking compatibility with the old schema, existing
           consumers that use the old schema may fail to deserialize the new data — either crashing (if the deserializer
           is strict) or producing incorrect results (if the deserializer silently ignores unknown fields). The fix is
           to use a schema registry with compatibility enforcement — the registry rejects incompatible schema changes,
           preventing producers from deploying them.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           JSON as the serialization format for high-throughput event streams becoming a CPU bottleneck is a common
           performance failure. JSON parsing is 5-10x slower than binary format parsing, and in a pipeline that
           processes millions of events per second, the JSON parsing overhead can consume all available CPU, throttling
           throughput and increasing latency. The fix is to switch to a binary format (Avro or Protobuf) for the event
           stream, which reduces the CPU overhead of parsing by 80-90 percent.
-        </p>
+        </HighlightBlock>
         <p>
           Consumers not handling missing or unknown fields gracefully when schemas evolve causes failures during
           rolling upgrades. When a producer writes data with a new schema that includes a new field, consumers that
@@ -345,7 +364,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses Avro with Schema Registry for its Kafka event streams, where hundreds of
           microservices produce and consume events representing order changes, inventory updates, and customer
           activities. The schema registry enforces backward compatibility, allowing producer teams to add new fields
@@ -353,8 +375,8 @@ export default function ArticlePage() {
           and consumers fetch the schema from the registry on first use and cache it for subsequent messages. The
           platform processes 10 million events per minute, and the Avro serialization overhead is less than 5 percent
           of the total CPU cost — compared to 40 percent when the platform previously used JSON.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses Protobuf for its microservice RPC layer, where services communicate via
           gRPC with Protobuf-defined request and response messages. The .proto schemas are versioned in a central
           repository, and code is generated for each target language (Java, Go, Python) as part of the CI/CD pipeline.
@@ -362,7 +384,7 @@ export default function ArticlePage() {
           less than 10 microseconds — and the type safety provided by the generated code catches schema mismatches at
           compile time rather than at runtime. The platform uses backward-compatible schema evolution to allow
           services to add new request fields without breaking existing clients.
-        </p>
+        </HighlightBlock>
         <p>
           A technology company uses Parquet for its data lake storage, where 500 TB of analytical data is stored in
           partitioned Parquet files on S3. The Parquet format&apos;s columnar layout enables the query engine (Trino) to
@@ -385,25 +407,28 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How do backward and forward compatibility differ, and when would you use each?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Backward compatibility means that readers using the new schema can read data written with the old schema.
             This is achieved by allowing new fields to be added with default values — when the new reader encounters
             old data that does not have the new field, it uses the default value. Backward compatibility is the
             safest default for event streaming because it allows producers to deploy new schemas without requiring
             consumers to be updated simultaneously.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Forward compatibility means that readers using the old schema can read data written with the new schema.
             This is achieved by allowing new fields to be added as optional fields that old readers can ignore — when
             the old reader encounters new data that has a field it does not know about, it skips the field. Forward
             compatibility is useful when consumers are updated before producers — the old producer writes data with
             the old schema, and the new consumer can still read it.
-          </p>
+          </HighlightBlock>
           <p>
             Full compatibility means both backward and forward compatibility, enabling rolling upgrades where
             producers and consumers are upgraded independently in any order. Full compatibility is the most flexible

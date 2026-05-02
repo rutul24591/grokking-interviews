@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function SecureClientStorageArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Secure Client Storage</strong> addresses how to safely store
           sensitive data in the browser, including authentication tokens,
           personally identifiable information (PII), session data, and any
@@ -51,8 +55,8 @@ export default function SecureClientStorageArticle() {
           storing tokens enables seamless user experience but increases attack
           surface, while encrypting data protects confidentiality but adds
           complexity and performance overhead.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The security reality is that no client-side storage is completely
           secure. The goal is defense in depth — making it difficult enough that
           attackers pursue easier targets, while implementing layered defenses
@@ -62,7 +66,7 @@ export default function SecureClientStorageArticle() {
           takeover. Other sensitive data (PII, API keys, encryption keys) also
           requires careful consideration of storage mechanism, encryption, and
           access patterns.
-        </p>
+        </HighlightBlock>
         <p>
           Client storage options vary significantly in their security
           characteristics. localStorage provides persistent key-value storage
@@ -81,7 +85,10 @@ export default function SecureClientStorageArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The security comparison of storage mechanisms centers on XSS
           vulnerability. Any storage mechanism accessible by JavaScript
           (localStorage, sessionStorage, IndexedDB, in-memory variables) can be
@@ -93,8 +100,8 @@ export default function SecureClientStorageArticle() {
           trade-off is that HttpOnly cookies are automatically sent with every
           request to the domain, which can increase bandwidth for large cookies
           and requires CSRF protection for state-changing operations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Token storage strategy determines the security posture of the
           authentication system. The recommended approach is HttpOnly, Secure,
           SameSite cookies for both access and refresh tokens. This prevents XSS
@@ -107,7 +114,7 @@ export default function SecureClientStorageArticle() {
           gains memory access. Storing tokens in localStorage is not recommended
           for sensitive applications because any XSS vulnerability immediately
           compromises all user sessions.
-        </p>
+        </HighlightBlock>
         <p>
           Client-side encryption adds a protection layer for sensitive data
           stored in XSS-vulnerable mechanisms (IndexedDB, localStorage). The
@@ -137,7 +144,10 @@ export default function SecureClientStorageArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The secure token storage architecture follows the HttpOnly cookie
           pattern. On login, the server validates credentials and sets two
           cookies: an access token cookie (short-lived, 15-60 minutes) and a
@@ -150,8 +160,8 @@ export default function SecureClientStorageArticle() {
           original request. The refresh token is rotated on each use — a new
           refresh token is issued and the old one is invalidated, detecting
           token reuse attacks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The encryption architecture for client-stored sensitive data uses the
           Web Crypto API with AES-GCM. On app initialization, the encryption
           key is derived from the user&apos;s password (using PBKDF2 or
@@ -161,7 +171,7 @@ export default function SecureClientStorageArticle() {
           key before use. On logout or session timeout, the encryption key is
           cleared from memory, rendering all encrypted data in IndexedDB
           unreadable. The key is never persisted to any storage mechanism.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/token-storage-patterns.svg"
@@ -186,7 +196,10 @@ export default function SecureClientStorageArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Token storage decisions represent the most critical security-versus-UX
           trade-off. HttpOnly cookies prevent XSS token theft but require CSRF
           protection for state-changing operations (since the browser
@@ -198,8 +211,8 @@ export default function SecureClientStorageArticle() {
           XSS immediately compromises all sessions. For staff engineer
           interviews, the correct answer is HttpOnly cookies with an explanation
           of why localStorage is insecure for tokens.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Client-side encryption presents a trade-off between data protection
           and operational complexity. Encrypting sensitive data before storing
           it in IndexedDB protects against direct storage access (someone
@@ -210,7 +223,7 @@ export default function SecureClientStorageArticle() {
           profile is accessed directly, the encrypted data is unreadable without
           the key. It is a supplementary defense that strengthens the overall
           security posture but does not replace the need for XSS prevention.
-        </p>
+        </HighlightBlock>
         <p>
           Server-side sessions versus client-side tokens present an architectural
           trade-off. Server-side sessions store all session data on the server
@@ -227,7 +240,10 @@ export default function SecureClientStorageArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Store authentication tokens in HttpOnly, Secure, SameSite cookies —
           this is the single most important storage security decision. HttpOnly
           prevents JavaScript access (XSS cannot steal tokens), Secure ensures
@@ -238,8 +254,8 @@ export default function SecureClientStorageArticle() {
           add the token to a server-side blocklist. Never store passwords
           client-side, not even encrypted — passwords should only transit
           through memory during authentication.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement Content Security Policy (CSP) as the primary XSS prevention
           mechanism, protecting all client storage from script injection. CSP
           restricts which scripts can execute on the page by specifying allowed
@@ -251,7 +267,7 @@ export default function SecureClientStorageArticle() {
           <code>Content-Security-Policy</code>. A well-configured CSP
           significantly reduces XSS risk, indirectly protecting all client
           storage mechanisms.
-        </p>
+        </HighlightBlock>
         <p>
           Clear sensitive data comprehensively on logout and session timeout.
           Clear localStorage of any sensitive preferences, clear IndexedDB of
@@ -266,7 +282,10 @@ export default function SecureClientStorageArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Storing authentication tokens in localStorage is the most widespread
           security mistake in frontend applications. Many tutorials and
           boilerplate projects demonstrate this pattern because it is simple —{" "}
@@ -279,8 +298,8 @@ export default function SecureClientStorageArticle() {
           used (for applications where HttpOnly cookies are genuinely
           impractical), implement additional defenses: very short token expiry,
           device fingerprinting, and anomaly detection.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Failing to protect against CSRF when using cookies for authentication
           is a common oversight. Because browsers automatically send cookies
           with cross-site requests, an attacker can craft a malicious page that
@@ -290,7 +309,7 @@ export default function SecureClientStorageArticle() {
           CSRF tokens (unique per-session token validated on state-changing
           operations), and custom headers (X-Requested-With) that browsers do
           not send cross-origin. Implement all three for defense in depth.
-        </p>
+        </HighlightBlock>
         <p>
           Storing PII (names, email addresses, phone numbers) in client storage
           without a clear need is unnecessary risk. Every piece of PII stored
@@ -305,7 +324,10 @@ export default function SecureClientStorageArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Banking and financial applications implement the most stringent client
           storage security. Authentication tokens are stored exclusively in
           HttpOnly, Secure, SameSite cookies with very short expiry (15 minutes
@@ -317,8 +339,8 @@ export default function SecureClientStorageArticle() {
           jailbreak/root detection on mobile devices. Offline functionality is
           minimal — users can view the last cached balance but cannot perform
           transactions offline.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Healthcare applications (HIPAA-compliant) use encrypted IndexedDB for
           offline patient data access. Patient records are fetched when online,
           encrypted with AES-GCM using a key derived from the user&apos;s
@@ -328,7 +350,7 @@ export default function SecureClientStorageArticle() {
           Authentication uses HttpOnly cookies with MFA. The application
           implements automatic data deletion — cached patient data is removed
           from IndexedDB after 24 hours to limit exposure window.
-        </p>
+        </HighlightBlock>
         <p>
           Consumer SaaS applications use a balanced approach — HttpOnly cookies
           for authentication tokens, localStorage for non-sensitive preferences
@@ -344,12 +366,15 @@ export default function SecureClientStorageArticle() {
 
       <section>
         <h2>Advanced Security Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Web Crypto API provides native browser cryptographic operations without requiring external libraries. AES-GCM (Advanced Encryption Standard in Galois/Counter Mode) is the recommended symmetric encryption algorithm because it provides both confidentiality and integrity — the encrypted ciphertext cannot be modified without detection, as GCM produces an authentication tag that verifies the data has not been tampered with. The key derivation process uses PBKDF2 (Password-Based Key Derivation Function 2) or the more modern Argon2id to derive an encryption key from the user&apos;s password. PBKDF2 applies a pseudorandom function (typically HMAC-SHA256) thousands of iterations to the password combined with a random salt, producing a derived key that is computationally expensive to brute-force. The iteration count should be set as high as possible while maintaining acceptable user experience — typically 100,000 to 600,000 iterations, which takes 100-500ms on modern hardware. Argon2id is superior to PBKDF2 because it is memory-hard, requiring significant RAM during derivation, which makes GPU and ASIC-based attacks substantially more expensive. However, Argon2id has limited browser support and is typically used server-side, with the derived key transmitted to the client for local encryption operations. The encryption key is stored in memory only (JavaScript variables) and never persisted to any storage mechanism, ensuring that the key is lost when the page unloads or the session expires.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Key rotation is a critical but often overlooked aspect of client-side encryption architecture. When the user changes their password, the encryption key derived from the old password becomes invalid, and all data encrypted with the old key must be re-encrypted with the new key. The implementation must decrypt all stored data using the old key (requiring the user to enter their old password during the password change flow), re-encrypt it with the new key, and replace the ciphertext in IndexedDB. If the user changes their password from a different device (where the old key is not available), the server must handle the re-encryption on behalf of the user, or the client must prompt the user to re-authenticate with the old password before completing the change. For applications with rotating encryption keys (periodic key changes for compliance), a key version identifier is stored alongside each encrypted record, and the decryption process checks the key version to determine which key to use. This allows multiple key versions to coexist in the database during the transition period, with old records decrypted using the old key and new records encrypted with the current key. The old key is retained until all records have been migrated to the new key, at which point it is securely destroyed.
-        </p>
+        </HighlightBlock>
         <p>
           Token binding and DPoP (Demonstrating Proof-of-Possession) represent the next evolution in authentication token security beyond bearer tokens. Traditional bearer tokens (JWT, OAuth access tokens) are usable by anyone who possesses the token — if an attacker steals the token, they can authenticate as the user without additional proof. Token binding ties the token to a specific cryptographic key pair held by the client. The client generates a key pair, sends the public key to the server during authentication, and the server binds the issued token to that public key. When the client makes subsequent requests, it proves possession of the private key by signing a challenge or including a cryptographic proof in the request headers. DPoP formalizes this pattern as an HTTP extension — the client includes a DPoP proof header (a JWT signed with the client&apos;s private key) in each request, and the server validates the proof before accepting the bearer token. This prevents token replay attacks — even if an attacker intercepts the token, they cannot use it without the corresponding private key. For frontend applications, DPoP requires storing the private key in a secure location (ideally the browser&apos;s native key store or a Web Crypto API Key object that is non-extractable), and signing each request with the private key before sending it. The implementation overhead is significant but provides a substantial security improvement for high-value applications like banking and healthcare.
         </p>
@@ -369,19 +394,22 @@ export default function SecureClientStorageArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: Where should you store authentication tokens?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: HttpOnly, Secure, SameSite cookies. HttpOnly prevents
               JavaScript access (XSS cannot steal tokens), Secure ensures tokens
               only sent over HTTPS, SameSite protects against CSRF. For maximum
               security, use short-lived access tokens (15-60 min) in memory
               with rotating refresh tokens in HttpOnly cookies. Never store
               tokens in localStorage — any XSS exposes all sessions.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

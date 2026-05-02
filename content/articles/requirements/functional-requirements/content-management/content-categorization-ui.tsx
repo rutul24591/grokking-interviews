@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ContentCategorizationUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content Categorization UI provides the interface through which users assign content to categories within a taxonomy structure. Categories organize content hierarchically (parent-child relationships), enabling structured navigation, filtered discovery, and content organization. Unlike tags (which are flat, unstructured metadata), categories form a tree structure with defined relationships—&quot;Electronics → Computers → Laptops&quot; shows clear parent-child hierarchy. For content-heavy platforms (e-commerce, news, knowledge bases, learning management), effective categorization is fundamental to content discoverability and user experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, content categorization UI architecture involves category selection interfaces (tree views, dropdowns, search), hierarchical taxonomy management (parent-child relationships, multi-level hierarchies), multi-category assignment (content in multiple categories), auto-categorization (ML-based category suggestions), and the balance between structure and flexibility (rigid taxonomy vs. user freedom). The implementation must balance ease of categorization (minimal user effort) with accurate content organization (content in correct categories). Poor categorization UI leads to miscategorized content, frustrated users, and degraded discovery experience.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of content categorization extends beyond simple dropdown selection. Hierarchical navigation must handle deep taxonomies (5+ levels) without overwhelming users. Multi-category assignment requires conflict resolution (can content be in sibling categories?). Auto-categorization must balance accuracy with user override capability. Category management involves taxonomy evolution (adding, merging, deprecating categories) without breaking existing content. For staff engineers, categorization UI is a content infrastructure decision affecting discoverability, SEO, and long-term content organization strategy.
         </p>
@@ -46,13 +50,16 @@ export default function ContentCategorizationUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Category Selection Interfaces</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tree view provides visual hierarchy representation. Expandable nodes show parent-child relationships through indentation. Click to expand/collapse categories, revealing children. Visual hierarchy (indentation, icons) shows parent/child relationships at a glance. Selection highlighting indicates chosen category. Lazy loading loads children on expand for large taxonomies, preventing initial load performance issues. Tree view works well for deep hierarchies where users need to understand category structure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Search-based selection enables finding categories by name. Type-ahead filtering shows matching categories as user types. Highlight matching text in results for quick scanning. Auto-expand to show matched category&apos;s position in hierarchy. Recent categories section shows frequently used categories for quick access. Search works well for large taxonomies where browsing is impractical, or when users know the category name.
-        </p>
+        </HighlightBlock>
         <p>
           Suggested categories leverage content analysis for recommendations. Analyze title, body, and existing metadata to predict appropriate category. ML classification models trained on historical categorization data predict category with confidence score. Show confidence score to users (high confidence = more likely correct). Allow user override of suggestions—auto-categorization assists but doesn&apos;t replace human judgment. Suggestions reduce categorization effort while maintaining accuracy.
         </p>
@@ -104,9 +111,12 @@ export default function ContentCategorizationUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content categorization architecture spans category selection UI, taxonomy service, auto-categorization engine, and content-category relationships. Category selection UI provides user interface for category assignment. Taxonomy service manages category hierarchy and metadata. Auto-categorization engine provides ML/rule-based suggestions. Content-category relationships persist assignments. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/category-hierarchy.svg"
@@ -117,9 +127,9 @@ export default function ContentCategorizationUIArticle() {
         />
 
         <h3>Category Selection UI</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Category selection UI provides interfaces for category assignment. Tree view component renders hierarchical taxonomy with expand/collapse functionality. Search component enables finding categories by name with type-ahead filtering. Suggestion component displays ML-predicted categories with confidence scores. Selection state management tracks chosen categories, enforces limits (max categories), handles conflicts (sibling categories). UI must be responsive (work on mobile), accessible (keyboard navigation, screen reader support), and performant (lazy loading for large taxonomies).
-        </p>
+        </HighlightBlock>
         <p>
           Category display renders selected categories. Breadcrumb navigation shows category path (Home → Electronics → Computers → Laptops). Category chips/tags show selected categories with remove option. Category badges show category on content cards. Display must be consistent across platform—same category shown same way everywhere.
         </p>
@@ -159,14 +169,17 @@ export default function ContentCategorizationUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content categorization design involves trade-offs between hierarchy depth and usability, single vs. multi-category assignment, and manual vs. auto-categorization. Understanding these trade-offs enables informed decisions aligned with platform requirements and user needs.
-        </p>
+        </HighlightBlock>
 
         <h3>Hierarchy Depth: Deep vs. Shallow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Deep hierarchy (5+ levels). Pros: Fine-grained organization (specific categories for specific content), precise navigation (users find exact category), scalable (accommodates content growth). Cons: Complex navigation (many clicks to reach leaf categories), user confusion (hard to understand deep structure), maintenance overhead (managing deep taxonomy). Best for: Large content libraries, specialized domains requiring granularity.
-        </p>
+        </HighlightBlock>
         <p>
           Shallow hierarchy (2-3 levels). Pros: Simple navigation (few clicks to any category), easy to understand (clear structure), low maintenance (simpler taxonomy management). Cons: Broad categories (less specific organization), potential category overload (too many siblings), limited scalability (may need restructuring as content grows). Best for: Small to medium content libraries, general-purpose platforms.
         </p>
@@ -207,13 +220,16 @@ export default function ContentCategorizationUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Design intuitive category hierarchy:</strong> 3-4 levels max for most platforms. Clear category names (avoid jargon). Logical parent-child relationships. Category descriptions guide users.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide multiple selection methods:</strong> Tree view for browsing. Search for finding by name. Suggestions for assistance. Recent categories for quick access.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Support multi-category with primary designation:</strong> Allow 3-5 categories per content. Designate primary category for navigation. Handle conflicts (sibling categories).
           </li>
@@ -243,13 +259,16 @@ export default function ContentCategorizationUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Deep hierarchy without navigation aids:</strong> Users get lost in deep taxonomy. <strong>Solution:</strong> Limit depth to 3-4 levels, provide breadcrumbs, search, and suggestions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No multi-category support:</strong> Content spans multiple topics but forced into one. <strong>Solution:</strong> Support 3-5 categories with primary designation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Auto-categorization without override:</strong> Wrong categories assigned, users can&apos;t fix. <strong>Solution:</strong> Always allow user override of auto-suggestions.
           </li>
@@ -279,16 +298,19 @@ export default function ContentCategorizationUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-commerce Product Categorization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platform uses hierarchical categories for product organization. Electronics → Computers → Laptops → Gaming Laptops structure. Multi-category assignment (product in &quot;Gaming Laptops&quot; and &quot;On Sale&quot;). Primary category for breadcrumbs, secondary for additional discovery. Auto-categorization suggests category from product title/description. Category management interface for merchandising team to restructure taxonomy. Analytics track category performance (conversion by category).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">News Website Article Categorization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           News website categorizes articles by section and topic. World → Europe → UK for geographic hierarchy. Politics → International Politics for topic hierarchy. Articles in multiple categories (UK article in &quot;UK&quot; and &quot;Politics&quot;). Auto-categorization from article content suggests categories. Editor overrides suggestions as needed. Category pages show all articles in category with pagination.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Knowledge Base Article Categorization</h3>
         <p>
@@ -308,12 +330,15 @@ export default function ContentCategorizationUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design category hierarchy for large content libraries?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design category hierarchy for large content libraries?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Balance depth with usability. Limit to 3-4 levels for most platforms—deeper becomes hard to navigate. Use faceted filtering for additional granularity without hierarchy complexity. Clear category names with descriptions. User testing to validate hierarchy makes sense to users. Analytics to identify problematic areas (categories users skip, search terms with no matching category). The key insight: hierarchy should reflect user mental models, not organizational structure.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function NotificationDeliveryArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Notification delivery routes notifications through appropriate channels (push, email, SMS, in-app) based on user preferences and notification priority. The delivery system ensures notifications reach users through their preferred channels while respecting quiet hours, rate limits, and platform constraints. Effective notification delivery balances immediacy with user experience—delivering important notifications promptly without overwhelming users with alerts.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of notification delivery stems from multiple factors: users have different preferences per notification type, channels have different costs and reliability, platforms impose rate limits, and timing affects engagement. A mention notification should arrive instantly via push, while a marketing email can wait for business hours. High-priority security alerts should bypass quiet hours, while social notifications should respect them. The delivery system must evaluate all these factors for each notification.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, notification delivery involves distributed systems challenges. The system must handle millions of notifications per day with low latency. Delivery must be reliable—important notifications should not be lost. Rate limiting prevents notification spam while ensuring urgent notifications get through. Cross-device sync ensures consistent notification state. Monitoring tracks delivery success rates, latency, and user engagement to optimize delivery strategies.
         </p>
@@ -47,13 +51,16 @@ export default function NotificationDeliveryArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Delivery Channels</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Push notifications deliver to mobile and desktop devices via platform services (APNs for iOS, FCM for Android, Web Push for browsers). Pros: Instant delivery, high visibility, works when app is closed. Cons: Rate limited by platforms, battery impact, requires user opt-in. Best for: Time-sensitive notifications (messages, mentions, security alerts).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Email notifications deliver to user's email inbox. Pros: No rate limits, persistent record, works across devices. Cons: Delayed delivery, lower open rates, can go to spam. Best for: Digests, non-urgent updates, marketing, password resets.
-        </p>
+        </HighlightBlock>
         <p>
           SMS notifications deliver to user's phone number. Pros: Highest open rate, works without internet, immediate. Cons: Cost per message, character limits, intrusive. Best for: Critical alerts (2FA, security, account issues).
         </p>
@@ -108,9 +115,12 @@ export default function NotificationDeliveryArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Notification delivery architecture spans notification generation, preference evaluation, channel routing, and delivery tracking. Notifications enter system from various sources (social, system, marketing). Preference service evaluates user settings. Router selects channels. Delivery services send via appropriate channels. Tracking service monitors delivery success.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/notification-delivery/delivery-architecture.svg"
@@ -121,9 +131,9 @@ export default function NotificationDeliveryArticle() {
         />
 
         <h3>Preference Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Preference service evaluates user settings for each notification. Input: user_id, notification_type, sender_id. Output: allowed channels, quiet hours status, rate limit status. Cache preferences in Redis for fast access—key: user:ID:preferences.
-        </p>
+        </HighlightBlock>
         <p>
           Hierarchical evaluation: check global toggle (if off, block all), check type preference (if off for type, block), check sender mute (if muted, block), check quiet hours (if active, queue), check rate limits (if exceeded, queue). Return allowed channels.
         </p>
@@ -183,14 +193,17 @@ export default function NotificationDeliveryArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Notification delivery involves trade-offs between immediacy, user experience, cost, and reliability. Understanding these trade-offs enables informed decisions aligned with product goals and user expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Push vs Email vs SMS</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Push notifications: instant, high visibility, free. Cons: platform rate limits, requires app install, battery impact. Best for: time-sensitive, frequent notifications.
-        </p>
+        </HighlightBlock>
         <p>
           Email: no rate limits, persistent, universal. Cons: delayed, lower engagement, spam risk. Best for: digests, non-urgent, detailed content.
         </p>
@@ -242,13 +255,16 @@ export default function NotificationDeliveryArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Respect user preferences:</strong> Always check preferences before delivery. Never bypass user settings except for critical security. Make preferences easy to find and modify.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement quiet hours:</strong> Default quiet hours (10 PM - 8 AM local time). Allow user customization. Queue non-urgent notifications during quiet hours.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Rate limit notifications:</strong> Per-user limits (10 push/hour, 50 email/day). Per-type limits for notification categories. Queue excess, deliver when limit resets.
           </li>
@@ -278,13 +294,16 @@ export default function NotificationDeliveryArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring preferences:</strong> Sending notifications user disabled. Solution: Always check preferences before delivery. Log preference violations for debugging.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No quiet hours:</strong> Notifications at 3 AM annoy users. Solution: Implement quiet hours with timezone handling. Queue non-urgent notifications.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No rate limiting:</strong> Notification spam overwhelms users. Solution: Per-user and per-type rate limits. Queue excess notifications.
           </li>
@@ -314,16 +333,19 @@ export default function NotificationDeliveryArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Facebook Notification Delivery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook delivers notifications via push, email, and in-app. User preferences per notification type (likes, comments, tags, events). Quiet hours respected for non-urgent notifications. Batch digests for high-volume users (50+ notifications/day). ML optimizes send time per user.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Slack Notification Routing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Slack routes notifications based on channel settings and user preferences. @channel and @here notifications bypass quiet hours for urgent team alerts. Direct messages always deliver via push. Digest email for offline period. Per-channel mute overrides global settings.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Uber Critical Alerts</h3>
         <p>
@@ -343,12 +365,15 @@ export default function NotificationDeliveryArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle notification preferences?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle notification preferences?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Store preferences in user_settings table: user_id, notification_type, enabled, channels, quiet_hours. Evaluate on notification creation—check global toggle, type preference, sender mute, quiet hours, rate limits. If any filter blocks, don't deliver. Cache preferences in Redis for fast access. Sync across devices via WebSocket.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

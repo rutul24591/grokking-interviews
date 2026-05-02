@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Data compression</strong> is the process of encoding data using fewer bits than its original
           representation, reducing storage cost and network bandwidth at the expense of CPU cycles for compression and
           decompression. In data-intensive systems, compression is applied at multiple stages: when writing data to
@@ -32,14 +36,14 @@ export default function ArticlePage() {
           communication), and when caching data in memory (Redis, application caches). The choice of compression
           algorithm and configuration is a fundamental engineering trade-off that affects storage cost, network
           throughput, CPU utilization, and query latency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Lossless compression — the type used in data processing — guarantees that the decompressed data is identical
           to the original data, bit for bit. This is essential for data processing pipelines where even a single-bit
           error can produce incorrect results. Lossy compression, which sacrifices some data fidelity for higher
           compression ratios, is used in media processing (images, audio, video) but is never appropriate for
           transactional or analytical data processing.
-        </p>
+        </HighlightBlock>
         <p>
           The compression ratio — the ratio of uncompressed size to compressed size — varies significantly based on the
           data type and the compression algorithm. Structured data (JSON, CSV, log files) typically achieves ratios of
@@ -80,19 +84,22 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Dictionary-based compression builds a dictionary of recurring patterns in the data and replaces each pattern
           with a shorter reference. This is particularly effective for structured data where certain values (status
           codes, country names, product categories) repeat frequently. Dictionary encoding is used internally by
           columnar formats like Parquet and ORC, where each column&apos;s dictionary is stored alongside the column data,
           enabling both compression and fast equality lookups without full decompression.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Run-length encoding (RLE) replaces consecutive runs of the same value with a count-value pair. This is
           extremely effective for sorted or partially sorted data where the same value appears many times in sequence.
           RLE is automatically applied within columnar formats for columns with low cardinality (few unique values),
           where a column with one million rows but only ten unique values can be compressed to a few hundred bytes.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/data-compression-diagram-1.svg"
           alt="Compression algorithm comparison showing the spectrum from fast/low-CPU to maximum-compression/high-CPU with algorithms positioned along the spectrum"
@@ -144,20 +151,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compression in a data processing pipeline is applied at multiple stages, each with different requirements
           and trade-offs. At the ingestion stage, raw data from source systems may already be compressed (for example,
           gzip-compressed log files) or uncompressed (CSV exports, JSON API responses). The ingestion pipeline should
           detect the compression format automatically and decompress before processing, then re-compress in the
           pipeline&apos;s chosen format for intermediate and final storage.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the intermediate storage stage (between pipeline stages), compression reduces the volume of data that
           must be shuffled between workers, which is often the dominant cost in distributed processing. Apache Spark,
           for example, compresses shuffle output by default using lz4, reducing network I/O at the cost of CPU on both
           the writing and reading sides. The choice of shuffle compression algorithm directly impacts job performance:
           too aggressive compression becomes a CPU bottleneck, too light compression saturates the network.
-        </p>
+        </HighlightBlock>
         <p>
           At the output storage stage (writing to S3, HDFS, or a data warehouse), compression reduces long-term
           storage cost and improves query performance by reducing I/O. Columnar formats with built-in compression
@@ -199,7 +209,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           LZ4 versus Snappy versus Zstandard is the most common compression algorithm choice for data processing
           pipelines. LZ4 is the fastest for both compression and decompression, with moderate compression ratios
           (2x-2.5x for typical data). Snappy is slightly slower than LZ4 but achieves slightly better ratios
@@ -207,8 +220,8 @@ export default function ArticlePage() {
           Snappy&apos;s compression speed while achieving significantly better ratios (3x-4x), and its decompression
           speed matches LZ4. For new systems, Zstandard at level 3 is the recommended default because it provides
           the best ratio-speed balance and is tunable if requirements change.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Gzip versus Zstandard for archival storage: Gzip is universally supported — every operating system,
           programming language, and tool can decompress gzip data — making it the safest choice for data that may
           be accessed by unknown or external consumers. However, Zstandard at level 19-22 achieves 10-20 percent
@@ -216,7 +229,7 @@ export default function ArticlePage() {
           internal data lakes and warehouses where the consumer stack is known and controlled, Zstandard at high
           levels is the better choice. For data that may be shared externally or archived for decades, Gzip&apos;s
           universality may justify its lower ratio.
-        </p>
+        </HighlightBlock>
         <p>
           Column-level versus file-level compression in columnar formats: Parquet and ORC compress each column
           chunk independently, allowing different columns to use different compression algorithms based on their
@@ -239,21 +252,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use Zstandard at level 3 as the default compression algorithm for new data processing pipelines. Zstd
           provides the best balance of compression ratio and speed across a wide range of data types, and its
           tunable levels allow adjustment if requirements change without changing the algorithm. At level 3, Zstd
           compresses at approximately 300-500 MB/s per core and decompresses at approximately 1000-1500 MB/s per
           core, with compression ratios of 3x-4x for typical JSON and log data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Benchmark compression with representative data before committing to an algorithm. Compression performance
           varies significantly based on data type: text data compresses much better than binary data, sorted data
           compresses better than random data, and data with repeating patterns compresses better than high-entropy
           data. Test the candidate algorithms (LZ4, Snappy, Zstd, Gzip) on a representative sample of the actual
           data and measure both compression ratio and throughput (MB/s for compression and decompression) to make
           an informed choice.
-        </p>
+        </HighlightBlock>
         <p>
           Store codec metadata alongside compressed data so that the decompressor can identify the algorithm and
           configuration used. In Parquet files, the codec is stored in the file footer. In Kafka, the codec is
@@ -285,22 +301,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using maximum compression level creating a CPU bottleneck is the most common compression performance
           failure. When a pipeline uses Gzip level 9 or Zstd level 22 for real-time processing, the compression
           CPU cost becomes the bottleneck, throttling throughput and increasing latency. The fix is to benchmark
           compression levels and choose the level that provides the best ratio-speed balance for the specific
           workload. For most workloads, this is level 3-6 for Zstd, level 6 for Gzip, and LZ4 or Snappy for
           latency-sensitive paths.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Incompatible reader and writer codecs making data unreadable is an operational failure that occurs when
           the data is compressed with one algorithm but the reader only supports a different algorithm. This
           typically happens during pipeline migrations (switching from Gzip to Zstd) where the reader is not updated
           to support the new codec. The fix is to store codec metadata alongside the compressed data and to validate
           that all readers support the codec before switching. For gradual migrations, write data in both codecs
           during a transition period.
-        </p>
+        </HighlightBlock>
         <p>
           Silent data corruption from bit flips in compressed data is a correctness failure that is difficult to
           detect without checksums. A single-bit error in a compressed block corrupts the entire decompressed block,
@@ -326,7 +345,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform stores 500 TB of order history, customer activity, and inventory data in an
           S3 data lake using Parquet format with Zstd compression at level 3. The uncompressed data would occupy
           approximately 1.5 PB, so compression reduces storage cost by 67 percent. The platform chose Zstd over
@@ -335,15 +357,15 @@ export default function ArticlePage() {
           data is queried daily by batch pipelines and interactively by analysts through Trino, and the decompression
           cost is a small fraction of the total query cost because Trino&apos;s predicate pushdown skips most blocks
           without decompressing them.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses LZ4 compression for its real-time market data streaming pipeline, where
           millions of price updates per second are published to Kafka topics. The pipeline chose LZ4 over Zstd because
           the compression must keep up with a sustained throughput of 500 MB/s with sub-millisecond latency, and
           LZ4&apos;s compression speed (over 1 GB/s per core) ensures that compression does not become a bottleneck. The
           moderate compression ratio (2x) is sufficient because the primary cost driver is network bandwidth between
           availability zones, not storage.
-        </p>
+        </HighlightBlock>
         <p>
           A technology company uses Zstd at level 19 for its log archive pipeline, where 100 TB of application logs
           are compressed and archived to S3 Glacier each month. The archive is rarely accessed (only for compliance
@@ -366,12 +388,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How do you choose between LZ4, Snappy, Zstd, and Gzip for a data processing pipeline?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The choice starts with the workload requirements. For real-time stream processing where latency is
             critical (sub-millisecond compression), LZ4 is the fastest option and should be chosen unless the
             compression ratio is insufficient. For batch processing where throughput matters more than per-message
@@ -379,14 +404,14 @@ export default function ArticlePage() {
             storage where data is written once and read rarely, Zstd at high levels (19-22) maximizes compression
             ratio. For data that must be accessible by external systems or unknown consumers, Gzip provides the
             widest compatibility.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The second factor is benchmarking with representative data. Compression performance varies significantly
             based on data type, so the candidate algorithms should be tested on a sample of the actual data to measure
             both ratio and throughput. For JSON log data, Zstd at level 3 typically achieves 3x-4x ratio at 300-500
             MB/s compression speed. For numeric data with patterns, Zstd can achieve 10x-20x ratio. For already-random
             data (encrypted, binary), no algorithm achieves meaningful compression.
-          </p>
+          </HighlightBlock>
           <p>
             The recommended default for new systems is Zstd at level 3, because it provides the best ratio-speed
             balance and is tunable. If the workload is latency-sensitive, drop to LZ4. If the workload is storage-bound,

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function SpamDetectionArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Spam detection enables platforms to identify and remove unwanted, repetitive, commercial, or low-quality content at scale. The spam detection system is a critical platform quality mechanism that protects users from scams, misinformation, commercial abuse, and content flooding while maintaining platform integrity. For staff and principal engineers, spam detection implementation involves automated detection (ML-based classification, pattern detection), user reporting integration (spam reports inform detection models), spam prevention (rate limiting, account restrictions), false positive handling (legitimate content incorrectly flagged), and integration with moderation systems (spam queue, automated removal, escalation).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of spam detection extends beyond simple keyword filtering. Modern spam includes sophisticated campaigns (coordinated posting, AI-generated content, account networks), evolving tactics (adapting to detection methods), and high volume (spam can be majority of content on popular platforms). Detection must balance accuracy (catch spam) with precision (don&apos;t remove legitimate content), speed (remove spam before widespread distribution) with thoroughness (analyze content thoroughly), and automation (handle volume) with human review (nuanced decisions). The system must handle edge cases (promotional content vs. spam, satire vs. misinformation, legitimate marketing vs. spam campaigns).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, spam detection architecture involves content analysis (ML models, pattern detection, network analysis), user behavior analysis (account age, posting patterns, network connections), enforcement systems (automated removal, rate limiting, account restrictions), and moderation integration (spam queue, human review, model training feedback). The system must handle massive scale (popular platforms receive millions of spam attempts daily), provide real-time detection (remove spam before distribution), and maintain user trust (spam removed reliably, legitimate content protected). Legal compliance is critical—spam detection must respect free expression while protecting users from abuse.
         </p>
@@ -46,13 +50,16 @@ export default function SpamDetectionArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Automated Spam Detection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           ML-based classification uses machine learning to identify spam. Content analysis (text, images, links analyzed for spam signals). Behavioral analysis (posting patterns, account age, network connections). Model training (trained on historical spam data, continuously updated). Confidence scoring (spam probability score, high confidence triggers auto-action). ML classification handles high volume with good accuracy but requires ongoing training and tuning.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Pattern detection identifies spam through recognizable patterns. Keyword filtering (spam keywords, phrases, hashtags). Link analysis (known spam domains, URL shorteners, link patterns). Posting patterns (rapid posting, identical content, coordinated timing). Account patterns (new accounts, fake profiles, account networks). Pattern detection catches known spam tactics but spammers adapt to evade detection.
-        </p>
+        </HighlightBlock>
         <p>
           Network analysis detects coordinated spam campaigns. Account networks (groups of accounts posting same content). Coordination detection (accounts posting in coordination, same IP, same device). Amplification networks (accounts that amplify spam content). Bot detection (automated accounts posting spam). Network analysis catches sophisticated spam campaigns that individual analysis misses.
         </p>
@@ -104,9 +111,12 @@ export default function SpamDetectionArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Spam detection architecture spans content analysis, user behavior analysis, enforcement systems, and moderation integration. Content analysis processes content for spam signals. User behavior analysis analyzes user patterns for spam indicators. Enforcement systems act on detected spam (removal, throttling, restrictions). Moderation integration connects spam detection with human review and model improvement.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/spam-detection/spam-detection-architecture.svg"
@@ -117,9 +127,9 @@ export default function SpamDetectionArticle() {
         />
 
         <h3>Content Analysis Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Content analysis layer processes content for spam signals. ML models analyze content for spam classification (text, images, links). Pattern detection identifies spam patterns (keywords, links, posting patterns). Network analysis detects coordinated spam (account networks, amplification networks). Analysis happens at content creation time for real-time spam prevention.
-        </p>
+        </HighlightBlock>
         <p>
           Spam scoring assigns spam probability to content. Content features extracted (text features, link features, image features). Model inference produces spam score (0-1 probability). Confidence thresholds determine action (high confidence = auto-remove, medium = review, low = monitor). Spam scoring enables proportional response based on spam confidence.
         </p>
@@ -179,14 +189,17 @@ export default function SpamDetectionArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Spam detection design involves trade-offs between accuracy and precision, automation and human review, and aggressiveness and caution. Understanding these trade-offs enables informed decisions aligned with platform values and user experience requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Detection: High Accuracy vs. High Precision</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           High accuracy detection (catch most spam). Pros: Removes most spam (platform clean), protects users effectively, reduces spam volume. Cons: Higher false positives (legitimate content removed), may frustrate legitimate users, requires robust appeal process. Best for: Platforms prioritizing spam-free experience, high spam volume platforms.
-        </p>
+        </HighlightBlock>
         <p>
           High precision detection (minimize false positives). Pros: Protects legitimate content (few false positives), maintains user trust, less appeal volume. Cons: More spam gets through (platform less clean), users see more spam, may frustrate users. Best for: Platforms prioritizing free expression, low spam tolerance platforms.
         </p>
@@ -238,13 +251,16 @@ export default function SpamDetectionArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement ML-based spam detection:</strong> Train models on historical spam data. Continuously update models. Confidence scoring for proportional response. Real-time analysis for prevention.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Integrate user spam reports:</strong> Enable spam reporting from users. Weight reports by reporter trust. Feed reports into ML models. Feedback loops for model improvement.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement spam prevention:</strong> Rate limiting for posting, messaging, following. Account restrictions for new/unverified accounts. Content throttling for borderline spam.
           </li>
@@ -274,13 +290,16 @@ export default function SpamDetectionArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-reliance on keywords:</strong> Simple keyword filtering easily evaded. Solution: ML-based detection, pattern analysis, network analysis.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No user report integration:</strong> Missing ground truth data. Solution: Enable spam reporting, weight by trust, feed into models.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>High false positive rate:</strong> Legitimate content removed frequently. Solution: Confidence thresholds, human review for borderline, model improvement.
           </li>
@@ -310,16 +329,19 @@ export default function SpamDetectionArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter Spam Detection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter spam detection for platform quality. ML-based spam classification (tweets, accounts, DMs). User spam reporting integration. Rate limiting for tweets, follows, DMs. Account restrictions for spam accounts. Network detection for coordinated spam. Automated removal for high-confidence spam. Spam queue for moderator review.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Facebook Spam Detection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook spam detection for feed quality. ML models for spam posts, comments, messages. User reporting integration. Rate limiting for posts, comments, friend requests. Account restrictions for spam accounts. Network analysis for spam rings. Automated removal and account suspension. Integration with Community Standards enforcement.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Instagram Spam Detection</h3>
         <p>
@@ -339,12 +361,15 @@ export default function SpamDetectionArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you balance spam detection accuracy with false positive prevention?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you balance spam detection accuracy with false positive prevention?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement confidence-based enforcement that balances spam removal with protecting legitimate content. High-confidence spam auto-removed: ML confidence &gt;95% for clear spam (crypto scams, phishing links, bot-generated content)—minimal false positive risk at high confidence, remove immediately without human review. Medium-confidence spam queued for human review: ML confidence 70-95%—catches spam while protecting legitimate content, human moderator makes final decision. Low-confidence spam monitored: ML confidence &lt;70%—no action taken, but content flagged for data collection, pattern analysis. Tune confidence thresholds based on platform tolerance: high spam volume platforms (Twitter, Facebook) use lower threshold (more aggressive removal), free expression focused platforms (Reddit, forums) use higher threshold (more cautious). Implement robust appeal process for false positives: users can appeal removals, fast-track review for appealed content, track appeal outcomes to tune thresholds. Track false positive rate continuously: target &lt;1% false positive rate, adjust thresholds if rate exceeds target, analyze false positives to improve model. The key insight: perfect spam detection is impossible—balance spam removal with legitimate content protection based on platform values, continuously tune based on outcomes, and provide clear appeal path for users affected by false positives.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function EngagementFraudDetectionArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Engagement fraud detection identifies and prevents artificial inflation of engagement metrics through bots, click farms, engagement pods, and coordinated manipulation. Fraudulent engagement undermines platform integrity—users lose trust in trending content, creators lose faith in fair competition, and advertisers question ROI. A single viral post with fake engagement can damage platform reputation for months.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The engagement fraud economy is sophisticated and lucrative. Services sell likes, followers, views, and comments at scale. Bot networks with millions of accounts can deliver thousands of engagements per minute. Engagement pods coordinate real users to mutually boost each other's content. Detection requires multi-layered defenses combining behavioral analysis, network analysis, machine learning, and human review.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, fraud detection involves balancing false positives and false negatives. Aggressive detection catches more fraud but risks penalizing legitimate users. Lenient detection protects legitimate users but allows fraud to flourish. The system must detect fraud in real-time to prevent manipulation from affecting trending algorithms while allowing time for thorough analysis. Enforcement actions range from removing fraudulent engagement to account suspension to legal action against fraud service operators.
         </p>
@@ -47,13 +51,16 @@ export default function EngagementFraudDetectionArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Fraud Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Bot activity exhibits non-human patterns. Bots engage at superhuman speed—liking content within milliseconds of posting, impossible for humans reading content. Bots engage at inhuman volume—thousands of actions per day versus hundreds for active humans. Bots show no content preference—engaging with all content regardless of topic, language, or quality. Bots operate 24/7 without sleep patterns that characterize human activity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Click farms concentrate engagement from specific IP ranges or geographic regions. A post receiving thousands of likes from a single data center IP range indicates farm activity. Click farms use device farms—hundreds of physical phones running automation scripts. Detection identifies device fingerprints, IP patterns, and engagement timing that indicates coordinated farm activity.
-        </p>
+        </HighlightBlock>
         <p>
           Engagement pods coordinate real users to mutually boost each other's content. Pod members agree to like and comment on each other's posts within minutes of posting. Detection identifies tight-knit groups with reciprocal engagement patterns—members engage with each other at rates far exceeding random chance. Pod detection requires graph analysis of engagement networks.
         </p>
@@ -105,9 +112,12 @@ export default function EngagementFraudDetectionArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Fraud detection architecture spans real-time scoring, batch analysis, and human review. Real-time scoring evaluates each engagement as it occurs, blocking obvious fraud immediately. Batch analysis processes historical data to identify patterns invisible in real-time. Human review handles edge cases and provides labeled data for model training.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/interaction-engagement/engagement-fraud-detection/fraud-detection-architecture.svg"
@@ -118,9 +128,9 @@ export default function EngagementFraudDetectionArticle() {
         />
 
         <h3>Real-time Scoring</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each engagement event flows through scoring pipeline. Event data includes account ID, content ID, engagement type, timestamp, device fingerprint, IP address, and user agent. Feature extraction computes fraud indicators—account age, engagement velocity, geographic consistency. Model inference produces fraud probability score.
-        </p>
+        </HighlightBlock>
         <p>
           Score thresholds determine action. Scores below 0.3 pass through as legitimate. Scores between 0.3 and 0.7 queue for batch review. Scores above 0.7 block immediately and queue for human review. Thresholds tune based on acceptable false positive rate—platforms prioritizing user experience set higher thresholds, platforms prioritizing integrity set lower thresholds.
         </p>
@@ -172,14 +182,17 @@ export default function EngagementFraudDetectionArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Fraud detection involves fundamental trade-offs between catching fraud and protecting legitimate users. Understanding these trade-offs enables informed decisions aligned with platform values and risk tolerance.
-        </p>
+        </HighlightBlock>
 
         <h3>Detection Aggressiveness</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Aggressive detection catches more fraud but increases false positives. Legitimate users may have engagement removed or accounts suspended erroneously. This damages user trust and creates support burden. Aggressive detection appropriate for platforms where fraud causes severe harm—financial fraud, election manipulation, health misinformation.
-        </p>
+        </HighlightBlock>
         <p>
           Conservative detection minimizes false positives but allows more fraud through. Legitimate users rarely affected, but fraudsters operate with impunity. Conservative detection appropriate for platforms where fraud impact is limited—social media likes, follower counts.
         </p>
@@ -220,13 +233,16 @@ export default function EngagementFraudDetectionArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Multi-layer detection:</strong> Combine velocity checks, network analysis, ML models, and human review. No single method catches all fraud. Layers provide defense in depth.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Continuous model retraining:</strong> Fraud tactics evolve constantly. Retrain models weekly with new labeled data. Monitor model drift and retrain when accuracy degrades.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Graceful enforcement:</strong> Remove fraudulent engagement in batches to avoid visible count fluctuations. Notify creators without accusing them of fraud. Provide clear appeal process.
           </li>
@@ -250,13 +266,16 @@ export default function EngagementFraudDetectionArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-reliance on single signal:</strong> Using only velocity or only IP concentration misses sophisticated fraud. Combine multiple signals for robust detection.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Static thresholds:</strong> Fixed velocity thresholds become obsolete as platform grows. Use adaptive thresholds based on account history and platform norms.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No appeal process:</strong> Users penalized erroneously have no recourse. This creates lasting resentment and support burden. Always provide appeal mechanism with human review.
           </li>
@@ -274,16 +293,19 @@ export default function EngagementFraudDetectionArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter Bot Detection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter uses machine learning models trained on known bot accounts. Features include tweet frequency, follower/following ratio, profile completeness, and engagement patterns. Twitter removes billions of fake accounts annually. Suspended accounts show login patterns, tweet timing, and network structures indicative of automation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Instagram Engagement Pod Detection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Instagram identifies engagement pods through graph analysis. Accounts that consistently engage with same small group within minutes of posting flag for review. Instagram reduces visibility of pod-driven engagement and may remove engagement from pod members. Repeat pod participants receive account penalties.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">YouTube View Fraud Prevention</h3>
         <p>
@@ -298,12 +320,15 @@ export default function EngagementFraudDetectionArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you detect bot engagement?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you detect bot engagement?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Analyze timing patterns—bots engage at superhuman speed (milliseconds after posting) and inhuman volume (thousands per day). Check for lack of human patterns—no sleep cycles, no content preferences, identical engagement across all content. Examine account characteristics—new accounts, no profile info, following thousands with few followers. Use device fingerprinting to detect automation tools and emulators. Train ML models on known bot accounts to identify new bots.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

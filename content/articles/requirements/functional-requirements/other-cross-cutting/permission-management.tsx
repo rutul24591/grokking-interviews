@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function PermissionManagementArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Permission Management enables users to control what permissions they have granted to apps, services, and other users. Users can view granted permissions (what apps can access), revoke permissions (remove access), grant new permissions (authorize access), and audit permission usage (see how permissions are used). Permission management is fundamental to security (users control who has access), privacy (users limit data access), and compliance (GDPR, CCPA require user control over data access). For platforms with third-party integrations, collaborative features, or role-based access, effective permission management is essential for security, privacy, and user trust.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, permission management architecture involves permission types (app permissions, feature permissions, user permissions), permission grants (how permissions are granted), permission revocation (how permissions are removed), permission auditing (track permission usage), and enforcement (permissions respected across all access). The implementation must balance security (restrict access) with usability (easy to manage permissions) and functionality (permissions enable features). Poor permission management leads to over-permissioned apps, security vulnerabilities, and user distrust.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of permission management extends beyond simple grant/revoke. Granular permissions (specific access levels). Permission inheritance (permissions inherited from roles). Time-limited permissions (permissions expire). Delegated permissions (users delegate permissions to others). Permission templates (predefined permission sets). For staff engineers, permission management is a security and privacy infrastructure decision affecting access control, data protection, and user trust.
         </p>
@@ -46,13 +50,16 @@ export default function PermissionManagementArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Permission Types</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           App permissions control third-party app access. Data access (what data app can access). Action permissions (what actions app can take). Scope-based permissions (specific scope of access). App permissions enable third-party integrations while limiting access. Benefits include ecosystem growth (apps can integrate), user control (users choose what to grant). Drawbacks include security risk (apps may misuse access), complexity (manage many app permissions).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature permissions control access to platform features. Feature access (can use specific feature). Feature limits (usage limits for feature). Feature visibility (can see feature). Feature permissions enable tiered access (free vs. premium features). Benefits include monetization (premium features), access control (limit by role/subscription). Drawbacks includes complexity (manage feature permissions), user frustration (features unavailable).
-        </p>
+        </HighlightBlock>
         <p>
           User permissions control what users can do within platform. Read permissions (can view content). Write permissions (can create/edit content). Admin permissions (can manage users/settings). User permissions enable role-based access control. Benefits include security (limit access), organization (clear roles). Drawbacks includes complexity (manage user permissions), permission creep (users accumulate permissions).
         </p>
@@ -104,9 +111,12 @@ export default function PermissionManagementArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Permission management architecture spans permission service, grant management, enforcement layer, and audit system. Permission service manages permission definitions and relationships. Grant management manages permission grants and revocation. Enforcement layer ensures permissions are respected. Audit system tracks permission usage. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/permission-management/permission-architecture.svg"
@@ -117,9 +127,9 @@ export default function PermissionManagementArticle() {
         />
 
         <h3>Permission Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Permission service manages permission definitions. Permission registry (define all permissions). Permission relationships (parent-child, dependencies). Permission metadata (description, risk level). Permission service is the source of truth for permissions. Benefits include centralization (one place for permissions), consistency (same permissions everywhere). Drawbacks includes complexity (manage permission definitions), coupling (services depend on permission service).
-        </p>
+        </HighlightBlock>
         <p>
           Permission templates provide predefined permission sets. Role templates (permissions for roles). App templates (permissions for app types). Custom templates (user-defined templates). Templates simplify permission management (grant template vs. individual permissions). Benefits include simplicity (grant multiple at once), consistency (same permissions for same roles). Drawbacks includes inflexibility (templates may not fit all cases).
         </p>
@@ -159,14 +169,17 @@ export default function PermissionManagementArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Permission management design involves trade-offs between granular and simple permissions, explicit and implicit grants, and strict and lenient enforcement. Understanding these trade-offs enables informed decisions aligned with security requirements and user needs.
-        </p>
+        </HighlightBlock>
 
         <h3>Permissions: Granular vs. Simple</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Granular permissions (many specific permissions). Pros: Precise control (exactly what access is granted), security (minimal access), flexibility (different access for different needs). Cons: Complexity (many permissions to manage), user confusion (hard to understand), decision fatigue (many choices). Best for: Enterprise platforms, security-sensitive access.
-        </p>
+        </HighlightBlock>
         <p>
           Simple permissions (few broad permissions). Pros: Easy to understand (simple mental model), quick to grant (few choices), less decision fatigue. Cons: Over-permissioning (more access than needed), security risk (excess access), less flexibility. Best for: Consumer platforms, simple access patterns.
         </p>
@@ -207,13 +220,16 @@ export default function PermissionManagementArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide clear permission types:</strong> App permissions, feature permissions, user permissions. Clear descriptions of each. Separate management for each type.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use explicit grants for sensitive:</strong> Sensitive permissions require explicit consent. Essential permissions may be implicit. Risk-based grant approach.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Enable easy revocation:</strong> Revoke button for each permission. Bulk revoke option. Revoke all option. Immediate effect.
           </li>
@@ -243,13 +259,16 @@ export default function PermissionManagementArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-permissioned apps:</strong> Apps granted more than needed. <strong>Solution:</strong> Granular permissions, regular review, recommendations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No revocation option:</strong> Can&apos;t revoke permissions. <strong>Solution:</strong> Easy revocation, immediate effect, bulk revoke.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Poor enforcement:</strong> Permissions not enforced. <strong>Solution:</strong> Enforce at every access, API-level enforcement, log denials.
           </li>
@@ -279,16 +298,19 @@ export default function PermissionManagementArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Mobile App Permissions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mobile platforms provide app permission management. Permission categories (location, camera, contacts, etc.). Grant/revoke per app. Usage indicators (show when permission used). Permission reports (see all app permissions). Users control what apps can access on their device.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Google Account Permissions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Account provides third-party permission management. Connected apps (list of apps with access). Permission details (what each app can access). Revoke access (remove app access). Security checkup (review all permissions). Users control third-party access to their Google data.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Enterprise RBAC</h3>
         <p>
@@ -308,12 +330,15 @@ export default function PermissionManagementArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design permission management that balances security with usability?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design permission management that balances security with usability?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement risk-based permission management because security and usability aren&apos;t mutually exclusive—different permissions have different risk levels. Sensitive permissions require explicit consent: financial access (bank accounts, payment methods), personal data (health records, private messages), admin actions (delete account, change ownership)—high-risk permissions need explicit user approval, clear explanation of consequences. Essential permissions may be implicit: basic functionality (read own profile, post content), service operation (authentication, session management)—low-risk permissions granted implicitly for core functionality. Group related permissions: bundle related permissions (&quot;Manage Posts&quot; includes create, edit, delete posts; &quot;Manage Users&quot; includes view, invite, remove users)—simpler UI, fewer prompts, logical groupings. Provide clear descriptions: users understand what they&apos;re granting (&quot;This app will access your email to send notifications,&quot; &quot;This permission allows deleting all content&quot;)—plain language, specific examples, consequences explained. Easy revocation: users can remove access (one-click revoke, bulk revoke, revoke from settings)—users control their permissions, can change mind. The balance insight: security and usability aren&apos;t mutually exclusive—risk-based approach provides security where needed (explicit consent for sensitive), usability where safe (implicit for essential), group related permissions, provide clear descriptions, enable easy revocation.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

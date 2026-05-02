@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,12 +28,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Ambassador pattern</strong> introduces a dedicated local proxy component that acts as a representative for an external service or remote dependency. Instead of an application communicating directly with a third-party API, database, or microservice over the network, it routes all outbound traffic through a co-located ambassador process. This ambassador then handles the actual communication with the external system, managing TLS termination, authentication, connection pooling, retries, rate-limit compliance, and telemetry collection on behalf of the application.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The pattern derives its name from diplomacy: just as an ambassador represents their home country in a foreign land, handling protocol, negotiation, and cultural translation, the ambassador proxy represents the application in its interactions with external systems. The application interacts with a stable, local interface—typically a loopback address or Unix domain socket—while the ambassador absorbs the complexity of the remote system's failure modes, security requirements, and behavioral idiosyncrasies.
-        </p>
+        </HighlightBlock>
         <p>
           This pattern is distinct from—and often confused with—the sidecar pattern and the adapter pattern. A sidecar is a deployment packaging concept: any co-located helper process that shares lifecycle with the primary container. An ambassador is specifically a sidecar whose responsibility is <em>delegated outbound communication</em>. An adapter, by contrast, is an interface translation layer that maps semantics and data models rather than network behavior. In practice, many production systems deploy an ambassador as a sidecar and still use a small adapter layer within the application code to map the ambassador's responses into domain models. What matters is clarity about responsibilities so that connection management, resilience logic, and telemetry aggregation are not duplicated across services.
         </p>
@@ -54,14 +58,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Delegation and Proxying</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           At the heart of the Ambassador pattern is delegation: the application delegates all outbound communication to a local process. This delegation is transparent to the application—the application makes what it believes is a normal network call to a local endpoint, typically on <code>127.0.0.1</code> or via a Unix domain socket, and the ambassador transparently forwards that request to the actual remote destination. The response flows back through the same path.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The delegation boundary is critical. Everything the application cares about—business logic, domain models, request/response handling—stays in the application. Everything that is purely about <em>how</em> to communicate with the external system—TLS version negotiation, certificate validation, request signing, OAuth token refresh, retry budgets, rate-limit headers—lives in the ambassador. This separation means the application code remains focused on its core domain, while the ambassador becomes the authoritative source of knowledge about the external system's operational characteristics.
-        </p>
+        </HighlightBlock>
 
         <h3>Telemetry Aggregation</h3>
         <p>
@@ -107,14 +114,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Deployment Topology: Per-Workload vs. Shared</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most critical architectural decision for the Ambassador pattern is the deployment topology. An ambassador can be deployed per-workload, meaning each application instance has its own dedicated ambassador process co-located in the same pod or on the same host. Alternatively, it can be deployed as a shared service, where a small pool of ambassador instances serves multiple application instances across the cluster.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Per-workload deployment provides maximum isolation. Each application's ambassador operates independently, so a misconfiguration or failure in one ambassador cannot affect other applications. The failure blast radius is limited to a single workload. Per-workload deployment also enables workload-specific tuning—different ambassadors can have different retry budgets, timeout configurations, and circuit-breaking thresholds tailored to the specific application's needs. However, per-workload deployment increases the operational overhead of the fleet, as each ambassador instance must be monitored, updated, and maintained individually.
-        </p>
+        </HighlightBlock>
         <p>
           Shared ambassador deployment reduces fleet overhead by consolidating ambassador instances into a shared pool. This pool is easier to manage, update, and monitor centrally. Shared ambassadors also benefit from aggregated request volume, which improves the statistical accuracy of health assessments and circuit-breaking decisions. However, shared deployment introduces cross-tenant coupling—a misconfiguration affecting one provider impacts all applications using that ambassador, and a single overloaded ambassador can become a bottleneck for multiple workloads. The shared model also concentrates the failure blast radius, making careful capacity planning and auto-scaling essential.
         </p>
@@ -149,14 +159,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>Direct Integration vs. Ambassador</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fundamental trade-off is between direct integration, where each application communicates directly with the external system, and ambassador-mediated integration. Direct integration has lower operational complexity—there is no additional component to deploy, monitor, or maintain. Each application can tune its own retry strategy, timeout, and connection parameters to its specific needs. Direct integration also avoids the additional latency hop introduced by the ambassador, which typically adds one to five milliseconds per request for local proxying.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           However, direct integration means every application team must understand the external system's failure modes, rate limits, authentication mechanisms, and error codes. When the provider changes its API, every team must update their integration. When an incident occurs, every team must independently diagnose whether the provider is at fault. This duplication of effort scales poorly as the number of services and external dependencies grows. The ambassador pattern trades a small amount of latency and operational overhead for massive gains in consistency, observability, and organizational efficiency.
-        </p>
+        </HighlightBlock>
 
         <h3>Ambassador vs. API Gateway</h3>
         <p>
@@ -188,16 +201,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Define Clear Boundaries</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Establish a clear contract between the application and the ambassador. The contract should specify the local endpoint format, the expected request structure, the response format including error responses, and the trace context propagation mechanism. This contract should be versioned and treated as an internal API—changes require review, testing, and progressive rollout. Applications should not make assumptions about the ambassador's internal behavior; they should interact with it strictly through the defined contract.
-        </p>
+        </HighlightBlock>
 
         <h3>Implement Bounded Retries</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Retry policies in the ambassador must be bounded to prevent retry amplification. Define a maximum retry count that is small—typically two to three retries for transient failures. Use jittered exponential backoff to prevent thundering-herd effects when multiple instances retry simultaneously. Respect the external system's Retry-After headers when provided. Implement a retry budget that limits the total percentage of requests that can be retries—typically ten to twenty percent of total traffic. When the retry budget is exhausted, the ambassador should fail fast rather than continuing to retry.
-        </p>
+        </HighlightBlock>
 
         <h3>Centralize Telemetry</h3>
         <p>
@@ -220,14 +236,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Retry Amplification</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most dangerous failure mode of the Ambassador pattern is retry amplification. When an external system degrades, the ambassador retries failed requests. If the retry policy is too aggressive—with high retry counts or insufficient backoff—the ambassador multiplies the load on an already-struggling system. If many application instances each have their own ambassador, the amplification effect compounds: a ten percent failure rate with three retries per instance becomes a forty percent increase in total request volume. This additional load can push the external system from partial degradation to complete outage, which in turn causes even more retries, creating a positive feedback loop that collapses both systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The mitigation is to enforce strict retry budgets. Limit the total number of retries to two or three. Use jittered exponential backoff with a wide jitter range to spread retries over time. Monitor the retry rate as a percentage of total traffic and alert when it exceeds a threshold. Implement circuit breaking that opens when retry rates indicate systemic failure, preventing further retries until the external system has time to recover.
-        </p>
+        </HighlightBlock>
 
         <h3>Token Refresh Storms</h3>
         <p>
@@ -267,14 +286,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Payment Provider Integration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform integrated with multiple payment providers—Stripe, PayPal, and a regional provider for emerging markets. Each provider had different rate limits, authentication mechanisms, error code conventions, and failure patterns. Without an ambassador, each service team implemented its own integration logic, leading to inconsistent retry behavior, duplicated token refresh code, and difficulty diagnosing provider-specific outages.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The platform deployed a per-workload ambassador using Envoy proxy with provider-specific configuration. The ambassador managed TLS termination, OAuth token refresh with jittered scheduling, rate-limit compliance per provider, retry budgets with circuit breaking, and comprehensive telemetry for each provider. During a partial outage of one payment provider, the ambassador's circuit breaker opened within thirty seconds, failing fast for non-essential calls while preserving capacity for payment authorization. The platform maintained eighty-five percent checkout success rate during the outage, compared to forty percent during a previous similar incident without the ambassador. Telemetry from the ambassador allowed the on-call team to identify the provider as the root cause within two minutes, versus forty-five minutes in the previous incident.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Multi-Tenant External API Integration</h3>
         <p>
@@ -306,14 +328,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the Ambassador pattern and how does it differ from a sidecar or adapter?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               The Ambassador pattern introduces a dedicated local proxy that acts as a representative for an external service. The application communicates with the ambassador over a local interface (loopback or Unix socket), and the ambassador handles all aspects of the remote communication including TLS, authentication, retries, rate-limit compliance, and telemetry collection. The key idea is that the application should not need to understand every nuance of a third-party API, network policy, or legacy protocol—the ambassador provides a stable local contract and absorbs the messy parts of operating an external dependency.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               The Ambassador pattern differs from a sidecar in scope and purpose. A sidecar is a general deployment pattern concept: any co-located helper process that shares lifecycle with the primary container. An ambassador is specifically a sidecar whose responsibility is delegated outbound communication. Not all sidecars are ambassadors—a log-forwarding sidecar or a metrics collector is not an ambassador because it does not represent a remote dependency.
             </p>

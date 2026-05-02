@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function GraphDatabasesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Graph databases</strong> model data as nodes (entities) and edges (relationships) with properties on both. Unlike relational databases that use joins to connect tables, graph databases store relationships as first-class citizens—edges are physically stored as pointers between nodes. This enables efficient traversals (following relationships) regardless of data depth. Graph databases excel at relationship-heavy queries: finding connections between entities, path discovery, pattern matching, and network analysis.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The distinction matters for system design: graph databases (Neo4j, Amazon Neptune, JanusGraph) excel when relationships are as important as entities (social networks, fraud detection, recommendation engines). Relational databases excel when data has structured relationships with complex aggregations. Document databases excel when data is hierarchical with few cross-references. Graph databases trade general-purpose query flexibility for relationship traversal performance.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, understanding graph database trade-offs is essential for relationship-heavy architectures. Key decisions include: graph model (property graph vs RDF), query language (Cypher for Neo4j, Gremlin for traversals, SPARQL for RDF), partitioning strategy (by community, by entity type), and traversal depth limits (prevent query explosions). Use cases: social networks (friend recommendations), fraud detection (uncovering rings), knowledge graphs (entity relationships), master data management (complex hierarchies), and network/IT operations (dependency mapping).
         </p>
@@ -42,13 +46,16 @@ export default function GraphDatabasesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Nodes:</strong> Nodes represent entities (people, products, accounts, transactions). Nodes have labels (types) and properties (attributes). Example: a Person node has labels [Person, Customer] and properties (name, email, created_at). Labels enable indexing and querying by type. Properties store entity attributes. Nodes can have multiple labels for polymorphic queries. Node IDs are internal identifiers—use properties for business keys.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Edges (Relationships):</strong> Edges represent relationships between nodes with direction and type. Example: (Person)-[PURCHASED]-&gt;(Product) with properties (quantity, price, date). Edges are stored as physical pointers—traversing edges is O(1) regardless of graph size. Relationships can have properties (timestamp, weight, confidence). Direction matters for queries but can be traversed either way. Relationship types should be verbs (PURCHASED, FRIEND_OF, WORKS_AT).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Property Graph Model:</strong> Most graph databases use property graph model—nodes and edges both have properties. Alternative is RDF (Resource Description Framework) with subject-predicate-object triples. Property graphs are more intuitive for application developers. RDF is better for semantic web and linked data. Neo4j, Amazon Neptune (property graph mode), and JanusGraph use property graph model. Property graphs support rich queries with property filters.
           </li>
@@ -72,17 +79,20 @@ export default function GraphDatabasesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Aspect</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Aspect</th>
               <th className="p-3 text-left">Graph Databases</th>
               <th className="p-3 text-left">Relational Databases</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3">
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3">
                 <strong>Data Model</strong>
               </td>
               <td className="p-3">
@@ -99,8 +109,8 @@ export default function GraphDatabasesArticle() {
                 <br />
                 • Rigid schema
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Traversal Performance</strong>
               </td>
@@ -118,8 +128,8 @@ export default function GraphDatabasesArticle() {
                 <br />
                 • Deep joins expensive
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Query Flexibility</strong>
               </td>
@@ -137,7 +147,7 @@ export default function GraphDatabasesArticle() {
                 <br />
                 • Subqueries
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Use Cases</strong>
@@ -169,13 +179,16 @@ export default function GraphDatabasesArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Model for Query Patterns:</strong> Design graph schema based on traversal patterns, not entity relationships. If you frequently query "friends who bought X," model (Person)-[FRIEND]-&gt;(Person) and (Person)-[PURCHASED]-&gt;(Product). Create indexes on frequently queried properties (name, email, id). Avoid over-modeling—start with core entities and relationships, expand based on actual queries. Document traversal patterns for team consistency.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Control High-Degree Nodes:</strong> High-degree nodes (celebrities with millions of followers, popular products) cause traversal explosions. Mitigation: cap traversal depth (limit to depth 3-4), use super-node pattern (split high-degree nodes into shards), cache traversal results for hot nodes, use async traversal for deep queries. Monitor node degree distribution and alert on outliers. High-degree nodes are the #1 cause of graph database performance issues.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Meaningful Relationship Types:</strong> Relationship types should be specific and directional. Use PURCHASED not BOUGHT, CREATED not MADE. Direction should reflect natural flow (Person PURCHASED Product, not bidirectional). Specific types enable efficient queries (find all PURCHASED relationships vs all relationships). Document relationship semantics for team. Use consistent naming conventions across graph.
           </li>
@@ -193,13 +206,16 @@ export default function GraphDatabasesArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ul className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Neo4j for Fraud Detection (Financial Services):</strong> Banks use Neo4j for fraud detection—transactions modeled as (Account)-[TRANSFERRED_TO]-&gt;(Account) with properties (amount, timestamp). Graph queries detect fraud rings (cycles of transfers), mule accounts (many incoming, few outgoing), and unusual patterns (rapid transfers through multiple accounts). Graph traversals find connections that relational joins miss. Real-time fraud scoring during transactions. Graph enables pattern detection across millions of transactions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Amazon Neptune for Social Networks (LinkedIn):</strong> LinkedIn uses graph databases for "People You May Know" recommendations. Users modeled as nodes, connections as edges. Graph traversals find mutual connections (friends-of-friends), calculate connection strength (shared companies, schools), and rank recommendations. Graph enables efficient depth-2 traversals (friend-of-friend) across hundreds of millions of users. Recommendations updated in real-time as network evolves.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Neo4j for Recommendation Engines (eCommerce):</strong> eCommerce platforms use Neo4j for product recommendations. Products and users modeled as nodes, interactions (viewed, purchased, liked) as edges. Graph queries find similar users (collaborative filtering), similar products (co-purchase patterns), and personalized recommendations (users like you bought). Graph enables real-time recommendations during browsing. Recommendations improve as more interaction data is collected.
           </li>
@@ -217,15 +233,18 @@ export default function GraphDatabasesArticle() {
 
       <section>
         <h2>Security Considerations</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Access Control</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Graph-Level Security:</strong> Implement graph-level access control (read, write, traverse permissions). Neo4j supports roles and permissions (reader, editor, admin). Use database roles for permission management. Restrict write access to trusted services. Audit graph modifications (who created/modified nodes and edges). Use read replicas for read-only access.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Row-Level Security:</strong> Implement row-level security for multi-tenant graphs (tenant_id property on nodes). Filter queries by tenant (WHERE n.tenant_id = current_tenant). Use database views or query rewriting for automatic filtering. Prevent cross-tenant data leaks (application bug cannot access other tenant data). Defense-in-depth alongside application access control.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Traversal Security:</strong> Limit traversal depth to prevent graph exploration attacks (malicious users exploring entire graph). Set maximum traversal depth in queries. Implement query timeouts to prevent runaway queries. Monitor for unusual traversal patterns (depth 10+ traversals). Restrict access to graph metadata (schema, labels, relationship types).
             </li>
@@ -262,15 +281,18 @@ export default function GraphDatabasesArticle() {
 
       <section>
         <h2>Performance Optimization</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Traversal Optimization</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Start from Indexed Nodes:</strong> Always start traversals from indexed properties (node lookups). Neo4j must scan all nodes if starting point is not indexed. Use indexes on labels and frequently queried properties. Example: index on Person.email for user lookups. Monitor index usage and add missing indexes. Indexes accelerate node lookups, not traversals.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Filter Early:</strong> Apply filters (WHERE clauses) as early as possible in traversal. Reduces intermediate result set size. Neo4j query planner optimizes filter placement, but explicit early filtering helps. Example: filter by date before traversing relationships. Monitor query plans for filter placement. Use EXPLAIN to analyze query plans.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Use Relationship Types:</strong> Specify relationship types in traversals. (Person)-[PURCHASED]-&gt;() is faster than (Person)-[]-&gt;() (all relationships). Reduces edges to traverse. Use specific relationship types (PURCHASED, VIEWED, LIKED) not generic (RELATED_TO). Document relationship type vocabulary for team consistency.
             </li>
@@ -313,15 +335,18 @@ export default function GraphDatabasesArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Storage:</strong> Graph databases store nodes, edges, and properties. Estimate: 100-500 bytes per node, 50-200 bytes per edge. Neo4j store files grow with graph size. SSDs recommended for performance. Estimate: $0.10-0.20/GB/month for SSD storage. Indexes add 20-50 percent overhead. Monitor storage growth, archive old data.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Memory:</strong> Graph databases are memory-intensive for caching. Neo4j page cache should fit working set. Estimate: 16-64GB RAM for moderate graphs, 128GB+ for large graphs. Memory directly impacts traversal performance. Monitor cache hit rate. Scale memory before hitting limits.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Compute:</strong> Traversal-heavy workloads require more CPU. Estimate: 4-8 vCPU for moderate workloads, 16+ vCPU for high-throughput. Parallel traversals benefit from more cores. Monitor CPU usage during peak traversals. Scale vertically for more throughput.
             </li>
@@ -358,12 +383,15 @@ export default function GraphDatabasesArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What makes graph databases fast for relationship queries?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What makes graph databases fast for relationship queries?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Graph databases use index-free adjacency—edges are stored as physical pointers between nodes. Traversing an edge is O(1) regardless of total graph size. In relational databases, joins require index lookups (O(log n)) for each hop, and cost grows with table size. Graph databases maintain constant traversal cost per hop. Example: finding friends-of-friends (depth 2 traversal) takes same time whether graph has 1000 nodes or 100 million nodes. This makes graph databases ideal for social networks, fraud detection, and recommendation engines where relationship depth matters. Trade-off: graph databases sacrifice general-purpose query flexibility (aggregations, complex filtering) for traversal performance.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

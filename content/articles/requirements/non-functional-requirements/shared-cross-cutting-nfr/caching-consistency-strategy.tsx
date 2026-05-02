@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,18 +25,21 @@ export default function CachingConsistencyStrategyArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Caching Consistency Strategy</strong> addresses the fundamental tension between
           performance (caching data for fast access) and correctness (ensuring cached data reflects the
           current state). In distributed systems with multiple cache layers—browser, CDN, application,
           and database—maintaining consistency is one of the most challenging problems in systems design.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The CAP theorem tells us we cannot have perfect consistency, availability, and partition tolerance
           simultaneously. Caching strategies make explicit trade-offs based on use case requirements. For
           staff and principal engineers, caching consistency is a critical architectural decision—the
           strategy you choose impacts system latency, database load, user experience, and data correctness.
-        </p>
+        </HighlightBlock>
         <p>
           The difficulty of cache invalidation is legendary—Phil Karlton&apos;s famous quote that &quot;there
           are only two hard things in Computer Science: cache invalidation and naming things&quot; persists
@@ -53,7 +57,10 @@ export default function CachingConsistencyStrategyArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consistency models define what guarantees the cache provides about data freshness, and different
           models suit different use cases. Strong consistency ensures every read returns the most recent
           write—the cache is always synchronized with the source of truth. This is implemented by
@@ -62,9 +69,9 @@ export default function CachingConsistencyStrategyArticle() {
           transactions like account balances, inventory management to prevent overselling, access control
           decisions, and auction bidding. The trade-off is higher latency, reduced cache effectiveness, and
           increased database load.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Eventual consistency allows reads to return stale data temporarily, with the guarantee that data
           will eventually converge to the latest value. This is the most common model for distributed caches,
           implemented through time-based expiration (TTL), asynchronous cache invalidation, and lazy cache
@@ -72,7 +79,7 @@ export default function CachingConsistencyStrategyArticle() {
           minimizes latency, and provides high availability—at the cost of potentially serving stale data.
           It works well for social media feeds, product catalogs where brief price delays are acceptable,
           user profiles, analytics dashboards, and search results.
-        </p>
+        </HighlightBlock>
 
         <p>
           Read-your-writes consistency ensures users always see their own writes immediately, even if other
@@ -124,14 +131,17 @@ export default function CachingConsistencyStrategyArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A caching architecture typically involves multiple layers, each with distinct topology, request
           flow, and data flow characteristics. Understanding how requests traverse these layers and how
           data flows through them for both reads and writes is essential for designing effective consistency
           strategies.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The browser cache sits at the outermost layer, controlled by HTTP headers such as Cache-Control,
           ETag, and Last-Modified. Static assets like JavaScript, CSS, and images can be cached for up to a
           year with content hashing, while API responses typically cache for seconds to minutes, and HTML
@@ -140,7 +150,7 @@ export default function CachingConsistencyStrategyArticle() {
           configured based on path, headers, and cookies, with purge APIs available for invalidation. Static
           assets cache for hours to days at the CDN layer, API responses for seconds to minutes, and dynamic
           content is not cached at all.
-        </p>
+        </HighlightBlock>
 
         <p>
           The application cache layer uses in-memory stores like Redis or Memcached within the application
@@ -188,11 +198,14 @@ export default function CachingConsistencyStrategyArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Every caching strategy involves explicit trade-offs between consistency, latency, complexity, and
           cost. Understanding these trade-offs enables informed decisions that match the requirements of
           each data type and access pattern.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cache-Aside vs Write-Through vs Write-Behind</h3>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
@@ -320,7 +333,7 @@ export default function CachingConsistencyStrategyArticle() {
           </table>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Real systems rarely use a single pattern. A production system typically combines cache-aside for
           most data, write-through for critical data requiring strong consistency, TTL as a safety net even
           with explicit invalidation, and version-based invalidation for specific use cases where atomic
@@ -328,12 +341,15 @@ export default function CachingConsistencyStrategyArticle() {
           decision. For most applications, a centralized cache cluster like Redis is simpler and sufficient,
           while distributed local caches with pub-sub invalidation add complexity but reduce network hops
           for latency-sensitive workloads.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The cache strategy should be chosen per data type rather than applied uniformly across the system.
           Cache-aside works best for most read-heavy workloads where occasional staleness is acceptable.
           Write-through is appropriate for data requiring strong consistency, such as financial data or
@@ -341,9 +357,9 @@ export default function CachingConsistencyStrategyArticle() {
           each data type, not arbitrarily. Cache warming should be implemented for predictable traffic
           patterns—pre-populating the cache before high-traffic periods or after deployments prevents the
           thundering herd problem when cold caches drive all requests to the database.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Invalidation logic should be centralized and consistent across all code paths to avoid situations
           where some paths invalidate cache entries and others do not. Version-based invalidation provides
           atomic updates without race conditions, while tag-based invalidation handles complex scenarios
@@ -351,7 +367,7 @@ export default function CachingConsistencyStrategyArticle() {
           a safety net to prevent permanently stale entries if invalidation logic fails. Monitoring
           invalidation latency and success rate ensures that invalidation events are actually reaching all
           cache nodes.
-        </p>
+        </HighlightBlock>
 
         <p>
           Monitoring should track cache hit rate per data type—not just overall—because an aggregate hit
@@ -373,16 +389,19 @@ export default function CachingConsistencyStrategyArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Caching everything is a common mistake—not all data benefits from caching. Data that is rarely
           accessed or changes constantly provides little cache benefit while adding complexity and
           staleness risk. Always set a TTL as a safety net; entries that never expire lead to permanently
           stale data when invalidation logic fails for any reason. Inconsistent invalidation where some code
           paths invalidate cache entries and others do not leads to unpredictable staleness—centralizing
           invalidation logic prevents this.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cache stampede (dog-piling) occurs when a popular cache entry expires and many simultaneous
           requests hit the database. Solutions include probabilistic early expiration that refreshes the
           cache before the TTL expires with increasing probability as the TTL approaches, a lock or mutex
@@ -392,7 +411,7 @@ export default function CachingConsistencyStrategyArticle() {
           happens when requests for non-existent keys bypass the cache and hit the database every time—cache
           null values with a short TTL, use bloom filters to check key existence before querying, and
           validate input to reject invalid keys early.
-        </p>
+        </HighlightBlock>
 
         <p>
           Cache avalanche occurs when many cache entries expire simultaneously, often after a deployment or
@@ -410,7 +429,10 @@ export default function CachingConsistencyStrategyArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Twitter uses a multi-layer caching architecture with hundreds of Redis and Memcached instances to
           serve timelines. Their approach combines cache-aside for timeline data with write-behind for
           tweet counts and analytics. Twitter implements read-your-writes consistency so that users
@@ -418,16 +440,16 @@ export default function CachingConsistencyStrategyArticle() {
           They use version-based cache keys for timelines, incrementing the version on each new tweet to
           atomically invalidate the old timeline cache. Twitter&apos;s cache infrastructure handles millions
           of requests per second with P99 latencies under 200 milliseconds.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook&apos;s TAO (The Associations and Objects) system is a distributed data store optimized
           for the social graph. TAO uses a two-layer cache architecture: a leader-follower cache layer for
           read-your-writes consistency and a separate Memcached layer for read scalability. Facebook handles
           cache coherence through leader-based writes—each cache object has a designated leader that
           serializes writes, preventing conflicting updates. TAO provides eventual consistency for most
           reads but guarantees read-your-writes consistency for the user&apos;s own actions.
-        </p>
+        </HighlightBlock>
 
         <p>
           Amazon&apos;s product catalog uses TTL-based caching with moderate TTLs (5-15 minutes) because
@@ -449,10 +471,13 @@ export default function CachingConsistencyStrategyArticle() {
 
       <section>
         <h2>Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What cache invalidation strategy would you use for a product catalog?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What cache invalidation strategy would you use for a product catalog?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: For a product catalog, I would use TTL-based caching with a moderate TTL of 5 to 15 minutes
               since product data changes infrequently relative to read volume. On product updates, I would
               implement explicit invalidation through an event-driven system—when a product is updated in the
@@ -461,7 +486,7 @@ export default function CachingConsistencyStrategyArticle() {
               The cache-aside pattern works well for the read path, with TTL serving as a safety net even when
               explicit invalidation is in place. Monitoring hit rates and adjusting TTLs based on access
               patterns ensures the cache remains effective.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Atomic Design</strong> is a methodology for creating design systems through a hierarchical component structure. Created by Brad Frost, it borrows from chemistry to establish five distinct levels: atoms, molecules, organisms, templates, and pages. This methodology provides a clear mental model for organizing components, enabling teams to build scalable, maintainable, and consistent user interfaces.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Atomic Design addresses a fundamental challenge in frontend development: how do we create component libraries that scale from dozens to hundreds of components while maintaining consistency and reusability? Without a structured approach, component libraries become disorganized collections of UI elements with unclear relationships, duplicate implementations, and inconsistent APIs.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, Atomic Design provides a framework for making architectural decisions about component granularity, composition patterns, and design system organization. It answers questions like: Should this be one component or two? How do we share common functionality? What belongs in the design system versus the application?
         </p>
@@ -45,6 +49,9 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/component-design/atomic-design-hierarchy.svg"
@@ -53,14 +60,14 @@ export default function ArticlePage() {
         />
 
         <h3>The Five Levels of Atomic Design</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Atomic Design establishes five distinct levels, each serving a specific purpose in the component hierarchy.
-        </p>
+        </HighlightBlock>
 
         <h4>Atoms: The Building Blocks</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Atoms are the smallest, most fundamental building blocks. They cannot be broken down further without losing functionality. Examples include buttons, input fields, labels, icons, colors, fonts, and animations. Atoms are typically simple, highly reusable, and have minimal dependencies.
-        </p>
+        </HighlightBlock>
         <p>
           Key characteristics of atoms include being visually simple with a single responsibility, highly reusable across different contexts, having minimal or no business logic, and being thoroughly tested due to wide usage. A button atom might accept props for size, variant, and disabled state, but contains no knowledge of what it's used for.
         </p>
@@ -116,9 +123,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing Atomic Design requires thoughtful architecture decisions about component organization, dependencies, and data flow.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/component-design/composition-patterns.svg"
@@ -127,9 +137,9 @@ export default function ArticlePage() {
         />
 
         <h3>Component Directory Structure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Organize components by Atomic level to make the hierarchy explicit. Create directories for atoms, molecules, organisms, templates, and pages. Within each directory, organize by component name. This structure makes it immediately clear what level each component operates at and what it can depend on.
-        </p>
+        </HighlightBlock>
         <p>
           Atoms should have no dependencies on other components. Molecules depend only on atoms. Organisms depend on atoms and molecules. Templates depend on organisms, molecules, and atoms. Pages depend on templates and can include any level. This dependency flow prevents circular dependencies and keeps the architecture clean.
         </p>
@@ -161,9 +171,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Atomic Design involves trade-offs between structure and flexibility, upfront investment and long-term maintainability.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -198,19 +211,22 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that Atomic Design provides structure without rigidity. The hierarchy guides organization but doesn't prevent creative solutions. For large design systems with multiple teams, the structure pays for itself in reduced confusion and improved consistency.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Start with atoms and work up. Build your foundational atoms first, then compose molecules, then organisms. This bottom-up approach ensures atoms are well-designed before being used everywhere. Document each component's level in the hierarchy. Make it clear whether a component is an atom, molecule, or organism.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Keep atoms simple and focused. If an atom has multiple responsibilities, consider breaking it down or making it a molecule. Enforce dependency rules. Atoms shouldn't import molecules. Organisms shouldn't import templates. Use TypeScript or PropTypes to enforce component interfaces.
-        </p>
+        </HighlightBlock>
         <p>
           Create a component catalog using tools like Storybook. Document each component with examples, props, and usage guidelines. Test atoms thoroughly since they're used everywhere. Invest in atom quality. Review new components for proper Atomic level placement during code review.
         </p>
@@ -218,12 +234,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Over-categorization wastes time debating whether something is a molecule or organism. Focus on the mental model, not rigid classification. Creating atoms that are too complex defeats the purpose. Atoms should be simple building blocks, not mini-applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Ignoring the template and page levels means missing the full benefit. Templates and pages complete the methodology by connecting components to real layouts and content. Inconsistent naming across levels creates confusion. Use consistent naming conventions for atoms, molecules, and organisms.
-        </p>
+        </HighlightBlock>
         <p>
           Building everything upfront instead of evolving the system iteratively is inefficient. Start with what you need and grow the system organically. Treating Atomic Design as rigid rules rather than guidelines creates unnecessary friction. Adapt the methodology to your team's needs.
         </p>
@@ -231,14 +250,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Enterprise Design System: Scaling to 500+ Components</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A Fortune 500 company had a disorganized component library with 500+ components. Finding components was difficult, duplication was rampant, and consistency was poor. The solution was reorganizing using Atomic Design. Components were categorized into atoms (80), molecules (150), organisms (200), templates (50), and pages (20).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Results included component discovery time reduced from 30 minutes to 5 minutes, duplicate components reduced by 60 percent, and design-development handoff improved with shared vocabulary. The design system became maintainable and scalable.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Platform: Consistent Multi-Product Experience</h3>
         <p>
@@ -267,14 +289,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What are the five levels of Atomic Design and how do they relate?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Atoms are the smallest building blocks like buttons and inputs. Molecules combine atoms into functional units like search forms. Organisms combine molecules and atoms into complex sections like navigation bars. Templates arrange organisms into page layouts. Pages are template instances with real content.
-            </p>
+            </HighlightBlock>
             <p>
               The relationship is hierarchical: atoms compose molecules, molecules compose organisms, organisms fill templates, templates become pages. Each level builds on the previous, creating a clear component hierarchy.
             </p>

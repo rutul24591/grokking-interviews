@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function RealTimeValidationArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Real-time validation</strong> provides immediate feedback to
           users as they type, validating input continuously or at very short
           intervals rather than waiting for blur or submit events. Unlike
@@ -44,8 +48,8 @@ export default function RealTimeValidationArticle() {
           form (on submit), real-time validation creates a dynamic feedback loop
           where the validation state updates in response to every keystroke or
           at minimal delays (typically 200-500ms after typing stops).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-time validation serves two primary purposes: <strong>guidance</strong> and{" "}
           <strong>confidence</strong>. Guidance helps users format input
           correctly (phone number formatting, password strength indicators).
@@ -54,7 +58,7 @@ export default function RealTimeValidationArticle() {
           implemented well, real-time validation reduces form abandonment rates
           and support tickets caused by validation errors discovered only after
           submission.
-        </p>
+        </HighlightBlock>
         <p>
           The technical challenge of real-time validation lies in balancing
           responsiveness with performance. Validating on every keystroke without
@@ -94,8 +98,11 @@ export default function RealTimeValidationArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Debouncing:</strong> The fundamental technique for real-time
             validation. Debouncing delays validation execution until a specified
             time has elapsed since the last input event. A 300ms debounce means
@@ -105,8 +112,8 @@ export default function RealTimeValidationArticle() {
             shorter delays (100-200ms) feel more responsive but trigger more
             validations; longer delays (400-600ms) reduce validations but feel
             less immediate.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Throttling:</strong> Related to debouncing but different in
             behavior. Throttling ensures validation runs at most once per
             specified interval, regardless of how many input events occur. A
@@ -116,7 +123,7 @@ export default function RealTimeValidationArticle() {
             common for validation than debouncing but useful for continuous
             validation scenarios (e.g., validating a field that's being
             programmatically updated).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Smart Triggering:</strong> Only validating when input
             reaches a meaningful state. For email validation, don&apos;t run
@@ -191,13 +198,16 @@ export default function RealTimeValidationArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-time validation architecture consists of several interconnected
           components: an input event handler that captures user input, a
           debouncing layer that controls validation timing, a validation engine
           that executes rules, an async request manager that handles API calls,
           and a state manager that tracks validation results and updates the UI.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/forms-validation/real-time-validation/realtime-validation-architecture.svg"
@@ -207,7 +217,7 @@ export default function RealTimeValidationArticle() {
           height={600}
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The architecture diagram illustrates how input events flow through the
           system. User input triggers the debouncing layer, which waits for
           typing to pause before passing the value to the validation engine. The
@@ -215,7 +225,7 @@ export default function RealTimeValidationArticle() {
           if needed. The async request manager handles API calls with
           cancellation and caching. Results flow into the state manager, which
           updates the UI with appropriate feedback.
-        </p>
+        </HighlightBlock>
 
         <h3>Debouncing Strategies</h3>
         <p>
@@ -267,20 +277,23 @@ export default function RealTimeValidationArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-time validation involves numerous trade-offs between
           responsiveness, performance, and user experience.
-        </p>
+        </HighlightBlock>
 
         <h3>Real-time vs On-Blur Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Real-time validation</strong> provides immediate feedback but
           requires careful optimization to avoid performance issues. It&apos;s
           best for fields where format matters (email, phone, password), where
           async checks are needed (username availability), or where users
           benefit from guidance (password strength). The cost is implementation
           complexity and potential performance overhead.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>On-blur validation</strong> is simpler and more performant —
           validation runs once when the user leaves the field. It&apos;s
@@ -337,21 +350,24 @@ export default function RealTimeValidationArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Appropriate Debounce Timing:</strong> 300ms is a good
             default for async validation. Use shorter delays (150-200ms) for
             sync validation where immediate feedback is valuable. Use longer
             delays (500ms+) for expensive operations or when API rate limits are
             a concern.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cancel Superseded Requests:</strong> Always implement
             request cancellation for async validation. Use AbortController for
             fetch requests, or track request IDs and ignore responses for stale
             requests. This prevents race conditions and reduces unnecessary
             server load.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cache Validation Results:</strong> Implement a cache for
             async validation results with appropriate TTL. Cache keys should be
@@ -400,20 +416,23 @@ export default function RealTimeValidationArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Validating on Every Keystroke:</strong> The most common
             performance mistake. Without debouncing, a 20-character input
             triggers 20 validations — wasteful for sync validation and
             catastrophic for async. Always debounce real-time validation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Race Conditions:</strong> Not handling out-of-order
             async responses causes incorrect validation states. The response for
             an earlier value may arrive after a later value&apos;s response,
             overwriting the correct state. Always track request IDs or use
             AbortController.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No Loading State:</strong> Users don&apos;t know if
             validation is still running or if the system is unresponsive. Always
@@ -451,9 +470,12 @@ export default function RealTimeValidationArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Username Availability Check</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Registration forms check username availability in real-time. As users
           type, the system debounces input (300ms), checks format (sync:
           alphanumeric, length), then calls the availability API. Loading
@@ -462,10 +484,10 @@ export default function RealTimeValidationArticle() {
           critical — users typing &quot;john&quot; then &quot;johnny&quot;
           should see the result for &quot;johnny&quot;, not a stale
           &quot;john&quot; response.
-        </p>
+        </HighlightBlock>
 
         <h3>Password Strength Meter</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Password fields show real-time strength indicators. Sync validation
           checks length, character variety, common patterns. A strength score
           (0-100) updates as users type, with visual feedback (red → yellow →
@@ -473,7 +495,7 @@ export default function RealTimeValidationArticle() {
           number). Debouncing (150ms) prevents flickering. Accessibility:
           announce strength changes only when category changes (weak → medium),
           not on every score update.
-        </p>
+        </HighlightBlock>
 
         <h3>Coupon Code Validation</h3>
         <p>
@@ -501,19 +523,22 @@ export default function RealTimeValidationArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Common Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is debouncing, and why is it critical for real-time
               validation?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Debouncing is a technique that delays function execution until
               a specified time has elapsed since the last trigger event. For
               validation, this means waiting until the user stops typing for X
               milliseconds before running validation.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               Without debouncing, every keystroke triggers validation. A user
               typing &quot;john.doe@example.com&quot; (20 characters) would

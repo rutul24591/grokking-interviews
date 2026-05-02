@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,12 +28,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Materialized View pattern</strong> stores a precomputed, query-optimized representation of data so that a specific class of reads can be answered with predictable, low latency. Instead of recalculating joins, aggregations, filters, and complex projections on every request, you compute the result—or an intermediate derived structure—once and persist it as a view that can be queried like a table, an index, or a document store.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This pattern is a pragmatic response to a fundamental tension in system design: transactional schemas are designed for correctness, referential integrity, and update efficiency, while many product-facing queries are designed for user experience, reporting, and analytical depth. A single OLTP schema rarely serves both workloads optimally. Materialized views let you keep a well-normalized write model that enforces invariants and still serve rich, aggregation-heavy reads at predictable latency without hammering the primary database.
-        </p>
+        </HighlightBlock>
         <p>
           The distinction between a materialized view and a simple cache is important and frequently tested in interviews. A cache accelerates reads by storing copies of existing data, typically in the same shape as the underlying entity, and can be invalidated or discarded without correctness consequences. A materialized view, by contrast, is a <em>derived model</em>—often with a completely different shape than the source—optimized for specific query patterns and requiring explicit maintenance, refresh workflows, and rebuild procedures. If a cache goes cold, the system slows down. If a materialized view goes stale or corrupt, the system returns <em>wrong answers</em>.
         </p>
@@ -49,6 +53,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/materialized-view-pattern-diagram-1.svg"
@@ -57,12 +64,12 @@ export default function ArticlePage() {
         />
 
         <h3>Two Common Interpretations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Teams use the term &quot;materialized view&quot; in two legitimate but operationally distinct ways. Understanding the distinction is essential for choosing the right approach in any given context.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Database-managed materialized views</strong> are maintained by the database engine itself. Relational databases like PostgreSQL, Oracle, and SQL Server support materialized views as first-class objects. The database provides a refresh mechanism—either manual or periodic—and the view is stored within the same database. This approach is attractive when the database can handle the refresh workload and you want fewer moving parts in your architecture. The view benefits from transactional guarantees during refresh and shares the same connection pool, security model, and backup strategy as the source data. However, refresh cost can be high for large datasets, query constraints may limit what the view can express, and the view competes with the OLTP workload for the same database resources.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Application-managed projections</strong> are maintained by a service that consumes changes—via event sourcing, change data capture, or message queues—and updates a separate read store, which might be Elasticsearch, MongoDB, a dedicated PostgreSQL read replica, or even a key-value store. This approach is common in CQRS architectures and distributed systems where read paths require fundamentally different storage engines, indexing strategies, or data shapes than the write model. The application-managed approach offers far more flexibility: you can project the same source events into multiple read stores, each optimized for different query patterns. However, you are fully responsible for correctness, idempotency, backfilling, ordering guarantees, and operational discipline. The projection service becomes a critical component of your infrastructure.
         </p>
@@ -120,6 +127,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/materialized-view-pattern-diagram-2.svg"
@@ -128,12 +138,12 @@ export default function ArticlePage() {
         />
 
         <h3>Projection Pipeline Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A robust materialized view architecture consists of four logical components. The source of truth is the authoritative system of record—typically an OLTP database or an event store. The change capture mechanism detects modifications to the source and produces a stream of change events. This can be database triggers, write-ahead log tailing via Debezium or CDC connectors, domain events from an event-sourced system, or application-level event publishing. The change capture mechanism must be reliable and ordered per entity to ensure correct projection.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The projection service consumes change events and applies the projection function to update the materialized view. The projection service must be horizontally scalable, idempotent, and resilient to failures. It maintains a processing offset or watermark so it can resume from the last processed event after a restart. The projection function transforms the source event into view updates, which may involve incrementing counters, updating documents, or inserting new rows.
-        </p>
+        </HighlightBlock>
         <p>
           The view store is the persistence layer for the materialized view. It is chosen based on query patterns: Elasticsearch for full-text search and faceting, PostgreSQL for relational queries, Redis for low-latency key-value lookups, ClickHouse for analytical aggregations, or MongoDB for document-based views. The view store is optimized for reads, not writes, and its schema reflects the query shapes, not the source schema.
         </p>
@@ -163,6 +173,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/materialized-view-pattern-diagram-3.svg"
@@ -171,12 +184,12 @@ export default function ArticlePage() {
         />
 
         <h3>Materialized View Versus Caching</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The choice between a materialized view and a cache depends on the nature of the query and the consequences of staleness. Caching stores copies of existing data in the same shape, serves the same query patterns as the underlying store, and can be invalidated without correctness impact—if a cache entry is stale or missing, the system falls back to the source and returns the correct answer. Caching is appropriate when the bottleneck is read throughput for simple lookups and when the data shape does not need transformation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Materialized views store derived data in a different shape optimized for specific query patterns, serve fundamentally different queries than the source, and require explicit maintenance—if a view is stale or corrupt, the system returns wrong answers with no automatic fallback. Materialized views are appropriate when the bottleneck is query complexity—joins, aggregations, faceted search—and when the data shape needs transformation to serve the query efficiently.
-        </p>
+        </HighlightBlock>
         <p>
           The staff-level insight is that these patterns are complementary, not mutually exclusive. A well-designed system often uses materialized views to precompute complex aggregations and then caches the materialized view results for hot queries. The cache accelerates the already-optimized read path, providing two layers of performance improvement.
         </p>
@@ -208,12 +221,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Define the staleness budget explicitly for each materialized view. The staleness budget is the maximum acceptable delay between a source write and the corresponding view update, and it should be documented, measured, and alerted on. Different views serving different product surfaces can have different staleness budgets. A dashboard showing daily metrics may tolerate thirty minutes of lag, while an inventory availability view may need to be within five seconds.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Make the projection function deterministic and idempotent. Determinism ensures that replaying the same event sequence produces the same view state, which is essential for rebuildability. Idempotency ensures that reprocessing an event—due to at-least-once delivery or consumer restart—does not corrupt the view. Use unique event identifiers and upsert semantics rather than blind increments.
-        </p>
+        </HighlightBlock>
         <p>
           Build rebuild capability from day one. The ability to reconstruct the view from the source of truth is not optional—it is a core requirement. Store the event log or change log durably with sufficient retention to cover the maximum rebuild window. Document the rebuild procedure, test it regularly, and ensure the team knows how to execute it during an incident. Practice rebuilds in staging to verify that the procedure works and to measure the time required.
         </p>
@@ -236,12 +252,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most insidious pitfall is silent drift, where the view gradually diverges from the source due to missed events, out-of-order processing, duplicate handling errors, or schema changes that the projection function does not account for. The view continues serving requests quickly, so the failure is not visible through latency metrics. Users see incorrect data and lose trust in the system. Without reconciliation checks, drift can persist for weeks or months before being discovered. The mitigation is continuous reconciliation with automated alerts on any detected divergence.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Out-of-order event processing causes incorrect final state when the projection function is not commutative. If a &quot;order cancelled&quot; event arrives before the corresponding &quot;order created&quot; event, the projection may attempt to cancel a non-existent order or produce negative totals. The mitigation is to enforce per-entity ordering at the consumer level, use versioned updates that check the expected state before applying changes, or design the projection function to be order-independent where possible.
-        </p>
+        </HighlightBlock>
         <p>
           Duplicate event processing inflates counts and corrupts aggregates in at-least-once delivery systems. Without idempotency, processing the same event twice doubles its contribution to aggregates. The mitigation is to use idempotent projection keys that track which events have been processed and skip duplicates, implement deduplication windows that buffer events and deduplicate within the window, and use upsert semantics that overwrite previous values rather than incrementing blindly.
         </p>
@@ -261,14 +280,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Analytics Dashboards</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A SaaS company&apos;s analytics dashboard showed daily active users, revenue totals, conversion rates, and top products. The raw data lived in an operational PostgreSQL database, but computing these aggregates on demand caused expensive sequential scans and unpredictable latency that ranged from 200 milliseconds to 8 seconds depending on the query complexity and database load. As the customer base grew from thousands to millions, the database became a bottleneck that threatened the company&apos;s ability to retain enterprise customers who relied on the dashboard for daily decision-making.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The engineering team built a materialized view pipeline using Debezium to capture change events from PostgreSQL, a Kafka-based projection service that maintained per-day aggregates in ClickHouse, and a reconciliation job that ran nightly to compare ClickHouse aggregates against PostgreSQL. The dashboard query latency dropped from multi-second to sub-100-millisecond lookups, database CPU utilization decreased by 60 percent, and enterprise customer satisfaction improved significantly. The staleness budget of five seconds was well within the dashboard&apos;s tolerance, and the reconciliation job caught two instances of projection drift in the first month of operation.
-        </p>
+        </HighlightBlock>
 
         <h3>Search Index Projections</h3>
         <p>
@@ -308,14 +330,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How is a materialized view different from a cache, and when would you choose one over the other?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               A cache stores copies of existing data in the same shape as the source, serves the same query patterns, and can be invalidated without correctness consequences—if a cache entry is stale, the system falls back to the source and returns the correct answer. A materialized view stores derived data in a different shape optimized for specific query patterns, serves fundamentally different queries than the source, and requires explicit maintenance—if a view is stale or corrupt, the system returns wrong answers with no automatic fallback.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               Choose caching when the bottleneck is read throughput for simple lookups, when the data shape does not need transformation, and when cache misses are acceptable. Choose materialized views when the bottleneck is query complexity—joins, aggregations, faceted search—when the data shape needs transformation to serve the query efficiently, and when the query pattern is stable enough to justify the maintenance cost.
             </p>

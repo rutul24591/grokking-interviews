@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ConflictResolutionArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Conflict Resolution enables systems to detect and resolve conflicts that occur during concurrent operations. Systems can configure conflict detection (configure how to detect conflicts), set conflict strategies (set how to resolve conflicts), implement resolution policies (implement resolution policies), handle conflicts (handle conflicts), and manage conflicts (manage conflict process). Conflict resolution is fundamental to data consistency (maintain data consistency), system reliability (maintain system reliability), and user experience (maintain user experience). For distributed systems, effective conflict resolution is essential for data consistency, system reliability, and user experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, conflict resolution architecture involves conflict detection (detect conflicts), conflict strategies (define conflict strategies), resolution policies (define resolution policies), conflict handling (handle conflicts), and conflict management (manage conflict process). The implementation must balance consistency (resolve conflicts) with performance (don&apos;t overhead system) and user experience (maintain user experience). Poor conflict resolution leads to data corruption, system failures, and user frustration.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of conflict resolution extends beyond simple conflict detection. Conflict detection (detect conflicts). Conflict strategies (define conflict strategies). Resolution policies (define resolution policies). Conflict handling (handle conflicts). Conflict management (manage conflict process). For staff engineers, conflict resolution is a data consistency infrastructure decision affecting data consistency, system reliability, and user experience.
         </p>
@@ -46,13 +50,16 @@ export default function ConflictResolutionArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Conflict Detection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Version detection detects conflicts by version. Version check (check versions). Version comparison (compare versions). Version conflict (detect version conflict). Version detection enables version detection. Benefits include accuracy (accurate detection), consistency (data consistency). Drawbacks includes detection overhead (detection overhead), complexity (complexity).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Timestamp detection detects conflicts by timestamp. Timestamp check (check timestamps). Timestamp comparison (compare timestamps). Timestamp conflict (detect timestamp conflict). Timestamp detection enables timestamp detection. Benefits include accuracy (accurate detection), simplicity (simplicity). Drawbacks includes detection overhead (detection overhead), clock issues (clock issues).
-        </p>
+        </HighlightBlock>
         <p>
           Content detection detects conflicts by content. Content check (check content). Content comparison (compare content). Content conflict (detect content conflict). Content detection enables content detection. Benefits include accuracy (accurate detection), completeness (complete detection). Drawbacks includes detection overhead (detection overhead), complexity (complexity).
         </p>
@@ -104,9 +111,12 @@ export default function ConflictResolutionArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Conflict resolution architecture spans detection service, strategy service, policy service, and handling service. Detection service manages detection. Strategy service manages strategies. Policy service manages policies. Handling service manages handling. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/conflict-resolution/conflict-architecture.svg"
@@ -117,9 +127,9 @@ export default function ConflictResolutionArticle() {
         />
 
         <h3>Detection Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Detection service manages detection. Detection storage (store detection). Detection retrieval (retrieve detection). Detection update (update detection). Detection service is the core of conflict resolution. Benefits include centralization (one place for detection), consistency (same detection everywhere). Drawbacks includes complexity (manage detection), coupling (services depend on detection service).
-        </p>
+        </HighlightBlock>
         <p>
           Detection policies define detection rules. Default detection (default detection). Detection validation (validate detection). Detection sync (sync detection). Detection policies automate detection management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function ConflictResolutionArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Conflict resolution design involves trade-offs between strict and lenient detection, automatic and manual resolution, and aggressive and conservative handling. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Detection: Strict vs. Lenient</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Strict detection (strictly detect). Pros: High accuracy (high accuracy), no missed conflicts (no missed conflicts), data consistency (data consistency). Cons: Overhead (overhead), may detect false (may detect false), complexity (complexity). Best for: High accuracy, data consistency.
-        </p>
+        </HighlightBlock>
         <p>
           Lenient detection (leniently detect). Pros: Lower overhead (lower overhead), no false detection (no false detection), simplicity (simplicity). Cons: May miss conflicts (may miss conflicts), data issues (data issues), accuracy issues (accuracy issues). Best for: Lower overhead, simplicity.
         </p>
@@ -207,13 +220,16 @@ export default function ConflictResolutionArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide conflict detection:</strong> Version detection. Timestamp detection. Content detection. Let users choose.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement conflict strategies:</strong> Last write wins. First write wins. Merge wins.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Define resolution policies:</strong> Automatic resolution. Manual resolution. Hybrid resolution.
           </li>
@@ -243,13 +259,16 @@ export default function ConflictResolutionArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No conflict detection:</strong> Can&apos;t detect conflicts. <strong>Solution:</strong> Provide conflict detection.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No conflict strategies:</strong> No strategies. <strong>Solution:</strong> Implement conflict strategies.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No resolution policies:</strong> No policies. <strong>Solution:</strong> Define resolution policies.
           </li>
@@ -279,16 +298,19 @@ export default function ConflictResolutionArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Database Conflict Resolution</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Database platforms provide conflict resolution. Write conflicts (resolve write conflicts). Transaction conflicts (resolve transaction conflicts). Replication conflicts (resolve replication conflicts). Users control database conflict resolution.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Cloud Service Conflict Resolution</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cloud services provide conflict resolution. Service conflicts (resolve service conflicts). Resource conflicts (resolve resource conflicts). Operation conflicts (resolve operation conflicts). Users control cloud service conflict resolution.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Microservice Conflict Resolution</h3>
         <p>
@@ -308,12 +330,15 @@ export default function ConflictResolutionArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design conflict resolution that balances consistency with performance?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design conflict resolution that balances consistency with performance?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement conflict resolution with performance because users want consistency (data correct, no lost updates) but want performance (not slow down every write). Detect conflicts: detect conflicts (version conflicts, timestamp conflicts, content conflicts)—identify conflicts before data corruption. Resolve conflicts: resolve conflicts (automatic resolution, manual resolution, merge)—handle conflicts appropriately. Monitor performance: monitor performance (conflict rate, resolution time, performance impact)—identify optimization opportunities, balance consistency with cost. The performance insight: users want consistency but want performance—provide detection (version, timestamp, content), resolution (automatic, manual, merge), monitoring (rate, time, impact), and balance data consistency with performance.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

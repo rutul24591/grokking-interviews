@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -25,7 +26,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Dashboards</strong> are curated, purpose-built interfaces that transform raw telemetry into
           situational awareness for operators, engineers, and stakeholders. They are not a random collection of
           charts pasted onto a shared screen during an incident. A well-designed dashboard answers specific,
@@ -33,8 +37,8 @@ export default function ArticlePage() {
           system recently? Where is the bottleneck concentrated? Did the mitigation action produce the expected
           recovery signal? These questions form the foundation of dashboard design, and every panel on a
           dashboard should map directly to answering at least one of them.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most important property of a dashboard is not its visual polish or the density of information it
           packs into a viewport. It is <strong>decision value</strong>. Every panel on a dashboard must either
           help detect user impact, narrow the scope of an investigation, isolate a root cause, or verify that a
@@ -42,7 +46,7 @@ export default function ArticlePage() {
           that slows responders down during an incident. This principle separates operational dashboards from
           business intelligence dashboards, which serve different audiences with different time horizons and
           different definitions of signal.
-        </p>
+        </HighlightBlock>
         <p>
           Good defaults matter enormously in dashboard design. The choice of time range determines whether
           responders see a transient spike or a sustained trend. The choice of statistical representation
@@ -97,7 +101,10 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of effective dashboard design begins with the concept of <strong>audience
           segmentation</strong>. A common failure mode is attempting to serve every possible audience with a
           single dashboard, which produces a sprawling panel collection that no single audience can use
@@ -108,8 +115,8 @@ export default function ArticlePage() {
           visibility into node-level resource pressure, network conditions, and storage performance. These
           are fundamentally different informational needs, and no single dashboard can satisfy them all
           without becoming unwieldy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The solution is a <strong>layered dashboard architecture</strong>, where each layer serves a
           specific audience with specific informational needs and links to the next layer for deeper
           investigation. The top layer is the overview dashboard, which shows user-facing availability,
@@ -119,7 +126,7 @@ export default function ArticlePage() {
           health, timeout rates, retry behavior, circuit breaker states, and error fingerprints. The fourth
           layer is the infrastructure drilldown, which shows node-level CPU, memory, disk I/O, network
           throughput, and container orchestration events such as pod evictions and restart loops.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/dashboards-diagram-1.svg"
           alt="Dashboard layering hierarchy showing four levels: overview showing user journeys, service drilldown showing single-service metrics, dependency drilldown showing downstream health, and infrastructure drilldown showing node-level resources"
@@ -200,7 +207,10 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production dashboard ecosystem consists of several interconnected layers, each of which affects
           the quality and timeliness of the operational picture that responders see. The first layer is
           telemetry emission, where services, infrastructure components, and application frameworks emit
@@ -209,8 +219,8 @@ export default function ArticlePage() {
           units, or missing labels, no amount of dashboard sophistication can compensate. Services must
           emit telemetry with stable, documented semantics that include service name, environment, region,
           deployment version, route, and correlation identifiers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The second layer is telemetry collection and storage, where emitted signals are ingested,
           normalized, aggregated, and persisted for query. Metric systems such as Prometheus, VictoriaMetrics,
           or commercial alternatives scrape or receive metrics and store them as time series with defined
@@ -219,7 +229,7 @@ export default function ArticlePage() {
           APM platforms store distributed span data for query and analysis. The collection pipeline must
           handle bursty writes during incidents without dropping data, because dropped telemetry creates
           blind spots exactly when operational visibility is most critical.
-        </p>
+        </HighlightBlock>
         <p>
           The third layer is the query and computation engine, where dashboard panels execute their queries
           against the stored telemetry. This is where the choice of query language, aggregation strategy,
@@ -265,7 +275,10 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental trade-off in dashboard design is <strong>breadth versus depth</strong>. A broad
           dashboard that shows many services and many metrics provides comprehensive visibility but becomes
           overwhelming during incidents when responders need to find specific information quickly. A deep,
@@ -275,8 +288,8 @@ export default function ArticlePage() {
           overview level and depth at the drilldown level, but it requires discipline to maintain the
           boundaries between layers and resist the temptation to add overview-level panels to drilldown
           dashboards or vice versa.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another critical trade-off involves <strong>real-time versus pre-aggregated data</strong>.
           Real-time queries against raw telemetry provide the most accurate and flexible view of the
           system but can be slow and expensive, especially during incidents when query volume spikes
@@ -285,7 +298,7 @@ export default function ArticlePage() {
           re-aggregate along different dimensions after the fact. The recommended approach is to use
           pre-aggregated data for the most common dashboard panels and preserve raw data access for
           ad-hoc investigation when responders need to pivot to unexpected dimensions.
-        </p>
+        </HighlightBlock>
         <p>
           The choice between <strong>single dashboard versus layered dashboards</strong> represents one
           of the most consequential design decisions. A single dashboard for an entire system is tempting
@@ -334,7 +347,10 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The single most important best practice in dashboard design is to <strong>define the audience
           and purpose before creating a single panel</strong>. Every dashboard should have a documented
           statement of who it serves and what questions it answers. An overview dashboard serves all
@@ -343,8 +359,8 @@ export default function ArticlePage() {
           A dependency drilldown serves engineers investigating cross-service failures and answers
           questions about which downstream service is the dominant contributor. Without this clarity of
           purpose, dashboards accumulate panels organically and inevitably become unusable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Start with <strong>user-impact signals</strong> and add diagnostic overlays second. The first
           panels on any operational dashboard should show availability for core user journeys, tail
           latency percentiles, error rates, and SLO burn rate. These are the signals that tell responders
@@ -352,7 +368,7 @@ export default function ArticlePage() {
           panels be added: CPU utilization, memory usage, garbage collection pauses, connection pool
           depth, and so on. The diagnostic panels provide context for the impact signals, but they should
           never obscure or displace the impact signals from the most prominent position on the dashboard.
-        </p>
+        </HighlightBlock>
         <p>
           Use <strong>consistent units, naming conventions, and time windows</strong> across all panels
           on a dashboard and across all dashboards in a system. Inconsistent units are one of the most
@@ -404,7 +420,10 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Christmas tree effect</strong> is the most pervasive dashboard anti-pattern. Over
           time, teams add panels to dashboards in response to individual incidents without removing
           panels that have become irrelevant. The result is a dashboard with dozens of panels, each
@@ -413,8 +432,8 @@ export default function ArticlePage() {
           panels are relevant to the current situation. This effect is compounded when teams share
           dashboards across services, producing a dashboard that is supposed to serve everyone but
           actually serves no one effectively.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Vanity metrics</strong> represent another common pitfall. CPU utilization, memory
           usage, total request counts, and disk space are metrics that look informative on a dashboard
           but rarely map to actionable decisions during an incident. High CPU does not necessarily mean
@@ -423,7 +442,7 @@ export default function ArticlePage() {
           metrics are useful as diagnostic overlays on drilldown dashboards where they can be correlated
           with impact signals, but they are harmful on overview dashboards where they displace panels
           that actually indicate user experience.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/dashboards-diagram-2.svg"
           alt="Three dashboard anti-patterns: Christmas tree effect with too many panels, inconsistent units across panels mixing milliseconds with seconds and per-minute with per-second rates, and panels without decision mapping showing metrics with no action threshold"
@@ -472,7 +491,10 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Search degradation incident at a major e-commerce platform:</strong> During a peak
           shopping event, users reported slow search results and occasional timeouts. The journey overview
           dashboard immediately showed elevated p99 latency concentrated in the search flow, while other
@@ -487,8 +509,8 @@ export default function ArticlePage() {
           team removed three panels that had added noise during the investigation, including instance-level
           CPU charts that were not relevant to the root cause, and added a top-dependencies-by-latency
           panel that made the next incident faster to isolate.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Payment provider failover at a fintech company:</strong> A primary payment provider
           experienced a regional outage affecting transaction processing for customers in the European
           Union. The payment journey overview dashboard showed a sharp drop in successful transaction
@@ -502,7 +524,7 @@ export default function ArticlePage() {
           dashboard annotations showed the exact time of the circuit breaker state transition and the
           deployment of a configuration change that increased the initial connection pool size for the
           secondary provider, providing a clear chronological narrative for the post-incident review.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Database saturation during a social media product launch:</strong> A social media
           company launched a new feature that generated significantly more write traffic than anticipated.
@@ -536,25 +558,28 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How do you decide what goes on an overview dashboard versus a drilldown dashboard?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The decision is driven by the question each panel answers and the audience it serves. Overview dashboards
             answer questions about user impact and system-wide health: are users experiencing errors, what is the tail
             latency for critical journeys, is the SLO burn rate within acceptable bounds, and which region or tenant
             tier is affected. Every panel on an overview dashboard should be answerable in under five seconds by someone
             who is seeing the dashboard for the first time during an incident.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Drilldown dashboards answer questions about specific services, dependencies, or infrastructure components:
             is the service&apos;s connection pool saturated, which downstream dependency is timing out, are database
             nodes experiencing disk I/O wait, and is garbage collection causing latency spikes. The key principle is
             that overview panels should indicate whether there is a problem and where to look next, while drilldown
             panels should provide the diagnostic detail needed to understand and resolve the problem.
-          </p>
+          </HighlightBlock>
           <p>
             If a panel on the overview dashboard requires domain-specific knowledge to interpret, it belongs on a
             drilldown instead. If a panel on a drilldown dashboard is relevant to all responders regardless of which

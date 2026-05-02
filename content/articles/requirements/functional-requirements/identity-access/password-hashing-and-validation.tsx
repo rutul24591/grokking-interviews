@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,13 +34,16 @@ export default function PasswordHashingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Password Hashing and Validation</strong> is the cryptographic process of securely
           storing and verifying user passwords. Hashing transforms passwords into irreversible
           representations, protecting user credentials even if the database is compromised.
           Password hashing is the last line of defense — if attackers breach your database, proper
           hashing prevents them from obtaining plaintext passwords.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/password-hashing-flow.svg"
@@ -47,7 +51,7 @@ export default function PasswordHashingArticle() {
           caption="Password Hashing Flow — showing registration flow (hash before storage) and login flow (hash + compare) with Argon2/bcrypt"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing password hashing requires deep
           understanding of hashing algorithms (Argon2id, bcrypt, scrypt, PBKDF2), salting (unique
           salt per password), cost factors (work factor, memory, iterations), timing-safe
@@ -55,7 +59,7 @@ export default function PasswordHashingArticle() {
           policies (NIST guidelines — no composition rules), and migration strategies (rehashing on
           login, algorithm upgrades). The implementation must balance security (strong hashing)
           with performance (authentication latency).
-        </p>
+        </HighlightBlock>
         <p>
           Modern password hashing has evolved from simple MD5/SHA1 (broken, never use) to
           adaptive hashing functions (Argon2, bcrypt) that are intentionally slow and
@@ -67,17 +71,20 @@ export default function PasswordHashingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Password hashing is built on fundamental concepts that determine how passwords are
           secured. Understanding these concepts is essential for designing secure password systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Hashing Algorithms:</strong> Argon2id (recommended for new systems — memory-hard,
           GPU/ASIC resistant, PHC winner 2015), bcrypt (industry standard — adaptive, wide
           language support, cost factor 12-14), scrypt (memory-hard, alternative to Argon2),
           PBKDF2 (NIST approved, but GPU-vulnerable — use only if required by compliance). Never
           use MD5, SHA1, SHA256 alone (not designed for passwords, GPU-crackable).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Salting:</strong> Unique random value per password (128-bit minimum). Prevents
           rainbow table attacks (pre-computed hash tables). Salt stored with hash (not secret).
@@ -100,11 +107,14 @@ export default function PasswordHashingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Password hashing architecture separates hashing from validation, enabling secure storage
           with efficient verification. This architecture is critical for protecting user
           credentials.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/password-validation.svg"
@@ -112,13 +122,13 @@ export default function PasswordHashingArticle() {
           caption="Password Validation — showing NIST guidelines (min 8 chars, no composition rules), breach detection, strength meter, and blocked passwords"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Registration flow: User submits password. Frontend validates format (min length,
           real-time strength meter). Backend receives password. Backend validates (min 8 chars per
           NIST, check breach database — Have I Been Pwned API). Backend generates salt
           (auto-generated by hashing library). Backend hashes password (Argon2id with cost
           factors). Backend stores hash + salt (never plaintext). Backend returns success.
-        </p>
+        </HighlightBlock>
         <p>
           Login flow: User submits password. Backend retrieves stored hash + salt. Backend hashes
           submitted password with stored salt. Backend compares hashes (timing-safe comparison). If
@@ -143,23 +153,26 @@ export default function PasswordHashingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing password hashing involves trade-offs between security, performance, and
           compatibility. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Argon2id vs bcrypt vs scrypt</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Argon2id:</strong> Memory-hard, GPU/ASIC resistant, PHC winner. Best
               security. Limitation: newer, less language support.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>bcrypt:</strong> Industry standard, wide language support, battle-tested.
               Good security. Limitation: not memory-hard (GPU-vulnerable at scale).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>scrypt:</strong> Memory-hard, alternative to Argon2. Good security.
               Limitation: less widely adopted, complex tuning.
@@ -208,18 +221,21 @@ export default function PasswordHashingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing password hashing requires following established best practices to ensure
           security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Algorithm Selection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use Argon2id for new systems (memory-hard, GPU/ASIC resistant). Use bcrypt for legacy
           systems (wide support, battle-tested). Never use MD5, SHA1, SHA256 alone (not designed
           for passwords). Plan for algorithm migration (store algorithm identifier, rehash on
           login).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cost Factor Tuning</h3>
         <p>
@@ -246,20 +262,23 @@ export default function PasswordHashingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing password hashing to ensure secure password
           storage.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Using MD5/SHA1:</strong> GPU-crackable in seconds, never use.{" "}
             <strong>Fix:</strong> Use Argon2id or bcrypt. Never use general-purpose hash functions
             for passwords.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No salting:</strong> Rainbow table attacks succeed, same password = same hash.{" "}
             <strong>Fix:</strong> Use unique salt per password (auto-generated by library).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Low cost factor:</strong> Hashing too fast, brute force feasible.{" "}
             <strong>Fix:</strong> Tune cost for 200-500ms hashing time. Re-evaluate annually.
@@ -303,16 +322,19 @@ export default function PasswordHashingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Password hashing is critical for credential security. Here are real-world implementations
           from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Tech Company (Google)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Billions of users. High-value target for attackers. Need
           strongest password security.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Argon2id for new accounts. Bcrypt for legacy (migrating).
           Breach detection (check against known breaches). Strong password policy (NIST
@@ -400,14 +422,17 @@ export default function PasswordHashingArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of password hashing design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Which hashing algorithm do you choose?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Which hashing algorithm do you choose?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Argon2id for new systems (memory-hard, GPU/ASIC resistant, PHC winner 2015).
               Bcrypt for legacy systems (wide support, battle-tested). Never MD5, SHA1, SHA256

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>Large Language Model (LLM)</strong> is a deep neural network
           trained on massive text corpora to predict and generate human-like
           language. The &quot;large&quot; refers to the parameter count — modern
@@ -33,8 +37,8 @@ export default function ArticlePage() {
           simple n-gram prediction; they develop internal representations of
           syntax, semantics, world knowledge, reasoning patterns, and even
           emergent capabilities that were not explicitly trained for.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundational architecture behind LLMs is the{" "}
           <strong>Transformer</strong>, introduced in the 2017 paper
           &quot;Attention Is All You Need&quot; by Vaswani et al. The
@@ -44,7 +48,7 @@ export default function ArticlePage() {
           other token, regardless of distance. This parallelizable architecture
           made it feasible to train models on orders of magnitude more data than
           previous approaches.
-        </p>
+        </HighlightBlock>
         <p>
           For software engineers, understanding LLM internals is no longer
           optional. Decisions about which model to use, how to manage context
@@ -81,7 +85,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           LLMs are built on several foundational concepts that every engineer
           must understand. At the architectural level, the Transformer consists
           of an encoder-decoder structure (though most modern LLMs use
@@ -94,7 +101,7 @@ export default function ArticlePage() {
           similarity. These heads operate in parallel, and their outputs are
           concatenated and linearly projected to produce the final attention
           output.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/llm-attention-mechanism.svg"
@@ -102,7 +109,7 @@ export default function ArticlePage() {
           caption="Multi-head attention — input tokens projected into Q/K/V, split across attention heads (syntactic, coreference, semantic), attention weights computed, concatenated and projected back"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The training process for LLMs occurs in distinct phases.{" "}
           <strong>Pre-training</strong> is the computationally expensive phase
           where the model learns to predict the next token in a sequence across
@@ -112,7 +119,7 @@ export default function ArticlePage() {
           function is straightforward: given a sequence of tokens, maximize the
           probability of the next token. Despite this simple objective, the
           model develops surprisingly sophisticated internal representations.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Supervised Fine-Tuning (SFT)</strong> follows pre-training,
           where the model is trained on high-quality instruction-response pairs
@@ -243,7 +250,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding the inference flow of an LLM is essential for making
           informed decisions about latency, throughput, and cost. When a request
           arrives, the input text is first <strong>tokenized</strong> — broken
@@ -251,8 +261,8 @@ export default function ArticlePage() {
           SentencePiece. These tokens are converted to integer IDs using the
           model&apos;s vocabulary, then embedded into dense vector
           representations through a learned embedding layer.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The embedded tokens flow through the model&apos;s transformer layers.
           Each layer applies multi-head self-attention followed by a
           feed-forward neural network, with residual connections and layer
@@ -262,7 +272,7 @@ export default function ArticlePage() {
           of the final layer is projected through a linear layer to produce
           logits over the entire vocabulary, from which the next token is
           sampled.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Key-Value (KV) caching</strong> is a critical optimization
           during inference. Since each token generation step reprocesses all
@@ -365,7 +375,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Selecting an LLM for production use involves balancing capability,
           cost, latency, and control. Closed models from OpenAI, Anthropic, and
           Google offer state-of-the-art performance with zero infrastructure
@@ -374,8 +387,8 @@ export default function ArticlePage() {
           Llama and Mistral can be self-hosted with full control over data flow,
           but require GPU infrastructure, MLOps expertise, and may lag behind
           closed models in raw capability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The trade-off between <strong>open-weight and closed models</strong>{" "}
           extends far beyond the surface-level cost comparison and requires
           careful analysis of your organization&apos;s constraints. Data privacy
@@ -404,7 +417,7 @@ export default function ArticlePage() {
           high-volume, privacy-sensitive, or domain-specific workloads, while
           closed models are reserved for tasks requiring peak reasoning
           capability.
-        </p>
+        </HighlightBlock>
         <p>
           Selecting the right <strong>model size</strong> requires a systematic
           framework rather than intuition. Seven-billion-parameter models excel
@@ -470,7 +483,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           When integrating LLMs into production systems, start with a model
           evaluation phase that tests multiple candidates against your specific
           use case rather than assuming the most capable model is the right
@@ -478,8 +494,8 @@ export default function ArticlePage() {
           outputs, and evaluate each model on accuracy, latency, cost, and output
           consistency. Many teams find that a mid-tier model meets their needs at
           a fraction of the cost of the top-tier option.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement a robust <strong>abstraction layer</strong> between your
           application code and the LLM provider. This layer should handle provider
           switching, retry logic with exponential backoff, token counting, cost
@@ -488,7 +504,7 @@ export default function ArticlePage() {
           enforce their specific requirements around logging, monitoring, and
           fallback behavior. This abstraction is critical for avoiding vendor
           lock-in and enabling model experimentation without application changes.
-        </p>
+        </HighlightBlock>
         <p>
           Design for <strong>failure as the default assumption</strong>. LLMs
           will produce malformed output, hallucinate facts, exceed token limits,
@@ -561,7 +577,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>treating LLMs as
           deterministic</strong>. Unlike traditional software, the same input can
           produce different outputs across calls, across model versions, and
@@ -569,8 +588,8 @@ export default function ArticlePage() {
           user experience design fundamentally different from traditional
           software engineering. Teams that assume determinism will face
           production incidents when outputs change unexpectedly.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another critical pitfall is <strong>ignoring the economic
           model</strong>. LLM API calls are priced per token, and it&apos;s easy
           for costs to spiral when processing large documents, supporting many
@@ -578,7 +597,7 @@ export default function ArticlePage() {
           implement cost tracking from day one often discover shockingly high
           bills months after deployment. A single poorly-designed prompt that
           includes unnecessary context can cost 10x more than an optimized one.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Hallucination</strong> — the model generating plausible but
           incorrect information — remains an unsolved problem. Even the most
@@ -650,22 +669,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           LLMs have found production applications across virtually every software
           domain. <strong>Code generation and assistance</strong> — powering IDE
           plugins like GitHub Copilot and Cursor that provide inline code
           suggestions, refactoring recommendations, and test generation. These
           systems use a combination of file context, cursor position, and recent
           edits to construct prompts that generate relevant code completions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Document understanding and extraction</strong> — processing
           contracts, invoices, research papers, and legal documents to extract
           structured information, summarize key points, or identify risks.
           Financial services firms use LLMs to process earnings call transcripts
           and regulatory filings at scale. Legal teams use them for contract
           review and clause extraction.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Customer support automation</strong> — handling tier-1 support
           queries, triaging tickets, drafting responses, and escalating complex
@@ -736,13 +758,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: Explain the difference between pre-training, fine-tuning, and
             RLHF. Why are all three phases necessary?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <strong>Pre-training</strong> is the foundational phase where the
             model learns language patterns and world knowledge by predicting the
             next token across trillions of tokens from diverse sources. This
@@ -751,8 +776,8 @@ export default function ArticlePage() {
             conversational context. Pre-training requires massive compute
             (thousands of GPUs for months) and teaches the model everything it
             knows.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             <strong>Supervised Fine-Tuning (SFT)</strong> adapts the pre-trained
             model to be an instruction-follower by training it on high-quality
             examples of instructions and desired responses. This phase is much
@@ -760,7 +785,7 @@ export default function ArticlePage() {
             and teaches the model the format and behavior expected in
             conversational interactions. Without SFT, the model would try to
             &quot;complete&quot; user instructions rather than follow them.
-          </p>
+          </HighlightBlock>
           <p>
             <strong>RLHF (Reinforcement Learning from Human Feedback)</strong>{" "}
             aligns the model with human preferences by training a reward model on

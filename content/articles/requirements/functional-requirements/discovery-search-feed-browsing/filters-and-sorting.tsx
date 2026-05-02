@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,20 +35,23 @@ export default function FiltersAndSortingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Filters and Sorting</strong> enable users to refine search results and
           browse content by applying criteria (filters) and ordering preferences (sorting).
           They are essential for discovery—users who apply filters have 3x higher conversion
           rates and 2x longer session duration. Filters narrow down results (show me only
           phones under $500), while sorting reorders results (show me cheapest first).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The challenge is balancing power with simplicity—too many filters overwhelm users,
           too few frustrate them. Well-designed filter/sort systems anticipate user needs
           (common filters upfront, advanced filters collapsible), provide clear feedback
           (active filter badges, result counts), and maintain state (URL persistence,
           back button support).
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, filters and sorting involve state management (filter
           state, sort order), URL synchronization (query params for sharing/bookmarking),
@@ -58,10 +62,13 @@ export default function FiltersAndSortingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Filter Types</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Different filter UI patterns for different data types:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Checkboxes:</strong> Multi-select categories, tags, brands. Most
@@ -92,9 +99,9 @@ export default function FiltersAndSortingArticle() {
         </ul>
 
         <h3 className="mt-6">Sort Options</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Common sorting options:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Relevance:</strong> Default for search results. Based on search
@@ -193,10 +200,13 @@ export default function FiltersAndSortingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production filter/sort system involves efficient state management and API
           integration.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery-search-feed-browsing/filters-and-sorting/filter-architecture.svg"
@@ -208,14 +218,14 @@ export default function FiltersAndSortingArticle() {
 
         <h3>Component Structure</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Filter Container:</strong> Main wrapper. Manages global filter state.
             Fetches available filters on mount.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Filter Section:</strong> Group of related filters (Price, Category,
             Brand). Expandable/collapsible.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Filter Item:</strong> Individual filter (checkbox, slider, dropdown).
             Handles user interaction.
@@ -325,10 +335,13 @@ export default function FiltersAndSortingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Filter/sort design involves balancing discoverability, space efficiency, and
           cognitive load.
-        </p>
+        </HighlightBlock>
 
         <h3>Filter Placement Trade-offs</h3>
         <div className="overflow-x-auto">
@@ -379,11 +392,11 @@ export default function FiltersAndSortingArticle() {
         />
 
         <h3 className="mt-6">Update Strategy Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Instant Update:</strong> Results update immediately on filter change.
           Feels responsive. Risk: Multiple API calls during interaction (slider dragging).
           Best for: Checkboxes, toggles.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Debounced Update:</strong> Wait for user to stop interacting (300ms).
           Reduces API calls. Risk: Slight delay feels unresponsive. Best for: Sliders,
@@ -412,15 +425,18 @@ export default function FiltersAndSortingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Show Result Counts:</strong> Display count per filter option
             ("Electronics (123)"). Helps users gauge filter impact.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Active Filter Badges:</strong> Show selected filters as removable
             chips above results. Clear all button.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Disable Empty Filters:</strong> Gray out filter options with 0
             results. Don't let users select dead ends.
@@ -450,15 +466,18 @@ export default function FiltersAndSortingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No Result Counts:</strong> Users don't know how many results per
             filter. Solution: Show counts, update dynamically.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Lost State on Back:</strong> Filters reset when navigating back.
             Solution: Persist in URL, restore from history state.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scroll Jump:</strong> Page jumps to top on filter change. Solution:
             Preserve scroll position, use CSS scroll-behavior.
@@ -480,17 +499,20 @@ export default function FiltersAndSortingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Amazon Product Filters</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon shows 20+ filter categories in left sidebar. Each filter shows count.
           Price slider with histogram. Multi-select checkboxes. "Apply" button for some
           filters. Sort dropdown with 10+ options.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Filter recommendations—"Customers who filtered
           by X also filtered by Y".
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Airbnb Search Filters</h3>
         <p>
@@ -527,17 +549,20 @@ export default function FiltersAndSortingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you persist filter state?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you persist filter state?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Three approaches: (1) URL query params—shareable,
               bookmarkable, back button works. Best for most cases. (2) localStorage—
               persists across sessions, not shareable. Good for user preferences. (3)
               Backend sync—filters saved to user account, works across devices. Best
               for logged-in users. Combine approaches: URL for current session,
               localStorage for preferences, backend for saved searches.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

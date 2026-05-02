@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -40,8 +41,11 @@ export default function ScalabilityStrategyArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Scalability</strong> is the ability of a system to handle
           increased load by adding resources while maintaining acceptable
           performance levels. It is not a feature you bolt on after launch — it
@@ -51,9 +55,9 @@ export default function ScalabilityStrategyArticle() {
           growth without code changes or manual intervention is a scalable
           system. A system that requires heroic engineering effort to handle
           each traffic doubling is not.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           In system design interviews, scalability is often the first
           non-functional requirement discussed because it fundamentally
           constrains or enables every other aspect of the system. When an
@@ -63,7 +67,7 @@ export default function ScalabilityStrategyArticle() {
           scaling strategy — from single server to globally distributed
           infrastructure — is a defining characteristic of staff and principal
           engineer candidates.
-        </p>
+        </HighlightBlock>
 
         <p>
           Scalability must be quantified with specific, measurable targets.
@@ -119,18 +123,21 @@ export default function ScalabilityStrategyArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding scalability requires grasping several foundational
           concepts that govern how systems behave under increasing load. These
           concepts form the vocabulary of scalability discussions in both
           production architecture and system design interviews.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Amdahl&apos;s Law and Scaling Limits
         </h3>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amdahl&apos;s Law states that the maximum speedup of a system is
           limited by the fraction of work that cannot be parallelized. If 20% of
           your application&apos;s workload is inherently sequential (database
@@ -141,7 +148,7 @@ export default function ScalabilityStrategyArticle() {
           80-90% — the coordination overhead (distributed transactions, cache
           invalidation, replication lag) becomes a larger fraction of total work
           as you add nodes.
-        </p>
+        </HighlightBlock>
 
         <p>
           In practice, this means that adding the 10th server to a pool provides
@@ -194,13 +201,16 @@ export default function ScalabilityStrategyArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A scalable architecture evolves through phases as traffic grows. The
           progression is not linear — each phase introduces new components, new
           failure modes, and new operational complexity. Understanding this
           evolution is essential for both production architecture and interview
           discussions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/scalability-strategies-comparison.svg"
@@ -212,14 +222,14 @@ export default function ScalabilityStrategyArticle() {
           Phase 1: Single Server (0-10K Users)
         </h3>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The simplest architecture: one server running the application and
           database together. This is appropriate for early-stage products where
           development velocity matters more than scalability. The focus should
           be on product-market fit, clean code, and establishing monitoring
           basics. A single server can handle 10,000 daily active users with
           proper resource sizing (4-8 vCPUs, 16-32 GB RAM, SSD storage).
-        </p>
+        </HighlightBlock>
 
         <p>
           At this stage, invest in good observability: structured logging, basic
@@ -301,18 +311,21 @@ export default function ScalabilityStrategyArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Every scalability decision involves trade-offs between complexity,
           cost, consistency, and availability. Understanding these trade-offs
           and articulating them clearly is a hallmark of senior engineering
           judgment.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Horizontal vs Vertical Scaling
         </h3>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Vertical scaling (adding more power to existing machines) is the
           simplest approach — it requires no code changes, no distributed
           systems logic, and no new operational complexity. A larger server
@@ -321,7 +334,7 @@ export default function ScalabilityStrategyArticle() {
           at 448 vCPUs and 24 TB RAM, which is finite. Upgrading requires
           downtime, and hardware costs increase non-linearly — a server with
           twice the CPU often costs three to four times more.
-        </p>
+        </HighlightBlock>
 
         <p>
           Horizontal scaling (adding more machines) provides near-linear
@@ -424,17 +437,20 @@ export default function ScalabilityStrategyArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Scalability is not just about architecture — it is about operational
           practices that keep your system healthy under load. These practices
           distinguish production-grade systems from academic designs.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Capacity Planning and Load Testing
         </h3>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Work backwards from requirements to calculate required capacity. If
           your system needs to handle 100,000 RPS and one server handles 5,000
           RPS with P99 latency under 100ms, you need at least 20 servers. Add a
@@ -442,7 +458,7 @@ export default function ScalabilityStrategyArticle() {
           overlap — resulting in 26-30 servers for normal operation. This buffer
           is critical because operating at 100% capacity leaves no room for
           error when a server fails or traffic unexpectedly spikes.
-        </p>
+        </HighlightBlock>
 
         <p>
           Load test regularly at 2-3× your expected peak load. Synthetic load
@@ -518,17 +534,20 @@ export default function ScalabilityStrategyArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Even experienced engineers make predictable mistakes when designing
           for scale. Recognizing these pitfalls before they become production
           incidents is a mark of engineering maturity.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Premature Distribution
         </h3>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common mistake is building distributed systems before proving
           that a single server cannot handle the load. Microservices, sharding,
           and event-driven architectures add enormous complexity that is
@@ -537,7 +556,7 @@ export default function ScalabilityStrategyArticle() {
           50,000-100,000 RPS with proper optimization. Start with the simplest
           architecture and distribute only when measurements prove it is
           necessary.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Ignoring the Database Bottleneck
@@ -598,12 +617,15 @@ export default function ScalabilityStrategyArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Social Media Feed (Twitter/X Scale)
         </h3>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter handles over 6,000 tweets per second at peak and serves 300
           million monthly active users. The feed generation problem is
           fundamentally a scalability challenge: each user&apos;s home feed must
@@ -616,13 +638,13 @@ export default function ScalabilityStrategyArticle() {
           write amplification (pushing one tweet to 100M followers is expensive)
           against read latency (computing a feed from 10K followed accounts at
           request time is slow).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           E-Commerce Platform (Amazon Scale)
         </h3>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon&apos;s infrastructure handles millions of transactions per
           second during peak shopping events like Black Friday. The key
           scalability patterns include: microservices decomposition (each
@@ -635,7 +657,7 @@ export default function ScalabilityStrategyArticle() {
           for product search). The system degrades gracefully during overload by
           disabling non-critical features (recommendations, reviews) while
           preserving the checkout flow.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Video Streaming (Netflix Scale)
@@ -676,16 +698,19 @@ export default function ScalabilityStrategyArticle() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-6">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               1. Design a system to handle 10M daily active users with 100K
               concurrent users. How do you approach capacity planning and what
               scaling strategy do you choose?
-            </p>
+            </HighlightBlock>
             <div className="mt-4 p-4 bg-panel rounded-lg">
-              <p className="font-semibold text-accent">Answer:</p>
+              <HighlightBlock as="p" tier="important" className="font-semibold text-accent">Answer:</HighlightBlock>
               <p className="mt-2">
                 Start by quantifying the workload. Ten million daily active
                 users generating roughly 10 requests each per day yields 100
@@ -937,18 +962,21 @@ export default function ScalabilityStrategyArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Scalability decisions have direct security implications. A system that
           scales without security controls amplifies both legitimate traffic and
           attack traffic equally.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
             DDoS and Traffic Amplification
           </h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Auto-Scaling Under Attack:</strong> Auto-scaling groups
               respond to increased traffic by adding instances. During a DDoS
               attack, this causes runaway scaling — the system scales to meet
@@ -956,13 +984,13 @@ export default function ScalabilityStrategyArticle() {
               rate limiting before auto-scaling triggers, use WAF to filter
               malicious traffic, set maximum scaling caps, deploy Cloudflare or
               AWS Shield to absorb volumetric attacks.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Connection Exhaustion:</strong> Attackers open millions of
               connections to exhaust server file descriptors. Mitigation:
               configure connection limits per IP, implement SYN cookies, use
               connection pooling with maximum pool sizes.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Slowloris Attacks:</strong> Attackers open connections and
               send data very slowly, exhausting server connection pools.
@@ -1025,27 +1053,30 @@ export default function ScalabilityStrategyArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Scalability must be validated through systematic testing — not assumed
           from architecture diagrams. The testing strategy spans from
           component-level load tests to full-system chaos experiments.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Load Testing Pyramid</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Component Load Tests:</strong> Test individual services
               under increasing load. Measure throughput, latency percentiles
               (P50, P95, P99), and resource utilization. Tools: k6, Artillery,
               Locust. Run weekly, target 2× expected peak.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Integration Load Tests:</strong> Test service interactions
               under load. Measure how load on one service cascades to
               dependencies. Test database connection pool behavior under
               concurrent load. Test cache hit ratios at scale.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>End-to-End Load Tests:</strong> Full-system load tests
               simulating realistic user traffic patterns. Include read-heavy and

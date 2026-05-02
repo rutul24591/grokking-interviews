@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Real-Time Data Updates</strong> enable visualizations to reflect live data changes as they occur. Unlike static visualizations that load data once, real-time visualizations continuously update as new data arrives. Use cases include stock tickers, IoT sensor monitoring, live sports scores, system monitoring dashboards, and collaborative applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff/principal engineers, real-time visualization architecture requires balancing update frequency, rendering performance, and data accuracy. High-frequency updates (100+ per second) require specialized techniques. The architecture must handle data ingestion, processing, and rendering without overwhelming the browser.
-        </p>
+        </HighlightBlock>
         <p>
           Real-time visualization challenges include <strong>data volume</strong> (handling continuous data streams), <strong>rendering performance</strong> (updating at 60fps while processing data), <strong>data accuracy</strong> (showing correct data without dropping updates), and <strong>user experience</strong> (avoiding visual chaos from rapid updates).
         </p>
@@ -42,6 +46,9 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/real-time-architecture.svg"
@@ -50,12 +57,12 @@ export default function ArticlePage() {
         />
 
         <h3>Data Ingestion Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>WebSocket</strong> provides bidirectional, low-latency communication. Ideal for high-frequency updates (stock ticks, game state). WebSocket maintains persistent connection, enabling server-push without polling overhead.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Server-Sent Events (SSE)</strong> provides unidirectional server-push over HTTP. Simpler than WebSocket but only server-to-client. Ideal for notifications, live feeds, and dashboards where client doesn't send data.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Polling</strong> periodically requests data from server. Simple but inefficient (overhead of repeated requests, latency between polls). Use only when WebSocket/SSE unavailable. Long-polling reduces overhead by keeping request open.
         </p>
@@ -110,9 +117,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-time visualization architecture requires decisions about data flow, state management, and rendering pipelines.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/real-time-architecture.svg"
@@ -121,9 +131,9 @@ export default function ArticlePage() {
         />
 
         <h3>Data Flow Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement a pipeline architecture. <strong>Ingestion</strong> stage receives data from WebSocket/SSE. <strong>Buffer</strong> stage collects incoming data. <strong>Processing</strong> stage transforms and aggregates data. <strong>Rendering</strong> stage updates visualization.
-        </p>
+        </HighlightBlock>
         <p>
           Pipeline stages should be decoupled. Ingestion doesn't depend on rendering. Processing doesn't depend on ingestion rate. This enables independent optimization of each stage.
         </p>
@@ -184,9 +194,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-time visualization involves trade-offs between latency, accuracy, and performance.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -228,16 +241,19 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that update pattern should match data frequency and user needs. Low-frequency data (stock prices at 1Hz) can use direct updates. High-frequency data (sensor data at 1000Hz) requires sampling. Choose pattern based on requirements.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Profile rendering performance. Use browser DevTools to identify bottlenecks. Measure frame rate, memory usage, and update latency. Optimize based on measurements, not intuition.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/update-patterns.svg"
@@ -245,9 +261,9 @@ export default function ArticlePage() {
           caption="Update patterns — match pattern to data volume: direct (&lt;1K), batched (1-10K), sampled (10-100K), aggregated (100K+), GPU (1M+)"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use appropriate rendering technology. SVG for low-frequency updates (&lt;10Hz). Canvas for medium-frequency (10-100Hz). WebGL for high-frequency (100+Hz). Match technology to update frequency.
-        </p>
+        </HighlightBlock>
         <p>
           Implement data windowing for time series. Maintain rolling window (e.g., last 1000 points). Append new data, remove old data. This bounds memory usage and rendering cost.
         </p>
@@ -267,12 +283,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rendering every update causes performance collapse. At 1000Hz, rendering every update is impossible. Use batching, throttling, or sampling to reduce render rate.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not handling backpressure causes memory exhaustion. If ingestion is faster than processing, buffers grow unbounded. Implement queue limits and overflow handling.
-        </p>
+        </HighlightBlock>
         <p>
           Not handling disconnection causes confusion. When connection fails, show indicator. Don't leave users wondering if data is stuck or connection is broken.
         </p>
@@ -289,14 +308,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Trading Platform: Stock Ticker</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A trading platform needed to display stock prices updating at 100+ updates per second. Traders needed to see price changes immediately.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong> Used WebSocket for low-latency data. Implemented batching (16ms batches for 60fps). Used Canvas for rendering. Showed aggregated view (OHLC) with drill-down to ticks.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Results:</strong> 60fps rendering with 100+ updates/second. Traders could see price changes in real-time. Memory usage stable at 100MB.
         </p>
@@ -337,14 +359,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How do you handle 1000 updates per second in a visualization?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Use batching and sampling. Batch incoming data (e.g., 16ms batches for 60fps). Sample within batch if needed (show latest, average, or min/max). Use Canvas or WebGL for rendering (not SVG).
-            </p>
+            </HighlightBlock>
             <p>
               Implementation: WebSocket for ingestion. Buffer for collecting data. requestAnimationFrame for render timing. Throttle render rate to 60fps regardless of data rate.
             </p>

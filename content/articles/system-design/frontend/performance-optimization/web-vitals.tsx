@@ -115,9 +115,9 @@ export default function WebVitalsArticle() {
           <strong>Thresholds:</strong>
         </p>
         <ul className="space-y-1">
-          <HighlightBlock as="li" tier="crucial">
+          <li>
             • <strong>Good:</strong> ≤ 2.5 seconds
-          </HighlightBlock>
+          </li>
           <li>• <strong>Needs Improvement:</strong> 2.5 – 4.0 seconds</li>
           <li>• <strong>Poor:</strong> &gt; 4.0 seconds</li>
         </ul>
@@ -136,9 +136,9 @@ export default function WebVitalsArticle() {
           <strong>Thresholds:</strong>
         </p>
         <ul className="space-y-1">
-          <HighlightBlock as="li" tier="crucial">
+          <li>
             • <strong>Good:</strong> ≤ 200 milliseconds
-          </HighlightBlock>
+          </li>
           <li>• <strong>Needs Improvement:</strong> 200 – 500 milliseconds</li>
           <li>• <strong>Poor:</strong> &gt; 500 milliseconds</li>
         </ul>
@@ -157,9 +157,9 @@ export default function WebVitalsArticle() {
           <strong>Thresholds:</strong>
         </p>
         <ul className="space-y-1">
-          <HighlightBlock as="li" tier="crucial">
+          <li>
             • <strong>Good:</strong> ≤ 0.1
-          </HighlightBlock>
+          </li>
           <li>• <strong>Needs Improvement:</strong> 0.1 – 0.25</li>
           <li>• <strong>Poor:</strong> &gt; 0.25</li>
         </ul>
@@ -169,20 +169,20 @@ export default function WebVitalsArticle() {
         </p>
 
         <h3>Additional Important Metrics</h3>
-        <HighlightBlock as="p" tier="important">
+        <p>
           While not part of Core Web Vitals, these metrics are still important for comprehensive performance 
           analysis:
-        </HighlightBlock>
+        </p>
 
         <h4>TTFB — Time to First Byte</h4>
-        <HighlightBlock as="p" tier="important">
+        <p>
           Time from the browser&apos;s request until the first byte of the response arrives. Measures server 
           responsiveness plus network latency.
-        </HighlightBlock>
+        </p>
         <ul className="space-y-1">
-          <HighlightBlock as="li" tier="important">
+          <li>
             • <strong>Target:</strong> ≤ 800ms
-          </HighlightBlock>
+          </li>
           <li>• <strong>Improve with:</strong> CDN, server-side caching, faster backends, HTTP/2, edge computing</li>
         </ul>
 
@@ -191,9 +191,9 @@ export default function WebVitalsArticle() {
           Time until the first text or image is painted. Measures how quickly the user sees <em>something</em>.
         </p>
         <ul className="space-y-1">
-          <HighlightBlock as="li" tier="important">
+          <li>
             • <strong>Target:</strong> ≤ 1.8s
-          </HighlightBlock>
+          </li>
           <li>• <strong>Improve with:</strong> Critical CSS, eliminate render-blocking resources, optimize LCP</li>
         </ul>
 
@@ -203,9 +203,9 @@ export default function WebVitalsArticle() {
           task of 200ms contributes 150ms of blocking time.
         </p>
         <ul className="space-y-1">
-          <HighlightBlock as="li" tier="important">
+          <li>
             • <strong>Target:</strong> ≤ 200ms
-          </HighlightBlock>
+          </li>
           <li>• <strong>Improve with:</strong> Code splitting, reduce JavaScript, break up long tasks</li>
         </ul>
 
@@ -215,9 +215,9 @@ export default function WebVitalsArticle() {
           Vital but still useful for diagnosing JavaScript-heavy pages.
         </p>
         <ul className="space-y-1">
-          <HighlightBlock as="li" tier="important">
+          <li>
             • <strong>Target:</strong> ≤ 3.8s
-          </HighlightBlock>
+          </li>
           <li>• <strong>Improve with:</strong> Reduce JavaScript, code splitting, optimize execution time</li>
         </ul>
       </section>
@@ -498,9 +498,9 @@ export default function WebVitalsArticle() {
           Google uses the 75th percentile of page loads across all users. This means:
         </HighlightBlock>
         <ul className="space-y-1">
-          <HighlightBlock as="li" tier="crucial">
+          <li>
             • 75% of users should have a &quot;Good&quot; experience
-          </HighlightBlock>
+          </li>
           <li>• Optimizing for average isn&apos;t sufficient</li>
           <li>• Focus on improving the worst 25% of experiences</li>
         </ul>
@@ -521,18 +521,18 @@ export default function WebVitalsArticle() {
           Define thresholds for Web Vitals and enforce them:
         </HighlightBlock>
         <ul className="space-y-1">
-          <HighlightBlock as="li" tier="important">
+          <li>
             • LCP: &lt; 2.5s for 75th percentile
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          </li>
+          <li>
             • INP: &lt; 200ms for 75th percentile
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          </li>
+          <li>
             • CLS: &lt; 0.1 for 75th percentile
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="crucial">
+          </li>
+          <li>
             • Fail CI/CD builds that exceed budgets
-          </HighlightBlock>
+          </li>
         </ul>
 
         <h3>Segment Your Data</h3>
@@ -636,10 +636,10 @@ export default function WebVitalsArticle() {
         </HighlightBlock>
 
         <h3>SaaS Dashboard: INP Improvement</h3>
-        <HighlightBlock as="p" tier="important">
+        <p>
           A SaaS dashboard had INP of 650ms (Poor). Users reported the interface felt &quot;laggy&quot; 
           when clicking buttons.
-        </HighlightBlock>
+        </p>
         <p>
           Optimizations:
         </p>
@@ -654,10 +654,10 @@ export default function WebVitalsArticle() {
         </HighlightBlock>
 
         <h3>News Publisher: CLS Reduction</h3>
-        <HighlightBlock as="p" tier="important">
+        <p>
           A news publisher had CLS of 0.35 (Poor). Users complained about content &quot;jumping&quot; 
           while reading.
-        </HighlightBlock>
+        </p>
         <p>
           Optimizations:
         </p>
@@ -677,24 +677,36 @@ export default function WebVitalsArticle() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: treat Web Vitals as an SLO. Define LCP/INP/CLS, explain why field p75 matters, and outline a
+          measurement-driven optimization loop (RUM + lab tooling + regression gates) that avoids metric shifting.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Strong answers connect each metric to its dominant levers (LCP: TTFB/hero discovery/render-blocking; INP:
+          main-thread long tasks; CLS: reserved space/fonts/dynamic injection).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Mention operational details: segmentation by route/device/network, alerting on p75, and verifying that an LCP
+          fix didn&apos;t regress INP/CLS.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What are Core Web Vitals and why do they matter?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="important" className="mb-3">
+            <p className="mb-3">
               Core Web Vitals are three metrics that measure real-world user experience:
-            </HighlightBlock>
+            </p>
             <ul className="space-y-1">
-              <HighlightBlock as="li" tier="crucial">
+              <li>
                 • <strong>LCP (Largest Contentful Paint):</strong> Loading performance (≤2.5s good)
-              </HighlightBlock>
-              <HighlightBlock as="li" tier="crucial">
+              </li>
+              <li>
                 • <strong>INP (Interaction to Next Paint):</strong> Interactivity responsiveness (≤200ms good)
-              </HighlightBlock>
-              <HighlightBlock as="li" tier="crucial">
+              </li>
+              <li>
                 • <strong>CLS (Cumulative Layout Shift):</strong> Visual stability (≤0.1 good)
-              </HighlightBlock>
+              </li>
             </ul>
             <p className="mb-3">
               They matter because:
@@ -709,9 +721,9 @@ export default function WebVitalsArticle() {
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 2: How would you improve LCP for a page with a large hero image?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="crucial" className="mb-3">
+            <p className="mb-3">
               I would implement these optimizations:
-            </HighlightBlock>
+            </p>
             <ol className="space-y-2">
               <li>
                 <strong>Optimize the image:</strong> Compress to WebP/AVIF format, serve responsive sizes 
@@ -745,9 +757,7 @@ export default function WebVitalsArticle() {
             <ul className="space-y-1">
               <li>• Tools: Lighthouse, WebPageTest, DevTools</li>
               <li>• Reproducible, debuggable</li>
-              <HighlightBlock as="li" tier="important">
-                • Cannot measure INP (needs real interactions)
-              </HighlightBlock>
+              <li>• Cannot measure INP (needs real interactions)</li>
               <li>• Best for: Development, CI/CD, debugging</li>
             </ul>
             <p className="mb-3 mt-3">
@@ -756,14 +766,12 @@ export default function WebVitalsArticle() {
             <ul className="space-y-1">
               <li>• Sources: CrUX, web-vitals library, RUM providers</li>
               <li>• Real devices, networks, conditions</li>
-              <HighlightBlock as="li" tier="important">
-                • Measures all metrics including INP
-              </HighlightBlock>
+              <li>• Measures all metrics including INP</li>
               <li>• Best for: SEO, monitoring, real-world impact</li>
             </ul>
-            <HighlightBlock as="p" tier="crucial" className="mt-3">
+            <p className="mt-3">
               Google uses field data for ranking. Use both: lab for development, field for success criteria.
-            </HighlightBlock>
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
@@ -779,9 +787,9 @@ export default function WebVitalsArticle() {
               <li>• <strong>Web fonts:</strong> Use font-display: optional with size-adjust fallbacks</li>
               <li>• <strong>Late-loading CSS:</strong> Inline critical CSS, load non-critical asynchronously</li>
             </ul>
-            <HighlightBlock as="p" tier="crucial" className="mt-3">
+            <p className="mt-3">
               Target CLS ≤ 0.1 for 75% of users.
-            </HighlightBlock>
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
@@ -795,26 +803,26 @@ export default function WebVitalsArticle() {
               <li>• FID didn&apos;t capture the full interaction experience</li>
               <li>• Pages with minimal initial interaction could score well despite poor overall responsiveness</li>
             </ul>
-            <HighlightBlock as="p" tier="important" className="mb-3">
+            <p className="mb-3">
               INP (Interaction to Next Paint) measures the <em>worst</em> interaction latency throughout 
               the page&apos;s lifetime:
-            </HighlightBlock>
+            </p>
             <ul className="space-y-1">
               <li>• Captures all clicks, taps, and keyboard interactions</li>
               <li>• Better reflects overall responsiveness</li>
               <li>• Encourages consistent performance, not just good initial performance</li>
             </ul>
-            <HighlightBlock as="p" tier="important" className="mt-3">
+            <p className="mt-3">
               INP replaced FID as a Core Web Vital in March 2024.
-            </HighlightBlock>
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 6: How do you monitor Web Vitals in production?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="important" className="mb-3">
+            <p className="mb-3">
               I would use a combination of approaches:
-            </HighlightBlock>
+            </p>
             <ol className="space-y-2">
               <li>
                 <strong>web-vitals library:</strong> Install Google&apos;s official package, send metrics 
@@ -832,9 +840,9 @@ export default function WebVitalsArticle() {
                 <strong>Segment data:</strong> Track by device, network, geography to identify specific 
                 improvement opportunities.
               </li>
-              <HighlightBlock as="li" tier="important">
+              <li>
                 <strong>Set alerts:</strong> Notify when 75th percentile exceeds thresholds.
-              </HighlightBlock>
+              </li>
             </ol>
           </div>
         </div>
@@ -845,8 +853,12 @@ export default function WebVitalsArticle() {
           ============================================================ */}
       <section>
         <h2>References</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Use these to calibrate definitions and thresholds, and to design a production measurement loop (field p75,
+          segmentation, alerting). In interviews, avoid treating Web Vitals as &quot;run Lighthouse once&quot;.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://web.dev/vitals/" 
               className="text-accent hover:underline" 
@@ -858,8 +870,8 @@ export default function WebVitalsArticle() {
             <p className="text-sm text-muted mt-1">
               Official Google documentation on Core Web Vitals metrics and optimization.
             </p>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://github.com/GoogleChrome/web-vitals" 
               className="text-accent hover:underline" 
@@ -871,7 +883,7 @@ export default function WebVitalsArticle() {
             <p className="text-sm text-muted mt-1">
               Official Google library for measuring Web Vitals in production.
             </p>
-          </li>
+          </HighlightBlock>
           <li>
             <a 
               href="https://search.google.com/search-console/core-web-vitals" 
@@ -885,7 +897,7 @@ export default function WebVitalsArticle() {
               Google Search Console report showing your site&apos;s Core Web Vitals performance.
             </p>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://developer.chrome.com/docs/crux/" 
               className="text-accent hover:underline" 
@@ -897,7 +909,7 @@ export default function WebVitalsArticle() {
             <p className="text-sm text-muted mt-1">
               Guide to accessing and analyzing the Chrome UX Report dataset.
             </p>
-          </li>
+          </HighlightBlock>
           <li>
             <a 
               href="https://web.dev/inp/" 

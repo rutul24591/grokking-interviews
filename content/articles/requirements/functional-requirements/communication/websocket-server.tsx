@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function WebSocketServerArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           WebSocket server maintains persistent bidirectional connections for real-time communication, enabling instant message delivery, presence updates, and live synchronization between clients and servers. Unlike HTTP request-response, WebSocket provides full-duplex communication over a single TCP connection, dramatically reducing latency and overhead for real-time features. The WebSocket server is the backbone of chat applications, collaborative tools, live dashboards, and any system requiring sub-second updates.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The operational complexity of WebSocket servers is often underestimated. Each connection consumes server resources (memory, file descriptors) for its entire lifetime—minutes for casual users, hours for active users, potentially days for mobile apps with background connections. A server handling 50,000 concurrent connections must manage 50,000 open TCP connections, each requiring heartbeat monitoring, message buffering, and graceful disconnect handling. Connection storms—when thousands of users reconnect simultaneously after an outage—can overwhelm servers designed for steady-state load.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, WebSocket server implementation involves distributed systems challenges. Connections must distribute across servers using consistent hashing for efficient routing. Heartbeat mechanisms detect stale connections without false positives from temporary network blips. Reconnection logic must handle network transitions (WiFi to cellular), app backgrounding, and server restarts gracefully. The architecture must scale horizontally, handling connection growth without degrading latency for existing connections. Monitoring must detect connection leaks, memory pressure, and heartbeat failures before users notice.
         </p>
@@ -47,13 +51,16 @@ export default function WebSocketServerArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>WebSocket Protocol</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WebSocket handshake upgrades HTTP connection to WebSocket protocol. Client sends HTTP request with Upgrade: websocket header, Sec-WebSocket-Key. Server responds with 101 Switching Protocols, Sec-WebSocket-Accept (key hash). Connection upgrades to binary protocol with framing for messages. Handshake includes origin validation for security, subprotocol negotiation for application-specific protocols.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Message framing wraps data in frames with opcode (text, binary, ping, pong, close). Text frames carry UTF-8 encoded messages. Binary frames carry arbitrary binary data (images, files). Control frames (ping, pong, close) manage connection lifecycle. Frames support masking (client-to-server) to prevent cache poisoning, fragmentation for large messages.
-        </p>
+        </HighlightBlock>
         <p>
           Connection lifecycle: connecting (handshake in progress), open (ready for messages), closing (close frame sent/received), closed (connection terminated). Proper lifecycle management ensures resources release on disconnect, prevents zombie connections, enables clean reconnection.
         </p>
@@ -105,9 +112,12 @@ export default function WebSocketServerArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           WebSocket server architecture spans connection handling, message routing, session management, and scaling infrastructure. Clients connect through load balancer to WebSocket servers. Server authenticates connection, registers in connection registry, starts heartbeat. Messages route through server to recipient's connection. Session state stored in shared storage for failover. Monitoring tracks connection health, server load, message throughput.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/websocket-server/websocket-architecture.svg"
@@ -118,9 +128,9 @@ export default function WebSocketServerArticle() {
         />
 
         <h3>Connection Handler</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Connection handler accepts WebSocket handshakes. Validates origin header for security—reject cross-origin requests unless explicitly allowed. Validates authentication token (JWT or session cookie). Extract user ID, device info, capabilities from token. Reject invalid tokens with 401 Unauthorized.
-        </p>
+        </HighlightBlock>
         <p>
           Connection object wraps raw WebSocket. Tracks metadata: user ID, device ID, connect time, last activity, message count. Implements send queue for backpressure—buffer messages when client slow. Implements timeout tracking—disconnect on heartbeat timeout. Connection object abstracts protocol details from application logic.
         </p>
@@ -180,14 +190,17 @@ export default function WebSocketServerArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           WebSocket server design involves trade-offs between connection density, latency, reliability, and operational complexity. Understanding these trade-offs enables informed decisions aligned with reliability requirements and operational capabilities.
-        </p>
+        </HighlightBlock>
 
         <h3>Heartbeat Frequency</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Frequent heartbeat (every 10-15 seconds) detects failures quickly. Pros: Fast failure detection, quick reconnect. Cons: Higher bandwidth, battery drain on mobile, more false positives from temporary blips. Best for: Financial trading, real-time gaming where every second matters.
-        </p>
+        </HighlightBlock>
         <p>
           Moderate heartbeat (every 30-60 seconds) balances detection with overhead. Pros: Reasonable detection time, acceptable overhead. Cons: 1-2 minute detection delay. Best for: Most chat applications, collaborative tools.
         </p>
@@ -239,13 +252,16 @@ export default function WebSocketServerArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement heartbeat with timeout:</strong> Ping every 30 seconds, timeout after 90 seconds. Detect stale connections before they accumulate. Clean up resources on timeout. Monitor heartbeat success rate.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use exponential backoff for reconnection:</strong> 1s, 2s, 4s, 8s, 16s, max 30s. Add jitter (±20%) to prevent thundering herd. Client-side implementation protects server from connection storms.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement graceful shutdown:</strong> Stop accepting new connections. Send close frame with timeout. Wait for acks, force close after timeout. Drain ensures in-flight messages deliver during deployments.
           </li>
@@ -275,13 +291,16 @@ export default function WebSocketServerArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No heartbeat implementation:</strong> Connections appear open but are dead (NAT timeout). Solution: Implement ping/pong with timeout, application-level heartbeat.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Resource leaks on disconnect:</strong> Event listeners, timers, buffers not cleaned up. Solution: Proper cleanup in close handler, use weak references, monitor memory growth.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No connection limits:</strong> Server accepts unlimited connections until crash. Solution: Set per-server and per-user limits, monitor capacity, implement eviction.
           </li>
@@ -311,16 +330,19 @@ export default function WebSocketServerArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Slack Real-time Infrastructure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Slack uses WebSocket for real-time message delivery and presence. Connection multiplexing handles multiple workspaces per client. Heartbeat every 30 seconds with 60-second timeout. Slack implements message acknowledgments with retry. Connection state synchronized across devices for seamless multi-device experience.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Discord Gateway</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Discord's WebSocket gateway handles millions of concurrent connections. Implements connection sharding by user ID. Heartbeat with interval negotiated per connection. Discord uses resume capability—reconnects resume session without full re-sync. Gateway scales horizontally with consistent hashing for user routing.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Facebook Chat</h3>
         <p>
@@ -340,12 +362,15 @@ export default function WebSocketServerArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you scale WebSocket servers?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you scale WebSocket servers?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Horizontal scaling with load balancer distributing connections. Consistent hashing pins user to specific server for session affinity. Connection registry in Redis for distributed lookup. Implement graceful shutdown for zero-downtime deployments. Monitor connection count per server, auto-scale at 80% capacity. Use sticky sessions or consistent hashing to minimize session replication.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

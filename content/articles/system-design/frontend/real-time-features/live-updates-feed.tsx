@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,7 @@ export default function LiveUpdatesFeedArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           <strong>Live updates and feeds</strong> refer to UI patterns where
           content dynamically appears, updates, or reorders in response to
           real-time events without requiring the user to refresh the page or
@@ -49,8 +50,8 @@ export default function LiveUpdatesFeedArticle() {
           document lists that show edits from other users. These live feeds
           transform static content pages into dynamic, event-driven experiences
           that keep users engaged and informed.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The core engineering challenge of live feeds is reconciling two
           conflicting requirements: real-time freshness (showing new content
           immediately) and reading stability (not disrupting the user&apos;s
@@ -64,8 +65,8 @@ export default function LiveUpdatesFeedArticle() {
           even as items are inserted above), and intelligent update strategies
           (different behavior when the user is at the top of the feed versus
           scrolled deep into older content).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Live feeds also introduce complex state management challenges on the
           frontend. The feed must handle items arriving from multiple sources:
           the initial page load (server-rendered or API-fetched), real-time
@@ -78,7 +79,7 @@ export default function LiveUpdatesFeedArticle() {
           delivered. The feed reconciliation layer must merge these sources
           using item IDs as the deduplication key, maintaining correct sort
           order and preventing visual duplicates.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, designing a live feed system
           requires thinking about both the real-time data pipeline (how events
@@ -107,7 +108,7 @@ export default function LiveUpdatesFeedArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Update Injection Strategies
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Three primary strategies govern how new content enters a live feed.{" "}
           <strong>Immediate insertion</strong> adds items to the feed as soon
           as they arrive, which provides maximum freshness but disrupts the
@@ -124,12 +125,12 @@ export default function LiveUpdatesFeedArticle() {
           provides real-time freshness when the user is &quot;waiting for
           updates&quot; at the top, without disrupting their reading experience
           when they are engaged with older content.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Optimistic Updates and Reconciliation
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           When a user creates a new post, the UI should show it immediately
           in the feed rather than waiting for the server round-trip. This{" "}
           <strong>optimistic update</strong> uses client-generated temporary
@@ -145,12 +146,12 @@ export default function LiveUpdatesFeedArticle() {
           events using a correlation ID (a client-generated ID sent with the
           creation request and included in the real-time event) and merges them
           seamlessly.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Feed Pagination with Live Data
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Combining pagination with live updates creates a unique challenge:
           the dataset is constantly changing while the user pages through it.
           Cursor-based pagination (using the ID or timestamp of the last
@@ -163,7 +164,7 @@ export default function LiveUpdatesFeedArticle() {
           gap. Production systems handle this by either pre-filling the gap
           (loading items between the real-time buffer and the paginated window)
           or by refreshing the feed when the gap becomes too large.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Virtualized Rendering for Long Feeds
@@ -209,12 +210,18 @@ export default function LiveUpdatesFeedArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           A production live feed architecture combines traditional API-driven
           feed loading with real-time event streaming, managing the two data
           sources through a client-side reconciliation layer that ensures
           consistency, deduplication, and correct ordering.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The critical system-design point is defining a single client-side
+          source of truth (store) and deterministic merge rules so pagination
+          results and push events don&apos;t create duplicates, reordering bugs,
+          or flicker during scroll.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/real-time-features/live-updates-feed-diagram-2.svg"
@@ -222,7 +229,7 @@ export default function LiveUpdatesFeedArticle() {
           caption="Figure 2: Live feed client architecture with dual data sources and reconciliation"
         />
 
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           The architecture has two data inflow paths: the <strong>pull
           path</strong> (initial feed load and pagination via REST API) and the{" "}
           <strong>push path</strong> (real-time events via WebSocket or SSE).
@@ -238,7 +245,7 @@ export default function LiveUpdatesFeedArticle() {
           trims the oldest items from the store when it exceeds a threshold
           (e.g., keeping only the latest 500 items in memory), relying on
           pagination to reload them if the user scrolls back.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -248,15 +255,15 @@ export default function LiveUpdatesFeedArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Different live feed approaches balance freshness, stability, and
           implementation complexity. The following comparison evaluates the
           primary strategies.
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-theme text-sm">
             <thead>
-              <tr className="bg-panel">
+              <HighlightBlock as="tr" tier="important">
                 <th className="border border-theme px-4 py-2 text-left">
                   Strategy
                 </th>
@@ -269,10 +276,10 @@ export default function LiveUpdatesFeedArticle() {
                 <th className="border border-theme px-4 py-2 text-left">
                   Complexity
                 </th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody>
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="border border-theme px-4 py-2 font-medium">
                   Poll and refresh
                 </td>
@@ -285,7 +292,7 @@ export default function LiveUpdatesFeedArticle() {
                 <td className="border border-theme px-4 py-2">
                   Low
                 </td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="border border-theme px-4 py-2 font-medium">
                   Immediate real-time insert
@@ -353,24 +360,24 @@ export default function LiveUpdatesFeedArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Use scroll-position-aware update strategy as the default: auto-insert
             new items when the user is within 100px of the feed top, buffer
             behind a banner when scrolled deeper. This provides the best
             balance of freshness and stability
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Implement cursor-based pagination exclusively — never use
             offset-based pagination for live feeds. The cursor (item ID or
             timestamp) anchors the pagination position regardless of
             insertions above
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Deduplicate using item IDs at the store level — every item
             entering the feed (from API, real-time push, or optimistic insert)
             is checked against existing IDs before insertion. This prevents
             visual duplicates from any source
-          </li>
+          </HighlightBlock>
           <li>
             Use virtualized rendering for feeds that accumulate more than
             50-100 items in a session. Without virtualization, DOM node
@@ -408,25 +415,25 @@ export default function LiveUpdatesFeedArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Content layout shift (CLS) from live inserts</strong> —
             prepending items to a feed while the user is scrolled down
             pushes all content downward, creating a jarring jump. This is
             the most common UX complaint in live feeds and directly impacts
             Core Web Vitals
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Unbounded memory growth</strong> — accumulating all
             real-time items in the client store without eviction leads to
             increasing memory consumption and degrading performance over
             long sessions
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Duplicate items from multiple sources</strong> — the
             same item appearing twice because it arrived from both the
             initial API response and the real-time push channel. Always
             deduplicate by item ID at the store level
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Pagination gap</strong> — a gap between the latest
             real-time items (at the top) and the oldest paginated items
@@ -458,7 +465,7 @@ export default function LiveUpdatesFeedArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Twitter/X: The Canonical Live Feed
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Twitter&apos;s timeline is the archetypal live feed implementation.
           Their scroll-position-aware strategy shows a &quot;N new posts&quot;
           pill at the top of the timeline when the user is scrolled down,
@@ -474,12 +481,12 @@ export default function LiveUpdatesFeedArticle() {
           reconciliation is particularly sophisticated, handling tweet
           edits, deletions, and retweet/unretweet events that modify or
           remove existing feed items.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Bloomberg Terminal: High-Frequency Financial Feeds
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Bloomberg Terminal&apos;s web interface handles some of the most
           demanding live feed requirements: streaming thousands of price
           updates per second across multiple instruments simultaneously. Their
@@ -493,12 +500,12 @@ export default function LiveUpdatesFeedArticle() {
           optimization ensures that a price change in one instrument does not
           re-render the entire table. This fine-grained update strategy is
           essential when displaying hundreds of streaming values simultaneously.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Datadog: Real-Time Metrics Dashboard
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Datadog&apos;s dashboards display live metrics from infrastructure
           monitoring, streaming data points at configurable intervals (1
           second to 5 minutes). Their frontend architecture uses a
@@ -512,7 +519,7 @@ export default function LiveUpdatesFeedArticle() {
           streams per dashboard widget, with client-side aggregation
           (downsampling high-resolution data for overview charts) and
           WebSocket-based streaming for real-time updates.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/real-time-features/live-updates-feed-diagram-3.svg"
@@ -526,14 +533,17 @@ export default function LiveUpdatesFeedArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do you prevent content layout shift when injecting new
               items into a live feed?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               Use scroll-position-aware insertion: detect whether the user is
               at the top of the feed (within a threshold like 100px from top).
               If at top, prepend items with smooth animation. If scrolled down,
@@ -543,14 +553,14 @@ export default function LiveUpdatesFeedArticle() {
               <code>overflow-anchor: auto</code> CSS property. Additionally,
               reserve layout space for incoming items using estimated heights
               to prevent shifts during the insert animation.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How would you handle optimistic updates in a live feed where
               real-time events may also deliver the same item?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               Generate a client-side correlation ID (UUID) when creating a new
               item. Include it in the API request and store the optimistic entry

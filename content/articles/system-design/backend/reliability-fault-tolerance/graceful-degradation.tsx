@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Graceful degradation</strong> is the practice of continuing to deliver core functionality while non-essential features are reduced or disabled during failures, overload, or partial outages. It prioritizes critical user journeys over feature completeness, ensuring that the system remains usable even when operating below its normal capacity. Graceful degradation is not a last-resort emergency measure—it is a designed behavior that should activate automatically when the system detects that it cannot sustain its full feature set.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Graceful degradation is often confused with fault tolerance or failover. Fault tolerance aims to prevent any user-visible impact through redundancy and automatic recovery. Failover moves traffic from a failed component to a healthy replica. Graceful degradation accepts that some functionality will be lost and makes explicit, pre-planned decisions about what to sacrifice and what to preserve. It is the difference between a system that says "everything works perfectly" and one that says "checkout works, but recommendations are temporarily unavailable."
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, graceful degradation requires balancing four competing concerns. <strong>Core preservation</strong> means identifying which user journeys must remain functional at all costs—authentication, checkout, messaging—and which can be safely disabled—recommendations, personalization, analytics. <strong>User experience</strong> means that degraded modes must be predictable and communicative—users should understand what is missing and what still works, rather than encountering ambiguous failures. <strong>Automation</strong> means degradation should activate and deactivate automatically based on measurable signals, not manual decisions made under incident pressure. <strong>Recovery</strong> means that returning from degraded mode to normal operation must be safe, staged, and free from re-triggering the overload that caused degradation in the first place.
         </p>
@@ -48,6 +52,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/reliability-fault-tolerance/degradation-strategy-comparison.svg"
@@ -56,12 +63,12 @@ export default function ArticlePage() {
         />
 
         <h3>Core versus Optional Feature Classification</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The foundation of graceful degradation is knowing which features are core and which are optional. Core features are those that, if unavailable, would cause the system to fail its primary purpose. For an e-commerce platform, core features include product browsing, cart management, checkout, and payment processing. Optional features include product recommendations, personalized sorting, user reviews, and wish lists. For a messaging application, core features include sending and receiving messages, while optional features include read receipts, typing indicators, and message reactions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The classification should be formalized, not ad hoc. Define a minimum viable experience for your system—the smallest set of features that still delivers value to the user. Everything outside this set is a candidate for degradation. The classification should be tied to resource consumption: optional features are often those that are expensive to compute, depend on fragile external services, or consume shared resources that could starve core features under load.
-        </p>
+        </HighlightBlock>
         <p>
           A strong approach is to define degradation as a budget system. Each feature is allocated a resource budget—CPU, database queries, cache bandwidth, external API calls. When a feature exceeds its budget during stress, it degrades automatically to protect the core system. This removes subjective decisions during incidents and makes degradation deterministic and testable.
         </p>
@@ -119,14 +126,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust graceful degradation architecture requires explicit degradation paths, automated triggers, and clear user experience contracts. The flow begins with signal detection—circuit breakers, saturation monitors, SLO burn rates—identifying that the system cannot sustain its full feature set. The degradation controller evaluates which features to disable based on a pre-defined order, activates the appropriate fallbacks, and notifies the user experience layer to render accordingly. Recovery flows in reverse: when signals normalize, features are re-enabled in a staged manner to avoid recreating the overload.
-        </p>
+        </HighlightBlock>
 
         <h3>Degradation Order and the Degradation Ladder</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Define an explicit degradation ladder that specifies the order in which features are disabled. Level 1 disables expensive optional features such as recommendations and advanced search facets. Level 2 serves cached or default responses for non-critical reads. Level 3 reduces write volume by queuing or limiting non-essential writes. Level 4 switches to read-only or limited-mode operation for the highest-risk workflows. Each level has explicit entry criteria tied to SLO burn and saturation, and explicit exit criteria tied to recovery signals.
-        </p>
+        </HighlightBlock>
         <p>
           The degradation ladder should be encoded in configuration, not hardcoded in application logic. This allows operations teams to adjust the order and thresholds without deploying code during an incident. Feature flags are the natural implementation mechanism—each degradation level is controlled by a flag that can be toggled centrally.
         </p>
@@ -153,12 +163,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Graceful degradation involves trade-offs between user experience completeness, system stability, and engineering complexity. Preserving more features during degradation improves user experience but increases resource consumption and the risk of incomplete recovery. Aggressive degradation stabilizes the system faster but risks degrading too much and damaging user trust.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The engineering cost of graceful degradation is significant. It requires service separation, resource isolation, fallback implementation, circuit breaker configuration, degradation monitoring, and user experience design for degraded states. For small teams or low-impact services, this investment may not be justified. For large-scale, revenue-critical services, the investment pays for itself in the first incident it mitigates.
-        </p>
+        </HighlightBlock>
         <p>
           A key trade-off is between graceful degradation and horizontal scaling. If you can scale elastically to handle any load, degradation is less necessary. However, scaling has limits—database connections, external API rate limits, and budget constraints all cap how much you can scale. Graceful degradation is the safety net when scaling reaches its limit. The most resilient systems use both: scale when possible, degrade when necessary.
         </p>
@@ -169,12 +182,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Define critical paths and optional features explicitly. Document the minimum viable experience for your system and classify every feature as core or optional. Create explicit degradation paths with fallback chains for each optional feature. Each fallback should have a known quality level and a known resilience level, and the chain should be ordered from highest quality to most resilient.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Automate degraded-mode activation using circuit breakers, SLO burn rates, and saturation thresholds. Manual decisions during incidents are slow, error-prone, and create unnecessary stress. The system should degrade automatically when signals indicate that it cannot sustain its full feature set. Ensure that degradation is reversible—each degraded mode should have clear exit criteria and a staged recovery path.
-        </p>
+        </HighlightBlock>
         <p>
           Monitor degraded-mode usage and user impact. Track how often degradation activates, how long it lasts, and what the user experience is during degraded operation. Use this data to tune degradation thresholds, improve fallback quality, and identify features that degrade too frequently—which signals an underlying capacity or dependency issue that should be fixed, not just degraded around.
         </p>
@@ -188,12 +204,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most dangerous pitfall is unplanned degradation—when optional systems fail unpredictably without pre-defined fallbacks, causing cascading failures in critical paths. If a recommendation service crashes and its failure causes the homepage to error because the homepage aggregates recommendations synchronously, the system has failed to degrade gracefully. This is the exact scenario graceful degradation is designed to prevent, and it occurs when teams do not plan fallback paths in advance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Brownout conditions are another critical pitfall. A brownout occurs when the system is partially healthy but slow and unstable, triggering retries, hedging, and timeouts across clients, which amplifies load and can collapse the entire system. Degradation strategies should be designed to reduce tail latency, not only to return a response. If a degraded response is as slow as a failing response, it has not actually helped.
-        </p>
+        </HighlightBlock>
         <p>
           Oscillation between normal and degraded modes occurs when entry and exit criteria are not properly separated. If the system degrades at 80 percent saturation and recovers at 80 percent saturation, it will cycle continuously at the boundary. Use hysteresis: degrade at 80 percent, recover at 60 percent. The gap prevents oscillation and provides a stability buffer.
         </p>
@@ -207,16 +226,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce: Black Friday Traffic Spike</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           During a Black Friday sale, an e-commerce platform experienced 10x normal traffic. The recommendation service could not handle the load and began timing out. Because the platform had pre-defined graceful degradation, the circuit breaker opened for the recommendation service, and the homepage fell back to cached top-seller lists. Personalized sorting on search results was disabled, falling back to relevance-based ranking. Checkout and payment processing remained fully functional. The platform processed record revenue without a single checkout failure, even though multiple optional features were degraded.
-        </p>
+        </HighlightBlock>
 
         <h3>Social Media: Image Processing Pipeline Failure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A social media platform's image processing pipeline experienced a partial outage, unable to generate thumbnails and resized images. Instead of failing image uploads entirely, the platform accepted uploads and displayed a processing placeholder. Users could still post text and links. When the pipeline recovered, images were processed asynchronously and the placeholder was replaced. The degradation preserved the core posting functionality while the image feature was temporarily reduced to async processing.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Services: Read-Only Mode During Database Maintenance</h3>
         <p>
@@ -234,14 +256,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How do you decide which features to degrade during an incident?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Start from the critical user journey and define a minimum viable experience. Degrade optional features that are expensive or dependency-heavy—recommendations, rich personalization, long-tail analytics—while preserving core actions like browse, checkout, and login. Decisions should be tied to explicit SLO and correctness constraints, not subjective importance.
-            </p>
+            </HighlightBlock>
             <p>
               Classify features by their resource consumption and dependency fragility. Features that consume disproportionate CPU, database queries, or external API calls are the first candidates for degradation. Features that depend on fragile third-party services should have pre-defined fallbacks. The classification should be documented and tested before incidents occur.
             </p>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,7 +28,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>JSON Web Tokens (JWT)</strong> are a compact, URL-safe token format defined by RFC 7519 that
           carries claims (statements about an entity, typically the user) between parties. A JWT consists of three
           base64url-encoded sections separated by dots: the header (metadata about the token, including the signing
@@ -35,14 +39,14 @@ export default function ArticlePage() {
           has not been tampered with). JWTs are the de facto standard for token-based authentication in modern
           distributed systems — they are used in OAuth 2.0 access tokens, OpenID Connect ID tokens, API
           authentication, and session management.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The key property of JWTs is that they are self-contained — all the information needed to validate and
           process the token is contained within the token itself. This enables stateless authentication: the resource
           server can validate the JWT&apos;s signature and extract the claims without calling the authorization server or
           looking up a session in a database. This is a significant architectural advantage in distributed systems,
           where a database lookup on every request would create a bottleneck and a single point of failure.
-        </p>
+        </HighlightBlock>
         <p>
           However, JWTs have significant security implications. They are not encrypted — the header and payload are
           base64url-encoded, which is trivially reversible. Anyone who obtains a JWT can read its claims. JWTs cannot
@@ -74,7 +78,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The JWT header contains metadata about the token — the signing algorithm (alg), the token type (typ,
           typically &quot;JWT&quot;), and optionally the key ID (kid) used to select the correct key for signature validation.
           The algorithm is critical — it determines how the signature is computed and validated. Common algorithms
@@ -82,15 +89,15 @@ export default function ArticlePage() {
           SHA-256, asymmetric). The choice of algorithm depends on the architecture — symmetric algorithms are simpler
           but require the same secret on both the issuer and validator, while asymmetric algorithms enable public key
           validation (the issuer signs with a private key, and anyone with the public key can validate the signature).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The JWT payload contains claims — statements about an entity (typically the user). Claims are categorized
           as registered (standard claims defined by the RFC, such as sub for subject, iss for issuer, aud for
           audience, exp for expiration, iat for issued-at), public (claims registered in the IANA registry or with
           collision-resistant names), and private (custom claims agreed upon by the parties). The claims are the
           core of the JWT — they carry the information that the resource server needs to process the request (user
           identity, roles, scopes, permissions).
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/jwt-json-web-tokens-diagram-1.svg"
           alt="JWT structure showing header, payload, and signature sections with their claims and encoding"
@@ -137,22 +144,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The JWT architecture consists of the issuer (which creates and signs tokens), the client (which stores
           and presents tokens), and the validator (which verifies tokens). The issuer generates the JWT by
           constructing the header and payload, computing the signature, and concatenating the three sections. The
           client stores the JWT securely and presents it with each API request (typically in the Authorization:
           Bearer header). The validator verifies the JWT by checking the signature, expiration, issuer, audience,
           and claims.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In a distributed system, the issuer and validator may be different services. The issuer signs tokens with
           a private key (for asymmetric algorithms) or a shared secret (for symmetric algorithms). The validator
           validates tokens using the corresponding public key or shared secret. For asymmetric algorithms, the
           issuer publishes its public keys on a well-known endpoint (the JWKS endpoint), and the validator fetches
           the public key dynamically. This enables key rotation — the issuer can rotate its keys without requiring
           the validator to be reconfigured.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/jwt-json-web-tokens-diagram-3.svg"
           alt="JWT security considerations showing attack vectors, defense measures, and algorithm comparison"
@@ -188,7 +198,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           JWT versus opaque tokens is the primary trade-off in token design. JWTs are self-contained — they carry
           claims that the resource server can validate without calling the authorization server. This enables
           stateless authentication, which is simpler to scale and operate. However, JWTs cannot be revoked until
@@ -196,8 +209,8 @@ export default function ArticlePage() {
           to server-side session state — the resource server must call the authorization server to validate the
           token and retrieve the claims. This enables immediate revocation, but introduces a network dependency
           and latency on each request.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Symmetric versus asymmetric signing is a trade-off between simplicity and security. Symmetric algorithms
           (HS256) use the same secret for signing and validation — simpler to implement but requires the secret to
           be shared between the issuer and all validators. If the secret is compromised, all tokens are vulnerable.
@@ -205,7 +218,7 @@ export default function ArticlePage() {
           public key can be published, and anyone with the public key can validate tokens without being able to
           forge them. Asymmetric algorithms are recommended for distributed systems where multiple services validate
           tokens.
-        </p>
+        </HighlightBlock>
         <p>
           Storing claims in the JWT versus in a database is a trade-off between performance and flexibility. Storing
           claims in the JWT enables stateless validation — the resource server does not need to call a database to
@@ -233,18 +246,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use asymmetric signing algorithms (RS256 or ES256) for distributed systems. Asymmetric algorithms enable
           the issuer to sign tokens with a private key and the validator to validate tokens with the corresponding
           public key. This eliminates the need to share a secret between the issuer and all validators, and it
           enables key rotation without reconfiguring the validators.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use short-lived access tokens (5-15 minutes) with refresh token rotation. Short-lived access tokens limit
           the window of opportunity if a token is compromised. Refresh token rotation detects token theft — if a
           refresh token is reused, the authorization server revokes the entire token family. The client must handle
           token rotation gracefully, updating its stored tokens on each refresh.
-        </p>
+        </HighlightBlock>
         <p>
           Validate all JWT claims — signature, expiration, issuer, audience, and any additional claims (scopes,
           roles). Use a well-tested JWT library (jose, PyJWT, jsonwebtoken) — do not implement JWT validation
@@ -277,18 +293,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Accepting unsigned tokens (alg: none) is a critical vulnerability. Some JWT libraries accept unsigned
           tokens by default — if the algorithm header is set to &quot;none&quot;, the library skips signature validation. An
           attacker can forge a token by setting the algorithm to &quot;none&quot; and removing the signature. The fix is to
           configure the JWT library to reject unsigned tokens and to whitelist allowed algorithms.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Algorithm confusion attacks occur when the attacker changes the algorithm from RS256 (asymmetric) to
           HS256 (symmetric) and signs the token with the public key. Since the public key is known, the attacker
           can forge tokens that the validator accepts as valid. The fix is to whitelist allowed algorithms — if the
           system uses RS256, the validator should only accept RS256 tokens and reject all other algorithms.
-        </p>
+        </HighlightBlock>
         <p>
           Storing sensitive data in JWT claims is a common pitfall. JWT claims are base64url-encoded, not encrypted
           — anyone who obtains a JWT can read the claims. Storing sensitive data (passwords, social security numbers,
@@ -315,22 +334,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses JWTs for API authentication — users authenticate through the platform&apos;s
           identity provider, which issues JWTs with short expiration (15 minutes) and refresh tokens with rotation.
           The JWTs contain the user&apos;s ID, roles, and tenant ID. The API gateway validates the JWT&apos;s signature and
           expiration, and the service layer evaluates the user&apos;s roles to determine what actions they can perform.
           The platform uses RS256 for signing, with the identity provider signing tokens using a private key and the
           API gateway validating tokens using the corresponding public key (fetched from the JWKS endpoint).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses JWTs for service-to-service authentication. Each service is assigned a
           client ID and private key, and it obtains JWTs from the authorization server using the Client Credentials
           flow. The JWTs contain the service&apos;s identity (sub claim) and the scopes it is authorized to use. The
           target service validates the JWT&apos;s signature, expiration, and scopes, and processes the request if the
           JWT is valid. The company uses ES256 for signing (smaller signatures, faster validation) and rotates
           signing keys every 90 days.
-        </p>
+        </HighlightBlock>
         <p>
           A healthcare organization uses JWTs for federated identity — healthcare providers authenticate through
           their organization&apos;s identity provider (Okta, Active Directory) using OpenID Connect. The identity provider
@@ -354,14 +376,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between JWT and JWE, and when would you use each?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               JWT (JSON Web Token) is a signed token — the signature ensures integrity (the token has not been tampered with), but the claims are readable (base64url-encoded, not encrypted). JWE (JSON Web Encryption) is an encrypted token — the payload is encrypted, so only parties with the decryption key can read the claims.
-            </p>
+            </HighlightBlock>
             <p>
               Use JWT when the claims are not sensitive and you need the resource server to read them without decryption. Use JWE when the claims are sensitive and must be protected from being read by anyone who obtains the token. In practice, JWT is far more common — most systems rely on transport security (HTTPS) and secure storage to protect JWTs, and JWE is rarely used.
             </p>

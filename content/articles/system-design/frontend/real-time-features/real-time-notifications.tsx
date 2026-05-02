@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,7 @@ export default function RealTimeNotificationsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           <strong>Real-time notifications</strong> are system-generated messages
           delivered to users with minimal latency to inform them about events
           that require their attention — new messages, mentions, status changes,
@@ -49,8 +50,8 @@ export default function RealTimeNotificationsArticle() {
           synchronization. They are the primary mechanism through which
           applications create urgency, re-engage users, and surface actionable
           information without requiring users to actively check for updates.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The notification landscape spans multiple delivery channels, each
           with different reach, urgency, and intrusiveness characteristics.{" "}
           <strong>In-app notifications</strong> appear within the application UI
@@ -65,8 +66,8 @@ export default function RealTimeNotificationsArticle() {
           based on the notification&apos;s priority, the user&apos;s current
           engagement state (are they active in the app right now?), and their
           notification preferences.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           From a systems design perspective, real-time notifications are
           challenging because they sit at the intersection of several complex
           domains: real-time delivery (getting the notification to the client
@@ -80,7 +81,7 @@ export default function RealTimeNotificationsArticle() {
           second must efficiently determine which of its hundreds of millions
           of users should receive each notification, through which channel,
           and with what content.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, notification system design reveals
           deep architectural thinking. The event-driven nature of notifications
@@ -111,7 +112,7 @@ export default function RealTimeNotificationsArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           In-App Notification Delivery
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           In-app notifications are delivered via WebSocket or SSE connections
           to the active browser session. When the server generates a
           notification, it publishes the event to a message broker, which
@@ -126,12 +127,12 @@ export default function RealTimeNotificationsArticle() {
           notifications with read/unread state). The choice of pattern depends
           on the notification&apos;s urgency — toasts for high-priority items
           that need immediate attention, badge-only for low-priority items.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Web Push Notifications
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           The Web Push API (RFC 8030) enables servers to send notifications
           to users even when they do not have the application open. The flow
           involves three components: the application server, a push service
@@ -147,12 +148,12 @@ export default function RealTimeNotificationsArticle() {
           displays it using the Notification API. Web push notifications
           bypass the browser tab entirely — they appear as native OS
           notifications and can re-engage users who have navigated away.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Priority, Batching, and Deduplication
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Notification fatigue is the primary enemy of engagement. When a
           user receives 50 notifications in an hour, they stop reading any
           of them. Effective notification systems implement several
@@ -170,7 +171,7 @@ export default function RealTimeNotificationsArticle() {
           per time window, dropping or batching low-priority items when the
           budget is exhausted. These mechanisms work together to ensure that
           each notification the user sees is genuinely valuable.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Read State and Cross-Device Synchronization
@@ -218,12 +219,17 @@ export default function RealTimeNotificationsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           A production notification system is an event-driven pipeline with
           distinct stages: event ingestion, notification generation, channel
           routing, delivery, and read-state tracking. Each stage is
           independently scalable and failure-isolated.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          For staff/principal design, call out idempotency and ordering: retries
+          must not create duplicate notifications, and read/unread state must
+          converge across devices even under out-of-order delivery.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/real-time-features/real-time-notifications-diagram-2.svg"
@@ -231,7 +237,7 @@ export default function RealTimeNotificationsArticle() {
           caption="Figure 2: Notification processing pipeline from event to delivery"
         />
 
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Events enter the pipeline from application services (user actions,
           system events, scheduled triggers) via a message queue. The
           notification generator determines which users should be notified,
@@ -245,7 +251,7 @@ export default function RealTimeNotificationsArticle() {
           service API calls, email queue management. Read-state events flow
           back from clients to the centralized store, and state changes are
           broadcast to all active sessions via WebSocket.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -255,15 +261,15 @@ export default function RealTimeNotificationsArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Each notification delivery channel has distinct characteristics that
           make it suitable for different scenarios. The following comparison
           helps architects choose the right channel mix.
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-theme text-sm">
             <thead>
-              <tr className="bg-panel">
+              <HighlightBlock as="tr" tier="important">
                 <th className="border border-theme px-4 py-2 text-left">
                   Channel
                 </th>
@@ -276,10 +282,10 @@ export default function RealTimeNotificationsArticle() {
                 <th className="border border-theme px-4 py-2 text-left">
                   Best For
                 </th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody>
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="border border-theme px-4 py-2 font-medium">
                   In-app (WebSocket/SSE)
                 </td>
@@ -292,7 +298,7 @@ export default function RealTimeNotificationsArticle() {
                 <td className="border border-theme px-4 py-2">
                   Chat messages, live updates, typing indicators
                 </td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="border border-theme px-4 py-2 font-medium">
                   Web Push
@@ -346,24 +352,24 @@ export default function RealTimeNotificationsArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Implement channel orchestration that adapts to user engagement
             state — if the user is active in-app, suppress push notifications
             and deliver in-app only; if inactive for more than 5 minutes,
             escalate to push; if inactive for hours, batch into email digest
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Batch related notifications aggressively — &quot;Alice, Bob, and 3
             others liked your post&quot; is one notification, not five.
             Implement a batching window (30 seconds to 2 minutes) where related
             events are grouped before delivery
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Use a high-water mark plus individual reads for efficient read-state
             management — &quot;mark all as read&quot; sets the high-water mark
             to the current timestamp, and only notifications after the mark
             need individual read tracking
-          </li>
+          </HighlightBlock>
           <li>
             Design notification payloads to be self-contained: include enough
             context (sender name, content preview, action URL) that the user
@@ -403,24 +409,24 @@ export default function RealTimeNotificationsArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Notification overload</strong> — sending too many
             notifications trains users to ignore all of them. A single
             high-signal notification is worth more than ten low-signal ones.
             Audit notification volume per user and implement budgets
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Requesting push permission immediately</strong> — asking
             for notification permission on the first page load, before the user
             has any context, results in high denial rates and burns the
             permission permanently
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Unread count drift</strong> — maintaining the unread count
             as a separate counter that increments on notification creation and
             decrements on read leads to drift from race conditions. Derive the
             count from the notification list with read state applied
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Duplicate notifications across channels</strong> — sending
             both a push notification and an in-app notification for the same
@@ -452,7 +458,7 @@ export default function RealTimeNotificationsArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Facebook: Notification Infrastructure at Billions Scale
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Facebook&apos;s notification system processes billions of events per
           day across its family of apps. Their architecture uses a centralized
           notification service that receives events from hundreds of
@@ -468,12 +474,12 @@ export default function RealTimeNotificationsArticle() {
           promoted to push. This ML-driven approach dramatically reduced
           notification fatigue while maintaining engagement, and has become the
           industry standard for high-volume notification systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Linear: Developer-Focused Notification Design
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Linear&apos;s issue tracker demonstrates a minimalist approach to
           notifications optimized for developer workflow. Their notification
           system focuses on signal over volume: users only receive
@@ -487,12 +493,12 @@ export default function RealTimeNotificationsArticle() {
           email channel sends a single daily digest of unread notifications
           rather than individual emails, respecting developers&apos;
           preference for focused work periods.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           GitHub: Activity-Centric Notification Streams
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           GitHub&apos;s notification system manages the intersection of code
           review, issue tracking, CI/CD status, and security alerts across
           millions of repositories. Their system allows fine-grained
@@ -507,7 +513,7 @@ export default function RealTimeNotificationsArticle() {
           markdown rendering), using web push as an optional enhancement.
           Their API also supports custom notification routing through webhooks,
           enabling integrations with Slack, Discord, and custom tooling.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/real-time-features/real-time-notifications-diagram-3.svg"
@@ -521,14 +527,17 @@ export default function RealTimeNotificationsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How would you design a real-time notification system for a
               social media platform with 100 million users?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               Event-driven pipeline: application events flow to a message queue
               (Kafka). A notification generator consumes events, determines
               recipients using fan-out logic (e.g., all followers of the poster),
@@ -539,14 +548,14 @@ export default function RealTimeNotificationsArticle() {
               Email delivery via an email service with digest batching.
               Read-state stored in a dedicated datastore with cross-device sync
               via WebSocket events.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do you prevent notification fatigue while maintaining
               user engagement?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               Multiple strategies: batch related notifications (group likes,
               comments on the same post), implement per-user rate limits (max

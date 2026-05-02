@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,15 +25,18 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Kappa Architecture</strong> is a data processing architecture that uses a single streaming pipeline
           for all computation — both real-time processing and historical reprocessing. It was proposed by Jay Kreps at
           LinkedIn as a simplification of the Lambda Architecture, which maintains two separate codebases (a batch
           layer and a speed layer) and merges their results in a serving layer. Kappa eliminates the batch layer
           entirely, treating batch processing as a special case of stream processing: reprocessing historical data is
           achieved by replaying the stream from an earlier point in time.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The core insight of Kappa is that the batch and speed layers in Lambda are doing the same computation —
           they just operate on different time windows of data. The batch layer computes results over all historical
           data, while the speed layer computes results over recent data. If the same computation can be expressed as
@@ -40,7 +44,7 @@ export default function ArticlePage() {
           the stream processor can process historical data by rewinding its read position to the beginning of the log
           and replaying all events. This eliminates the need for two codebases, two execution engines, and a complex
           merge logic in the serving layer.
-        </p>
+        </HighlightBlock>
         <p>
           Kappa is not universally superior to Lambda — it has specific requirements and limitations. It requires that
           the streaming platform retain data for a sufficiently long period (days to weeks) to support reprocessing.
@@ -77,21 +81,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The immutable log is the foundation of Kappa Architecture. All events — user activities, database changes,
           IoT sensor readings, system metrics — are written to a single, append-only, ordered log. The log is
           partitioned for parallelism and replicated for durability. The retention period (how long data is kept in
           the log before being deleted) is the key operational parameter — it determines how far back the stream
           processor can rewind for reprocessing. A retention period of 7 days supports reprocessing of the last 7
           days of data; a retention period of 30 days supports reprocessing of the last 30 days.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The stream processor reads from the log and computes results in real-time. It maintains state
           (aggregations, windowed counts, join buffers) that is updated as each event is processed. The state is
           periodically checkpointed to durable storage, so that if the processor fails, it can restore its state from
           the latest checkpoint and continue processing from the corresponding position in the log. This ensures that
           the processor&apos;s output is correct even in the face of failures — no events are lost or duplicated.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/kappa-architecture-diagram-1.svg"
           alt="Kappa architecture flow: event sources to immutable log to stream processor to serving layer, with reprocessing flow"
@@ -139,21 +146,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Kappa architecture consists of three components: the immutable log (Kafka, Pulsar), the stream
           processor (Flink, Kafka Streams), and the serving layer (database, cache, API). Events are written to the
           log by producers (application services, CDC connectors, IoT devices). The stream processor reads from the
           log, computes results, and writes to the serving layer. Consumers (BI tools, APIs, internal services) query
           the serving layer for the latest results.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The reprocessing flow begins when the processing logic needs to be updated. The operations team stops the
           current stream processor (or starts a new one alongside it), configures the new processor to read from the
           desired historical point (for example, 7 days ago), and starts processing. The processor reads all events
           from that point through the current time, applying the updated logic and writing results to a parallel
           serving table. Once reprocessing completes (the processor has caught up to the current time), the serving
           layer switches to the reprocessed results, and the old results are discarded.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/kappa-architecture-diagram-3.svg"
           alt="When Kappa works well versus when Lambda is better, showing use cases for each architecture"
@@ -186,7 +196,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Kappa versus Lambda is the primary trade-off. Kappa simplifies the architecture by eliminating the batch
           layer, the speed layer, and the merge logic — one codebase, one execution engine, one serving layer.
           However, Kappa requires that the stream processor support reprocessing (rewinding the read position and
@@ -195,8 +208,8 @@ export default function ArticlePage() {
           efficiently — it is not limited by log retention. The choice depends on the reprocessing requirements: if
           reprocessing is limited to a bounded window (days to weeks), Kappa is simpler. If reprocessing needs to
           cover arbitrary historical periods (months to years), Lambda is more flexible.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Reprocessing cost is a significant trade-off. In Kappa, reprocessing requires replaying all historical
           events through the stream processor, which is computationally expensive — each event is processed
           individually, with state updates and checkpointing for each event. In Lambda, the batch layer can process
@@ -204,7 +217,7 @@ export default function ArticlePage() {
           datasets because it can parallelize over the entire dataset at once. For small reprocessing windows (days),
           Kappa reprocessing is efficient. For large reprocessing windows (months), Lambda batch processing is more
           efficient.
-        </p>
+        </HighlightBlock>
         <p>
           Operational complexity differs between the two architectures. Kappa requires managing a Kafka cluster with
           long retention and a stream processor with stateful computation and checkpointing. Lambda requires managing
@@ -225,18 +238,21 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Set log retention based on the reprocessing window — the retention period should be long enough to support
           the maximum reprocessing window (for example, 7 days if you need to reprocess up to 7 days of historical
           data). Monitor log retention closely — if the log is approaching the retention limit, increase the
           retention period or archive older data to a data lake before it is deleted.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use a stream processor that supports exactly-once semantics and stateful computation with checkpointing.
           Flink and Kafka Streams are the most widely used stream processors for Kappa Architecture, providing
           exactly-once processing, stateful computation, and checkpointing. Ensure that the processor&apos;s checkpointing
           mechanism captures the full state atomically, so that recovery after a failure produces correct results.
-        </p>
+        </HighlightBlock>
         <p>
           Test reprocessing regularly — run a reprocessing job on a historical window (for example, the last 24 hours)
           and verify that the reprocessed results match the expected results. This catches bugs in the processing
@@ -258,20 +274,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Insufficient log retention preventing reprocessing is the most common Kappa failure. If the log retention
           period is shorter than the reprocessing window (for example, 3 days of retention but a bug is discovered
           that requires reprocessing 7 days of data), the historical data is not available for reprocessing. The fix
           is to monitor log retention and increase the retention period proactively, or to archive older data to a
           data lake before it is deleted from the log.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           State that is too large to checkpoint efficiently causes slow reprocessing and recovery. If the stream
           processor&apos;s state (aggregations, windowed counts, join buffers) grows beyond the checkpointing capacity,
           checkpointing takes too long and the processor cannot recover quickly after a failure. The fix is to optimize
           the state (use incremental checkpointing, reduce the state window, or partition the state across multiple
           processor instances).
-        </p>
+        </HighlightBlock>
         <p>
           Reprocessing that interferes with real-time processing causes service disruption. When reprocessing runs
           in parallel with real-time processing, the processor consumes resources (CPU, memory, network) that are
@@ -290,7 +309,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses Kappa Architecture for its real-time analytics pipeline, where user
           activity events (page views, clicks, purchases) are written to a Kafka topic with 7-day retention. A Flink
           processor reads from the topic, computes windowed aggregations (page views per minute, per user, per
@@ -298,8 +320,8 @@ export default function ArticlePage() {
           aggregation logic, the operations team rewinds the Flink processor to 7 days ago and replays all events
           through the fixed logic, producing corrected results in approximately 3 hours. The serving layer switches to
           the corrected results when reprocessing completes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses Kappa Architecture for its fraud detection pipeline, where transaction
           events are written to a Kafka topic and a Flink processor computes real-time risk scores for each
           transaction. The processor maintains a rolling 30-day history of each customer&apos;s transaction pattern,
@@ -307,7 +329,7 @@ export default function ArticlePage() {
           processor is reconfigured to read from 30 days ago and replay all transactions through the updated model,
           producing updated risk scores for all customers. The reprocessing runs in parallel with real-time
           processing, and the serving layer switches to the updated scores when reprocessing completes.
-        </p>
+        </HighlightBlock>
         <p>
           A technology company uses a hybrid approach — Kappa for real-time processing and Lambda for historical
           analysis. The Kappa pipeline processes real-time events through a stream processor for operational
@@ -328,25 +350,28 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How does Kappa Architecture simplify Lambda Architecture, and what are the trade-offs?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Kappa simplifies Lambda by eliminating the batch layer, the speed layer, and the merge logic. Instead of
             maintaining two codebases (batch and streaming) and a complex merge in the serving layer, Kappa uses one
             codebase (the stream processor) for both real-time processing and historical reprocessing. This reduces
             the operational complexity of maintaining two execution engines and the development complexity of keeping
             two codebases in sync.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The trade-offs are: Kappa requires that the log retain data for the reprocessing window, which can be
             expensive for large retention periods. Kappa reprocessing is less efficient than Lambda batch processing
             for large historical datasets, because the stream processor processes events individually rather than in
             parallel batches. And Kappa does not support ad-hoc historical analysis as well as Lambda, because the
             log is not directly queryable.
-          </p>
+          </HighlightBlock>
           <p>
             The choice between Kappa and Lambda depends on the reprocessing requirements and the organization&apos;s
             expertise. If reprocessing is limited to a bounded window (days to weeks) and the team has stream

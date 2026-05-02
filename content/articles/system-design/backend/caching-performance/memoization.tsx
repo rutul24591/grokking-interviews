@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 const BASE_PATH = "/diagrams/system-design-concepts/backend/caching-performance";
@@ -37,7 +38,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Memoization</strong> is the practice of caching the return value
           of a function so that subsequent calls with identical arguments can
           bypass computation entirely and return the cached result immediately.
@@ -49,8 +53,8 @@ export default function ArticlePage() {
           lifecycle, or occasionally a single user session. Its intimacy with
           the computation it caches makes it both uniquely powerful and uniquely
           dangerous.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The term was coined by Donald Michie in 1968, derived from the Latin
           word &quot;memorandum&quot; (to be remembered). In academic computer
           science, memoization is most closely associated with dynamic
@@ -63,7 +67,7 @@ export default function ArticlePage() {
           transformation pipelines that cache intermediate normalization steps.
           Every one of these is a memoization problem, even if the team does not
           use that terminology.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, memoization is a deceptively deep
           topic. The core idea -- store results keyed by inputs -- is trivial.
@@ -81,8 +85,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Memoization applies exclusively to <strong>deterministic functions</strong> --
           functions that, given the same inputs, always produce the same outputs
           and have no observable side effects. A function that reads the current
@@ -94,9 +101,9 @@ export default function ArticlePage() {
           that depend on global configuration, environment variables, or mutable
           singletons often fall into the latter category and are the most
           dangerous candidates for memoization.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>cache key</strong> is the most critical design decision in
           memoization. The key must capture every input that influences the
           function&apos;s output, and nothing more. If the key omits a relevant
@@ -111,7 +118,7 @@ export default function ArticlePage() {
           undefined and null be distinguished, should large objects be truncated
           or hashed, and should the serialization itself be cached to avoid
           making key construction more expensive than the computation it guards.
-        </p>
+        </HighlightBlock>
 
         <p>
           The <strong>scope</strong> of memoization determines how long cached
@@ -162,8 +169,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           A production-grade memoization system is more than a simple map from
           keys to values. It is a layered architecture where each layer addresses
           a specific operational concern: key construction, cache storage,
@@ -171,9 +181,9 @@ export default function ArticlePage() {
           how these layers interact is essential for designing memoization that
           improves performance under production load without introducing correctness
           bugs or memory leaks.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>key construction layer</strong> transforms function arguments
           into a stable, comparable cache key. For functions with primitive
           arguments (strings, numbers, booleans), this is straightforward:
@@ -189,7 +199,7 @@ export default function ArticlePage() {
           which is one reason why memoization is most effective when applied by
           the team that owns the function rather than as a generic, reusable
           decorator.
-        </p>
+        </HighlightBlock>
 
         <p>
           The <strong>cache storage layer</strong> holds the key-value pairs and
@@ -277,8 +287,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Memoization sits within a broader landscape of caching strategies, and
           understanding where it fits relative to alternatives is essential for
           making the right architectural choice. Memoization is the most
@@ -292,7 +305,7 @@ export default function ArticlePage() {
           are visible to only one process. A distributed cache serves all processes
           but introduces network latency, serialization overhead, and the
           possibility of serving stale data to consumers that expect fresh results.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -406,7 +419,7 @@ export default function ArticlePage() {
           </tbody>
         </table>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The choice between memoization and application-level caching is not
           either/or -- they are complementary. Memoization handles the fine-grained
           repetition of function calls within a request pipeline, while
@@ -416,7 +429,7 @@ export default function ArticlePage() {
           simultaneously benefiting from an application-level cache for user
           profile data, product catalog entries, and feature flag values. The two
           layers operate independently and address different repetition patterns.
-        </p>
+        </HighlightBlock>
 
         <p>
           The choice between per-process memoization and distributed caching
@@ -437,8 +450,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most important best practice is to restrict memoization to
           functions that are provably deterministic. Before applying memoization
           to any function, conduct a purity audit that examines every data source
@@ -451,9 +467,9 @@ export default function ArticlePage() {
           memoization, which limits the blast radius of a staleness bug to a
           single request rather than affecting all subsequent requests handled by
           the process.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Always bound memoization tables with either a maximum entry count or a
           maximum memory footprint. The bound should be configured based on the
           observed working set of inputs -- the number of distinct argument
@@ -465,7 +481,7 @@ export default function ArticlePage() {
           is too small for the working set and should be resized. If entries are
           never evicted, the cache may be larger than necessary and could be
           reduced to free heap space.
-        </p>
+        </HighlightBlock>
 
         <p>
           Design cache keys with the same rigor as designing database primary
@@ -512,8 +528,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is memoizing functions that are not truly
           deterministic. This often happens when a function depends on data that
           appears stable during development but changes in production. A function
@@ -527,9 +546,9 @@ export default function ArticlePage() {
           any function whose output depends on data that can change -- even if
           the change is infrequent or externally triggered -- requires a
           memoization strategy that accounts for that change.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Unbounded memoization tables are the second most common pitfall. A
           function that accepts user-specific inputs (user ID, session token,
           personalized preferences) creates a new cache entry for every distinct
@@ -543,7 +562,7 @@ export default function ArticlePage() {
           are not user-specific -- system configuration, reference data, template
           compilation, and schema validation are good candidates; user profile
           lookups and personalized recommendations are not.
-        </p>
+        </HighlightBlock>
 
         <p>
           Incorrect cache key construction is a subtle pitfall that causes
@@ -578,8 +597,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Template rendering engines</strong> use memoization extensively
           to cache the results of parsing and compiling templates. When a request
           renders a page, the template engine parses the template source into an
@@ -593,9 +615,9 @@ export default function ArticlePage() {
           (templates are only invalidated during deployments). Template engines
           like Handlebars, Pug, and EJS all include built-in compilation caching
           that is essentially memoization of the compile function.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Authorization policy evaluation</strong> is another common
           memoization target. In systems that evaluate complex authorization
           policies (role-based access control, attribute-based access control, or
@@ -611,7 +633,7 @@ export default function ArticlePage() {
           if policies change between requests); and the TTL is the request
           lifetime. Open source policy engines like OPA (Open Policy Agent)
           include built-in caching for this reason.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Data transformation pipelines</strong> in ETL and stream
@@ -658,14 +680,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you decide between per-request and per-process
               memoization for a given function?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The decision hinges on three factors: data freshness
               requirements, input cardinality, and recomputation cost. Per-request
               memoization is the default choice when the function&apos;s output
@@ -683,7 +708,7 @@ export default function ArticlePage() {
               memory pressure) may not be justified unless the hit rate is very high.
               If the function costs milliseconds or more, per-process memoization
               delivers meaningful latency savings even at moderate hit rates.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

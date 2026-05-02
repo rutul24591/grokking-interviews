@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,15 +34,15 @@ export default function BroadcastChannelAPIArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>Broadcast Channel API</strong> provides a simple, efficient publish-subscribe messaging mechanism for communication between browsing contexts — tabs, windows, and iframes — that share the same origin. Unlike point-to-point messaging APIs that require explicit targeting of recipients, the Broadcast Channel API operates on a broadcast model: any context that posts a message to a named channel delivers that message to all other contexts subscribed to the same channel. The API uses the structured clone algorithm for message serialization, enabling the transmission of complex data types including objects, arrays, typed arrays, Maps, Sets, and even File and Blob objects — far beyond the string-only limitation of the localStorage event mechanism.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Broadcast Channel API was introduced to address a fundamental need in modern web applications: coordinating behavior across multiple open tabs of the same application. Before its introduction, developers relied on workarounds that were either inefficient or limited. The localStorage event mechanism allowed cross-tab notification of storage changes but required serializing all data to strings, was constrained by storage quotas, and provided no guarantee of message ordering. Shared Workers provided efficient cross-tab communication with shared state but required a separate worker script, had complex port-based APIs, and lacked Safari support. The Broadcast Channel API provides the simplest possible cross-tab communication mechanism — create a channel with a name, post messages, listen for messages — with good browser support across all modern browsers except Internet Explorer.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The API operates on a fire-and-forget model. When a context posts a message to a channel, the message is delivered to all other contexts currently subscribed to that channel. There is no acknowledgment mechanism, no delivery guarantee, and no message persistence — if no other context is listening when the message is posted, the message is lost. This model is appropriate for real-time coordination signals (logout notification, settings change, UI state update) where the signal is only relevant to currently active contexts. It is not appropriate for persistent state synchronization where late-joining contexts need to receive historical messages — for that, a shared state mechanism like Shared Workers or server-side state is required.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, the Broadcast Channel API represents the simplest tool in the cross-tab communication toolbox. Its simplicity is both its greatest strength and its primary limitation. The API requires minimal code — typically three lines to create a channel, post a message, and listen for messages — making it easy to implement and maintain. However, the lack of shared state, delivery guarantees, and message persistence means that it is suitable only for specific use cases: real-time coordination signals between currently active tabs. Understanding when to use the Broadcast Channel API versus Shared Workers, localStorage events, or server-mediated communication is a key architectural decision that affects application reliability, complexity, and user experience.
         </p>
@@ -50,15 +51,15 @@ export default function BroadcastChannelAPIArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>channel creation model</strong> is the foundation of the Broadcast Channel API. A channel is created by calling <code>new BroadcastChannel(channelName)</code> with a string identifier. The channel name determines which contexts receive broadcast messages — only contexts that have created a BroadcastChannel with the exact same name will receive each other&apos;s messages. This enables multiple independent communication channels within the same application: a &quot;auth&quot; channel for authentication-related messages, a &quot;settings&quot; channel for configuration changes, and a &quot;notifications&quot; channel for user notification events. Channels are scoped by origin — contexts from different origins cannot communicate through the same channel, even if they use the same channel name. This origin scoping provides a security boundary that prevents cross-origin message leakage.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>message posting model</strong> uses the <code>postMessage(data)</code> method to send messages to all contexts subscribed to the channel. The data argument can be any value that is serializable by the structured clone algorithm — this includes primitives (strings, numbers, booleans, null), objects, arrays, typed arrays, Maps, Sets, Dates, RegExps, Blob objects, File objects, ImageData objects, and ArrayBuffer objects. Notably, it does not include functions, DOM nodes, or objects with circular references that cannot be cloned. The structured clone algorithm creates a deep copy of the data, so modifications to the original object after posting do not affect the received copy. This is important for message integrity — the sender and receiver operate on independent copies of the data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>message reception model</strong> uses the <code>onmessage</code> event handler to receive messages posted by other contexts. When any context posts a message to the channel, the onmessage handler fires in all other contexts subscribed to that channel, including the posting context itself. The event object contains a <code>data</code> property with the cloned message data and an <code>origin</code> property with the origin of the posting context (which is always the same as the receiving context&apos;s origin, due to same-origin scoping). The onmessage handler should process the message data and update the application state or UI accordingly. For error handling, the <code>onmessageerror</code> event fires if the message data cannot be deserialized — this can occur if the data contains types that the receiving browser does not support.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>channel lifecycle model</strong> manages the channel&apos;s existence and resource consumption. A channel exists as long as the creating context holds a reference to the BroadcastChannel object and has not called the <code>close()</code> method. When the context is destroyed (tab closed, page navigated), the channel is automatically closed and its resources are released. However, in long-running single-page applications, contexts may persist for extended periods, and channels should be explicitly closed when no longer needed to prevent resource leaks. The <code>close()</code> method disconnects the channel from the broadcast system, preventing further message delivery and releasing associated resources. After calling close(), the channel cannot be reopened — a new BroadcastChannel object must be created.
         </p>
@@ -81,15 +82,15 @@ export default function BroadcastChannelAPIArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A production Broadcast Channel API implementation requires an architecture that manages channel lifecycle, message serialization and routing, state synchronization, and error handling. While the API itself is simple, production usage patterns require careful design to ensure reliability, prevent message loss, and handle edge cases gracefully.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>channel management layer</strong> is responsible for creating, maintaining, and closing BroadcastChannel instances. In a well-architected system, channel management is centralized in a communication module that provides a clean interface to the rest of the application. The module creates channels on application initialization, registers message handlers for each channel, and closes channels on application teardown. The module should implement channel naming conventions — for example, prefixing channel names with the application identifier to prevent conflicts with other applications running on the same origin (such as different micro-frontends or embedded widgets). The module should also implement channel health monitoring — periodically verifying that channels are still active and recreating them if they have been closed unexpectedly.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>message routing layer</strong> handles message dispatch within each context. Since a single channel can carry multiple types of messages, the message routing layer examines each received message and dispatches it to the appropriate handler based on a message type identifier. The standard pattern is to wrap all messages in a consistent structure: <code>type: message-type, payload, timestamp: Date.now()</code>. The message router maintains a registry of handlers keyed by message type. When a message is received, the router looks up the handler for the message type and invokes it with the payload. This pattern enables multiple components to register handlers for different message types on the same channel, promoting modularity and separation of concerns.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>state synchronization layer</strong> addresses the Broadcast Channel API&apos;s lack of message persistence and shared state. When a context posts a &quot;state changed&quot; message through the channel, other contexts receive the signal but not the actual state data. The state synchronization layer combines the broadcast signal with a state source — typically localStorage for simple state, IndexedDB for complex state, or the server for authoritative state. When a context receives a &quot;state changed&quot; signal, it reads the current state from the state source and updates its local state accordingly. This pattern ensures that late-joining contexts (tabs that open after a state change) can fetch the current state from the state source on initialization, while active contexts receive real-time notification of changes through the channel.
         </p>
@@ -121,15 +122,15 @@ export default function BroadcastChannelAPIArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The Broadcast Channel API involves trade-offs between simplicity and capability, between real-time signaling and state persistence, and between same-origin isolation and cross-origin communication needs. Understanding these trade-offs is essential for choosing the right cross-tab communication mechanism for each use case.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most significant trade-off is <strong>simplicity versus capability</strong>. The Broadcast Channel API is the simplest cross-tab communication mechanism — create a channel, post messages, listen for messages. It requires no worker scripts, no port management, no connection tracking, and no complex lifecycle handling. However, this simplicity comes with significant limitations: no shared state, no message persistence, no delivery guarantees, no message routing (only broadcast to all subscribers), and same-origin only. For use cases that fit within these limitations — real-time coordination signals between active tabs — the Broadcast Channel API is the ideal choice. For use cases that require shared state, message persistence, or cross-origin communication, more complex mechanisms are necessary.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>real-time signaling versus state persistence</strong> trade-off is fundamental to the API&apos;s design. The Broadcast Channel API delivers messages in real-time to currently active contexts but does not persist messages for late-joining contexts. This is appropriate for event signals (&quot;user logged out&quot;, &quot;settings changed&quot;, &quot;new message received&quot;) where the signal is only relevant to contexts that are currently active. It is not appropriate for state synchronization (&quot;here is the current user profile&quot;, &quot;here is the latest data&quot;) where late-joining contexts need the current state. The solution is to combine the Broadcast Channel API with a persistent state source — use the channel for real-time signals and the state source for actual state data.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>same-origin isolation versus cross-origin communication</strong> trade-off affects multi-domain applications. The Broadcast Channel API is scoped by origin — contexts from different origins cannot communicate through the same channel. This provides a security boundary that prevents message leakage between different applications on different subdomains. However, for applications that span multiple origins (e.g., <code>app.example.com</code> and <code>admin.example.com</code>), the Broadcast Channel API cannot facilitate cross-origin communication. For cross-origin communication, use the <code>postMessage</code> API with iframes or window references, or use server-mediated communication through WebSocket or SSE.
         </p>
@@ -160,15 +161,15 @@ export default function BroadcastChannelAPIArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The most important best practice is <strong>implementing a consistent message structure</strong> for all broadcast messages. Every message should include a type identifier that indicates the message&apos;s purpose, a payload containing the actual data, and optionally a timestamp and sender identifier. The type identifier enables the message router to dispatch messages to the appropriate handlers. The payload should be a plain object with well-defined properties. The timestamp enables recipients to determine the message&apos;s age and decide whether to process it (for example, ignoring stale messages). The sender identifier enables deduplication — recipients can skip messages where the sender identifier matches their own.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Combining broadcast signals with persistent state</strong> addresses the API&apos;s lack of message persistence. When a context changes shared state (user settings, authentication status, application configuration), it should do two things: first, update the persistent state source (localStorage, IndexedDB, or server); second, broadcast a &quot;state changed&quot; signal through the Broadcast Channel. Recipients of the signal read the updated state from the persistent source and update their local state. This pattern ensures that active contexts receive real-time notification of changes, while late-joining contexts can fetch the current state from the persistent source on initialization.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Using separate channels for different message domains</strong> improves message routing efficiency and reduces unnecessary message processing. Instead of posting all messages to a single channel, create separate channels for different message domains: an &quot;auth&quot; channel for authentication-related messages (login, logout, session expiration), a &quot;settings&quot; channel for configuration changes, a &quot;data&quot; channel for data updates, and so on. Contexts that only care about authentication messages subscribe only to the &quot;auth&quot; channel, reducing the number of messages they need to process. This is particularly important in large applications with many components that have different cross-tab communication needs.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Closing channels when no longer needed</strong> prevents resource leaks. Call <code>channel.close()</code> when the channel is no longer needed — when the component that uses the channel is unmounted, when the user navigates away from the relevant page, or when the application is shutting down. In single-page applications, channels should be closed in the component cleanup lifecycle. While channels are automatically closed when the context is destroyed, explicit closing is a best practice that ensures resources are released promptly.
         </p>
@@ -183,15 +184,15 @@ export default function BroadcastChannelAPIArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The most common pitfall is <strong>relying on Broadcast Channel for state synchronization</strong> without a persistent state source. Since messages are not persisted, a context that opens after a state change will not receive the change notification and will have stale state. The solution is to combine broadcast signals with a persistent state source — broadcast a &quot;state changed&quot; signal through the channel, and store the actual state in localStorage, IndexedDB, or on the server. Late-joining contexts fetch the current state from the persistent source on initialization.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Not handling the sender receiving its own messages</strong> leads to redundant processing or infinite loops. Since the Broadcast Channel API delivers messages to all subscribers including the sender, a context that posts a message also receives it. If the message handler triggers an action that posts another message, this can create an infinite loop. The solution is to implement deduplication — include a sender identifier in each message and skip messages where the sender identifier matches the current context. Alternatively, design message handlers to be idempotent so that processing your own messages is harmless.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Posting large messages frequently</strong> can degrade performance. While the structured clone algorithm supports complex data types, cloning large objects (megabytes of data) is expensive in both CPU time and memory. Posting large messages at high frequency (hundreds of messages per second) can cause performance degradation, particularly on low-end devices. The solution is to keep messages small — post identifiers and references rather than full data objects, and let recipients fetch the actual data from the persistent state source. For high-frequency data (such as cursor position in a collaborative editor), consider throttling or batching messages to reduce the posting rate.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Not closing channels</strong> leads to resource leaks in long-running applications. Each open channel consumes browser resources — memory for the channel object, processing power for message delivery, and potentially network resources for cross-process communication. In single-page applications where components are mounted and unmounted frequently, unclosed channels accumulate and consume resources unnecessarily. The solution is to close channels in the component cleanup lifecycle: call <code>channel.close()</code> when the component is unmounted or when the channel is no longer needed.
         </p>
@@ -208,19 +209,19 @@ export default function BroadcastChannelAPIArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>Authentication State Synchronization</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Multi-tab web applications use the Broadcast Channel API to synchronize authentication state across tabs. When a user logs out in one tab, that tab posts a &quot;logout&quot; message to the auth channel. All other tabs receive the message and clear their local authentication state, redirect to the login page, and close any authenticated WebSocket connections. Similarly, when a user logs in, the tab posts a &quot;login&quot; message, and other tabs update their authentication state. This ensures consistent authentication behavior across tabs — a user who logs out in one tab does not remain logged in on other tabs. The actual authentication tokens are stored in localStorage or httpOnly cookies, and the broadcast message simply signals that the state has changed.
-        </p>
+        </HighlightBlock>
 
         <h3>Settings and Configuration Propagation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Applications with user-configurable settings (theme preference, language, notification preferences, display options) use the Broadcast Channel API to propagate settings changes across tabs. When a user changes a setting in one tab, the tab saves the new setting to localStorage and posts a &quot;settings-changed&quot; message to the settings channel with the setting key. Other tabs receive the message, read the updated setting from localStorage, and apply it to their UI. This ensures that settings changes are reflected immediately across all open tabs without requiring a page refresh. The combination of localStorage (persistent storage) and BroadcastChannel (real-time signal) provides both immediate propagation for active tabs and correct initialization for new tabs.
-        </p>
+        </HighlightBlock>
 
         <h3>Analytics Event Deduplication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Web applications that track user analytics events (page views, clicks, interactions) use the Broadcast Channel API to deduplicate events across tabs. When a user performs an action that should be tracked, the tab posts an analytics event to the analytics channel. Other tabs receive the event and check whether they have already tracked it (using a shared event log in localStorage or IndexedDB). If the event has already been tracked by another tab, the receiving tab skips tracking it. This prevents duplicate analytics events when the user has multiple tabs open and performs the same action in multiple tabs. The deduplication reduces analytics data volume and improves data accuracy.
-        </p>
+        </HighlightBlock>
 
         <h3>Presence and Activity Detection</h3>
         <p>
@@ -239,15 +240,15 @@ export default function BroadcastChannelAPIArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: How does the Broadcast Channel API work, and what are its limitations?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: The Broadcast Channel API provides a publish-subscribe messaging mechanism for same-origin browsing contexts. Create a channel with <code>new BroadcastChannel(name)</code>, post messages with <code>channel.postMessage(data)</code>, and receive messages with <code>channel.onmessage</code>. Messages are delivered to all contexts subscribed to the same channel, including the sender. Data is serialized using the structured clone algorithm, supporting complex data types beyond strings.
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               The API has several important limitations. Messages are not persisted — if no context is listening when a message is posted, the message is lost. There is no shared state — each context maintains its own state independently. There are no delivery guarantees — messages may be lost if a context is in the process of closing. The API is same-origin only — contexts from different origins cannot communicate. And messages are delivered to all subscribers — there is no targeted messaging to specific contexts.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

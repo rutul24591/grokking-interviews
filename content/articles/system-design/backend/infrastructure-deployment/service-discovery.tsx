@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,12 +38,15 @@ export default function ServiceDiscoveryArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Service discovery</strong> is the automated process of detecting and locating network services in a distributed system. In modern microservices architectures, services are deployed dynamically (instances are created, destroyed, rescheduled, scaled), making it impossible to hardcode service addresses (IP addresses, ports) in client applications. Service discovery solves this by maintaining a real-time registry of available service instances (IP addresses, ports, health status), enabling clients to locate and connect to healthy service instances automatically.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, service discovery is essential for managing microservices at scale. Without service discovery, services would need to be configured with hardcoded addresses of dependent services — which breaks when services are rescheduled (new IP addresses), scaled (more instances), or fail (instances become unavailable). Service discovery automates service location (clients query the service registry to find healthy instances), health checking (unhealthy instances are removed from the registry), and load balancing (traffic is distributed across healthy instances).
-        </p>
+        </HighlightBlock>
         <p>
           Service discovery involves several technical considerations. Registration (services register themselves with the registry on startup, and deregister on shutdown — or the registry discovers services through external means). Health checking (the registry periodically checks service health — removing unhealthy instances from the registry, ensuring that clients only connect to healthy instances). Discovery mechanism (DNS-based — clients resolve service names to IP addresses via DNS; client-side — clients query the registry directly; server-side — a load balancer or proxy queries the registry and routes traffic). Service meshes (sidecar proxies that handle service discovery, load balancing, and traffic management transparently — applications do not need to implement discovery logic).
         </p>
@@ -54,12 +58,15 @@ export default function ServiceDiscoveryArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Service Registration</strong> is the process of adding a service instance to the service registry. Registration can be self-registration, where the service instance registers itself with the registry on startup and deregisters on shutdown. This approach is simple but requires the service to implement registration logic. Alternatively, external registration uses a separate process such as an orchestrator or sidecar proxy to register the service instance with the registry. Services do not need to implement registration logic, but external registration requires dedicated infrastructure. Self-registration is used by service meshes where sidecar proxies handle registration, while external registration is used by container orchestration platforms like Kubernetes which registers pods with the service registry automatically.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Health Checking</strong> is the process of verifying that a service instance is healthy and able to serve requests. Health checks are performed by the service registry periodically, querying the service instance through HTTP endpoint checks, TCP connection checks, or custom health endpoints. If a service instance fails health checks, it is removed from the registry so clients will not connect to it. If the service instance recovers, it is added back to the registry. Health checking ensures that clients only connect to healthy service instances, preventing cascading failures where unhealthy instances are queried and cause further errors.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>DNS-Based Discovery</strong> allows clients to resolve service names to IP addresses via DNS. For example, user-service.internal.example.com resolves to the IP addresses of healthy user-service instances. DNS-based discovery is simple because clients use standard DNS resolution with no custom discovery logic needed. However, it has limitations: DNS caching may serve stale addresses, TTL limits how quickly addresses are updated, and DNS does not provide load balancing, meaning clients must implement load balancing themselves. DNS-based discovery is used by Kubernetes through CoreDNS which resolves service names to pod IPs, and by cloud providers such as Route 53 and Cloud DNS.
         </p>
@@ -85,12 +92,15 @@ export default function ServiceDiscoveryArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Service discovery architecture consists of the service registry (storing service instance addresses, health status, metadata), the registration mechanism (services registering themselves, or external registration by orchestrators/sidecars), the health checking system (periodically verifying service instance health), and the discovery mechanism (DNS-based, client-side, or server-side — how clients find healthy instances). The flow begins with a service instance starting up and registering itself with the registry (or being registered by the orchestrator/sidecar). The registry periodically health checks the instance (HTTP endpoint, TCP connection, custom health endpoint). If the instance is healthy, it remains in the registry. If the instance fails health checks, it is removed from the registry.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           When a client needs to connect to a service, it queries the registry (or resolves the service name via DNS, or sends requests to the load balancer). The registry returns a list of healthy service instance addresses. The client load balances requests across the healthy instances (round-robin, least connections, random). If an instance becomes unhealthy, the registry removes it from the registry, and clients stop sending requests to it. If the instance recovers, the registry adds it back, and clients resume sending requests to it.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/discovery-patterns.svg"
@@ -123,14 +133,17 @@ export default function ServiceDiscoveryArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Service discovery involves trade-offs between DNS-based and client-side discovery, self-registration and external registration, and service mesh and traditional discovery. Understanding these trade-offs is essential for designing effective service discovery strategies.
-        </p>
+        </HighlightBlock>
 
         <h3>DNS-Based vs. Client-Side Discovery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>DNS-Based Discovery:</strong> Clients resolve service names to IP addresses via DNS. Advantages: simple (clients use standard DNS resolution, no custom discovery logic needed), widely supported (all operating systems support DNS resolution), scalable (DNS is highly optimized for high-throughput lookups). Limitations: DNS caching may serve stale addresses (TTL limits how quickly addresses are updated, clients may use stale addresses during the TTL period), DNS does not provide load balancing (clients must implement load balancing themselves), DNS does not provide health checking (DNS returns all addresses, including unhealthy ones — clients must health check addresses themselves). Best for: simple service discovery, organizations wanting minimal client complexity.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Client-Side Discovery:</strong> Clients query the service registry directly. Advantages: real-time addresses (no DNS caching — clients always get the latest addresses from the registry), health-checked addresses (registry returns only healthy addresses — clients do not need to health check), client-side load balancing (clients distribute requests across instances — reducing latency, avoiding load balancer bottleneck). Limitations: clients must implement discovery logic (querying the registry, handling registry failures, load balancing), registry is a dependency (if the registry is unavailable, clients cannot discover services). Best for: microservices architectures, organizations wanting real-time, health-checked addresses.
         </p>
@@ -155,12 +168,15 @@ export default function ServiceDiscoveryArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement Health Checking</strong> by configuring the service registry to periodically health check service instances using HTTP endpoint checks, TCP connection checks, or custom health endpoints. Health checking ensures that unhealthy instances are removed from the registry so clients do not connect to them, preventing cascading failures where unhealthy instances are queried and cause further errors. Use appropriate health check intervals — not too frequent to avoid overhead, and not too infrequent to prevent unhealthy instances from remaining in the registry too long. Typical health check intervals are 10-30 seconds, with 3 consecutive failures before removing the instance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use Stale While Revalidate</strong> by caching service registry responses locally as a stale cache while revalidating in the background. This ensures that if the registry is temporarily unavailable, clients can still use cached addresses to connect to services. Stale while revalidate prevents registry failures from causing cascading service failures where clients cannot discover services. Typical cache TTL is 30-60 seconds, with background revalidation that updates the cache while serving stale addresses.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Implement Circuit Breakers</strong> to prevent sending requests to unhealthy services. If a service instance fails repeatedly through errors or timeouts, the circuit breaker opens and stops sending requests to the instance, preventing cascading failures where the unhealthy instance is overwhelmed with requests. After a cooldown period, the circuit breaker half-opens by sending a test request to the instance, and if the instance responds successfully, the circuit breaker closes and resumes sending requests. Circuit breakers are essential for resilient service communication.
         </p>
@@ -178,12 +194,15 @@ export default function ServiceDiscoveryArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>No Health Checking</strong> occurs when the service registry is not configured to health check service instances. Without health checking, unhealthy instances remain in the registry and clients continue to send requests to them, causing cascading failures where unhealthy instances are queried and cause client errors. Always configure health checking through HTTP endpoint checks or TCP connection checks with appropriate intervals of 10-30 seconds and failure thresholds of 3 consecutive failures before removing an instance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>DNS Caching Issues</strong> arise when using DNS-based discovery without considering DNS caching. DNS resolvers cache addresses based on TTL (time to live, typically 60-300 seconds), so clients may use stale addresses from instances that are no longer available during the TTL period. Use low TTL such as 30 seconds for service discovery DNS records, or use client-side discovery where there is no DNS caching because clients query the registry directly.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Registry as Single Point of Failure</strong> happens when using a single service registry instance with no replication and no high availability. If the registry fails, clients cannot discover services, causing cascading service failures. Use replicated registries such as Consul clusters, etcd clusters, or ZooKeeper ensembles with multiple nodes and consensus algorithms for high availability, and implement stale caching so clients cache registry responses and use stale cache if the registry is unavailable.
         </p>
@@ -201,16 +220,19 @@ export default function ServiceDiscoveryArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Microservices Communication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Microservices architectures use service discovery for inter-service communication (services discovering and connecting to other services). Each service registers itself with the registry on startup, and deregisters on shutdown. Clients query the registry to find healthy service instances, and load balance requests across them. This pattern is used by organizations like Netflix, Airbnb, and Pinterest to manage inter-service communication at scale — ensuring that services can discover and connect to each other dynamically (without hardcoded addresses).
-        </p>
+        </HighlightBlock>
 
         <h3>Kubernetes Service Discovery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Kubernetes uses service discovery for pod communication (pods discovering and connecting to other pods). Kubernetes automatically registers pods with the service registry (kubelet registers pods, CoreDNS provides DNS resolution for service names), health checks pods (readiness probes determine pod health), and routes traffic to healthy pods (Services route traffic to ready pods). This pattern is essential for Kubernetes — pods are ephemeral (created, destroyed, rescheduled frequently), and service discovery ensures that pods can discover and connect to each other dynamically.
-        </p>
+        </HighlightBlock>
 
         <h3>Multi-Datacenter Service Discovery</h3>
         <p>
@@ -226,15 +248,18 @@ export default function ServiceDiscoveryArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is service discovery and why is it important?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Service discovery is the automated process of detecting and locating network services in a distributed system. In microservices architectures, services are deployed dynamically (instances are created, destroyed, rescheduled, scaled), making it impossible to hardcode service addresses. Service discovery solves this by maintaining a real-time registry of available service instances (IP addresses, ports, health status), enabling clients to locate and connect to healthy service instances automatically. It is important for microservices — without it, services would need hardcoded addresses, which break when services change (rescheduled, scaled, failed).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

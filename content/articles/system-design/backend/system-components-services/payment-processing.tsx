@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -24,22 +25,25 @@ export default function PaymentProcessingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>payment processing service</strong> is the infrastructure that authorizes, captures, settles, and
           reconciles financial transactions between customers and merchants. It serves as the bridge between the
           merchant&apos;s checkout flow and the global banking network, navigating card networks (Visa, Mastercard,
           Amex), issuing banks, acquiring banks, and payment gateways to move money securely and reliably. Payment
           processing is the most reliability-critical component in any e-commerce or SaaS platform: failures directly
           impact revenue, and errors (double charges, lost payments) create legal liability and erode user trust.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The payment processing flow follows a well-defined sequence: authorization (the issuing bank approves or
           declines the transaction and places a hold on the customer&apos;s funds), capture (the merchant claims the
           authorized funds, typically when the order ships), settlement (the banks exchange funds through the card
           network, typically in end-of-day batches), and payout (the acquirer deposits funds into the merchant&apos;s
           bank account, typically within one to seven business days). Each step in this flow has its own failure modes,
           timing characteristics, and reconciliation requirements.
-        </p>
+        </HighlightBlock>
         <p>
           The fundamental architectural challenge in payment processing is ensuring exactly-once semantics in a
           distributed system where network failures, timeouts, and partial failures are inevitable. A payment request
@@ -61,7 +65,10 @@ export default function PaymentProcessingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Authorization</strong> is the first step in payment processing, where the issuing bank verifies that
           the customer has sufficient funds or credit and places a hold on the authorized amount. The authorization
           request includes the payment amount, currency, card details (or token), merchant identifier, and transaction
@@ -69,8 +76,8 @@ export default function PaymentProcessingArticle() {
           available balance. Authorization typically completes within two to five seconds and does not transfer funds;
           it merely reserves them. Authorizations expire after a configurable period (typically seven days for card
           networks), after which the hold is released and the funds become available to the customer again.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Capture</strong> is the merchant&apos;s action of claiming the authorized funds. Capture can be full
           (the entire authorized amount) or partial (a subset of the authorized amount, useful for partial shipments or
           tip adjustments). Multiple partial captures are allowed by most processors, enabling merchants to capture
@@ -78,7 +85,7 @@ export default function PaymentProcessingArticle() {
           and the merchant must re-authorize the payment. The capture request includes the authorization reference and
           the capture amount, and the processor responds with a capture confirmation that initiates the settlement
           process.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Settlement</strong> is the batch process where the processor sends all captured transactions to the
           card networks for clearing, and the card networks facilitate the transfer of funds from the issuing banks to
@@ -130,14 +137,17 @@ export default function PaymentProcessingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The payment processing architecture consists of a checkout API that receives payment requests, a payment
           gateway that validates requests and performs fraud checks, a payment processor integration layer that
           communicates with external processors (Stripe, Adyen, Braintree), a payment state machine that tracks each
           payment through its lifecycle, a webhook processor that handles asynchronous events from the processor, and a
           reconciliation system that compares internal records with processor settlement reports.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The checkout API receives payment requests with the amount, currency, payment method (token or card details),
           customer identifier, order identifier, and an idempotency key. The API validates the request (amount is
           positive, currency is supported, payment method is valid), checks the idempotency key for a cached response,
@@ -145,7 +155,7 @@ export default function PaymentProcessingArticle() {
           the customer&apos;s fraud score (based on device fingerprint, IP reputation, purchase history, and velocity
           checks), verifies that the customer has not exceeded their spending limit, and applies any business rules
           (e.g., blocking transactions from sanctioned countries).
-        </p>
+        </HighlightBlock>
         <p>
           The processor integration layer translates the internal payment request into the processor&apos;s API format
           and sends the authorization request. For 3DS2-compliant regions, the processor returns a 3DS2 authentication
@@ -174,7 +184,10 @@ export default function PaymentProcessingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The primary trade-off in payment processing architecture is between using a single payment processor versus
           multiple processors. A single processor (e.g., Stripe only) simplifies integration, reduces operational
           complexity, and provides a unified reporting dashboard. However, it creates a single point of failure: if the
@@ -184,8 +197,8 @@ export default function PaymentProcessingArticle() {
           require separate reconciliation for each processor, and complicate reporting. Most production systems start
           with a single processor and add a second processor when the business scale justifies the additional
           complexity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice between direct processor integration and using a payment orchestration layer (Primer, Gr4vy,
           Spreedly) involves a trade-off between control and convenience. Direct integration gives full control over the
           payment flow, error handling, and retry logic, but requires building and maintaining integrations with each
@@ -194,7 +207,7 @@ export default function PaymentProcessingArticle() {
           provider and may limit access to processor-specific features. Organizations with a single processor typically
           integrate directly, while organizations with multiple processors benefit from the abstraction provided by an
           orchestration layer.
-        </p>
+        </HighlightBlock>
         <p>
           Immediate capture (authorize and capture in a single API call) versus delayed capture (authorize first,
           capture later) involves a trade-off between cash flow speed and operational flexibility. Immediate capture
@@ -243,7 +256,10 @@ export default function PaymentProcessingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement idempotency at every layer of the payment processing pipeline. The idempotency key should be
           generated by the client and passed through every layer (API gateway, payment gateway, processor integration,
           database) to ensure that duplicate requests are detected and handled consistently. The database should enforce
@@ -251,8 +267,8 @@ export default function PaymentProcessingArticle() {
           layer fails to detect a duplicate, the database prevents it. The cached response for an idempotent request
           should include the full payment response (status, amount, currency, processor reference) so that the client
           receives exactly the same response on retry.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement daily automated reconciliation between internal payment records and processor settlement reports.
           The reconciliation process should fetch the settlement report from the processor (via API or CSV download),
           compare each transaction against internal records, flag discrepancies, and auto-correct simple mismatches.
@@ -260,7 +276,7 @@ export default function PaymentProcessingArticle() {
           escalated to the finance team for manual investigation. The reconciliation process should run automatically
           every day and produce a report that is reviewed by the finance team. Any unreconciled amount above a threshold
           should trigger an immediate alert.
-        </p>
+        </HighlightBlock>
         <p>
           Use webhooks as the primary mechanism for payment state updates, with API polling as a fallback. Webhooks
           provide real-time notification of payment state changes (authorization, capture, refund, chargeback), but
@@ -302,15 +318,18 @@ export default function PaymentProcessingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not implementing idempotency at the database level leads to double charges when the application layer fails
           to detect a duplicate request. Even if the application layer checks for duplicate idempotency keys, a race
           condition between the check and the insert can allow two concurrent requests with the same key to both
           proceed to the processor, creating duplicate charges. The fix is to add a unique constraint on the
           idempotency key column in the database, ensuring that the second insert fails at the database level even if
           the application layer check was bypassed by a race condition.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Relying solely on webhooks for payment state updates leads to stale payment states when webhook events are
           missed. Webhook delivery is not guaranteed: the webhook endpoint may be down during a deployment, the network
           may drop the request, or the processor may fail to send the webhook. The fix is to implement a polling
@@ -319,7 +338,7 @@ export default function PaymentProcessingArticle() {
           for failed webhook deliveries (the processor typically retries failed webhooks with exponential backoff), and
           the payment service should reconcile its state with the processor&apos;s state at least once per day through
           the automated reconciliation process.
-        </p>
+        </HighlightBlock>
         <p>
           Not handling authorization expiration leads to lost revenue when customers complete checkout but the
           authorization expires before capture. Authorizations typically expire after seven days, and if the merchant
@@ -360,7 +379,10 @@ export default function PaymentProcessingArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Stripe powers payments for millions of businesses worldwide, from startups to Fortune 500 companies.
           Stripe&apos;s architecture demonstrates the idempotency pattern at scale: every API request accepts an
           idempotency key that ensures duplicate requests produce the same result, and Stripe&apos;s webhook system
@@ -368,8 +390,8 @@ export default function PaymentProcessingArticle() {
           Stripe&apos;s reconciliation API provides settlement reports that merchants can use to reconcile their
           internal records with processed transactions, and Stripe&apos;s Radar product provides machine learning-based
           fraud detection that analyzes transaction patterns to identify suspicious activity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Adyen provides a unified commerce platform that handles online, in-store, and in-app payments for global
           merchants like Uber, Spotify, and McDonald&apos;s. Adyen&apos;s architecture demonstrates multi-processor
           routing at scale: Adyen connects directly to card networks and acquiring banks worldwide, enabling optimal
@@ -377,7 +399,7 @@ export default function PaymentProcessingArticle() {
           processing costs. Adyen&apos;s platform also supports local payment methods (iDEAL in the Netherlands,
           Bancontact in Belgium, SEPA Direct Debit across Europe) that are essential for merchant expansion in specific
           markets.
-        </p>
+        </HighlightBlock>
         <p>
           Shopify handles payments for millions of online stores through Shopify Payments (powered by Stripe) and
           integrations with over one hundred payment gateways. Shopify&apos;s payment architecture demonstrates the
@@ -407,12 +429,15 @@ export default function PaymentProcessingArticle() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How do you prevent double charges when a payment request times out and the client retries?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Double charges are prevented through idempotency at every layer of the payment pipeline. The client
             generates a unique idempotency key (UUID v4) for each payment attempt and includes it in the request
             header. The server checks this key against a deduplication store (a database table with a unique constraint
@@ -424,14 +449,14 @@ export default function PaymentProcessingArticle() {
             processor (Stripe, Adyen) also supports idempotency keys, providing a second layer of protection at the
             processor level. This multi-layer idempotency approach ensures that double charges are prevented even in
             the face of network failures, application crashes, and concurrent retries.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 2: How would you design the reconciliation process to detect and resolve payment discrepancies?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The reconciliation process runs daily and compares internal payment records with the processor&apos;s
             settlement report. The process begins by fetching the settlement report from the processor&apos;s API (or
             downloading the CSV file) for the previous business day. The report contains all settled transactions with
@@ -446,7 +471,7 @@ export default function PaymentProcessingArticle() {
             total (sum of captured amounts minus fees). Any discrepancy above a configurable threshold triggers an
             immediate alert. The reconciliation results are stored in a reconciliation report that is reviewed by the
             finance team daily, and unresolved discrepancies are escalated to senior management.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

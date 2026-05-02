@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>APM (Application Performance Monitoring)</strong> is the practice and tooling stack that provides
           end-to-end visibility into how an application behaves in production. It answers three fundamental questions
           that every on-call engineer, SRE, and staff engineer must resolve during an incident: <em>what</em> is the
@@ -34,15 +38,15 @@ export default function ArticlePage() {
           symptoms into actionable diagnoses by combining telemetry from <strong>distributed traces</strong>,{" "}
           <strong>aggregated metrics</strong>, <strong>structured logs</strong>, and increasingly{" "}
           <strong>continuous profiling</strong> into a single correlated workflow.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The evolution of APM has been driven by the architectural shift from monolithic deployments to distributed
           microservices, service meshes, and serverless platforms. In a monolith, a slow endpoint could be profiled on a
           single host with a flame graph. In a distributed system handling thousands of requests per second across dozens
           of services, the same question — why is checkout slow? — requires correlating span trees that cross HTTP
           boundaries, message queues, database connection pools, cache layers, and third-party APIs. APM is the
           discipline that makes this correlation possible at production scale.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, APM is not merely a tool procurement decision. It is an architectural
           commitment that shapes how services are instrumented, how telemetry flows through collector pipelines, how
@@ -63,12 +67,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           APM rests on four pillars that must work together to provide reliable diagnostic capability. Understanding each
           pillar and, critically, how they interlock is essential for designing an APM system that survives the pressure
           of real incidents.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Distributed Tracing</strong> forms the backbone of APM. A trace represents the end-to-end journey of a
           single request as it flows through the system. It is composed of <strong>spans</strong>, each representing a
           discrete unit of work — an HTTP handler, a database query, a cache lookup, a downstream service call. Spans
@@ -80,7 +87,7 @@ export default function ArticlePage() {
           handler, 340 milliseconds in a database query, 8 milliseconds in a Redis cache miss, and 210 milliseconds
           waiting on a downstream inventory service — and to compare this breakdown across thousands of requests to
           identify the dominant contributor to tail latency.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Metrics</strong> provide the aggregated, time-series view of system health. Where traces give you
           individual request stories, metrics give you population-level statistics: request rate, error rate, latency
@@ -122,12 +129,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production-scale APM system is a data pipeline with three major stages: instrumentation at the service level,
           collection and enrichment in a telemetry pipeline, and storage with correlation for query and analysis. Each
           stage introduces design decisions that affect cost, latency, diagnostic capability, and system reliability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>instrumentation layer</strong> lives inside each service. It can be automatic, provided by language
           agents that hook into HTTP frameworks, database drivers, and message queue clients without code changes. It can
           be explicit, where developers add instrumentation calls to create custom spans around business-critical
@@ -138,7 +148,7 @@ export default function ArticlePage() {
           parent span ID, and this context must cross every boundary — HTTP headers, message queue metadata, gRPC
           trailers, and even background job payloads. When propagation breaks at any boundary, the trace is severed, and
           the end-to-end view is lost. This is one of the most common and most damaging APM failure modes.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/apm-application-performance-monitoring-diagram-1.svg"
@@ -200,12 +210,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Every APM design decision involves trade-offs between diagnostic fidelity, system overhead, and cost. Staff
           engineers must understand these trade-offs to design systems that are sustainable at production scale and
           provide the diagnostic capability needed when incidents occur.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Head-based versus tail-based sampling</strong> is the most consequential trade-off in APM. Head-based
           sampling makes the keep-or-drop decision at the start of a trace, before its outcome is known. It is simple to
           implement and provides a predictable, uniform sample of traffic. The downside is that rare failures — the very
@@ -218,7 +231,7 @@ export default function ArticlePage() {
           gradually slower over time. The pragmatic solution is hybrid sampling: a small uniform head sample (0.1–1%) for
           trend analysis, combined with tail-based sampling that prioritizes error traces and traces exceeding latency
           thresholds.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Agent-based versus SDK-based instrumentation</strong> is another critical decision. Agent-based
           instrumentation (Java agents, Python auto-instrumentation, Node.js wrappers) provides rapid coverage with
@@ -262,19 +275,22 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The practices below are distilled from organizations running APM at production scale across hundreds of
           services and millions of requests per second. They represent the guardrails that keep APM systems useful,
           sustainable, and trustworthy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Standardize transaction naming at the route level, not the request level. A transaction for a checkout API
           call should be named &ldquo;POST /api/checkout&rdquo; regardless of which user made the call, which items are
           in the cart, or which payment method was used. Encoding request-specific details into transaction names
           fragments your data and makes percentile comparisons across releases impossible. Enforce this standard in code
           review and, where possible, in automated linting that rejects instrumentation changes introducing unique or
           high-cardinality transaction names.
-        </p>
+        </HighlightBlock>
         <p>
           Propagate trace context across every boundary. This includes HTTP requests (via W3C Trace Context headers),
           message queue publications (embedding trace ID and span ID in message headers or metadata), gRPC calls (via
@@ -322,11 +338,14 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           APM systems fail quietly. The dashboards still render, traces still appear, and the UI looks polished. But
           during an actual incident, responders discover that the data is incomplete, inconsistent, or too expensive to
           query at the volume required. These failure modes are preventable with awareness and governance.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/apm-application-performance-monitoring-diagram-3.svg"
@@ -334,7 +353,7 @@ export default function ArticlePage() {
           caption="Common APM failure modes: broken context propagation at async boundaries, cardinality explosion from unbounded attributes, sampling bias that misses rare failures, and the governance guardrails that prevent each."
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Broken context propagation</strong> is the most common and most damaging failure mode. When trace
           context is not passed across a message queue, a background job, or a third-party API call, the trace is
           severed. The result is orphan spans — spans that belong to a trace but cannot be connected to it — and
@@ -344,7 +363,7 @@ export default function ArticlePage() {
           context, every message consumption must extract it and create a child span, and every service boundary must be
           audited for this pattern. Automated tests that verify trace propagation across boundaries should be part of the
           integration test suite.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Cardinality explosion</strong> occurs when teams encode high-cardinality data into indexed attributes.
           A team adds &ldquo;user_id&rdquo; as an indexed attribute to understand per-user latency. This works for the
@@ -392,14 +411,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider a large e-commerce platform running 200+ microservices handling 50,000 requests per second during
           peak traffic. The checkout flow spans 12 services: API gateway, cart service, inventory service, pricing
           service, payment processor, order service, notification service, and several supporting data services. After a
           routine deployment, the checkout p99 latency increases from 800ms to 3.2 seconds. The APM-driven incident
           workflow begins immediately.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The SLO alert fires because the checkout error budget is being consumed at 10x the normal rate. The responder
           opens the APM interface, filters traces by the checkout transaction name and the post-deployment time window,
           and examines the span breakdown. The traces reveal that the pricing service call, which normally takes 15ms,
@@ -410,7 +432,7 @@ export default function ArticlePage() {
           returns to baseline within two minutes. The post-incident action item is to add a query plan regression check
           to the deployment pipeline, using the APM system to verify that no new slow query patterns appear during
           canary deployment.
-        </p>
+        </HighlightBlock>
         <p>
           In a second scenario, a SaaS platform with multi-tenant architecture observes that one tenant tier (enterprise)
           experiences elevated error rates while other tiers remain unaffected. APM attribute filtering by tenant tier
@@ -443,13 +465,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How does APM differ from traditional monitoring, and what specific diagnostic workflow does APM
             enable that metrics dashboards alone cannot provide?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Traditional monitoring provides aggregated metrics — request rate, error rate, latency percentiles, resource
             utilization — displayed on dashboards. These metrics tell you <em>that</em> something is wrong: latency has
             increased, error rate has climbed, or CPU is saturated. They do not tell you <em>why</em>. APM adds the
@@ -458,14 +483,14 @@ export default function ArticlePage() {
             indicates the problem (SLO burn, p99 spike), pivot to representative traces that show the affected requests,
             examine the span breakdown to identify which hop dominates execution time, correlate to logs for the specific
             error fingerprint, and validate against resource metrics for saturation confirmation.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             This workflow transforms an incident from &ldquo;checkout is slow&rdquo; to &ldquo;the pricing service
             database query is doing a full table scan because the deployment updated statistics and the query planner
             chose a suboptimal plan&rdquo; — a diagnosis that leads directly to a mitigation (rollback) and a prevention
             (query plan regression testing in CI). Metrics dashboards alone cannot provide this because they operate at
             the population level and lack per-request decomposition.
-          </p>
+          </HighlightBlock>
           <p>
             The practical difference shows up in mean time to resolution. Teams with mature APM workflows routinely
             resolve incidents in minutes because the diagnostic path is direct: metric to trace to span to log to root

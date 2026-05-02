@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function FacetedSearchArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Faceted search</strong> (also called faceted navigation or
           faceted filtering) allows users to narrow search results by applying
           multiple filters across different categories or &quot;facets&quot;.
@@ -44,8 +45,8 @@ export default function FacetedSearchArticle() {
           availability. Unlike simple search that returns a flat list of results,
           faceted search enables iterative refinement — users start with a broad
           query and progressively narrow down by selecting facet values.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce sites pioneered faceted search (Amazon, eBay), but it&apos;s
           now standard for any application with filterable data: job boards
           (location, role, experience level), real estate (price, bedrooms,
@@ -54,7 +55,13 @@ export default function FacetedSearchArticle() {
           filter state — handling multiple simultaneous filters, updating facet
           counts as filters are applied, and maintaining a coherent URL state
           for sharing and bookmarking.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
+          Staff-level framing: this is a state + computation problem. Define a
+          canonical filter state model (AND/OR semantics), keep it URL-shareable,
+          and compute facet counts fast enough to feel instant without misleading
+          users.
+        </HighlightBlock>
         <p>
           Faceted search involves several technical challenges. <strong>Facet
           counting</strong> — showing how many results match each facet value
@@ -91,26 +98,26 @@ export default function FacetedSearchArticle() {
             can be enabled (selectable), selected (currently applied), or
             disabled (would return zero results).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Facet Counts:</strong> The number of results matching each
             facet value. Counts update dynamically as filters are applied.
             Computing counts efficiently is critical — naive recomputation on
             every filter change is O(n×m) where n is results and m is facet
             values.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Filter Logic:</strong> AND logic requires items to match all
             selected values within a facet (rare). OR logic matches any selected
             value within a facet (common for brands, colors). Across facets,
             AND logic is standard (must match selected brand AND selected price
             range).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Applied Filters:</strong> Currently active filters displayed
             as removable chips or tags. Each chip shows the facet name and
             selected value with a remove button. Clearing all filters resets to
             unfiltered state.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Disabled Facets:</strong> Facet values that would return zero
             results given current filters. These are shown but not selectable,
@@ -123,6 +130,7 @@ export default function FacetedSearchArticle() {
           src="/diagrams/system-design-concepts/frontend/search-filtering/faceted-search/facet-structure.svg"
           alt="Facet Structure showing facets, values, counts, and states"
           caption="Facet structure — each facet contains multiple values with counts; values can be enabled, selected, or disabled based on current filter state"
+          captionTier="important"
           width={900}
           height={500}
         />
@@ -140,45 +148,47 @@ export default function FacetedSearchArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Faceted search architecture consists of a filter state manager that
           tracks applied filters, a facet computation engine that calculates
           available facets and counts, and a results manager that filters and
           displays matching items. The architecture must handle filter changes
           efficiently without recomputing everything from scratch.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/search-filtering/faceted-search/filter-architecture.svg"
           alt="Faceted Search Architecture showing filter state, facet computation, and results flow"
           caption="Faceted search architecture — filter state tracks applied filters, facet engine computes available facets and counts, results manager filters and displays items"
+          captionTier="important"
           width={900}
           height={550}
         />
 
         <h3>Filter State Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Filter state must track: applied filters (facet name, selected values),
           available facets (facet name, available values with counts), and UI
           state (expanded/collapsed facets, sort order). State can be stored in
           React state, Zustand, or Redux depending on application complexity.
           Critical: filter state should be synchronized with URL for shareability
           and bookmarking.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Faceted search implementation involves trade-offs between performance,
           complexity, and user experience.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/search-filtering/faceted-search/filter-state-flow.svg"
           alt="Filter State Flow showing state changes as filters are applied and removed"
           caption="Filter state flow — selecting a facet value updates applied filters, triggers facet recomputation, updates results, and syncs to URL"
+          captionTier="important"
           width={900}
           height={500}
         />
@@ -194,20 +204,20 @@ export default function FacetedSearchArticle() {
         </p>
 
         <h3>Client-Side vs Server-Side Filtering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Client-side filtering</strong> loads all data upfront and
           filters in the browser. Advantages: instant filter response, works
           offline, no server load. Limitations: dataset must fit in memory
           (&lt;50,000 items), initial load is slower, facet counting can be slow
           for many facets.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Server-side filtering</strong> sends filter state to server
           and receives filtered results. Advantages: handles arbitrary dataset
           size, server can optimize queries, facet counts are accurate.
           Limitations: network latency on every filter change, server load
           increases with filter complexity, requires robust API.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Hybrid approach</strong> loads a subset of data client-side
           for instant feedback, with server-side filtering for comprehensive
@@ -237,23 +247,23 @@ export default function FacetedSearchArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Sync Filters with URL:</strong> Store filter state in query
             params (?brand=nike&price=50-100) for shareability, bookmarking, and
             back-button support. Use a library like useQueryParams or implement
             custom serialization.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Show Applied Filters Prominently:</strong> Display applied
             filters as removable chips above results. Users should always know
             what filters are active and be able to remove them easily. Include
             &quot;Clear all&quot; button.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Update Counts Dynamically:</strong> As filters are applied,
             update facet counts to show how many results match each remaining
             option. Gray out or disable options with zero results.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Order Facets by Importance:</strong> Place most-used facets
           at the top (price, brand for e-commerce). Allow users to collapse
@@ -277,21 +287,21 @@ export default function FacetedSearchArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Disabling Zero-Count Facets:</strong> Allowing users to
             select facet values that return zero results creates frustration.
             Always compute and display counts, disable values with zero matches.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Slow Facet Recomputation:</strong> Recomputing all facet
             counts on every filter change is O(n×m) and slow for large datasets.
             Use incremental computation or server-side counts for large datasets.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong> Losing Filter State on Navigation:</strong> Users navigate
             to a product page, hit back, and lose all filters. Persist filter
             state in URL or state management to survive navigation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Too Many Facets:</strong> Showing 20+ facets overwhelms
             users. Limit to 5-10 most important facets. Put less-common filters
@@ -313,15 +323,20 @@ export default function FacetedSearchArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you can preserve filter intent across navigation
+          (URL), keep interactions responsive (fast counts), and handle “no
+          results” recovery without dead ends.
+        </HighlightBlock>
 
         <h3>E-Commerce Product Filtering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce sites use faceted search extensively. Amazon, eBay, and
           Shopify stores provide facets for price, brand, category, rating,
           shipping options, and product attributes (size, color, material).
           Facet counts update as filters are applied. Server-side filtering for
           large catalogs, client-side for small subsets.
-        </p>
+        </HighlightBlock>
 
         <h3>Job Board Search</h3>
         <p>
@@ -332,12 +347,12 @@ export default function FacetedSearchArticle() {
         </p>
 
         <h3>Real Estate Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Real estate sites (Zillow, Redfin) use facets for price, bedrooms,
           bathrooms, property type, square footage, and year built. Map view
           syncs with filter state — moving map updates location facet. Saved
           searches store filter state for alerts.
-        </p>
+        </HighlightBlock>
 
         <h3>Content Library Filtering</h3>
         <p>
@@ -351,13 +366,18 @@ export default function FacetedSearchArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: state your data model + filter semantics first, then
+          explain how you compute counts (index/aggregation), how you keep URL in
+          sync, and how you keep interactions fast under load.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How do you efficiently compute facet counts as filters change?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Naive approach recomputes all counts on every filter change —
               O(n×m) where n is items and m is facet values. Better approaches:
               (1) Pre-compute a facet index mapping each facet value to item
@@ -366,14 +386,14 @@ export default function FacetedSearchArticle() {
               queries with GROUP BY. (3) For large datasets, use approximate
               counts or cache common filter combinations. The key is avoiding
               full scans on every filter change.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How do you handle filter state synchronization with URL?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Serialize filter state to query params: ?brand=nike,adidas&price=50-100&rating=4+.
               Use a library like useQueryParams, TanStack Router, or Next.js
               useSearchParams. On mount, read query params and initialize filter
@@ -381,7 +401,7 @@ export default function FacetedSearchArticle() {
               page reload (shallow routing or history.pushState). Handle
               back/forward navigation by listening to popstate events. For
               complex filters, use JSON serialization with base64 encoding.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

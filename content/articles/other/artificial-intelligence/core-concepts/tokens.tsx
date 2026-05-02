@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In the context of Large Language Models, a <strong>token</strong> is
           the fundamental unit of text processing — a subword unit that the model
           operates on. Tokens are not words; they are fragments of words,
@@ -33,8 +37,8 @@ export default function ArticlePage() {
           English word might be one token (&quot;house&quot;), multiple tokens
           (&quot;un-believ-able&quot; as 3 tokens), or a fraction of a token
           depending on the vocabulary and algorithm.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tokenization is the critical first step in the LLM pipeline. Before
           any text reaches the model, it must be converted into a sequence of
           integer token IDs that map to the model&apos;s vocabulary. The choice
@@ -45,7 +49,7 @@ export default function ArticlePage() {
           token, every context window limit is measured in tokens, and every
           prompt&apos;s effectiveness depends on how the tokenizer segments the
           input.
-        </p>
+        </HighlightBlock>
         <p>
           The rough heuristic that &quot;1 token ≈ 4 characters ≈ 0.75
           words&quot; for English is commonly cited but imprecise. The actual
@@ -75,7 +79,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The evolution of tokenization has moved through three major phases.
           <strong>Character-level tokenization</strong> treats each character as
           a token, producing very long sequences with small vocabularies (around
@@ -87,8 +94,8 @@ export default function ArticlePage() {
           cannot handle out-of-vocabulary (OOV) words — a critical failure for
           any real-world system encountering new words, typos, or domain
           terminology.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Subword tokenization</strong> — the dominant approach in
           modern LLMs — strikes a balance by splitting words into meaningful
           subword units. The most common algorithms are{" "}
@@ -103,7 +110,7 @@ export default function ArticlePage() {
           &quot;un&quot;, &quot;character&quot;, &quot;istic&quot;, &quot;ally&quot; —
           allowing the model to handle both efficiently and compose meaning from
           subword units it has seen in other contexts.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>WordPiece</strong>, used by BERT and many Google models, is
           similar to BPE but uses a different merge criterion — instead of
@@ -170,7 +177,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The tokenization pipeline operates in two directions: encoding
           (text to token IDs) during both training and inference, and decoding
           (token IDs to text) during generation. During encoding, the raw input
@@ -180,8 +190,8 @@ export default function ArticlePage() {
           tokens are inserted at defined positions — begin-of-sequence (BOS),
           end-of-sequence (EOS), padding tokens, and sometimes separator tokens
           for multi-sequence inputs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           During decoding, the process reverses: the model outputs token IDs,
           which are looked up in the vocabulary to retrieve the corresponding
           subword strings, which are then concatenated (with space handling) to
@@ -189,7 +199,7 @@ export default function ArticlePage() {
           cases like incomplete tokens at the end of generation, special tokens
           that should not appear in output, and language-specific joining rules
           (some languages don&apos;t use spaces between tokens).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Tokenizer mismatch</strong> between training and inference is a
           silent failure mode that can significantly degrade model performance.
@@ -268,7 +278,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice between tokenization algorithms involves trade-offs across
           several dimensions. BPE is simple, well-understood, and produces good
           results for most use cases, making it the default choice for most
@@ -280,8 +293,8 @@ export default function ArticlePage() {
           requirement and works uniformly across all languages, but adds
           complexity and may produce different token boundaries than BPE-based
           systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Vocabulary size decisions cascade through the entire system. A 32K
           vocabulary (GPT-2) produces sequences roughly 20-30% longer than a
           100K vocabulary (GPT-4) for the same text, meaning 20-30% higher costs
@@ -291,7 +304,7 @@ export default function ArticlePage() {
           — a significant increase for models serving at scale. The embedding
           layer also becomes a larger fraction of total model parameters,
           affecting the model&apos;s capacity for learning complex patterns.
-        </p>
+        </HighlightBlock>
         <p>
           For production systems, the tokenization overhead itself is typically
           negligible (microseconds per request) compared to the model inference
@@ -337,7 +350,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Always use the <strong>exact tokenizer</strong> that corresponds to
           the model you&apos;re calling. Never estimate token counts with a
           different tokenizer or a simple word-count heuristic. Most LLM
@@ -345,8 +361,8 @@ export default function ArticlePage() {
           OpenAI models, tiktoken-based utilities for Anthropic), and these
           should be integrated into your development workflow for accurate
           prompt construction and cost estimation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement <strong>token budgeting</strong> at the application level.
           Define maximum token budgets for prompts and responses per feature, per
           user, and per request. When a prompt approaches the context window
@@ -354,7 +370,7 @@ export default function ArticlePage() {
           content — typically system instructions and recent context take
           priority over older conversation history or less relevant retrieved
           documents.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Monitor token efficiency</strong> as a metric. Track the ratio
           of input tokens to output tokens, the average token count per request,
@@ -393,7 +409,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most costly pitfall is <strong>underestimating token costs</strong>
           by using rough heuristics instead of the actual tokenizer. The &quot;1
           token ≈ 4 characters&quot; rule is accurate on average for English
@@ -401,15 +420,15 @@ export default function ArticlePage() {
           or non-English text. A prompt that you estimate at 2000 tokens might
           actually be 2800 tokens, and at scale, this discrepancy compounds into
           significant budget overruns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Context window miscalculation</strong> is another common
           failure. The context window includes both input tokens AND output
           tokens. If you send a 120K token prompt to a 128K context model, you
           only have 8K tokens remaining for the response — the model will be
           truncated mid-response. Production systems must account for the full
           token budget (input + output) when constructing prompts.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Special token handling</strong> can cause subtle bugs.
           Different models use different special tokens (BOS, EOS, padding) and
@@ -434,7 +453,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Prompt optimization for cost reduction</strong> — engineering
           teams routinely reduce prompt token counts by 30-50% through
           tokenization-aware optimization. This includes removing redundant
@@ -442,8 +464,8 @@ export default function ArticlePage() {
           instruction formats, and compressing retrieved documents to their
           essential content before inclusion in the prompt. At scale, these
           optimizations save hundreds of thousands of dollars annually.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Context window management in RAG systems</strong> — retrieval
           systems must carefully manage how many tokens of retrieved content to
           include in the prompt. Including too much wastes tokens on irrelevant
@@ -452,7 +474,7 @@ export default function ArticlePage() {
           Including too little misses critical context. Token-aware retrieval
           ranks and selects documents based on their token count, not document
           count, ensuring optimal use of the context window budget.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Multilingual application cost modeling</strong> — companies
           serving global audiences must account for language-specific token
@@ -485,13 +507,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: Why do LLMs use subword tokenization instead of word-level or
             character-level tokenization?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Word-level tokenization faces the out-of-vocabulary (OOV) problem:
             any word not in the vocabulary cannot be processed, and the
             vocabulary size grows unbounded as new words, names, and
@@ -502,8 +527,8 @@ export default function ArticlePage() {
             making the attention computation O(n²) prohibitively expensive and
             forcing the model to waste capacity on learning that &quot;q&quot; +
             &quot;u&quot; often go together.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             Subword tokenization solves both problems. Common words remain as
             single tokens (efficient), rare words are split into meaningful
             subword units (no OOV problem), and the vocabulary size is bounded
@@ -512,7 +537,7 @@ export default function ArticlePage() {
             constructions it hasn&apos;t seen. The vocabulary size (typically
             32K-256K) is a tunable hyperparameter that balances sequence length
             against model size.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

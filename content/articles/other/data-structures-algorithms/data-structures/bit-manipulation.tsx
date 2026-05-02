@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,7 +35,10 @@ export default function BitManipulationArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Bit manipulation</strong> is the practice of reading,
           writing, and combining individual bits within integer values using
           the processor&apos;s native bitwise instructions — AND, OR, XOR,
@@ -47,8 +51,8 @@ export default function BitManipulationArticle() {
           memory, power, or clock cycles are tight enough that the
           representational overhead of higher-level data structures is
           unaffordable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In modern application code, bit manipulation shows up less often but
           no less consequentially. A staff-level engineer recognizes the
           patterns: a permissions bitmap in an authorization service, a
@@ -57,7 +61,7 @@ export default function BitManipulationArticle() {
           choice is a deliberate trade that picks O(1) set operations and
           cache-friendly packing over the ergonomics of a general-purpose hash
           set.
-        </p>
+        </HighlightBlock>
         <p>
           The languages a senior engineer works in all expose bitwise
           operators, but with very different semantics. C and Rust operate on
@@ -89,11 +93,14 @@ export default function BitManipulationArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           The fundamental operators
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The six essential operators give complete expressive power.{" "}
           <strong>AND (<code>&amp;</code>)</strong> yields 1 only where both
           inputs are 1 — used to extract bits, clear unwanted bits, and test
@@ -110,12 +117,12 @@ export default function BitManipulationArticle() {
           <strong>right shift</strong> divides; the
           subtlety is whether right shift is logical (zero-fill) or arithmetic
           (sign-extend), which is language- and type-dependent.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Canonical identities and tricks
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A handful of identities appear in every experienced practitioner&apos;s
           toolkit. <code>x &amp; (x − 1)</code> clears the lowest set bit —
           the basis of Brian Kernighan&apos;s popcount. <code>x &amp; -x</code>
@@ -129,7 +136,7 @@ export default function BitManipulationArticle() {
           <code>x &amp; ~(1 &lt;&lt; n)</code> clears it.
           <code> x ^ (1 &lt;&lt; n)</code> toggles it. These eight patterns
           cover nearly every bit-level operation needed in application code.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Endianness and alignment
@@ -161,11 +168,14 @@ export default function BitManipulationArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Population count (popcount)
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Counting the set bits in a word is the archetypal bit-level
           primitive. A naive loop masks each bit and accumulates the count
           in O(k) where k is the word width. Kernighan&apos;s trick{" "}
@@ -178,12 +188,12 @@ export default function BitManipulationArticle() {
           the hardware instruction through SIMD. Popcount is foundational
           for bloom filters, roaring bitmaps, succinct data structures, and
           any ranking algorithm that counts on-bits between two positions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           XOR identities and their applications
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           XOR has four foundational properties that combine into surprisingly
           powerful algorithms. (1) <code>x ^ x = 0</code> — self-cancellation.
           (2) <code>x ^ 0 = x</code> — identity. (3){" "}
@@ -196,7 +206,7 @@ export default function BitManipulationArticle() {
           application. RAID-5 uses XOR parity across disks for the same
           reason: losing any one disk lets the contents be reconstructed by
           XORing the remaining disks and the parity block.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Bit manipulation at the JavaScript language level
@@ -232,11 +242,14 @@ export default function BitManipulationArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Bitmask vs Set vs boolean array
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For a set drawn from a small, dense integer universe (say, the
           integers 0 to 63, or an enumeration of 32 possible feature flags),
           a single machine word&apos;s bitmask beats every general-purpose
@@ -248,12 +261,12 @@ export default function BitManipulationArticle() {
           uses a full 8 bits per entry in most runtimes. When the universe
           is small and fits in 32 or 64 bits, a bitmask is not an
           optimization — it is the obvious implementation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Bit array vs bloom filter vs roaring bitmap
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A flat <strong>bit array</strong> represents membership in a
           universe of <em>n</em> integers with <em>n</em> bits — exact,
           simple, and space-proportional to the universe. A{" "}
@@ -269,7 +282,7 @@ export default function BitManipulationArticle() {
           bitmap. ElasticSearch, Druid, and Pinot all use roaring bitmaps
           for posting lists precisely because no one container strategy
           wins across the full index.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Readability vs raw performance
@@ -290,21 +303,24 @@ export default function BitManipulationArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Name your masks.</strong> Hard-coded literals like{" "}
             <code>0x00FF0000</code> are unreadable. Define{" "}
             <code>const FLAG_ADMIN = 1 &lt;&lt; 3</code> and use the name —
             the compiler or engine folds the constant either way.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use hardware popcount when available.</strong> In
             Node/WebAssembly, <code>i32x4.popcnt</code> (SIMD) or the{" "}
             <code>POPCNT</code> x86 instruction via FFI is an order of
             magnitude faster than any bit-tricky JavaScript loop. In V8,
             {" "}<code>Math.clz32</code> is intrinsified to the{" "}
             <code>LZCNT</code> instruction.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Stay inside 31 bits in hot JavaScript.</strong> V8&apos;s
             Smi (small integer) representation fits in 31 bits on 32-bit
@@ -348,21 +364,24 @@ export default function BitManipulationArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Forgetting 32-bit coercion in JavaScript.</strong>{" "}
             <code>(1 &lt;&lt; 31)</code> is <code>-2147483648</code>, not{" "}
             <code>2147483648</code>. Any formula that treats this as a
             positive bit position silently gets wrong answers at bit 31.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Signed vs logical right shift.</strong> In languages
             where <code>&gt;&gt;</code> is arithmetic (sign-extending) and{" "}
             <code>&gt;&gt;&gt;</code> is logical (zero-filling), confusing
             the two on a negative value gives completely different results.
             Rust, Go, and C have only arithmetic right shift for signed
             types, while Java and JavaScript expose both.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Out-of-range shift amounts.</strong> Shifting a 32-bit
             value by 32 or more is undefined behavior in C and yields
@@ -406,11 +425,14 @@ export default function BitManipulationArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Unix file permissions
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The classic <code>rwxrwxrwx</code> permission bits are a nine-bit
           mask stored inside a 16-bit mode field. <code>chmod 755</code>
           {" "}composes three octal digits that each encode three bits — a
@@ -419,12 +441,12 @@ export default function BitManipulationArticle() {
           (AWS IAM, Kubernetes RBAC) layer richer predicates on top but
           retain the same underlying bitmap pattern for coarse per-resource
           flags.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Bloom filters and probabilistic membership
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Content-delivery networks, browser safe-browsing caches, database
           LSM trees, and distributed caches all use bloom filters to
           short-circuit expensive lookups. The entire data structure is a
@@ -432,7 +454,7 @@ export default function BitManipulationArticle() {
           the implementation. A well-tuned 1% false-positive bloom filter
           saves roughly 99 disk seeks per 100 nonexistent-key queries on an
           LSM-tree database like RocksDB.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Feature flags and A/B test cohorts
@@ -472,13 +494,16 @@ export default function BitManipulationArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you count the number of set bits in an integer in less
               than O(width) time?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Kernighan&apos;s trick: repeatedly compute{" "}
               <code>x &amp;= x − 1</code>, which clears the lowest set bit.
               The loop runs exactly s times where s is the popcount. For
@@ -487,7 +512,7 @@ export default function BitManipulationArticle() {
               <code>POPCNT</code> instruction exposed via intrinsics or
               WebAssembly. On x86-64 <code>POPCNT</code> is a single cycle;
               any pure-software implementation runs 5–20× slower.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

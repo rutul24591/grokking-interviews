@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,10 @@ export default function CreateContentUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Create Content UI</strong> is the primary interface for users to generate new
           content on the platform. It must provide an intuitive, powerful editing experience while
           enforcing content policies and guiding users toward quality submissions. The create UI is
@@ -43,7 +47,7 @@ export default function CreateContentUIArticle() {
           attachments), draft management (auto-save, local storage, sync), content validation
           (real-time feedback, policy enforcement, quality checks), and templates (pre-filled
           structures for common content types).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/create-content-flow.svg"
@@ -51,7 +55,7 @@ export default function CreateContentUIArticle() {
           caption="Create Content Flow — showing editor selection (WYSIWYG, Markdown, block), media upload (drag-drop, progress, validation), draft auto-save, content validation (real-time feedback), and publish workflow"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing create UI requires deep understanding of
           editor architecture (WYSIWYG — TinyMCE, CKEditor, Quill for visual editing, Markdown —
           for developer/technical content, Block — Gutenberg, Notion-style for modular content),
@@ -64,7 +68,7 @@ export default function CreateContentUIArticle() {
           provide prompts, motivation — show progress, completion — clear publish flow). The
           implementation must balance creative freedom (flexible editing) with content quality
           (validation, guidance) and policy compliance (enforce rules without frustrating users).
-        </p>
+        </HighlightBlock>
         <p>
           Modern create UIs have evolved from simple text areas to sophisticated editing
           experiences with real-time collaboration, AI assistance, and rich media support.
@@ -77,19 +81,22 @@ export default function CreateContentUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content creation is built on fundamental concepts that determine how users create, edit,
           and publish content. Understanding these concepts is essential for designing effective
           create interfaces.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Editor Types:</strong> WYSIWYG (What You See Is What You Get — visual editing
           with formatting toolbar, immediate visual feedback, user-friendly for non-technical users
           — TinyMCE, CKEditor, Quill), Markdown (plain text with markdown syntax — fast typing,
           version-control friendly, popular with developers — Stack Overflow, GitHub, Reddit),
           Block (content as modular blocks — paragraph, image, embed blocks, flexible layout,
           Notion-style — Gutenberg, Notion, Craft). Choose based on audience and content type.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Media Upload:</strong> Drag-drop (drag files to upload area — intuitive, fast),
           file picker (click to open file dialog — standard fallback), progress indicators (show
@@ -117,12 +124,15 @@ export default function CreateContentUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Create UI architecture separates editor (content input), media upload (file handling),
           draft management (auto-save, sync), and validation (real-time feedback), enabling
           modular, maintainable implementation. This architecture is critical for user experience
           and reliability.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/editor-architecture.svg"
@@ -130,7 +140,7 @@ export default function CreateContentUIArticle() {
           caption="Editor Architecture — showing WYSIWYG editor (TinyMCE, CKEditor), Markdown editor (with preview), Block editor (modular blocks), and shared services (auto-save, validation, media upload)"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Create flow: User clicks "Create". User selects content type (blog post, product, job —
           or default). Editor loads (WYSIWYG, Markdown, or Block based on user preference/content
           type). User types content (editor handles formatting, media embeds). Media upload (user
@@ -139,7 +149,7 @@ export default function CreateContentUIArticle() {
           (character count updates, required fields highlight, policy checks run in background).
           User clicks "Publish" (or "Save Draft"). Final validation (block if critical issues —
           empty title, policy violation). Content published (or saved as draft).
-        </p>
+        </HighlightBlock>
         <p>
           Editor architecture includes: editor core (content editable area — handle input,
           selection, cursor), toolbar (formatting buttons — bold, italic, headings, lists — apply
@@ -168,25 +178,28 @@ export default function CreateContentUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing create UI involves trade-offs between flexibility, ease of use, and control.
           Understanding these trade-offs is essential for making informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">WYSIWYG vs Markdown vs Block Editor</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>WYSIWYG:</strong> Visual editing (what you see is what you get),
               user-friendly (no markup knowledge), immediate feedback. Limitation: HTML bloat
               (extra markup), cross-browser issues (different rendering), harder to version control.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Markdown:</strong> Plain text (fast typing, clean), version-control friendly
               (diffs are clean), portable (any text editor). Limitation: learning curve (syntax to
               learn), no visual feedback (need preview pane), less discoverable (users don't know
               syntax).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Block:</strong> Modular (content as blocks — flexible), visual (see layout as
               you build), structured (enforces consistency). Limitation: complex implementation,
@@ -240,18 +253,21 @@ export default function CreateContentUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing create content UI requires following established best practices to ensure
           usability, reliability, and content quality.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Editor Selection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choose based on audience (technical users — Markdown, general users — WYSIWYG, structured
           content — Block). Support multiple editors (let users choose preference — remember for
           next time). Provide toolbar customization (users hide unused buttons — reduce clutter).
           Ensure accessibility (keyboard navigation, screen reader support, high contrast mode).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Media Upload</h3>
         <p>
@@ -285,21 +301,24 @@ export default function CreateContentUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing create content UI to ensure usability,
           reliability, and content quality.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No auto-save:</strong> Users lose work (browser crash, accidental close),
             frustration, abandonment. <strong>Fix:</strong> Auto-save every 30 seconds. Save to
             local storage. Sync to server.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No draft recovery:</strong> Users can't recover lost drafts.{" "}
             <strong>Fix:</strong> Store drafts locally. Show "Recover draft?" on return. List
             drafts for selection.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Slow media upload:</strong> No progress indicator, users don't know status.{" "}
             <strong>Fix:</strong> Show progress per file. Enable retry. Optimize images before
@@ -340,16 +359,19 @@ export default function CreateContentUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Create content UI is critical for user engagement. Here are real-world implementations
           from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Blogging Platform (Medium)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Distraction-free writing. Rich formatting. Image embeds.
           Auto-save. Publishing flow.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Minimalist editor (focus on content — hide UI until needed).
           Rich text formatting (bold, italic, headings — via slash commands). Image embeds (drag-drop,
@@ -448,15 +470,18 @@ export default function CreateContentUIArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of create content UI design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you choose between WYSIWYG, Markdown, and Block
-            editor?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you choose between WYSIWYG, Markdown, and Block
+            editor?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Based on audience and content type. Technical users (developers, engineers) —
               Markdown (fast, clean, version-control friendly). General users (bloggers, writers) —

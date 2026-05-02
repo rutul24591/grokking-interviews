@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function EventReplayabilityArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Event replayability</strong> is the ability to reprocess events from an event log or
           message queue, enabling recovery from failures, state reconstruction, bug fixes, and data
           migration. In event-driven architectures, events are the source of truth — the current state
           of the system is derived from processing all events in order. If an event processing bug is
           discovered, a new consumer version is deployed, and the events are replayed through the new
           consumer to fix the state.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Event replayability is a critical non-functional requirement for event-driven systems. Without
           replayability, a bug in event processing can corrupt state irreversibly — the only recovery
           option is to restore from backup and lose all events processed since the backup. With
           replayability, the event log is the backup — events can be reprocessed through a fixed
           consumer to restore correct state, with no data loss.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, event replayability architecture demonstrates
           understanding of event sourcing, the ability to design idempotent event handlers, and the
@@ -70,20 +74,23 @@ export default function EventReplayabilityArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding event replayability requires grasping several foundational concepts about
           event sourcing, idempotent handlers, schema evolution, and replay mechanisms.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Event Sourcing and Replay</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event sourcing stores state changes as a sequence of events rather than the current state.
           The current state is derived by replaying all events from the beginning through an event
           handler. Event sourcing naturally supports replayability — if the event handler has a bug,
           a fixed handler can replay all events to rebuild the correct state. Kafka-based event
           sourcing retains events for a configurable period (days, weeks, or indefinitely), enabling
           replay from any point within the retention window.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Idempotent Event Handlers</h3>
         <p>
@@ -109,10 +116,13 @@ export default function EventReplayabilityArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Event replayability architecture spans event log retention, consumer offset management,
           idempotent handler design, schema evolution, and replay orchestration.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/event-replayability.svg"
@@ -121,14 +131,14 @@ export default function EventReplayabilityArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Replay Orchestration Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When replay is needed (bug fix, state corruption, new consumer), the replay orchestration
           begins: a new consumer group is created (to avoid interfering with the existing consumer),
           the consumer offset is set to the replay start point (beginning of log, specific timestamp,
           or specific offset), the new consumer processes events through the fixed handler, and the
           resulting state replaces the corrupted state. The existing consumer continues processing
           new events during replay, ensuring that the system remains operational.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Idempotent Handler Design</h3>
         <p>
@@ -155,25 +165,28 @@ export default function EventReplayabilityArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Approach</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Approach</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Deduplication Store</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>Deduplication Store</strong></td>
               <td className="p-3">
                 Simple to implement. Exact-once processing. Works with any event log.
               </td>
               <td className="p-3">
                 Additional storage cost. Deduplication store becomes a bottleneck. Requires cleanup.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Conditional Updates</strong></td>
               <td className="p-3">
                 No additional storage. Natural idempotency. Works with existing data store.
@@ -181,8 +194,8 @@ export default function EventReplayabilityArticle() {
               <td className="p-3">
                 Complex for non-idempotent operations (increment, append). Requires version tracking.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Compensating Actions</strong></td>
               <td className="p-3">
                 Handles non-idempotent operations. Reversible. Audit trail of compensations.
@@ -190,7 +203,7 @@ export default function EventReplayabilityArticle() {
               <td className="p-3">
                 Complex to implement. Compensation may fail. Requires idempotent compensations.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Event Sourcing</strong></td>
               <td className="p-3">
@@ -207,26 +220,29 @@ export default function EventReplayabilityArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Design Events for Replay from Day One</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event replayability must be designed into the event schema and handler from the beginning —
           retrofitting replayability after events are produced is difficult or impossible. Include a
           unique event ID in every event, use schema registries to enforce compatibility rules, retain
           events for a sufficient period (minimum 7 days, ideally 30+ days), and design handlers to be
           idempotent. Events that are not designed for replay (no unique ID, no schema registry, short
           retention, non-idempotent handlers) cannot be safely replayed.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Test Replay Procedures Regularly</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Replay procedures that have never been tested will fail when needed — the replay consumer may
           have bugs, the event schema may be incompatible, or the deduplication store may be corrupted.
           Test replay procedures quarterly by replaying a subset of events through the current consumer
           and verifying that the resulting state matches the expected state. Include replay testing in
           the deployment pipeline — after deploying a new consumer version, replay a subset of events
           and verify correctness before switching to the new version.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Manage Schema Evolution Carefully</h3>
         <p>
@@ -252,26 +268,29 @@ export default function EventReplayabilityArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Non-Idempotent Event Handlers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event handlers that produce side effects (sending emails, charging payments, incrementing
           counters) without idempotency guarantees will duplicate side effects when events are replayed.
           A non-idempotent payment handler that charges $100 per event will charge $200 if the event is
           replayed. Design all event handlers to be idempotent — track processed event IDs and skip
           duplicate events, use conditional updates that only apply if the event has not been processed,
           or use compensating actions that reverse the previous effect before applying the new effect.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Insufficient Event Retention</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event replay requires events to be retained in the event log. If events are deleted after a
           short period (hours or days), replay is not possible for events outside the retention window.
           Set event retention based on replay requirements — minimum 7 days for bug fix replay, 30+
           days for state reconstruction, indefinite for event sourcing. Monitor event log storage
           costs and balance retention with cost — use tiered storage (hot for recent events, cold for
           old events) to reduce storage costs while maintaining replayability.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Schema Incompatibility During Replay</h3>
         <p>
@@ -296,9 +315,12 @@ export default function EventReplayabilityArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">LinkedIn — Kafka Event Replay for Bug Recovery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           LinkedIn uses Kafka for event-driven architecture with 7-day event retention. When a bug in
           an event consumer causes state corruption, LinkedIn creates a new consumer group, sets the
           offset to 7 days ago (before the bug was introduced), and replays events through the fixed
@@ -306,17 +328,17 @@ export default function EventReplayabilityArticle() {
           up and the state is verified, the new consumer replaces the old consumer. LinkedIn&apos;s
           replay process has recovered from dozens of consumer bugs without data loss or service
           disruption.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Uber — Event Sourcing with Replay</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uber uses event sourcing for critical business entities (rides, drivers, payments) — state
           changes are stored as events, and the current state is derived by replaying events. When a
           bug is discovered in the state derivation logic, Uber replays all events through the fixed
           logic to rebuild the correct state. Uber&apos;s event log retains events indefinitely for
           critical entities, enabling replay from any point in time. Uber&apos;s replay infrastructure
           can replay millions of events per second, enabling rapid recovery from bugs.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Stripe — Idempotent Payment Event Processing</h3>
         <p>
@@ -342,19 +364,22 @@ export default function EventReplayabilityArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Event replayability involves security risks — event logs contain sensitive data, replay consumers may have access to data they should not see, and replay procedures may inadvertently expose data.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Event Log Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Sensitive Data in Events:</strong> Events may contain sensitive data (user IDs, payment amounts, personal information) that must be protected. Mitigation: encrypt sensitive fields in events, restrict event log access to authorized consumers, monitor event log access patterns, include events in data classification and compliance audits.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Replay Consumer Access Control:</strong> Replay consumers should have the same access controls as production consumers — they should not be able to access events or produce side effects beyond their authorized scope. Mitigation: use separate consumer groups for replay, apply the same authorization policies to replay consumers, audit replay consumer activity.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
       </section>
@@ -362,19 +387,22 @@ export default function EventReplayabilityArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Event replayability must be validated through systematic testing — idempotency verification, schema compatibility, replay correctness, and performance must all be tested.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Replay Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Idempotency Test:</strong> Process the same event multiple times through the handler and verify that the resulting state is the same as processing it once. Test with different event types and different handler states to ensure comprehensive idempotency coverage.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Schema Compatibility Test:</strong> Replay events from all schema versions through the current consumer and verify that all events are deserialized and processed correctly. Test with events from the oldest retained schema version to the newest to ensure full compatibility.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Replay Correctness Test:</strong> Replay a subset of events through the consumer in a staging environment and compare the resulting state with the expected state. Verify that all events are processed in order, no events are skipped, and the resulting state matches the state produced by the production consumer.
             </li>

@@ -113,6 +113,12 @@ export default function PluginArchitectureArticle() {
           points.
         </HighlightBlock>
 
+        <HighlightBlock as="p" tier="important">
+          The staff-level design concern is the boundary: treat plugins as partially trusted code. Define explicit
+          capabilities, isolate failures, and ensure you can disable or roll back a plugin without taking the host
+          down.
+        </HighlightBlock>
+
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
             Host Application / Plugin API / Lifecycle Hooks
@@ -356,14 +362,14 @@ export default function PluginArchitectureArticle() {
             notification. Never let a plugin crash bring down the host
             application.
           </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Monitor Plugin Performance:</strong> Track each
             plugin&apos;s activation time, memory usage, and API call frequency.
             Surface slow or resource-heavy plugins to users so they can make
             informed decisions about which plugins to keep. VS Code&apos;s
             &quot;Extension Bisect&quot; feature helps identify problematic
             extensions.
-          </HighlightBlock>
+          </li>
         </ol>
       </section>
 
@@ -704,8 +710,12 @@ export default function PluginArchitectureArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: compare plugin ecosystems by their safety model (capabilities, sandboxing), lifecycle,
+          and compatibility guarantees (API versioning and deprecation).
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://code.visualstudio.com/api"
               className="text-accent hover:underline"
@@ -714,8 +724,8 @@ export default function PluginArchitectureArticle() {
             >
               VS Code — Extension API Documentation
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://webpack.js.org/api/plugins/"
               className="text-accent hover:underline"
@@ -724,8 +734,8 @@ export default function PluginArchitectureArticle() {
             >
               Webpack — Plugin API
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.figma.com/plugin-docs/"
               className="text-accent hover:underline"
@@ -734,8 +744,8 @@ export default function PluginArchitectureArticle() {
             >
               Figma — Plugin Documentation
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.chrome.com/docs/extensions/"
               className="text-accent hover:underline"
@@ -744,7 +754,7 @@ export default function PluginArchitectureArticle() {
             >
               Chrome — Extension Development Documentation
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

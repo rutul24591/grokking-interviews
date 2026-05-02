@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function OsiTcpIpArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>OSI (Open Systems Interconnection) model</strong> and <strong>TCP/IP stack</strong> are conceptual frameworks that explain how data moves from an application on one host to an application on another host across a network. The OSI model, developed by ISO in 1984, defines seven layers that separate networking concerns from physical transmission to application logic. TCP/IP, developed by the Department of Defense in the 1970s and used by the modern internet, collapses these seven layers into four practical layers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For backend engineers, understanding these models is not academic — it is essential for debugging production issues, designing resilient systems, and communicating effectively with network engineers. When a request fails with a timeout, is the problem at the transport layer (TCP connection failed), the network layer (routing issue), or the application layer (TLS handshake failure)? The layered model provides a mental framework for isolating problems systematically rather than guessing.
-        </p>
+        </HighlightBlock>
         <p>
           The key insight is that each layer provides services to the layer above it and uses services from the layer below it. This separation of concerns enables modularity: you can replace Wi-Fi with Ethernet (physical/link layer) without changing TCP (transport layer), or upgrade from HTTP/1.1 to HTTP/2 (application layer) without changing IP (network layer). This modularity is why the internet scales to billions of devices with heterogeneous hardware and software.
         </p>
@@ -36,16 +40,19 @@ export default function OsiTcpIpArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The OSI model and TCP/IP stack are built on several foundational concepts that govern how data is transmitted across networks. Understanding these concepts is essential for debugging connectivity issues and designing network-aware applications.
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Layered Architecture:</strong> The OSI model defines seven layers: Physical (cables, signals), Data Link (Ethernet, MAC addresses), Network (IP, routing), Transport (TCP, UDP), Session (connection management), Presentation (encryption, compression), and Application (HTTP, DNS). TCP/IP collapses these into four layers: Link (OSI L1-L2), Internet (OSI L3), Transport (OSI L4), and Application (OSI L5-L7). Each layer has a specific responsibility and communicates only with adjacent layers, enabling independent evolution and replacement.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Encapsulation:</strong> As data flows down the stack from application to physical, each layer adds its own header (and sometimes trailer) to the data. The application layer creates an HTTP request, the transport layer wraps it in a TCP segment with port numbers, the network layer wraps that in an IP packet with source/destination IPs, and the link layer wraps that in an Ethernet frame with MAC addresses. This process is called encapsulation. At the receiving end, the process reverses: each layer strips its corresponding header and passes the payload up. Understanding encapsulation is critical for packet analysis and MTU troubleshooting.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Protocol Data Units (PDUs):</strong> Each layer has a specific name for the data unit it handles. At the application layer, it is called a message or data. At the transport layer, it is called a segment (TCP) or datagram (UDP). At the network layer, it is called a packet. At the link layer, it is called a frame. These distinctions matter when debugging: a "packet loss" issue is at the network layer, while a "frame error" is at the link layer.
           </li>
@@ -66,9 +73,12 @@ export default function OsiTcpIpArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The flow of data through the OSI and TCP/IP layers follows a predictable pattern that is essential to understand for debugging and performance optimization. When you make an HTTP request from a browser to a server, the data traverses the stack twice: once down the stack on the client, across the network, and once up the stack on the server.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/fundamentals-building-blocks/encapsulation-flow.svg"
@@ -100,9 +110,9 @@ export default function OsiTcpIpArticle() {
           </ol>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Encapsulation Overhead:</strong> Each layer adds headers that reduce payload efficiency. A typical HTTP request might have: 20-60 bytes of HTTP headers, 20 bytes of TCP header, 20 bytes of IPv4 header (or 40 bytes for IPv6), and 14-18 bytes of Ethernet header plus 4 bytes of FCS. For a small payload (e.g., a 100-byte API request), the headers can represent 25-30% of the total transmission. This overhead is one reason why binary protocols (Protocol Buffers, MessagePack) and compression are used in latency-sensitive systems — they reduce the application-layer payload size, making the header overhead proportionally smaller.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>MTU and Fragmentation:</strong> The Maximum Transmission Unit (MTU) is the largest frame size that a link layer can transmit. Ethernet has an MTU of 1500 bytes by default. If an IP packet exceeds the MTU of any link along the path, it must be fragmented (split into smaller packets) or dropped. Fragmentation is expensive: it increases packet count, each fragment must be reassembled at the destination, and loss of any fragment requires retransmission of the entire original packet. Modern networks avoid fragmentation using Path MTU Discovery (PMTUD), where the sender discovers the smallest MTU along the path and adjusts packet sizes accordingly.
@@ -111,9 +121,12 @@ export default function OsiTcpIpArticle() {
 
       <section>
         <h2>Protocol Placement</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding where common protocols fit in the layered model is essential for system design and debugging. The placement determines what services a protocol can use and what services it provides to higher layers.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Common Protocol Mapping</h3>
@@ -187,9 +200,9 @@ export default function OsiTcpIpArticle() {
           </table>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>TLS Placement Confusion:</strong> TLS is often a source of confusion because it does not fit cleanly into the OSI model. TLS provides encryption (a presentation layer function) and session management (a session layer function), but it operates above TCP and below application protocols like HTTP. In practice, TLS is best understood as sitting between the application and transport layers — it uses TCP for reliable delivery and provides a secure channel to application protocols. This placement is why TLS can secure any TCP-based protocol (HTTP, SMTP, IMAP) without modifying the protocols themselves.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/fundamentals-building-blocks/protocol-mapping-layers.svg"
@@ -204,6 +217,9 @@ export default function OsiTcpIpArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -294,12 +310,12 @@ export default function OsiTcpIpArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When to Use Each Model</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <strong>Use OSI when:</strong> teaching networking fundamentals, documenting protocol specifications, troubleshooting complex multi-vendor environments where precise layer identification matters, or communicating with network engineers who use OSI terminology.
-          </p>
-          <p className="mt-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-3">
             <strong>Use TCP/IP when:</strong> implementing network protocols, debugging production issues with standard tools, designing internet-facing applications, or communicating with software engineers who work with the actual protocol stack.
-          </p>
+          </HighlightBlock>
           <p className="mt-3">
             <strong>Best practice:</strong> Understand both models and translate between them fluently. The OSI model provides vocabulary for discussing networking concepts precisely, while TCP/IP provides the mental model for how data actually flows through real systems.
           </p>
@@ -308,16 +324,19 @@ export default function OsiTcpIpArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Applying the layered model effectively requires discipline and practice. These best practices will help you debug network issues more efficiently and design more resilient systems.
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Debug from Bottom to Top:</strong> When troubleshooting connectivity issues, start at the lowest layer that could cause the symptom and work upward. First verify physical connectivity (is the cable plugged in, is the Wi-Fi connected), then link layer (do you have an IP address via DHCP), then network layer (can you ping the gateway), then transport layer (can you establish a TCP connection), and finally application layer (does the HTTP request succeed). This systematic approach prevents wasting time debugging application code when the network is down.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Layer-Appropriate Tools:</strong> Each layer has diagnostic tools designed for that layer's concerns. Use <code>ipconfig</code>/<code>ifconfig</code> for link layer (IP configuration), <code>ping</code> for network layer (IP connectivity), <code>telnet</code> or <code>nc</code> for transport layer (TCP connectivity), <code>curl</code> for application layer (HTTP requests), and <code>tcpdump</code> or <code>Wireshark</code> for cross-layer packet analysis. Using the wrong tool for the layer wastes time and can lead to incorrect conclusions.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Understand MTU Implications:</strong> MTU issues are a common source of "works locally, fails in production" bugs, especially with VPNs and tunnels that add encapsulation overhead. If you experience silent failures with large payloads but small requests succeed, suspect MTU. The fix is often enabling Path MTU Discovery, lowering the MTU on tunnel interfaces, or reducing application payload sizes. Always test with realistic payload sizes, not just small test requests.
           </li>
@@ -332,16 +351,19 @@ export default function OsiTcpIpArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Even experienced engineers fall into traps when working with network layers. These pitfalls are common sources of production incidents and debugging delays.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Confusing TLS Placement:</strong> Many engineers assume TLS is a transport layer protocol because it provides "secure transport." In reality, TLS operates above TCP and below application protocols. This confusion leads to incorrect debugging approaches — for example, trying to inspect TLS traffic with TCP-level tools (tcpdump shows encrypted data) instead of application-level tools (browser DevTools, application logs after TLS termination).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Treating "The Network" as a Single Layer:</strong> When debugging, saying "it's a network issue" is too vague. The problem could be at the link layer (bad cable, Wi-Fi interference), network layer (routing misconfiguration, IP conflict), or transport layer (firewall blocking ports, TCP window exhaustion). Each requires different tools and different teams to resolve. Use precise language: "it's a routing issue" or "it's a TCP handshake failure."
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring Encapsulation Overhead:</strong> When designing protocols or estimating bandwidth requirements, engineers often calculate based on payload size alone, forgetting header overhead. A 1 KB payload becomes 1.1 KB with TCP/IP/Ethernet headers. With multiple encapsulation layers (VPN, service mesh, container networking), overhead can reach 20-30%. This miscalculation leads to underprovisioned bandwidth and unexpected latency.
           </li>
@@ -356,15 +378,18 @@ export default function OsiTcpIpArticle() {
 
       <section>
         <h2>Production Case Studies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-world incidents demonstrate how the layered model accelerates debugging and prevents misdiagnosis.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Case Study 1: MTU Mismatch in VPN Tunnel</h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             <strong>Symptom:</strong> API requests under 1 KB succeed, but requests with large payloads (10+ KB) hang indefinitely and eventually timeout.
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             <strong>Debugging Process:</strong> Application logs showed no errors — the requests never reached the application. TCP dumps revealed SYN-ACK handshake succeeded, but large packets were sent without acknowledgment. Further investigation showed packets were being fragmented, and fragments were being dropped by a firewall that blocked fragmented packets.
           </p>
@@ -420,9 +445,12 @@ export default function OsiTcpIpArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding the performance characteristics of each layer helps optimize latency and throughput.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Typical Latency by Layer</h3>
@@ -467,12 +495,12 @@ export default function OsiTcpIpArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Header Overhead by Layer</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Ethernet:</strong> 14 bytes header + 4 bytes FCS = 18 bytes
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>IPv4:</strong> 20 bytes (without options)
-            </li>
+            </HighlightBlock>
             <li>
               <strong>IPv6:</strong> 40 bytes (fixed size)
             </li>
@@ -491,9 +519,12 @@ export default function OsiTcpIpArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Security controls exist at every layer, and understanding layer placement is critical for designing defense in depth.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Security Controls by Layer</h3>
@@ -518,20 +549,23 @@ export default function OsiTcpIpArticle() {
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">TLS vs IPsec Trade-offs</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             TLS operates at the transport/application boundary and protects specific application traffic. It is flexible (can secure individual connections), widely supported, and terminates at the application server. IPsec operates at the network layer and protects all traffic between two endpoints. It is transparent to applications, provides network-level authentication, but requires infrastructure support (IPsec gateways, key management). Choose TLS for application-specific security and IPsec for site-to-site VPNs or when all traffic must be encrypted regardless of application.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why do we use layers?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Why do we use layers?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Layers separate concerns and enable interoperability. Each layer has a specific responsibility and communicates only with adjacent layers, enabling independent evolution. You can replace Wi-Fi with Ethernet (link layer) without changing TCP (transport layer), or upgrade from HTTP/1.1 to HTTP/2 (application layer) without changing IP (network layer). This modularity is why the internet scales to billions of heterogeneous devices.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

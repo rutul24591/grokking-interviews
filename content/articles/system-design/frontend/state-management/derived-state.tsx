@@ -471,22 +471,26 @@ export default function DerivedStateConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: derived state is primarily about correctness and re-render cost. Favor selectors/computed
+          derivations over duplicating source-of-truth state, and know when you don&apos;t need an effect.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://react.dev/learn/choosing-the-state-structure#avoid-redundant-state" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               React Docs - Choosing the State Structure: Avoid Redundant State
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://react.dev/learn/you-might-not-need-an-effect#updating-state-based-on-props-or-state" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               React Docs - You Might Not Need an Effect (Derived State Section)
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://github.com/reduxjs/reselect" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Reselect - Selector Library for Redux
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://mobx.js.org/computeds.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MobX Documentation - Computed Values

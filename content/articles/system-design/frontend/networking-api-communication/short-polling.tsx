@@ -857,8 +857,12 @@ export default function ShortPollingConciseArticle() {
 
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Short polling is interview-relevant as the “baseline”: it’s easy, but wasteful. A strong answer describes
+          how you minimize cost (conditional requests, backoff, pause in background) and when you switch to SSE/WS.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API"
               className="text-accent hover:underline"
@@ -867,8 +871,8 @@ export default function ShortPollingConciseArticle() {
             >
               MDN - Page Visibility API
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests"
               className="text-accent hover:underline"
@@ -877,7 +881,7 @@ export default function ShortPollingConciseArticle() {
             >
               MDN - HTTP Conditional Requests (ETags, 304)
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://swr.vercel.app/docs/revalidation#revalidate-on-interval"
@@ -888,7 +892,7 @@ export default function ShortPollingConciseArticle() {
               SWR Documentation - Revalidate on Interval (Polling)
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://tanstack.com/query/latest/docs/framework/react/guides/polling"
               className="text-accent hover:underline"
@@ -897,8 +901,8 @@ export default function ShortPollingConciseArticle() {
             >
               TanStack Query - Polling with refetchInterval
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/"
               className="text-accent hover:underline"
@@ -907,7 +911,7 @@ export default function ShortPollingConciseArticle() {
             >
               AWS Architecture Blog - Exponential Backoff and Jitter
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

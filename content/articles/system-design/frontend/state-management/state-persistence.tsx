@@ -265,9 +265,9 @@ export default function StatePersistenceConciseArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           Follow these practices to build robust and maintainable persistence layers:
-        </HighlightBlock>
+        </p>
         <ol className="space-y-3">
           <HighlightBlock as="li" tier="crucial">
             <strong>Version Your Persisted State:</strong> Always store a version number alongside
@@ -281,12 +281,12 @@ export default function StatePersistenceConciseArticle() {
             N to version N+1. Test migrations against snapshot fixtures of previous versions to
             prevent regressions.
           </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Encrypt Sensitive Data:</strong> Never store authentication tokens, personal data,
             or financial information in plain text in localStorage. Use the Web Crypto API to encrypt
             data before persisting. Better yet, use HttpOnly cookies for tokens so JavaScript cannot
             access them at all.
-          </HighlightBlock>
+          </li>
           <HighlightBlock as="li" tier="important">
             <strong>Debounce Writes:</strong> State updates can fire dozens of times per second during
             user interaction. Debounce writes to storage with a 300-500ms delay to batch rapid changes
@@ -369,29 +369,29 @@ export default function StatePersistenceConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           State persistence powers many familiar user experiences across the web:
-        </HighlightBlock>
+        </p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Theme and Locale Preferences:</strong> Persisting dark/light mode and language
             selection so users do not have to re-select after every visit. Often stored in cookies
             (for SSR access) or localStorage (for client-only apps). Example: GitHub, Vercel, and
             most SaaS products persist theme in cookies to avoid flash-of-unstyled-content (FOUC).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Form Draft Auto-Save:</strong> Long forms (job applications, survey builders,
             CMS editors) auto-persist to sessionStorage or localStorage with debounced writes. Users
             can accidentally close the tab and return to their in-progress work. Google Docs takes
             this further with IndexedDB for offline editing and server sync.
-          </li>
-          <HighlightBlock as="li" tier="important">
+          </HighlightBlock>
+          <li>
             <strong>Shopping Cart Persistence:</strong> E-commerce carts persist to localStorage
             (guest users) or server-side (authenticated users) so items survive across sessions.
             Shopify, Amazon, and Stripe Checkout all implement cart persistence with conflict
             resolution when anonymous carts merge with authenticated accounts.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="crucial">
+          </li>
+          <HighlightBlock as="li" tier="important">
             <strong>Offline-First Applications:</strong> PWAs like Notion, Figma, and Linear persist
             entire document trees to IndexedDB for offline access. Changes queue locally and sync
             when connectivity returns, using CRDTs or operational transforms for conflict resolution.
@@ -400,7 +400,7 @@ export default function StatePersistenceConciseArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When NOT to Persist State</h3>
-          <HighlightBlock as="p" tier="crucial">
+          <HighlightBlock as="p" tier="crucial" className="text-base">
             Avoid persistence for:
           </HighlightBlock>
           <ul className="mt-2 space-y-2">
@@ -473,27 +473,31 @@ export default function StatePersistenceConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: persistence is a storage + hydration problem. Use these to reason about storage backends,
+          quota/eviction, SSR-safe hydration, and library patterns (Zustand persist / redux-persist).
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN - Web Storage API (localStorage & sessionStorage)
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN - IndexedDB API
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://docs.pmnd.rs/zustand/integrations/persisting-store-data" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Zustand Documentation - Persisting Store Data
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://web.dev/articles/storage-for-the-web" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev - Storage for the Web
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://github.com/rt2zz/redux-persist" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Redux Persist - GitHub Repository

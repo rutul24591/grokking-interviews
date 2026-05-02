@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function DeviceOrientationAPIArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Device Orientation API</strong> provides access to device
           motion sensors (accelerometer, gyroscope, magnetometer) for detecting
           device orientation and movement. The API exposes three rotation angles
@@ -46,8 +50,8 @@ export default function DeviceOrientationAPIArticle() {
           gaming (tilt controls), augmented reality (device as viewport),
           fitness tracking (movement detection), and creative interactions
           (parallax effects based on device tilt).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Device Orientation involves several technical considerations.{" "}
           <strong>Coordinate system</strong> — alpha (0-360°, compass
           direction), beta (-180 to 180°, front-back tilt), gamma (-90 to 90°,
@@ -56,7 +60,7 @@ export default function DeviceOrientationAPIArticle() {
           sensor data can fingerprint users, browsers are restricting access.{" "}
           <strong>Cross-device variation</strong> — sensor quality varies by
           device.
-        </p>
+        </HighlightBlock>
         <p>
           The business case for Device Orientation API is experiential — it
           enables unique interactions impossible with traditional input. Gaming
@@ -70,20 +74,23 @@ export default function DeviceOrientationAPIArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Orientation Angles:</strong> Alpha (0-360°) — rotation around
             Z-axis (compass direction). Beta (-180 to 180°) — rotation around
             X-axis (front-back tilt). Gamma (-90 to 90°) — rotation around
             Y-axis (left-right tilt). Together define device orientation in 3D
             space.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Acceleration:</strong>{" "}
             <code>acceleration</code> (without gravity),{" "}
             <code>accelerationIncludingGravity</code> (with gravity). Measured
             in m/s². Useful for detecting movement, steps, shakes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Rotation Rate:</strong> Rotation speed around each axis,
             measured in degrees/second. Useful for detecting quick turns,
@@ -120,13 +127,16 @@ export default function DeviceOrientationAPIArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Device Orientation architecture consists of sensor data collection
           (browser accesses device sensors), event dispatch (orientationchange,
           deviceorientation), and application logic (interpreting orientation
           for use case). The architecture must handle permission requests,
           sensor calibration, and cross-device variation.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/mobile-considerations/device-orientation-permission-flow.svg"
@@ -137,9 +147,9 @@ export default function DeviceOrientationAPIArticle() {
         />
 
         <h3>iOS Permission Handling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           iOS 13 and later requires permission for orientation access. Request on user action such as button click, not page load. Explain why you need access. Handle denial gracefully and provide alternative interaction. Store permission state to avoid repeated requests.
-        </p>
+        </HighlightBlock>
         <p>
           Example: use async function on button click to request permission, then start orientation tracking if granted.
         </p>
@@ -156,17 +166,20 @@ export default function DeviceOrientationAPIArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Device Orientation involves trade-offs between immersion,
           accessibility, and privacy.
-        </p>
+        </HighlightBlock>
 
         <h3>Permission Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Request on Load:</strong> Ask immediately. Advantages: know
           early if available. Limitations: users deny without context, can&apos;t
           re-request. Best for: orientation-first apps.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Request on Action:</strong> Ask when user tries orientation
           feature. Advantages: users understand why, higher grant rate.
@@ -191,19 +204,22 @@ export default function DeviceOrientationAPIArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Request Permission on User Action:</strong> Don&apos;t
             request on page load — users deny without context. Request when user
             clicks &quot;Enable Tilt Controls&quot; button. Explain why you need
             access.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide Alternative Input:</strong> Not all devices have
             sensors. Not all users can tilt devices (accessibility). Always
             provide button/touch alternative. Orientation enhances, doesn&apos;t
             replace, traditional input.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Smooth Noisy Data:</strong> Sensor data is noisy — apply
             low-pass filter, moving average. Don&apos;t react to every small
@@ -230,16 +246,19 @@ export default function DeviceOrientationAPIArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Requesting Permission Too Early:</strong> Asking on page
             load gets denied. Users don&apos;t understand why you need access.
             Request when user tries orientation feature.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Handling Denial:</strong> User denies permission — app
             breaks. Always handle denial gracefully, provide alternative input.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring Sensor Noise:</strong> Raw sensor data is noisy —
             jittery movement. Apply smoothing filter. Use threshold for
@@ -261,22 +280,25 @@ export default function DeviceOrientationAPIArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Gaming: Tilt Controls</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Racing games use device tilt for steering (tilt left = turn left).
           Maze games use tilt to roll ball. Permission requested when user
           selects &quot;Tilt Controls&quot; option. Alternative: on-screen
           buttons for users who can&apos;t or won&apos;t use tilt.
-        </p>
+        </HighlightBlock>
 
         <h3>Augmented Reality</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           AR apps use device orientation to render 3D content anchored to real
           world. Device acts as viewport into AR scene. Orientation tracking
           critical for stable AR experience. WebXR builds on Device Orientation
           for web-based AR.
-        </p>
+        </HighlightBlock>
 
         <h3>Fitness Tracking</h3>
         <p>
@@ -297,15 +319,18 @@ export default function DeviceOrientationAPIArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you request permission for Device Orientation on iOS?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: iOS 13 and later requires explicit permission. Request on user action such as button click, not page load. Use async function to request permission, then add event listener if granted, otherwise show alternative interface. Explain why you need access before requesting. Handle denial gracefully and provide fallback interaction.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

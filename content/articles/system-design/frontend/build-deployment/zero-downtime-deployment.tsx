@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,15 +37,15 @@ export default function ZeroDowntimeDeploymentArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Zero-downtime deployment</strong> is a deployment strategy that ensures the application remains available and functional throughout the entire deployment process — users experience no interruption, no errors, and no degraded performance during the deployment. Unlike traditional deployments where the application is taken offline during the update (downtime), zero-downtime deployment keeps the application running by deploying the new version alongside the old version, switching traffic only after the new version is verified healthy, and maintaining backward compatibility throughout the transition.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, zero-downtime deployment is a fundamental requirement for production applications where downtime is costly (e-commerce, SaaS, financial services, healthcare). Even a few minutes of downtime can result in significant revenue loss, user trust erosion, and regulatory compliance violations. Zero-downtime deployment ensures that deployments can happen at any time (not just during maintenance windows) without impacting users, enabling continuous deployment and rapid feature delivery.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Zero-downtime deployment involves several technical considerations. Deployment strategy (blue-green, canary, rolling updates — each enables zero-downtime through different mechanisms), health checks (verifying the new version is healthy before switching traffic), database compatibility (ensuring both old and new versions work with the database schema during the transition), graceful degradation (ensuring partial functionality if some components are unavailable during deployment), and CDN cache management (ensuring users receive the correct version from CDN caches during and after deployment).
-        </p>
+        </HighlightBlock>
         <p>
           The business case for zero-downtime deployment is availability and user trust. Applications that are always available maintain user trust (users know they can rely on the application), support 24/7 operations (global users in different time zones), and enable continuous deployment (deployments are not restricted to maintenance windows). For competitive organizations, zero-downtime deployment is not optional — it is essential for maintaining market position and user satisfaction.
         </p>
@@ -57,15 +58,15 @@ export default function ZeroDowntimeDeploymentArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Deployment Strategy:</strong> The mechanism for deploying the new version while keeping the old version running. Blue-green deployment maintains two identical environments, switches traffic all at once. Canary releases gradually increase traffic to the new version. Rolling updates replace old instances with new instances one at a time (or in batches). All three strategies enable zero-downtime deployment through different mechanisms — the choice depends on infrastructure, risk tolerance, and deployment frequency.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Health Checks:</strong> Verification that the new version is healthy before switching traffic. Health checks include HTTP endpoint checks (ensuring the application responds), functional tests (ensuring key features work), performance tests (ensuring response times are acceptable), and smoke tests (ensuring critical user flows work). Only switch traffic if all health checks pass. Health checks prevent switching traffic to a broken version, which would cause downtime.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Database Compatibility:</strong> Ensuring that both old and new versions work with the database schema during the transition. Use the expand-contract pattern: expand the schema to support both versions (add new columns, keep old columns), deploy the new version, then contract the schema (remove old columns) after the old version is decommissioned. This ensures that the old version continues working during the transition, preventing downtime due to database incompatibility.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Graceful Degradation:</strong> Ensuring partial functionality if some components are unavailable during deployment. For example, if a new API endpoint is not yet available, the frontend should display a fallback message instead of crashing. Graceful degradation ensures that users can still use core functionality even if some features are temporarily unavailable during deployment.
           </li>
@@ -89,12 +90,12 @@ export default function ZeroDowntimeDeploymentArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Zero-downtime deployment architecture consists of the old version serving live traffic, the new version being deployed alongside the old version, health checks verifying the new version&apos;s health, traffic switching from the old to the new version, and the old version being decommissioned after the new version is stable. The flow ensures that at every point during the deployment, at least one healthy version is serving traffic — users never experience downtime.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For frontend applications, the architecture involves deploying new version assets (HTML, CSS, JavaScript) to the CDN alongside old version assets, updating the HTML reference to point to new version assets (versioned URLs), and ensuring that CDN caches serve the correct version. Users who loaded the old HTML page continue using old assets (compatible with old HTML), while users who load the new HTML page receive new assets (compatible with new HTML). This ensures that all users have a consistent experience, regardless of when they load the page.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/build-deployment/zero-downtime-flow.svg"
@@ -105,9 +106,9 @@ export default function ZeroDowntimeDeploymentArticle() {
         />
 
         <h3>Frontend-Specific Considerations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Versioned Asset URLs:</strong> Each version&apos;s assets have unique URLs (e.g., /v1/app.js, /v2/app.js). This ensures that old HTML pages request old assets and new HTML pages request new assets. Without versioned URLs, old HTML pages may request new assets (which may be incompatible with old HTML), causing errors. Versioned URLs are the cleanest solution for frontend zero-downtime deployment.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>HTML Cache Control:</strong> HTML pages should have short cache TTL (e.g., 5 minutes) or no cache, so that users receive the latest HTML page (referencing the latest assets). Long HTML cache TTL causes users to receive stale HTML pages (referencing old assets), which may be incompatible with new backend APIs. Use cache-control: no-cache for HTML pages, cache-control: max-age=31536000 for versioned assets.
         </p>
@@ -127,17 +128,17 @@ export default function ZeroDowntimeDeploymentArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Zero-downtime deployment involves trade-offs between deployment complexity, infrastructure cost, rollback speed, and user experience. Understanding these trade-offs is essential for designing effective zero-downtime deployment strategies.
-        </p>
+        </HighlightBlock>
 
         <h3>Blue-Green vs. Rolling Updates</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Blue-Green:</strong> Two full environments, instant traffic switch. Advantages: instant rollback (switch back instantly), simple deployment logic (all-or-nothing switch), zero-downtime guaranteed (traffic switch is instant). Limitations: double infrastructure cost, all users see the new version at once (no gradual exposure). Best for: applications requiring instant rollback, teams wanting simple deployment logic.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Rolling Updates:</strong> Gradual instance replacement, one at a time or in batches. Advantages: lower infrastructure cost (only need capacity for one additional batch), gradual exposure (issues affect only a subset of users). Limitations: slower rollback (must roll back instance by instance), potential for mixed-version requests (some requests hit old instances, some hit new). Best for: large-scale applications where double infrastructure cost is prohibitive.
-        </p>
+        </HighlightBlock>
 
         <h3>Versioned URLs vs. Cache Purge</h3>
         <p>
@@ -160,15 +161,15 @@ export default function ZeroDowntimeDeploymentArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use Versioned Asset URLs:</strong> Generate unique URLs for each version&apos;s assets (e.g., /v1/app.abc123.js, /v2/app.def456.js). This ensures that old HTML pages request old assets and new HTML pages request new assets. Configure the build tool to generate versioned URLs automatically (Webpack content hash, Vite content hash, Rollup content hash). Versioned URLs are the foundation of frontend zero-downtime deployment.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Set Proper Cache-Control Headers:</strong> Use cache-control: max-age=31536000 (long-term caching) for versioned assets (they never change — URL changes when content changes). Use cache-control: no-cache for HTML pages (always check for updates). This combination ensures that assets are cached aggressively (fast loading) while HTML pages are always fresh (latest asset references).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Run Health Checks Before Switching Traffic:</strong> Verify the new version is healthy before switching traffic. Health checks should include HTTP endpoint checks, functional tests, performance tests, and smoke tests. Only switch traffic if all health checks pass. This prevents switching traffic to a broken version, which would cause downtime.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Deploy All Assets Before Switching Traffic:</strong> Ensure all assets (main bundle, lazy-loaded chunks, CSS, images, fonts) are deployed to the CDN before switching traffic. If users request assets that are not yet deployed, they will receive 404 errors. Deploy all assets first, then switch traffic. For code-split applications, this means deploying the main bundle and all lazy-loaded chunks.
           </li>
@@ -185,15 +186,15 @@ export default function ZeroDowntimeDeploymentArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Incompatible Asset Requests:</strong> Old HTML pages requesting new version assets (or vice versa), causing errors. This happens when asset URLs are not versioned — old HTML requests /app.js, which now points to the new version&apos;s app.js (incompatible with old HTML). Solution: use versioned asset URLs (unique URLs for each version&apos;s assets) so that old HTML requests old assets and new HTML requests new assets.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing Lazy-Loaded Chunks:</strong> Deploying the main bundle but not lazy-loaded chunks, causing 404 errors when users navigate to lazy-loaded routes. Ensure all chunks (main bundle and lazy-loaded chunks) are deployed before switching traffic. Configure the build tool to deploy all chunks together, not separately.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Long HTML Cache TTL:</strong> Caching HTML pages for too long (e.g., 24 hours), causing users to receive stale HTML pages referencing old assets. Use cache-control: no-cache for HTML pages (always check for updates) or short cache TTL (e.g., 5 minutes). This ensures that users receive the latest HTML page with the latest asset references.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Database Incompatibility:</strong> Deploying the new version with non-backward-compatible database schema changes, causing the old version to fail during the transition. Use the expand-contract pattern for schema changes, ensuring both old and new versions work with the schema during the transition.
           </li>
@@ -211,19 +212,19 @@ export default function ZeroDowntimeDeploymentArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>E-Commerce Platform Deployment</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           E-commerce platforms deploy multiple times per day with zero downtime. New version assets are deployed to the CDN alongside old version assets, HTML reference is updated to point to new version assets, health checks verify the new version, and traffic is switched. Versioned asset URLs ensure that old HTML pages continue working (they request old assets), while new HTML pages receive new assets. Users experience no interruption during deployment — shopping continues seamlessly.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Application Deployment</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SaaS applications deploy with zero downtime using blue-green deployment. The new version is deployed to the green environment, health checks verify functionality, and traffic is switched from blue to green. Client-side sessions (JWT tokens) ensure that user sessions survive the environment switch. Monitoring alerts detect any post-deployment issues, triggering instant rollback if needed. This pattern enables SaaS teams to ship features rapidly while maintaining high availability.
-        </p>
+        </HighlightBlock>
 
         <h3>Content Publishing Platform Deployment</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Content publishing platforms deploy theme and template changes with zero downtime. New version assets are deployed to the CDN, HTML reference is updated, CDN cache is purged for HTML pages (ensuring users receive latest HTML), and versioned asset URLs ensure correct asset delivery. If content rendering issues are detected, instant rollback restores the previous version. This pattern ensures that content is always available during deployments.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Services Application Deployment</h3>
         <p>
@@ -237,18 +238,18 @@ export default function ZeroDowntimeDeploymentArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: How do you achieve zero-downtime deployment for frontend applications?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Deploy new version assets (HTML, CSS, JavaScript) to the CDN alongside old version assets. Use versioned asset URLs (unique URLs for each version&apos;s assets) so that old HTML pages request old assets and new HTML pages request new assets. Set proper cache-control headers (long-term caching for versioned assets, no-cache for HTML pages). Run health checks on the new version before switching traffic. Switch traffic by updating the HTML reference (serving new HTML pages that reference new assets). Monitor post-deployment health and rollback if issues are detected. This ensures that at every point during deployment, users receive a consistent, working version of the application.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: What are versioned asset URLs and why are they important?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Versioned asset URLs are unique URLs for each version&apos;s assets (e.g., /v1/app.abc123.js, /v2/app.def456.js). They are generated by the build tool using content hashes (the hash changes when content changes). Versioned URLs are important because they ensure that old HTML pages request old assets (compatible with old HTML) and new HTML pages request new assets (compatible with new HTML). Without versioned URLs, old HTML pages may request new assets (incompatible with old HTML), causing errors. Versioned URLs are the foundation of frontend zero-downtime deployment.
             </p>

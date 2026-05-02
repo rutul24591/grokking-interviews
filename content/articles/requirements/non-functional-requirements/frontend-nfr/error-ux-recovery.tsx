@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,10 @@ export default function ErrorUXRecoveryArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Error UX &amp; Recovery</strong> encompasses how applications
           handle, display, and help users recover from errors across the entire
           user journey. This includes network failures, API errors (HTTP 4xx and
@@ -49,8 +53,8 @@ export default function ErrorUXRecoveryArticle() {
           unhandled exceptions, blank screens, and lost user work — erodes
           trust, generates support tickets, and directly impacts revenue through
           abandoned tasks and lost conversions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff engineers, error handling is a critical quality attribute
           that distinguishes professional applications from amateur ones. All
           systems fail eventually — networks are unreliable, APIs return errors,
@@ -59,7 +63,7 @@ export default function ErrorUXRecoveryArticle() {
           the application handles them. A resilient application degrades
           gracefully, preserves user work, provides clear recovery paths, and
           surfaces errors to monitoring systems for investigation and resolution.
-        </p>
+        </HighlightBlock>
         <p>
           Error handling spans multiple layers of the application architecture.
           At the component level, React Error Boundaries catch rendering errors
@@ -75,7 +79,10 @@ export default function ErrorUXRecoveryArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Error classification is the foundation of appropriate error handling.
           Errors can be categorized by their source: network errors (connection
           failures, timeouts, DNS resolution failures, offline state) are often
@@ -88,8 +95,8 @@ export default function ErrorUXRecoveryArticle() {
           errors are user-fixable with clear guidance on what is wrong and how
           to correct it. Application errors (JavaScript exceptions) often
           indicate bugs and may require a page reload or support contact.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Errors can also be classified by recoverability. Transient errors
           (network timeouts, 503 Service Unavailable, rate limiting with
           Retry-After header) are automatically recoverable — the application
@@ -102,7 +109,7 @@ export default function ErrorUXRecoveryArticle() {
           application errors) cannot be resolved by the user and should
           acknowledge the situation, provide next steps (contact support, return
           home), and log the incident for investigation.
-        </p>
+        </HighlightBlock>
         <p>
           Error severity determines the appropriate user-facing response. Info
           severity (non-blocking notifications like &quot;Changes saved&quot;)
@@ -126,7 +133,10 @@ export default function ErrorUXRecoveryArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           React Error Boundaries provide a component-level safety net that
           catches JavaScript errors during rendering, lifecycle methods, and
           constructors of the child component tree. When an error is caught,
@@ -139,8 +149,8 @@ export default function ErrorUXRecoveryArticle() {
           recommended approach is to use libraries like react-error-boundary
           that provide a clean API with retry capability and FallbackComponent
           customization.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Error boundary placement strategy determines the granularity of error
           isolation. An app-level boundary provides a last line of defense — if
           any unhandled error bubbles up, the user sees a &quot;something went
@@ -152,7 +162,7 @@ export default function ErrorUXRecoveryArticle() {
           component-level for critical widgets (comments, recommendations, user
           profile), route-level for major sections, and app-level as the final
           safety net.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/error-boundary-hierarchy.svg"
@@ -183,7 +193,10 @@ export default function ErrorUXRecoveryArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Automatic retry versus user-controlled retry presents a UX trade-off.
           Automatic retry with exponential backoff provides the best user
           experience for transient errors — the user never sees the error
@@ -194,8 +207,8 @@ export default function ErrorUXRecoveryArticle() {
           attempts) and a user-visible retry option after the limit is reached.
           Show &quot;Retrying...&quot; with a cancel button so the user can stop
           retries and take manual action.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Optimistic UI updates (updating the interface immediately before
           server confirmation) create the perception of instant response but
           introduce rollback complexity. When the server rejects the operation,
@@ -207,7 +220,7 @@ export default function ErrorUXRecoveryArticle() {
           confirmation is required before showing success. The trade-off is
           perceived speed versus data consistency — optimistic UI feels instant
           but requires robust rollback logic.
-        </p>
+        </HighlightBlock>
         <p>
           Error boundary scope affects both user experience and debugging
           capability. Fine-grained boundaries (per-component) provide the best
@@ -226,7 +239,10 @@ export default function ErrorUXRecoveryArticle() {
 
       <section>
         <h2>Error Boundary Composition Patterns</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Error boundary composition is the architectural pattern of nesting
           and layering error boundaries to create a resilient error handling
           surface that catches failures at the appropriate granularity. The most
@@ -240,8 +256,8 @@ export default function ErrorUXRecoveryArticle() {
           boundaries wrap individual widgets (comments section, recommendation
           carousel, user profile card) so that a failure in one widget does not
           affect sibling widgets or the page layout.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The react-error-boundary library provides a clean compositional API
           that supports this pattern elegantly. The <code>ErrorBoundary</code>{" "}
           component accepts a <code>FallbackComponent</code> prop for
@@ -256,7 +272,7 @@ export default function ErrorUXRecoveryArticle() {
           approach keeps error handling logic declarative and co-located with
           the components it protects, rather than centralized in a monolithic
           error handler that lacks context about what failed.
-        </p>
+        </HighlightBlock>
         <p>
           Error boundary state management involves deciding what information to
           preserve and what to discard when a component crashes. When a comments
@@ -293,7 +309,10 @@ export default function ErrorUXRecoveryArticle() {
 
       <section>
         <h2>Retry Strategies Per Error Type</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Different error categories demand distinct retry strategies because
           their root causes and resolution timelines vary dramatically. Network
           timeouts and connection failures are typically transient — the user&apos;s
@@ -304,8 +323,8 @@ export default function ErrorUXRecoveryArticle() {
           to the user for background operations (data fetches, analytics
           events) and visible for foreground operations (form submissions, file
           uploads) where the user is actively waiting.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Server errors (HTTP 500, 502, 503, 504) indicate backend failures
           that may be transient (a single server in the pool crashed, the
           database connection pool is temporarily exhausted) or systemic (a
@@ -320,7 +339,7 @@ export default function ErrorUXRecoveryArticle() {
           the server is under heavy load or undergoing maintenance, and
           aggressive retries contribute to the load problem (the thundering herd
           effect where thousands of clients retry simultaneously).
-        </p>
+        </HighlightBlock>
         <p>
           Rate limiting errors (HTTP 429) require a fundamentally different
           approach — the server is operational but actively rejecting the client
@@ -352,7 +371,10 @@ export default function ErrorUXRecoveryArticle() {
 
       <section>
         <h2>Network Resilience Patterns</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Network resilience patterns ensure the application functions
           gracefully under degraded or intermittent connectivity, which is the
           normal condition for mobile users in transit, users in areas with poor
@@ -367,8 +389,8 @@ export default function ErrorUXRecoveryArticle() {
           Queued actions (operations the user attempted while offline) should be
           stored in IndexedDB or localStorage with metadata (action type,
           payload, timestamp) for later submission.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Request queuing and deferred submission handle user actions performed
           during offline periods. When a user submits a form while offline, the
           application should not show an error — instead, it should queue the
@@ -381,7 +403,7 @@ export default function ErrorUXRecoveryArticle() {
           conflict-resolution UI. For simpler operations (posting a comment,
           liking content), the queued action can be submitted directly on
           reconnection with standard retry logic for any failures.
-        </p>
+        </HighlightBlock>
         <p>
           Stale-while-revalidate caching is a network resilience pattern that
           serves cached data immediately while fetching fresh data in the
@@ -413,7 +435,10 @@ export default function ErrorUXRecoveryArticle() {
 
       <section>
         <h2>Form Recovery with Auto-Save</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Form recovery with auto-save is one of the most impactful error
           resilience features because forms represent significant user effort —
           filling out a multi-field form, writing a long comment, or composing
@@ -425,8 +450,8 @@ export default function ErrorUXRecoveryArticle() {
           and a timestamp for conflict detection — if the user opens the form
           on multiple tabs, the most recent state wins, or the user is prompted
           to choose which version to keep.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On form load, the recovery logic checks for a saved draft in
           localStorage and offers to restore it. The restoration should be
           selective — only restore fields that are currently empty or where the
@@ -438,7 +463,7 @@ export default function ErrorUXRecoveryArticle() {
           or review the draft before applying it. After restoration, the saved
           draft should be cleared from localStorage to prevent confusion on
           subsequent loads.
-        </p>
+        </HighlightBlock>
         <p>
           Browser crash and accidental navigation recovery requires additional
           safeguards beyond periodic auto-save. The beforeunload event can
@@ -470,7 +495,10 @@ export default function ErrorUXRecoveryArticle() {
 
       <section>
         <h2>Payment Error Handling UX</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Payment error handling is the highest-stakes error scenario because
           financial transactions directly impact user trust and have real
           monetary consequences. When a payment fails, the error UX must
@@ -483,8 +511,8 @@ export default function ErrorUXRecoveryArticle() {
           methods. The error message must be precise — &quot;Your payment could
           not be processed&quot; is insufficient; &quot;Your card ending in 4242
           was declined — insufficient funds&quot; provides actionable information.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The payment retry architecture should distinguish between retryable
           and non-retryable failures. Network timeouts during payment processing
           are retryable — the payment may have gone through on the server, so
@@ -497,7 +525,7 @@ export default function ErrorUXRecoveryArticle() {
           non-retryable — the user must contact support or use a different
           payment method. Each failure type maps to a specific UI flow and
           recovery path.
-        </p>
+        </HighlightBlock>
         <p>
           Idempotency in payment operations is the technical foundation that
           makes safe retry possible. Every payment request should include an
@@ -514,7 +542,10 @@ export default function ErrorUXRecoveryArticle() {
 
       <section>
         <h2>Error Monitoring Architecture &amp; Production Triage</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Error monitoring architecture spans client-side capture, transport,
           aggregation, analysis, and alerting. On the client side, Sentry SDK
           (or equivalent) is initialized with the application and configured to
@@ -526,8 +557,8 @@ export default function ErrorUXRecoveryArticle() {
           application state snapshot (current Redux/Zustand state, active route).
           This context is essential for reproducing and triaging errors — an
           error without context is nearly impossible to diagnose.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Error grouping and deduplication prevent alert fatigue when the same
           error affects thousands of users. Sentry groups errors by stack trace
           fingerprint — errors with the same call stack are aggregated into a
@@ -539,7 +570,7 @@ export default function ErrorUXRecoveryArticle() {
           are queued for regular backlog grooming, and known benign errors
           (specific browser quirks, extensions injecting scripts) are muted or
           ignored.
-        </p>
+        </HighlightBlock>
         <p>
           Production error triage follows a structured workflow. When an alert
           fires (new error type, frequency spike, or critical error affecting
@@ -570,7 +601,10 @@ export default function ErrorUXRecoveryArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Craft error messages that are clear, specific, and actionable. State
           the problem in plain language (&quot;Unable to save document&quot;
           rather than &quot;Error 500&quot;), explain why it happened when
@@ -582,8 +616,8 @@ export default function ErrorUXRecoveryArticle() {
           an empathetic tone that does not blame the user (&quot;We could not
           complete your request&quot; rather than &quot;You entered invalid
           data&quot;).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Preserve user work whenever possible. Form inputs should not be
           cleared on submission errors — display the error next to the
           problematic field and let the user fix and resubmit. Implement
@@ -593,7 +627,7 @@ export default function ErrorUXRecoveryArticle() {
           re-select it on retry. For multi-step forms, save progress after each
           step so users can resume from where they left off. The principle is
           that errors should never cost the user their work.
-        </p>
+        </HighlightBlock>
         <p>
           Implement comprehensive error monitoring with context-rich reporting.
           Every error should be captured with the error message, stack trace,
@@ -609,7 +643,10 @@ export default function ErrorUXRecoveryArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Displaying technical error messages to users is one of the most common
           and frustrating UX mistakes. Error messages like
           &quot;NullPointerException at line 234&quot; or &quot;Error
@@ -620,8 +657,8 @@ export default function ErrorUXRecoveryArticle() {
           they should take. Every error displayed to users should answer three
           questions: what happened, why did it happen (if helpful), and what can
           I do about it.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Swallowing errors silently is equally problematic. When an API call
           fails and the application shows no error indication, the user assumes
           the operation succeeded — leading to confusion when expected results
@@ -633,7 +670,7 @@ export default function ErrorUXRecoveryArticle() {
           recommendations), a subtle inline error is sufficient. For critical
           operations (form submission, payment processing), a prominent error
           message with retry options is required.
-        </p>
+        </HighlightBlock>
         <p>
           Failing to handle errors in React event handlers is a subtle bug that
           Error Boundaries do not catch. Error Boundaries only catch errors
@@ -650,7 +687,10 @@ export default function ErrorUXRecoveryArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Financial applications handle errors with the highest level of care
           because mistakes have real monetary consequences. Payment processing
           errors display specific decline reasons (&quot;Insufficient
@@ -662,8 +702,8 @@ export default function ErrorUXRecoveryArticle() {
           resolution instructions. The error UX must balance urgency (the user
           needs to know the payment failed) with reassurance (their money is
           safe, no duplicate charges occurred).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Social media applications handle errors at massive scale with
           millions of concurrent operations. Twitter and Instagram use
           optimistic UI for likes, follows, and retweets — the interface updates
@@ -675,7 +715,7 @@ export default function ErrorUXRecoveryArticle() {
           the previously loaded content. This approach handles the high volume
           of common operations gracefully while providing clear recovery paths
           for less frequent failures.
-        </p>
+        </HighlightBlock>
         <p>
           Offline-capable applications face the most complex error scenarios
           because errors may not surface until hours or days after the user
@@ -692,12 +732,15 @@ export default function ErrorUXRecoveryArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do React Error Boundaries work and what do they not catch?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Error Boundaries are React components that catch JavaScript
               errors during rendering, lifecycle methods, and constructors of
               their child component tree. When an error is caught, they render a
@@ -707,7 +750,7 @@ export default function ErrorUXRecoveryArticle() {
               .catch() or try/catch in async functions), server-side rendering,
               or errors thrown within the boundary itself. Use libraries like
               react-error-boundary for a clean API with retry support.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

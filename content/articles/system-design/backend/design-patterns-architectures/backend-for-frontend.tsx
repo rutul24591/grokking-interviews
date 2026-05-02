@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Backend for Frontend (BFF)</strong> is an architectural pattern in which each distinct client experience—web application, iOS app, Android app, partner portal, internal admin dashboard—receives a dedicated backend service purpose-built to serve that client&apos;s specific needs. The BFF exposes an API contract that is tightly optimized for the consuming UI: it aggregates data from multiple upstream services, applies presentation-friendly data shaping, encapsulates client-specific business workflows, and manages versioned contracts so that UI teams can iterate on their own cadence without repeatedly negotiating changes to shared domain services.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A BFF is not a mechanism for duplicating business logic across multiple services. In a well-designed architecture, domain rules and invariants remain firmly within domain services. The BFF primarily owns composition: it calls the right downstream services, selects only the fields the client needs, applies client-specific policies such as pagination strategy, localization, and feature-flag evaluation, and produces a stable, versioned contract that the UI consumes. The BFF sits between the client and the shared service layer, absorbing backend complexity so the client sees a clean, purpose-built API.
-        </p>
+        </HighlightBlock>
         <p>
           The pattern was formalized by Sam Newman in 2015 as a response to a common organizational and technical problem: as organizations grew multiple client teams (web, mobile, third-party integrations), a single shared backend became a coordination bottleneck where every client wanted &quot;just one more&quot; field or &quot;just one more&quot; aggregation step. BFF resolves this tension by giving each client team ownership of their own backend edge service.
         </p>
@@ -55,6 +59,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/backend-for-frontend-diagram-1.svg"
@@ -63,12 +70,12 @@ export default function ArticlePage() {
         />
 
         <h3>BFF vs. API Gateway: Distinct Responsibilities</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common source of confusion is distinguishing BFF from API gateway. These patterns serve different purposes and operate at different layers. An API gateway is a shared entry point that enforces coarse, cross-cutting policies across all traffic: TLS termination, authentication and authorization, global rate limiting, request routing, and DDoS protection. The gateway is horizontally scalable infrastructure that does not understand product semantics—it routes requests and applies security policies. A BFF, by contrast, is a client-specific application service that understands product semantics: it knows what a &quot;home feed&quot; needs, how to aggregate user profile with recommendations and notifications, and which fields the mobile client can afford to receive on a 3G connection.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In practice, these patterns are complementary. A typical deployment places the gateway at the network edge, where it terminates TLS, validates tokens, and routes requests to the appropriate BFF based on the <code>X-Client-Type</code> header or URL path prefix. The BFF then performs application-level composition: calling user service, recommendation service, and notification service in parallel, merging the results, applying mobile-specific field selection, and returning a single response. The gateway handles infrastructure concerns; the BFF handles product composition.
-        </p>
+        </HighlightBlock>
         <p>
           The anti-pattern to avoid is putting client-specific composition logic into the gateway. When a gateway starts handling product semantics—&quot;the mobile feed needs these three services aggregated, but the web dashboard needs something different&quot;—it becomes a multi-tenant product service with conflicting requirements. This is called the &quot;smart gateway anti-pattern&quot; and it creates a single service that must understand every client&apos;s needs, defeating the purpose of having an architecture that enables independent team velocity.
         </p>
@@ -118,14 +125,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>BFF Request Flow and Composition Pipeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A typical BFF request follows a well-defined composition pipeline. The client sends a request to its dedicated BFF endpoint. The BFF first validates the request—checking authentication tokens, verifying the client version against supported contracts, and parsing request parameters. If validation fails, the BFF returns an immediate error response without calling any downstream services, which protects upstream services from invalid traffic.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           After validation, the BFF executes its composition plan. This plan identifies which upstream services need to be called, with what parameters, and in what order. Independent calls execute in parallel using <code>Promise.all</code> or equivalent constructs, while dependent calls execute sequentially when one call&apos;s output feeds into another&apos;s input. The BFF enforces per-request time budgets: each upstream call has a timeout, and if a call exceeds its budget, the BFF either fails fast or returns a partial response with degraded data.
-        </p>
+        </HighlightBlock>
         <p>
           Once all upstream calls complete, the BFF applies response transformation. This step merges the results, selects only the fields the client needs, applies localization for internationalized content, formats dates and numbers according to client locale, and applies any business rules that are presentation-specific (such as &quot;hide this feature for this user tier&quot;). The transformed response is serialized and returned to the client with appropriate cache headers, correlation IDs for tracing, and version information for contract management.
         </p>
@@ -167,14 +177,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>BFF vs. Single Shared API</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fundamental trade-off is between team autonomy and operational simplicity. A single shared API is operationally simple: one codebase, one deployment, one monitoring dashboard, one set of runbooks. When you have a single client team or when all clients have identical data needs, the shared API is the right choice. The complexity of BFF is not justified when there is no client divergence.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           However, as soon as client needs diverge, the shared API becomes a coordination bottleneck. The web team needs additional fields that the mobile team does not want. The mobile team needs aggregated data that the web team computes client-side. Every change requires cross-team review, and the API becomes a lowest-common-denominator compromise that serves no one well. At this inflection point, BFF reduces total organizational cost despite increasing infrastructure complexity.
-        </p>
+        </HighlightBlock>
 
         <h3>BFF vs. API Gateway for Composition</h3>
         <p>
@@ -206,16 +219,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Define Clear Composition Boundaries</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Establish an explicit rule for what belongs in the BFF versus what belongs in domain services. The BFF composes existing domain operations and shapes responses for client consumption. It does not define new business invariants, does not perform cross-entity transactions, and does not own data that has a single source of truth elsewhere. A practical guideline is: if the logic would need to be duplicated across multiple BFFs, it belongs in a shared service, not in the BFF.
-        </p>
+        </HighlightBlock>
 
         <h3>Align BFF Ownership with Client Teams</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The team that builds the client should own the BFF. This creates a feedback loop where the client team feels the pain of a slow or unreliable BFF and is motivated to fix it. It also eliminates cross-team dependencies for client-specific changes. If organizational constraints prevent client teams from owning their BFF, the next best option is embedding a BFF engineer within the client team with dedicated responsibility.
-        </p>
+        </HighlightBlock>
 
         <h3>Implement Per-Request Time Budgets</h3>
         <p>
@@ -246,16 +262,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Fan-Out Latency Amplification</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common BFF failure mode is uncontrolled fan-out. A single client request triggers calls to eight upstream services, and the response time is dominated by the slowest service. When that service experiences elevated latency, every BFF request that depends on it becomes slow. The mitigation is to enforce strict time budgets, implement circuit breakers that fail fast when a service is degraded, and define partial-response semantics so that non-critical data sections can be omitted when their budget is exceeded.
-        </p>
+        </HighlightBlock>
 
         <h3>Duplicated Business Logic Across BFFs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When BFF boundaries are unclear, teams duplicate business logic across multiple BFFs. The web BFF calculates discount eligibility one way, the mobile BFF calculates it differently, and the two clients show inconsistent prices. The fix is to enforce a strict boundary: BFFs compose and shape, they do not compute business invariants. If two BFFs need the same computation, it belongs in a shared service.
-        </p>
+        </HighlightBlock>
 
         <h3>Contract Drift Between Clients</h3>
         <p>
@@ -283,14 +302,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Platform: Mobile and Web Divergence</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform started with a single public API serving both web and mobile clients. As the mobile app grew, the team noticed that mobile users on 3G networks experienced page load times exceeding 8 seconds because the shared API returned payloads designed for web clients—rich product descriptions, multiple image URLs, review data, and related product recommendations. The mobile team requested a lightweight endpoint, but every change to the shared API required coordination with the web team and the backend platform team.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The solution was to introduce a mobile BFF and a web BFF. The mobile BFF implemented aggressive field selection, sending only product name, price, thumbnail URL, and availability status—reducing payload size from 120KB to 35KB. It also implemented server-side aggregation for the product detail page, combining product info, inventory status, and delivery estimates into a single response. Mobile page load times dropped to 2.5 seconds, and the mobile team could iterate on their API contract independently. The web BFF retained rich payloads and added server-side rendering support for SEO optimization.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Services: Partner Integration BFF</h3>
         <p>
@@ -318,14 +340,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the Backend for Frontend pattern, and when would you choose it over a single shared API?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Backend for Frontend (BFF) is an architectural pattern where each distinct client application—web, mobile, IoT, partner—receives a dedicated backend service purpose-built to serve that client&apos;s specific needs. The BFF aggregates data from multiple upstream services, applies presentation-friendly data shaping, manages versioned contracts, and encapsulates client-specific workflows so that UI teams can iterate independently.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               You choose BFF over a single shared API when client needs, performance constraints, or release cadences diverge enough that a shared contract becomes a coordination bottleneck. Specific triggers include: mobile clients needing lightweight payloads while web clients need rich data, mobile apps having slow upgrade cycles requiring versioned contracts, different clients needing different aggregation patterns, and different security or compliance requirements per client type.
             </p>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,12 +36,15 @@ export default function InteractionAPIsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Interaction APIs provide backend endpoints for user engagement actions—likes, comments, shares, follows, saves, and reactions. These APIs form the backbone of social platforms, content sites, and community features, handling millions to billions of interactions daily. Well-designed interaction APIs balance low latency (users expect instant feedback) with durability (interactions must persist), consistency (counts must be accurate) with availability (system must handle traffic spikes).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The scale of interaction APIs is staggering. Facebook processes 4.5 million likes per minute at peak. Twitter handles 6,000 tweets per second. YouTube receives 500 hours of video uploads per minute, each generating comments, likes, and shares. This scale demands distributed architectures with sharded databases, cached counters, async processing, and intelligent rate limiting. A single poorly optimized API endpoint can cascade into platform-wide outages during viral events.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, interaction API design involves distributed systems challenges. Idempotency ensures network retries don't create duplicate interactions. Rate limiting prevents abuse while allowing legitimate high-volume users. Async processing decouples user-facing latency from backend durability. Event publishing enables downstream systems (notifications, analytics, feed ranking) to react to interactions. The architecture must handle viral traffic spikes—10-100x normal load—without degradation. Monitoring and alerting detect issues before users notice.
         </p>
@@ -48,13 +52,16 @@ export default function InteractionAPIsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>API Endpoint Design</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           RESTful interaction APIs use resource-oriented URLs with HTTP verbs. Like endpoints: POST /content/:id/like to create, DELETE /content/:id/like to remove. Comment endpoints: POST /content/:id/comments to create, GET /content/:id/comments to list, PUT /comments/:id to update, DELETE /comments/:id to remove. Follow endpoints: POST /users/:id/follow to follow, DELETE /users/:id/follow to unfollow. This RESTful approach provides intuitive, discoverable APIs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           GraphQL provides alternative enabling clients to request exactly the data needed. Single mutation handles interaction: mutateInteraction(contentId, type, action). Query fetches interaction state with related data in single request: content &#123; id, likes &#123; count, userHasLiked &#125;, comments &#123; count, items &#125; &#125;. GraphQL reduces over-fetching and under-fetching but adds complexity in caching and rate limiting.
-        </p>
+        </HighlightBlock>
         <p>
           RPC-style APIs use action-oriented endpoints: likeContent(contentId), createComment(contentId, body). This approach maps cleanly to backend services but loses RESTful discoverability. gRPC provides high-performance RPC with Protocol Buffers serialization, suitable for service-to-service communication but less common for client-facing APIs.
         </p>
@@ -117,9 +124,12 @@ export default function InteractionAPIsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Interaction API architecture spans API gateway, request validation, async processing, database persistence, counter caching, and event publishing. Requests flow through gateway (authentication, rate limiting), to API service (validation, idempotency check), to queue (async buffering), to worker (database write, event publish). Response returns to client after validation, before async processing completes.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/interaction-engagement/interaction-apis/interaction-api-architecture.svg"
@@ -130,9 +140,9 @@ export default function InteractionAPIsArticle() {
         />
 
         <h3>API Gateway Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           API gateway handles cross-cutting concerns: authentication (JWT validation, session lookup), rate limiting (token bucket per user/IP), request logging (for debugging and analytics), and routing (path-based to backend services). Gateway offloads concerns from backend services, enabling services to focus on business logic.
-        </p>
+        </HighlightBlock>
         <p>
           Authentication validates user identity. JWT tokens decoded and verified (signature, expiration). Session-based auth looks up session in Redis. Authenticated user ID attached to request context for downstream services. Unauthenticated requests rejected with 401 unless endpoint allows anonymous access (viewing public content).
         </p>
@@ -203,14 +213,17 @@ export default function InteractionAPIsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Interaction API design involves fundamental trade-offs between consistency, availability, latency, and durability. Understanding these trade-offs enables informed decisions aligned with platform requirements and user expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Sync vs Async Processing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Sync processing persists interaction before returning response. Pros: Strong consistency—count accurate immediately, durability—interaction persisted before success returned. Cons: Higher latency (database round-trip), lower throughput (blocked on database), vulnerable to traffic spikes. Best for: Low-volume platforms, financial transactions requiring strong consistency.
-        </p>
+        </HighlightBlock>
         <p>
           Async processing queues interaction, returns immediately. Pros: Low latency (no database wait), high throughput (queue buffers spikes), better availability (queue survives database outages). Cons: Eventual consistency (count lags), durability risk (queue loss before persist). Best for: High-volume social platforms, engagement actions where slight delay acceptable.
         </p>
@@ -262,13 +275,16 @@ export default function InteractionAPIsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use async processing:</strong> Queue interactions, return immediately, process asynchronously. Use Redis for fast counter updates, async flush to database. Accept eventual consistency for public counts.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement idempotency:</strong> Require idempotency keys for write operations. Store keys in Redis with 24-hour TTL. Return cached response for duplicate keys. Use database unique constraints as backup.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Rate limit appropriately:</strong> Per-user limits (100-200 likes/min, 20-50 comments/min). Per-IP limits for anonymous endpoints. Return 429 with Retry-After header. Include rate limit headers in responses.
           </li>
@@ -298,13 +314,16 @@ export default function InteractionAPIsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Sync database writes:</strong> Writing every interaction directly to database before response. Solution: Async processing with queue, Redis counters for fast updates.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No idempotency:</strong> Duplicate interactions from network retries. Solution: Idempotency keys with Redis cache, database unique constraints.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Single counter key:</strong> Single Redis key for all content becomes bottleneck. Solution: Shard counters for high-velocity content, detect and auto-shard viral content.
           </li>
@@ -328,16 +347,19 @@ export default function InteractionAPIsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter Like API</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter's like API uses async processing with Redis counters. POST /tweets/:id/likers returns immediately after queueing. Redis INCR updates counter, async flush to Manhattan (Twitter's distributed database). Rate limit: 100 likes per minute. Idempotency via unique constraint on (user_id, tweet_id). Event published to notification service and feed ranking.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Facebook Comment API</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook's comment API uses hybrid fan-out. Comment created via GraphQL mutation, stored in TAO (Facebook's graph store). Counter updates cached in TAO, async flush to HBase. Comments fan-out to viewer feeds based on affinity. Rate limit: 50 comments per hour for new accounts, higher for established. Real-time delivery via WebSocket to active viewers.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Instagram Follow API</h3>
         <p>
@@ -357,12 +379,15 @@ export default function InteractionAPIsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle concurrent likes?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle concurrent likes?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use atomic Redis INCR/DECR operations—Redis single-threaded, guarantees atomicity. Database-level: unique constraint on (user_id, content_id) prevents duplicates. Upsert operation (INSERT ... ON CONFLICT UPDATE) handles race conditions. For viral content, shard counters across multiple Redis keys, hash user_id to shard. Accept eventual consistency for public counts, reconcile periodically.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

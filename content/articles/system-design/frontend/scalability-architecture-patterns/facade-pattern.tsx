@@ -499,27 +499,31 @@ export default function FacadePatternArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: a facade is a “boundary object” that reduces coupling. The value is stable
+          interfaces, observability hooks, and change isolation when underlying subsystems evolve.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://refactoring.guru/design-patterns/facade" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Refactoring Guru — Facade Pattern
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.patterns.dev/vanilla/facade-pattern" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               patterns.dev — Facade Pattern
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://react.dev/learn/reusing-logic-with-custom-hooks" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               React Documentation — Custom Hooks
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Joel Spolsky — The Law of Leaky Abstractions
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

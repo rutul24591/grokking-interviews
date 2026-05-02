@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,21 +28,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>TLS (Transport Layer Security)</strong> is the cryptographic protocol that secures network
           communication — it encrypts data in transit, authenticates the communicating parties, and ensures data
           integrity. TLS is the successor to SSL (Secure Sockets Layer), which was deprecated due to critical
           vulnerabilities. When people say &quot;SSL,&quot; they almost always mean TLS — SSL 3.0 and earlier versions are
           obsolete and insecure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           TLS is the foundation of secure internet communication — HTTPS (HTTP over TLS), SMTPS (email over TLS),
           FTPS (file transfer over TLS), and mTLS (mutual TLS for service-to-service authentication) all rely on
           TLS. Without TLS, network traffic is transmitted in plaintext and can be intercepted, read, and modified
           by anyone on the network path (ISPs, public Wi-Fi operators, nation-state actors). TLS is required by all
           major compliance standards (PCI-DSS, HIPAA, SOC 2, GDPR) and is enforced by browsers (which mark
           non-HTTPS sites as &quot;Not Secure&quot;) and app stores (which require HTTPS for API communication).
-        </p>
+        </HighlightBlock>
         <p>
           The evolution of TLS has been driven by the discovery of vulnerabilities in earlier versions. SSL 2.0 and
           3.0 had critical flaws (POODLE, DROWN) that allowed attackers to decrypt traffic. TLS 1.0 and 1.1 had
@@ -81,21 +85,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The TLS handshake is the process by which the client and server establish a secure connection. In TLS
           1.3, the handshake requires one round-trip (1-RTT): the client sends a ClientHello (supported versions,
           cipher suites, key shares), and the server responds with a ServerHello (chosen version, cipher suite,
           key share) along with its certificate, certificate verification, and Finished message. The client verifies
           the certificate chain, derives the shared session keys from the key exchange, and sends its Finished
           message. After the handshake, all communication is encrypted using the session keys.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The key exchange in TLS 1.3 uses ECDHE (Elliptic Curve Diffie-Hellman Ephemeral) — the client and server
           each generate an ephemeral (temporary) key pair, exchange public keys, and compute a shared secret. The
           shared secret is used to derive the session keys for symmetric encryption (AES-256-GCM). ECDHE provides
           forward secrecy — even if the server&apos;s long-term private key is compromised in the future, past sessions
           cannot be decrypted because each session used a unique ephemeral key that was discarded after the session.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/tls-ssl-diagram-1.svg"
           alt="TLS 1.3 handshake flow showing ClientHello, ServerHello with certificate, and encrypted application data"
@@ -143,20 +150,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The TLS architecture consists of the TLS library (OpenSSL, BoringSSL, LibreSSL, rustls) that implements
           the TLS protocol, the certificate store (which holds trusted root CA certificates), and the certificate
           management system (which obtains, installs, and renews certificates). The TLS library handles the
           handshake, encryption, and decryption. The certificate store provides the trust anchors for certificate
           validation. The certificate management system automates the certificate lifecycle.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The TLS connection flow begins with the TCP handshake (three-way handshake to establish the connection),
           followed by the TLS handshake (key exchange, authentication, cipher suite negotiation). After the TLS
           handshake, the application protocol (HTTP, SMTP, FTP) runs over the encrypted TLS connection. The TLS
           connection is terminated when either party sends a close_notify alert, after which no further data is
           transmitted.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/tls-ssl-diagram-3.svg"
           alt="TLS deployment best practices showing cipher suite selection, HSTS, certificate management, and mTLS"
@@ -196,14 +206,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           TLS 1.2 versus TLS 1.3 is a trade-off between compatibility and security. TLS 1.3 is more secure — it
           removes insecure cipher suites, requires forward secrecy, and encrypts the server certificate. However,
           TLS 1.3 is not supported by older clients and servers (Java 8, older load balancers, legacy systems). For
           maximum compatibility, TLS 1.2 with carefully configured cipher suites is still necessary. The recommended
           approach is to support both TLS 1.2 and 1.3, with TLS 1.3 preferred when available.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           One-way TLS versus mutual TLS is a trade-off between security and operational complexity. One-way TLS
           (server presents a certificate, client does not) is simpler to deploy and is sufficient for most
           client-server communication. Mutual TLS (both parties present certificates) provides stronger
@@ -211,7 +224,7 @@ export default function ArticlePage() {
           (issuance, distribution, rotation, revocation), which is operationally complex. mTLS is recommended for
           service-to-service authentication in microservice architectures, where the operational complexity is
           managed by a service mesh.
-        </p>
+        </HighlightBlock>
         <p>
           Commercial certificates versus free certificates (Let&apos;s Encrypt) is a trade-off between cost and features.
           Let&apos;s Encrypt provides free, automated DV (Domain Validation) certificates with 90-day validity — sufficient
@@ -236,16 +249,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use TLS 1.3 exclusively where possible, and TLS 1.2 as a fallback for compatibility. Disable TLS 1.0
           and 1.1 — they have known vulnerabilities and are deprecated by all major browsers. Configure your server
           to prefer TLS 1.3 and only fall back to TLS 1.2 if the client does not support TLS 1.3.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use strong cipher suites — AES-256-GCM, ChaCha20-Poly1305, AES-128-GCM — and disable all insecure
           cipher suites (RC4, 3DES, CBC-mode ciphers, static RSA, MD5, SHA-1). Use Mozilla&apos;s SSL Configuration
           Generator as a starting point for cipher suite configuration.
-        </p>
+        </HighlightBlock>
         <p>
           Automate certificate management using the ACME protocol (Let&apos;s Encrypt, certbot, cert-manager). Certificates
           should be obtained, installed, and renewed automatically — manual certificate management leads to expired
@@ -275,18 +291,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Allowing TLS 1.0 and 1.1 is a common compliance and security failure. TLS 1.0 and 1.1 have known
           vulnerabilities (BEAST, Lucky 13) and are deprecated by all major browsers. The fix is to disable TLS
           1.0 and 1.1 and require TLS 1.2 or higher. Use a configuration scanner (SSL Labs, testssl.sh) to verify
           that only TLS 1.2 and 1.3 are enabled.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not enabling HSTS is a common security pitfall. Without HSTS, an attacker can perform an SSL stripping
           attack — intercepting the initial HTTP request and preventing the upgrade to HTTPS, allowing the attacker
           to read and modify the traffic. The fix is to enable HSTS with a max-age of at least 31536000 and
           includeSubDomains.
-        </p>
+        </HighlightBlock>
         <p>
           Expired certificates causing service outages is the most common TLS operational failure. Certificates
           have a limited validity period, and if they are not renewed before expiration, TLS connections fail. The
@@ -313,21 +332,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses TLS 1.3 for all customer-facing communication — HTTPS for the website,
           TLS for API communication, and mTLS for service-to-service communication. The platform uses AWS Certificate
           Manager to manage TLS certificates, with automatic renewal and deployment. The platform enforces HSTS with
           a max-age of one year and includeSubDomains, and it monitors certificate expiration with alerts at 30, 14,
           and 7 days before expiration. The platform has achieved PCI-DSS compliance in part due to its TLS
           configuration.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses mTLS for all service-to-service communication — each microservice has
           its own certificate, issued by the company&apos;s internal CA (managed by HashiCorp Vault). The service mesh
           (Istio) automates mTLS — it issues certificates to each service, manages certificate rotation (every 24
           hours), and enforces mTLS between services. The company monitors mTLS connections and alerts on
           connections that do not use mTLS (indicating misconfiguration or unauthorized services).
-        </p>
+        </HighlightBlock>
         <p>
           A healthcare organization uses TLS 1.3 with OCSP Stapling for its patient portal — the server includes
           the OCSP response in the TLS handshake, eliminating the need for the client to query the OCSP responder
@@ -349,14 +371,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between TLS 1.2 and TLS 1.3?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               TLS 1.3 requires one round-trip (1-RTT) for the handshake, while TLS 1.2 requires two round-trips (2-RTT). TLS 1.3 removes insecure cipher suites (RC4, 3DES, CBC-mode ciphers, static RSA), requires forward secrecy (ECDHE for all connections), and encrypts the server certificate (unlike TLS 1.2 where it was sent in plaintext).
-            </p>
+            </HighlightBlock>
             <p>
               TLS 1.3 also supports 0-RTT resumption for repeat connections — the client can send encrypted data in the first round-trip if it has previously connected to the server. However, 0-RTT data is vulnerable to replay attacks, so it should only be used for idempotent operations (GET requests).
             </p>

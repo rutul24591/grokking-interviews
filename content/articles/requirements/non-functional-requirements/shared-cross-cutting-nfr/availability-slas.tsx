@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,18 +25,21 @@ export default function AvailabilitySlasArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Availability SLAs</strong> (Service Level Agreements) are contractual commitments that
           define the minimum acceptable uptime for a service, along with penalties for failing to meet
           those commitments. SLAs translate reliability into business terms that customers understand and
           can hold providers accountable to.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Availability is expressed as a percentage of uptime over a measurement period (typically monthly
           or annually). The difference between 99.9% and 99.99% represents a 10× reduction in allowable
           downtime—with corresponding cost implications. Each additional &quot;nine&quot; of availability
           requires exponentially more investment in redundancy, monitoring, and operational excellence.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, SLAs represent a critical intersection of technical capability
           and business commitment. The SLAs you commit to drive architectural decisions, operational
@@ -67,7 +71,10 @@ export default function AvailabilitySlasArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Availability is expressed in &quot;nines&quot;—each nine represents an order of magnitude
           improvement in uptime. Understanding what each tier means in practical terms is essential for
           setting appropriate expectations and making architectural decisions. The jump from 99% to 99.9%
@@ -75,7 +82,7 @@ export default function AvailabilitySlasArticle() {
           checks. However, the jump from 99.99% to 99.999% demands multi-region active-active deployments,
           sub-minute failover, and zero-downtime deployment pipelines—increasing infrastructure costs by
           20 to 50 times.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">The Availability Tiers</h3>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
@@ -123,7 +130,7 @@ export default function AvailabilitySlasArticle() {
           </table>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           SLA calculation follows a straightforward formula: Uptime percentage equals total minutes minus
           downtime minutes, divided by total minutes, multiplied by 100. For a 30-day month with 43,200
           total minutes, even 45 minutes of downtime drops availability to 99.896%—missing a 99.9% SLA
@@ -133,7 +140,7 @@ export default function AvailabilitySlasArticle() {
           down, geographic regions unavailable), performance degradation (P99 latency exceeding SLA
           thresholds, throughput below minimums), and data issues (data loss, corruption, stale data beyond
           an acceptable window) all count as downtime depending on how the SLA is worded.
-        </p>
+        </HighlightBlock>
 
         <p>
           SLA penalty structures typically take the form of service credits applied to future invoices.
@@ -165,23 +172,26 @@ export default function AvailabilitySlasArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Achieving high availability requires architectural investment across multiple dimensions. The
           foundation is redundancy—deploying multiple application instances across failure domains with
           auto-scaling to maintain minimum capacity. Zone redundancy distributes instances across multiple
           availability zones so that a single zone failure does not take down the service, which is required
           for anything above 99% availability. Region redundancy extends this across geographic regions and
           is required for 99.99% and above.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Load balancing sits at the traffic distribution layer, using Layer 4 (TCP) or Layer 7 (HTTP) load
           balancers with health check integration to automatically remove unhealthy instances from the pool.
           Cross-zone or cross-region load balancing ensures traffic reaches healthy instances regardless of
           where failures occur. Health checks themselves must be comprehensive—going beyond simple TCP
           connection checks to include application-level health verification such as database connectivity
           and downstream dependency status.
-        </p>
+        </HighlightBlock>
 
         <p>
           Failover architecture determines how quickly the system recovers from failures. Active-passive
@@ -216,11 +226,14 @@ export default function AvailabilitySlasArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Every architectural choice for high availability involves trade-offs between cost, complexity,
           consistency, and recovery speed. Understanding these trade-offs is essential for making informed
           decisions that match business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Multi-AZ vs Multi-Region</h3>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
@@ -342,18 +355,21 @@ export default function AvailabilitySlasArticle() {
           </table>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The diminishing returns on availability investment are significant. Most services should target
           99.9% to 99.99% as the sweet spot between reliability and cost. Five nines is only justified for
           truly critical infrastructure where minutes of downtime translate to millions in losses. The SLA
           should be treated as the minimum acceptable availability, not the engineering target—internal SLOs
           must be stricter to provide a meaningful error budget buffer.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Setting SLAs should begin with historical performance data, adding a conservative buffer rather
           than aspirational targets. Different service tiers can have different SLAs—a payment processing
           endpoint warrants a higher commitment than an analytics dashboard. The measurement methodology
@@ -362,16 +378,16 @@ export default function AvailabilitySlasArticle() {
           External monitoring should be used for SLA calculation because it represents the customer&apos;s
           actual experience, while internal monitoring tracks SLO compliance and provides earlier warning
           signals.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Monitoring and alerting should focus on SLO burn rate rather than just SLA breach detection.
           A burn rate approach tells you how quickly you are consuming your error budget—if you are burning
           through 24 hours of error budget in just 1 hour, you have a critical problem even though the SLA
           has not yet been breached. Dashboards showing real-time availability should be visible to both
           engineering teams and customers, with regular SLA reporting to stakeholders on a monthly or
           quarterly cadence.
-        </p>
+        </HighlightBlock>
 
         <p>
           Communication during incidents is equally important. A status page providing real-time
@@ -386,23 +402,26 @@ export default function AvailabilitySlasArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Over-committing is the most common mistake—promising 99.99% availability without the
           architectural foundation to support it leads to penalties, lost trust, and engineering teams
           constantly firefighting. The fix is to base SLAs on historical performance with a conservative
           buffer and improve gradually. Ambiguous definitions of downtime lead to disputes during incidents;
           the contract must explicitly define what counts as downtime including error rate thresholds,
           latency limits, and geographic scope.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Measuring the wrong metric is another frequent issue—internal metrics may show healthy availability
           while customers experience degraded service due to network issues or CDN problems that internal
           monitoring does not capture. Using external monitoring for SLA calculation aligns measurement
           with customer experience. Ignoring exclusions in the contract creates mismatched expectations;
           customers may assume everything is covered when scheduled maintenance, force majeure, and
           third-party dependency failures are excluded.
-        </p>
+        </HighlightBlock>
 
         <p>
           Operating without an internal SLO stricter than the external SLA removes the error budget buffer,
@@ -418,7 +437,10 @@ export default function AvailabilitySlasArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           AWS structures its SLAs around service-level commitments with service credits as the primary
           remedy. For EC2, AWS承诺s 99.99% availability per region, with credits ranging from 10% to 100%
           of the monthly service fee depending on the severity and duration of the outage. AWS excludes
@@ -426,16 +448,16 @@ export default function AvailabilitySlasArticle() {
           multi-AZ RDS offering provides automated failover within a region, while cross-region read
           replicas provide disaster recovery capability—customers must architect for multi-region
           themselves using Route 53 health checks and failover routing policies.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe, as a payment processor, maintains 99.99% availability SLA because every minute of
           downtime directly translates to lost revenue for merchants. Their architecture uses active-active
           deployments across multiple regions with automatic failover. Stripe publishes a public status
           page with historical uptime data, and their API documentation explicitly states that merchants
           should implement retry logic with exponential backoff—acknowledging that transient failures are
           inevitable even with high availability infrastructure.
-        </p>
+        </HighlightBlock>
 
         <p>
           Google Cloud Platform offers differentiated SLAs across its services—Compute Engine provides
@@ -458,10 +480,13 @@ export default function AvailabilitySlasArticle() {
 
       <section>
         <h2>Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What&apos;s the difference between 99.9% and 99.99% availability in practical terms?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What&apos;s the difference between 99.9% and 99.99% availability in practical terms?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: 99.9% allows 8.76 hours of downtime annually, which is 44 minutes per month. 99.99% allows
               only 52.6 minutes annually, or 4.4 minutes per month—that is a 10× reduction in allowable
               downtime. Achieving 99.9% requires multi-AZ deployment with automated health checks and basic
@@ -470,7 +495,7 @@ export default function AvailabilitySlasArticle() {
               monitoring, and zero-downtime deployment pipelines, pushing infrastructure costs to 10-50×.
               The cost increases exponentially with each additional nine, which is why most services should
               target 99.9% to 99.99% as the practical sweet spot.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

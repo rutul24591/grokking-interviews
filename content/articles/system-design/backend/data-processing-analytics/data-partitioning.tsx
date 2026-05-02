@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Data partitioning</strong> is the practice of dividing a dataset into independent subsets —
           partitions — that can be stored, processed, and queried separately. Partitioning is the primary mechanism by
           which data systems achieve horizontal scalability: instead of storing and processing the entire dataset on a
@@ -32,8 +36,8 @@ export default function ArticlePage() {
           Partitioning also enables query optimization: when a query&apos;s filter conditions align with the partitioning
           scheme, the query engine can skip entire partitions (partition pruning), reading only the relevant data and
           dramatically reducing I/O cost.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice of partitioning strategy — the function that assigns each record to a partition — is one of the
           most consequential architectural decisions in a data system. It affects query performance (does the partition
           scheme enable partition pruning for the most common queries?), data distribution (is data evenly spread
@@ -41,7 +45,7 @@ export default function ArticlePage() {
           read?), and system evolution (can partitions be added or removed without rewriting the entire dataset?).
           Getting the partitioning wrong is difficult to fix: repartitioning a large dataset requires reading and
           rewriting every record, which is expensive and disruptive.
-        </p>
+        </HighlightBlock>
         <p>
           Partitioning operates at multiple levels in a data platform. At the storage level, files are organized into
           partitioned directory structures (for example, S3 paths like s3://bucket/table/date=2024-01-01/), enabling
@@ -87,21 +91,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Hash partitioning assigns each record to a partition based on the hash of its partition key modulo the
           number of partitions: partition = hash(key) % N. This strategy provides even data distribution regardless of
           the key distribution — even if 90 percent of records have the same key, they will be distributed across all
           partitions (assuming a good hash function). Hash partitioning is the default strategy for most distributed
           processing systems (Spark shuffle, Kafka topic partitioning) because it prevents hot partitions and enables
           parallel processing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The trade-off with hash partitioning is that it does not support range queries. A query for all records
           where the key is between A and M must scan all partitions, because the hash function destroys the natural
           ordering of keys. This makes hash partitioning unsuitable for range-based queries (time-series queries,
           alphabetical range scans) where the query engine benefits from knowing that relevant records are co-located
           in specific partitions.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/data-partitioning-diagram-1.svg"
           alt="Four partitioning strategies compared: hash, range, list, and round-robin with their pros and cons"
@@ -160,22 +167,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The partitioning architecture in a data processing pipeline determines how records are routed from the
           ingestion stage through the processing stage to the output stage. At ingestion, records are assigned to
           partitions based on the partitioning strategy — a hash function, a range lookup, a list mapping, or a
           round-robin counter. The partition assignment determines which worker processes the record in the processing
           stage, which storage location holds the record in the output stage, and which partitions must be scanned to
           answer a query.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In distributed processing frameworks (Spark, Flink), partitioning determines the shuffle strategy. When a
           transformation requires records with the same key to be processed together (such as group-by or join), the
           framework repartitions the data by the key, routing all records with the same key to the same worker. This
           repartitioning involves a shuffle — reading records from their current partitions, redistributing them by
           the new key, and writing them to the new partitions. The shuffle is the most expensive phase in distributed
           processing because it involves reading, network transfer, and writing for every record.
-        </p>
+        </HighlightBlock>
         <p>
           In storage systems (data lakes, databases), partitioning determines the directory or file structure. A
           partitioned table in a data lake is organized as a directory hierarchy where each directory represents a
@@ -220,7 +230,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The number of partitions is a trade-off between parallelism and overhead. More partitions enable more
           parallelism — more workers can process data simultaneously — but also increase overhead: more files to
           manage in storage, more metadata to track in the catalog, more scheduling decisions in the processing
@@ -228,8 +241,8 @@ export default function ArticlePage() {
           batch processing is to size partitions at 128 MB to 1 GB each — large enough to amortize file open/close
           overhead, small enough to enable fine-grained parallelism. For a 1 TB dataset, this means 1,000 to 8,000
           partitions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Hash versus range partitioning is a fundamental trade-off between data distribution and query efficiency.
           Hash partitioning provides even data distribution regardless of key distribution, preventing hot partitions
           and enabling consistent performance. But it does not support range queries — a query for a key range must
@@ -238,7 +251,7 @@ export default function ArticlePage() {
           distribution is non-uniform. The choice depends on the query patterns: if range queries are common, use
           range partitioning and mitigate hot partitions with careful boundary selection. If point lookups and
           even distribution are more important, use hash partitioning.
-        </p>
+        </HighlightBlock>
         <p>
           Static versus dynamic partitioning is a trade-off between simplicity and adaptability. Static partitioning
           uses a fixed number of partitions that does not change over time. It is simple to implement and reason
@@ -260,7 +273,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Over-partition initially rather than under-partitioning. It is much easier to merge small partitions than
           to split large ones. When designing the partitioning scheme for a new dataset, estimate the data volume over
           the next 12-18 months and choose a partition count that keeps individual partitions in the 128 MB to 1 GB
@@ -268,14 +284,14 @@ export default function ArticlePage() {
           partitions are not a performance problem — they just create slightly more metadata overhead. Large partitions,
           on the other hand, are a serious performance problem because they limit parallelism and increase the cost of
           repartitioning.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Align the partitioning scheme with the most common query patterns. The primary purpose of partitioning is to
           enable partition pruning — skipping irrelevant data during queries. Identify the most common filter
           conditions in your query workload and choose a partition key that matches those conditions. If most queries
           filter by date, partition by date. If most queries filter by customer ID, partition by customer ID. If
           queries filter by both, use hierarchical partitioning with the more selective filter at the top level.
-        </p>
+        </HighlightBlock>
         <p>
           Monitor partition sizes and alert on imbalance. Partition size should be tracked as a time-series metric,
           and alerts should fire when any partition exceeds 2x the average partition size. This detects hot partitions
@@ -311,22 +327,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Hot partitions from skewed key distribution creating processing bottlenecks is the most common partitioning
           failure. When one partition receives disproportionately more data than others — because a single key value
           is much more common than others, or because the range boundaries are poorly chosen — that partition becomes
           a bottleneck. All processing must wait for the hot partition to complete, negating the benefits of
           parallelism. The fix is to monitor partition sizes, detect the skew, and apply key salting or repartition
           with a different strategy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Too many small partitions increasing metadata overhead and query planning time is a common over-correction.
           After experiencing hot partitions, teams sometimes over-partition to ensure even distribution, creating
           thousands of tiny partitions that each contain only a few records. The metadata overhead of managing
           thousands of partitions (file listings, catalog entries, scheduling decisions) can exceed the cost of
           processing the data itself, and query planning can take longer than query execution. The fix is to target
           partitions of 128 MB to 1 GB, merging small partitions when they are below this threshold.
-        </p>
+        </HighlightBlock>
         <p>
           Partitioning by a key that does not match query patterns, providing no partition pruning benefit, is a
           wasted optimization. If the data is partitioned by customer ID but most queries filter by date, every query
@@ -357,7 +376,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform partitions its order history data lake by date (one directory per day) and then
           by hash of customer ID within each day (128 hash buckets per day). This hierarchical partitioning supports
           two primary query patterns: time-range queries (scan only the relevant date directories for orders in a
@@ -367,8 +389,8 @@ export default function ArticlePage() {
           orders evenly across buckets. The date partitioning at the top level supports efficient time-range queries
           and easy data lifecycle management (orders older than 7 years are purged by deleting the corresponding date
           directories).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses range partitioning for its market data database, partitioning by timestamp
           with one partition per hour. The range partitioning supports efficient time-range queries (scan only the
           relevant hourly partitions for market data in a specific period) and preserves the chronological ordering of
@@ -376,7 +398,7 @@ export default function ArticlePage() {
           and adjusts the hourly boundaries when the data volume changes — during market open, when volume is 10x
           higher, the partitions are split into 15-minute intervals to prevent any single partition from becoming too
           large. During off-hours, the partitions are merged back to hourly intervals to reduce metadata overhead.
-        </p>
+        </HighlightBlock>
         <p>
           A technology company uses list partitioning for its multi-tenant SaaS data warehouse, partitioning by tenant
           ID with one partition per tenant. This provides data isolation between tenants (each tenant&apos;s data is in a
@@ -401,24 +423,27 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How do you choose the right partitioning strategy for a new dataset?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The choice starts with analyzing the query workload. Identify the most common filter conditions in your
             queries and choose a partition key that matches those conditions. If most queries filter by date, partition
             by date. If most queries filter by a specific business key, partition by that key. If queries filter by
             multiple keys, use hierarchical partitioning with the most selective filter at the top level.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The second factor is data distribution. Analyze the distribution of the candidate partition key to identify
           potential hot partitions. If the key distribution is highly skewed (one value accounts for more than 10
             percent of the data), consider hash partitioning or key salting to distribute the skewed values across
             multiple partitions. If the key distribution is uniform, range partitioning is a viable option that also
             supports range queries.
-          </p>
+          </HighlightBlock>
           <p>
             The third factor is growth trajectory. Estimate the data volume over the next 12-18 months and choose a
             partition count that keeps individual partitions in the 128 MB to 1 GB range. Over-partition rather than

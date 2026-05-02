@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Render Props</strong> is a pattern where a component receives a function as a prop and calls that function to render content. The function typically receives data or state from the component, enabling the component to share its internal state with the render logic. This pattern provides maximum flexibility for component composition and logic reuse.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Render props address a core challenge: how do we create components that share logic while giving consumers full control over rendering? Without render props, components either hard-code their rendering (inflexible) or accept pre-rendered content via children (can't share state). Render props enable components to say "I'll handle the logic, you handle the rendering."
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, render props are an important pattern to understand. While hooks have replaced render props for many use cases, render props still excel in certain scenarios. Understanding render props provides insight into component API design and the evolution of React patterns.
         </p>
@@ -45,6 +49,9 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/component-design/render-props-pattern.svg"
@@ -53,12 +60,12 @@ export default function ArticlePage() {
         />
 
         <h3>Render Props Fundamentals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A render prop is a function prop that a component uses to know what to render. The component calls the function with its internal state or data, and the function returns JSX. This enables the component to share state while delegating rendering decisions to the consumer.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The simplest render prop uses the children prop as a function. The component calls props.children with data, and the consumer provides a function that returns JSX. This pattern is called "function as child" and is syntactically clean because the function goes between the component's opening and closing tags.
-        </p>
+        </HighlightBlock>
 
         <h3>Named Render Props</h3>
         <p>
@@ -95,14 +102,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing render props requires careful attention to function creation, performance, and API design.
-        </p>
+        </HighlightBlock>
 
         <h3>Function Creation and Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Render props are functions created in the parent component's render. This means a new function is created on every render. For most cases, this doesn't matter. But if the child component does expensive computation or comparison, the new function reference can cause unnecessary re-renders.
-        </p>
+        </HighlightBlock>
         <p>
           Use useCallback to memoize render prop functions when the child component is memoized or does expensive work. This prevents the function from being recreated on every render. However, don't over-optimize. Most render props don't need memoization.
         </p>
@@ -134,9 +144,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Render props involve trade-offs between flexibility, readability, and performance.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/component-design/render-props-vs-hooks.svg"
@@ -185,19 +198,22 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that render props provide maximum flexibility but can create readability issues with nesting. Use render props when the flexibility is needed. Use hooks for simpler logic reuse. Use compound components for cohesive APIs.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use render props when the component needs to share state with the render logic. This is the core use case for render props. Don't use render props when hooks would be simpler. Hooks don't create nested callbacks and have better performance characteristics.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Keep render prop functions small. Extract complex rendering logic to separate components. This improves readability and makes the render prop easier to understand. Use descriptive prop names that indicate what data the render function receives.
-        </p>
+        </HighlightBlock>
         <p>
           Provide default rendering so render props are optional when reasonable. This makes the component easier to use for simple cases while enabling customization for complex cases. Document the render function signature clearly. Include types for the arguments and return type.
         </p>
@@ -208,12 +224,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Callback hell from nesting multiple render props creates deeply indented code that's hard to read. If you're nesting more than two render props, consider extracting functions, using utility components, or refactoring to hooks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Creating render functions that capture stale closures. Render functions created in render capture the props and state at that moment. If the function is used asynchronously, it might reference stale values. Use refs or callbacks to access current values.
-        </p>
+        </HighlightBlock>
         <p>
           Not memoizing render functions when needed. If the child component does expensive work or comparison, new function references on every render can cause performance issues. Use useCallback when appropriate. Overusing render props when simpler patterns would work. Not every component needs to be a render prop component.
         </p>
@@ -224,14 +243,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Data Fetching: Flexible Data Display</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A data-fetching component needed to display data in different ways depending on the use case. Some views needed tables, some needed cards, some needed charts. The solution was a render prop that received the fetched data and let the consumer decide how to render it.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Results included a single data-fetching component that worked for all display types, consistent loading and error handling across all views, and flexible rendering without duplicating fetch logic. The pattern was used across 20+ views.
-        </p>
+        </HighlightBlock>
 
         <h3>Virtual List: Custom Item Rendering</h3>
         <p>
@@ -260,14 +282,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the render props pattern and when do you use it?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Render props is a pattern where a component receives a function as a prop and calls that function to render content. The function receives data or state from the component. Use render props when the component needs to share state with the render logic, when you need maximum flexibility in rendering, or when the component controls when and how the render function is called.
-            </p>
+            </HighlightBlock>
             <p>
               Render props are less common now that hooks exist, but still useful for certain patterns like virtual lists, data-fetching components, and flexible layout components.
             </p>

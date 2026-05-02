@@ -254,7 +254,6 @@ export default function BrowserCachingConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/caching-strategies/cache-headers-decision.svg"
           alt="Cache Headers Decision Tree"
           caption="Decision tree for selecting appropriate cache headers based on resource type"
-          captionTier="important"
         />
 
         <p>
@@ -267,7 +266,6 @@ export default function BrowserCachingConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/caching-strategies/cache-lifecycle.svg"
           alt="Cache Lifecycle Timeline"
           caption="Timeline showing how a cached resource progresses through fresh, stale, revalidation, and replacement states"
-          captionTier="important"
         />
 
         <h3>Cache Key Construction</h3>
@@ -662,22 +660,27 @@ export default function BrowserCachingConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: demonstrate you understand HTTP caching semantics (freshness, validation, shared vs private
+          caches) and can reason about correctness bugs (stale auth responses, missing Vary) and operational patterns
+          (immutable assets vs dynamic HTML).
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.rfc-editor.org/rfc/rfc9111" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               RFC 9111 - HTTP Caching (June 2022)
             </a> - The authoritative specification for HTTP caching semantics, replacing RFC 7234
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://web.dev/articles/http-cache" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev - Prevent unnecessary network requests with the HTTP Cache
             </a> - Google&apos;s comprehensive guide to HTTP caching with practical examples
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN Web Docs - HTTP Caching
             </a> - Mozilla&apos;s reference documentation covering all cache-related headers and behaviors
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://csswizardry.com/2019/03/cache-control-for-civilians/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Cache-Control for Civilians - Harry Roberts

@@ -817,8 +817,12 @@ export default function ComponentLibrariesDesignSystemsArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: treat a design system as an org-scale platform. The hard problems are governance,
+          versioning, and distribution (tokens, theming, a11y guarantees), not just “a component library”.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://bradfrost.com/blog/post/atomic-web-design/"
               className="text-accent hover:underline"
@@ -827,8 +831,8 @@ export default function ComponentLibrariesDesignSystemsArticle() {
             >
               Brad Frost — Atomic Design Methodology
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://amzn.github.io/style-dictionary/"
               className="text-accent hover:underline"
@@ -837,8 +841,8 @@ export default function ComponentLibrariesDesignSystemsArticle() {
             >
               Style Dictionary — Design Token Build System
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.radix-ui.com/"
               className="text-accent hover:underline"
@@ -847,8 +851,8 @@ export default function ComponentLibrariesDesignSystemsArticle() {
             >
               Radix UI — Headless Component Primitives
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://storybook.js.org/"
               className="text-accent hover:underline"
@@ -857,7 +861,7 @@ export default function ComponentLibrariesDesignSystemsArticle() {
             >
               Storybook — Component Development and Documentation
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://designsystemsrepo.com/"

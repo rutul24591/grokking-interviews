@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function SMSGatewaysArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SMS gateways enable sending and receiving text messages programmatically via SMS providers. Use cases include two-factor authentication (2FA), appointment reminders, order notifications, alerts, and marketing campaigns. SMS has 98% open rate (vs 20% for email) and 45% response rate, making it ideal for time-sensitive, high-priority communications. However, SMS costs per message ($0.005-$0.05 per message) and has strict regulations (TCPA, GDPR).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of SMS delivery stems from carrier variations (AT&amp;T, Verizon, T-Mobile each have different filtering), phone number formats (international E.164 standard), delivery tracking (delivery receipts vary by carrier), and compliance (opt-in requirements, quiet hours). SMS providers (Twilio, Vonage, AWS SNS) handle carrier relationships but require proper integration for optimal deliverability.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, SMS gateway implementation involves infrastructure and compliance challenges. Queue management handles traffic spikes (2FA storms). Two-way messaging requires webhook handling for incoming messages. Delivery tracking captures delivery receipts (delivered, failed, undeliverable). Compliance includes opt-in management, STOP keyword handling, and quiet hours enforcement. The architecture must balance cost (per-message pricing) with reliability and compliance.
         </p>
@@ -47,13 +51,16 @@ export default function SMSGatewaysArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>SMS Providers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twilio: Full-featured communications platform. Pros: Best documentation, global coverage, voice + SMS + WhatsApp. Cons: Higher cost at scale. Pricing: $0.0075 per message (US). Best for: Startups to enterprise, all use cases.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Vonage (Nexmo): Communications API platform. Pros: Good coverage, competitive pricing. Cons: Documentation not as good as Twilio. Pricing: $0.0065 per message (US). Best for: Cost-conscious, international.
-        </p>
+        </HighlightBlock>
         <p>
           AWS SNS (Simple Notification Service): AWS native SMS service. Pros: AWS integration, lowest cost. Cons: Basic features, limited two-way. Pricing: $0.00645 per message (US). Best for: AWS users, one-way notifications.
         </p>
@@ -111,9 +118,12 @@ export default function SMSGatewaysArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SMS gateway architecture spans queue management, provider integration, webhook handling, and compliance. SMS queued for async processing. Provider API sends message. Webhooks handle delivery receipts and incoming messages. Compliance layer enforces opt-in, quiet hours, STOP handling.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/sms-gateways/sms-architecture.svg"
@@ -124,9 +134,9 @@ export default function SMSGatewaysArticle() {
         />
 
         <h3>Queue Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SMS queue decouples request from sending. Queue messages (Redis, SQS). Workers process at controlled rate (respect provider/carrier limits). Priority queues (2FA before marketing). Retry logic for transient failures (carrier downtime).
-        </p>
+        </HighlightBlock>
         <p>
           Rate limiting: Provider limits (Twilio: 100 messages/second). Carrier limits (varies by number type). Implement backpressure (slow down if queue grows). Throttle by destination (avoid carrier filtering).
         </p>
@@ -186,14 +196,17 @@ export default function SMSGatewaysArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SMS gateway design involves trade-offs between cost, throughput, deliverability, and compliance. Understanding these trade-offs enables informed decisions aligned with use case and volume.
-        </p>
+        </HighlightBlock>
 
         <h3>Number Type: Cost vs Throughput</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Long codes: $0/month, 1 message/second. Pros: Cheapest, easy to get. Cons: Low throughput, carrier filtering. Best for: Two-way messaging, low volume (&lt;1000/day).
-        </p>
+        </HighlightBlock>
         <p>
           10DLC: $2-5/month, 30-100 messages/second. Pros: Good throughput, better deliverability. Cons: Registration required. Best for: Business messaging, most use cases.
         </p>
@@ -237,13 +250,16 @@ export default function SMSGatewaysArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use 10DLC for business:</strong> Register long codes for A2P messaging. Better deliverability, higher throughput. Required for US business messaging.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement opt-in management:</strong> Store opt-in status per number. Track opt-in source. Double opt-in for marketing. Proof of consent for compliance.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle STOP immediately:</strong> Webhook → opt-out within seconds. Suppress from all marketing. Send confirmation. Legal requirement (TCPA).
           </li>
@@ -273,13 +289,16 @@ export default function SMSGatewaysArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No opt-in management:</strong> Sending without consent. Solution: Implement opt-in tracking, double opt-in for marketing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring STOP requests:</strong> Continue sending after STOP. Solution: Process STOP webhooks immediately, suppress within seconds.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No quiet hours:</strong> Sending marketing at night. Solution: Check timezone, enforce 9 PM - 8 AM block.
           </li>
@@ -309,16 +328,19 @@ export default function SMSGatewaysArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Two-Factor Authentication (2FA)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           User requests login → generate 6-digit code → queue SMS (high priority) → send via provider → track delivery → code expires in 5 minutes. Delivery time target: &lt;10 seconds. High deliverability critical.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Appointment Reminders</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Schedule reminder 24 hours before appointment → check timezone → queue SMS → send during business hours → track delivery → handle replies (CONFIRM, RESCHEDULE). Reduces no-show rate by 30-50%.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Order Notifications</h3>
         <p>
@@ -338,12 +360,15 @@ export default function SMSGatewaysArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle SMS delivery tracking?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle SMS delivery tracking?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Provider sends webhook for each status change: sent (to carrier), delivered (to phone), failed (undeliverable). Webhook includes message ID, status, timestamp, error code. Update message status in database. Monitor delivery rate (target 95%+). Alert on drops (carrier filtering).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -184,6 +184,13 @@ export default function GraphQLConciseArticle() {
           framework.
         </p>
 
+        <HighlightBlock as="p" tier="important">
+          For staff-level system design, talk about where you enforce
+          <strong>query cost</strong> (depth/complexity limits, persisted queries)
+          and how that interacts with caching and auth across the client link
+          chain.
+        </HighlightBlock>
+
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Frontend GraphQL Stack</h3>
           <ol className="space-y-3">
@@ -359,10 +366,10 @@ export default function GraphQLConciseArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           These practices represent hard-won lessons from teams running GraphQL
           at scale:
-        </HighlightBlock>
+        </p>
         <ol className="space-y-3">
           <HighlightBlock as="li" tier="crucial">
             <strong>Colocate Fragments with Components:</strong> Define a
@@ -1131,8 +1138,12 @@ export default function GraphQLConciseArticle() {
 
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview-level answer: GraphQL solves over/under-fetching, but shifts complexity to schema governance,
+          caching, and query cost control. Be ready to discuss batching, persisted queries, and depth limits.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://graphql.org/learn/"
               className="text-accent hover:underline"
@@ -1141,8 +1152,8 @@ export default function GraphQLConciseArticle() {
             >
               GraphQL Official Documentation - Learn GraphQL
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.apollographql.com/docs/react/"
               className="text-accent hover:underline"
@@ -1151,7 +1162,7 @@ export default function GraphQLConciseArticle() {
             >
               Apollo Client Documentation - React Integration
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://relay.dev/docs/"
@@ -1162,7 +1173,7 @@ export default function GraphQLConciseArticle() {
               Relay Documentation - Thinking in Relay
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.graphql-tools.com/"
               className="text-accent hover:underline"
@@ -1171,8 +1182,8 @@ export default function GraphQLConciseArticle() {
             >
               GraphQL Tools - Schema-First Development
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://productionreadygraphql.com/"
               className="text-accent hover:underline"
@@ -1181,7 +1192,7 @@ export default function GraphQLConciseArticle() {
             >
               Production Ready GraphQL - Marc-Andre Giroux
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

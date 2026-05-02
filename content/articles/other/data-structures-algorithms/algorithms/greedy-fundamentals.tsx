@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,22 +25,25 @@ export default function GreedyFundamentalsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A <span className="font-semibold">greedy algorithm</span> builds a solution one
           commitment at a time, always choosing the option that looks best at the moment and
           never reconsidering past choices. When the problem has the right structure, this
           myopic strategy yields a globally optimal solution in polynomial time — often
           n log n — without any of the bookkeeping required by dynamic programming or
           branch-and-bound.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The catch is that greedy works only for a narrow class of problems. The theoretical
           justification comes from two properties: the <span className="font-semibold">greedy-
           choice property</span> (a globally optimal solution can be assembled from local
           optima) and <span className="font-semibold">optimal substructure</span> (the
           remaining subproblem after a greedy choice is itself solved optimally). Both must
           hold, and both must be proved — usually by an exchange argument.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Classical greedy successes include activity selection, Huffman coding, Kruskal and
           Prim for MST, Dijkstra for shortest paths on non-negative weights, and fractional
@@ -52,21 +56,24 @@ export default function GreedyFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Greedy-choice property.</span> A problem has this
           property if there exists a globally optimal solution that contains the choice
           produced by the greedy rule. The classical proof is the exchange argument: take any
           optimal solution O; if it does not contain the greedy choice G, show that replacing
           one element of O with G yields a solution that is at least as good. Iterating
           transforms O into the greedy solution without loss.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Optimal substructure.</span> After committing to the
           greedy choice, the remaining input forms a smaller instance of the same problem.
           This lets induction close the argument: assume greedy is optimal on smaller inputs,
           then a correct greedy choice plus an inductively optimal remainder is globally
           optimal.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Exchange argument — template.</span> (1) Assume for
           contradiction that greedy G differs from optimal O; (2) identify the first position
@@ -100,21 +107,24 @@ export default function GreedyFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Generic greedy skeleton.</span> (1) Define a scoring
           function on candidates; (2) sort or priority-queue by the score; (3) iterate: pick
           the best remaining candidate; if feasible, commit; (4) stop when the solution is
           complete or no candidates remain. Runtime is dominated by the sort (O(n log n)) or
           heap operations (O(n log n)).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Activity selection flow.</span> Sort activities by
           finishing time. Initialize last-finish = −∞. Walk the list; pick every activity
           whose start ≥ last-finish; update last-finish = this activity&rsquo;s finish. O(n
           log n) with sort, O(n) if already sorted. The exchange argument swaps any first
           activity in O with the earliest-finishing one — the latter leaves at least as much
           room for the tail.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Huffman flow.</span> Put all leaf frequencies in a
           min-heap. Repeatedly extract the two smallest, create a new internal node with
@@ -149,18 +159,21 @@ export default function GreedyFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Greedy vs DP.</span> Greedy commits once, DP
           considers all predecessors. DP solves a strict superset of problems — any greedy can
           be simulated with DP — but at a space/time cost. When both work, greedy is faster
           and far easier to explain.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Greedy vs branch-and-bound.</span> B&amp;B explores
           all feasible choices but prunes with bounds; greedy explores one path. Greedy is
           always polynomial; B&amp;B is worst-case exponential. B&amp;B is the right tool when
           you need optimum on a non-greedy problem at moderate scale (TSP with n ≈ 30).
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Greedy vs approximation.</span> Some greedy
           algorithms are not exact but have provable approximation ratios: set-cover greedy
@@ -190,17 +203,20 @@ export default function GreedyFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Prove before you ship.</span> Every greedy needs a
           correctness argument — exchange, matroid, or cut-property. Skipping the proof is
           the shortest path to a silent bug on a corner case you did not imagine.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Try to break it with small inputs.</span> If you
           cannot prove greedy correct, brute-force all inputs of size ≤ 8 and compare. A
           mismatch means greedy is wrong; no mismatch is not a proof but is a strong signal
           that a proof exists.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">State the greedy rule precisely.</span> &ldquo;Pick
           the earliest-finishing activity&rdquo; — not &ldquo;pick the shortest&rdquo; or
@@ -232,17 +248,20 @@ export default function GreedyFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Assuming greedy works because it feels natural.</span>
           Students (and interns) regularly write greedy for 0/1 knapsack, coin change on
           arbitrary denominations, bin packing, or graph coloring. It passes the first few
           tests and fails in production.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Wrong sort key.</span> Activity selection sorted by
           start time (instead of finish time) is wrong. Kruskal sorted by anything other than
           weight is wrong. Always document <em>why</em> the key is correct.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Ignoring feasibility checks.</span> Greedy must
           skip a candidate that would violate a constraint. In Kruskal, adding an edge that
@@ -276,17 +295,20 @@ export default function GreedyFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Compression: Huffman coding.</span> Core of DEFLATE
           (gzip, PNG), JPEG DC coefficients, and many file formats. Greedy merges the two
           lowest-frequency nodes; exchange argument proves optimality for prefix codes.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Scheduling: activity selection and job
           sequencing.</span> Classroom scheduling, TV programming blocks, operating-room
           assignment — any problem of picking a non-overlapping maximal subset. The earliest-
           finishing-time rule is ubiquitous.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Networking: MST for spanning tree protocols.</span>
           Kruskal and Prim underlie physical-network backbone planning (fiber rollout, cable
@@ -331,15 +353,18 @@ export default function GreedyFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">LeetCode 55 — Jump Game.</span> Can you reach the
           end? Expected answer: greedy track the farthest reachable index; if at any step you
           exceed the current max reach, return false. O(n).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">LeetCode 45 — Jump Game II.</span> Minimum jumps.
           Expected answer: BFS-style greedy over the reachable horizon.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">LeetCode 134 — Gas Station.</span> Circular tour
           greedy — skip segments where tank goes negative; unique start if one exists.

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Consistent hashing</strong> is a distributed hashing scheme
           that maps both data keys and storage nodes onto the same circular hash
           space — commonly called a <em>hash ring</em>. Unlike traditional modulo
@@ -55,8 +59,8 @@ export default function ArticlePage() {
           modulo hashing requires remapping nearly <em>all</em> keys whenever N
           changes, because <code>hash(key) % N</code> produces a different
           result for every key when N changes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The technique was introduced in 1997 by Karger, Lehman, Leighton,
           Panigrahy, Levine, and Lewin in their paper &quot;Consistent Hashing
           and Random Trees: Distributed Caching Protocols for Relieving Hot
@@ -67,7 +71,7 @@ export default function ArticlePage() {
           probability, consistent hashing distributes keys within a{" "}
           <code>(1 ± ε)</code> factor of perfectly balanced, even as nodes join
           and leave the system.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, consistent hashing is not merely an
           algorithm — it is a foundational abstraction that appears in load
@@ -84,8 +88,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The hash ring is constructed by applying a hash function — typically
           MD5, MurmurHash3, or xxHash — to each node&apos;s identifier (IP
           address, hostname, or a logical name). The resulting hash value,
@@ -98,9 +105,9 @@ export default function ArticlePage() {
           node exists. This lookup is efficiently performed with a binary search
           over a sorted list of node positions, yielding O(log N) time
           complexity for any ring size.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fundamental problem with the naive consistent hashing approach —
           where each physical node occupies exactly one position on the ring —
           is that positions are determined by the hash of node identifiers, and
@@ -111,7 +118,7 @@ export default function ArticlePage() {
           case, one node could be responsible for a disproportionate fraction of
           the key space while others sit nearly idle. This violates the load
           balancing goal that motivated consistent hashing in the first place.
-        </p>
+        </HighlightBlock>
 
         <p>
           The solution is <strong>virtual nodes</strong> (also called vnode
@@ -158,6 +165,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/consistent-hashing-diagram-1.svg"
@@ -165,7 +175,7 @@ export default function ArticlePage() {
           caption="Consistent hash ring — each node is positioned by hashing its identifier; keys are assigned to the first clockwise node"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The architecture of a consistent hashing system comprises three
           interconnected components: the hash function, the ring data structure,
           and the routing layer. The hash function must be deterministic (the
@@ -178,9 +188,9 @@ export default function ArticlePage() {
           collision probability), but they are significantly slower and should be
           reserved for environments where adversarial resistance is a
           requirement.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The ring data structure maintains a sorted mapping of hash positions to
           node identifiers. In-memory implementations use a balanced binary
           search tree (such as a red-black tree or a skip list) or simply a
@@ -196,7 +206,7 @@ export default function ArticlePage() {
           initiates data transfer; and <code>getNode(key)</code>, which hashes
           the key, performs a binary search for the first position ≥ key hash,
           and returns the owning physical node.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/consistent-hashing-diagram-2.svg"
@@ -245,8 +255,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The decision to use consistent hashing versus alternative data routing
           strategies involves several interdependent trade-offs. Modulo hashing
           is the simplest alternative — it requires no ring data structure, no
@@ -258,7 +271,7 @@ export default function ArticlePage() {
           cached entries — the cache hit rate plummets, and the origin database
           is overwhelmed. Consistent hashing, by contrast, invalidates only 9%
           of entries — the ones that now map to the new server.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -330,7 +343,7 @@ export default function ArticlePage() {
           </tbody>
         </table>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Rendezvous hashing (also called Highest Random Weight or HRW hashing)
           offers an alternative that achieves the same minimal disruption
           property as consistent hashing without requiring a ring data structure.
@@ -347,7 +360,7 @@ export default function ArticlePage() {
           prohibitively expensive. Rendezvous hashing is therefore preferred for
           small clusters (N &lt; 50) or for scenarios where the client already
           iterates over all nodes for other reasons (e.g., health checking).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/consistent-hashing-diagram-4.svg"
@@ -378,8 +391,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Select a vnode count that balances distribution quality against
           operational overhead. The standard recommendation is 150 to 256
           virtual nodes per physical server. Below 100 vnodes, the distribution
@@ -394,9 +410,9 @@ export default function ArticlePage() {
           KB, which fits in L2 cache. The binary search over 25,600 entries
           requires at most 15 comparisons, adding sub-microsecond latency to
           each routing decision.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use a non-cryptographic hash function optimized for distribution and
           speed. MurmurHash3 (32-bit variant) is the industry default and should
           be your starting point. If you need a larger output space to reduce
@@ -409,7 +425,7 @@ export default function ArticlePage() {
           could be crafted to create hot spots) — in that case, use a keyed hash
           function like SipHash with a cluster-specific secret key to prevent
           hash collision attacks.
-        </p>
+        </HighlightBlock>
 
         <p>
           Implement ring topology change notifications with a bounded
@@ -453,8 +469,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Insufficient virtual node count is the most common misconfiguration.
           Teams deploying consistent hashing with the default vnode count (often
           1 or a small number in early implementations) observe severe load
@@ -467,9 +486,9 @@ export default function ArticlePage() {
           which reduces the coefficient of variation to below 5%. This change
           requires a full ring rebuild, as all virtual node positions must be
           recomputed, so plan it as a controlled maintenance operation.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Hash function selection based on convenience rather than distribution
           quality is another common error. Using Java&apos;s <code>
             Object.hashCode()
@@ -483,7 +502,7 @@ export default function ArticlePage() {
           cross-platform hash function with a fixed seed, and validate that all
           clients in the system compute identical ring positions for a test set
           of keys.
-        </p>
+        </HighlightBlock>
 
         <p>
           Ring state divergence during partial failures can create split-brain
@@ -530,8 +549,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon DynamoDB uses consistent hashing as the foundation of its
           partition management. Each partition is assigned a range of the hash
           key space on a ring, and items are routed to partitions based on their
@@ -544,9 +566,9 @@ export default function ArticlePage() {
           the primary (write coordinator) for each partition. This architecture
           enables DynamoDB to scale to millions of requests per second with
           single-digit millisecond latency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Apache Cassandra uses consistent hashing (via the Murmur3Partitioner,
           which is the default and recommended partitioner) to distribute data
           across its ring topology. Each Cassandra node is assigned a token
@@ -561,7 +583,7 @@ export default function ArticlePage() {
           required and dramatically simplifying cluster operations. Teams can add
           or remove nodes without calculating token values, and the ring
           automatically rebalances.
-        </p>
+        </HighlightBlock>
 
         <p>
           Memcached deployments commonly use the ketama consistent hashing
@@ -609,6 +631,9 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
@@ -616,7 +641,7 @@ export default function ArticlePage() {
             added or removed, compared to modulo hashing? Walk through a
             concrete example.
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             With modulo hashing, a key&apos;s target node is computed as{" "}
             <code>hash(key) % N</code>. When N changes to N+1, the modulo
             operation produces a different result for nearly every key. For
@@ -627,8 +652,8 @@ export default function ArticlePage() {
             rare keys whose hash value happens to be a multiple of both N and
             N+1. The result is that approximately (N-1)/N = 91% of keys are
             remapped when going from 10 to 11 servers.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             With consistent hashing, keys and nodes are both placed on a hash
             ring. A key is assigned to the first node clockwise from its
             position. When a new node is added, it occupies a position on the
@@ -642,7 +667,7 @@ export default function ArticlePage() {
             small slice from its predecessor. The total data moved is still 1/10
             of the key space, but the migration is spread across all existing
             nodes, reducing the per-node migration burden.
-          </p>
+          </HighlightBlock>
           <p>
             The mathematical guarantee is that adding or removing one node
             affects at most K/N keys (where K is the total key space and N is

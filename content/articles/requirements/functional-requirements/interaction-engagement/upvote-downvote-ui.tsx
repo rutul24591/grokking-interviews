@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function UpvoteDownvoteUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Upvote/downvote UI enables community-driven content quality assessment by allowing users to express approval or disapproval of content and comments. Unlike simple like buttons that only capture positive sentiment, upvote/downvote systems provide nuanced feedback that surfaces valuable content while demoting low-quality or irrelevant contributions. Platforms like Reddit, Stack Overflow, and Hacker News rely on voting to maintain content quality at scale without requiring proportional moderation resources.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The voting UI directly shapes community behavior and content quality. Prominent downvote buttons encourage critical evaluation but may discourage participation from users who fear negative feedback. Upvote-only systems like Facebook likes encourage positive engagement but provide less signal for content ranking. The design choice reflects community values—Reddit prioritizes content quality through critical voting, while Instagram prioritizes positive reinforcement through likes only.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, upvote/downvote implementation involves navigating technical and social challenges. The system must handle vote state management for three states (upvoted, downvoted, none) with clean transitions. Score calculation must account for vote changes and display net scores accurately. Sorting algorithms like Reddit's hot algorithm or Wilson score confidence intervals determine content visibility and significantly impact user experience. Vote manipulation prevention through rate limiting, account age requirements, and pattern detection protects system integrity. The architecture must scale to handle millions of votes on viral content while maintaining real-time score updates.
         </p>
@@ -47,13 +51,16 @@ export default function UpvoteDownvoteUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Vote States and Transitions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Vote state management handles three possible states for each user-content pair: no vote (default), upvoted, and downvoted. The UI displays the current state through visual indicators—filled arrows for active votes, outlined arrows for inactive states. Color coding reinforces state: orange or red for upvotes, blue or purple for downvotes, gray for inactive.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           State transitions must handle all possible user actions smoothly. Clicking upvote when in no-vote state adds an upvote and increments score by one. Clicking upvote when already upvoted removes the vote (toggle off) and decrements score by one. Clicking upvote when downvoted switches the vote—removing the downvote and adding an upvote—incrementing score by two. The same logic applies symmetrically for downvote actions.
-        </p>
+        </HighlightBlock>
         <p>
           Optimistic updates provide instant visual feedback by updating the UI before server confirmation. When a user votes, the arrow fills immediately and the score adjusts. The API request fires in the background. If the API fails, the UI reverts to the previous state with an error notification. This approach maintains the perception of instant response while handling failures gracefully.
         </p>
@@ -108,9 +115,12 @@ export default function UpvoteDownvoteUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Vote UI architecture spans client state management, API design, database schema, and score caching. The client component manages vote state, optimistic updates, and score display. The API layer validates votes, enforces rate limits, and persists vote records. The database stores votes with efficient indexes for score calculation. Caching layers handle read-heavy score display workloads.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/interaction-engagement/upvote-downvote-ui/vote-architecture.svg"
@@ -121,9 +131,9 @@ export default function UpvoteDownvoteUIArticle() {
         />
 
         <h3>Client Component Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The vote component maintains local state for the user's vote (none, up, down), pending action state during API calls, and the current score. On user interaction, it updates the vote state optimistically, adjusts the displayed score based on the transition (plus or minus 1 or 2), and fires the API request. If the API succeeds, the pending state clears. If the API fails, the component reverts to the previous state and displays an error notification.
-        </p>
+        </HighlightBlock>
         <p>
           Vote buttons must be accessible with keyboard support. Tab navigates to the vote buttons, Enter or Space activates the focused button. ARIA labels indicate the current state and action ("Upvote this post, currently not voted" or "Remove upvote, currently upvoted"). Focus indicators must be clearly visible for keyboard users. Touch targets should meet the 44x44 pixel minimum for mobile accessibility.
         </p>
@@ -175,14 +185,17 @@ export default function UpvoteDownvoteUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Vote UI design involves numerous trade-offs affecting community behavior, content quality, and system complexity. Understanding these trade-offs enables informed decisions aligned with community goals.
-        </p>
+        </HighlightBlock>
 
         <h3>Upvote/Downvote vs Like-Only</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Upvote/downvote systems provide nuanced feedback that distinguishes high-quality content from controversial or low-quality content. The ability to downvote enables community moderation where users collectively demote spam, misinformation, and low-effort posts. However, downvotes can discourage participation, especially from new users who may be sensitive to negative feedback. Research shows that receiving downvotes reduces subsequent contribution frequency.
-        </p>
+        </HighlightBlock>
         <p>
           Like-only systems encourage positive engagement without the psychological cost of negative feedback. Instagram, Facebook, and TikTok use like-only models that maximize participation. However, like-only provides less signal for content ranking—everything with likes is "good" with no differentiation for quality levels. Like-only also removes community moderation capability, requiring more centralized moderation resources.
         </p>
@@ -223,13 +236,16 @@ export default function UpvoteDownvoteUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement optimistic updates:</strong> Update vote state and score immediately on user interaction, then sync to server. Revert on failure with clear error messaging. Users expect instant feedback for vote actions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use clear visual indicators:</strong> Filled arrows for active votes, outlined for inactive. Distinct colors for upvote (orange/red) vs downvote (blue/purple). Show score changes with subtle animation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle vote toggling correctly:</strong> Clicking the same vote twice removes the vote. Clicking the opposite vote switches with score change of 2. Test all transition paths thoroughly.
           </li>
@@ -253,13 +269,16 @@ export default function UpvoteDownvoteUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Incorrect score transitions:</strong> Failing to handle vote switching correctly results in score drift. Switching from downvote to upvote should change score by +2, not +1. Test all six transition paths (none→up, none→down, up→none, down→none, up→down, down→up).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No optimistic updates:</strong> Waiting for server confirmation before updating UI makes voting feel slow. Users expect instant feedback. Always use optimistic updates with rollback on failure.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Score cache drift:</strong> Redis scores diverging from database totals over time. Implement periodic reconciliation that compares and corrects cache against database.
           </li>
@@ -277,16 +296,19 @@ export default function UpvoteDownvoteUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Reddit Voting System</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Reddit pioneered modern upvote/downvote for content ranking. Votes determine post visibility through hot algorithm combining score and time decay. Reddit implements vote fuzzing to prevent exact score tracking. Karma thresholds restrict voting in new subreddits to prevent brigading. The platform handles billions of votes monthly with sharded Redis counters and async database persistence.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Stack Overflow Reputation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stack Overflow uses upvote/downvote with reputation weighting. Upvotes on answers give +10 reputation, downvotes cost -2 reputation to the answerer. Downvoting costs the voter -1 reputation to discourage casual downvoting. Minimum 125 reputation required to downvote, ensuring voters understand community standards. Wilson score sorts answers by quality confidence.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Hacker News Minimalism</h3>
         <p>
@@ -301,12 +323,15 @@ export default function UpvoteDownvoteUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you calculate hot ranking?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you calculate hot ranking?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Hot ranking combines vote score with time decay. Reddit's algorithm uses: score = log10(upvotes - downvotes) + (seconds_since_epoch - post_timestamp) / 45000. The logarithmic scale means the difference between 10 and 100 votes matters more than 1010 and 1100 votes. The time term (divided by gravity constant 45000) allows newer posts to rank higher with fewer votes. Adjust gravity based on community engagement patterns—higher gravity for fast-moving communities.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

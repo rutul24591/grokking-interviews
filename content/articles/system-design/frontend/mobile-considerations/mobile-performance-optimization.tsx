@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function MobilePerformanceOptimizationArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Mobile Performance Optimization</strong> encompasses techniques
           to make web applications load faster and run smoother on mobile
           devices. Mobile users face unique constraints: slower networks (3G,
@@ -45,14 +49,14 @@ export default function MobilePerformanceOptimizationArticle() {
           optimization. For staff-level engineers, mobile performance is both a
           technical challenge and a business imperative — 53% of mobile users
           abandon sites that take longer than 3 seconds to load.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Mobile performance optimization involves multiple layers: network
           optimization (reduce bytes transferred), rendering optimization
           (reduce paint/composite work), JavaScript optimization (reduce parse
           and execute time), and caching optimization (reduce repeat load time).
           Each layer requires different techniques and trade-offs.
-        </p>
+        </HighlightBlock>
         <p>
           Mobile performance involves several technical considerations.{" "}
           <strong>Bundle size</strong> — mobile networks are slower, every KB
@@ -75,19 +79,22 @@ export default function MobilePerformanceOptimizationArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance Budget:</strong> Maximum allowed size for
             different resource types (JavaScript, CSS, images). Example: JS
             &lt; 170KB, CSS &lt; 50KB, images &lt; 500KB. Enforce in CI/CD —
             fail build if budget exceeded.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Code Splitting:</strong> Split JavaScript into multiple
             chunks loaded on-demand. Route-based splitting (load code per page),
             component-based splitting (load heavy components lazily). Reduces
             initial load time.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Image Optimization:</strong> Serve appropriately sized
             images (don&apos;t send 2000px image to mobile). Use modern formats
@@ -125,14 +132,17 @@ export default function MobilePerformanceOptimizationArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Mobile performance architecture consists of build-time optimization
           (minification, tree-shaking, image optimization), runtime optimization
           (code splitting, lazy loading), and caching optimization (service
           workers, CDN). The architecture must handle different network
           conditions (3G, 4G, WiFi) and device capabilities (low-end vs.
           high-end phones).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/mobile-considerations/code-splitting-strategy.svg"
@@ -143,12 +153,12 @@ export default function MobilePerformanceOptimizationArticle() {
         />
 
         <h3>Mobile-Specific Optimizations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Adaptive Loading:</strong> Detect device capability (via
           Network Information API, Device Memory API), serve lighter experience
           to low-end devices. Less JavaScript, lower quality images, simpler
           animations.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Service Worker Caching:</strong> Cache critical resources for
           offline and repeat visits. Cache-first strategy for static assets,
@@ -174,17 +184,20 @@ export default function MobilePerformanceOptimizationArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Mobile performance involves trade-offs between load time,
           functionality, and development complexity.
-        </p>
+        </HighlightBlock>
 
         <h3>Code Splitting Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Route-Based Splitting:</strong> One chunk per route.
           Advantages: simple, automatic with frameworks. Limitations: chunk size
           varies by route. Best for: most applications.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Component-Based Splitting:</strong> Lazy load individual
           components. Advantages: fine-grained control. Limitations: more
@@ -218,19 +231,22 @@ export default function MobilePerformanceOptimizationArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Set Performance Budgets:</strong> Define maximum sizes: JS
             &lt; 170KB (compressed), CSS &lt; 50KB, images &lt; 500KB per page.
             Enforce in CI/CD — fail build if exceeded. Mobile budgets should be
             stricter than desktop.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Optimize Images:</strong> Use responsive images (srcset),
             modern formats (WebP), lazy loading. Compress images (TinyPNG,
             ImageOptim). Serve appropriately sized images — don&apos;t send
             desktop-sized images to mobile.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Minimize JavaScript:</strong> Tree-shake unused code,
             code-split routes, lazy load non-critical components. Avoid large
@@ -259,17 +275,20 @@ export default function MobilePerformanceOptimizationArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Testing Only on Desktop:</strong> Desktop performance
             doesn&apos;t predict mobile performance. Mobile has slower networks,
             slower CPUs, less memory. Test on real mobile devices.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Image Size:</strong> Images are often 50%+ of page
             weight. Sending 2MB images to mobile wastes bandwidth and time. Use
             responsive images, compression, modern formats.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Too Much JavaScript:</strong> JavaScript is expensive on
             mobile — parse and execute time adds up. 500KB JS on desktop might
@@ -296,22 +315,25 @@ export default function MobilePerformanceOptimizationArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Mobile Optimization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce sites optimize heavily for mobile (70%+ traffic is mobile).
           Techniques: lazy load product images, code-split checkout flow,
           critical CSS for product pages, service worker for offline browsing.
           Result: 30-50% faster load times, 10-20% higher conversion.
-        </p>
+        </HighlightBlock>
 
         <h3>News Site Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           News sites (Washington Post, Guardian) use AMP-like optimization:
           inline critical CSS, lazy load images and comments, defer
           non-critical JavaScript, CDN for global delivery. Mobile users get
           fast article loads even on slow networks.
-        </p>
+        </HighlightBlock>
 
         <h3>Progressive Web App</h3>
         <p>
@@ -333,20 +355,23 @@ export default function MobilePerformanceOptimizationArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you optimize a website for mobile performance?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Multi-layer approach: (1) Reduce bytes: optimize images
               (srcset, WebP), minify CSS/JS, code-split. (2) Reduce round trips:
               HTTP/2, CDN, preconnect. (3) Optimize rendering: critical CSS,
               lazy loading, avoid layout thrashing. (4) Cache: service workers,
               browser caching. (5) Test: Lighthouse, WebPageTest on 3G, real
               devices. Measure Core Web Vitals (LCP, FID, CLS).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

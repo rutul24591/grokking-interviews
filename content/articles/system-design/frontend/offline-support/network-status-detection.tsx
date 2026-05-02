@@ -115,7 +115,7 @@ export default function NetworkStatusDetectionConciseArticle() {
             during lie-fi, captive portals, and server-side outages, making it
             insufficient as a sole connectivity indicator.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Online/Offline Events:</strong> The <code>window</code>{" "}
             object fires <code>online</code> and
             <code>offline</code> events when the browser&apos;s online status
@@ -130,8 +130,8 @@ export default function NetworkStatusDetectionConciseArticle() {
             declaring the app online again. These events do not fire for gradual
             degradation (a connection slowing from 4G to 2G) or for lie-fi
             scenarios.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Network Information API:</strong> Exposed via{" "}
             <code>navigator.connection</code> (a
             <code>NetworkInformation</code> object), this API provides detailed
@@ -149,8 +149,8 @@ export default function NetworkStatusDetectionConciseArticle() {
             Chromium-based browsers (Chrome, Edge, Opera, Samsung Internet) and
             is not available in Safari or Firefox, requiring feature detection
             and fallback strategies.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Heartbeat/Ping Pattern:</strong> A periodic HTTP request
             (typically <code>HEAD</code>) sent to your own server at a known
             endpoint (e.g., <code>/api/health</code>) to verify actual
@@ -165,7 +165,7 @@ export default function NetworkStatusDetectionConciseArticle() {
             adapter is up. The trade-off is battery consumption, server load,
             and the latency between a connectivity change and its detection (up
             to one heartbeat interval).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Adaptive Loading:</strong> The practice of adjusting content
             quality, asset size, and feature set based on the detected
@@ -295,14 +295,14 @@ export default function NetworkStatusDetectionConciseArticle() {
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each detection method excels in different dimensions. No single
           approach is sufficient for production use; the optimal strategy
           combines multiple methods to cover their respective weaknesses.
           Understanding these trade-offs enables you to choose the right
           combination for your application&apos;s specific requirements around
           accuracy, resource consumption, and browser support.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -345,7 +345,7 @@ export default function NetworkStatusDetectionConciseArticle() {
               <td className="p-3">None. Event-driven, no active requests.</td>
               <td className="p-3">Universal. All modern browsers.</td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Heartbeat/Ping</strong>
               </td>
@@ -363,7 +363,7 @@ export default function NetworkStatusDetectionConciseArticle() {
                 hidden).
               </td>
               <td className="p-3">Universal. Uses standard fetch/XHR.</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Fetch Monitoring</strong>
@@ -601,13 +601,13 @@ export default function NetworkStatusDetectionConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most effective network status detection implementations come from
           applications that handle connectivity loss as a core feature, not an
           afterthought:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Google Docs:</strong> Displays a subtle, non-intrusive
             banner at the top of the page saying &quot;Trying to
             connect...&quot; when connectivity is lost. The document remains
@@ -618,8 +618,8 @@ export default function NetworkStatusDetectionConciseArticle() {
             &quot;Saving...&quot; (syncing), and &quot;Offline - changes will be
             saved when you reconnect&quot; (offline). This is the gold standard
             for connectivity UX.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Slack:</strong> Shows a yellow &quot;Connecting...&quot; bar
             at the top of the message list when WebSocket connectivity is lost.
             Messages typed while offline are queued and sent when the connection
@@ -628,8 +628,8 @@ export default function NetworkStatusDetectionConciseArticle() {
             connectivity signal (more reliable than navigator.onLine since it
             tests actual server reachability) and falls back to HTTP polling
             when WebSocket reconnection fails.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Figma:</strong> Shows an &quot;Offline&quot; badge in the
             toolbar when connectivity is lost. Local edits continue to work
             because Figma maintains a local copy of the document state.
@@ -637,7 +637,7 @@ export default function NetworkStatusDetectionConciseArticle() {
             editing remains functional. When connectivity is restored, Figma
             uses CRDTs (Conflict-free Replicated Data Types) to merge local
             changes with any concurrent remote changes without conflicts.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>VS Code Web (vscode.dev):</strong> Displays connection
             status in the status bar at the bottom of the editor. When offline,

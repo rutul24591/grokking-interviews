@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -25,7 +26,10 @@ export default function PrivacyConsentUXArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Privacy &amp; Consent UX</strong> encompasses how web
           applications collect, use, and disclose user data, and how users
           control their privacy settings. This includes cookie consent banners,
@@ -40,8 +44,8 @@ export default function PrivacyConsentUXArticle() {
           confidence and loyalty. Non-compliance carries significant financial
           risk: GDPR fines reach up to 4% of global annual revenue or €20
           million, whichever is higher.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The regulatory landscape has evolved rapidly. GDPR, effective May
           2018, established the global standard for data protection — requiring
           explicit consent for non-essential cookies, providing users the right
@@ -54,7 +58,7 @@ export default function PrivacyConsentUXArticle() {
           &quot;do not sell my data&quot; preference automatically. Compliance
           requires engineering effort — script blocking, consent state
           management, data access/deletion workflows, and documentation.
-        </p>
+        </HighlightBlock>
         <p>
           Privacy UX design balances legal compliance with user experience.
           Cookie consent banners that dominate the screen, use dark patterns
@@ -96,7 +100,10 @@ export default function PrivacyConsentUXArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cookie consent is the most visible privacy requirement. Cookies are
           categorized as essential (required for site functionality — session
           management, security, load balancing — and do not require consent),
@@ -110,8 +117,8 @@ export default function PrivacyConsentUXArticle() {
           easy as to give consent). The consent banner must present accept and
           reject options with equal prominence and provide granular choices per
           category, not just an all-or-nothing toggle.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Script blocking ensures that non-essential scripts are not loaded
           until the user provides consent. Analytics scripts (Google Analytics,
           Mixpanel), marketing scripts (Facebook Pixel, Google Ads), and
@@ -123,7 +130,7 @@ export default function PrivacyConsentUXArticle() {
           do not include non-essential scripts in the HTML response without
           verified consent. The consent state is stored in localStorage or a
           cookie with a timestamp and version for compliance records.
-        </p>
+        </HighlightBlock>
         <p>
           Privacy preferences give users ongoing control over their data. A
           preference center allows users to manage which categories of data
@@ -198,7 +205,10 @@ export default function PrivacyConsentUXArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The privacy compliance architecture flows through several layers. The
           consent collection layer presents the consent banner on first visit,
           captures the user&apos;s choices (accept all, reject all, or granular
@@ -210,8 +220,8 @@ export default function PrivacyConsentUXArticle() {
           load only if the user has explicitly consented. The consent state is
           checked on every page load and when the user changes their preferences
           in the preference center.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Global Privacy Control (GPC) signal provides an automated opt-out
           mechanism. When a browser sends the GPC signal
           (<code>navigator.globalPrivacyControl === true</code>), the
@@ -222,7 +232,7 @@ export default function PrivacyConsentUXArticle() {
           re-asked for consent for 12 months after an opt-out, as required by
           CCPA. GPC is supported in Firefox, Brave, and Safari (optional), and
           honoring it is legally required in California.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/privacy-by-design.svg"
@@ -307,7 +317,10 @@ export default function PrivacyConsentUXArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consent management platform selection involves trade-offs between
           compliance coverage, user experience, and cost. OneTrust is the
           enterprise standard — comprehensive compliance coverage for GDPR,
@@ -320,8 +333,8 @@ export default function PrivacyConsentUXArticle() {
           control over UX and avoids vendor costs but requires significant
           engineering effort to stay current with evolving regulations and
           carries compliance risk if the implementation has gaps.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Granular consent versus all-or-nothing consent presents a compliance
           versus UX trade-off. Granular consent (separate toggles for analytics,
           marketing, functional) is required by GDPR and provides users with
@@ -333,7 +346,7 @@ export default function PrivacyConsentUXArticle() {
           with equal visual weight, plus a &quot;Manage Preferences&quot; link
           for granular control. This satisfies compliance requirements while
           minimizing friction for users who want a quick decision.
-        </p>
+        </HighlightBlock>
         <p>
           Data minimization versus data collection for analytics creates tension
           between privacy and business intelligence. Collecting comprehensive
@@ -403,7 +416,10 @@ export default function PrivacyConsentUXArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design consent banners that are compliant and user-friendly. Use clear,
           plain language — not legal jargon — to describe what the user is
           consenting to. Present accept and reject options with equal visual
@@ -414,8 +430,8 @@ export default function PrivacyConsentUXArticle() {
           does and which third-parties receive data. Remember the user&apos;s
           choice — do not re-ask on every visit. Provide a persistent link to
           the cookie policy and preference center in the website footer.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement privacy by design in the development process. Conduct
           privacy impact assessments for features that collect new types of data.
           Document all data collection (what data, from whom, why, where stored,
@@ -425,7 +441,7 @@ export default function PrivacyConsentUXArticle() {
           data deletion based on retention policies (delete session data after
           30 days, delete inactive accounts after 2 years). Encrypt data in
           transit (HTTPS) and sensitive data at rest.
-        </p>
+        </HighlightBlock>
         <p>
           Make data access and deletion requests easy to submit and fulfill.
           Provide a self-service privacy portal where users can view their data,
@@ -482,7 +498,10 @@ export default function PrivacyConsentUXArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Dark patterns in consent design are increasingly scrutinized by
           regulators and can result in fines. Dark patterns include: hiding the
           reject button (making it smaller, less visible, or requiring
@@ -494,8 +513,8 @@ export default function PrivacyConsentUXArticle() {
           the banner on every page load or every visit). GDPR explicitly
           requires consent to be as easy to withdraw as to give. Regulators in
           multiple EU countries have issued fines for dark patterns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Loading scripts before consent is a common technical compliance
           failure. Even if the consent banner is displayed, if analytics or
           marketing scripts load before the user makes a choice, consent is not
@@ -506,7 +525,7 @@ export default function PrivacyConsentUXArticle() {
           analytics or marketing requests are made before consent is given.
           Server-side rendering must also respect consent — do not include
           non-essential scripts in the HTML response without verified consent.
-        </p>
+        </HighlightBlock>
         <p>
           Failing to honor the Global Privacy Control signal is a CCPA
           compliance risk. If a user has GPC enabled in their browser, the
@@ -569,7 +588,10 @@ export default function PrivacyConsentUXArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           European news websites face the strictest cookie consent requirements
           because they serve EU residents and use analytics and advertising
           scripts. The Guardian and Der Spiegel implement consent banners with
@@ -580,8 +602,8 @@ export default function PrivacyConsentUXArticle() {
           balances GDPR compliance with user experience — the banner is
           noticeable but not intrusive, and users who reject analytics still
           receive full content access.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           US-based SaaS companies focus on CCPA compliance for California
           residents while maintaining GDPR compliance for EU users. They
           implement a &quot;Do Not Sell My Personal Information&quot; link in
@@ -591,7 +613,7 @@ export default function PrivacyConsentUXArticle() {
           granular choices. The dual-compliance approach is implemented through
           geo-IP detection — EU users see the GDPR banner, US users see the
           CCPA link, and all users have access to the privacy portal.
-        </p>
+        </HighlightBlock>
         <p>
           E-commerce platforms implement privacy UX that protects customers
           while enabling the analytics needed for business optimization. They
@@ -657,12 +679,15 @@ export default function PrivacyConsentUXArticle() {
 
       <section>
         <h2>Advanced Privacy Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consent management platform comparison requires evaluating the trade-offs between enterprise-grade solutions and lightweight alternatives based on organizational needs, regulatory scope, and engineering capacity. OneTrust is the enterprise standard — it provides comprehensive compliance coverage for GDPR, CCPA, LGPD, and 30+ other regulations, with features including automated cookie scanning, data mapping, DPIA workflows, vendor risk assessments, and automated compliance reporting. The platform integrates with major tag managers (Google Tag Manager, Tealium, Adobe Launch) and provides SDKs for mobile apps. The trade-off is high cost ($10,000-$50,000+ annually depending on features), complex setup (requires dedicated implementation effort and ongoing administration), and a user experience that can feel enterprise-heavy for smaller applications. Cookiebot (now part of Usercentrics) offers a cleaner UX with customizable banner designs, automatic cookie scanning, and simpler configuration at lower cost ($100-$500/month), making it suitable for mid-market companies that need solid compliance without enterprise complexity. Osano is SMB-friendly with essential compliance features (consent banner, script blocking, consent logging) at accessible pricing ($50-$200/month) and a developer-friendly API for custom integrations. Custom implementation provides full control over UX and avoids vendor costs but requires significant engineering effort to stay current with evolving regulations — the engineering team must monitor regulatory changes, update the consent logic, maintain the banner UX, and ensure script blocking remains effective as third-party scripts change. For most organizations above 50 employees, a CMP is the recommended choice because the compliance risk of a custom implementation outweighs the cost savings.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Server-side consent enforcement provides a more robust defense than client-side blocking alone, because it prevents tracking code from reaching the client in the first place rather than relying on the client to block it after delivery. In a server-side rendering architecture (Next.js SSR, Nuxt SSR), the server constructs the HTML response and can conditionally include or exclude tracking scripts, analytics beacons, and third-party pixels based on the user&apos;s consent state. The consent state is stored in a cookie that is sent with every request — the server reads this cookie during the request processing and passes the consent flags to the rendering engine. If analytics consent is false, the server does not include the Google Analytics snippet, the Mixpanel beacon, or any other analytics script in the HTML. If marketing consent is false, the server does not include the Facebook Pixel, Google Ads tag, or any advertising script. The implementation must handle the first-visit case — when the user has not yet made a consent decision, the consent cookie is absent, and the server must default to the most privacy-preserving behavior (no non-essential scripts included). The consent banner is rendered as part of the SSR output, and when the user makes a choice, the consent cookie is set and the page reloads (or the scripts are loaded dynamically via JavaScript) with the user&apos;s preferences applied. Server-side enforcement should be combined with client-side enforcement (the consent manager blocks script loading in the browser) for defense in depth — if the server-side enforcement has a bug (the consent cookie is not read correctly), the client-side enforcement provides a fallback.
-        </p>
+        </HighlightBlock>
         <p>
           Privacy impact assessment workflow integrates privacy risk evaluation into the feature development lifecycle, ensuring that privacy risks are identified and mitigated before implementation begins rather than after deployment. The PIA process mirrors the security review process — when a new feature is proposed that involves collecting, processing, or storing personal data, the engineering team completes a PIA questionnaire that documents the data types collected (names, email addresses, location data, behavioral data), the purpose of collection (authentication, analytics, personalization, advertising), the data retention period (how long the data is kept), the data sharing practices (whether the data is shared with third parties, and which ones), the user controls (whether users can access, delete, or opt out of the data collection), and the legal basis for processing (consent, legitimate interest, contractual necessity). The completed PIA is reviewed by the privacy team (or legal counsel if no dedicated privacy team exists), who assess the risk level and recommend mitigation measures. High-risk processing activities (large-scale profiling, processing of sensitive data, systematic monitoring) require a full DPIA under GDPR, which includes a more detailed risk analysis and documentation of the measures taken to address the risks. The PIA process should be integrated into the project management workflow (Jira ticket, PR template, design review checklist) so that it is triggered automatically when a feature involves personal data, and the feature cannot proceed to implementation without a completed PIA.
         </p>
@@ -679,12 +704,15 @@ export default function PrivacyConsentUXArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What are GDPR cookie consent requirements?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Consent must be freely given (not forced as condition of
               service), specific (per purpose, not bundled), informed (clear
               description), unambiguous (affirmative action — no pre-checked
@@ -700,7 +728,7 @@ export default function PrivacyConsentUXArticle() {
               original consent. Organizations must also document the consent
               obtained, including what the user was told at the time of consent,
               how consent was given, and when it was obtained.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

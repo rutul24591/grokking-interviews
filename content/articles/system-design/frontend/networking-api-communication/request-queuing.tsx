@@ -82,10 +82,10 @@ export default function RequestQueuingConciseArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           Request queuing encompasses several queue types and management
           strategies, each addressing different constraints:
-        </HighlightBlock>
+        </p>
         <ul>
           <HighlightBlock as="li" tier="important">
             <strong>FIFO Queue (First-In, First-Out):</strong> The simplest
@@ -225,18 +225,18 @@ export default function RequestQueuingConciseArticle() {
               exceeded, the request is aborted and optionally re-queued with
               retry logic
             </HighlightBlock>
-            <HighlightBlock as="li" tier="important">
+            <li>
               <strong>7. Response Handling:</strong> On completion (success or
               failure), the in-flight counter is decremented, the caller's
               Promise is resolved/rejected, and the scheduler checks for the
               next queued request
-            </HighlightBlock>
-            <HighlightBlock as="li" tier="important">
+            </li>
+            <li>
               <strong>8. Drain and Cleanup:</strong> On application teardown or
               route transition, the queue cancels all pending requests and
               aborts all in-flight requests to prevent memory leaks and state
               updates on unmounted components
-            </HighlightBlock>
+            </li>
           </ol>
         </div>
 
@@ -247,7 +247,7 @@ export default function RequestQueuingConciseArticle() {
           captionTier="important"
         />
 
-        <HighlightBlock as="p" tier="important">
+        <p>
           The interaction between the queue and the browser's built-in
           connection management requires careful consideration. If the
           application-level queue allows 4 concurrent requests, but the
@@ -257,7 +257,7 @@ export default function RequestQueuingConciseArticle() {
           limit equal to or above the browser limit negates the benefit, as the
           browser will still queue excess connections internally, where the
           application has no visibility or control over ordering.
-        </HighlightBlock>
+        </p>
       </section>
 
       <section>
@@ -666,9 +666,9 @@ export default function RequestQueuingConciseArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           Understanding request queuing performance characteristics is essential for tuning queue parameters.
-        </HighlightBlock>
+        </p>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
@@ -1072,8 +1072,12 @@ export default function RequestQueuingConciseArticle() {
 
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview anchor: request queues are about shaping load and preserving UX. You should articulate: priority,
+          dedupe/coalescing, cancellation, and what you persist across reload/offline.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.chrome.com/docs/workbox/modules/workbox-background-sync/"
               className="text-accent hover:underline"
@@ -1082,7 +1086,7 @@ export default function RequestQueuingConciseArticle() {
             >
               Workbox Background Sync - Chrome Developers
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://tanstack.com/query/latest/docs/framework/react/overview"
@@ -1093,7 +1097,7 @@ export default function RequestQueuingConciseArticle() {
               TanStack Query (React Query) - Request Management
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController"
               className="text-accent hover:underline"
@@ -1102,8 +1106,8 @@ export default function RequestQueuingConciseArticle() {
             >
               MDN Web Docs - AbortController API
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://web.dev/articles/fetch-priority"
               className="text-accent hover:underline"
@@ -1112,8 +1116,8 @@ export default function RequestQueuingConciseArticle() {
             >
               web.dev - Fetch Priority and Resource Prioritization
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/Background_Synchronization_API"
               className="text-accent hover:underline"
@@ -1122,7 +1126,7 @@ export default function RequestQueuingConciseArticle() {
             >
               MDN Web Docs - Background Synchronization API
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

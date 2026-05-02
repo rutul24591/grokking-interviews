@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,13 +34,16 @@ export default function SessionRevocationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Session Revocation</strong> is the process of invalidating active user sessions,
           either individually (single device logout) or in bulk (logout all devices). It is a
           critical security capability for responding to compromised accounts, enabling user
           control over active sessions, and maintaining compliance (password changes must invalidate
           existing sessions).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/session-revocation-flow.svg"
@@ -47,14 +51,14 @@ export default function SessionRevocationArticle() {
           caption="Session Revocation Flow — showing user-initiated, admin-initiated, and automatic revocation workflows"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing session revocation requires deep
           understanding of revocation scenarios (user logout, password change, security incident,
           device loss), implementation patterns (token denylist, version-based invalidation,
           broadcast), and distributed systems challenges (propagation delay, eventual consistency,
           race conditions). The implementation must provide immediate revocation while handling
           the complexities of distributed session management.
-        </p>
+        </HighlightBlock>
         <p>
           Modern session revocation has evolved from simple server-side session deletion to
           sophisticated token-based invalidation strategies. With stateless JWTs, revocation
@@ -68,19 +72,22 @@ export default function SessionRevocationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Session revocation is built on fundamental concepts that determine how sessions are
           invalidated and how invalidation propagates across distributed systems. Understanding
           these concepts is essential for designing effective revocation systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Revocation Scenarios:</strong> There are four primary scenarios: User logout
           (single session or all sessions), password change (revoke all sessions automatically),
           security incident (admin revokes sessions for compromised account), and device loss (user
           revokes specific device session). Each scenario has different urgency and scope —
           password change requires immediate bulk revocation, while device loss requires selective
           revocation.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Token Denylist:</strong> For stateless tokens (JWT), maintain a denylist of
           revoked token identifiers (JTI claim). Store in Redis with TTL matching token expiry.
@@ -104,11 +111,14 @@ export default function SessionRevocationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Session revocation architecture separates revocation logic from session storage, enabling
           centralized revocation management with distributed validation. This architecture is
           critical for scaling revocation across distributed systems.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/session-revocation-patterns.svg"
@@ -116,7 +126,7 @@ export default function SessionRevocationArticle() {
           caption="Session Revocation Patterns — comparing denylist, version-based, and broadcast approaches"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The revocation flow starts when a revocation event occurs (user clicks logout, password
           changes, admin triggers revocation). The revocation service identifies target sessions
           (single session, all sessions for user, or specific sessions by device), invalidates
@@ -125,7 +135,7 @@ export default function SessionRevocationArticle() {
           via email (for security-related revocations), and logs the revocation event for audit.
           This flow must complete quickly to minimize the window where revoked sessions remain
           valid.
-        </p>
+        </HighlightBlock>
         <p>
           Distributed revocation architecture uses shared infrastructure for consistency. Redis
           Cluster provides shared denylist accessible by all services. Kafka event stream
@@ -154,26 +164,29 @@ export default function SessionRevocationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing session revocation systems involves trade-offs between immediacy, scalability,
           and complexity. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Denylist vs Version-Based Revocation</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Denylist:</strong> Store revoked token IDs until expiry. Immediate
               revocation, fine-grained control (revoke specific tokens). Limitation: stateful
               checking, memory grows with revocations, requires cleanup.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Version-Based:</strong> Include user version in token, increment on
               revocation. Stateless validation, no memory growth, simple implementation. Limitation:
               bulk revocation only (can't revoke specific sessions), requires version check on
               every validation.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Hybrid:</strong> Version-based for bulk revocation (password change),
               denylist for selective revocation (device logout). Best of both — scalable bulk
@@ -226,13 +239,16 @@ export default function SessionRevocationArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing session revocation requires following established best practices to ensure
           security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement immediate revocation for security incidents — don't delay, revoke immediately
           on compromise detection. Use short-lived tokens to limit revocation window — access
           tokens 15-60 minutes, refresh tokens 7-30 days with rotation. Invalidate all sessions on
@@ -240,7 +256,7 @@ export default function SessionRevocationArticle() {
           events for audit — include actor, target sessions, timestamp, reason. Notify user of
           session revocation — email for security-related revocations, in-app notification for
           user-initiated.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
         <p>
@@ -273,22 +289,25 @@ export default function SessionRevocationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing session revocation to ensure secure,
           usable, and maintainable revocation systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Stateless token revocation:</strong> JWTs can't be directly revoked without
             additional mechanism. <strong>Fix:</strong> Use denylist (store JTI until expiry),
             short expiry (accept risk window), or version claims (include user version in JWT,
             increment on revocation).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No distributed revocation:</strong> Sessions remain active on other services
             after revocation. <strong>Fix:</strong> Shared denylist in Redis Cluster, event
             propagation via Kafka, version checks on every validation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Long token expiry:</strong> Revoked tokens valid for too long, extended
             security risk. <strong>Fix:</strong> Short access token expiry (15-60 min), refresh
@@ -335,17 +354,20 @@ export default function SessionRevocationArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Session revocation is critical for organizations with security and compliance
           requirements. Here are real-world implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Social Media Platform (Facebook)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> 3 billion users with sessions across web, mobile, third-party
           apps. Need to revoke sessions when accounts compromised, users lose devices, or privacy
           concerns. Scale to millions of revocations daily.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Version-based revocation for bulk operations (password change,
           account compromise). Denylist for selective revocation (specific device logout). Redis
@@ -445,14 +467,17 @@ export default function SessionRevocationArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of session revocation design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you revoke JWT tokens?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you revoke JWT tokens?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: JWTs are stateless so can't be directly revoked without additional mechanism.
               Options: (1) Denylist — store JTI (token ID) in Redis until expiry, check on every

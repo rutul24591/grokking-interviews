@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,15 +37,15 @@ export default function EnvironmentVariablesArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Environment variables</strong> in frontend development are key-value pairs that configure application behavior across different deployment environments (development, staging, production). Unlike backend environment variables that are read at runtime from the server process, frontend environment variables are injected at build time — the build tool replaces variable references in source code with actual values before generating the production bundle. This fundamental difference has critical implications for security (variables are visible in the bundle source), deployment (changing variables requires a rebuild), and configuration management (variables must be available during the build process).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, understanding the distinction between build-time and runtime configuration is essential. Build-time environment variables are baked into the bundle during the build process, meaning that changing a variable requires rebuilding the entire application. Runtime configuration (fetching configuration from a JSON endpoint, using a configuration service) allows configuration changes without rebuilding, which is critical for applications that need to adapt configuration between environments without triggering a new build pipeline. The choice between build-time and runtime configuration depends on how frequently configuration changes, whether zero-downtime reconfiguration is needed, and security requirements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Frontend environment variables serve several purposes: API endpoint configuration (different URLs for development, staging, production), feature flags (enabling or disabling features per environment), analytics configuration (different tracking IDs per environment), third-party service keys (public API keys for services like maps, payment processors), and build mode indicators (development versus production behavior). The key security principle is that all frontend environment variables are public — they are embedded in the JavaScript bundle and visible to anyone who inspects the source. Therefore, never include secrets (private API keys, database credentials, passwords) in frontend environment variables.
-        </p>
+        </HighlightBlock>
         <p>
           Each build tool has its own convention for environment variables. Webpack uses the DefinePlugin to replace process.env.VAR_NAME references with actual values. Vite uses import.meta.env.VAR_NAME and only exposes variables prefixed with VITE_ (a security measure to prevent accidentally exposing sensitive variables). Rollup uses rollup-plugin-replace for similar substitution. Understanding these conventions is essential for configuring environment variables correctly and avoiding common pitfalls like accidentally exposing secrets or using the wrong variable prefix.
         </p>
@@ -54,15 +55,15 @@ export default function EnvironmentVariablesArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Build-Time Injection:</strong> Environment variables are replaced in source code during the build process, not at runtime. The build tool scans source files for variable references, replaces them with actual values from the environment, and generates a bundle with hardcoded values. This means the variable values are fixed at build time — changing an environment variable requires rebuilding the entire application. This is fundamentally different from backend environment variables, which are read at runtime from the server process.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Public Visibility:</strong> All frontend environment variables are public — they are embedded in the JavaScript bundle and visible to anyone who inspects the source code. This is a critical security consideration: never include secrets (private API keys, database credentials, OAuth client secrets) in frontend environment variables. Only include public configuration (public API endpoints, public analytics IDs, public feature flags). Any value that should remain secret must be kept on the backend and accessed via API calls.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Variable Prefixing:</strong> Build tools use prefix conventions to control which variables are exposed to the frontend. Vite only exposes variables prefixed with VITE_ (import.meta.env.VITE_API_URL), preventing accidental exposure of sensitive variables. Webpack exposes all variables explicitly configured in DefinePlugin. Understanding and following these conventions is essential for security — using the correct prefix ensures that sensitive variables are not accidentally included in the bundle.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Multi-Environment Configuration:</strong> Applications typically have multiple environments (development, staging, production, preview) with different variable values. Environment files (.env.development, .env.staging, .env.production) store variable values per environment. The build tool automatically loads the appropriate file based on the build mode. This pattern ensures that each environment has its own configuration without hardcoding values in source code.
           </li>
@@ -86,12 +87,12 @@ export default function EnvironmentVariablesArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Environment variable architecture consists of definition (storing variables in .env files or CI/CD secrets), build-time injection (replacing variable references with actual values), and runtime access (reading hardcoded values from the bundle). The flow begins with developers defining variables in .env files (local development) or CI/CD secrets (production builds). During the build, the build tool loads the appropriate .env file based on the build mode, replaces all variable references in source code with actual values, and generates a bundle with hardcoded configuration.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The key insight is that after the build, environment variables no longer exist as variables — they are hardcoded values in the bundle. This means that changing an environment variable requires rebuilding the application, redeploying the bundle, and waiting for users to download the new bundle. For applications that need frequent configuration changes, runtime configuration (fetching configuration from a JSON endpoint) is more appropriate than build-time injection.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/build-deployment/build-time-vs-runtime.svg"
@@ -102,9 +103,9 @@ export default function EnvironmentVariablesArticle() {
         />
 
         <h3>Build Tool Conventions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Webpack:</strong> Uses DefinePlugin to replace process.env.VAR_NAME with actual values. All variables must be explicitly defined in the plugin configuration — undefined variables are not automatically replaced. This gives precise control over which variables are exposed but requires more configuration. Best for: applications with strict security requirements where every exposed variable must be explicitly approved.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Vite:</strong> Uses import.meta.env.VAR_NAME and automatically loads .env files. Only variables prefixed with VITE_ are exposed to the client (security measure). Other variables (without prefix) are available only in Node.js build scripts, not in client code. This convention prevents accidental exposure of sensitive variables. Best for: applications wanting security-by-default with minimal configuration.
         </p>
@@ -124,17 +125,17 @@ export default function EnvironmentVariablesArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Environment variable configuration involves trade-offs between build-time injection and runtime configuration, security and convenience, and simplicity and flexibility. Understanding these trade-offs is essential for choosing the right approach for each use case.
-        </p>
+        </HighlightBlock>
 
         <h3>Build-Time vs. Runtime Configuration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Build-Time Injection:</strong> Variables are baked into the bundle during the build. Advantages: zero runtime overhead (values are hardcoded, no fetch needed), simple implementation (no configuration fetch logic), fast application startup (no configuration fetch delay). Limitations: changing variables requires a full rebuild and redeploy, cannot adapt configuration between deployments without rebuilding, configuration changes are coupled to code changes. Best for: configuration that rarely changes (API endpoints, analytics IDs, public feature flags).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Runtime Configuration:</strong> Variables are fetched from a JSON endpoint or configuration service when the app starts. Advantages: configuration can change without rebuilding (update config.json, no rebuild needed), different configurations for the same build (same bundle, different config per customer or region), dynamic feature toggling. Limitations: runtime overhead (fetch configuration before app starts), complexity (handle fetch failures, loading states, cache configuration), delayed application startup (must wait for config fetch). Best for: configuration that changes frequently, multi-tenant applications, A/B testing scenarios.
-        </p>
+        </HighlightBlock>
 
         <h3>Security vs. Convenience</h3>
         <p>
@@ -160,15 +161,15 @@ export default function EnvironmentVariablesArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use Correct Prefix Convention:</strong> Follow your build tool&apos;s prefix convention (VITE_ for Vite, explicit DefinePlugin for Webpack). Never store sensitive values in frontend environment variables, even with a prefix — remember that all frontend variables are public. Use environment variables only for public configuration (API URLs, analytics IDs, public feature flags).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Validate Required Variables:</strong> Add validation at the start of the build process to ensure all required variables are present and correctly formatted. Check for presence (variable is not empty), type (variable is a valid number, URL, or boolean), and format (URL is valid, API key has correct format). This prevents builds from succeeding with missing or invalid configuration, which would produce broken deployments.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Separate Public and Secret Variables:</strong> Maintain a clear distinction between public variables (safe for frontend, embedded in bundle) and secret variables (must stay on backend). Document which variables are public and which are secret, enforce this distinction in code review, and use build tool prefixing to prevent accidental exposure of secrets.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Environment-Specific Files:</strong> Maintain separate .env files for each environment (.env.development, .env.staging, .env.production). This ensures that each environment has its own configuration and prevents accidentally using production configuration in development or vice versa. Store environment files in version control for development defaults and use CI/CD secrets for production values.
           </li>
@@ -185,15 +186,15 @@ export default function EnvironmentVariablesArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Exposing Secrets:</strong> Accidentally including sensitive values (API keys, database credentials, passwords) in frontend environment variables. Since these values are embedded in the bundle, anyone can read them. Always keep secrets on the backend and access them via authenticated API calls. Use environment variable prefixing and code review to prevent accidental exposure.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Assuming Variables Update Without Rebuild:</strong> Changing an environment variable and expecting the running application to pick up the change. Since variables are injected at build time, changing them requires a rebuild and redeploy. If you need to change configuration without rebuilding, use runtime configuration instead.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing Variable Validation:</strong> Builds succeeding with missing or invalid environment variables, producing broken deployments. For example, a missing API URL causes all API calls to fail, but the build succeeds because the variable reference is simply replaced with an empty string. Always validate required variables before the build starts.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Using Wrong Environment File:</strong> Accidentally using production environment variables in development or staging builds. This happens when the build mode is not correctly set (e.g., building with production mode in development). Ensure that the build process automatically selects the correct .env file based on the build mode.
           </li>
@@ -211,19 +212,19 @@ export default function EnvironmentVariablesArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>Multi-Environment API Configuration</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Frontend applications use environment variables to configure API endpoints per environment. Development uses local API servers (localhost:3000), staging uses staging APIs (staging-api.example.com), and production uses production APIs (api.example.com). Environment variables ensure that the correct endpoint is used in each environment without code changes. Build tool automatically loads the appropriate .env file based on the build mode, replacing the variable reference with the correct endpoint.
-        </p>
+        </HighlightBlock>
 
         <h3>Analytics and Monitoring Configuration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Analytics services (Google Analytics, Mixpanel, Sentry) use different tracking IDs and project IDs per environment. Development may disable analytics entirely, staging uses test analytics accounts, and production uses production analytics. Environment variables configure these values at build time, ensuring that development activity does not pollute production analytics and that production analytics are correctly attributed.
-        </p>
+        </HighlightBlock>
 
         <h3>Feature Flag Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Feature flags (enabling or disabling features per environment) are commonly configured via environment variables. Development may have all features enabled for testing, staging has features enabled incrementally for testing, and production has only stable features enabled. Environment variables allow enabling or disabling features without code changes, and the build tool ensures that the correct feature flags are baked into each environment&apos;s bundle.
-        </p>
+        </HighlightBlock>
 
         <h3>Runtime Configuration for SaaS Products</h3>
         <p>
@@ -237,18 +238,18 @@ export default function EnvironmentVariablesArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: What is the difference between build-time and runtime environment variables?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Build-time environment variables are injected during the build process — the build tool replaces variable references in source code with actual values before generating the bundle. Changing a build-time variable requires rebuilding the application. Runtime environment variables are fetched when the application starts (from a JSON endpoint or configuration service), allowing configuration changes without rebuilding. Build-time has zero runtime overhead and simple implementation but requires rebuilds for changes. Runtime has flexibility (change config without rebuild) but adds complexity (fetch logic, error handling, delayed startup).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: Why are frontend environment variables considered public?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Frontend environment variables are embedded in the JavaScript bundle during the build process. The bundle is downloaded and executed by the browser, and anyone can inspect the source code to see the variable values. This means that all frontend environment variables are public — visible to anyone who inspects the bundle. Therefore, never include secrets (API keys, database credentials, passwords) in frontend environment variables. Only include public configuration (API URLs, analytics IDs, public feature flags). Any value that should remain secret must be kept on the backend and accessed via authenticated API calls.
             </p>

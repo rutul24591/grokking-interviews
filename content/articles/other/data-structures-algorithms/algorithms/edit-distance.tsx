@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,20 +30,23 @@ export default function EditDistanceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The <span className="font-semibold">edit distance</span> (Levenshtein distance) between
           two strings a and b is the minimum number of single-character edits — insertions,
           deletions, and substitutions — required to transform a into b. Formally introduced by
           Vladimir Levenshtein in 1965, it generalizes Hamming distance (which permits only
           substitutions) to strings of unequal length.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Edit distance is a true metric: it is non-negative, symmetric, zero iff the strings are
           equal, and satisfies the triangle inequality. That metric structure lets us use it as
           the basis for nearest-neighbor search, clustering, and approximate indexing. It is the
           workhorse behind spell check, fuzzy search, speech-recognition evaluation (WER), DNA
           alignment, and diff tooling.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           The classical Wagner-Fischer algorithm (1974) solves it in O(mn) time and O(mn) space
           via a dynamic programming table. Hirschberg&rsquo;s divide-and-conquer refinement
@@ -55,14 +59,17 @@ export default function EditDistanceArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">State:</span> dp[i][j] = edit distance between the
           first i characters of a and the first j characters of b. The answer is dp[m][n].
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Base cases:</span> dp[0][j] = j (insert j characters
           to build b[:j] from empty) and dp[i][0] = i (delete i characters to empty a[:i]).
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Recurrence:</span> if a[i-1] == b[j-1], then dp[i][j]
           = dp[i-1][j-1] (free match, no edit needed). Otherwise dp[i][j] = 1 + min(dp[i-1][j],
@@ -95,19 +102,22 @@ export default function EditDistanceArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The standard tabulation fills the DP matrix row by row, left to right. Each cell reads
           three already-computed neighbors, so the order respects the dependency DAG. After
           filling, dp[m][n] is the answer; a second backward pass reconstructs the alignment if
           needed.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Two-row space optimization:</span> since dp[i][j]
           depends only on row i-1 and the already-computed portion of row i, we can keep just
           the previous row and the current row, dropping memory to Θ(min(m, n)) (always iterate
           with the shorter string on the inner axis). This is the default in production code
           when only the distance is needed.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Hirschberg&rsquo;s algorithm:</span> to recover the
           alignment in O(min(m, n)) space, split one string in half, compute forward DP from
@@ -144,7 +154,10 @@ export default function EditDistanceArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Edit distance vs LCS:</span> if substitution is
           disallowed (cost ∞), then edit distance = m + n − 2·LCS(a, b). That is exactly the
           model the Unix diff and git diff tools use — lines can only be inserted or deleted,
@@ -152,14 +165,14 @@ export default function EditDistanceArticle() {
           followed by a &ldquo;+&rdquo;. With substitutions allowed, edit distance can be
           strictly less than the LCS-distance, but it no longer corresponds to a clean line-
           oriented diff.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Levenshtein vs Damerau-Levenshtein:</span> Damerau
           adds a fourth operation — swapping adjacent characters (&ldquo;teh&rdquo; →
           &ldquo;the&rdquo;) — at cost 1. Pure Levenshtein would charge 2 for that transposition
           (two substitutions). Damerau models human typos more faithfully and is standard in
           spell-check pipelines.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Levenshtein vs Hamming:</span> Hamming distance only
           allows substitution and requires equal-length strings. It is O(n) to compute but much
@@ -191,18 +204,21 @@ export default function EditDistanceArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Pick the right cost model up front.</span> Default
           Levenshtein (1/1/1) is wrong for keyboard typos (q↔w is cheaper than q↔z), wrong for
           DNA (purine↔purine cheaper than purine↔pyrimidine), wrong for diff (no sub). Choose
           the variant that matches your domain before tuning anything else.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Bound the distance when possible.</span> Spell-check,
           fuzzy search, and record linkage almost always have a sane upper bound on k (2–3 for
           words, 5–10 for addresses). Use Ukkonen&rsquo;s banded DP or a Levenshtein automaton
           to exploit that bound — full DP is typically 10–100× slower than needed.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Filter before you compute.</span> For large candidate
           pools, compute a cheap upper-bound (length difference, q-gram Jaccard, prefix/suffix
@@ -237,16 +253,19 @@ export default function EditDistanceArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Off-by-one in base row/column.</span> The base cases
           dp[0][j] = j and dp[i][0] = i are the single most common bug. Always test with an
           empty string on each side — the answer must be the length of the other string.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Forgetting the diagonal match case.</span> When
           a[i-1] == b[j-1] the cost is dp[i-1][j-1] with <em>no</em> +1. A surprising number of
           implementations accidentally always add 1 and come up with inflated distances.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Two-row trick that overwrites too eagerly.</span>
           When rolling arrays you need to save the diagonal value (dp[i-1][j-1]) <em>before</em>
@@ -281,18 +300,21 @@ export default function EditDistanceArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Spell check and autocorrect.</span> Aspell, Hunspell,
           iOS/Android keyboards, and Google&rsquo;s &ldquo;Did you mean?&rdquo; all rank
           dictionary words by edit distance to the input token, usually with a bounded k ≤ 2
           and a candidate index (Symspell or BK-tree) to prune the search.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Fuzzy search.</span> Elasticsearch and Lucene expose
           fuzzy queries implemented via the Levenshtein automaton of the query term — the
           automaton is traversed in lockstep with the term dictionary trie to yield all matches
           within distance k in time near-linear in the match count.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Speech recognition and machine translation
           evaluation.</span> Word Error Rate (WER = edit-distance-over-words / reference length)
@@ -341,17 +363,20 @@ export default function EditDistanceArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Classic: implement edit distance.</span> Given two
           strings, return the Levenshtein distance. Expected answer: O(mn) DP with the three-
           operation recurrence, two-row space optimization. LeetCode 72.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">One Edit Distance.</span> Return whether two strings
           are exactly one edit apart. Expected answer: linear scan — if lengths differ by
           &gt;1, no; else walk both strings, allow exactly one mismatch (or one skip on the
           longer string). LeetCode 161.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Delete Operation for Two Strings.</span> Minimum
           deletions from both strings to make them equal. Expected answer: m + n − 2·LCS(a, b).

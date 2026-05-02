@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function EndToEndSecurityPostureArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>End-to-End Security Posture</strong> encompasses the comprehensive security controls,
           processes, and practices that protect a system across all layers—from user interface to
           database, from development to production. It is not a single technology but a holistic
           approach that considers threats at every layer and implements defense in depth.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Security posture answers critical questions: what are our assets and what threats do they face?
           What controls protect each layer? How do we detect and respond to breaches? How do we prove
           compliance? A strong security posture means attackers must overcome multiple independent
           controls to compromise the system. For staff and principal engineers, security is an
           architectural concern—the decisions you make about authentication, authorization, encryption,
           and monitoring determine the organization&apos;s risk exposure.
-        </p>
+        </HighlightBlock>
         <p>
           The foundational principles guiding end-to-end security include defense in depth, where multiple
           independent security layers ensure that if one fails, others provide protection. Least privilege
@@ -69,7 +73,10 @@ export default function EndToEndSecurityPostureArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding threats is the foundation of security. Threat modeling is a systematic process
           for identifying, quantifying, and addressing security risks before they materialize into
           actual breaches. The STRIDE framework, developed by Microsoft, categorizes threats into six
@@ -81,8 +88,8 @@ export default function EndToEndSecurityPostureArticle() {
           non-repudiation mechanisms counter repudiation, encryption and access controls counter
           information disclosure, rate limiting and redundancy counter denial of service, and
           authorization with least privilege counters elevation of privilege.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The threat modeling process follows a disciplined sequence. First, diagram the system by
           creating data flow diagrams that identify all components—processes, data stores, and external
           entities—while mapping data flows between them and marking trust boundaries where trust levels
@@ -95,7 +102,7 @@ export default function EndToEndSecurityPostureArticle() {
           and assigning ownership for implementation. Sixth, validate that mitigations are effective
           through security testing including SAST, DAST, and penetration testing, then update the
           threat model as the system evolves.
-        </p>
+        </HighlightBlock>
         <p>
           Threat modeling is most effective when performed during design, before code is written, but
           it is never too late to threat model existing systems. The process should be repeated for
@@ -143,14 +150,17 @@ export default function EndToEndSecurityPostureArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Defense in depth requires controls at every layer, with each layer providing independent
           protection so that if one control fails, others still protect the system. The architecture
           of a comprehensive security posture spans four primary layers: network, application, data,
           and infrastructure. Understanding how these layers interact and how security flows through
           them is critical for designing resilient systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the network layer, firewalls serve as the first line of defense by restricting inbound
           traffic to necessary ports only and restricting outbound traffic to prevent data exfiltration.
           Web Application Firewalls filter HTTP traffic while next-generation firewalls provide
@@ -164,7 +174,7 @@ export default function EndToEndSecurityPostureArticle() {
           for web applications. Private networks including VPCs for cloud resources, private subnets
           for internal services, NAT gateways for outbound traffic, and VPC peering for cross-service
           communication form the foundational network architecture.
-        </p>
+        </HighlightBlock>
         <p>
           The application layer protects the application itself from attacks targeting code and logic.
           Input validation validates all user input for type, length, format, and range while
@@ -251,12 +261,15 @@ export default function EndToEndSecurityPostureArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Building a security posture involves constant trade-offs between prevention, detection, and
           response investments, as well as technology selection decisions that shape the organization&apos;s
           security trajectory for years. Understanding these trade-offs is essential for making informed
           architectural decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <table className="w-full text-sm">
@@ -339,24 +352,27 @@ export default function EndToEndSecurityPostureArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Compliance Does Not Equal Security</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Compliance is necessary but not sufficient for security. You can be compliant and still be
             vulnerable. Use compliance as a baseline, but build security beyond what is required.
             Compliance is about proving security; security is about actually being secure.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Secure development practices begin with security training for all developers, establishing
           secure coding standards, conducting code reviews with a security focus, integrating SAST
           and DAST into the CI/CD pipeline, and continuously scanning dependencies for known
           vulnerabilities. Security as code means security controls are versioned alongside application
           code, tested in automated pipelines, and deployed through the same release mechanisms.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Security operations require 24/7 security monitoring with documented incident response
           procedures that are exercised regularly. A vulnerability management program tracks and
           remediates identified vulnerabilities within defined SLAs, while regular access reviews
@@ -365,7 +381,7 @@ export default function EndToEndSecurityPostureArticle() {
           container image scanning, secrets scanning to prevent credential commits, infrastructure as
           code scanning, and security gates before deployment ensure that security is part of the
           definition of done.
-        </p>
+        </HighlightBlock>
         <p>
           Building a strong security culture involves embedding security champions within each team
           who serve as security liaisons, maintaining regular security communications across the
@@ -386,22 +402,25 @@ export default function EndToEndSecurityPostureArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Treating security as an afterthought—bolting it on at the end of development rather than
           designing it in from the start—is the most fundamental mistake organizations make. The fix
           requires embedding security by design principles and conducting threat modeling early in
           the development lifecycle. Similarly, relying on a single layer of defense means that when
           one control fails, the game is over. Defense in depth with independent layers is the
           corrective approach.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Operating without an incident response plan leads to panic when breaches occur. A documented
           plan with regular tabletop exercises ensures the team knows exactly what to do under pressure.
           Treating compliance as a checkbox creates organizations that are compliant but not secure—security
           must extend beyond compliance requirements. Storing secrets in code repositories remains a
           pervasive problem that requires dedicated secrets management and automated scanning tools
           to prevent credential commits.
-        </p>
+        </HighlightBlock>
         <p>
           Failing to implement comprehensive logging makes it impossible to detect or investigate
           breaches effectively. A centralized SIEM with comprehensive log collection from all layers
@@ -419,7 +438,10 @@ export default function EndToEndSecurityPostureArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Capital One breach of 2019 serves as a cautionary tale about misconfigured Web Application
           Firewall rules in AWS WAF that allowed a Server-Side Request Forgery attack to access over
           100 million customer records. The breach highlighted the critical importance of proper WAF
@@ -427,8 +449,8 @@ export default function EndToEndSecurityPostureArticle() {
           automated security posture monitoring. Capital One&apos;s response—implementing stricter access
           controls, enhancing their WAF management processes, and investing in continuous security
           monitoring—demonstrates how incidents drive security maturity improvements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Equifax breach of 2017, which exposed the personal information of 147 million people
           through an unpatched Apache Struts vulnerability, underscores the devastating consequences
           of inadequate patch management and vulnerability scanning practices. The failure to patch
@@ -438,7 +460,7 @@ export default function EndToEndSecurityPostureArticle() {
           security transformation program—including automated vulnerability management, enhanced network
           segmentation, and improved detection capabilities—illustrates how organizations must rebuild
           their entire security posture after catastrophic failures.
-        </p>
+        </HighlightBlock>
         <p>
           CrowdStrike&apos;s Falcon platform exemplifies a modern detection-and-response-first security
           posture, emphasizing behavioral analysis and threat intelligence over signature-based
@@ -460,10 +482,13 @@ export default function EndToEndSecurityPostureArticle() {
 
       <section>
         <h2>Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is defense in depth and why is it critical?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What is defense in depth and why is it critical?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Defense in depth uses multiple independent security layers so that if one control fails,
               others still provide protection. An example stack includes a firewall, authentication,
               authorization, encryption, and audit logging. An attacker must bypass all layers to
@@ -471,7 +496,7 @@ export default function EndToEndSecurityPostureArticle() {
               not bypass multiple layers. A network firewall plus application authentication plus database
               authorization represent independent layers, but two firewalls from the same vendor with the
               same rule engine do not.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

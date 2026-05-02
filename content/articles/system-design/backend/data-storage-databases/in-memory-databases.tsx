@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function InMemoryDatabasesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>In-memory databases</strong> store data primarily in RAM rather than on disk, enabling microsecond read latency and hundred-thousands of operations per second. Unlike disk-based databases that must seek and read from storage, in-memory databases access data directly from memory. Popular examples include Redis (rich data structures with optional persistence), Memcached (simple key-value caching), and Apache Ignite (distributed in-memory computing).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The distinction matters for system design: in-memory databases excel at caching (reduce database load), session storage (user sessions on every request), real-time analytics (sub-second aggregations), and leaderboards (sorted set operations). Disk-based databases excel at durable storage where data loss is unacceptable. In-memory databases trade durability for speed—data is lost on power failure unless persistence is configured.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, understanding in-memory database trade-offs is essential for caching architecture and low-latency systems. Key decisions include: persistence strategy (RDB snapshots vs AOF logs), eviction policy (LRU, LFU, TTL), data structures (strings, hashes, sorted sets, bitmaps), and replication (master-replica, sentinel, cluster). The right choice depends on data criticality: can you tolerate data loss for speed? What latency SLOs do you need?
         </p>
@@ -42,13 +46,16 @@ export default function InMemoryDatabasesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>RAM-Based Storage:</strong> Data resides in memory, enabling O(1) access time regardless of data size. Redis achieves 100,000+ operations/second per node with microsecond latency. Memory is expensive ($0.02-0.05/GB/hour) compared to disk ($0.0001/GB/hour), so in-memory databases are best for hot data (frequently accessed) rather than cold storage. RAM provides random access—any key can be retrieved in constant time, unlike disk which requires seeking.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Persistence Modes:</strong> In-memory databases offer optional persistence. RDB (Redis Database) creates point-in-time snapshots—fast recovery but potential data loss between snapshots. AOF (Append-Only File) logs every write—slower recovery but minimal data loss. Hybrid approaches combine both (RDB for fast recovery, AOF for durability). Choose based on RPO (recovery point objective). Snapshots are compact but may lose minutes of data. AOF is verbose but loses at most one second of data.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Eviction Policies:</strong> When memory is full, in-memory databases evict keys to make room. LRU (Least Recently Used) evicts oldest accessed keys—good for caches. LFU (Least Frequently Used) evicts least accessed keys—good for hot data. TTL-based eviction removes expired keys. No eviction blocks writes when full (dangerous for production). Configure based on use case. Eviction is a symptom of undersized memory—scale before eviction triggers.
           </li>
@@ -72,17 +79,20 @@ export default function InMemoryDatabasesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Aspect</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Aspect</th>
               <th className="p-3 text-left">In-Memory Databases</th>
               <th className="p-3 text-left">Disk-Based Databases</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3">
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3">
                 <strong>Latency</strong>
               </td>
               <td className="p-3">
@@ -99,8 +109,8 @@ export default function InMemoryDatabasesArticle() {
                 <br />
                 • Disk I/O dependent
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Durability</strong>
               </td>
@@ -118,8 +128,8 @@ export default function InMemoryDatabasesArticle() {
                 <br />
                 • Zero data loss typical
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Cost</strong>
               </td>
@@ -137,7 +147,7 @@ export default function InMemoryDatabasesArticle() {
                 <br />
                 • Scales to petabytes
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Use Cases</strong>
@@ -169,13 +179,16 @@ export default function InMemoryDatabasesArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Configure Persistence Based on RPO:</strong> Choose persistence strategy based on acceptable data loss. For caches (can rebuild from database): no persistence or RDB snapshots hourly. For session storage (user experience impacted): AOF with fsync every second. For critical data (financial, counters): AOF with fsync every write. Test restore procedures regularly—verify RTO (recovery time objective) meets requirements. Document persistence configuration for each use case.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Set Appropriate Eviction Policy:</strong> For caches: use LRU or LFU eviction with maxmemory limit. For session storage: disable eviction (use TTL instead—sessions expire naturally). For leaderboards/counters: disable eviction (data must persist). Monitor memory usage and alert at 80 percent capacity. Eviction is a symptom of undersized memory—scale up before eviction triggers. Use ALLKEYS policies for mixed data, VOLATILE policies for TTL-only eviction.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Appropriate Data Structures:</strong> Choose data structures based on access patterns. Strings for simple caching. Hashes for objects (saves memory vs multiple keys). Lists for queues (LPUSH/BRPOP). Sets for unique items (SADD, SISMEMBER). Sorted sets for leaderboards (ZADD, ZRANGE). Bitmaps for boolean flags (SETBIT, GETBIT). HyperLogLog for cardinality estimation (PFADD, PFCOUNT). Match data structure to operation needs.
           </li>
@@ -193,13 +206,16 @@ export default function InMemoryDatabasesArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ul className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Redis for Session Storage (Twitter):</strong> Twitter stores user sessions in Redis with TTL (24 hours). Sessions accessed on every request—microsecond latency critical. Redis provides horizontal scaling with Cluster, automatic expiration, and high availability with Sentinel. Session data includes user_id, permissions, last_activity. If Redis fails, users must re-login—AOF persistence configured for minimal data loss. Sessions replicated across multiple nodes for redundancy.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Memcached for Database Caching (Facebook):</strong> Facebook uses Memcached to cache frequently accessed data (user profiles, feed data). Memcached is simple (key-value only), fast, and scales horizontally with client-side sharding. Cache hit rate exceeds 95 percent—dramatically reduces database load. TTL-based expiration ensures stale data refreshes. No persistence needed—cache rebuilds from database on miss. Memcached's simplicity is a feature (no complex data structures to manage).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Redis for Rate Limiting (GitHub):</strong> GitHub uses Redis for API rate limiting. Each API request increments a counter (INCR command) with TTL (1 hour). Redis atomic operations prevent race conditions. Sorted sets track request timestamps for sliding window rate limiting. Sub-millisecond latency ensures rate limiting doesn't become bottleneck. If Redis fails, rate limiting disabled (fail-open) to maintain availability. Rate limits enforced at edge (CDN) for DDoS protection.
           </li>
@@ -217,15 +233,18 @@ export default function InMemoryDatabasesArticle() {
 
       <section>
         <h2>Security Considerations</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Access Control</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Authentication:</strong> Enable authentication (Redis AUTH, AWS IAM for ElastiCache). Never expose in-memory databases to public internet. Use VPC/private networking. Rotate credentials regularly. Use service accounts with minimal privileges. Disable dangerous commands in production (FLUSHALL, DEBUG).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Authorization:</strong> Implement key-level access control for multi-tenant systems. Use key prefixes for tenant isolation (tenant:acme:*, tenant:globex:*). Redis 6+ supports ACLs with per-user permissions. Implement application-level authorization checks. Restrict commands by user role (read-only users, admin users).
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -259,15 +278,18 @@ export default function InMemoryDatabasesArticle() {
 
       <section>
         <h2>Performance Optimization</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Latency Optimization</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Use Pipelining:</strong> Batch multiple commands in single round-trip. Redis pipelining sends multiple commands without waiting for individual responses. Reduces network latency from N × RTT to 1 × RTT. Use for bulk operations (multi-get, multi-set). Pipeline size affects memory usage (balance latency vs memory).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Implement Local Caching:</strong> Cache hot keys in application memory (in-process cache like Guava, Caffeine). Reduces network round-trips for frequently accessed keys. Use TTL to prevent stale data. Implement cache invalidation on updates. Local cache + Redis provides two-tier caching (nanosecond + microsecond latency).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Avoid Blocking Commands:</strong> Commands like KEYS, SMEMBERS on large sets block the server. Use SCAN instead of KEYS (incremental iteration). Use ZRANGEBYSCORE with LIMIT instead of full range queries. Monitor slow log for blocking commands. Set timeout for long-running commands.
             </li>
@@ -304,15 +326,18 @@ export default function InMemoryDatabasesArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Memory:</strong> In-memory databases require RAM for all data. Estimate: $0.02-0.05/GB/hour for managed Redis (ElastiCache, Memorystore). For 100GB dataset: $72-180/month. Self-hosted on EC2: $0.01-0.03/GB/hour (lower cost but operational overhead). Memory costs dominate—optimize data structures to reduce memory footprint.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Compute:</strong> In-memory databases are CPU-efficient for simple operations. Estimate: 1-2 vCPU per 10GB dataset for moderate workloads. Scale vertically for more throughput, horizontally for more capacity. CPU costs secondary to memory costs.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Network:</strong> Cross-AZ replication consumes network bandwidth. Estimate: 10-20 percent of write volume for replication traffic. Cross-region replication adds latency and cost. Use same-AZ replicas for low-latency reads. Cross-region replicas for disaster recovery.
             </li>
@@ -349,12 +374,15 @@ export default function InMemoryDatabasesArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why use an in-memory database?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Why use an in-memory database?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: In-memory databases provide microsecond latency and 100,000+ operations/second by storing data in RAM instead of disk. Use cases: caching layers (reduce database load, improve response times), session storage (user sessions accessed on every request), real-time analytics (sub-second aggregations), leaderboards (sorted set operations), rate limiting (atomic counters). Trade-off: in-memory databases are volatile—data is lost on power failure unless persistence is configured. Memory is expensive compared to disk, so in-memory databases are best for hot data (frequently accessed) rather than cold storage. Choose based on latency requirements and data criticality.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

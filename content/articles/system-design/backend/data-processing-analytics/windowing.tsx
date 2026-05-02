@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,19 +25,22 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Windowing</strong> is the mechanism by which stream processing systems divide an unbounded stream of
           events into bounded chunks for computation. Without windowing, a stream aggregation (for example, &quot;count of
           events&quot;) would run forever, producing a single, ever-growing result. Windowing allows the computation to
           produce finite results — for example, &quot;count of events per 5-minute window&quot; — that are meaningful and
           actionable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Windowing is essential for time-based computations on streams — hourly aggregations, moving averages, trend
           analysis, sessionization, and anomaly detection. The window defines the scope of the computation — which
           events are included in the result and which are not — and the trigger defines when the result is emitted —
           when the window is complete and the result is ready.
-        </p>
+        </HighlightBlock>
         <p>
           The choice of window type (tumbling, sliding, session, global) determines the computation pattern —
           non-overlapping time buckets, overlapping time buckets, activity-based groupings, or unbounded cumulative
@@ -76,21 +80,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Window assignment is the process of assigning each event to one or more windows based on its event-time
           timestamp. For tumbling windows, each event is assigned to exactly one window — the window whose time range
           contains the event&apos;s timestamp. For sliding windows, each event may be assigned to multiple windows — all
           windows whose time range contains the event&apos;s timestamp. For session windows, each event is assigned to a
           session window based on the activity gap — if the event arrives within the gap of an existing session, it is
           added to that session; otherwise, a new session is started.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Window state is the state maintained by the stream processor for each window — for example, the running
           count, sum, or average of events in the window. The state is updated as each event arrives in the window,
           and it is emitted when the window is complete (triggered by the watermark passing the window&apos;s end time).
           The state must be cleaned up after the window is complete and the allowed lateness period has passed, to
           prevent unbounded state growth.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/windowing-diagram-1.svg"
           alt="Four window types: tumbling (non-overlapping), sliding (overlapping), session (variable-size), and global (unbounded)"
@@ -134,19 +141,22 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The windowing architecture begins with the event source (Kafka, Kinesis, Pulsar) providing events with
           event-time timestamps. The stream processor assigns each event to one or more windows based on its
           timestamp and the window type (tumbling, sliding, session). The event is then processed by the windowed
           aggregation operator, which updates the window state (running count, sum, average) with the event&apos;s value.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The watermark generator tracks the maximum event-time timestamp seen so far and emits watermarks at
           configured intervals (for example, every second). The watermark is computed as the maximum event-time minus
           a delay (the watermark delay), which is set based on the observed latency of events. When the watermark
           passes the end of a window, the window is considered complete, and the trigger fires, emitting the window
           result to the downstream operator.
-        </p>
+        </HighlightBlock>
         <p>
           The late-data handler processes events that arrive after the watermark has passed the window&apos;s end. If the
           event is within the allowed lateness period, it is processed and used to update the window result, and a
@@ -175,15 +185,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tumbling versus sliding windows is a trade-off between efficiency and granularity. Tumbling windows are
           more efficient — each event is processed exactly once, and the state is maintained for one window at a time.
           Sliding windows are less efficient — each event may be processed multiple times (once for each window it
           belongs to), and the state is maintained for multiple overlapping windows. However, sliding windows provide
           more granular results — for example, a 10-minute window sliding every 5 minutes provides a result every 5
           minutes, while a 10-minute tumbling window provides a result every 10 minutes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Session versus fixed-size windows is a trade-off between accuracy and complexity. Session windows provide
           accurate groupings based on actual activity patterns — for example, a user session that ends after 30
           minutes of inactivity. Fixed-size windows (tumbling, sliding) are simpler but may split sessions across
@@ -191,7 +204,7 @@ export default function ArticlePage() {
           into one window (multiple short sessions within a window are combined). The choice depends on whether the
           computation requires accurate session groupings — if it does, session windows are necessary; if it does
           not, fixed-size windows are simpler.
-        </p>
+        </HighlightBlock>
         <p>
           Event-time versus processing-time windowing is a trade-off between correctness and simplicity. Event-time
           windowing assigns events to windows based on when they occurred, which is correct for time-sensitive
@@ -204,18 +217,21 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use event-time windowing for time-sensitive computations. Event-time ensures that events are assigned to
           the correct windows based on when they occurred, not when they were processed. Use watermarks to track
           progress in event-time and to handle late events. Set the watermark delay based on the observed latency of
           events — the percentile that balances accuracy (few late events) and latency (short wait time).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use tumbling windows for non-overlapping aggregations (hourly/daily counts, per-window averages) and
           sliding windows for overlapping aggregations (moving averages, trend analysis). Use session windows for
           activity-based groupings (user sessions, burst detection). Use global windows for cumulative computations
           (running totals, all-time counts) with a trigger to emit results periodically.
-        </p>
+        </HighlightBlock>
         <p>
           Configure allowed lateness based on the observed latency of events — the period that captures 99 percent
           of late events. This ensures that the window result is accurate for 99 percent of cases, while bounding
@@ -239,20 +255,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Unbounded window state growth causing out-of-memory errors is the most common windowing failure. Window
           state is maintained for each active window, and if windows are not evicted (due to a watermark stall, a
           configuration error, or an unbounded global window), the state grows unbounded. The fix is to monitor
           window state size, configure allowed lateness to bound the state retention period, and use window cleanup
           triggers to evict state after the allowed lateness period.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Watermark stall causing windows to never close is a subtle failure. If the watermark does not advance (due
           to a producer issue, a network issue, or a clock skew issue), windows never close, and results are never
           emitted. The fix is to monitor the watermark advancement rate and alert when it stalls — if the watermark
           has not advanced for a defined period, investigate the root cause and take corrective action (for example,
           manually advancing the watermark or fixing the producer).
-        </p>
+        </HighlightBlock>
         <p>
           Incorrect allowed lateness causing data loss or excessive state retention is a configuration failure. If
           the allowed lateness is too short, late events are dropped, causing data loss. If the allowed lateness is
@@ -271,21 +290,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses tumbling windows for its real-time sales dashboard, where purchase events
           are aggregated into 1-minute windows to produce real-time revenue metrics. Each purchase event is assigned
           to the 1-minute window based on its event-time timestamp, and the window result (total revenue, number of
           purchases) is emitted when the watermark passes the window&apos;s end. The dashboard displays the revenue for
           each 1-minute window, providing a real-time view of sales performance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses sliding windows for its anomaly detection pipeline, where transaction
           events are aggregated into 1-hour windows sliding every 5 minutes to produce moving averages of transaction
           volume and amount. Each transaction event is assigned to all 1-hour windows that contain its event-time
           timestamp, and the window result (moving average, standard deviation) is emitted every 5 minutes. The
           anomaly detection system compares the current transaction volume to the moving average, alerting when the
           volume exceeds two standard deviations above the average.
-        </p>
+        </HighlightBlock>
         <p>
           A social media platform uses session windows for its user engagement pipeline, where user activity events
           (page views, clicks, comments) are grouped into session windows based on 30-minute gaps of inactivity.
@@ -305,21 +327,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How do you choose between tumbling, sliding, and session windows?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Use tumbling windows for non-overlapping aggregations — for example, hourly/daily counts, per-window
             averages, or computations where each event should be counted exactly once. Tumbling windows are the most
             efficient — each event is processed exactly once, and the state is maintained for one window at a time.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Use sliding windows for overlapping aggregations — for example, moving averages, trend analysis, or
             computations where the result should be updated frequently with overlapping data. Sliding windows are less
             efficient — each event may be processed multiple times — but they provide more granular results.
-          </p>
+          </HighlightBlock>
           <p>
             Use session windows for activity-based groupings — for example, user sessions, burst detection, or
             computations where the window size depends on the event pattern, not a fixed time interval. Session

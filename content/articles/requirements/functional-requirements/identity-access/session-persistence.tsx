@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,13 +34,16 @@ export default function SessionPersistenceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Session Persistence</strong> refers to maintaining user authentication state
           across page reloads, browser restarts, and extended periods. It enables "remember me"
           functionality, seamless navigation, and multi-session support while balancing
           convenience with security. Session persistence is critical for user experience — without
           it, users would need to re-authenticate on every page load.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/session-persistence-flow.svg"
@@ -47,14 +51,14 @@ export default function SessionPersistenceArticle() {
           caption="Session Persistence Flow — comparing token storage strategies, refresh mechanisms, and cross-tab synchronization"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing session persistence requires deep
           understanding of token storage strategies (HttpOnly cookies, memory, localStorage),
           refresh mechanisms (silent refresh, refresh token rotation), security trade-offs (XSS,
           CSRF), cross-tab synchronization (BroadcastChannel API), and session lifecycle
           management. The implementation must provide seamless UX while protecting against token
           theft and unauthorized access.
-        </p>
+        </HighlightBlock>
         <p>
           Modern session persistence has evolved from simple cookie-based sessions to sophisticated
           token-based systems with refresh token rotation, cross-tab synchronization, and device
@@ -66,18 +70,21 @@ export default function SessionPersistenceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Session persistence is built on fundamental concepts that determine how tokens are
           stored, refreshed, and synchronized. Understanding these concepts is essential for
           designing effective session systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Token Storage Strategies:</strong> HttpOnly cookies (recommended — refresh token
           in HttpOnly, Secure, SameSite cookie, inaccessible to JavaScript, XSS-proof), Memory
           (access token in JavaScript variables, lost on refresh, most secure), localStorage (not
           recommended — accessible via JavaScript, XSS risk), sessionStorage (per-tab storage,
           cleared on tab close).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Token Refresh Strategy:</strong> Silent refresh (refresh access token before
           expiry at 80% of TTL, automatic API call to /refresh endpoint), refresh token rotation
@@ -101,11 +108,14 @@ export default function SessionPersistenceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Session persistence architecture separates token storage from refresh logic, enabling
           secure token handling with seamless user experience. This architecture is critical for
           maintaining security while providing smooth UX.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/session-token-refresh.svg"
@@ -113,14 +123,14 @@ export default function SessionPersistenceArticle() {
           caption="Session Token Refresh — showing access token expiry, silent refresh, refresh token rotation, and failure handling"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Session flow: User logs in successfully. Backend returns access token (short-lived) and
           refresh token (long-lived). Frontend stores access token in memory, refresh token in
           HttpOnly cookie. On each API request: include access token in Authorization header.
           Before access token expires (at 80% TTL): trigger silent refresh (POST /refresh with
           refresh token cookie), backend validates refresh token, issues new access token + new
           refresh token (rotation), frontend updates memory with new tokens.
-        </p>
+        </HighlightBlock>
         <p>
           Cross-tab sync flow: User logs in on tab A. BroadcastChannel broadcasts "login" event
           with user data. Tab B receives event, updates auth state, redirects to dashboard. User
@@ -145,23 +155,26 @@ export default function SessionPersistenceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing session persistence involves trade-offs between security, user experience, and
           operational complexity. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">HttpOnly Cookie vs localStorage vs Memory</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>HttpOnly Cookie:</strong> XSS-proof (JavaScript can't access), automatic
               inclusion, CSRF risk (mitigate with SameSite). Recommended for refresh tokens.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>localStorage:</strong> Easy to use, persists across restarts. Limitation:
               XSS vulnerability (any script can read tokens). Not recommended for sensitive apps.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Memory:</strong> Most secure (lost on refresh), no persistence. Limitation:
               user must re-login on refresh. Recommended for access tokens.
@@ -208,19 +221,22 @@ export default function SessionPersistenceArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing session persistence requires following established best practices to ensure
           security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use HttpOnly cookies for refresh tokens — XSS-proof, automatic inclusion. Store access
           tokens in memory only — no persistence, lost on refresh. Implement token refresh before
           expiry — silent refresh at 80% of TTL. Use refresh token rotation — issue new on each
           use, invalidate old. Implement cross-tab logout sync — BroadcastChannel API for
           consistent state.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
         <p>
@@ -250,20 +266,23 @@ export default function SessionPersistenceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing session persistence to ensure secure,
           usable, and maintainable session systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Tokens in localStorage:</strong> XSS can steal tokens, full account
             compromise. <strong>Fix:</strong> Use HttpOnly cookies for refresh tokens. Memory for
             access tokens.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No token refresh:</strong> Users logged out unexpectedly, poor UX.{" "}
             <strong>Fix:</strong> Silent refresh before access token expiry (at 80% of TTL).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No cross-tab sync:</strong> Logout in one tab, others stay logged in,
             inconsistent state. <strong>Fix:</strong> BroadcastChannel API for logout sync.
@@ -305,16 +324,19 @@ export default function SessionPersistenceArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Session persistence is critical for platform UX. Here are real-world implementations
           from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer Platform (Google)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Billions of users, multiple devices per user. Need seamless
           session persistence. Security critical.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> HttpOnly cookies for refresh tokens. Silent refresh for access
           tokens. Cross-tab sync via BroadcastChannel. Device trust (skip MFA on trusted devices).
@@ -400,14 +422,17 @@ export default function SessionPersistenceArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of session persistence design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Where should you store JWT tokens?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Where should you store JWT tokens?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Access token in memory (not localStorage) — no persistence, lost on refresh.
               Refresh token in HttpOnly cookie — XSS-proof, automatic inclusion. This prevents XSS

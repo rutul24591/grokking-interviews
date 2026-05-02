@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,15 +25,18 @@ export default function RadixSortArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Radix Sort is a non-comparative sorting algorithm that processes keys one digit at a time,
           achieving Θ(d · (n + b)) time where n is the number of elements, d is the number of digits
           per key, and b is the base (radix) — typically 2, 10, or 256. It predates the electronic
           computer: punch-card sorting machines in the 1890s US Census used radix sort mechanically,
           feeding cards through one column at a time. Herman Hollerith&apos;s tabulator was, in essence,
           a physical radix sort, and the algorithm&apos;s name comes from that era.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Two variants dominate. <strong>LSD radix sort</strong> (Least Significant Digit) processes
           digits from right to left, stably sorting by each digit in turn; it is the textbook form
           and works beautifully when keys have uniform width (32-bit integers, 8-byte IP addresses,
@@ -40,7 +44,7 @@ export default function RadixSortArticle() {
           left to right, recursively partitioning by each digit and descending into each bucket; it
           handles variable-length keys (strings, names) and can early-exit once a bucket has a single
           element.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           For integer sorting on modern hardware, radix sort is often the fastest known algorithm.
           On CPUs, ska_sort and Rust&apos;s radsort beat introsort by 3–5× on 10⁶–10⁷ element arrays.
@@ -66,8 +70,11 @@ export default function RadixSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">LSD: stability-driven correctness</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           LSD radix sort&apos;s correctness hinges entirely on the inner sort being stable. After
           sorting by the ones digit, elements are ordered by that digit. When we then sort by the
           tens digit, a stable sort preserves the ones-digit ordering among elements with the same
@@ -75,16 +82,16 @@ export default function RadixSortArticle() {
           but only if lower-digit order was never disturbed. If the inner sort is unstable,
           correctness collapses. Counting sort is the canonical choice precisely because it is
           stable, and its Θ(n + b) per pass gives radix&apos;s total Θ(d(n + b)).
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">MSD: prefix partitioning + recursion</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           MSD sorts by the most significant digit first, producing b buckets, each of which is then
           recursively radix-sorted on the next digit. It is natural for variable-length keys: once
           a bucket has only one element, recursion stops. MSD is essentially a trie built top-down,
           and the string sort called 3-way radix quicksort is a hybrid MSD radix + quicksort that
           handles tie runs efficiently. MSD with b = 256 and in-place partition is the fastest
           known general-purpose string sort.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">Choice of radix (base)</h3>
         <p className="mb-4">
           The radix b controls the d vs (n + b) tradeoff. Larger b means fewer digits (smaller d)
@@ -121,21 +128,24 @@ export default function RadixSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Modern radix sort implementations are highly engineered. ska_sort uses a byte-wise MSD
           radix for the outer levels (cache-friendly big buckets) and switches to American-Flag
           in-place when recursion is deep. It also skips radix passes when a range is already
           small (&lt; 128), falling back to insertion or pdqsort. For floating-point, it preprocesses
           bits to encode IEEE-754 as a sortable byte sequence.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           GPU radix sort is a different engineering game. Thrust/CUB&apos;s radix sort uses
           <strong> block-level</strong> decomposition: each thread block computes a local histogram
           over its tile, computes a local prefix scan, and participates in a global scan to compute
           per-bucket offsets. The scatter step uses coalesced memory writes per bucket, which
           dramatically improves memory throughput. This achieves 10+ GB/s — memory-bandwidth-limited
           rather than compute-limited.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Distributed radix sort is the backbone of TeraSort (Hadoop) and Spark&apos;s sort shuffle.
           The top few bits of each key route records to the correct reducer via range partitioning;
@@ -153,19 +163,22 @@ export default function RadixSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Comparison sorts</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Radix is Θ(d · n) for fixed d, beating Θ(n log n). For 32-bit integers on 10⁶ elements,
           radix is 3–5× faster than introsort in practice. But d scales with key width: for 128-bit
           keys, d = 16 at byte-radix, and radix&apos;s advantage narrows. For variable-length strings,
           d is the key length and radix can lose to 3-way quicksort.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Counting sort</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Counting sort is single-pass O(n + k); radix is d passes of O(n + b) with b ≪ k. When k
           is small enough to allocate a full count array (e.g., k = 256), counting sort is faster.
           When k = 2³², the count array is 16 GB — radix is the only option.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">Stability</h3>
         <p className="mb-4">
           LSD radix is <strong>stable</strong> (inherits from inner counting sort). MSD radix can
@@ -181,9 +194,12 @@ export default function RadixSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc pl-6 mb-4 space-y-2">
-          <li><strong>Use LSD radix for fixed-width keys</strong> (integers, IP addresses, timestamps). MSD for variable-width (strings, suffixes).</li>
-          <li><strong>Choose b = 256 (byte-radix)</strong> unless you have a specific reason otherwise — cache fit + minimal d.</li>
+          <HighlightBlock as="li" tier="important"><strong>Use LSD radix for fixed-width keys</strong> (integers, IP addresses, timestamps). MSD for variable-width (strings, suffixes).</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Choose b = 256 (byte-radix)</strong> unless you have a specific reason otherwise — cache fit + minimal d.</HighlightBlock>
           <li><strong>Preprocess signed ints and floats</strong> to sortable bit patterns before sorting. Flip sign bits, handle NaNs.</li>
           <li><strong>Switch to insertion/pdqsort at small n</strong> (&lt; 64 typically) — radix overhead dominates below that.</li>
           <li><strong>Use ska_sort or CUB, not hand-rolled</strong> — engineering headroom is narrow; tuned implementations win.</li>
@@ -195,9 +211,12 @@ export default function RadixSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc pl-6 mb-4 space-y-2">
-          <li><strong>Unstable inner sort breaks LSD correctness</strong> — higher-digit pass destroys lower-digit ordering.</li>
-          <li><strong>Signed ints without sign-bit flip</strong> sort negatives as large unsigned values, placing them at the end.</li>
+          <HighlightBlock as="li" tier="important"><strong>Unstable inner sort breaks LSD correctness</strong> — higher-digit pass destroys lower-digit ordering.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Signed ints without sign-bit flip</strong> sort negatives as large unsigned values, placing them at the end.</HighlightBlock>
           <li><strong>Floats without IEEE bit-pattern encoding</strong> produce nonsensical ordering (−0, NaNs, denormals).</li>
           <li><strong>Large b (e.g., 2¹⁶)</strong>: count array exceeds L1, degrading throughput. Stick to 256 unless measured.</li>
           <li><strong>Short keys with padding</strong>: sorting 4-byte prefixes of strings can miss ordering differences in the tail.</li>
@@ -208,15 +227,18 @@ export default function RadixSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>NVIDIA CUB &amp; Thrust</strong>: radix sort is the default GPU integer sort,
           hitting 10 GB/s on H100. Used by PyTorch torch.sort for integer tensors, RAPIDS cuDF for
           DataFrame sorting, and NVIDIA&apos;s RAPIDS recommendation engines.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Hadoop TeraSort &amp; Spark sort-shuffle</strong>: MSD radix for range partitioning
           across reducers, LSD inside each reducer. Held the 1 TB sort record from 2008–2014.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Google Flash Sort</strong>: internally used in ranking pipelines where record
           layouts are fixed. Byte-wise radix for indexed fields.
@@ -248,9 +270,12 @@ export default function RadixSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <ol className="list-decimal pl-6 mb-4 space-y-2">
-          <li><strong>LSD vs MSD: when to use each?</strong> LSD for fixed-width; MSD for variable-width (strings) or when early termination is possible.</li>
-          <li><strong>Why must the inner sort be stable?</strong> LSD correctness requires preserving lower-digit order when sorting higher digits.</li>
+          <HighlightBlock as="li" tier="important"><strong>LSD vs MSD: when to use each?</strong> LSD for fixed-width; MSD for variable-width (strings) or when early termination is possible.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Why must the inner sort be stable?</strong> LSD correctness requires preserving lower-digit order when sorting higher digits.</HighlightBlock>
           <li><strong>What&apos;s the time complexity and when does radix beat quicksort?</strong> Θ(d(n+b)); beats O(n log n) when d is constant or d · log b &lt; log n.</li>
           <li><strong>How do you sort signed integers / floats with radix?</strong> Flip sign bit for ints; IEEE-754 bit-fixup for floats.</li>
           <li><strong>Choose the radix base b. Why 256?</strong> Byte-wise: d=4 for 32-bit keys, count array 1 KB fits in L1.</li>

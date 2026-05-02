@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function SchemaGovernanceArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Schema governance</strong> is the practice of managing data schemas (API request/response
           schemas, event schemas, database schemas) to ensure that schema changes are backward and
           forward compatible, preventing breaking changes that cause consumer failures. In distributed
@@ -32,8 +36,8 @@ export default function SchemaGovernanceArticle() {
           schema, consumers must be able to read the new schema without modification. Schema governance
           ensures that schema changes are validated for compatibility before deployment, and that
           incompatible changes are communicated and coordinated with consumers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Schema compatibility is defined in four levels: backward compatibility (new schema can be
           read by old consumers), forward compatibility (old schema can be read by new consumers),
           full compatibility (both backward and forward compatible), and no compatibility (breaking
@@ -41,7 +45,7 @@ export default function SchemaGovernanceArticle() {
           new events must be readable by old consumers that have not yet been updated. Forward
           compatibility is important for API evolution — old clients must be able to read new API
           responses.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, schema governance architecture demonstrates
           understanding of API and event evolution challenges, the ability to design schema
@@ -74,13 +78,16 @@ export default function SchemaGovernanceArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding schema governance requires grasping several foundational concepts about schema
           compatibility, schema registries, evolution strategies, and breaking change management.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Schema Compatibility Levels</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Schema compatibility is defined by whether old consumers can read new schemas and whether
           new consumers can read old schemas. <strong>Backward compatibility</strong> means new schemas
           can be read by old consumers — achieved by adding optional fields (with defaults), not
@@ -89,7 +96,7 @@ export default function SchemaGovernanceArticle() {
           requiring new fields, and maintaining field order. <strong>Full compatibility</strong> means
           both backward and forward compatibility — the schema can evolve safely without coordinating
           with consumers.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Schema Registries</h3>
         <p>
@@ -117,10 +124,13 @@ export default function SchemaGovernanceArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Schema governance architecture spans schema registries, compatibility enforcement, evolution
           management, and breaking change coordination.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/schema-governance.svg"
@@ -129,14 +139,14 @@ export default function SchemaGovernanceArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Schema Registration and Validation Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a developer proposes a schema change, the schema is registered with the schema registry.
           The schema registry validates the new schema against the previous schema for compatibility
           (based on the configured compatibility level — backward, forward, full, or none). If the
           schema is compatible, it is registered and assigned a new version number. If the schema is
           not compatible, the registration is rejected with a compatibility error, and the developer
           must either make the schema compatible or coordinate a breaking change with consumers.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Schema Evolution and Deployment</h3>
         <p>
@@ -165,25 +175,28 @@ export default function SchemaGovernanceArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Compatibility Level</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Compatibility Level</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Backward</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>Backward</strong></td>
               <td className="p-3">
                 New schemas readable by old consumers. Safe for event-driven systems. Consumers can be deployed after producers.
               </td>
               <td className="p-3">
                 New consumers cannot read old schemas. Requires careful schema evolution.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Forward</strong></td>
               <td className="p-3">
                 Old schemas readable by new consumers. Safe for API evolution. Producers can be deployed after consumers.
@@ -191,8 +204,8 @@ export default function SchemaGovernanceArticle() {
               <td className="p-3">
                 Old consumers cannot read new schemas. Requires careful schema evolution.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Full</strong></td>
               <td className="p-3">
                 Both backward and forward compatible. Deployment order does not matter. Safest evolution.
@@ -200,7 +213,7 @@ export default function SchemaGovernanceArticle() {
               <td className="p-3">
                 Most restrictive. Limits schema evolution options. Complex to maintain.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>None</strong></td>
               <td className="p-3">
@@ -217,26 +230,29 @@ export default function SchemaGovernanceArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Enforce Backward Compatibility for Events</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event-driven systems should enforce backward compatibility — new events must be readable by
           old consumers that have not yet been updated. This is essential for safe event evolution —
           when a producer starts emitting events with a new schema, old consumers must be able to read
           the new events without modification. Enforce backward compatibility through schema registries
           that reject incompatible schema changes, and include compatibility checking in the CI/CD
           pipeline.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Use Optional Fields with Defaults</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Adding optional fields with default values is the safest schema evolution strategy — it is
           backward compatible (old consumers ignore the new field) and forward compatible (new consumers
           use the default value if the field is missing). Avoid adding required fields — they break
           backward compatibility (old consumers cannot read the new schema without the required field).
           If a required field is needed, add it as optional first, deploy all consumers, then make it
           required in a subsequent schema version.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Deprecate Before Removing</h3>
         <p>
@@ -260,25 +276,28 @@ export default function SchemaGovernanceArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Breaking Changes Without Coordination</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Breaking schema changes (removing required fields, changing field types, renaming fields
           without aliases) cause consumer failures if consumers are not updated before the schema
           change is deployed. Always coordinate breaking changes with consumers — notify all consumers
           of the breaking change, wait for all consumers to update, then deploy the schema change.
           Use schema registries to enforce compatibility and prevent breaking changes from being
           deployed without coordination.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Ignoring Schema Evolution for APIs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           API schemas evolve over time — new fields are added, old fields are deprecated, and field
           types change. Ignoring API schema evolution causes client failures — clients that expect
           the old schema fail when the API returns the new schema. Manage API schema evolution through
           API versioning (v1, v2, v3) — each version has its own schema, and clients update to the
           new API version when ready. Maintain old API versions until all clients have migrated.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Not Tracking Deprecated Fields</h3>
         <p>
@@ -303,26 +322,29 @@ export default function SchemaGovernanceArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Confluent — Schema Registry for Kafka</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Confluent Schema Registry is the industry-standard schema registry for Kafka — it stores
           Avro, JSON Schema, and Protobuf schemas, validates compatibility, and provides schema
           lookup for Kafka producers and consumers. Confluent Schema Registry enforces backward
           compatibility by default — new schemas must be backward compatible with the previous schema.
           Confluent Schema Registry is used by thousands of organizations to manage schema evolution
           in event-driven architectures.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Netflix — Schema Evolution at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix manages thousands of schemas across hundreds of microservices — schema changes are
           validated for compatibility through automated testing in the CI/CD pipeline. Netflix uses
           Protobuf for event schemas with backward compatibility enforcement — new schemas must be
           backward compatible with the previous schema. Netflix&apos;s schema governance process
           prevents breaking changes from being deployed, ensuring that microservices can evolve
           independently without breaking consumers.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Stripe — API Schema Versioning</h3>
         <p>
@@ -347,19 +369,22 @@ export default function SchemaGovernanceArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Schema governance involves security risks — schemas may contain sensitive field names, and schema changes may introduce security vulnerabilities.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Schema Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Sensitive Field Exposure:</strong> Schema changes may inadvertently expose sensitive fields (PII, credentials) to consumers that should not have access. Mitigation: include security review in schema change process, validate that new fields are not sensitive, use field-level access control to restrict sensitive field access.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Schema Registry Access Control:</strong> Schema registries store all schemas, including schemas with sensitive field names. Mitigation: restrict schema registry access to authorized personnel, encrypt schema registry at rest, monitor schema registry access patterns, include schema registry in security audits.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Breaking Change Security:</strong> Breaking schema changes may cause consumers to fail, leading to denial-of-service. Mitigation: enforce compatibility through schema registries, require approval for breaking changes, test breaking changes in staging before production, coordinate breaking changes with all consumers.
             </li>
@@ -370,19 +395,22 @@ export default function SchemaGovernanceArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Schema governance must be validated through systematic testing — compatibility enforcement, evolution strategies, breaking change management, and schema registry availability must all be tested.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Schema Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Compatibility Test:</strong> Register a new schema and verify that the schema registry validates it against the previous schema for compatibility. Verify that compatible schemas are accepted and incompatible schemas are rejected with clear error messages.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Evolution Test:</strong> Evolve a schema through multiple versions (add optional fields, deprecate fields, rename fields with aliases) and verify that old consumers can read new schemas (backward compatibility) and new consumers can read old schemas (forward compatibility).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Breaking Change Test:</strong> Propose a breaking schema change and verify that the schema registry rejects it. Verify that the breaking change can be approved through the coordination process (notify consumers, wait for migration, deploy change).
             </li>

@@ -84,13 +84,13 @@ export default function ServiceWorkerCachingConciseArticle() {
             Promise resolves to a <code>ServiceWorkerRegistration</code> object, which exposes the installing,
             waiting, and active worker references.
           </li>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Install:</strong> Fires once per Service Worker version. This is where you pre-cache
             critical assets using <code>event.waitUntil(caches.open(name).then(c =&gt; c.addAll(urls)))</code>.
             If any resource in <code>addAll</code> fails to download, the entire installation fails atomically,
             ensuring you never have a partially populated cache. The worker enters the &quot;installed&quot;
             (waiting) state after the install event completes.
-          </HighlightBlock>
+          </li>
           <HighlightBlock as="li" tier="important">
             <strong>Waiting:</strong> A newly installed Service Worker does not immediately take control. It
             waits until all tabs controlled by the previous version are closed. This prevents the scenario where
@@ -98,12 +98,12 @@ export default function ServiceWorkerCachingConciseArticle() {
             <code>self.skipWaiting()</code>, but this requires careful consideration because the new worker will
             begin handling fetch events for pages that were loaded under the old worker.
           </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Activate:</strong> Fires when the Service Worker takes control. This is the ideal place to
             clean up outdated caches. Use <code>event.waitUntil()</code> to delete old cache versions before the
             worker begins handling fetch events. Call <code>clients.claim()</code> during activation if you want
             the new worker to immediately control all open pages without requiring a navigation.
-          </HighlightBlock>
+          </li>
           <li>
             <strong>Fetch (Active):</strong> Once activated, the Service Worker intercepts all network requests
             within its scope via the <code>fetch</code> event. You implement your caching strategy here by
@@ -122,29 +122,29 @@ export default function ServiceWorkerCachingConciseArticle() {
           when it expires, and how it is served.
         </HighlightBlock>
         <ul>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>caches.open(cacheName):</strong> Opens or creates a named cache. Returns a Promise resolving
             to a <code>Cache</code> object. Using versioned cache names (e.g., <code>'app-v2'</code>) is the
             standard pattern for cache invalidation.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          </li>
+          <li>
             <strong>cache.addAll(urls):</strong> Fetches all URLs and stores the request/response pairs
             atomically. If any request fails, none are cached. Used during the install event for precaching.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          </li>
+          <li>
             <strong>cache.put(request, response):</strong> Stores a specific request/response pair. You must
             clone the response before caching because response bodies are streams that can only be consumed once:
             one read for the cache, one for the browser.
-          </HighlightBlock>
+          </li>
           <li>
             <strong>cache.match(request):</strong> Looks up a cached response for a given request. Returns{" "}
             <code>undefined</code> if no match is found. By default, matches on URL including query string,
             but the <code>ignoreSearch</code> option allows matching without query parameters.
           </li>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>caches.delete(cacheName):</strong> Deletes an entire named cache. Essential during the
             activate event to remove old cache versions and prevent storage from growing unbounded.
-          </HighlightBlock>
+          </li>
           <li>
             <strong>caches.keys():</strong> Returns all cache names. Use this during activation to iterate and
             delete caches that do not match the current version identifier.
@@ -159,13 +159,13 @@ export default function ServiceWorkerCachingConciseArticle() {
           You can restrict scope with the <code>scope</code> option during registration, but you cannot expand
           it beyond the script's location without a <code>Service-Worker-Allowed</code> response header.
         </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
+        <p>
           The browser checks for SW updates when a navigation occurs to a page within the worker's scope. It
           performs a byte-for-byte comparison of the SW script (and any imported scripts, as of Chrome 78). If
           even one byte differs, the browser triggers a new install. You can also trigger manual update checks
           via <code>registration.update()</code>. The update check respects HTTP cache headers for the SW script
           itself, but browsers cap the max-age to 24 hours to ensure updates are not indefinitely stalled.
-        </HighlightBlock>
+        </p>
       </section>
 
       <section>
@@ -194,7 +194,6 @@ export default function ServiceWorkerCachingConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/caching-strategies/sw-cache-flow.svg"
           alt="Service Worker Cache Flow"
           caption="Fetch event interception flow: how the Service Worker decides between serving from cache or forwarding to the network"
-          captionTier="important"
         />
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
@@ -206,12 +205,12 @@ export default function ServiceWorkerCachingConciseArticle() {
               return it. Best for static assets (images, fonts, CSS/JS bundles with hashed filenames) that change
               infrequently and benefit from instant loading.
             </HighlightBlock>
-            <HighlightBlock as="li" tier="important">
+            <li>
               <strong>Network First (Network Falling Back to Cache):</strong> Always attempt the network request
               first. If the network succeeds, cache the fresh response and return it. If the network fails (offline
               or timeout), fall back to the cached version. Best for API responses and frequently updated content
               where freshness is more important than speed.
-            </HighlightBlock>
+            </li>
             <HighlightBlock as="li" tier="important">
               <strong>Stale-While-Revalidate:</strong> Return the cached response immediately for speed, then
               simultaneously fetch an updated response from the network and update the cache for next time. The
@@ -223,11 +222,11 @@ export default function ServiceWorkerCachingConciseArticle() {
               resources that were precached during installation. Best for versioned static assets that are
               guaranteed to be in cache if the SW is active.
             </li>
-            <HighlightBlock as="li" tier="important">
+            <li>
               <strong>Network Only:</strong> Always go to the network, bypassing cache entirely. The SW still
               intercepts the request (useful for analytics, logging, or header modification) but does not cache the
               response. Best for non-GET requests and real-time data where caching would be harmful.
-            </HighlightBlock>
+            </li>
           </ol>
         </div>
 
@@ -235,16 +234,15 @@ export default function ServiceWorkerCachingConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/caching-strategies/sw-strategies.svg"
           alt="Service Worker Caching Strategies Comparison"
           caption="Comparison of five caching strategies: each balances speed, freshness, and offline support differently"
-          captionTier="important"
         />
 
-        <HighlightBlock as="p" tier="important">
+        <p>
           In production, most applications use a combination of strategies. A typical pattern uses Cache First
           for hashed static assets (JS, CSS, images), Stale-While-Revalidate for API responses that can tolerate
           brief staleness, and Network First for critical data endpoints like user authentication or payment
           information. The <strong>Workbox</strong> library from Google provides a declarative API for configuring
           these strategies per route pattern using <code>registerRoute(matchCallback, handler)</code>.
-        </HighlightBlock>
+        </p>
       </section>
 
       <section>
@@ -252,6 +250,11 @@ export default function ServiceWorkerCachingConciseArticle() {
         <HighlightBlock as="p" tier="crucial">
           Service Worker caching gives you control and offline capability, but it also gives you responsibility:
           invalidation, update UX, and safety checks move from “browser defaults” into your application.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The biggest trade-off is correctness vs speed: a cache hit can be sub-10ms, but serving the wrong thing
+          (wrong auth state, stale API contract, cached error) becomes your incident. Senior designs explicitly
+          partition routes by risk (auth, payments, writes are network-first/only) and put guardrails on caching.
         </HighlightBlock>
         <p>
           Understanding how Service Worker caching compares to other browser storage and caching mechanisms is
@@ -412,11 +415,11 @@ export default function ServiceWorkerCachingConciseArticle() {
             Always serve <code>sw.js</code> with <code>Cache-Control: no-cache</code> or{" "}
             <code>max-age=0</code>.
           </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Not Cleaning Up Old Caches:</strong> Without explicit deletion during the activate event,
             old cache versions accumulate and consume storage. In production apps with frequent deployments,
             this can exhaust the origin's storage quota within weeks, causing cache writes to silently fail.
-          </HighlightBlock>
+          </li>
           <li>
             <strong>Precaching Too Many Assets:</strong> Aggressively precaching every asset (images, fonts,
             all JS chunks) during install causes a massive initial download. Users on slow connections may
@@ -590,22 +593,26 @@ export default function ServiceWorkerCachingConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: service workers are powerful because they change network semantics. Use these to deepen your
+          understanding of lifecycle/activation, caching strategy selection, and production tooling (Workbox).
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://web.dev/learn/pwa/service-workers" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Learn PWA: Service Workers - web.dev
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Service Worker API - MDN Web Docs
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.chrome.com/docs/workbox" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Workbox: Production-Ready Service Worker Libraries - Chrome Developers
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://jakearchibald.com/2014/offline-cookbook/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               The Offline Cookbook - Jake Archibald

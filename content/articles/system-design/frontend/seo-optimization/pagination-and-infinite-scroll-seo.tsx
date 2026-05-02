@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -32,7 +33,7 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Pagination</strong> is the practice of dividing large content
           sets into discrete, numbered pages, each with its own URL. For search
           engines, pagination determines how content is discovered, crawled, and
@@ -40,8 +41,8 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
           — where content loads continuously as the user scrolls — presents
           unique SEO challenges because there are no discrete page boundaries or
           URLs for search engines to crawl.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The tension between pagination and infinite scroll is fundamentally a
           tension between user experience and crawlability. Users often prefer
           infinite scroll for browsing experiences (social feeds, image
@@ -51,8 +52,8 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
           Google&apos;s 2019 deprecation of rel=prev/next — the canonical
           pagination signal — further complicated the landscape, removing the
           explicit mechanism sites used to declare paginated relationships.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the staff/principal engineer level, pagination strategy is an
           information architecture decision that impacts organic traffic
           acquisition. E-commerce category pages with hundreds of products, blog
@@ -62,22 +63,22 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
           500 paginated pages needs every product discoverable by search
           engines, while an infinite-scroll social feed may intentionally limit
           search engine access to prevent thin content indexing.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Traditional Pagination:</strong> Content is divided into
             numbered pages (page 1, page 2, etc.) with distinct URLs
             (/products?page=1, /products?page=2). Each page is independently
             crawlable and indexable. Navigation controls (prev/next links, page
             number links) allow both users and crawlers to traverse the
             sequence. This remains the most SEO-friendly pagination approach.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Load More Button:</strong> A hybrid approach where the
             initial page loads with a subset of content and a &quot;Load
             More&quot; button appends additional items to the page via
@@ -85,8 +86,8 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
             search engines only see the initial page content. With proper URL
             management (updating the URL via History API), this can approximate
             traditional pagination&apos;s SEO benefits.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Infinite Scroll:</strong> Content loads automatically as the
             user scrolls toward the bottom of the page, with no explicit user
             action required. Without intervention, infinite scroll creates a
@@ -94,7 +95,7 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
             engine crawlers cannot scroll — they only see content present in the
             initial HTML response or loaded by JavaScript within
             Googlebot&apos;s rendering timeout.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>rel=prev/next (Deprecated):</strong> HTML link tags that
             declared paginated series relationships. Google deprecated these in
@@ -140,27 +141,27 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The architectural choice between pagination strategies directly
           impacts both crawlability and user engagement metrics.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/pagination-and-infinite-scroll-seo-diagram-1.svg"
           alt="Comparison of pagination strategies showing traditional pagination, load more button, and infinite scroll with their respective URL and crawling behaviors"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           Traditional pagination creates discrete, crawlable URLs for each page
           of content. Load More creates a single initial URL with
           JavaScript-loaded additional content. Infinite scroll presents all
           content under one URL with scroll-triggered loading. For search
           engines, the key difference is URL addressability — only content with
           its own URL is reliably crawled and indexed.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/pagination-and-infinite-scroll-seo-diagram-2.svg"
           alt="Crawler navigation flow through paginated content showing how Googlebot discovers and traverses page sequences via links and sitemaps"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           Googlebot discovers paginated content through two primary channels:
           following links (both sequential prev/next and jump navigation) and
           sitemap entries. Deep pages (beyond page 10) are often only
@@ -168,7 +169,7 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
           sequential traversal unreliable. The crawler does not
           &quot;scroll&quot; — it can only follow links and render JavaScript
           within its rendering budget.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/pagination-and-infinite-scroll-seo-diagram-3.svg"
           alt="Hybrid pagination architecture showing server-rendered paginated URLs with client-side infinite scroll overlay for user experience"
@@ -188,16 +189,19 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="important">
               <th className="p-3 text-left">Pattern</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
+            </HighlightBlock>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">Traditional Pagination</td>
               <td className="p-3">
                 Fully crawlable; each page independently indexable; clear URL
@@ -207,8 +211,8 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
                 Click-and-wait friction; page reloads interrupt browsing flow;
                 may have lower engagement metrics than infinite scroll
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">Infinite Scroll</td>
               <td className="p-3">
                 Seamless user experience; higher engagement for browsing
@@ -219,7 +223,7 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
                 URLs for deep content; footer inaccessible; back button
                 doesn&apos;t restore scroll position; accessibility challenges
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3 font-medium">Load More Button</td>
               <td className="p-3">
@@ -255,26 +259,26 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Ensure Every Content Item Has a Crawlable Path:</strong>{" "}
             Whether using pagination, infinite scroll, or load more, every item
             in the collection must be reachable by crawlers through some
             mechanism — paginated page URLs, sitemap entries, or direct links
             from other pages. No content should be discoverable only through
             user interaction.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide Unique URLs for Paginated Content:</strong> Each
             page of a paginated sequence should have a distinct, stable URL
             (/products?page=2 or /products/page/2). This enables deep linking,
             bookmark sharing, and independent indexing of each page.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Self-Canonicalize Each Paginated Page:</strong> Do not
             canonicalize page 2, 3, etc. to page 1. Each page has unique content
             and should self-canonicalize. Canonicalizing all pages to page 1
             de-indexes all products/items on subsequent pages.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Include Paginated Pages in Sitemaps:</strong> Deep paginated
             pages (beyond page 10) may not be discovered through link crawling
@@ -309,25 +313,25 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Canonicalizing All Pages to Page 1:</strong> The most common
             and most damaging pagination SEO error. This tells search engines
             that content on pages 2+ is duplicate of page 1, hiding all
             products/items beyond the first page from search results.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Infinite Scroll Without Fallback URLs:</strong> Implementing
             pure infinite scroll without underlying paginated URLs makes all
             content beyond the initial viewport invisible to search engines.
             Googlebot does not scroll — it only sees content in the initial
             render.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Relying on rel=prev/next:</strong> Since Google deprecated
             these signals in 2019, relying solely on rel=prev/next for
             pagination SEO provides no benefit. Focus on crawlable URLs,
             internal linking, and sitemap inclusion instead.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No-Indexing Paginated Pages:</strong> Applying noindex to
             pages 2+ removes their content from search results. While sometimes
@@ -353,28 +357,28 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Amazon Category Pages:</strong> Uses traditional pagination
             with numbered page links and next/prev navigation. Each page has a
             distinct URL (/s?page=N), self-referencing canonical, and inclusion
             in sitemaps. Products appear in search results individually through
             dedicated product URLs, but category pagination ensures
             discoverability of the full catalog.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Pinterest:</strong> Uses the hybrid approach — server-
             rendered paginated URLs exist for search engine crawling, while
             users experience infinite scroll with History API URL updates. Pins
             discovered through paginated crawling each have their own dedicated
             URL for individual indexing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Twitter/X:</strong> Intentionally does not make infinite
             scroll content SEO-friendly. Timeline content is ephemeral and
             changes constantly — indexing individual scroll positions would
             create stale search results. Individual tweets have dedicated URLs
             for search indexing.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Google Search Results:</strong> Google&apos;s own search
             results use traditional pagination — a notable choice given that
@@ -389,12 +393,15 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do you make infinite scroll SEO-friendly?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Implement the hybrid pattern: create server-rendered paginated
               URLs (/page/1, /page/2) that serve as the crawlable foundation.
               For JavaScript-enabled users, overlay infinite scroll that loads
@@ -404,12 +411,12 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
               URLs in the sitemap. Provide noscript fallback with traditional
               pagination links. This gives crawlers discrete, indexable pages
               while users get a seamless scrolling experience.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: Should paginated pages have noindex tags?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Generally no. Each paginated page contains unique content
               (different products, articles, etc.) that should be discoverable
@@ -475,7 +482,7 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://developers.google.com/search/docs/specialty/ecommerce/pagination-and-incremental-page-loading"
               target="_blank"
@@ -484,8 +491,8 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
             >
               Google Search Central — Pagination and Incremental Page Loading
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://web.dev/articles/infinite-scroll-search-friendly"
               target="_blank"
@@ -494,8 +501,8 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
             >
               web.dev — Infinite Scroll Search-Friendly Recommendations
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.searchenginejournal.com/google-on-rel-prev-next/298187/"
               target="_blank"
@@ -504,7 +511,7 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
             >
               Search Engine Journal — Google Deprecates rel=prev/next
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://ahrefs.com/blog/pagination-seo/"

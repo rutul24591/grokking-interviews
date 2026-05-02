@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,20 +24,23 @@ export default function SlidingWindowArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Sliding window is a parallel two-pointer technique specialised for problems where the answer depends on a
         contiguous range A[L..R] of an array or string and on an aggregate over that range — sum, count, distinct
         characters, max, frequency map. Both pointers walk forward; the window expands by advancing R and shrinks by
         advancing L. By updating the aggregate incrementally, the total work is amortised O(n) instead of the O(n²)
         cost of recomputing for each candidate window.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The pattern has two shapes. <strong>Fixed-size sliding window</strong>: the window length is a given constant
         k; slide it across the input maintaining a running aggregate. <strong>Variable-size sliding window</strong>:
         the window length adapts to a predicate; expand R when the predicate is satisfied, shrink L when it&apos;s
         violated. Variable windows further split into two sub-flavours: longest-with-property (record after each
         valid expansion) and shortest-with-property (record before each shrink).
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Recognition signals are concrete and reliable. &quot;Longest / shortest contiguous substring or subarray
         with property X&quot;, &quot;sum of every window of size k&quot;, &quot;does pattern P appear as an anagram
@@ -52,19 +56,22 @@ export default function SlidingWindowArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Amortised O(n) argument.</strong> R advances n times across the loop. L advances at most n times
         total (it only moves forward and never past R). So the combined pointer movement is bounded by 2n, and as
         long as the per-step aggregate update is O(1) or O(log n), the total work is O(n) or O(n log n). This is the
         whole reason sliding window beats the O(n²) brute force.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Aggregate maintenance.</strong> The window state must support two operations: add(x) when R advances,
         remove(x) when L advances. For sum, both are O(1) integer addition. For frequency-based predicates (longest
         with at most k distinct characters), state is a hashmap from char to count, plus a running &quot;number of
         distinct chars&quot; counter — O(1) amortised per move. For window max / min, a monotonic deque gives O(1)
         amortised; a sorted multiset gives O(log n).
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Longest-with-property template.</strong> Initialise L = 0, best = 0, state empty. For each R from 0
         to n − 1: add A[R] to state; while predicate is violated, remove A[L] and increment L; record best = max(best,
@@ -96,19 +103,22 @@ export default function SlidingWindowArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Most sliding-window problems can be expressed using two templates. The longest-with-property template is the
         common case for substring and subarray maximisation. The shortest-with-property template is for
         minimisation. Memorise both and pick by problem shape.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Aggregate choice by predicate.</strong> &quot;Sum &lt; target&quot; → integer running sum.
         &quot;At most k distinct characters&quot; → hashmap of char counts plus a running distinct count. &quot;No
         repeating characters&quot; → set of characters in window, or hashmap from char to last-seen index for the
         jump-ahead variant. &quot;Window contains all characters of pattern P&quot; → two hashmaps (P&apos;s
         target counts vs. window&apos;s current counts) plus a &quot;matches&quot; counter that tracks how many
         characters in P have hit their target count in the window.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         For Minimum Window Substring (Leetcode 76), the aggregate is the &quot;matches&quot; counter — number of
         distinct characters in P whose count in the window meets or exceeds the target. The window is valid when
@@ -138,18 +148,21 @@ export default function SlidingWindowArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Sliding window vs. <strong>two-pointer</strong>: same skeleton, different predicate scope. Two-pointer
         predicates depend on A[L] and A[R] only; sliding-window predicates depend on the window contents A[L..R].
         Two Sum II is two-pointer; Minimum Window Substring is sliding-window. The aggregate is the differentiator.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Sliding window vs. <strong>prefix sum</strong>: prefix sums solve range-sum queries in O(1) after O(n)
         preprocessing — useful when ranges are arbitrary or non-contiguous in time. Sliding window is for problems
         where ranges are processed in monotone order. Prefix sum + hashmap (Subarray Sum Equals K, Leetcode 560) is
         the natural extension when the predicate is &quot;exactly equal&quot; rather than &quot;at most&quot; or
         &quot;at least.&quot;
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Sliding window vs. <strong>brute force</strong>: brute force is O(n²) — for each L, scan R until predicate
         breaks. Sliding window is O(n) by reusing work across L moves. The brute force is sometimes acceptable for n
@@ -168,16 +181,19 @@ export default function SlidingWindowArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Pick the right template for the problem. Longest-with-property: shrink while invalid, record after the inner
         loop. Shortest-with-property: shrink while valid, record before the shrink. Mixing them up gives off-by-one
         bugs that pass small tests and fail large ones.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Choose the simplest aggregate that the predicate needs. A set is enough for distinctness; a hashmap of
         counts is needed when duplicates matter; a multiset is needed when order statistics (median, max, min)
         matter; a monotonic deque is needed for window-max/min with O(1) amortised access.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         For predicates over character counts, maintain a &quot;matches&quot; counter alongside the count map. The
         counter changes by ±1 only when a count crosses zero or the target value — that&apos;s the O(1) per-move
@@ -198,15 +214,18 @@ export default function SlidingWindowArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Recording the answer at the wrong step in a variable window.</strong> Longest: record after the inner
         shrink loop. Shortest: record before each shrink. Get this wrong and the algorithm reports stale or
         invalid windows.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Forgetting to advance L on shrink.</strong> The inner loop must both update the aggregate (remove A[L])
         and advance L. Missing the L += 1 produces an infinite loop.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Using a set instead of a count map for hashmap-based windows.</strong> Sets handle distinctness, not
         multiplicity. &quot;Longest substring with at most k distinct characters&quot; needs counts to know when the
@@ -236,16 +255,19 @@ export default function SlidingWindowArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Sliding window is the dominant technique in <strong>rate limiting</strong> (count requests in the last
         N seconds), <strong>streaming analytics</strong> (rolling averages, p99 latencies over a 5-minute window),
         <strong> network packet inspection</strong> (signatures inside payload windows), and <strong>video / audio
         processing</strong> (fixed-window FFT, voice activity detection). The same expand-and-shrink discipline
         applies; the aggregate is whatever metric the application cares about.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Below are the canonical Leetcode problems that map to this pattern. Each tests a different aggregate.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>3. Longest Substring Without Repeating Characters.</strong> Classic variable-longest. Aggregate: set
         of characters in window, or hashmap of last-seen index for the jump-ahead form.
@@ -296,14 +318,17 @@ export default function SlidingWindowArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Walk through Minimum Window Substring.</strong> Build a target count map from P. Maintain a window
+        <HighlightBlock as="li" tier="important"><strong>Walk through Minimum Window Substring.</strong> Build a target count map from P. Maintain a window
         count map and a matches counter (number of chars in P whose window count meets target). Expand R, updating
         window count; if the new count of A[R] hits target, increment matches. While matches == |distinct(P)|, the
         window covers P — record min length, then shrink: if the count of A[L] is at target, decrement matches; then
-        decrement count and L. Continue. O(|S| + |P|) time.</li>
-        <li><strong>Why is the amortised cost O(n)?</strong> R moves n times. L moves at most n times (monotone forward,
-        bounded by n). Each pointer move does O(1) aggregate work. Total ≤ 2n × O(1) = O(n).</li>
+        decrement count and L. Continue. O(|S| + |P|) time.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Why is the amortised cost O(n)?</strong> R moves n times. L moves at most n times (monotone forward,
+        bounded by n). Each pointer move does O(1) aggregate work. Total ≤ 2n × O(1) = O(n).</HighlightBlock>
         <li><strong>How do you handle &quot;exactly k distinct&quot;?</strong> Compute &quot;at most k&quot; minus
         &quot;at most (k − 1)&quot;. Direct &quot;exactly k&quot; isn&apos;t monotone — shrinking might violate it,
         but it might still be valid later, so the standard expand-shrink discipline doesn&apos;t work.</li>

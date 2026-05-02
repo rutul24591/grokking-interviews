@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,21 +24,24 @@ export default function TrieArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         A trie (prefix tree) is a rooted tree where each node represents a prefix and each edge is
         labelled with a single character. Walking from the root along a sequence of edges spells out
         the prefix corresponding to that node. A boolean flag at each node marks whether the prefix
         also corresponds to a complete word in the stored set. Insert and search for a string of
         length L are both O(L), independent of the number of stored strings.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The trie&apos;s structural property is <strong>shared prefixes</strong>: storing &quot;car&quot;,
         &quot;card&quot;, and &quot;care&quot; uses three nodes for the shared &quot;car&quot; prefix
         plus one node each for &quot;d&quot; and &quot;e&quot;, not three independent strings. This is
         the win over a hash set — for prefix queries (&quot;does any stored word start with X?&quot;,
         &quot;list all words with prefix X&quot;), the trie is O(|X| + |answer|) where a hash needs
         a full scan or per-prefix indexing that bloats memory to O(L²).
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Recognition signals are concrete. &quot;Implement autocomplete&quot;, &quot;words starting
         with prefix&quot;, &quot;dictionary lookup with wildcards&quot;, &quot;words in grid from a
@@ -54,20 +58,23 @@ export default function TrieArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Node representation.</strong> Three common choices. <em>Fixed array</em> — int[26] or
         TrieNode[26] for lowercase Latin alphabet; fastest, sparse for non-alphabetic. <em>Hash
         map</em> — char → TrieNode; flexible alphabet, slight overhead per access. <em>Compressed
         (radix / Patricia) trie</em> — collapse single-child chains into one edge; saves memory at
         the cost of split logic on insert. For Leetcode-style alphabetic input, int[26] is the
         default.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>End-of-word marker.</strong> A boolean isEnd at each node distinguishes &quot;this
         prefix is a stored word&quot; from &quot;this prefix is just a path to other words&quot;.
         Without it, &quot;car&quot; cannot be told apart from a partial path to &quot;card&quot;.
         Some variants store a count or the original word string for richer queries.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Insert and search are walks.</strong> insert(word): walk from root, creating missing
         children, mark final node isEnd = true. search(word): walk; if any child is missing, return
@@ -106,18 +113,21 @@ export default function TrieArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Base trie template (208).</strong> TrieNode has children (array or map) and isEnd.
         insert walks from root creating missing children, sets isEnd at the final node. search walks;
         returns false if any child missing, returns isEnd at end. startsWith walks; returns true if
         the walk completes regardless of isEnd. All O(L).
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Wildcard search template (211).</strong> Recursive search(node, word, i). If i == |word|,
         return node.isEnd. If word[i] is a regular char, descend on it. If word[i] is &apos;.&apos;, try
         every existing child recursively; return true if any returns true. Average case is much
         better than the 26^L worst case because most subtrees prune fast.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Word Search II template (212).</strong> Build a trie of all dictionary words. For each
         cell of the grid, run DFS carrying the current trie node. From cell (r, c) with trie node n:
@@ -153,17 +163,20 @@ export default function TrieArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Trie vs. hash set.</strong> Hash set gives O(L) insert and exact-match lookup. It
         cannot answer prefix queries without a full scan or pre-indexing every prefix (O(L²)
         memory). Use a trie when prefix queries are part of the workload.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Trie vs. sorted array + binary search.</strong> Sorted array gives O(L log n) prefix
         lookup (binary-search the lower bound). Trie gives O(L). For static dictionaries,
         sorted-array + binary-search is often simpler and uses less memory. For dynamic insert
         / delete, trie is better — sorted array would be O(n) per insert.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Trie vs. compressed trie.</strong> Plain trie is simpler; compressed trie saves
         memory by an order of magnitude on sparse inputs. For interview implementations, plain trie
@@ -188,16 +201,19 @@ export default function TrieArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Pick the node type to match the alphabet.</strong> int[26] for lowercase Latin;
         Map&lt;Character, Node&gt; for arbitrary Unicode; int[2] for bit-tries. The choice affects
         both runtime and memory by 5–10×.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Always include an isEnd flag.</strong> Distinguishing &quot;this prefix is a word&quot;
         from &quot;this prefix is a path to other words&quot; is essential for correctness on any
         non-trivial query.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Sort dictionaries before inserting for autocomplete.</strong> A pre-sorted dictionary
         means DFS through the trie naturally yields alphabetic order — no per-result sort.
@@ -220,16 +236,19 @@ export default function TrieArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Forgetting isEnd in search.</strong> startsWith returns true at any walk-completion;
         search must additionally check isEnd. Conflating the two passes prefix queries when exact
         matches are needed.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Memory blow-up from int[26] with mostly-empty children.</strong> For a sparse
         100-word dictionary, int[26] uses ~10× the necessary memory. Use a hash map for sparse
         cases.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Recursing into all children for &apos;.&apos; on empty subtrees.</strong> Wildcard
         search must check whether the child exists before recursing. Otherwise it walks null
@@ -256,14 +275,17 @@ export default function TrieArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode Problems)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>208. Implement Trie.</strong> The base class — insert, search, startsWith. The
         warm-up.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>211. Add and Search Word — Data Structure Design.</strong> Wildcard search over
         &apos;.&apos; via DFS over the trie. Tests recursion discipline.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>1268. Search Suggestions System.</strong> Autocomplete returning up to 3 suggestions
         per prefix. Sort products first; DFS the trie subtree alphabetically.
@@ -306,13 +328,16 @@ export default function TrieArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why is trie better than hash for prefix queries?</strong> Hash answers exact match
+        <HighlightBlock as="li" tier="important"><strong>Why is trie better than hash for prefix queries?</strong> Hash answers exact match
         in O(L) but cannot list all keys with a given prefix without scanning all keys or
-        pre-indexing every prefix (O(L²) memory). Trie does it in O(|prefix| + |answer|).</li>
-        <li><strong>What does the isEnd flag distinguish?</strong> Whether a prefix is a stored word or
+        pre-indexing every prefix (O(L²) memory). Trie does it in O(|prefix| + |answer|).</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>What does the isEnd flag distinguish?</strong> Whether a prefix is a stored word or
         only a path to other words. Without it, &quot;car&quot; vs. &quot;card&quot; cannot be told
-        apart at the &quot;car&quot; node.</li>
+        apart at the &quot;car&quot; node.</HighlightBlock>
         <li><strong>How do you handle wildcards efficiently?</strong> Recurse over all existing children
         at each &apos;.&apos;. Pruning by missing children keeps the average case far below the 26^L
         worst case.</li>

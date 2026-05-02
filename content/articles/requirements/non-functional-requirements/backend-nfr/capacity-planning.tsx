@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function CapacityPlanningArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Capacity planning</strong> is the process of determining the production resources
           (compute, memory, storage, network) needed to meet current and future demand while maintaining
           performance targets and cost efficiency. It answers the question: &quot;How much infrastructure
           do we need, when do we need it, and how do we know before we run out?&quot;
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Capacity planning is a continuous discipline — not a one-time exercise. Demand changes as user
           growth, feature launches, and seasonal patterns fluctuate. Infrastructure changes as new services
           are deployed, existing services are optimized, and technology evolves. Effective capacity planning
           requires accurate demand forecasting, resource modeling (how much infrastructure does a unit of
           demand consume?), and headroom management (how much buffer between current usage and capacity
           limits?).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, capacity planning demonstrates operational maturity.
           Interviewers expect you to design systems that can forecast capacity needs 3-6 months in advance,
@@ -71,20 +75,23 @@ export default function CapacityPlanningArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding capacity planning requires grasping several foundational concepts about demand
           modeling, resource utilization, and growth forecasting.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Demand Forecasting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Demand forecasting predicts future load based on historical data, growth trends, and planned
           changes. Historical data provides the baseline — average and peak requests per second, data
           volume growth rate, and storage consumption trends. Growth trends account for user growth,
           feature adoption, and seasonal patterns (e.g., holiday shopping spikes). Planned changes
           include new product launches, marketing campaigns, and API deprecations that will shift load
           patterns.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Resource Modeling</h3>
         <p>
@@ -109,10 +116,13 @@ export default function CapacityPlanningArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Capacity planning architecture spans demand measurement, resource modeling, forecasting,
           headroom management, and procurement orchestration.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/capacity-planning-framework.svg"
@@ -121,14 +131,14 @@ export default function CapacityPlanningArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Capacity Monitoring Pipeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The capacity monitoring pipeline continuously measures resource utilization (CPU, memory,
           disk, network) across all infrastructure components, aggregates utilization by service and
           tier, compares utilization against capacity limits, calculates headroom (time until capacity
           exhaustion at current growth rate), and generates alerts when headroom falls below thresholds.
           This pipeline runs continuously — capacity data should be visible on dashboards in real time,
           not computed manually during quarterly reviews.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Forecasting Models</h3>
         <p>
@@ -156,25 +166,28 @@ export default function CapacityPlanningArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Approach</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Approach</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Static Provisioning</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>Static Provisioning</strong></td>
               <td className="p-3">
                 Predictable costs. Full control over infrastructure. No auto-scaling complexity.
               </td>
               <td className="p-3">
                 Slow response to demand changes. Requires manual procurement. Over-provisioning waste or under-provisioning risk.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Auto-Scaling</strong></td>
               <td className="p-3">
                 Automatic response to demand. Pay for what you use. Minimal manual intervention.
@@ -182,8 +195,8 @@ export default function CapacityPlanningArticle() {
               <td className="p-3">
                 Scaling latency (minutes to provision). Cold start performance impact. Cost unpredictability during spikes.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Reserved Capacity</strong></td>
               <td className="p-3">
                 Significant cost savings (30-60% vs on-demand). Guaranteed capacity. Budget predictability.
@@ -191,7 +204,7 @@ export default function CapacityPlanningArticle() {
               <td className="p-3">
                 Long-term commitment (1-3 years). Inflexible to demand changes. Upfront payment or higher monthly cost.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Hybrid (Reserved + On-Demand)</strong></td>
               <td className="p-3">
@@ -208,23 +221,26 @@ export default function CapacityPlanningArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Plan for Peak, Not Average</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Capacity must handle peak demand, not average demand. If average traffic is 10,000 RPS but
           peak traffic is 30,000 RPS (3× average), the system must be sized for 30,000 RPS. Sizing for
           average demand causes outages during peak periods. Use the 99th percentile of historical
           traffic as the baseline for capacity planning, not the average or median.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Maintain 30-50% Headroom</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Maintain 30-50% headroom between current peak utilization and capacity limits. This headroom
           absorbs traffic spikes, provides time for emergency procurement, and prevents latency
           degradation as utilization approaches saturation. The exact headroom level depends on scaling
           speed — systems that can auto-scale within minutes need less headroom than systems that require
           days to procure and provision new infrastructure.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Forecast 3-6 Months Ahead</h3>
         <p>
@@ -249,24 +265,27 @@ export default function CapacityPlanningArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Planning for Average Instead of Peak</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common capacity planning error is sizing infrastructure for average demand rather
           than peak demand. Average demand may be 10,000 RPS, but peak demand during a product launch
           or marketing campaign may be 50,000 RPS. Infrastructure sized for average demand will fail
           during peak periods, causing outages that could have been prevented with proper peak-based
           capacity planning.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Ignoring Indirect Capacity Constraints</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Capacity planning often focuses on direct constraints (CPU, memory, disk) while ignoring
           indirect constraints (connection pools, thread pools, file descriptors, rate limits). A
           system may have 50% CPU headroom but be limited by a connection pool that is 95% utilized.
           Monitor all capacity constraints — direct and indirect — and plan for the most restrictive
           constraint, not the most obvious one.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Not Accounting for Growth Acceleration</h3>
         <p>
@@ -293,9 +312,12 @@ export default function CapacityPlanningArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Amazon — Holiday Season Capacity Planning</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon&apos;s holiday season capacity planning begins 6-9 months in advance. Historical data from
           previous holiday seasons provides the baseline demand forecast. Growth trends from the current
           year adjust the baseline upward. Planned promotions (Black Friday, Cyber Monday) add demand
@@ -303,10 +325,10 @@ export default function CapacityPlanningArticle() {
           the baseline demand (cost-efficient, guaranteed availability) and auto-scaling for demand
           spikes above baseline. During the holiday season, Amazon&apos;s infrastructure scales to 2-3×
           its normal capacity, then scales back down in January.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Netflix — Auto-Scaling Capacity Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix uses auto-scaling as its primary capacity management strategy. Each service defines
           scaling policies based on CPU utilization, request rate, and custom metrics (streaming quality,
           error rates). Netflix&apos;s auto-scaling can provision new instances within 5-10 minutes,
@@ -314,7 +336,7 @@ export default function CapacityPlanningArticle() {
           uses predictive scaling — machine learning models forecast demand based on historical patterns
           (time of day, day of week, content release schedule) and pre-scale infrastructure before
           demand increases.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Slack — Capacity Planning for Real-Time Communication</h3>
         <p>
@@ -342,19 +364,22 @@ export default function CapacityPlanningArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Capacity planning decisions have security implications — insufficient capacity can cause security controls to fail, while excess capacity can increase the attack surface.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Capacity-Related Security Risks</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Security Control Degradation:</strong> When infrastructure approaches capacity limits, security controls (WAF, rate limiting, authentication) may degrade or fail. Mitigation: prioritize security infrastructure in capacity planning, maintain higher headroom for security controls (50%+ vs 30% for general infrastructure), monitor security control utilization separately.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Capacity Exhaustion Attacks:</strong> Attackers deliberately exhaust capacity (storage, connections, compute) to cause denial-of-service. Mitigation: implement per-client capacity limits, detect and block capacity exhaustion patterns, maintain emergency capacity reserves for attack mitigation.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Emergency Procurement Risks:</strong> During capacity emergencies, normal procurement security controls may be bypassed. Mitigation: maintain pre-approved emergency procurement procedures with security review, use trusted vendors only, verify security compliance of emergency infrastructure.
             </li>
@@ -377,19 +402,22 @@ export default function CapacityPlanningArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Capacity planning must be validated through systematic testing — forecasts must be compared against actual demand, resource models must be verified under load, and headroom calculations must be validated during peak conditions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Capacity Validation Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Load Testing at Peak:</strong> Run load tests at 2× forecasted peak demand. Verify that the system handles the load within performance targets. Identify the actual capacity limit (where performance degrades below SLOs) and compare it with the planned capacity limit. Adjust resource models based on actual results.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Soak Testing:</strong> Run sustained load tests (4-8 hours) at 80% of capacity to verify that the system maintains stable performance over time. Identify memory leaks, connection pool exhaustion, and gradual performance degradation that only appear under sustained load.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Forecast Accuracy Testing:</strong> Compare capacity forecasts against actual demand monthly. Calculate forecast accuracy (forecast vs actual) and identify systematic biases (consistently over-forecasting or under-forecasting). Adjust forecasting models based on accuracy trends.
             </li>

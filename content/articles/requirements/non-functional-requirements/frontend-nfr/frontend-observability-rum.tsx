@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,10 @@ export default function FrontendObservabilityRUMArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Frontend Observability</strong> provides visibility into how
           web applications perform and behave in production from the actual
           user&apos;s perspective. Real User Monitoring (RUM) collects data from
@@ -45,8 +49,8 @@ export default function FrontendObservabilityRUMArticle() {
           tests from controlled environments, RUM captures the variability of
           real-world conditions: diverse devices, network qualities, geographic
           locations, and user behavior patterns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff engineers, observability is the foundation of production
           quality assurance. You cannot improve what you cannot measure, and
           frontend performance directly impacts business outcomes — every 100ms
@@ -56,7 +60,7 @@ export default function FrontendObservabilityRUMArticle() {
           users complain), performance budget enforcement (alerting when metrics
           cross defined thresholds), and correlation between technical metrics
           and business outcomes (how does LCP affect checkout completion rate).
-        </p>
+        </HighlightBlock>
         <p>
           Modern frontend observability spans four pillars: performance metrics
           (Core Web Vitals, custom timing data, resource timing), error tracking
@@ -71,7 +75,10 @@ export default function FrontendObservabilityRUMArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Core Web Vitals are the industry-standard performance metrics defined
           by Google, focusing on three dimensions of user experience. Largest
           Contentful Paint (LCP) measures loading performance — the time from
@@ -84,8 +91,8 @@ export default function FrontendObservabilityRUMArticle() {
           stability — the sum of all unexpected layout shifts during the page
           lifecycle, where a layout shift occurs when a visible element changes
           position between frames. The target is under 0.1.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Supplemental performance metrics provide additional context. First
           Contentful Paint (FCP) measures when the first text or image is
           rendered, indicating that the page is loading (target under 1.8
@@ -95,7 +102,7 @@ export default function FrontendObservabilityRUMArticle() {
           when any pixel is rendered, often just the background color. These
           metrics form a hierarchy — TTFB affects FCP, which affects LCP, which
           affects user perception of page speed.
-        </p>
+        </HighlightBlock>
         <p>
           Measurement strategy involves the web-vitals library from Google,
           which provides observers for each Core Web Vital metric. The library
@@ -118,7 +125,10 @@ export default function FrontendObservabilityRUMArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The RUM data collection architecture operates at the browser level,
           using the Performance API to capture high-resolution timing data for
           navigation, resources, and user interactions. The Navigation Timing
@@ -129,8 +139,8 @@ export default function FrontendObservabilityRUMArticle() {
           files, images, fonts, API calls). The web-vitals library builds on
           these APIs to compute user-centric metrics (LCP, INP, CLS) that
           correlate with perceived performance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The data pipeline processes collected metrics through several stages.
           Client-side batching groups multiple metrics into a single request to
           reduce network overhead. Sampling reduces data volume — for high
@@ -141,7 +151,7 @@ export default function FrontendObservabilityRUMArticle() {
           experiment variant, application version). The enriched data is stored
           in a time-series database and aggregated for dashboards, alerts, and
           trend analysis.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/observability-architecture.svg"
@@ -171,7 +181,10 @@ export default function FrontendObservabilityRUMArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Sampling rate selection involves balancing data fidelity against cost
           and privacy. Collecting data from 100% of users provides the most
           complete picture but generates massive data volumes, increases costs
@@ -183,8 +196,8 @@ export default function FrontendObservabilityRUMArticle() {
           detection), and 1-5% for session replays (expensive storage, used for
           debugging specific issues). This ensures comprehensive error visibility
           while controlling performance data costs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Lab data (Lighthouse, WebPageTest) versus field data (RUM, Chrome UX
           Report) serve different purposes and both are necessary. Lab data
           provides controlled, reproducible measurements in a consistent
@@ -196,7 +209,7 @@ export default function FrontendObservabilityRUMArticle() {
           performance, and correlating technical metrics with business outcomes.
           The trade-off is not either/or — use lab data for development and CI
           gates, and field data for production monitoring and SEO reporting.
-        </p>
+        </HighlightBlock>
         <p>
           Session replay provides invaluable debugging context — seeing exactly
           what the user saw, how they interacted, and where they encountered
@@ -213,7 +226,10 @@ export default function FrontendObservabilityRUMArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Start observability implementation with Core Web Vitals as the
           foundation. These metrics (LCP, INP, CLS) are Google ranking factors,
           correlate with user experience, and have well-defined thresholds for
@@ -225,8 +241,8 @@ export default function FrontendObservabilityRUMArticle() {
           assessment, meaning 75% of users experience the metric at or below
           this value. Also track p95 for power users who may have slower
           devices or networks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Segment performance data by device class, network type, geography, and
           user type (new versus returning). Aggregate metrics hide important
           variations — your p75 LCP might be 2.2 seconds globally, but 4.5
@@ -235,7 +251,7 @@ export default function FrontendObservabilityRUMArticle() {
           toward the user segments that need the most improvement. Track
           performance by application version to identify which deployments
           introduced regressions.
-        </p>
+        </HighlightBlock>
         <p>
           Correlate technical performance metrics with business outcomes to
           make observability data actionable for stakeholders. Connect LCP
@@ -251,7 +267,10 @@ export default function FrontendObservabilityRUMArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Observing without acting is the most wasteful observability pitfall.
           Collecting terabytes of performance data, building beautiful
           dashboards, and setting up alerts is pointless if the data does not
@@ -261,8 +280,8 @@ export default function FrontendObservabilityRUMArticle() {
           ownership for each metric category, and include performance
           improvement work in sprint planning. Observability without action is
           voyeurism — interesting to watch but producing no value.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Over-collecting data without a retention and analysis strategy creates
           a data swamp — vast amounts of information that are expensive to store
           and impossible to query effectively. Define a data retention policy
@@ -271,7 +290,7 @@ export default function FrontendObservabilityRUMArticle() {
           ensure your analysis tools can query the data volume you collect.
           Regular data cleanup and aggregation prevents the observability
           platform from becoming a cost center that provides diminishing returns.
-        </p>
+        </HighlightBlock>
         <p>
           Ignoring third-party script impact in performance monitoring is a
           common blind spot. Analytics scripts, ad networks, chat widgets, and
@@ -287,7 +306,10 @@ export default function FrontendObservabilityRUMArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms use RUM data to optimize the checkout funnel —
           the sequence of pages from cart to order confirmation. By correlating
           LCP and INP with checkout abandonment rates, teams identify that pages
@@ -297,8 +319,8 @@ export default function FrontendObservabilityRUMArticle() {
           the payment page bundle, and server-side rendering for the order
           confirmation page. The result is measurable improvement in checkout
           completion rate, directly attributable to performance improvements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Media and publishing companies use RUM to understand how performance
           affects content consumption. The Washington Post and The New York
           Times correlate page load speed with article completion rate and time
@@ -308,7 +330,7 @@ export default function FrontendObservabilityRUMArticle() {
           inline critical CSS for above-the-fold content, lazy-load below-the
           fold images and ads, and defer analytics scripts until after the
           content is rendered.
-        </p>
+        </HighlightBlock>
         <p>
           SaaS companies use observability for proactive incident detection.
           Rather than waiting for users to report issues, they monitor error
@@ -324,12 +346,15 @@ export default function FrontendObservabilityRUMArticle() {
 
       <section>
         <h2>Advanced Observability Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           RUM data pipeline architecture must handle the unique challenges of collecting, processing, and storing high-volume, high-velocity telemetry data from millions of diverse browser environments. The pipeline begins with client-side data collection — the web-vitals library and custom instrumentation code capture metrics at specific lifecycle events (page load, navigation, user interaction, error occurrence). These metrics are batched client-side (grouping multiple metrics into a single payload to reduce HTTP overhead) and sent to an ingestion endpoint via navigator.sendBeacon, which ensures delivery even when the page is being unloaded (unlike fetch or XMLHttpRequest, which may be cancelled on page unload). The ingestion endpoint receives the batched payloads, validates the schema, enriches them with server-side context (application version, feature flag state, deployment timestamp), and writes them to a message queue (Apache Kafka, AWS Kinesis, or Google Pub/Sub) for asynchronous processing. The message queue decouples ingestion from processing, allowing the ingestion service to remain responsive even when the downstream processing pipeline experiences back-pressure. The processing service consumes messages from the queue, aggregates metrics by time window (1-minute, 5-minute, 1-hour buckets), computes percentiles (p50, p75, p95, p99) for each metric, and writes the aggregated data to a time-series database (InfluxDB, TimescaleDB, or a cloud-native solution like Google BigQuery or AWS Timestream). The aggregation reduces the data volume by 100-1000x compared to storing individual metric events, making long-term trend analysis and dashboard queries feasible. The pipeline must handle out-of-order data (metrics arriving late due to network delays or sendBeacon batching), duplicate data (the same metric sent multiple times due to retry logic), and data loss (metrics lost due to browser crashes or network failures) — the processing service deduplicates based on metric identifiers and uses approximate aggregation algorithms (t-digest, HyperLogLog) that are resilient to missing data points.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Sampling strategies for RUM data balance the need for comprehensive visibility against the cost of storing and processing massive data volumes. For a site with 10 million daily active users, collecting every Core Web Vital metric (LCP, INP, CLS, FCP, TTFB) plus custom timing data and error events generates 50-100 million metric events per day, which translates to terabytes of data per month. Uniform random sampling (collecting data from a fixed percentage of users, e.g., 10%) reduces the data volume proportionally but risks missing rare issues that affect small user segments (a bug that affects only 0.1% of users would be missed entirely at 10% sampling). Stratified sampling provides better coverage — it divides users into strata based on device class (mobile, tablet, desktop), network type (4G, 3G, WiFi), geography (North America, Europe, Asia), and application version, then samples a fixed percentage from each stratum. This ensures that every segment is represented in the collected data, even if some segments are small. Error-triggered sampling is the most efficient approach for error visibility — collect performance data from 100% of users who experience errors (every error matters) and 10% of users who do not experience errors (for baseline performance trends). This ensures comprehensive error visibility while controlling the cost of performance data collection. Session replay sampling is even more aggressive (1-5% of sessions) because replays are expensive to store and process — the sampling should prioritize sessions with errors, sessions with poor performance (p95+ metrics), and sessions from key user segments (new users, high-value customers).
-        </p>
+        </HighlightBlock>
         <p>
           Privacy-preserving analytics addresses the tension between collecting detailed user behavior data for observability and respecting user privacy expectations and regulatory requirements (GDPR, CCPA). The fundamental principle is data minimization — collect only the data needed for performance monitoring and error tracking, and avoid collecting data that can identify individual users or reveal sensitive information. User identifiers should be anonymized — instead of storing the user&apos;s email or user ID, store a hashed identifier (SHA-256 hash of the user ID with a salt known only to the analytics system) that allows correlating metrics across sessions without exposing the user&apos;s identity. IP addresses should be truncated (removing the last octet for IPv4) or not stored at all, as full IP addresses are considered personal data under GDPR. URL paths should be sanitized to remove dynamic segments that may contain PII (user IDs, email addresses, order numbers) — the URL /users/12345/profile should be normalized to /users/:id/profile before storage. Form input values should never be captured in session replays or analytics events — input fields should be masked by default, and the masking should be applied client-side before data is transmitted to the analytics server. Consent management integration ensures that RUM data collection respects the user&apos;s consent choices — if the user has not consented to analytics tracking, the RUM instrumentation should not collect or transmit data. The consent state should be checked on every page load, and the RUM data collection should be enabled or disabled accordingly.
         </p>
@@ -349,12 +374,15 @@ export default function FrontendObservabilityRUMArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between lab data and field data?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Lab data (Lighthouse, WebPageTest) is synthetic testing in a
               controlled, reproducible environment — consistent device, network,
               and location. It is ideal for debugging, comparing optimization
@@ -363,7 +391,7 @@ export default function FrontendObservabilityRUMArticle() {
               conditions — it reflects actual user experience. Use lab data for
               development and debugging, field data for production monitoring
               and SEO. Both are needed for a complete performance strategy.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

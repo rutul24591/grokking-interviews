@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,14 +35,17 @@ export default function AccessControlPoliciesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Access Control Policies</strong> are the formal rules that govern who can access
           what resources under which conditions. They are the foundation of authorization systems,
           translating business requirements into enforceable access decisions. Beyond simple
           role-based access control (RBAC), modern policies enable fine-grained, context-aware
           authorization decisions that consider attributes, relationships, and environmental
           factors.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/access-control-policies.svg"
@@ -49,14 +53,14 @@ export default function AccessControlPoliciesArticle() {
           caption="Access Control Policies — comparing DAC, MAC, RBAC, and ABAC models with selection matrix"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing access control policies requires deep
           understanding of policy models (RBAC, ABAC, ReBAC), policy evaluation engines (OPA,
           Cedar, AuthZ0), policy languages (Rego, Cedar policy language), and operational concerns
           (policy versioning, testing, deployment, audit). The implementation must provide flexible
           authorization while maintaining sub-millisecond evaluation latency and supporting gradual
           policy rollout.
-        </p>
+        </HighlightBlock>
         <p>
           Modern access control systems have evolved from static role assignments to dynamic,
           attribute-based policies that consider context (time, location, device), risk level, and
@@ -68,12 +72,15 @@ export default function AccessControlPoliciesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Access control policies are built on fundamental concepts that determine how access
           decisions are made. Understanding these concepts is essential for designing effective
           authorization systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Policy Models:</strong> The four primary models are Discretionary Access Control
           (DAC — resource owners decide access), Mandatory Access Control (MAC — system-enforced
           based on clearance levels), Role-Based Access Control (RBAC — access based on assigned
@@ -81,7 +88,7 @@ export default function AccessControlPoliciesArticle() {
           resource, action, and environment). Each model has trade-offs: DAC is flexible but
           inconsistent, MAC is secure but rigid, RBAC is simple but coarse-grained, ABAC is
           fine-grained but complex.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Policy Components:</strong> Every policy has five components: Subject (who is
           requesting access — user, service, role), Resource (what is being accessed — API, data,
@@ -107,11 +114,14 @@ export default function AccessControlPoliciesArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Access control policy architecture separates policy definition from enforcement, enabling
           centralized management with distributed evaluation. This architecture is critical for
           scaling authorization across microservices.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/policy-evaluation.svg"
@@ -119,7 +129,7 @@ export default function AccessControlPoliciesArticle() {
           caption="Policy Evaluation — XACML-style flow with PEP, PDP, PIP components and decision logic"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The evaluation flow starts when a user makes a request to access a resource. The Policy
           Enforcement Point (PEP) intercepts the request, extracts context (user identity, resource
           ID, action type, environmental attributes), and sends an access query to the Policy
@@ -127,7 +137,7 @@ export default function AccessControlPoliciesArticle() {
           Information Point (PIP) for additional attributes (user department, resource sensitivity,
           current time), evaluates the policies, and returns an allow/deny decision with rationale.
           The PEP enforces the decision and logs the evaluation for audit.
-        </p>
+        </HighlightBlock>
         <p>
           Performance optimization is critical — policy evaluation must complete in sub-millisecond
           latency to avoid impacting user experience. This is achieved through caching (cache
@@ -155,27 +165,30 @@ export default function AccessControlPoliciesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Choosing the right policy model involves trade-offs between simplicity, flexibility,
           performance, and auditability. Understanding these trade-offs is essential for making
           informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">RBAC vs ABAC vs ReBAC</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>RBAC (Role-Based):</strong> Simple to understand and audit. Users assigned
               to roles, roles have permissions. Best for organizational hierarchies (admin,
               manager, user). Limitation: coarse-grained, can't express context-aware rules
               (access only during business hours).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>ABAC (Attribute-Based):</strong> Fine-grained, context-aware. Policies
               evaluate boolean expressions over attributes (user.department ==
               resource.department AND time &gt; 9AM AND time &lt; 5PM). Best for complex
               requirements. Limitation: complex to manage, harder to audit, performance overhead.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>ReBAC (Relationship-Based):</strong> Access based on relationships (user is
               owner of resource, user is member of team that owns resource). Best for collaboration
@@ -231,20 +244,23 @@ export default function AccessControlPoliciesArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing access control policies requires following established best practices to
           ensure security, maintainability, and performance.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Policy Design</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use the principle of least privilege — grant minimum permissions necessary for the task.
           Keep policies simple and readable — complex policies are error-prone and hard to audit.
           Document policy purpose and rationale — future maintainers need to understand why a
           policy exists. Use consistent naming conventions (resource:action format like
           documents:read, users:delete). Version policies for backward compatibility — include
           version metadata, support gradual migration.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Policy Evaluation</h3>
         <p>
@@ -278,23 +294,26 @@ export default function AccessControlPoliciesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing access control policies to ensure secure,
           maintainable authorization systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Overly complex policies:</strong> Policies with nested conditions, multiple
             attribute lookups, and complex boolean logic are hard to understand, test, and
             maintain. <strong>Fix:</strong> Break into smaller, reusable policy fragments. Use
             helper functions for common logic. Document complex policies with examples.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Hardcoded policies in application code:</strong> Embedding policy logic in
             application code makes policies hard to update, audit, and reuse across services.{" "}
             <strong>Fix:</strong> Externalize policies, use policy engine (OPA, Cedar). Separate
             policy from code.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No policy testing:</strong> Deploying policies without validation leads to
             production incidents (unintended access denials or grants). <strong>Fix:</strong> Unit
@@ -347,17 +366,20 @@ export default function AccessControlPoliciesArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Access control policies are critical for organizations with complex authorization
           requirements. Here are real-world implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cloud Infrastructure Access (AWS)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> AWS IAM policies control access to thousands of resources
           across multiple accounts. Need fine-grained control (developer can deploy to dev, not
           prod), compliance requirements (SOC 2, PCI-DSS), and audit trails.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> ABAC policies with resource tags (environment:dev,
           environment:prod). Developers have policies allowing actions on resources tagged with
@@ -455,16 +477,19 @@ export default function AccessControlPoliciesArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of access control policy design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: RBAC vs ABAC — which do you choose and why?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: RBAC for simple, role-based access (admin, moderator, user) — easier to manage,
               clearer audit trail, better for organizational hierarchies. ABAC for fine-grained,

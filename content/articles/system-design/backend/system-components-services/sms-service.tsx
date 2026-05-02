@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,12 +39,15 @@ export default function SmsServiceArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>SMS service</strong> is the infrastructure that sends and receives text messages (Short Message Service) to and from mobile phone numbers, primarily for one-time password (OTP) delivery, account verification, notifications, and marketing communications. The SMS service sits between the application layer and external SMS providers (Twilio, Vonage, Amazon SNS, Plivo, Bandwidth), managing message queuing, provider selection, delivery tracking, retry logic, rate limiting, compliance enforcement (TCPA, GDPR, DNC lists), and fraud prevention (SMS bombing protection, toll fraud detection). For most applications, the primary use case is OTP delivery — sending a 6-digit verification code to a user&apos;s phone number during account creation, login, or sensitive actions (password reset, payment confirmation).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, designing an SMS service is a reliability and cost management challenge that spans distributed systems, telecommunications, and regulatory compliance. The technical difficulty lies not in sending individual messages (any SMS provider API can do that) but in building a reliable pipeline that delivers OTP codes within seconds (users expect OTP delivery in under 30 seconds), handles delivery failures gracefully (retrying with alternative providers, falling back to voice calls), prevents abuse (rate limiting per recipient, CAPTCHA challenges, phone number validation to prevent SMS toll fraud), manages costs (SMS pricing varies by country and carrier, from $0.005 per message in the US to $0.50+ in some international markets), and ensures compliance (TCPA requires explicit consent for marketing SMS in the US, GDPR requires consent and data processing transparency in the EU, and carriers require sender ID registration (10DLC, A2P) to prevent spam).
-        </p>
+        </HighlightBlock>
         <p>
           SMS service design involves several technical considerations. OTP lifecycle (generating a cryptographically random 6-digit code, storing its hash in Redis with a short TTL (5-10 minutes), sending it via SMS, verifying the user&apos;s input against the stored hash using constant-time comparison to prevent timing attacks, and deleting the code after successful verification or expiry). Provider routing (selecting the optimal SMS provider based on the recipient&apos;s country, cost, and delivery rate, with automatic failover to backup providers if the primary provider is unavailable or experiencing high failure rates). Delivery tracking (receiving and processing delivery receipts (DLRs) from providers via webhooks, matching receipts to sent messages by message ID, updating delivery status in the database, and triggering retries for failed deliveries). Rate limiting (enforcing per-recipient limits (1 OTP per minute, 5 per hour, 10 per day) to prevent SMS bombing attacks, per-IP limits to prevent automation, and implementing CAPTCHA challenges after repeated failures). Compliance management (tracking user consent for marketing SMS, maintaining Do Not Call (DNC) lists, processing opt-out requests (STOP keyword), registering sender IDs with carriers, and retaining audit logs for regulatory audits).
         </p>
@@ -55,14 +59,17 @@ export default function SmsServiceArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>OTP Generation, Storage, and Verification</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           OTP (One-Time Password) generation creates a cryptographically random 6-digit code (1,000,000 possible values, providing 1 in 1,000,000 guess probability per attempt) using a secure random number generator (/dev/urandom or crypto.getRandomValues). The OTP is never stored in plain text — instead, its cryptographic hash (SHA-256) is stored in Redis with a TTL of 5-10 minutes, along with metadata (recipient phone number, creation timestamp, attempt count). When the user submits the OTP, the service hashes the submitted code and compares it against the stored hash using constant-time comparison (to prevent timing attacks that could reveal the code character by character). After successful verification or after the maximum number of failed attempts (3), the OTP is deleted from Redis.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           OTP verification must be rate-limited per recipient (maximum 3 attempts per OTP code) and per phone number (maximum 10 OTP requests per day) to prevent brute force attacks. The OTP code should be sent via a dedicated SMS template that clearly identifies the application and the purpose of the code (e.g., &quot;Your ExampleApp verification code is 123456. Valid for 5 minutes. Do not share this code.&quot;) to reduce the risk of social engineering attacks (where an attacker tricks the user into sharing the code).
-        </p>
+        </HighlightBlock>
 
         <h3>SMS Provider Integration and Routing</h3>
         <p>
@@ -91,9 +98,12 @@ export default function SmsServiceArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The SMS service architecture consists of the application layer (generating OTP codes, templating messages, enforcing rate limits), the SMS queue (prioritizing OTP messages over notification and marketing messages, managing retry logic), the provider router (selecting the optimal SMS provider based on country, cost, and delivery rate, with automatic failover), the delivery tracker (processing delivery receipts from providers via webhooks, updating delivery status, triggering retries), and the compliance manager (tracking consent, processing opt-outs, maintaining DNC lists, auditing sends). The flow begins with the application requesting an OTP send — the SMS service generates a 6-digit code, stores its hash in Redis with a 5-minute TTL, validates the recipient phone number (format, carrier lookup, DNC check), enforces rate limits (per-recipient, per-IP), enqueues the message to the OTP priority queue, and routes it to the optimal SMS provider based on the recipient&apos;s country.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/system-components-services/sms-architecture.svg"
@@ -103,9 +113,9 @@ export default function SmsServiceArticle() {
           height={550}
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The SMS provider submits the message to the recipient&apos;s mobile carrier through the SMSC (Short Message Service Center), which delivers the message to the recipient&apos;s phone. The provider sends a delivery receipt (DLR) back to the SMS service&apos;s webhook handler, which matches the receipt to the sent message by message ID, updates the delivery status (delivered, failed, undelivered), and triggers retry logic if the delivery failed. For OTP messages, if delivery is not confirmed within 30 seconds, the service retries through an alternative provider (up to 2 retries). If all retries fail, the service offers an alternative delivery method (voice call with the OTP code).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/system-components-services/sms-delivery.svg"
@@ -145,14 +155,17 @@ export default function SmsServiceArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SMS service design involves trade-offs between single-provider and multi-provider architectures, SMS and alternative delivery channels (voice, email, push), and strict and lenient rate limiting. Understanding these trade-offs is essential for designing SMS infrastructure that matches your application&apos;s reliability requirements, budget constraints, and regulatory obligations.
-        </p>
+        </HighlightBlock>
 
         <h3>Single-Provider Versus Multi-Provider Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Single Provider:</strong> All messages are routed through one SMS provider. Advantages: simpler integration (one API to implement, one webhook handler to maintain), consolidated billing (one invoice, one cost structure), and simpler monitoring (one provider&apos;s delivery metrics to track). Limitations: single point of failure (if the provider experiences an outage, all SMS sends fail), limited geographic coverage (no provider has the best delivery rate in every country), and no cost optimization (cannot route to cheaper providers for specific countries). Best for: small-scale applications (thousands of messages per month), applications operating in a single country, organizations prioritizing simplicity over reliability.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Multi-Provider:</strong> Messages are routed across multiple SMS providers based on country, cost, and delivery rate. Advantages: fault tolerance (if one provider fails, messages are routed to another), better geographic coverage (different providers have different carrier relationships in different countries), and cost optimization (route to the cheapest provider meeting the delivery SLA for each country). Limitations: complex integration (multiple APIs, multiple webhook handlers, provider-specific error handling), fragmented billing (multiple invoices, complex cost tracking), and complex monitoring (delivery metrics from multiple providers must be aggregated and normalized). Best for: large-scale applications (millions of messages per month), applications with international users, organizations prioritizing reliability and cost optimization.
         </p>
@@ -185,16 +198,19 @@ export default function SmsServiceArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Use 6-Digit OTP Codes With Constant-Time Verification</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Generate 6-digit OTP codes (1,000,000 possible values) using a cryptographically secure random number generator. Store the code&apos;s hash (SHA-256) in Redis with a 5-minute TTL — never store the code in plain text. Verify the user&apos;s submitted code by hashing it and comparing against the stored hash using constant-time comparison (to prevent timing attacks that could reveal the code digit by digit). Limit verification attempts to 3 per OTP code — after 3 failed attempts, delete the OTP and require the user to request a new code. This provides 1 in 1,000,000 guess probability per attempt, with a maximum of 3 guesses (1 in 333,333 overall probability), which is computationally infeasible to brute force within the 5-minute window.
-        </p>
+        </HighlightBlock>
 
         <h3>Implement Multi-Provider Routing With Automatic Failover</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Integrate with at least 2 SMS providers and route messages based on the recipient&apos;s country, the provider&apos;s delivery rate for that country, and cost. Maintain a provider preference table (country &#8594; preferred provider, backup provider) and automatically fail over to the backup provider if the primary provider returns errors or if delivery receipts indicate high failure rates (&gt;10% failure rate for the country in the last 5 minutes). Monitor provider health continuously (delivery rate, latency, error rate) and adjust the provider preference table based on real-time performance data. This ensures that SMS delivery is reliable even when individual providers experience outages or degraded performance.
-        </p>
+        </HighlightBlock>
 
         <h3>Enforce Strict Rate Limits Per Recipient and Per IP</h3>
         <p>
@@ -220,16 +236,19 @@ export default function SmsServiceArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Using 4-Digit OTP Codes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           4-digit OTP codes (10,000 possible values) are too easy to brute force — with 3 attempts, an attacker has a 1 in 3,333 chance of guessing the code, which is feasible with automated tools. 6-digit codes (1,000,000 possible values) provide 1 in 333,333 overall probability with 3 attempts, which is computationally infeasible to brute force within the 5-minute expiry window. Always use 6-digit codes for OTP delivery, and enforce the 3-attempt limit strictly.
-        </p>
+        </HighlightBlock>
 
         <h3>Not Validating Phone Numbers Before Sending</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Sending SMS to invalid, disconnected, or VoIP phone numbers wastes money (providers charge for send attempts regardless of delivery) and increases the failure rate. Validate phone numbers before sending — use a carrier lookup API to verify that the number is valid, active, and associated with a mobile carrier (not a VoIP or landline number). Reject invalid numbers before attempting to send, and log the rejection for analysis (identifying patterns in invalid number submissions, such as typos in specific country codes).
-        </p>
+        </HighlightBlock>
 
         <h3>Ignoring SMS Toll Fraud</h3>
         <p>
@@ -255,16 +274,19 @@ export default function SmsServiceArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Account Verification During Signup</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Consumer applications (WhatsApp, Instagram, Uber) use SMS-based OTP to verify that users own the phone number they provide during account creation. The user enters their phone number, receives a 6-digit OTP via SMS, enters the code, and the account is activated. This prevents fraudulent account creation (attackers cannot create accounts with phone numbers they do not control) and ensures that the user has a valid communication channel for account recovery. WhatsApp alone sends billions of OTP messages per year for account verification across 180+ countries, using multi-provider routing to ensure reliable delivery in every market.
-        </p>
+        </HighlightBlock>
 
         <h3>Two-Factor Authentication for Login</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Banking applications (Chase, Bank of America), enterprise SaaS (Salesforce, Workday), and email providers (Gmail, Outlook) use SMS-based OTP as a second factor during login — after the user enters their password, they receive an OTP via SMS and must enter it to complete authentication. This adds a layer of security beyond passwords (even if the password is compromised, the attacker cannot login without the OTP). While SMS-based 2FA is less secure than app-based 2FA (TOTP) due to SIM swapping and SS7 vulnerabilities, it remains the most widely used 2FA method because it requires no additional hardware or app installation.
-        </p>
+        </HighlightBlock>
 
         <h3>Transaction Confirmation for Payments</h3>
         <p>
@@ -280,15 +302,18 @@ export default function SmsServiceArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you prevent SMS toll fraud in an OTP system?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Implement multiple layers of protection: (1) Per-recipient rate limits (1 OTP per minute, 10 per day) to limit the number of messages sent to any single number. (2) Per-IP rate limits (10 OTP requests per hour) to prevent automated abuse. (3) Phone number validation using a carrier lookup API to reject invalid, disconnected, or premium-rate numbers before sending. (4) CAPTCHA challenges after 2 failed verification attempts to distinguish humans from bots. (5) Cost monitoring and alerting — alert when SMS costs spike unexpectedly, indicating potential fraudulent activity. (6) Provider-level fraud detection — many SMS providers (Twilio, Vonage) have built-in fraud detection that flags suspicious patterns and can block sends to known premium-rate numbers.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

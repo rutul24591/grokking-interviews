@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function AnimationQueuingArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Animation queuing</strong> is the practice of managing the
           order, timing, and lifecycle of multiple animations that target the
           same elements or coordinate across different elements. When a user
@@ -50,8 +54,8 @@ export default function AnimationQueuingArticle() {
           applications — panels that snap to unexpected positions, elements
           that flicker between states, and animations that pile up and play
           simultaneously after a burst of user input.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the staff-engineer level, animation queuing is a state management
           problem. Every animated element has a current state (idle, entering,
           active, exiting), a target state (where the animation is heading),
@@ -61,7 +65,7 @@ export default function AnimationQueuingArticle() {
           merge with the current animation (blend), or get dropped
           (debounce)? The answer depends on the animation type, the user&apos;s
           intent, and the application&apos;s UX requirements.
-        </p>
+        </HighlightBlock>
         <p>
           jQuery popularized explicit animation queuing with its{" "}
           <code>.queue()</code> and <code>.dequeue()</code> methods, which
@@ -89,8 +93,11 @@ export default function AnimationQueuingArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Sequential Queuing (FIFO):</strong> Animations execute one
             after another in the order they were requested. The second
             animation waits for the first to complete before starting. This is
@@ -98,15 +105,15 @@ export default function AnimationQueuingArticle() {
             noticeable latency when multiple animations queue up during rapid
             interaction. Best for notification toasts, tutorial step sequences,
             and ordered transition flows.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Interruption (Preemptive):</strong> A new animation
             immediately cancels the current one and takes over. The element
             jumps to the new animation&apos;s starting state (or, with
             spring physics, redirects from the current position and velocity).
             This is the most responsive strategy but risks visual
             discontinuity if not handled with smooth blending.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Blended Interruption:</strong> A new animation starts
             from the element&apos;s current animated position and velocity,
@@ -178,12 +185,15 @@ export default function AnimationQueuingArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/animation-queuing-diagram-1.svg"
           alt="Animation queue strategies comparison showing sequential, interruption, debounce, and priority approaches"
           caption="Figure 1: Animation queue strategies — different approaches to handling overlapping animation requests"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The four primary queuing strategies produce distinctly different user
           experiences. Sequential queuing is predictable but laggy — if four
           animation requests arrive within 100ms and each animation takes
@@ -196,14 +206,14 @@ export default function AnimationQueuingArticle() {
           animation won&apos;t be interrupted by a hover effect, but a modal
           entrance will interrupt the spinner. The right strategy depends on
           the specific interaction pattern.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/animation-queuing-diagram-2.svg"
           alt="Animation state machine showing valid transitions between idle, entering, active, exiting states"
           caption="Figure 2: Animation state machine — valid transitions between animation lifecycle states"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           A state machine formalizes the animation lifecycle and prevents
           impossible transitions. An element in &quot;idle&quot; state can
           transition to &quot;entering.&quot; An element in &quot;entering&quot;
@@ -218,7 +228,7 @@ export default function AnimationQueuingArticle() {
           bugs like an element simultaneously playing enter and exit
           animations, or an exit animation triggering on an element that was
           never fully entered.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/animation-queuing-diagram-3.svg"
@@ -244,6 +254,9 @@ export default function AnimationQueuingArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr>
@@ -262,7 +275,7 @@ export default function AnimationQueuingArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2 font-medium">
                 Sequential (FIFO)
               </td>
@@ -275,8 +288,8 @@ export default function AnimationQueuingArticle() {
               <td className="border border-theme p-2">
                 Toast notifications, tutorial steps, wizard flows
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2 font-medium">
                 Interrupt (preempt)
               </td>
@@ -289,7 +302,7 @@ export default function AnimationQueuingArticle() {
               <td className="border border-theme p-2">
                 Tab switching, menu highlighting, tooltip repositioning
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="border border-theme p-2 font-medium">
                 Blended interrupt
@@ -339,16 +352,19 @@ export default function AnimationQueuingArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Choose the queuing strategy per interaction pattern:</strong>{" "}
             Do not apply a single strategy globally. Toggle animations
             (accordion open/close) benefit from interrupt-with-blend. Toast
             notifications benefit from sequential queuing with a max queue
             length. Tab navigation benefits from debounced interrupt. Define
             the strategy as part of the component&apos;s animation contract.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use spring physics for naturally interruptible motion:</strong>{" "}
             Springs redirect from the current position and velocity toward a
             new target without any discontinuity. This makes blended
@@ -356,7 +372,7 @@ export default function AnimationQueuingArticle() {
             and the physics handles the transition. Duration-based
             interruption requires computing the current interpolated value,
             which is error-prone.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement state machines for lifecycle animations:</strong>{" "}
             Components with distinct enter, active, and exit states should use
@@ -401,22 +417,25 @@ export default function AnimationQueuingArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Queue buildup from rapid user input:</strong> Without
             debouncing or interruption, rapid clicking on a toggle button can
             queue dozens of open/close animations. The element continues
             bouncing between states long after the user stops clicking. Fix
             with interrupt strategy or debouncing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Zombie animations after component unmount:</strong>{" "}
             Queued animations that reference unmounted DOM elements cause
             errors and memory leaks when they eventually execute. All queued
             animations targeting a component must be cancelled when the
             component unmounts. Framer Motion&apos;s AnimatePresence handles
             this for exit animations; manual queues require explicit cleanup.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Race conditions between enter and exit:</strong> A common
             bug: user opens a panel (enter animation queued), then immediately
@@ -448,23 +467,26 @@ export default function AnimationQueuingArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Slack Notifications:</strong> Uses sequential queuing for
             desktop notification toasts with a maximum visible count of three.
             When a fourth notification arrives, the oldest slides out while
             the new one enters. The queue caps at a configurable depth,
             collapsing excess notifications into a &quot;+N more&quot; summary
             to prevent indefinite queue growth during bursts of activity.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Figma Canvas Selection:</strong> Uses blended interruption
             for selection highlighting. When the user drags to select elements,
             the selection indicator animates to each new bounding box using
             spring physics. Rapid mouse movement continuously redirects the
             spring from its current position, producing smooth following
             behavior without any queue buildup.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Apple Keynote Web Presentations:</strong> Uses GSAP
             timeline orchestration with labels for section-based slide
@@ -489,14 +511,17 @@ export default function AnimationQueuingArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-medium">
+            <HighlightBlock as="p" tier="important" className="font-medium">
               How do you handle the situation where a user rapidly toggles a
               UI element (like an accordion) that has an animation?
-            </p>
-            <p className="mt-2">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2">
               Use a blended interruption strategy. When the user clicks to
               expand, start the expand animation. If they click again before
               it completes, interrupt the current animation and start the
@@ -510,7 +535,7 @@ export default function AnimationQueuingArticle() {
               start a new animation from that captured value to the new target.
               The key is never queueing — always interrupt with smooth
               handoff.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

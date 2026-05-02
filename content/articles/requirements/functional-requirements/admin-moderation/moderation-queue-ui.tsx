@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function ModerationQueueUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Moderation queue UI enables moderators to review flagged content efficiently, with tools for quick decisions, queue management, and quality assurance. The interface is the primary tool for content moderation teams to enforce community guidelines, review user reports, and maintain platform safety. For staff and principal engineers, moderation queue UI involves complex workflows (priority-based queue, auto-assignment), quality assurance (accuracy tracking, calibration), and integration with backend services (content service, user service, ML moderation service).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of moderation queue UI extends beyond simple content review. Queue management must handle high volume (thousands of items per day), prioritize effectively (high-risk content first), and distribute work evenly (auto-assignment, load balancing). Moderation actions require accuracy (false positives harm users, false negatives harm community), consistency (similar content treated similarly), and speed (backlog management). Quality assurance tracks moderator accuracy, provides calibration sessions, and identifies training needs. The UI must prevent errors (confirmation dialogs, context display) while enabling efficient operations (keyboard shortcuts, batch actions).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, moderation queue UI architecture involves queue management (priority queues, auto-assignment), quality tracking (accuracy metrics, review workflows), and operational excellence (backlog management, SLA tracking). The system must support multiple content types (text, images, videos, live streams), multiple violation types (spam, hate speech, harassment, nudity), and multiple workflows (single review, escalation, appeal). Integration with ML moderation (auto-classify content, prioritize high-confidence violations) improves efficiency. Audit logging tracks all moderation actions for compliance and quality assurance.
         </p>
@@ -47,13 +51,16 @@ export default function ModerationQueueUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Queue Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Priority queue orders content by risk and urgency. Risk scoring (ML-based risk assessment, user report count, content type). Urgency (live stream takes priority, viral content priority). SLA tracking (time in queue, approaching SLA breach). Queue views (all items, my items, escalated, appeals).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Auto-assignment distributes work among moderators. Round-robin assignment (even distribution). Skill-based assignment (assign based on moderator expertise). Load balancing (consider current workload). Specialization (some moderators handle specific violation types).
-        </p>
+        </HighlightBlock>
         <p>
           Queue filtering enables focused review. Filter by type (spam, hate speech, harassment). Filter by content type (text, image, video). Filter by priority (high, medium, low). Filter by status (pending, in review, escalated). Saved filters (save frequent filter combinations).
         </p>
@@ -105,9 +112,12 @@ export default function ModerationQueueUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Moderation queue UI architecture spans queue management, content review, quality assurance, and escalation workflows. Queue management organizes and distributes work (priority queue, auto-assignment). Content review enables moderator decisions (content display, actions, rationale). Quality assurance tracks and improves quality (accuracy tracking, calibration). Escalation workflows handle complex cases (escalation, appeal).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/admin-moderation/moderation-queue-ui/moderation-queue-architecture.svg"
@@ -118,9 +128,9 @@ export default function ModerationQueueUIArticle() {
         />
 
         <h3>Queue Management Interface</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Queue dashboard shows queue status. Queue stats (total items, by priority, by type). SLA tracking (items approaching SLA breach). Moderator stats (items reviewed, avg time, accuracy). Real-time updates (WebSocket for new items).
-        </p>
+        </HighlightBlock>
         <p>
           Queue list displays items for review. Item card (content preview, risk score, reporter info). Priority indicators (color-coded priority). Assignment status (unassigned, assigned to me, assigned to other). Quick actions (review, skip, escalate).
         </p>
@@ -180,14 +190,17 @@ export default function ModerationQueueUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Moderation queue UI design involves trade-offs between efficiency and accuracy, automation and human judgment, and specialization and flexibility. Understanding these trade-offs enables informed decisions aligned with moderation goals and resource constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Queue Assignment: Auto vs. Manual</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Auto-assignment (system assigns items). Pros: Efficient (no manual assignment), even distribution, fast. Cons: Less control (can&apos;t prioritize specific moderators), may not match expertise. Best for: High-volume queues, standard moderation.
-        </p>
+        </HighlightBlock>
         <p>
           Manual assignment (moderators pick items). Pros: Control (pick based on expertise), flexibility (handle complex cases). Cons: Slower (manual selection), uneven distribution (some moderators idle). Best for: Low-volume queues, specialized moderation.
         </p>
@@ -239,13 +252,16 @@ export default function ModerationQueueUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement priority queue:</strong> Order by risk score, urgency, SLA. High-risk first. SLA tracking (alert on breach). Real-time updates.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enable auto-assignment:</strong> Round-robin or skill-based. Load balancing. Priority-based assignment. Manual override for complex cases.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Design comprehensive review interface:</strong> Full content display. User context (history, reports). Quick actions (approve, remove, escalate). Keyboard shortcuts.
           </li>
@@ -275,13 +291,16 @@ export default function ModerationQueueUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No priority queue:</strong> High-risk content delayed. Solution: Priority queue, risk scoring, SLA tracking.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Manual assignment only:</strong> Inefficient, uneven distribution. Solution: Auto-assignment with manual override.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Poor review interface:</strong> Missing context, slow decisions. Solution: Full context display, quick actions, keyboard shortcuts.
           </li>
@@ -311,16 +330,19 @@ export default function ModerationQueueUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Facebook Content Moderation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook moderation queue for trust and safety. Priority queue (risk-scored content). Auto-assignment (skill-based, load-balanced). Review interface (full content, user context, reports). Actions (approve, remove, escalate). Quality tracking (accuracy, calibration). Escalation (legal, policy, safety). Audit logging (all actions logged).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">YouTube Content Review</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           YouTube content review for policy violations. Queue management (priority by risk, views). Review interface (video player, context, reports). Actions (approve, remove, age-restrict, escalate). ML assistance (auto-classify, prioritize). Quality assurance (accuracy tracking, calibration). Escalation (legal, policy). Audit logging.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Twitter Trust and Safety</h3>
         <p>
@@ -340,12 +362,15 @@ export default function ModerationQueueUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you prioritize moderation queue when dealing with high volumes (100K+ items/day)?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you prioritize moderation queue when dealing with high volumes (100K+ items/day)?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement multi-factor risk scoring combining ML-based risk assessment (hate speech, nudity, violence detection), user report count (more reports = higher priority), content type (live streams, viral content get priority), and user history (repeat offenders prioritized). Track SLA with time-in-queue metrics and alert on approaching breaches. The key trade-off is between risk-based prioritization and fairness—don&apos;t let low-risk content starve indefinitely. Implement auto-assignment with skill-based routing (complex content to experienced moderators) and load balancing to prevent moderator burnout. At scale, consider tiered queues with different SLAs per risk level.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

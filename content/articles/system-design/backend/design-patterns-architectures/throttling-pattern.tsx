@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,12 +28,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Throttling</strong> is an admission-control mechanism that regulates the rate or volume of requests a system accepts over a defined time window. The primary objective is not to maximize throughput but to preserve system stability under overload conditions: maintaining predictable latency, bounding queue depths, preventing resource exhaustion, and ensuring graceful degradation rather than catastrophic failure. When a system experiences traffic spikes, abusive patterns, or downstream slowdowns, throttling provides fast, explicit rejection semantics instead of allowing requests to accumulate and trigger cascading collapse.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Throttling differs fundamentally from related mechanisms. Caching eliminates work by serving responses from memory. Bulkheads partition work so that failure in one compartment does not spread. Throttling, by contrast, acts as a gatekeeper at the system boundary or at internal chokepoints, deciding which requests are admitted and at what pace. It is the first line of defense against overload, and when designed correctly, it shapes traffic before expensive downstream resources—database connections, thread pools, external API calls—are consumed.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/throttling-pattern-diagram-1.svg"
@@ -53,14 +57,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Throttling vs. Rate Limiting: Clarifying the Distinction</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In industry usage, these terms are often used interchangeably, but they represent distinct concepts with different operational implications. <strong>Throttling</strong> refers to the general practice of regulating request flow—slowing down, delaying, or rejecting requests to maintain system health. Throttling can be dynamic and adaptive: a system might reduce its acceptance rate gradually as CPU usage climbs, or it might delay responses by adding artificial latency rather than rejecting outright. <strong>Rate limiting</strong> is a specific, deterministic form of throttling that enforces a hard numerical ceiling on request frequency. A rate limit of 100 requests per minute is unambiguous: the 101st request within that window is rejected, regardless of current system load.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The practical distinction matters because rate limits are typically static and configured in advance, while throttling can be adaptive and responsive to real-time system conditions. A well-designed system uses both: rate limits define the contract with clients (what they are allowed to do), while adaptive throttling protects the system when conditions deviate from the expected norm (what the system can handle right now). In system design interviews, articulating this distinction demonstrates depth: rate limits are about fairness and abuse prevention, while adaptive throttling is about resilience and stability under unexpected load.
-        </p>
+        </HighlightBlock>
 
         <h3>Algorithmic Foundations: Token Bucket, Leaky Bucket, and Sliding Window</h3>
         <p>
@@ -113,14 +120,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Layered Throttling Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Production systems employ a multi-layer throttling strategy where each layer serves a distinct purpose and protects a different resource boundary. The outermost layer is CDN-level or edge-level throttling, typically implemented by services like Cloudflare, AWS WAF, or Fastly. This layer operates at the network perimeter and is the first line of defense against volumetric attacks, bot traffic, and abusive clients. Edge throttling uses IP-based rate limits, geofencing rules, and behavioral analysis to filter malicious traffic before it reaches origin servers. The key advantage of edge throttling is that it absorbs attack traffic at the CDN, which has orders of magnitude more bandwidth than the origin infrastructure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The next layer is the API gateway, which implements per-client and per-tenant rate limiting using token bucket or sliding window algorithms. The API gateway authenticates requests, identifies the client (via API key, OAuth token, or session), and enforces rate limits based on the client&apos;s tier or subscription level. This is where business logic enters throttling: premium clients receive higher limits, critical API endpoints have separate limits from experimental endpoints, and abusive clients can be dynamically throttled based on real-time analysis. The API gateway returns standard HTTP 429 Too Many Requests responses with <code>Retry-After</code> headers that inform clients when they can resume making requests.
-        </p>
+        </HighlightBlock>
         <p>
           The third layer is service-level concurrency limiting. Each microservice maintains a maximum concurrent request count for each downstream dependency. When the concurrency limit is reached, new requests are rejected with 503 Service Unavailable. This layer protects specific resources—database connection pools, thread pools, memory allocations—from exhaustion. Unlike rate limiting, which operates over time windows, concurrency limiting operates in real-time and caps resource usage directly. This is the most critical layer for system stability because it prevents the failure mode where rate limits are satisfied but the system is still overwhelmed by expensive, long-running requests.
         </p>
@@ -158,14 +168,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>Algorithm Selection Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing between token bucket, leaky bucket, and sliding window algorithms involves trade-offs across multiple dimensions. Token bucket is the simplest to implement and requires minimal state (two values per rate-limit key). It allows burst tolerance, which improves user experience for legitimate traffic patterns. However, burst tolerance can also be a liability: a sudden burst can overwhelm downstream capacity even though the sustained rate is within limits. Token bucket is best suited for user-facing APIs where burst tolerance is desirable and downstream systems can absorb short spikes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Leaky bucket provides the strongest protection for downstream systems by smoothing all traffic to a constant rate. It eliminates burst-induced overload entirely. The trade-off is increased latency for bursty legitimate traffic: requests that arrive in a burst are queued and processed sequentially, increasing response time. Leaky bucket is best suited for write-heavy operations, database writes, or calls to third-party APIs with strict rate contracts where downstream stability is paramount.
-        </p>
+        </HighlightBlock>
         <p>
           Sliding window provides the most accurate rate enforcement by eliminating fixed-window boundary effects. It is the only algorithm that guarantees the exact rate limit is enforced at every moment in time. The trade-off is higher storage cost: a sliding window log stores every request timestamp, while a sliding window counter requires multiple sub-window counters per key. Sliding window is best suited for billing, metering, or compliance scenarios where accurate rate accounting is required, and for APIs where clients expect strict, predictable rate enforcement.
         </p>
@@ -200,16 +213,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Apply Throttling Early in the Request Lifecycle</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Throttling is only effective when applied before expensive work begins. A common anti-pattern is to authenticate the request, parse the body, query the database, and then check the rate limit. By that point, the system has already consumed resources that throttling was supposed to protect. Throttle checks should occur at the earliest possible point: at the CDN for volumetric filtering, at the API gateway for per-client rate limits, and at the service ingress for concurrency limits. The throttle check should precede authentication, database queries, and body parsing wherever possible, using only the information available at that layer (IP address, API key, or session token).
-        </p>
+        </HighlightBlock>
 
         <h3>Return Clear, Actionable Error Responses</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a request is throttled, the response must be unambiguous. Use HTTP 429 Too Many Requests as the status code, not 503 or 403. Include a Retry-After header specifying the number of seconds until the client can retry. Include response headers that communicate the current rate-limit state: X-RateLimit-Limit (the maximum allowed), X-RateLimit-Remaining (tokens or requests left in the current window), and X-RateLimit-Reset (the timestamp when the window resets). This transparency enables clients to implement intelligent backoff strategies rather than blind retries. Document the rate-limiting behavior in the API specification so that client developers understand the contract and implement appropriate error handling.
-        </p>
+        </HighlightBlock>
 
         <h3>Implement Layered Throttling with Independent Limits</h3>
         <p>
@@ -232,16 +248,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Retry Amplification and Retry Storms</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most damaging pitfall in throttling design is retry amplification. When clients receive a throttle rejection, they interpret it as a transient failure and retry—often immediately and aggressively. If many clients are throttled simultaneously and all retry at the same time, the resulting retry storm can multiply the original load by 5-10x, worsening the overload that throttling was designed to prevent. The root cause is ambiguous error semantics: if clients cannot distinguish &quot;you are over your rate limit, wait before retrying&quot; from &quot;the server encountered an error, retry immediately,&quot; they will default to aggressive retry behavior. The solution is to use HTTP 429 with explicit Retry-After headers, document the expected client behavior in API documentation, and implement server-side throttling signals that clients can observe and respect. Additionally, clients should implement exponential backoff with jitter: after each throttle rejection, the retry delay increases exponentially with a random jitter component to desynchronize retry attempts across clients.
-        </p>
+        </HighlightBlock>
 
         <h3>Mis-Keyed Rate Limits</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Rate limits must be keyed to an identifier that accurately represents the entity whose behavior is being regulated. Keying by IP address is common but problematic in environments with shared NATs (corporate networks, mobile carriers, cloud proxies), where hundreds of legitimate users share a single IP address. Keying by user ID is more accurate for authenticated traffic but provides no protection against unauthenticated abuse. Keying by API key works well for service-to-service communication but is vulnerable if API keys are leaked or shared. The solution is to layer multiple keys: IP-based limits for unauthenticated traffic, user-based limits for authenticated traffic, and API-key-based limits for service-to-service calls. Each layer protects against different abuse patterns, and the combination provides comprehensive coverage.
-        </p>
+        </HighlightBlock>
 
         <h3>Unfair Throttle Distribution</h3>
         <p>
@@ -264,16 +283,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Platform: Flash Sale Protection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce platform experiences massive traffic spikes during flash sales and product launches. Without throttling, the sudden influx of requests overwhelms the inventory service, causing race conditions, overselling, and database lock contention. The platform implements a multi-layer throttling strategy. At the CDN level, volumetric rate limits filter bot traffic and automated scrapers that account for 60-70 percent of flash sale traffic. At the API gateway, per-user rate limits are tightened during the sale window (reduced from 1,000 to 100 requests per minute) to prevent individual users from monopolizing inventory through automated purchasing. At the service level, concurrency limits on the inventory reservation endpoint cap the number of simultaneous reservation attempts to match the database&apos;s lock capacity. The system also implements a virtual waiting room that queues users before they reach the application, releasing them in controlled batches. This layered approach prevents database overload, ensures fair access across users, and maintains system stability during the highest-traffic events of the year.
-        </p>
+        </HighlightBlock>
 
         <h3>API Provider: Tiered Rate Limiting for Monetization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A SaaS company offers its API through tiered subscription plans: free (100 requests per minute), professional (1,000 requests per minute), and enterprise (10,000 requests per minute). The API gateway implements distributed token bucket rate limiting via Redis, with separate buckets per API key and per plan tier. When a client upgrades their plan, the rate-limit configuration is updated in Redis within seconds, and the client immediately receives the higher limit without requiring a service restart. The system tracks rate-limit hit rates by tier and uses this data to identify clients who are consistently hitting their limits—indicating they are good candidates for upsell. The platform also implements per-endpoint rate limits: expensive endpoints (full data exports, complex analytics queries) have lower limits than simple endpoints (single-resource lookups) because they consume disproportionate downstream resources. This tiered approach balances revenue generation with system protection and provides a clear upgrade path for growing clients.
-        </p>
+        </HighlightBlock>
 
         <h3>Search Service: Protecting Expensive Query Endpoints</h3>
         <p>
@@ -291,14 +313,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between throttling and rate limiting, and when would you use each?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Throttling is the broad concept of regulating request flow to maintain system stability. It encompasses any mechanism that slows, delays, or rejects requests when the system is under pressure. Throttling can be adaptive and dynamic: a system might gradually reduce its acceptance rate as CPU usage climbs, or it might add artificial latency to responses rather than rejecting outright. Rate limiting is a specific form of throttling that enforces a hard numerical ceiling on request frequency within a defined time window. A rate limit of 100 requests per minute is deterministic and unambiguous.
-            </p>
+            </HighlightBlock>
             <p>
               You use rate limiting to define the contract with clients—what they are allowed to do under normal conditions. Rate limits are configured in advance, communicated to clients, and enforced consistently. You use adaptive throttling as a safety net when conditions deviate from the norm—when a downstream dependency is slow, when traffic patterns are anomalous, or when the system is under attack. Rate limiting prevents abuse under normal operation; adaptive throttling prevents collapse under unexpected conditions. Production systems use both: rate limits define the baseline policy, and adaptive throttling provides dynamic protection.
             </p>

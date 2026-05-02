@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function NotificationPreferencesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Notification Preferences enable users to control how they receive notifications. Users can select notification channels (email, push, SMS, in-app), choose notification types (what events trigger notifications), set frequency (how often to receive notifications), and customize notifications (how notifications appear). Notification preferences are fundamental to user experience (users control communication), engagement (right notifications at right time), and user satisfaction (don&apos;t overwhelm users). For platforms with user notifications, effective notification preferences are essential for user control, engagement optimization, and user satisfaction.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, notification preferences architecture involves channel management (manage notification channels), type management (manage notification types), frequency controls (control notification frequency), preference storage (store user preferences), and preference enforcement (ensure preferences are respected). The implementation must balance user control (users control notifications) with engagement (send important notifications) and platform needs (communicate with users). Poor notification preferences lead to notification fatigue, user churn, and missed important notifications.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of notification preferences extends beyond simple on/off toggle. Channel selection (choose which channels). Type selection (choose which events). Frequency controls (how often). Quiet hours (don&apos;t notify during certain times). Priority notifications (always notify for important). For staff engineers, notification preferences are a user communication infrastructure decision affecting user experience, engagement, and user satisfaction.
         </p>
@@ -46,13 +50,16 @@ export default function NotificationPreferencesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Notification Channels</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Email notifications send notifications via email. Email delivery (send via email). Email templates (template emails). Email preferences (configure email notifications). Email notifications enable asynchronous notification. Benefits include reach (users get emails), detail (can include detail). Drawbacks includes delay (not instant), email fatigue (too many emails).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Push notifications send notifications via push. Push delivery (send via push). Push templates (template push). Push preferences (configure push notifications). Push notifications enable instant notification. Benefits include immediacy (instant notification), engagement (high engagement). Drawbacks includes interruption (interrupts user), battery drain (drains battery).
-        </p>
+        </HighlightBlock>
         <p>
           SMS notifications send notifications via SMS. SMS delivery (send via SMS). SMS templates (template SMS). SMS preferences (configure SMS notifications). SMS notifications enable instant notification without app. Benefits include reach (works without app), immediacy (instant notification). Drawbacks includes cost (SMS costs), interruption (interrupts user).
         </p>
@@ -107,9 +114,12 @@ export default function NotificationPreferencesArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Notification preferences architecture spans preference service, channel service, type service, and enforcement service. Preference service manages preferences. Channel service manages channels. Type service manages types. Enforcement service enforces preferences. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/notification-preferences/preferences-architecture.svg"
@@ -120,9 +130,9 @@ export default function NotificationPreferencesArticle() {
         />
 
         <h3>Preference Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Preference service manages user preferences. Preference storage (store preferences). Preference retrieval (retrieve preferences). Preference update (update preferences). Preference service is the core of notification preferences. Benefits include centralization (one place for preferences), consistency (same preferences everywhere). Drawbacks includes complexity (manage preferences), coupling (services depend on preference service).
-        </p>
+        </HighlightBlock>
         <p>
           Preference policies define preference rules. Default preferences (default preferences). Preference validation (validate preferences). Preference sync (sync preferences). Preference policies automate preference management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -162,14 +172,17 @@ export default function NotificationPreferencesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Notification preferences design involves trade-offs between user control and engagement, immediate and digest notifications, and many and few channels. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Control: High vs. Low</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           High control (users control everything). Pros: Maximum user control (users control all), user satisfaction (users appreciate control), reduced fatigue (users control volume). Cons: Complexity (many options), user confusion (users may not understand), may reduce engagement (users may turn off too many). Best for: Power users, notification-heavy platforms.
-        </p>
+        </HighlightBlock>
         <p>
           Low control (platform controls most). Pros: Simplicity (few options), user clarity (users understand), maintain engagement (platform controls engagement). Cons: User frustration (users can&apos;t control), notification fatigue (users get too many), user churn (users may leave). Best for: Simple platforms, notification-light platforms.
         </p>
@@ -210,13 +223,16 @@ export default function NotificationPreferencesArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide preference center:</strong> Central place for preferences. All channels. All types. All frequency options.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Offer multiple channels:</strong> Email. Push. SMS. In-app. Let users choose.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Enable type selection:</strong> Activity notifications. System notifications. Marketing notifications. Let users choose.
           </li>
@@ -246,13 +262,16 @@ export default function NotificationPreferencesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No preference center:</strong> Users can&apos;t control notifications. <strong>Solution:</strong> Provide preference center.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Limited channels:</strong> Only one channel. <strong>Solution:</strong> Offer multiple channels.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No type selection:</strong> Can&apos;t select notification types. <strong>Solution:</strong> Enable type selection.
           </li>
@@ -282,16 +301,19 @@ export default function NotificationPreferencesArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Social Media Notification Preferences</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms provide notification preferences. Channel selection (email, push, SMS). Type selection (likes, comments, follows). Frequency controls (immediate, digest). Quiet hours (don&apos;t notify at night). Users control social media notifications.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">E-commerce Notification Preferences</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms provide notification preferences. Channel selection (email, push, SMS). Type selection (orders, promotions, shipping). Frequency controls (immediate, digest). Marketing preferences (opt-in/out marketing). Users control e-commerce notifications.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Productivity App Notification Preferences</h3>
         <p>
@@ -311,12 +333,15 @@ export default function NotificationPreferencesArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design notification preferences that balance user control with engagement?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design notification preferences that balance user control with engagement?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement sensible defaults with customization options that respect user autonomy while maintaining healthy engagement. Default important notifications on: security alerts (password changes, suspicious logins), urgent updates (service outages, payment failures), critical app functionality (message from close contacts, task deadlines). Default non-essential off: marketing promotions, feature announcements, social notifications from distant connections. Enable customization: users can toggle any notification on/off, change channels, adjust frequency—full control over their experience. Monitor engagement: track opt-out rates, notification dismissal patterns, user complaints—adjust defaults based on data (if 80% of users turn off a notification, consider defaulting it off). Provide smart recommendations: &quot;Users like you typically enable X notifications&quot; or &quot;You&apos;ve been dismissing these—want to turn them off?&quot; The engagement insight: users want control but don&apos;t want to configure everything from scratch—provide sensible defaults based on notification importance and user research, enable easy customization, monitor engagement metrics to identify problematic defaults, and continuously iterate based on user behavior and feedback.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

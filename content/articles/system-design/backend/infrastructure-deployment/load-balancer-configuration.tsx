@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,12 +39,15 @@ export default function LoadBalancerConfigurationArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Load balancer configuration</strong> is the practice of designing and tuning the settings of a load balancer — the component that distributes incoming network traffic across multiple backend servers or service instances — to ensure optimal performance, reliability, and security. A load balancer is not merely a traffic fan-out device; it is a policy engine that determines which backends receive traffic, how failures are handled, how long connections are maintained, and how clients experience degraded backend conditions. Proper load balancer configuration is the difference between a gracefully degrading system and a cascading failure that takes down an entire service fleet.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, load balancer configuration is a critical infrastructure decision that directly impacts tail latency, error budgets, and incident blast radius. Many production outages involve the load balancer indirectly — health checks that prematurely eject healthy instances, timeouts that terminate legitimate long-running requests, or aggressive retry behavior that amplifies downstream overload into a full outage. Understanding how load balancer settings interact with backend behavior, autoscaling systems, and service discovery is essential for designing resilient production systems.
-        </p>
+        </HighlightBlock>
         <p>
           Load balancer configuration involves several technical considerations. Layer selection (L4 transport-layer load balancing operates on TCP/UDP connections; L7 application-layer load balancing understands HTTP, routes based on paths, headers, and hostnames). Health check design (shallow checks may route traffic to broken instances; deep checks may eject healthy instances during transient dependency slowdowns). Timeout tuning (load balancer timeouts must align with backend processing latency distributions, not averages). Retry behavior (retries can amplify backend incidents if not carefully bounded). TLS termination (centralized certificate management versus end-to-end encryption). Connection draining (gracefully removing instances during deployments or scale-down without dropping in-flight requests).
         </p>
@@ -55,14 +59,17 @@ export default function LoadBalancerConfigurationArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Layer 4 vs. Layer 7 Load Balancing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Layer 4 (L4) load balancing operates at the transport layer, making routing decisions based on TCP or UDP connection information (source/destination IP, port). L4 load balancers are simple, fast, and protocol-agnostic — they forward raw TCP traffic to backends without inspecting the payload. This simplicity makes L4 load balancers highly performant and reliable, but they lack the ability to route based on application-level information (URL paths, HTTP headers, cookies). L4 load balancers are typically used as the first layer in a multi-tier architecture, distributing traffic to a fleet of L7 load balancers or directly to backend servers when application-level routing is not needed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Layer 7 (L7) load balancing operates at the application layer, understanding the protocol being transported (most commonly HTTP/HTTPS). L7 load balancers can route traffic based on URL paths (<code>/api/users</code> to user-service, <code>/api/orders</code> to order-service), HTTP headers, hostnames (virtual hosting), cookies (session affinity), and request methods. L7 load balancers can also enforce rate limits, perform request authentication, terminate TLS, compress responses, and add or modify headers. The additional capabilities come at the cost of higher complexity — L7 load balancers have more configuration knobs, and misconfiguration can create fragile systems. The recommended approach is to keep L7 logic as simple as possible at the edge, avoiding turning the load balancer into the place where product behavior is implemented.
-        </p>
+        </HighlightBlock>
 
         <h3>Health Checks: Readiness Versus Liveness</h3>
         <p>
@@ -108,9 +115,12 @@ export default function LoadBalancerConfigurationArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Load balancer architecture in production systems typically involves a multi-tier approach: an external (edge) load balancer that terminates client TLS connections and distributes traffic across a fleet of internal (backend) load balancers, which in turn distribute traffic to application servers or service instances. The edge load balancer handles TLS termination, DDoS mitigation, geographic routing, and initial path-based routing. The internal load balancers handle service-level load balancing, health checking, and fine-grained traffic distribution. This multi-tier architecture isolates failure domains — if an internal load balancer fails, the edge can redistribute traffic to other internal load balancers.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/load-balancer-configuration-diagram-1.svg"
@@ -120,9 +130,9 @@ export default function LoadBalancerConfigurationArticle() {
           height={550}
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The traffic flow begins with a client initiating a TLS connection to the edge load balancer. The edge load balancer performs the TLS handshake, inspects the HTTP request (method, path, headers), and routes the request to an internal load balancer based on path-based routing rules. The internal load balancer evaluates its backend pool (instances that have passed health checks and are not draining), selects a backend based on the load balancing algorithm (round-robin, least connections, consistent hashing), and forwards the request. If the backend responds within the configured timeout, the response is returned to the client through the load balancer chain. If the backend fails or times out, the load balancer may retry on a different backend (if retry is configured and the method is safe), or return an error to the client.
-        </p>
+        </HighlightBlock>
         <p>
           During deployments or scale-down events, connection draining is activated for the affected instances. The load balancer stops routing new requests to draining instances, allows in-flight requests to complete (up to the draining timeout), and then removes the instances from the backend pool. Health checks continue to run on all active instances, and instances that fail health checks are immediately removed from the pool (bypassing draining, as unhealthy instances should not serve traffic).
         </p>
@@ -158,14 +168,17 @@ export default function LoadBalancerConfigurationArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Load balancer configuration involves trade-offs between simplicity and capability, security and performance, and aggressive and conservative failure detection. Understanding these trade-offs is essential for designing load balancer strategies that match your system&apos;s reliability requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>L4 vs. L7 Load Balancing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Layer 4 Load Balancing:</strong> Operates on TCP/UDP connections without inspecting application payloads. Advantages: simple (fewer configuration knobs, less complexity), fast (no protocol parsing overhead), protocol-agnostic (works with any TCP/UDP traffic, not just HTTP). Limitations: no application-level routing (cannot route based on paths, headers, or hostnames), no TLS termination at L4 (requires backends to handle TLS), no request inspection (cannot enforce rate limits or authentication at L4). Best for: first-tier traffic distribution, non-HTTP protocols (gRPC, database traffic), high-throughput scenarios where L7 parsing overhead is unacceptable.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Layer 7 Load Balancing:</strong> Operates at the application layer, understanding and inspecting HTTP traffic. Advantages: application-level routing (path-based, header-based, hostname-based routing), TLS termination (centralized certificate management), request modification (header injection, compression, rate limiting). Limitations: complex (more configuration knobs, more potential for misconfiguration), higher latency (protocol parsing adds processing overhead), protocol-specific (designed for HTTP, limited support for other protocols). Best for: edge traffic distribution, microservices routing (path-based routing to different services), TLS termination centralization.
         </p>
@@ -198,16 +211,19 @@ export default function LoadBalancerConfigurationArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Design Health Checks That Reflect Real Ability to Serve Traffic</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Health checks should verify that the backend can serve actual user requests, not just that the process is listening. A TCP connection check verifies that the process is running but does not verify that the application can respond to requests. A deep dependency check (querying all downstream services, databases, caches) verifies comprehensive functionality but may eject healthy backends during transient dependency slowdowns. The recommended approach is a moderate-depth health endpoint that verifies the application process is running, the application can respond to HTTP requests, and critical in-process resources (thread pools, connection pools) are not exhausted. Downstream dependency health should be handled at the application level through circuit breakers and fallback logic, not through load balancer health check ejection.
-        </p>
+        </HighlightBlock>
 
         <h3>Align Timeouts with Backend Latency Distributions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Configure load balancer timeouts based on the backend&apos;s p99 or p99.9 latency, measured under production load, not based on average latency or theoretical maximums. Measure latency distributions regularly (they change as backends evolve, dependencies are added, and traffic patterns shift). Set per-route timeouts for heterogeneous endpoints (different API endpoints have different latency profiles). Add a safety margin (2-3x p99 latency) to account for occasional slow requests without terminating them prematurely. Monitor timeout-triggered errors — if timeouts are triggering frequently, the timeout is too low or the backend is degraded.
-        </p>
+        </HighlightBlock>
 
         <h3>Bound Retries to Prevent Amplification</h3>
         <p>
@@ -233,16 +249,19 @@ export default function LoadBalancerConfigurationArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Health Checks That Eject Healthy Capacity</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Configuring health checks that are too strict — checking too many dependencies, using too short a timeout, or requiring too many consecutive successes — causes healthy backends to be ejected during transient slowdowns. When the load balancer ejects healthy backends, the remaining backends receive more traffic, which may push them over capacity, causing them to fail health checks as well. This cascade pattern — healthy backends ejected, remaining backends overloaded, more backends ejected — is a classic production outage scenario. The mitigation is to design health checks that verify the backend&apos;s ability to serve requests, not the health of all downstream dependencies, and to use conservative failure thresholds that tolerate transient issues.
-        </p>
+        </HighlightBlock>
 
         <h3>Timeout Mismatch Causing Request Termination</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Setting load balancer timeouts shorter than the backend&apos;s actual processing time causes legitimate requests to be terminated prematurely. The client receives a timeout error and retries, multiplying load on the backend. This is particularly damaging for non-idempotent operations (POST requests that create resources) — the timeout terminates the request, the client retries, and the backend may process the request twice, creating duplicate records. The mitigation is to measure backend latency distributions under production load, set timeouts to p99 plus a safety margin, and implement per-route timeouts for heterogeneous endpoints.
-        </p>
+        </HighlightBlock>
 
         <h3>Retry Amplification During Backend Incidents</h3>
         <p>
@@ -268,16 +287,19 @@ export default function LoadBalancerConfigurationArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Flash Sale Traffic Distribution</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms (Amazon, Shopify stores) use load balancer configuration to handle flash sale traffic spikes that increase request volume 10-100x. During flash sales, the load balancer distributes traffic across a large pool of backend instances (auto-scaled based on demand), with health checks verifying that each instance can serve checkout requests (not just TCP connectivity). Timeouts are set to accommodate checkout flow latency (payment processing, inventory checks), and retries are bounded to prevent amplification if payment backends are struggling. Connection draining ensures that scale-down events after the flash sale do not drop in-flight checkout requests, preventing incomplete transactions and customer complaints.
-        </p>
+        </HighlightBlock>
 
         <h3>Microservices Path-Based Routing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Microservices architectures use L7 load balancers for path-based routing — different URL paths route to different backend services (<code>/api/users</code> to user-service, <code>/api/orders</code> to order-service, <code>/api/products</code> to product-service). Each backend service has its own health check endpoint (specific to the service&apos;s dependencies and readiness criteria), its own timeout configuration (based on the service&apos;s latency distribution), and its own load balancing algorithm (least connections for heterogeneous service instances, round-robin for homogeneous instances). This pattern is used by organizations of all sizes to route traffic across hundreds or thousands of microservices without requiring clients to know service-level addresses.
-        </p>
+        </HighlightBlock>
 
         <h3>Zero-Downtime Deployments with Connection Draining</h3>
         <p>
@@ -293,15 +315,18 @@ export default function LoadBalancerConfigurationArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you design health checks that are neither too shallow nor too deep?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: A health check should verify that the backend can serve actual user requests without checking all downstream dependencies. The recommended approach is a moderate-depth health endpoint that confirms the application process is running, the application can respond to HTTP requests, and critical in-process resources (thread pools, connection pools) are not exhausted. Downstream dependency health should be handled at the application level through circuit breakers and fallback logic, not through load balancer health check ejection. This prevents the cascade pattern where a transient dependency slowdown causes all backends to fail deep health checks, all backends are ejected, and the load balancer has no healthy backends to route traffic to.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

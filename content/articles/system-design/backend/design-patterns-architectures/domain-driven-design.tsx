@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Domain-Driven Design (DDD)</strong> is a software development approach that structures systems around the business domain — its concepts, rules, language, and workflows — rather than around technical concerns like databases, frameworks, or infrastructure layers. Introduced by Eric Evans in 2003, DDD provides a set of principles and patterns for building software that remains understandable and modifiable as domain complexity grows. The central premise is simple but profound: if the code does not reflect the domain, the domain cannot be understood from the code, and the system will accumulate bugs, duplication, and semantic confusion over time.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           DDD is not a universal solution. It is most valuable when the domain is genuinely complex — when there are many business rules, edge cases, regulatory constraints, and long-lived evolution paths. For simple CRUD applications with straightforward data models, DDD introduces ceremony that outweighs its benefits. The decision to apply DDD should be based on the actual complexity of the problem space, not on architectural trends. Staff and principal engineers must recognize when DDD is appropriate and when a lighter approach is sufficient.
-        </p>
+        </HighlightBlock>
         <p>
           The core mechanism of DDD is the <strong>ubiquitous language</strong>: a shared vocabulary used consistently by engineers, domain experts, product managers, and stakeholders. When the same term means different things to different teams, the codebase develops semantic fractures — two modules implement the same concept differently because nobody defined ownership. DDD treats this language inconsistency as a first-class architectural risk. The ubiquitous language is not a glossary document; it is the actual names of classes, methods, modules, and events in the codebase.
         </p>
@@ -58,14 +62,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Strategic DDD: Bounded Contexts and Context Maps</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Strategic DDD operates at the architectural level, focusing on how large systems are divided and how the pieces communicate. The foundational concept is the <strong>bounded context</strong>, which is a logical boundary within which a domain model is consistent and complete. Inside a bounded context, every term has a single, well-defined meaning. Outside that boundary, the same term may carry a different meaning — and that is not a defect but an expected property of complex systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider an e-commerce platform. The Order context defines &quot;customer&quot; as a buyer with a shopping profile, cart history, and preferences. The Billing context defines &quot;customer&quot; as a tax entity with invoicing details and payment history. The Shipping context defines &quot;customer&quot; as a delivery address with carrier preferences. All three definitions are correct within their respective contexts. The architectural failure occurs when teams attempt to force a single &quot;Customer&quot; model to serve all three purposes, resulting in an overloaded entity that satisfies none of the contexts fully.
-        </p>
+        </HighlightBlock>
         <p>
           A <strong>context map</strong> documents the relationships between bounded contexts. It identifies which context is upstream (produces data or services), which is downstream (consumes data or services), and what integration pattern governs the relationship. The context map makes dependencies visible and deliberate rather than implicit and accidental. Without a context map, teams discover integration points through production incidents rather than through design.
         </p>
@@ -111,14 +118,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Context Mapping Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           How bounded contexts integrate determines system resilience, team autonomy, and evolutionary capacity. DDD defines several context mapping patterns, each appropriate for different relationships between contexts. The choice of pattern is an architectural decision with long-term consequences for coupling, deployment independence, and team velocity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Customer-Supplier</strong> pattern describes an upstream context that provides data or services to a downstream context. The upstream team controls the model and the interface; the downstream team must adapt. This creates a power dynamic where upstream changes can break downstream consumers. In practice, this pattern requires clear contracts and versioning discipline. Without them, the downstream context becomes fragile and dependent on upstream release schedules.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>Anti-Corruption Layer (ACL)</strong> protects a downstream context from an upstream model that does not align with the downstream domain language. The ACL is a translation layer — adapters, facades, and translators — that converts upstream concepts into downstream equivalents. This is not cosmetic translation; it is a protective boundary that prevents upstream design decisions from corrupting the downstream model. Organizations that skip the ACL often find their domain models gradually morphing to match external API shapes, which defeats the purpose of DDD entirely.
         </p>
@@ -175,12 +185,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           DDD is not free. It introduces modeling overhead — time spent in event storming sessions, glossary refinement, aggregate design, and context map documentation. This overhead is justified when the domain is complex and long-lived, but it is a net loss for simple CRUD systems where the data model is stable and the business rules are minimal. The staff-level decision is recognizing which category a given system falls into.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Aggregate sizing presents a fundamental trade-off. Large aggregates enforce strong consistency — all invariants within the aggregate are guaranteed atomically through a single transaction. However, large aggregates create contention: two users modifying different parts of the same aggregate will conflict, database locks increase, and throughput decreases. Small aggregates reduce contention and improve throughput, but they push consistency requirements into the eventual-consistency domain, where invariants must be enforced through compensating actions rather than transactional guarantees.
-        </p>
+        </HighlightBlock>
         <p>
           The anti-corruption layer adds development cost — every upstream concept must be translated, and the translation layer itself must be maintained. However, the cost of not having an ACL is often higher: when upstream models change, downstream systems break in subtle ways. The ACL absorbs upstream changes at a single translation point rather than scattering adaptation logic throughout the downstream codebase. For critical downstream contexts where model integrity matters, the ACL investment pays for itself quickly.
         </p>
@@ -200,12 +213,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Start with strategic DDD before tactical DDD. Identify bounded contexts and draw context maps before you design aggregates. Understanding where the boundaries are tells you what each aggregate needs to own and what it can safely ignore. Teams that jump straight into tactical patterns without strategic framing often create well-modeled aggregates that do not align with team boundaries or deployment units, which defeats much of DDD&apos;s organizational benefit.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Invest in the ubiquitous language from day one. Treat naming as an architectural activity, not a cosmetic one. When domain experts use a term that does not exist in the codebase, that is a modeling gap. When the codebase uses a term that domain experts do not recognize, that is a modeling error. The names of your classes, methods, and events should be directly traceable to conversations with domain experts. Code reviews should include language reviews — does this method name mean the same thing to the business that it means to the code?
-        </p>
+        </HighlightBlock>
         <p>
           Keep aggregates small and focused on a single invariant cluster. A good rule of thumb is that an aggregate should contain no more than three to five entity types. If an aggregate is growing beyond this, it is likely enforcing invariants that do not belong together, and the aggregate should be split. Accept eventual consistency between aggregates — not every rule needs to be enforced atomically, and pushing for strong consistency across aggregates is the primary cause of performance problems in DDD systems.
         </p>
@@ -228,12 +244,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is the <strong>anemic domain model</strong>. This occurs when domain objects contain only data properties with getters and setters, while all business logic lives in service classes. The symptom is a proliferation of classes with names like OrderService, OrderValidator, OrderCalculator, OrderProcessor — each handling a slice of logic that should belong to the Order aggregate itself. The anemic model is the default outcome of traditional layered architecture, and teams must consciously fight against it to build rich domain models.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Semantic drift</strong> occurs when the same concept is implemented differently across contexts without explicit acknowledgment. The Order context treats &quot;cancellation&quot; as a status change, while the Billing context treats it as a refund event. Neither is wrong, but the lack of explicit translation between the two meanings causes integration bugs that are difficult to trace. Semantic drift is the natural state of systems without bounded contexts — it requires deliberate effort and ongoing vigilance to prevent.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Oversized aggregates</strong> are the primary cause of performance and contention problems in DDD systems. When developers model the entire domain as one large aggregate rooted at &quot;Customer&quot; or &quot;Order,&quot; every modification acquires a lock on the entire aggregate graph. Under concurrent load, transaction conflicts multiply, response times increase, and the system scales poorly. The fix is to identify which invariants truly require atomic enforcement and split everything else into separate aggregates coordinated by domain events.
         </p>
@@ -256,14 +275,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Platform: Checkout, Billing, and Shipping Divergence</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A mid-market e-commerce company built their platform with a single &quot;Order&quot; model serving checkout, billing, and shipping workflows. Initially, this worked — all three teams used the same model and the same database tables. As the company grew, the requirements diverged sharply. Checkout needed a lightweight cart model optimized for conversion speed. Billing needed invoice revisions, tax adjustments, audit trails, and compliance with financial regulations. Shipping needed package-level tracking, carrier integrations, and delivery route optimization.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The shared Order model became a bottleneck. Every change required coordination across all three teams, deployments were synchronized, and the database schema accumulated dozens of columns that were only relevant to one workflow. The company adopted DDD by identifying three bounded contexts — Checkout, Billing, and Shipping — each with its own model of the concept. Checkout published an OrderConfirmed event; Billing consumed it to create an Invoice with its own audit model; Shipping consumed it to create a Shipment with carrier-specific details.
-        </p>
+        </HighlightBlock>
         <p>
           The result was independent deployment cycles for each context, models that accurately reflected each workflow&apos;s complexity, and a 40% reduction in cross-team coordination overhead. The key insight was recognizing that &quot;Order&quot; was not one concept but three related concepts that happened to share a name. DDD provided the vocabulary and techniques to separate them cleanly.
         </p>
@@ -307,14 +329,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is a bounded context and how does it differ from a microservice?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               A bounded context is a logical boundary within which a domain model is consistent and complete. Every term has a single, well-defined meaning inside the boundary, and the same term may carry different meanings outside it. Bounded contexts define where models are consistent and where integration translation is needed.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               A microservice is a physical deployment boundary — an independently deployable unit with its own process, data store, and scaling characteristics. Bounded contexts are about model consistency; microservices are about deployment independence.
             </p>

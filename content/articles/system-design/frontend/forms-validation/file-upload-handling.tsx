@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function FileUploadHandlingArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>File upload handling</strong> encompasses the complete
           lifecycle of uploading files from a user&apos;s device to a server or
           cloud storage: file selection via input elements or drag-and-drop,
@@ -46,8 +50,8 @@ export default function FileUploadHandlingArticle() {
           unique challenges compared to standard form data — files are binary,
           potentially large (megabytes to gigabytes), and require special
           encoding (multipart/form-data) for transmission.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The architecture of file upload handling has evolved significantly.
           Early web applications uploaded files directly to the application
           server, which stored them on disk or in a database. This approach
@@ -58,7 +62,7 @@ export default function FileUploadHandlingArticle() {
           Google Cloud Storage, Azure Blob Storage) or specialized file hosting
           services (Cloudinary, Imgix for images), then reference files by URL
           in the application database.
-        </p>
+        </HighlightBlock>
         <p>
           File upload handling involves multiple stages, each with specific
           concerns. <strong>File selection</strong> provides the UI for users to
@@ -88,8 +92,11 @@ export default function FileUploadHandlingArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>File Input Element:</strong> The HTML{" "}
             <code>&lt;input type=&quot;file&quot; /&gt;</code> element provides
             native file selection. Attributes control behavior:{" "}
@@ -99,8 +106,8 @@ export default function FileUploadHandlingArticle() {
             access on mobile devices. The <code>files</code> property provides a
             FileList object containing File objects with metadata (name, size,
             type, lastModified).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Drag-and-Drop:</strong> The HTML5 Drag and Drop API enables
             users to drag files from their filesystem and drop them onto a
             designated zone. Key events: <code>dragenter</code> (file enters
@@ -109,7 +116,7 @@ export default function FileUploadHandlingArticle() {
             zone), <code>drop</code> (file is dropped — access via
             event.dataTransfer.files). Drag-and-drop provides a more intuitive
             UX than file pickers, especially for multiple files.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Multipart Form Data:</strong> The{" "}
             <code>multipart/form-data</code> encoding is required for file
@@ -183,14 +190,17 @@ export default function FileUploadHandlingArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           File upload architecture consists of several components working
           together: the file selection UI (input or drop zone), client-side
           validation, the upload mechanism (XHR, fetch, or specialized library),
           progress tracking, error handling, and integration with form
           submission. For direct-to-cloud uploads, there&apos;s also the
           signed URL generation and callback flow.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/forms-validation/file-upload-handling/upload-architecture.svg"
@@ -200,7 +210,7 @@ export default function FileUploadHandlingArticle() {
           height={600}
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The architecture diagram shows two upload patterns. In the{" "}
           <strong>server-mediated pattern</strong>, files upload to your
           application server, which then stores them in object storage. This is
@@ -208,7 +218,7 @@ export default function FileUploadHandlingArticle() {
           pattern</strong>, the browser uploads directly to object storage using
           a presigned URL from your server. This scales better but requires more
           complex client-side logic.
-        </p>
+        </HighlightBlock>
 
         <h3>Upload Progress Flow</h3>
         <p>
@@ -242,20 +252,23 @@ export default function FileUploadHandlingArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           File upload decisions involve trade-offs between simplicity,
           scalability, and user experience.
-        </p>
+        </HighlightBlock>
 
         <h3>Server-Mediated vs Direct-to-Cloud Upload</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Server-mediated upload</strong> (file → your server → cloud
           storage) is simpler to implement — your server handles authentication,
           validation, and storage. The downside is server load (your server
           becomes a file proxy), bandwidth costs (you pay for ingress and
           egress), and scalability limits (server resources constrain upload
           capacity).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Direct-to-cloud upload</strong> (file → cloud storage via
           presigned URL) scales better — your server only generates signed URLs,
@@ -316,20 +329,23 @@ export default function FileUploadHandlingArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Validate Before Upload:</strong> Check file size, type, and
             dimensions client-side before initiating upload. Reject obviously
             invalid files immediately to save bandwidth and user time. Always
             re-validate server-side — client validation can be bypassed.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Show Clear Progress:</strong> For files larger than 1 MB,
             show upload progress with percentage and estimated time remaining.
             Update progress smoothly (throttle updates to avoid excessive
             re-renders). For multiple files, show both per-file and overall
             progress.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement Retry Logic:</strong> Network failures happen.
             Implement automatic retry with exponential backoff (retry after 1s,
@@ -370,22 +386,25 @@ export default function FileUploadHandlingArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Trusting Client MIME Types:</strong> File.type can be
             spoofed — a malicious user can rename an executable to .jpg and the
             browser will report it as an image. Always verify file types
             server-side by inspecting file magic numbers (file signature bytes)
             or using a file type detection library.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Revoking Object URLs:</strong>{" "}
             <code>URL.createObjectURL(file)</code> creates a reference that
             consumes memory. Always call <code>URL.revokeObjectURL()</code>{" "}
             after you&apos;re done with the preview (e.g., after upload
             completes or component unmounts). Memory leaks from unrevoke URLs
             can crash the browser for applications with many file previews.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring Mobile Considerations:</strong> Mobile users may
             upload photos directly from camera. These can be very large (5-20
@@ -419,9 +438,12 @@ export default function FileUploadHandlingArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Social Media Image Upload</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social platforms handle massive image upload volumes. Users select
           images via drag-drop or file picker, client validates size and type,
           shows a preview with cropping/editing tools, then uploads directly to
@@ -429,10 +451,10 @@ export default function FileUploadHandlingArticle() {
           bar. After upload, the server generates thumbnails at multiple sizes,
           runs image optimization, and stores metadata. Failed uploads retry
           automatically.
-        </p>
+        </HighlightBlock>
 
         <h3>Document Submission Portal</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Legal or financial portals require document uploads (PDFs, Word docs)
           with strict validation. File type is verified by magic number, not
           extension. Files are encrypted client-side before upload (for
@@ -440,7 +462,7 @@ export default function FileUploadHandlingArticle() {
           documents. After upload, server-side virus scanning runs before the
           document is accepted. Users see detailed status: &quot;Scanning for
           viruses...&quot;, &quot;Processing...&quot;, &quot;Complete&quot;.
-        </p>
+        </HighlightBlock>
 
         <h3>Video Upload Platform</h3>
         <p>
@@ -457,17 +479,20 @@ export default function FileUploadHandlingArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Common Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you implement upload progress tracking with the Fetch
               API?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The Fetch API doesn&apos;t natively support upload progress,
               but you have several options.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               XMLHttpRequest approach: Use XHR instead of Fetch. XHR provides an
               upload.onprogress event that gives bytes loaded and total bytes.

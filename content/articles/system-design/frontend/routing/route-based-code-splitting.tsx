@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,27 +25,27 @@ export default function RouteBasedCodeSplittingArticle() {
     <ArticleLayout metadata={metadata}>
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Route-based code splitting is the technique of splitting your JavaScript bundle along
           route boundaries so that each route&apos;s code is loaded only when the user navigates to
           that route. Instead of shipping one monolithic bundle containing every page&apos;s
           components, styles, and logic, the bundler creates separate chunks — one per route (or
           group of routes) — that are fetched on demand via dynamic <code>import()</code>.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This is the highest-impact code splitting strategy because routes represent natural
           boundaries in an application. A user visiting the homepage doesn&apos;t need the admin
           dashboard code. A user browsing products doesn&apos;t need the checkout flow. Route-based
           splitting ensures users download only the JavaScript they need for the page they&apos;re
           viewing, dramatically reducing the initial bundle size and improving Time to Interactive.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Modern bundlers (Webpack, Vite, Turbopack) automatically create split points at dynamic{" "}
           <code>import()</code> boundaries. React provides <code>React.lazy()</code> to integrate
           these dynamic imports with component rendering, and <code>Suspense</code> to manage
           loading states. Next.js and Remix handle route-based splitting automatically at the
           framework level.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -57,29 +58,29 @@ export default function RouteBasedCodeSplittingArticle() {
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Dynamic import() as Split Points</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           The <code>import()</code> expression (distinct from the <code>import</code> declaration)
           returns a Promise that resolves to the module. Bundlers recognize this as a split point
           and extract the imported module and its dependency tree into a separate chunk. When the
           code executes, the browser fetches the chunk over the network and resolves the Promise.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For route-based splitting, each route component is wrapped in a dynamic import:{" "}
           <code>{"const Dashboard = React.lazy(() => import('./pages/Dashboard'))"}</code>. The
           bundler creates a separate chunk for <code>Dashboard</code> and everything it imports.
           When the user navigates to the dashboard route, React triggers the import, shows the
           Suspense fallback while the chunk loads, and renders the component once it arrives.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Chunk Naming and Caching</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Bundlers assign content-based hashes to chunk filenames (e.g.,{" "}
           <code>dashboard.a1b2c3.js</code>). When a route&apos;s code changes, only that chunk&apos;s
           hash changes — other chunks remain cacheable. This means deploying a change to the
           settings page doesn&apos;t invalidate the cached dashboard chunk. Webpack supports
           magic comments (<code>{"/* webpackChunkName: \"dashboard\" */"}</code>) to give chunks
           human-readable names for debugging.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Prefetching Strategies</h3>
         <p>
@@ -105,30 +106,30 @@ export default function RouteBasedCodeSplittingArticle() {
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Suspense Integration</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           React Suspense is the rendering mechanism for lazy-loaded components. When a lazy
           component&apos;s chunk hasn&apos;t loaded yet, it &quot;suspends&quot; — React catches
           the thrown Promise, traverses up the tree to find the nearest <code>{"<Suspense>"}</code>{" "}
           boundary, and renders the <code>fallback</code> UI. Once the chunk loads and the Promise
           resolves, React replaces the fallback with the actual component.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Place Suspense boundaries strategically. A single boundary at the route level shows a
           full-page loading indicator — simple but jarring. Nested boundaries allow partial loading:
           the layout renders immediately while only the content area shows a skeleton. The ideal
           placement depends on the visual hierarchy — loading states should replace the smallest
           meaningful unit of content.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Shared Chunks and Commons Splitting</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           When multiple routes import the same library (e.g., a chart library used in both
           Analytics and Dashboard), the bundler can extract it into a shared chunk rather than
           duplicating it in both route chunks. Webpack&apos;s <code>splitChunks</code>{" "}
           configuration controls this: <code>chunks: &quot;all&quot;</code> with{" "}
           <code>minSize</code> and <code>minChunks</code> thresholds determine what gets extracted.
           The trade-off: more shared chunks mean more HTTP requests but smaller total download size.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Framework-Level Splitting</h3>
         <p>
@@ -151,35 +152,35 @@ export default function RouteBasedCodeSplittingArticle() {
         <div className="my-6 overflow-x-auto rounded-lg border border-theme">
           <table className="min-w-full text-sm">
             <thead className="bg-panel-soft">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <th className="px-4 py-3 text-left font-semibold">Aspect</th>
                 <th className="px-4 py-3 text-left font-semibold">No Splitting</th>
                 <th className="px-4 py-3 text-left font-semibold">Route Splitting</th>
                 <th className="px-4 py-3 text-left font-semibold">Component Splitting</th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr><td className="px-4 py-3 font-medium">Initial bundle</td><td className="px-4 py-3">Large (all code)</td><td className="px-4 py-3">Small (current route only)</td><td className="px-4 py-3">Smallest (per-component)</td></tr>
+              <HighlightBlock as="tr" tier="important"><td className="px-4 py-3 font-medium">Initial bundle</td><td className="px-4 py-3">Large (all code)</td><td className="px-4 py-3">Small (current route only)</td><td className="px-4 py-3">Smallest (per-component)</td></HighlightBlock>
               <tr><td className="px-4 py-3 font-medium">Navigation latency</td><td className="px-4 py-3">None (pre-loaded)</td><td className="px-4 py-3">Chunk load time (prefetchable)</td><td className="px-4 py-3">Multiple chunk loads possible</td></tr>
               <tr><td className="px-4 py-3 font-medium">Complexity</td><td className="px-4 py-3">None</td><td className="px-4 py-3">Low (framework handles it)</td><td className="px-4 py-3">High (manual boundary decisions)</td></tr>
               <tr><td className="px-4 py-3 font-medium">Cache efficiency</td><td className="px-4 py-3">Poor (any change invalidates all)</td><td className="px-4 py-3">Good (per-route invalidation)</td><td className="px-4 py-3">Best (per-component invalidation)</td></tr>
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Route-based splitting is the recommended default. It provides the best complexity-to-impact
           ratio. Add component-level splitting only for heavy components within a route (chart
           libraries, rich text editors, map widgets) that not every user on that route will interact
           with.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>Split at route boundaries first — this gives the biggest bang for the complexity buck</li>
-          <li>Use React.lazy() with Suspense fallbacks that match the layout skeleton of the loading page</li>
-          <li>Prefetch likely-next routes on link hover or viewport intersection</li>
+          <HighlightBlock as="li" tier="crucial">Split at route boundaries first — this gives the biggest bang for the complexity buck</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Use React.lazy() with Suspense fallbacks that match the layout skeleton of the loading page</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Prefetch likely-next routes on link hover or viewport intersection</HighlightBlock>
           <li>Name chunks explicitly (via magic comments or config) for easier debugging and bundle analysis</li>
           <li>Extract shared vendor code into common chunks to avoid duplication</li>
           <li>Monitor bundle sizes in CI with tools like bundlesize, size-limit, or Webpack Bundle Analyzer</li>
@@ -191,9 +192,9 @@ export default function RouteBasedCodeSplittingArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li><strong>Missing Suspense boundary:</strong> Using React.lazy() without a Suspense boundary causes an error. Always wrap lazy routes in Suspense</li>
-          <li><strong>Over-splitting:</strong> Creating dozens of tiny chunks increases HTTP request overhead. Balance chunk count with chunk size — the overhead of an extra request often exceeds the cost of a few extra KB</li>
-          <li><strong>Stale chunks after deploy:</strong> After a deployment, old chunk filenames no longer exist. If a user&apos;s cached app references an old chunk, the fetch fails. Implement chunk load error recovery — catch the error and force a full page reload</li>
+          <HighlightBlock as="li" tier="crucial"><strong>Missing Suspense boundary:</strong> Using React.lazy() without a Suspense boundary causes an error. Always wrap lazy routes in Suspense</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Over-splitting:</strong> Creating dozens of tiny chunks increases HTTP request overhead. Balance chunk count with chunk size — the overhead of an extra request often exceeds the cost of a few extra KB</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Stale chunks after deploy:</strong> After a deployment, old chunk filenames no longer exist. If a user&apos;s cached app references an old chunk, the fetch fails. Implement chunk load error recovery — catch the error and force a full page reload</HighlightBlock>
           <li><strong>Loading waterfall:</strong> If a route component lazy-loads another component that lazy-loads data, you get a serial waterfall. Use data loaders or parallel Suspense boundaries to break the chain</li>
           <li><strong>No loading indicator:</strong> A blank screen during chunk loading feels broken. Always provide meaningful Suspense fallbacks — skeletons, spinners, or at minimum a loading message</li>
         </ul>
@@ -203,41 +204,49 @@ export default function RouteBasedCodeSplittingArticle() {
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Next.js Automatic Splitting</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Next.js splits every page into its own chunk automatically. The App Router goes further
             by splitting at the layout level — shared layouts are separate chunks that persist across
             child navigations. A user navigating between <code>/dashboard/analytics</code> and{" "}
             <code>/dashboard/settings</code> only downloads the child page chunk; the dashboard
             layout chunk is already loaded and cached.
-          </p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
+            In interviews, tie this to performance budgets: route splits reduce initial JS parse/exec
+            but increase the risk of navigation jank if you don&apos;t prefetch high-probability routes
+            and handle chunk-load failures safely during deployments.
+          </HighlightBlock>
         </div>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Airbnb</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Airbnb aggressively splits their application along route boundaries. The search results
             page, listing detail page, booking flow, and host management tools are all separate
             chunks. They combine this with granular prefetching — when search results render,
             Airbnb prefetches the listing detail chunk for the first few visible results, making
             the click-through feel instant.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How does route-based code splitting improve performance?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important">Q: How does route-based code splitting improve performance?</HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: It reduces the initial JavaScript bundle size by only loading the code needed for
               the current route. This decreases download time, parse time, and execution time —
               directly improving Time to Interactive and First Contentful Paint. Subsequent route
               chunks are loaded on demand (or prefetched), so the user pays only for the code they
               actually use.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What happens when a chunk fails to load after a deployment?</p>
+            <HighlightBlock as="p" tier="important">Q: What happens when a chunk fails to load after a deployment?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: After a deployment, old chunk filenames (with content hashes) no longer exist on
               the server. A user with a cached version of the app may try to load a chunk that no

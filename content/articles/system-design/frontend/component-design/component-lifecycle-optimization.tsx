@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Component Lifecycle Optimization</strong> is the practice of understanding and optimizing each phase of a component's lifecycle: mounting (creation), updating (re-rendering), and unmounting (destruction). Each phase has opportunities for optimization: avoiding unnecessary renders during mounting, minimizing work during updates, and cleaning up resources during unmounting. Proper lifecycle optimization ensures applications remain performant as they scale.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Component lifecycle addresses a fundamental challenge: how do we ensure components only do work when necessary? Without optimization, components re-render when props haven't changed, effects run when dependencies are stable, and resources leak when components unmount. These issues compound across large applications, causing noticeable performance degradation.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, lifecycle optimization is essential for building performant applications. It requires understanding React's rendering model, knowing when to apply optimization patterns, and measuring the impact of optimizations. The goal is not to optimize everything, but to optimize where it matters.
         </p>
@@ -45,6 +49,9 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/component-design/lifecycle-phases.svg"
@@ -53,12 +60,12 @@ export default function ArticlePage() {
         />
 
         <h3>Mounting Phase</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The mounting phase is when a component is created and inserted into the DOM. This happens on initial render. Optimization opportunities include lazy loading components to reduce initial bundle size, deferring non-critical work until after the initial paint, and avoiding unnecessary computations during mount.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           React.lazy and Suspense enable code splitting at the component level. Components are loaded on demand when they're rendered. This reduces initial bundle size and speeds up initial load. Use lazy loading for components that aren't needed immediately.
-        </p>
+        </HighlightBlock>
         <p>
           Effects with empty dependency arrays run after mount. Use this for initialization that doesn't block rendering. Defer expensive computations until after the initial paint using setTimeout or requestAnimationFrame.
         </p>
@@ -110,14 +117,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing lifecycle optimization requires understanding React's rendering model and applying patterns strategically.
-        </p>
+        </HighlightBlock>
 
         <h3>Rendering Model</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           React renders components when state or props change. Rendering creates a new virtual DOM tree. React compares the new tree to the old tree (diffing). It applies minimal changes to the real DOM (reconciliation). This process is fast but not free.
-        </p>
+        </HighlightBlock>
         <p>
           Optimization reduces the cost of rendering. Memoization skips rendering entirely when props haven't changed. Smaller components have smaller trees to diff. Stable references prevent child components from re-rendering unnecessarily.
         </p>
@@ -161,9 +171,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Lifecycle optimization involves trade-offs between performance, complexity, and memory.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/component-design/memoization-strategies.svg"
@@ -212,16 +225,19 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that optimization should be data-driven. Measure to identify bottlenecks. Apply targeted optimizations. Verify improvement with measurements. Don't optimize based on intuition alone.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Profile before optimizing. Use React DevTools Profiler to identify slow components. Focus optimization efforts where they matter. Don't optimize components that render infrequently or quickly.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/component-design/effect-cleanup-patterns.svg"
@@ -229,9 +245,9 @@ export default function ArticlePage() {
           caption="Effect cleanup — always cleanup timers, event listeners, subscriptions, and pending requests. Return cleanup function from useEffect to prevent memory leaks"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use React.memo for components that render frequently with stable props. Don't use it for components that render once or have changing props. The comparison cost exceeds the benefit.
-        </p>
+        </HighlightBlock>
         <p>
           Memoize expensive computations with useMemo. Define expensive as noticeable to users or called frequently. Don't memoize simple computations. The memoization overhead exceeds the computation cost.
         </p>
@@ -248,12 +264,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Over-memoizing creates complexity without benefit. Memoizing everything adds overhead and makes code harder to understand. Memoize selectively based on measurements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Incomplete effect dependencies cause stale closures. Effects capture old values when dependencies are missing. Use the exhaustive-deps ESLint rule. Include all values used in the effect.
-        </p>
+        </HighlightBlock>
         <p>
           Not cleaning up effects causes memory leaks. Subscriptions, timers, and event listeners accumulate. Always return cleanup functions from effects.
         </p>
@@ -270,14 +289,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce: Product List Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce site had a product list with 100+ items. Scrolling was laggy. The solution was React.memo for product items, useMemo for filtered/sorted products, and virtualization for rendering only visible items.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Results included 60 FPS scrolling, reduced memory usage from virtualization, and faster initial render from code splitting. The optimized list handled thousands of products smoothly.
-        </p>
+        </HighlightBlock>
 
         <h3>Dashboard: Real-Time Data Updates</h3>
         <p>
@@ -306,14 +328,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What are the phases of the component lifecycle?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Mounting is when the component is created and inserted into the DOM. Updating is when the component re-renders due to prop or state changes. Unmounting is when the component is removed from the DOM.
-            </p>
+            </HighlightBlock>
             <p>
               Each phase has optimization opportunities. Mounting: lazy loading, deferring work. Updating: memoization, batching. Unmounting: cleanup, canceling requests.
             </p>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -86,18 +87,21 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Timeout Types and Their Roles</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Connection Timeout</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The connection timeout specifies the maximum time allowed to establish a TCP connection
           (and TLS handshake, if applicable) to a downstream service. If the connection cannot be
           established within this duration, the operation fails with a connection timeout error.
           Connection timeouts protect against scenarios where the downstream service is unreachable
           (network partition, service crash, DNS resolution failure) and the client would otherwise
           wait indefinitely for the connection to succeed.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Connection timeouts are typically set to 1-5 seconds in production systems. A shorter
           connection timeout (1 second) causes faster failure when the service is unreachable,
           allowing the client to fail fast and potentially retry on a different service instance.
@@ -106,7 +110,7 @@ export default function ArticlePage() {
           on the network environment: in a data center with low-latency networking, a 1-second
           connection timeout is appropriate, while in a cross-region setup with higher network
           latency, a 3-5 second timeout may be necessary.
-        </p>
+        </HighlightBlock>
 
         <h3>Read Timeout</h3>
         <p>
@@ -169,9 +173,12 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Timeout Budget Allocation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In a service chain where the entry point makes multiple downstream calls, the total
           timeout budget must be allocated across all calls. The allocation strategy determines
           how much time each downstream service has to complete its work. A naive allocation
@@ -179,9 +186,9 @@ export default function ArticlePage() {
           calls, each call gets 100ms. However, this is rarely optimal because different services
           have different latency characteristics: the user service may respond in 10ms, while the
           recommendation service may take 80ms.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           A better allocation strategy is proportional to observed latency: each service receives
           a budget proportional to its typical response time. If the user service typically takes
           10ms (2 percent of total latency) and the recommendation service takes 80ms (16 percent
@@ -189,7 +196,7 @@ export default function ArticlePage() {
           recommendation service receives 80ms. This allocation reflects the actual work each
           service needs to perform and avoids allocating too much budget to fast services or too
           little to slow services.
-        </p>
+        </HighlightBlock>
 
         <h3>Adaptive Timeouts</h3>
         <p>
@@ -259,8 +266,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Configuring timeouts involves trade-offs between availability and latency. Short timeouts
           cause faster failures, freeing client resources and preventing cascading failures, but
           they also reject legitimate slow requests. Long timeouts tolerate slow responses but
@@ -269,15 +279,15 @@ export default function ArticlePage() {
           authentication) should have longer timeouts to avoid rejecting important operations,
           while non-critical services (recommendations, analytics) should have shorter timeouts
           to protect the system from degradation.
-        </p>
+        </HighlightBlock>
 
         <h3>Static vs Adaptive Timeouts</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Static timeouts are simple to configure and reason about: every request to a service
           has the same timeout, regardless of current conditions. This simplicity is valuable
           for debugging and capacity planning. However, static timeouts do not adapt to changing
           system conditions, requiring manual reconfiguration when service latency changes.
-        </p>
+        </HighlightBlock>
 
         <p>
           Adaptive timeouts adjust automatically based on observed latency, eliminating the need
@@ -303,23 +313,26 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Timeout Design</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Set timeouts based on observed latency, not guesses.</strong> Measure the P50,
           P95, and P99 latency of each downstream service under normal and peak load conditions.
           Set the timeout to 2-3x the P99 latency under peak load. This ensures that the timeout
           is long enough to accommodate legitimate slow responses during peak load but short enough
           to fail fast when the service is genuinely broken.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Propagate deadlines across service chains.</strong> When a service makes
           downstream calls, it should propagate the remaining deadline to the downstream service.
           This allows each service in the chain to make intelligent decisions about how much work
           to perform based on the time remaining. Systems like gRPC (with deadline propagation),
           Go (context.WithDeadline), and Java (OpenTelemetry with deadline propagation) support
           this pattern natively.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Implement minimum deadline thresholds.</strong> Each service should define a
@@ -351,8 +364,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Timeout cascades.</strong> When Service A calls Service B with a 5-second
           timeout, and Service B calls Service C with a 5-second timeout, the total timeout for
           a request from A to C is 10 seconds (not 5 seconds). If each service in a chain has
@@ -360,9 +376,9 @@ export default function ArticlePage() {
           has no control over the end-to-end latency. Fix: Use deadline propagation so that the
           entry point&apos;s deadline is shared across all service calls. Each service consumes
           a portion of the total deadline and passes the remaining deadline to downstream services.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Thundering herd on timeout recovery.</strong> When a service recovers from an
           outage, all clients that were timing out simultaneously retry their requests, causing
           a surge that can overwhelm the recovering service. Fix: Implement jittered retries:
@@ -370,7 +386,7 @@ export default function ArticlePage() {
           that retries are spread over time rather than arriving simultaneously. Additionally,
           implement circuit breaking: when a service fails repeatedly, the circuit breaker stops
           sending requests entirely, allowing the service to recover without retry traffic.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Using default library timeouts.</strong> Most HTTP client libraries have default
@@ -410,9 +426,12 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Google: Distributed Tracing with Deadline Propagation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google&apos;s internal infrastructure uses deadline propagation extensively across its
           microservices architecture. When a request enters Google&apos;s system, it is assigned
           a deadline based on the user-facing SLA (e.g., 200ms for search results). This deadline
@@ -420,15 +439,15 @@ export default function ArticlePage() {
           (Stubby/gRPC), and each service adjusts its behavior based on the remaining deadline.
           Services with little remaining time skip non-essential work (spell checking, query
           expansion, personalization) and return partial results.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google&apos;s approach to deadline propagation is integrated with its distributed
           tracing system (Dapper): each span in the trace includes the remaining deadline at the
           time of the span, allowing operators to see how deadline consumption varies across
           service calls. This visibility enables capacity planning: services that consistently
           consume a large portion of the deadline are identified for optimization.
-        </p>
+        </HighlightBlock>
 
         <h3>AWS: Adaptive Timeouts in Service Mesh</h3>
         <p>
@@ -473,11 +492,14 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg bg-panel-soft p-6">
-            <p className="font-semibold">Q1: What is the difference between a connection timeout, a read timeout, and a deadline?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: What is the difference between a connection timeout, a read timeout, and a deadline?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> A connection timeout bounds the time to establish a TCP
               connection to a downstream service. If the connection cannot be established within
               this duration, the operation fails. A read timeout bounds the time to receive a
@@ -487,7 +509,7 @@ export default function ArticlePage() {
               downstream service calls. Unlike connection and read timeouts, which apply to
               individual service calls, a deadline applies to the entire operation chain and
               is propagated to all downstream services.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg bg-panel-soft p-6">

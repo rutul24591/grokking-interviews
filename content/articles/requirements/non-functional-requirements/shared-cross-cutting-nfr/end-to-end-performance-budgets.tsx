@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,13 +25,16 @@ export default function EndToEndPerformanceBudgetsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>End-to-End Performance Budgets</strong> are quantitative limits on performance metrics
           that span the entire system—from user interaction to backend processing and back. Unlike
           component-level budgets such as frontend bundle size or API latency, end-to-end budgets define
           the total acceptable latency, resource consumption, or error rate for complete user journeys.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Performance budgets answer critical questions: How long should a page take to load? What is
           the maximum acceptable latency for a search query? How much data can we transfer before the
           user experience degrades? By setting and enforcing these budgets, teams ensure consistent user
@@ -40,7 +44,7 @@ export default function EndToEndPerformanceBudgetsArticle() {
           with justification, or reconsider the feature. Without budgets, performance degrades gradually
           through death by a thousand cuts; with budgets, every change is evaluated against clear
           criteria, preventing incremental degradation.
-        </p>
+        </HighlightBlock>
         <p>
           End-to-end budgets are user-centric, based on user-perceived metrics like Time to Interactive
           and First Contentful Paint rather than technical metrics alone. They are cross-functional,
@@ -59,7 +63,10 @@ export default function EndToEndPerformanceBudgetsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Performance budgets fall into three categories: time-based, resource-based, and quality
           budgets. Time-based budgets set limits on latency and timing metrics. Time to First Byte
           (TTFB) should be under 200ms to indicate server responsiveness. First Contentful Paint (FCP)
@@ -68,8 +75,8 @@ export default function EndToEndPerformanceBudgetsArticle() {
           Interactive (TTI) should be under 3.5 seconds so users perceive the page as usable. API
           Response Time at P95 should be under 300ms for responsive interactions. Total Page Load should
           be under 5 seconds for the complete loading experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Resource-based budgets limit data transfer and resource consumption. Total page weight might
           be capped at under 1.5MB for desktop and under 500KB for mobile. JavaScript budgets might
           limit initial load to under 200KB gzipped. CSS budgets might cap at under 50KB gzipped. Image
@@ -79,7 +86,7 @@ export default function EndToEndPerformanceBudgetsArticle() {
           percentage (under 0.1% for critical paths), Core Web Vitals pass rate (75% good ratings),
           minimum frame rate for animations (above 55 FPS for 60Hz displays), and maximum cumulative
           layout shift score (under 0.1).
-        </p>
+        </HighlightBlock>
         <p>
           Setting realistic budgets requires balancing user expectations with technical feasibility.
           User perception research shows that 0-100ms feels like an instant response with no perceived
@@ -112,14 +119,17 @@ export default function EndToEndPerformanceBudgetsArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Performance budget enforcement relies on an interconnected architecture of CI/CD integration,
           real user monitoring, budget evaluation engines, and alerting systems. Understanding this
           architecture enables staff and principal engineers to design effective enforcement strategies
           that catch regressions before they reach production and monitor actual user experience
           continuously.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The CI/CD integration pipeline catches performance regressions before deployment. Lighthouse
           CI runs Lighthouse audits on every pull request and fails the build if budgets are exceeded,
           with configurable thresholds for blocking versus advisory budgets. Webpack Bundle Analyzer
@@ -129,7 +139,7 @@ export default function EndToEndPerformanceBudgetsArticle() {
           critical budgets are violated or allow deployment with warnings for advisory budget breaches.
           The pipeline integrates with code review workflows so that performance regressions are visible
           to reviewers before merge, enabling teams to address issues proactively rather than reactively.
-        </p>
+        </HighlightBlock>
         <p>
           Real User Monitoring (RUM) data collection tracks actual user experience in production. The
           Performance API and Navigation Timing API in browsers collect metrics like TTFB, FCP, LCP,
@@ -176,34 +186,37 @@ export default function EndToEndPerformanceBudgetsArticle() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Performance budget enforcement decisions involve significant trade-offs across monitoring
           approaches, enforcement strictness, and evaluation granularity. Understanding these trade-offs
           enables teams to choose the right approach for their maturity level, traffic patterns, and
           organizational constraints.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Synthetic vs RUM Monitoring</h3>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-theme">
-                <th className="p-2 text-left">Dimension</th>
+  <tr className="border-b border-theme">
+<th className="p-2 text-left">Dimension</th>
                 <th className="p-2 text-left">Synthetic</th>
                 <th className="p-2 text-left">Real User Monitoring</th>
-              </tr>
-            </thead>
+  </tr>
+</thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Environment</td>
                 <td className="p-2">Controlled, repeatable</td>
                 <td className="p-2">Real-world, variable</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Coverage</td>
                 <td className="p-2">Predefined scenarios only</td>
                 <td className="p-2">All user journeys</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Detection Speed</td>
                 <td className="p-2">Immediate (on every run)</td>
@@ -229,16 +242,16 @@ export default function EndToEndPerformanceBudgetsArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Deployment Impact</td>
                 <td className="p-2">Blocks deployment on violation</td>
                 <td className="p-2">Allows deployment with warning</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Team Velocity</td>
                 <td className="p-2">May slow down (must fix first)</td>
                 <td className="p-2">Unimpeded (track and address)</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Performance Discipline</td>
                 <td className="p-2">Strong (forced compliance)</td>
@@ -264,16 +277,16 @@ export default function EndToEndPerformanceBudgetsArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Regression Prevention</td>
                 <td className="p-2">Prevents regression from merging</td>
                 <td className="p-2">Detects after merge, must fix</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Developer Experience</td>
                 <td className="p-2">Friction (must fix before merge)</td>
                 <td className="p-2">Smoother (merge, then fix)</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Fix Cost</td>
                 <td className="p-2">Lower (fix in PR context)</td>
@@ -299,16 +312,16 @@ export default function EndToEndPerformanceBudgetsArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Fairness</td>
                 <td className="p-2">May hide poor segments</td>
                 <td className="p-2">Exposes worst-affected users</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Complexity</td>
                 <td className="p-2">Low (single threshold)</td>
                 <td className="p-2">High (multiple thresholds)</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">User Impact</td>
                 <td className="p-2">Average experience</td>
@@ -326,7 +339,10 @@ export default function EndToEndPerformanceBudgetsArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designate performance champions or advocates in each team who serve as the first point of
           contact for performance questions, review pull requests for performance impact, and educate
           team members on performance best practices. These champions should receive advanced training
@@ -334,8 +350,8 @@ export default function EndToEndPerformanceBudgetsArticle() {
           matters. Establish a regular performance review cadence with weekly reviews of RUM dashboards
           to discuss trends, inclusion of performance tasks in sprint planning, and quarterly deep dives
           into performance metrics with budget adjustments based on findings.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Build a performance culture through regular training sessions on performance best practices,
           public dashboards showing performance metrics for visibility, team ownership of their portion
           of the budget, and recognition of performance improvements and wins. Include documentation
@@ -343,7 +359,7 @@ export default function EndToEndPerformanceBudgetsArticle() {
           recorded, runbooks are updated for operational impact, and changelog entries are created.
           Treat performance requirements as first-class user stories: &quot;As a user, I need the page
           to load in under 3 seconds so I can start my workflow quickly.&quot;
-        </p>
+        </HighlightBlock>
         <p>
           Integrate performance tools into CI/CD with Lighthouse CI running on every pull request,
           webpack-bundle-analyzer failing builds when bundle size exceeds budget, and synthetic
@@ -366,20 +382,23 @@ export default function EndToEndPerformanceBudgetsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Setting unrealistic budgets that are too strict leads to them being ignored, while budgets
           that are too loose provide no value. The fix is to start with achievable budgets and tighten
           them gradually as performance improves. Focusing only on averages (P50 or median) hides poor
           experiences for a significant portion of users. Always track P75, P95, and P99 percentiles
           to understand the full distribution of user experiences.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Setting desktop-only budgets ignores mobile users who often have worse network conditions
           and devices. Set separate budgets for mobile that account for slower networks and less
           powerful processors. Budgets without CI/CD gates and alerts become mere suggestions that
           teams ignore. Integrate enforcement into the development workflow with automated checks on
           every pull request and production monitoring for ongoing compliance.
-        </p>
+        </HighlightBlock>
         <p>
           Treating performance as a one-time effort rather than an ongoing commitment leads to gradual
           degradation over time. Performance requires continuous monitoring, regular budget reviews,
@@ -394,7 +413,10 @@ export default function EndToEndPerformanceBudgetsArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Google&apos;s Core Web Vitals represent the most influential performance budget framework in
           the industry. Google defined three key metrics—Largest Contentful Paint (LCP) under 2.5s,
           First Input Delay (FID) under 100ms, and Cumulative Layout Shift (CLS) under 0.1—as part of
@@ -403,8 +425,8 @@ export default function EndToEndPerformanceBudgetsArticle() {
           a Core Web Vitals report showing how pages perform against these budgets, and Lighthouse
           integrates these budgets into its auditing. Google&apos;s approach demonstrates how combining
           performance budgets with business incentives (search ranking) drives industry-wide adoption.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Amazon found that every 100ms of latency cost them 1% in sales, a finding that has become
           one of the most cited performance statistics in the industry. Amazon enforces strict
           performance budgets across their platform with automated monitoring of page load times,
@@ -414,7 +436,7 @@ export default function EndToEndPerformanceBudgetsArticle() {
           performance engineers embedded in teams, and executive-level accountability for performance
           metrics. Their approach demonstrates the direct business impact of performance budgets and
           the organizational commitment required to maintain them at scale.
-        </p>
+        </HighlightBlock>
         <p>
           Walmart measured the impact of performance on conversion rates and found that for every 1
           second improvement in page load time, conversions increased by 2%. Walmart invested in
@@ -439,15 +461,18 @@ export default function EndToEndPerformanceBudgetsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is a performance budget and why is it important?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What is a performance budget and why is it important?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: A performance budget defines quantitative limits on performance metrics (latency, bundle
               size, etc.). Important because: (1) Prevents incremental degradation, (2) Enables objective
               trade-off decisions, (3) Aligns teams on performance goals, (4) Catches regressions early.
               Without budgets, performance dies by a thousand cuts.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

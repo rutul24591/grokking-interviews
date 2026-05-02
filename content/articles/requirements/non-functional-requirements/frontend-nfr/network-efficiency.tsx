@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,10 @@ export default function NetworkEfficiencyArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Network Efficiency</strong> measures how effectively a web
           application uses network resources to deliver content and functionality
           to users. It encompasses protocol selection (HTTP/2, HTTP/3), request
@@ -51,8 +55,8 @@ export default function NetworkEfficiencyArticle() {
           (critical for mobile users on limited plans), battery life (network
           radio is a major battery drain on mobile devices), and infrastructure
           costs (reduced bandwidth equals lower CDN and server expenses).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff engineers, network efficiency is a systems-level
           optimization that spans frontend architecture, backend API design,
           and infrastructure configuration. Frontend engineers control request
@@ -63,7 +67,7 @@ export default function NetworkEfficiencyArticle() {
           compression). Infrastructure engineers configure HTTP protocol
           support, CDN caching, and connection management. The most effective
           network optimization requires coordination across all three layers.
-        </p>
+        </HighlightBlock>
         <p>
           The evolution of HTTP protocols has dramatically improved network
           efficiency. HTTP/1.1 required multiple TCP connections (typically 6-8
@@ -81,7 +85,10 @@ export default function NetworkEfficiencyArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The TCP connection lifecycle is the foundation of network efficiency
           understanding. Establishing an HTTPS connection requires a 3-way TCP
           handshake (SYN, SYN-ACK, ACK — 1.5 × RTT before any data is sent),
@@ -94,8 +101,8 @@ export default function NetworkEfficiencyArticle() {
           (keep-alive) is critical — once a connection is established,
           subsequent requests on the same connection have zero handshake
           overhead.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           HTTP/2 multiplexing transforms how requests are transmitted. Instead
           of opening 6-8 parallel connections in HTTP/1.1 (each with its own
           handshake overhead and slow start), HTTP/2 multiplexes all requests
@@ -107,7 +114,7 @@ export default function NetworkEfficiencyArticle() {
           header values. Server push allows the server to proactively send
           resources the client will need (though this feature has been
           deprecated in favor of resource hints).
-        </p>
+        </HighlightBlock>
         <p>
           HTTP/3 (QUIC) addresses the remaining limitation of HTTP/2 — TCP-level
           head-of-line blocking. In HTTP/2, if a single TCP packet is lost, all
@@ -130,7 +137,10 @@ export default function NetworkEfficiencyArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Request optimization architecture minimizes the number and size of
           network requests. Request batching combines multiple small requests
           into a single larger request — GraphQL naturally supports this by
@@ -142,8 +152,8 @@ export default function NetworkEfficiencyArticle() {
           and dashboard widgets), the first request&apos;s promise is cached and
           returned to subsequent requesters, so only one network request is made.
           Libraries like React Query and SWR handle deduplication automatically.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compression architecture reduces the size of transmitted data. Brotli
           is the preferred compression algorithm for web content, providing
           80-90% compression ratio (better than Gzip&apos;s 70-80%) with
@@ -153,7 +163,7 @@ export default function NetworkEfficiencyArticle() {
           provide built-in compression that is superior to general-purpose
           algorithms. For API responses, Gzip remains widely supported and is
           sufficient for JSON payloads where Brotli&apos;s advantage is modest.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/request-optimization.svg"
@@ -189,7 +199,10 @@ export default function NetworkEfficiencyArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Resource hint usage involves a trade-off between performance gain and
           resource waste. Preconnect and preload start work early but consume
           network bandwidth, CPU, and memory. Overusing preconnect (more than
@@ -201,8 +214,8 @@ export default function NetworkEfficiencyArticle() {
           next few seconds, preload only resources critical for the current
           page&apos;s first render, and prefetch only resources for high
           confidence next navigations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Connection management decisions affect both latency and server
           capacity. HTTP/2&apos;s single multiplexed connection is efficient
           for most scenarios but can become a bottleneck under very high
@@ -215,7 +228,7 @@ export default function NetworkEfficiencyArticle() {
           handshake costs across many requests. The pool size (typically 10-50
           connections per target host) balances throughput against memory usage
           per connection.
-        </p>
+        </HighlightBlock>
         <p>
           Compression algorithm selection involves trade-offs between
           compression ratio, encoding speed, and compatibility. Brotli provides
@@ -232,7 +245,10 @@ export default function NetworkEfficiencyArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enable HTTP/2 on all servers and CDNs — it is universally supported
           and provides immediate performance improvement over HTTP/1.1 without
           any application changes. Ensure your TLS configuration supports TLS
@@ -241,8 +257,8 @@ export default function NetworkEfficiencyArticle() {
           major CDNs offer it) for additional improvement, particularly for
           users on unstable networks who benefit from connection migration and
           eliminated TCP-level head-of-line blocking.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement request deduplication at the application level using data
           fetching libraries (React Query, SWR, Apollo Client) that
           automatically deduplicate concurrent requests for the same data. When
@@ -252,7 +268,7 @@ export default function NetworkEfficiencyArticle() {
           volume — data that changes infrequently (user profile, product
           catalog) can have longer stale times than data that changes frequently
           (notifications, live scores).
-        </p>
+        </HighlightBlock>
         <p>
           Use resource hints strategically for critical resources. Preconnect
           to your CDN domain and any third-party domains you will connect to
@@ -267,7 +283,10 @@ export default function NetworkEfficiencyArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Head-of-line blocking in HTTP/1.1 is a classic performance pitfall.
           When multiple resources are requested over the same connection, they
           must be processed in order — a slow resource (large image, delayed
@@ -277,8 +296,8 @@ export default function NetworkEfficiencyArticle() {
           connections), but this is counterproductive with HTTP/2 because each
           additional connection incurs handshake overhead that multiplexing
           eliminates. If you have migrated to HTTP/2, remove domain sharding.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Unnecessary redirects create new connections and add latency. Each
           redirect (HTTP 301, 302, 307) requires the browser to close the
           current connection and establish a new one to the redirect target,
@@ -289,7 +308,7 @@ export default function NetworkEfficiencyArticle() {
           HTTP-to-HTTPS redirects (fixable with HSTS preload), www-to-non-www
           redirects (fixable with DNS configuration), and trailing-slash
           redirects (fixable with consistent URL generation).
-        </p>
+        </HighlightBlock>
         <p>
           Sending unnecessary data in API responses wastes bandwidth and
           increases parse time. REST APIs that return complete resource objects
@@ -305,7 +324,10 @@ export default function NetworkEfficiencyArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Social media feeds optimize network efficiency for infinite scroll
           scenarios. Twitter and Instagram paginate feed data with cursor-based
           pagination (returning a cursor for the next page rather than page
@@ -315,8 +337,8 @@ export default function NetworkEfficiencyArticle() {
           multiplexing to load feed items, user avatars, and media thumbnails
           in parallel over a single connection, and compress JSON responses
           with Brotli to reduce payload size.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Single-page applications use resource hints to optimize navigation
           performance. When a user hovers over a navigation link, the
           application preloads the JavaScript bundle for the target page. When
@@ -325,7 +347,7 @@ export default function NetworkEfficiencyArticle() {
           and many modern SPAs, combines hover detection, dynamic preload
           injection, and cache management to create the perception of instant
           navigation without wasting bandwidth on pages the user never visits.
-        </p>
+        </HighlightBlock>
         <p>
           Global applications with users across multiple continents optimize
           network efficiency through CDN-based connection management. Users
@@ -340,12 +362,15 @@ export default function NetworkEfficiencyArticle() {
 
       <section>
         <h2>Advanced Network Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           HTTP/3 QUIC implementation details reveal the engineering complexity behind the protocol&apos;s performance improvements. QUIC (Quick UDP Internet Connections) replaces TCP with a custom transport protocol built on UDP that provides reliable, ordered delivery with several key advantages. Unlike TCP, where packet loss on any stream blocks all streams (because TCP delivers data in order), QUIC treats each stream independently — packet loss on stream 1 only blocks stream 1, while streams 2, 3, and 4 continue delivering data unimpeded. This elimination of TCP-level head-of-line blocking is the primary performance benefit of HTTP/3, particularly for users on lossy networks (cellular, satellite, congested WiFi) where packet loss rates of 1-5% are common. The QUIC handshake combines the transport handshake and TLS 1.3 handshake into a single round trip (1-RTT for new connections), compared to TCP+TLS which requires 2.5-3 RTT. For repeat connections, QUIC supports 0-RTT resumption — the client can send application data in the very first packet, using previously negotiated parameters cached from the prior connection. The 0-RTT feature has security implications: 0-RTT data is not protected by forward secrecy (it uses the PSK from the previous connection) and is vulnerable to replay attacks (an attacker can capture and retransmit the 0-RTT data). Therefore, 0-RTT should only be used for idempotent operations (GET requests, non-state-changing operations) and never for state-changing operations (POST, PUT, DELETE). QUIC&apos;s connection migration feature allows a connection to survive network interface changes (WiFi to cellular, one WiFi network to another) because the connection is identified by a 64-bit Connection ID rather than the IP/port tuple. When the client&apos;s IP address changes, it includes the Connection ID in subsequent packets, and the server recognizes it as the same connection, avoiding the need to re-establish the connection and lose in-flight data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Connection migration handling addresses the increasingly common scenario where users transition between network interfaces during a session. A user browsing on office WiFi walks into a conference room and switches to cellular, or a commuter transitions between multiple WiFi networks on a train. With TCP, the connection is tied to the IP address — when the IP changes, the connection breaks and must be re-established, losing any in-flight requests and requiring the application to retry. With QUIC, the Connection ID decouples the connection from the IP address, so the migration is seamless from the application&apos;s perspective. The implementation challenge is on the server side — the server must maintain a mapping of Connection IDs to connection state, and when a packet arrives from a new IP address with a known Connection ID, it must update its routing table to associate the Connection ID with the new IP. For load-balanced servers, the Connection ID must be routable across backend instances — if the connection was originally handled by server A and the post-migration packets arrive at server B, server B must be able to look up the connection state (either through shared state or by routing the packets back to server A). QUIC implementations typically use a connection ID encoding scheme that embeds routing information in the ID itself, allowing any server to decode the ID and determine which backend handles the connection. For applications that cannot use QUIC (server does not support it, corporate firewall blocks UDP port 443), the fallback is to detect connection failures and re-establish the connection with HTTP/2 over TCP, accepting the brief disruption.
-        </p>
+        </HighlightBlock>
         <p>
           0-RTT security considerations are critical for applications that prioritize performance without compromising security. The 0-RTT feature in QUIC (and TLS 1.3&apos;s early data extension for TCP) allows the client to send application data immediately upon reconnection, using parameters cached from the previous session. The performance benefit is significant — eliminating one round trip saves 50-200ms on typical connections. However, 0-RTT data is vulnerable to replay attacks because it is encrypted with the pre-shared key (PSK) from the previous connection, not with a fresh key exchange. An attacker who captures the 0-RTT data can retransmit it to the server, and the server will process it as a valid request. For GET requests (idempotent, read-only), replay attacks are harmless — the attacker replays a request for data that the client was already authorized to access. For POST, PUT, or DELETE requests (state-changing), replay attacks can cause duplicate operations (processing the same payment twice, deleting the same resource multiple times). The mitigation is to reject 0-RTT data for non-idempotent operations at the server level — the server checks whether the request arrived as 0-RTT data and, if so, verifies that the operation is idempotent before processing it. For APIs that use idempotency keys (unique request identifiers that prevent duplicate processing), 0-RTT is safe even for state-changing operations because the idempotency key ensures that a replayed request is recognized as a duplicate and not re-processed. The application should also implement anti-replay windows on the server — tracking recently received 0-RTT requests and rejecting duplicates within the window period.
         </p>
@@ -365,12 +390,15 @@ export default function NetworkEfficiencyArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What are the benefits of HTTP/2 over HTTP/1.1?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Multiplexing eliminates head-of-line blocking by interleaving
               multiple requests and responses on a single connection — no need
               for 6-8 parallel connections. Header compression (HPACK) reduces
@@ -380,7 +408,7 @@ export default function NetworkEfficiencyArticle() {
               send important resources first. Single connection reduces handshake
               overhead and memory usage compared to HTTP/1.1&apos;s multiple
               connections.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,7 +36,10 @@ export default function BucketSortArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Bucket Sort distributes n elements into k buckets based on some mapping from key to bucket
           index, sorts each bucket individually (usually with insertion sort), and concatenates the
           buckets to produce the sorted output. On uniformly distributed inputs it achieves expected
@@ -43,8 +47,8 @@ export default function BucketSortArticle() {
           each distinct key in its own bucket, bucket sort puts a <em>range</em> of keys in each
           bucket, letting it handle real-valued keys, strings, and arbitrary totally-ordered types
           that can be mapped to integer indices.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The expected linear-time result depends critically on the distribution of inputs. For n
           values drawn uniformly from [0, 1) and placed into n buckets of width 1/n, each bucket
           contains O(1) elements in expectation, and the sum of per-bucket insertion-sort costs is
@@ -52,7 +56,7 @@ export default function BucketSortArticle() {
           receives all n elements and bucket sort degrades to Θ(n²). This &quot;uniform or
           normalized&quot; assumption is what distinguishes bucket sort from radix or counting; it
           works best when you know something about the input distribution.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           In production, bucket sort appears in niche but important roles. Range-partitioning for
           distributed sort (Hadoop TeraSort, Spark repartition) is bucket sort at scale: each shard
@@ -78,23 +82,26 @@ export default function BucketSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">The bucket function</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The mapping f: key → bucket_index determines correctness and performance. For values in
           [min, max] with k buckets, the standard mapping is ⌊(key − min) · k / (max − min + ε)⌋.
           For hash-map-style keys, f can be a hash function, but then buckets no longer hold ranges
           and final concatenation requires sorting bucket indices too (giving radix sort back). The
           invariant that matters: <em>every key in bucket i is ≤ every key in bucket i+1</em>. Any
           mapping preserving this lets concatenation produce a sorted output.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">Choice of inner sort</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Insertion sort is the textbook inner sort because its Θ(n+I) cost is minimal on the
           small, near-uniform buckets bucket sort produces. When buckets can grow larger (skewed
           inputs), quicksort or merge sort on buckets is safer. In radix sort&apos;s MSD variant, the
           recursive call is the &quot;inner sort&quot;. The choice depends on expected bucket size: ≤ 16
           elements → insertion; 16–128 → introsort; &gt; 128 → recurse with bucket sort again.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">Expected-case analysis</h3>
         <p className="mb-4">
           Let X_i be the number of elements in bucket i. Insertion sort on bucket i is
@@ -121,21 +128,24 @@ export default function BucketSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A production bucket sort has three architectural decisions: bucket count k, bucket
           boundaries, and inner sort choice. The standard formula is k = Θ(n) with uniform
           boundaries for uniform inputs; k = n/log n with quantile boundaries for unknown
           distributions; k = (number of worker threads) for parallel sorts. Each bucket is
           typically a dynamic array; memory for all buckets combined is Θ(n) amortized.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The distribute phase is sequential but trivially parallelizable: each thread distributes
           its chunk of input into thread-local buckets, then buckets are merged. The merge step is
           the synchronization point — naive merging concatenates thread-local buckets with matching
           indices. Good implementations use a two-level scheme: per-thread local buckets at the
           first level, global buckets at the second, merged via parallel scan to compute offsets.
           This is the core of Intel TBB&apos;s parallel_sort bucket phase and GPU sample sort.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Sample sort is the canonical parallel variant. It picks p·s random samples (where p =
           thread count, s = oversampling factor, typically 16–64), sorts the sample, picks every
@@ -155,20 +165,23 @@ export default function BucketSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Counting Sort</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Counting sort is bucket sort with one bucket per distinct key. Counting sort requires
           integer keys with small range. Bucket sort works on any totally-ordered type with a
           suitable mapping — real numbers, strings, complex records. Counting is faster for integer
           inputs with bounded range; bucket handles broader types.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Radix Sort</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Radix is MSD bucket sort with fixed digit buckets plus recursion. Bucket sort with one
           pass is comparable to radix with one level, but radix naturally handles fixed-width keys
           and has predictable performance. Bucket sort is more flexible but more sensitive to
           distribution.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Quicksort / Introsort</h3>
         <p className="mb-4">
           Quicksort is O(n log n) expected, O(n²) worst case. Bucket sort is O(n) expected on
@@ -187,9 +200,12 @@ export default function BucketSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc pl-6 mb-4 space-y-2">
-          <li><strong>Use only when input distribution is known or learnable</strong>. Unknown distribution → use introsort instead.</li>
-          <li><strong>Set k = Θ(n) for uniform, k = √n with quantile boundaries otherwise</strong>. Too few buckets = O(n²); too many = wasted space.</li>
+          <HighlightBlock as="li" tier="important"><strong>Use only when input distribution is known or learnable</strong>. Unknown distribution → use introsort instead.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Set k = Θ(n) for uniform, k = √n with quantile boundaries otherwise</strong>. Too few buckets = O(n²); too many = wasted space.</HighlightBlock>
           <li><strong>Sample quantiles from input for non-uniform</strong>. Random sample of √n, sort, pick percentiles as boundaries.</li>
           <li><strong>Insertion sort for small buckets (≤ 32)</strong>, introsort for larger, recursive bucket sort for massive.</li>
           <li><strong>Pre-allocate bucket arrays</strong> — resizing during distribute kills throughput. Use expected-size estimates.</li>
@@ -201,9 +217,12 @@ export default function BucketSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc pl-6 mb-4 space-y-2">
-          <li><strong>Skewed input → O(n²)</strong>: all elements in one bucket, insertion-sort cost is quadratic. Defense: quantile-based boundaries.</li>
-          <li><strong>Overlapping bucket ranges</strong>: rounding errors in the mapping function can put the same key in two buckets. Use inclusive-exclusive boundaries consistently.</li>
+          <HighlightBlock as="li" tier="important"><strong>Skewed input → O(n²)</strong>: all elements in one bucket, insertion-sort cost is quadratic. Defense: quantile-based boundaries.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Overlapping bucket ranges</strong>: rounding errors in the mapping function can put the same key in two buckets. Use inclusive-exclusive boundaries consistently.</HighlightBlock>
           <li><strong>Too few buckets</strong>: k = 10 for n = 10⁶ means 10⁵ elements per bucket, insertion sort is Θ(10¹⁰). Always k ≥ √n, ideally k = Θ(n).</li>
           <li><strong>Too many buckets</strong>: k = n² means Θ(n²) space for Θ(n) data. Cache misses dominate distribution step.</li>
           <li><strong>Inner sort choice mismatch</strong>: using merge sort on 5-element buckets adds O(n log n) recursive overhead. Insertion is correct.</li>
@@ -214,16 +233,19 @@ export default function BucketSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Hadoop TeraSort</strong>: distribute records across reducers using range
           partitioning — bucket sort at distributed scale. Sample sort picks partition boundaries;
           each reducer sorts its bucket locally.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Spark RangePartitioner</strong>: for repartitionAndSortWithinPartitions,
           RangePartitioner samples the RDD to build bucket boundaries, distributes records, and
           sorts each partition. Pure bucket sort structure.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>External sort in databases</strong>: PostgreSQL&apos;s tuplesort.c for large result
           sets distributes tuples into per-tape runs, sorts each in memory, merges via polyphase
@@ -259,9 +281,12 @@ export default function BucketSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <ol className="list-decimal pl-6 mb-4 space-y-2">
-          <li><strong>Implement bucket sort for floats in [0,1).</strong> n buckets, distribute by ⌊key·n⌋, insertion sort each, concatenate.</li>
-          <li><strong>Why is expected time Θ(n) but worst case Θ(n²)?</strong> Uniform distribution gives O(1) per bucket; adversarial clusters all elements in one bucket.</li>
+          <HighlightBlock as="li" tier="important"><strong>Implement bucket sort for floats in [0,1).</strong> n buckets, distribute by ⌊key·n⌋, insertion sort each, concatenate.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Why is expected time Θ(n) but worst case Θ(n²)?</strong> Uniform distribution gives O(1) per bucket; adversarial clusters all elements in one bucket.</HighlightBlock>
           <li><strong>Bucket sort vs counting sort: when to use each?</strong> Counting for small integer range; bucket for real-valued or large-range keys.</li>
           <li><strong>Bucket sort vs radix sort: are they related?</strong> Radix is MSD bucket sort with fixed digit boundaries plus recursion.</li>
           <li><strong>Handle skewed inputs.</strong> Quantile-based bucket boundaries sampled from input.</li>

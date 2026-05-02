@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,20 +34,23 @@ export default function FeedGenerationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Feed Generation</strong> is the backend system responsible for creating
           personalized content streams for users on social platforms, news aggregators, and
           content discovery applications. It is one of the most complex and critical systems
           at scale, requiring careful trade-offs between freshness, relevance, latency, and
           computational cost.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The feed generation problem becomes exponentially challenging as platforms grow:
           Twitter serves feeds to over 400 million monthly active users, each potentially
           following hundreds of accounts. Facebook's News Feed must rank thousands of
           candidate stories per user per session. The system must handle celebrity accounts
           with over 100 million followers while maintaining sub-200ms feed load times.
-        </p>
+        </HighlightBlock>
         <p>
           At its core, feed generation answers: <em>"Given everything that happened since
           the user last checked, what should they see now, in what order?"</em> This requires
@@ -57,10 +61,13 @@ export default function FeedGenerationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Feed Types</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding feed types is fundamental to designing the generation system:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Chronological Feed:</strong> Simplest approach—query content from followed
@@ -83,13 +90,13 @@ export default function FeedGenerationArticle() {
         </ul>
 
         <h3 className="mt-6">The Celebrity Problem</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A fundamental challenge in feed generation is handling users with massive follower
           counts. When Justin Bieber (110M+ Twitter followers) posts, fan-out-on-write would
           require pushing to 110M feed caches—computationally infeasible. This asymmetry
           (most users have &lt;500 followers, celebrities have millions) necessitates hybrid
           approaches that treat high-follower-count accounts differently.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Feed Freshness vs. Relevance Trade-off</h3>
         <p>
@@ -102,10 +109,13 @@ export default function FeedGenerationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production feed generation system consists of multiple interconnected components
           working together to deliver personalized content at scale.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery/feed-generation/fanout-architecture.svg"
@@ -173,7 +183,7 @@ export default function FeedGenerationArticle() {
         />
 
         <h3 className="mt-6">Database Schema Considerations</h3>
-        <p>Key tables for feed generation:</p>
+        <HighlightBlock as="p" tier="important">Key tables for feed generation:</HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -211,10 +221,13 @@ export default function FeedGenerationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feed generation requires constant balancing of competing concerns. Understanding
           these trade-offs is critical for system design interviews and production decisions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery/feed-generation/caching-scaling-strategy.svg"
@@ -303,11 +316,11 @@ export default function FeedGenerationArticle() {
         </div>
 
         <h3 className="mt-6">Real-time vs Batch Feed Updates</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Real-time (Stream Processing):</strong> Every post triggers immediate feed
           updates for followers. Provides sub-second freshness but creates write amplification
           for popular users. Best for: Twitter, breaking news, live events.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Batch (Periodic Computation):</strong> Feeds recomputed every N minutes
           using scheduled jobs. Reduces write load but introduces staleness. Best for:
@@ -322,17 +335,20 @@ export default function FeedGenerationArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Cursor-based Pagination:</strong> Never use offset-based pagination
             for feeds. Cursors (post IDs) prevent duplicates and maintain consistency as new
             content arrives. Example: <code className="text-sm bg-muted px-1.5 py-0.5 rounded">?cursor=abc123&amp;limit=20</code>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Feed Coalescing:</strong> For users following 1000+ accounts,
             aggregate multiple posts from same author in single feed slot ("John posted 5
             photos"). Reduces feed fragmentation and improves UX.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Pre-compute Feeds for Inactive Users:</strong> Users who check app
             infrequently can have feeds pre-computed during low-traffic periods. Reduces
@@ -368,17 +384,20 @@ export default function FeedGenerationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Celebrity Problem Ignored:</strong> Attempting fan-out-on-write for users
             with millions of followers causes system overload. Solution: Hybrid approach with
             follower threshold (e.g., &gt;50K followers → fan-out-on-load).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Feed Stampede:</strong> Cache expiry causing thundering herd on database.
             If 100K users' feeds expire simultaneously, database overwhelmed. Solution:
             Staggered TTL with jitter, stale-while-revalidate caching.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Duplicate Items Across Pages:</strong> Poor cursor implementation causes
             same posts appearing on multiple pages. Solution: Use monotonically increasing
@@ -409,20 +428,23 @@ export default function FeedGenerationArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter Timeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter uses a hybrid fan-out approach. For normal users (&lt;10K followers), posts
           are pushed to follower timelines via fan-out-on-write. For celebrities (&gt;100K
           followers), posts are pulled on read. The timeline service maintains Redis caches
           with 200 post IDs per user, sorted by timestamp. Ranking was introduced in 2016,
           showing "best tweets first" by default with "latest tweets" as an option.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Twitter's "Home Mixer" uses a multi-stage ranking
           pipeline: candidate retrieval (3000 tweets) → scoring (ML model) → re-ranking
           (diversity, author balancing) → final timeline (150 tweets).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Facebook News Feed</h3>
         <p>
@@ -469,10 +491,13 @@ export default function FeedGenerationArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle feed for users with millions of followers?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle feed for users with millions of followers?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use a hybrid approach with fan-out-on-load for celebrities.
               Set a follower threshold (e.g., 50K-100K followers) above which posts are not
               pushed to follower caches. Instead, when a user requests their feed, fetch
@@ -480,7 +505,7 @@ export default function FeedGenerationArticle() {
               pre-computed feed cache. This prevents write amplification while maintaining
               acceptable read latency. Twitter uses this approach—celebrity posts are stored
               in a separate cache and pulled during feed assembly.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

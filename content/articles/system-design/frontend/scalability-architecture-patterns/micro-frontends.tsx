@@ -1082,8 +1082,12 @@ export default function MicroFrontendsArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: micro-frontends are an org-scaling tool. The decision hinges on independent deploys
+          vs. runtime integration complexity (shared deps, design system, perf budgets, and governance).
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://micro-frontends.org/"
               className="text-accent hover:underline"
@@ -1092,8 +1096,8 @@ export default function MicroFrontendsArticle() {
             >
               micro-frontends.org — Comprehensive Guide
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://martinfowler.com/articles/micro-frontends.html"
               className="text-accent hover:underline"
@@ -1102,8 +1106,8 @@ export default function MicroFrontendsArticle() {
             >
               Martin Fowler — Micro Frontends
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://single-spa.js.org/"
               className="text-accent hover:underline"
@@ -1112,7 +1116,7 @@ export default function MicroFrontendsArticle() {
             >
               single-spa — JavaScript Router for Micro Frontends
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://www.thoughtworks.com/radar/techniques/micro-frontends"
@@ -1123,7 +1127,7 @@ export default function MicroFrontendsArticle() {
               ThoughtWorks Technology Radar — Micro Frontends
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://webpack.js.org/concepts/module-federation/"
               className="text-accent hover:underline"
@@ -1132,7 +1136,7 @@ export default function MicroFrontendsArticle() {
             >
               webpack — Module Federation for Micro Frontends
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

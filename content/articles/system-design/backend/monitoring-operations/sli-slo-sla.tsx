@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Service Level Indicators (SLIs), Service Level Objectives (SLOs), and Service Level Agreements (SLAs) form a
           reliability vocabulary that transforms subjective statements like &quot;the system feels slow&quot; or
           &quot;we had a rough week&quot; into measurable, auditable, and actionable targets. These three concepts are
           often conflated in practice, yet they serve distinct audiences, carry different consequences, and demand
           different operational responses from engineering teams.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An <strong>SLI</strong> is a carefully chosen measurement of a user-facing property of a system -- availability,
           latency, throughput, correctness, or freshness. It is a number, computed continuously or in rolling windows,
           that reflects what users actually experience rather than what infrastructure metrics happen to be convenient to
           collect. The canonical formulation is a ratio of &quot;good events&quot; to &quot;total events&quot; over a
           defined time window, where a good event is one that meets a threshold the user would perceive as acceptable.
-        </p>
+        </HighlightBlock>
         <p>
           An <strong>SLO</strong> is a target value or range for an SLI over a specified time window. It is an internal
           engineering goal that balances reliability investment against product velocity. Setting an SLO is an explicit
@@ -79,17 +83,20 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>SLI Selection: Measuring What Users Actually Experience</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common failure in reliability engineering is not a lack of metrics but a surplus of irrelevant ones.
           Teams collect thousands of infrastructure metrics -- CPU utilization, memory pressure, disk I/O, network
           throughput -- and assume that healthy infrastructure implies healthy user experience. This assumption is
           frequently wrong. A system can have 99.99% host availability while every user-facing request returns a 500
           error because of a misconfigured load balancer. Conversely, a system running at 95% CPU can serve every request
           within latency targets because it was correctly dimensioned for that load.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Effective SLIs share two properties. They must be <strong>representative</strong>, meaning they capture
           properties that directly affect user experience or business outcomes. And they must be
           <strong>measurable</strong>, meaning the engineering team can compute them reliably, consistently, and at scale
@@ -98,7 +105,7 @@ export default function ArticlePage() {
           computing that requires understanding user intent, which is difficult at scale. The most measurable SLI might
           be &quot;HTTP 200 response rate,&quot; but that is rarely representative -- a 200 response can contain stale,
           incorrect, or incomplete data.
-        </p>
+        </HighlightBlock>
         <p>
           The practical approach is to define SLIs around the four golden signals that Google&apos;s SRE team identified:
           latency, traffic, errors, and saturation. Latency measures the time taken to service a request, with attention
@@ -162,23 +169,26 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>End-to-End SLO Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An SLO-driven reliability architecture has several interconnected components. At the base, telemetry
           collection gathers raw events -- request logs, response codes, latency histograms, and health-check results --
           from every service in the system. This telemetry must be consistent across services, meaning every service
           defines &quot;success&quot; and &quot;failure&quot; the same way, and latency thresholds are aligned with user
           experience research rather than arbitrary engineering convenience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Above the telemetry layer, an SLI computation engine aggregates raw events into good-event ratios over rolling
           windows. This engine typically runs in the monitoring infrastructure -- Prometheus, Datadog, or a custom
           pipeline -- and produces continuous SLI values that can be queried and displayed. The computation must handle
           edge cases: what counts as a &quot;total event&quot; when the load balancer drops connections before they reach
           the service? What happens during deployment windows when requests are intentionally drained? These decisions
           must be documented and consistent.
-        </p>
+        </HighlightBlock>
         <p>
           The SLO evaluation layer compares current SLI values against targets and computes the remaining error budget
           and the current burn rate. This layer feeds two downstream consumers: alerting systems that page engineers
@@ -240,9 +250,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>SLO Target Selection: Tightness Versus Cost</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing an SLO target is the most consequential reliability decision a team makes, because it determines the
           cost-reliability trade-off for the entire system. A 99.99% availability target (&quot;four nines&quot;) allows
           only 4.32 minutes of downtime per month. Achieving this requires redundant systems across multiple failure
@@ -250,15 +263,15 @@ export default function ArticlePage() {
           and engineering cost. A 99% target allows 7.2 hours of downtime per month, which is achievable with a single
           well-monitored service and a competent on-call rotation, but may not meet user expectations for a consumer
           product.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The right target depends on the user&apos;s tolerance for failure. For a payment processing system, even a
           single failed transaction can result in lost revenue, regulatory exposure, and customer churn -- justifying a
           tight SLO. For an internal analytics dashboard that users check once per day, a loose SLO may be entirely
           appropriate because the user impact of an hour of downtime is negligible. The mistake that teams make is
           setting tight SLOs uniformly across all services because &quot;reliability is important,&quot; without
           considering the actual cost of achieving that reliability versus the actual harm of failing to achieve it.
-        </p>
+        </HighlightBlock>
 
         <h3>SLA Positioning: Internal SLO Versus External SLA</h3>
         <p>
@@ -372,22 +385,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <ol className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Start with User Journeys, Not Services.</strong> The most common mistake is defining SLIs at the
             service level before understanding what users actually need. Identify the top three to five user journeys
             that drive the most business value -- checkout, search, authentication, data export -- and define SLIs for
             those journeys first. Service-level SLIs come later as supporting diagnostic signals. This ensures that
             reliability engineering effort is aligned with user impact, not infrastructure topology.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Keep the SLO Set Small and Actionable.</strong> A team that can act on three SLOs is more effective
             than a team that ignores thirty. Each SLO should have a clear owner, a documented response procedure, and a
             defined escalation path. If no one would page based on an SLO breach, it is not an SLO -- it is a
             vanity metric. Google&apos;s recommendation is no more than a handful of SLOs per service or journey, and
             this discipline should be enforced rigorously.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Set Internal SLOs Tighter Than External SLAs.</strong> The buffer between internal targets and
             external commitments is not wasted effort -- it is insurance. It provides the operational runway to detect
@@ -428,15 +444,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           SLO implementations fail in predictable patterns. Understanding these failure modes is as important as
           understanding the correct approach, because the cost of getting SLOs wrong is not just inaccurate metrics --
           it is misguided engineering decisions, wasted operational effort, and eroded trust between engineering and
           leadership.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most destructive pitfall is <strong>measurement mismatch</strong>, where the SLI does not actually
           reflect user experience. A team might define availability as &quot;percent of HTTP 200 responses&quot; and
           discover, only after a major incident, that the service was returning HTTP 200 with empty or stale response
@@ -444,7 +463,7 @@ export default function ArticlePage() {
           fix is to define &quot;good events&quot; based on response content and correctness, not just HTTP status
           codes. This requires deeper instrumentation -- response validation, content checks, and end-to-end synthetic
           monitoring -- but it is the only way to ensure the SLI is truthful.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>SLO sprawl</strong> is another common failure. When every team defines SLOs for every service, the
@@ -491,23 +510,26 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Checkout Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform defines its most critical journey SLO around the checkout flow: 99.95% of checkout
           requests must succeed with end-to-end latency under 2 seconds over a 30-day rolling window. This SLO maps
           directly to revenue -- every failed checkout is lost sales -- and justifies the significant infrastructure
           investment required: multi-region active-active deployment, redundant payment provider integrations, automated
           failover within 30 seconds, and real-time inventory synchronization across regions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The platform&apos;s external SLA to enterprise merchants is 99.9% availability, giving the engineering team a
           0.05% buffer. During a payment provider outage, the burn rate spikes to 12x on the 5-minute window, paging
           the on-call team immediately. The automated failover to the secondary payment provider activates within 45
           seconds, reducing the burn rate to 2x. The incident consumes 18 minutes of the monthly budget -- 42% of the
           total allowance. The team pauses non-critical releases for the remainder of the week and initiates a
           post-incident review to reduce the failover time further.
-        </p>
+        </HighlightBlock>
 
         <h3>Cloud Infrastructure Provider</h3>
         <p>
@@ -562,23 +584,26 @@ export default function ArticlePage() {
 
       <section>
         <h2>SLO-Driven Engineering Culture</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most sophisticated SLO implementations do not just measure reliability -- they transform how engineering
           teams make decisions. When error budgets become the shared language between product management, engineering,
           and operations, the conversation shifts from subjective arguments about &quot;is the system reliable enough?&quot;
           to data-driven decisions about &quot;we have 60% of our monthly budget remaining, which means we can safely
           ship the new payment integration this week, but we should hold off on the database migration until next
           month.&quot;
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This cultural shift requires leadership buy-in and consistent enforcement. Engineering managers must respect
           the error budget policy and not pressure teams to ship when budget is exhausted. Product managers must
           understand that a depleted budget is not an engineering failure but a signal that the system needs investment
           before further feature work is safe. And on-call engineers must feel empowered to page based on burn rate
           without fear of being labeled as over-reacting.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/sli-slo-sla-diagram-3.svg"
@@ -607,6 +632,9 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
@@ -614,21 +642,21 @@ export default function ArticlePage() {
             you handle the case where one dependency (payment provider) fails but others (inventory, shipping) are
             healthy?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The key insight is that SLIs for a multi-step journey must be defined at the journey level, not at
             individual step levels. For checkout, the primary SLI should be &quot;percent of checkout attempts that
             complete successfully within the latency target&quot; -- an end-to-end measurement that treats the entire
             flow as a single transaction. A &quot;good event&quot; is a checkout that reaches the confirmation page
             with correct order details; a &quot;bad event&quot; is anything that prevents this, regardless of which
             internal step failed.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             When the payment provider fails but inventory and shipping are healthy, the journey SLI correctly reflects
             the failure because the checkout did not complete. The supporting service SLIs tell the diagnostic story:
             the payment service SLI shows elevated error rates, while inventory and shipping SLIs remain healthy. This
             decomposition allows the on-call engineer to immediately identify the payment provider as the bottleneck
             without sifting through dozens of unrelated metrics.
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             The architectural response to this scenario is to design the checkout flow with payment provider redundancy.
             The primary SLI still burns during the failover window, but the budget consumption is limited to the

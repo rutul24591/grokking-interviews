@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cache coherence is the property that guarantees multiple caches
           storing the same logical data will not simultaneously serve
           conflicting values for the same key. In a single-process system with
@@ -47,8 +51,8 @@ export default function ArticlePage() {
           L2 caches (Redis, Memcached), CDN edge caches, and browser caches —
           and the presence of writes introduces the possibility that one cache
           holds a newer value while another continues to serve a stale one.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The problem is fundamentally a distributed-systems consistency
           challenge. Every cache layer introduces a potential divergence point,
           and every write must propagate invalidation or update signals to all
@@ -60,7 +64,7 @@ export default function ArticlePage() {
           ranging from strict invalidation for high-sensitivity data paths to
           eventual coherence bounded by time-to-live (TTL) windows for less
           critical data.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, cache coherence is not an academic
           concern. It directly impacts user-facing correctness, data integrity
@@ -80,15 +84,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of cache coherence rests on three pillars: the
           coherence model that defines what guarantee the system provides, the
           invalidation mechanism that propagates write signals, and the
           versioning strategy that prevents stale reads when invalidation fails.
           Each pillar interacts with the others, and the design choices in one
           area constrain the options available in the others.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Coherence models fall into two broad categories. Strict coherence
           requires that once a write is acknowledged, all subsequent reads from
           any cache tier return the new value. This is equivalent to
@@ -104,7 +111,7 @@ export default function ArticlePage() {
           explicit staleness budget — a maximum duration for which stale data is
           acceptable — that is tied to business requirements rather than
           engineering convenience.
-        </p>
+        </HighlightBlock>
         <p>
           Invalidation mechanisms are the transport layer that makes coherence
           possible. The most common approach is a publish-subscribe event bus,
@@ -138,7 +145,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production cache-coherence architecture typically spans multiple
           tiers and must handle both read and write paths with different
           consistency requirements. The read path prioritizes speed: the
@@ -148,7 +158,7 @@ export default function ArticlePage() {
           invalidation event, and only then returns success to the caller. The
           ordering of these steps determines the coherence guarantees the system
           can provide.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/cache-coherence-layers.svg`}
@@ -156,7 +166,7 @@ export default function ArticlePage() {
           caption="Write propagation across L1, L2, and CDN tiers through a central invalidation bus"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The critical insight is that the write path must be serializable with
           respect to invalidation. If the application writes to the database and
           returns success before the invalidation event is durably published,
@@ -167,7 +177,7 @@ export default function ArticlePage() {
           acknowledged, and only then return success. This adds one network
           round-trip to the write latency, but it is the minimum cost for
           providing eventual coherence with bounded staleness.
-        </p>
+        </HighlightBlock>
         <p>
           On the read side, the application follows a layered lookup pattern.
           First, it checks the L1 cache with a short TTL (seconds to a few
@@ -250,16 +260,19 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Aspect</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Aspect</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Strict Invalidation</strong>
               </td>
@@ -273,8 +286,8 @@ export default function ArticlePage() {
                 Fails open during network partitions, violating availability.
                 High operational complexity with many cache tiers.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Eventual Coherence (TTL-bounded)</strong>
               </td>
@@ -288,7 +301,7 @@ export default function ArticlePage() {
                 explicit staleness budget. Users may see inconsistent data
                 during the convergence window.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Version-Based Coherence</strong>
@@ -321,7 +334,7 @@ export default function ArticlePage() {
           </tbody>
         </table>
 
-        <p className="mt-4">
+        <HighlightBlock as="p" tier="important" className="mt-4">
           The choice among these approaches is not mutually exclusive.
           Production systems typically combine them: strict invalidation within
           a region for high-sensitivity data, eventual coherence with TTL bounds
@@ -331,13 +344,16 @@ export default function ArticlePage() {
           staleness tolerance and apply the appropriate coherence model to each
           class, rather than applying a single model uniformly across the
           system.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Define Explicit Staleness Budgets per Data Domain:</strong>{" "}
             Every piece of cached data should have a maximum acceptable
             staleness duration that is derived from business requirements, not
@@ -346,8 +362,8 @@ export default function ArticlePage() {
             seconds (eventual coherence with short TTL), and analytics
             dashboards may tolerate 5 minutes. These budgets drive the choice of
             coherence model, TTL values, and monitoring thresholds.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Durable Event Logs for Invalidation:</strong>{" "}
             Fire-and-forget invalidation is a correctness risk that is difficult
             to detect and recover from. Use an ordered, durable log (Kafka,
@@ -355,7 +371,7 @@ export default function ArticlePage() {
             to ensure that every cache tier processes every invalidation event
             at least once. Implement idempotent event handlers so that duplicate
             processing does not cause errors.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Layer Version-Based Coherence as a Safety Net:</strong> Even
             with durable invalidation, events can be lost during extreme failure
@@ -399,8 +415,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Assuming Invalidation Is Guaranteed Without Durable Logging:
             </strong>{" "}
@@ -411,8 +430,8 @@ export default function ArticlePage() {
             durable logging and acknowledgment tracking, missed events
             accumulate silently and coherence degrades over time until a
             user-facing incident reveals the problem.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cascading Invalidation Storms:</strong> When a write
             invalidates a key that is referenced by many derived keys (for
             example, a user profile update that invalidates cached user details,
@@ -422,7 +441,7 @@ export default function ArticlePage() {
             single parent-key invalidation signals downstream caches to
             invalidate their derived entries, rather than publishing one event
             per derived key.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cross-Region Coherence Without Explicit Budgets:</strong>{" "}
             Multi-region systems often assume that invalidation events propagate
@@ -455,8 +474,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>E-Commerce Product Catalog:</strong> A global e-commerce
             platform maintains product data across L1 application caches, L2
             Redis clusters, and CDN edge caches. Product price updates require
@@ -467,8 +489,8 @@ export default function ArticlePage() {
             coherence for bulk seasonal catalog updates. Shadow reads audit
             cross-region convergence, and the origin database is sized to handle
             full cache bypass during price-update incidents.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Financial Trading Dashboard:</strong> A trading platform
             caches market data, portfolio positions, and risk calculations.
             Market data has a staleness budget of less than 100 milliseconds,
@@ -479,7 +501,7 @@ export default function ArticlePage() {
             risk calculations. Version-based coherence ensures that any stale
             cache entry is detected and refreshed before being served to a
             trader.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Social Media Feed:</strong> A social media platform caches
             user feeds, trending topics, and engagement metrics. Feed updates
@@ -508,14 +530,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q1: How would you design cache coherence for a multi-region
               e-commerce platform where product prices must be consistent within
               a region but can tolerate cross-region delay?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               The design centers on treating each region as an independent
               coherence domain for pricing data. Within a region, use strict
               invalidation: when a price update is committed to the database,
@@ -526,7 +551,7 @@ export default function ArticlePage() {
               guarantees that after the write returns, any read within the same
               region will fetch the new price from the origin and repopulate the
               cache.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               For cross-region coherence, replicate the invalidation events
               asynchronously to other regions using the log replication

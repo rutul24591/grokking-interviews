@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Prompt engineering</strong> is the practice of designing and
           optimizing the input text (prompt) provided to a Large Language Model
           to elicit desired outputs. A prompt is not merely a question or
@@ -33,8 +37,8 @@ export default function ArticlePage() {
           sometimes examples of the desired output pattern. The quality of a
           prompt directly determines the quality, relevance, and reliability of
           the model&apos;s response.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The term &quot;engineering&quot; is deliberate. Effective prompt
           design is not casual writing; it is a disciplined practice involving
           systematic experimentation, measurement, versioning, and optimization.
@@ -44,7 +48,7 @@ export default function ArticlePage() {
           difference between a poorly designed prompt and a well-engineered one
           can mean the difference between a response that is useful and one that
           is misleading, incomplete, or harmful.
-        </p>
+        </HighlightBlock>
         <p>
           Prompt engineering has evolved from an ad-hoc art into a systematic
           discipline with established patterns, anti-patterns, and tooling. The
@@ -62,7 +66,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The anatomy of a production-grade prompt consists of several distinct
           components that serve different functions. The <strong>system
           prompt</strong> (or system message) establishes the model&apos;s
@@ -75,8 +82,8 @@ export default function ArticlePage() {
           requirements (&quot;Respond in JSON with fields: summary, key_points,
           confidence&quot;), and operational instructions (&quot;If uncertain,
           say &apos;I don&apos;t know&apos; rather than guessing&quot;).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>user prompt</strong> is the actual instruction or question
           from the user. Its effectiveness depends heavily on how well the system
           prompt has prepared the model to interpret it. A vague user prompt
@@ -86,7 +93,7 @@ export default function ArticlePage() {
           make user prompts specific, actionable, and self-contained — the model
           should be able to understand and act on the user prompt alone, with the
           system prompt providing the interpretive framework.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Few-shot prompting</strong> provides the model with examples
           of the desired input-output pattern within the prompt itself. By
@@ -148,7 +155,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In production systems, prompts are not static strings — they are
           dynamically constructed from templates, context retrieval results, user
           input, and system configuration. The <strong>prompt construction
@@ -158,8 +168,8 @@ export default function ArticlePage() {
           (context, user input, metadata), validate the total token count
           against the context window limit, and send the constructed prompt to
           the model API.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Prompt templates</strong> are parameterized prompt
           construction patterns that separate the prompt&apos;s structure from
           its content. A template might look like: &quot;You are a role
@@ -172,7 +182,7 @@ export default function ArticlePage() {
           critical at scale — organizations with dozens of features using LLMs
           may have hundreds of prompt templates that need versioning, testing,
           and monitoring.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Prompt versioning</strong> is the practice of treating prompts
           as versioned artifacts, similar to code. Each prompt template has a
@@ -219,7 +229,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice between prompting strategies involves fundamental trade-offs
           across cost, quality, and latency. Zero-shot prompting is cheapest
           (minimal tokens) but produces the lowest quality for novel or complex
@@ -231,8 +244,8 @@ export default function ArticlePage() {
           task complexity: simple classification tasks need only zero-shot,
           format-specific tasks benefit from few-shot, and reasoning tasks
           require chain-of-thought.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Prompt-based vs. fine-tuning-based</strong> adaptation presents
           another major trade-off. Prompting is fast (no training required),
           flexible (change behavior by changing text), and cheap (no GPU
@@ -245,7 +258,7 @@ export default function ArticlePage() {
           approach is to start with prompting and only fine-tune when prompting
           hits a quality ceiling that cannot be overcome with better prompts or
           retrieval augmentation.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>specificity vs. flexibility</strong> trade-off governs how
           constraining the prompt should be. Highly specific prompts (&quot;List
@@ -275,7 +288,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Establish a <strong>prompt development workflow</strong> from day one.
           This means building a test harness with representative inputs and
           expected outputs, evaluating each prompt change against this test set,
@@ -283,8 +299,8 @@ export default function ArticlePage() {
           compliance, latency, cost) over time. Without systematic evaluation,
           prompt improvements are based on anecdotes rather than data, and
           regressions go undetected until users report them.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use <strong>explicit formatting instructions</strong> in your prompts.
           Rather than implying the expected output format, state it clearly and
           specifically. Include field names, data types, and example values. For
@@ -292,7 +308,7 @@ export default function ArticlePage() {
           the exact number of items, the ordering criteria, and the level of
           detail. Ambiguity in formatting instructions is the leading cause of
           parsing failures in production LLM systems.
-        </p>
+        </HighlightBlock>
         <p>
           Implement <strong>defense in depth against prompt injection</strong>.
           Never trust user input to be well-behaved. Use structural separation
@@ -316,7 +332,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most pervasive pitfall is <strong>overloading a single prompt</strong>
           with multiple tasks. A prompt that tries to &quot;analyze sentiment,
           extract entities, summarize, and suggest actions&quot; will perform
@@ -325,8 +344,8 @@ export default function ArticlePage() {
           produce outputs that compromise across all tasks rather than excelling
           at any one, and are harder to evaluate and debug. The principle of
           single responsibility applies to prompts as much as to functions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Inconsistent prompt evaluation</strong> leads to false
           confidence. Testing a prompt on 3-5 hand-picked examples and declaring
           it &quot;works&quot; is insufficient. Prompts must be evaluated on
@@ -335,7 +354,7 @@ export default function ArticlePage() {
           of the time will produce 500 bad outputs per day at 10,000 requests —
           and those bad outputs will be the ones users remember and complain
           about.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Ignoring the model&apos;s training cutoff</strong> causes
           factual errors. LLMs have a knowledge cutoff date (the last date of
@@ -359,7 +378,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Customer support response generation</strong> uses a
           multi-component prompt: system prompt establishes the support
           agent persona and company policies, retrieved context provides the
@@ -369,8 +391,8 @@ export default function ArticlePage() {
           output is validated for tone, accuracy (against knowledge base), and
           completeness before being sent to the customer or suggested to the
           support agent.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Code review automation</strong> constructs prompts that include
           the code diff as context, the project&apos;s coding standards as system
           instructions, and specific review criteria (security, performance,
@@ -378,7 +400,7 @@ export default function ArticlePage() {
           the model reason through each review category systematically before
           producing a final summary. The output is structured as a list of
           findings with severity levels, file locations, and suggested fixes.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Document extraction and structuring</strong> uses
           few-shot prompting with examples of the desired extraction format.
@@ -393,13 +415,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: Why does chain-of-thought prompting improve reasoning
             performance in LLMs?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Chain-of-thought (CoT) prompting works because it converts a
             single-step inference into a multi-step computation. When a model is
             asked to solve a complex problem in one step, it must produce the
@@ -407,8 +432,8 @@ export default function ArticlePage() {
             representations — the entire reasoning process must happen implicitly
             within a single forward pass. This is analogous to asking a human to
             provide the answer to a math problem without showing any work.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             When the model generates intermediate reasoning steps, each step
             becomes part of the context for subsequent steps. The model
             effectively uses its own output as additional input, creating a
@@ -416,7 +441,7 @@ export default function ArticlePage() {
             This allows the model to decompose complex problems into simpler
             sub-problems, track intermediate results, and catch its own errors
             during the generation process.
-          </p>
+          </HighlightBlock>
           <p>
             The mechanism can be understood through the lens of attention: when
             the model generates step 3 of a reasoning chain, it can attend to

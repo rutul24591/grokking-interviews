@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -24,7 +25,10 @@ export default function FeatureFlagServiceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>feature flag service</strong> is a runtime control system that enables engineering teams to release,
           roll back, and target functionality without redeploying code. It evaluates rules (flags) against contextual
           attributes (user identity, tenant, geography, device type, custom properties) and returns decisions that
@@ -32,8 +36,8 @@ export default function FeatureFlagServiceArticle() {
           production in a dormant state and activated selectively based on operational needs. This decoupling is one of
           the most powerful safety mechanisms available to modern engineering organizations, and it underpins the
           practice of continuous delivery at scale.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature flags are often introduced as a convenience mechanism for hiding incomplete features during
           development, but in mature organizations they become critical infrastructure for operational safety. They
           enable gradual rollouts that limit blast radius, kill switches that disable risky behavior during incidents,
@@ -41,7 +45,7 @@ export default function FeatureFlagServiceArticle() {
           reduce deployment risk, shorten incident response time, and enable teams to ship with confidence. When used
           poorly, they create incomprehensible system behavior, accumulate as configuration debt, and become a
           production dependency that can take down services if the flag evaluation path fails.
-        </p>
+        </HighlightBlock>
         <p>
           The fundamental tension in feature flag design is between control and resilience. A centralized control plane
           that evaluates every flag request provides maximum consistency and auditability, but it makes the flag service
@@ -62,13 +66,16 @@ export default function FeatureFlagServiceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature flag systems encompass several interconnected concepts that determine their operational behavior,
           safety characteristics, and long-term maintainability. Understanding these concepts is essential for designing
           a flag service that scales, remains available during degradation, and does not accumulate unmanageable
           configuration debt over time.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Flag types</strong> determine the operational posture and safety requirements of each flag. Boolean
           flags represent simple on/off toggles and are the most common type, used for feature releases and kill
           switches. Multivariate flags support more than two values (e.g., variant A, variant B, variant C) and are
@@ -80,7 +87,7 @@ export default function FeatureFlagServiceArticle() {
           must evaluate locally with zero network dependency, experimentation flags require stable deterministic
           assignment and exposure logging, and entitlement gates must align with systems of record for billing and
           authorization.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Flag evaluation</strong> is the process of determining which variant a flag returns for a given
           context. Evaluation follows an ordered priority: first, explicit targeting rules are checked (for example,
@@ -143,7 +150,10 @@ export default function FeatureFlagServiceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The feature flag service architecture consists of a control plane for configuration management, a persistent
           flag store for durable storage, a distribution layer for delivering configurations to SDKs, and client and
           server SDKs that perform local evaluation. The control plane provides a user interface and API for creating,
@@ -151,8 +161,8 @@ export default function FeatureFlagServiceArticle() {
           lifecycle. All changes to flags are recorded in an audit log that captures who made the change, what was
           changed, and when. This audit trail is essential for debugging unexpected behavior changes and for compliance
           requirements in regulated industries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The flag store persists flag configurations in a versioned format. Each flag change creates a new version,
           and the full history of changes is retained. Versioning enables rollback to previous configurations and
           provides a point-in-time snapshot for debugging. The store is typically a relational database such as
@@ -160,7 +170,7 @@ export default function FeatureFlagServiceArticle() {
           distribution layer reads from the flag store and serves flag configurations to SDKs through one or more
           delivery mechanisms: polling endpoints, streaming connections, or CDN-cached payloads. The distribution layer
           versions each configuration payload so that SDKs can detect changes and update their local caches efficiently.
-        </p>
+        </HighlightBlock>
         <p>
           SDKs running in applications maintain an in-memory cache of flag configurations. On initialization, an SDK
           fetches the current configuration from the distribution layer and stores it locally. It then refreshes the
@@ -200,7 +210,10 @@ export default function FeatureFlagServiceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The primary trade-off in feature flag architecture is between evaluation consistency and availability. Remote
           evaluation guarantees that every flag decision reflects the latest configuration because the service is the
           single source of truth. However, it introduces a network dependency on every request path, and if the flag
@@ -209,8 +222,8 @@ export default function FeatureFlagServiceArticle() {
           and low latency, but introduces a staleness window where some SDKs may be using outdated flag configurations.
           The industry has converged on local evaluation as the default because the cost of a few seconds of staleness is
           almost always lower than the cost of adding a synchronous network dependency to every request.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The staleness window deserves careful analysis. In a polling-based system with a thirty-second interval, a
           flag change can take up to thirty seconds to propagate to all SDKs. During this window, different instances of
           the same service may evaluate the flag differently: some have the new configuration, others still have the old
@@ -219,7 +232,7 @@ export default function FeatureFlagServiceArticle() {
           across all services to prevent data divergence, the staleness window is problematic. In these cases, streaming
           updates with synchronous acknowledgment or a coordinated rollout mechanism where the flag change is applied at
           a specific timestamp that all SDKs honor may be necessary.
-        </p>
+        </HighlightBlock>
         <p>
           Polling versus streaming for flag delivery involves a trade-off between operational simplicity and
           propagation latency. Polling requires only a simple HTTP endpoint, has no connection management overhead, and
@@ -273,7 +286,10 @@ export default function FeatureFlagServiceArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enforce a flag lifecycle policy from day one. Every flag must have an owner, a creation date, an expected
           removal date, and a documented rationale. Use naming conventions that encode the flag type and expected
           lifespan, for example using prefixes like release-slash-new-checkout-flow-two-zero-two-six-q-two for feature
@@ -281,15 +297,15 @@ export default function FeatureFlagServiceArticle() {
           experiments. Set up automated alerts for flags that have passed their expected removal date, and integrate flag
           cleanup into the team definition of done for feature work. A flag is not truly retired until the configuration
           is deleted and the associated code path is removed from the codebase.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design flag evaluation to be resilient to flag service outages. SDKs must use local caches with safe default
           values. The default value for a kill switch should be off, meaning the risky behavior is disabled when the
           service is unavailable. The default value for a feature availability flag should be on, meaning the feature
           remains available when the service is unavailable. Each flag should explicitly declare its safe default based
           on its type and risk profile. The SDK should never block application execution waiting for a flag decision; if
           the cache is empty, return the default immediately and fetch the configuration asynchronously.
-        </p>
+        </HighlightBlock>
         <p>
           Use gradual rollouts with monitoring gates for any flag that changes user-facing behavior or load patterns.
           Start with internal users such as employees and QA teams, then expand to a small percentage of production
@@ -325,22 +341,25 @@ export default function FeatureFlagServiceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Accumulating flag debt is the most common and destructive pitfall in feature flag usage. Teams create flags to
           ship features incrementally but never remove them after the feature is fully rolled out. Over time, the number
           of active flags grows combinatorially, the codebase becomes riddled with dead branches, and the testing matrix
           becomes impossible to cover comprehensively. The solution is disciplined lifecycle management with automated
           detection and alerting for stale flags, combined with a team culture that treats flag cleanup as a first-class
           engineering responsibility.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Making the flag service a synchronous dependency on the request path is another common mistake. When
           applications call the flag service over the network for every flag evaluation, they introduce latency, reduce
           availability, and create a cascading failure risk if the flag service degrades. The correct approach is local
           evaluation with cached configurations, where the flag service is only consulted during cache refresh, not
           during individual flag evaluations. This pattern eliminates the network dependency from the critical path while
           still supporting centralized configuration management.
-        </p>
+        </HighlightBlock>
         <p>
           Failing to test with flags in both on and off states leads to production incidents when a flag is flipped. If
           a feature is developed and tested only with the flag enabled, the disabled code path may have rotted and
@@ -374,22 +393,25 @@ export default function FeatureFlagServiceArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           LaunchDarkly is the most widely adopted commercial feature flag platform, serving organizations from startups
           to Fortune 500 companies. It provides SDKs in over twenty languages, real-time streaming updates, advanced
           targeting rules, and integration with popular analytics and incident management tools. LaunchDarkly&apos;s
           architecture demonstrates the local evaluation pattern at scale: flag configurations are delivered to SDKs via
           streaming or polling, and all evaluation happens locally within the application process, ensuring that the flag
           service is never a synchronous dependency on the request path.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Facebook uses feature flags extensively for its dark launch and gate systems, enabling the company to deploy
           code to production hundreds of times per day while controlling feature exposure to specific user populations.
           Facebook&apos;s flag system is tightly integrated with its continuous deployment pipeline, where flags are
           automatically created when code is deployed and automatically flagged for cleanup after a configurable period.
           This automation is critical at Facebook&apos;s scale, where manual flag management would be impossible given
           the volume of deployments.
-        </p>
+        </HighlightBlock>
         <p>
           Netflix uses feature flags as part of its chaos engineering practice, where flags can be flipped to enable or
           disable specific failure injection scenarios. For example, a flag might control whether a service experiences
@@ -415,12 +437,15 @@ export default function FeatureFlagServiceArticle() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How would you design a feature flag system that supports millions of evaluations per second with sub-millisecond latency?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The key insight is that flag evaluation must happen locally within the application process, not as a remote
             service call. The architecture would consist of a control plane for flag configuration management, a
             persistent store for flag definitions, and a distribution layer that delivers flag configurations to SDKs
@@ -431,14 +456,14 @@ export default function FeatureFlagServiceArticle() {
             exposure events asynchronously in batches, decoupled from the evaluation path. This design ensures that
             millions of evaluations per second impose zero load on the flag service itself, because all evaluation
             happens at the edge within the consuming applications.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 2: What happens when the flag service goes down? How do you ensure application resilience?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             When the flag service goes down, SDKs should continue evaluating flags using their last known cached
             configuration. The SDK must never block application execution waiting for a flag decision. If the cache is
             empty, such as during application startup when the service is already down, the SDK returns the configured
@@ -449,7 +474,7 @@ export default function FeatureFlagServiceArticle() {
             and fetch the latest configuration, updating their caches atomically to avoid partial state. The staleness
             window during the outage is acceptable for most flag types, because the alternative of adding a synchronous
             network dependency to every request is far more dangerous.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

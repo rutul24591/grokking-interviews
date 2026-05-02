@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 const BASE_PATH = "/diagrams/system-design-concepts/backend/reliability-fault-tolerance";
@@ -28,12 +29,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Error handling patterns</strong> are the systematic approaches that distributed systems use to detect, classify, respond to, and recover from failures. These patterns encompass error classification (distinguishing transient from permanent failures), retry strategies with exponential backoff and jitter, circuit breakers that prevent cascading overload, bulkheads that isolate failure domains, structured error responses that enable consistent cross-service behavior, and timeout strategies that bound resource consumption. The goal is not to eliminate failures—they are inevitable in distributed systems—but to handle them in a way that prevents small degradations from cascading into system-wide outages.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental insight behind error handling patterns is that not all errors are equal. A network timeout during a transient network partition is fundamentally different from a schema validation error caused by an incompatible API contract, which is fundamentally different from a business rule violation like insufficient inventory. Treating all errors the same way—retrying everything, or failing everything immediately—produces systems that are either wasteful (retrying permanent failures) or fragile (not retrying transient ones). Error classification is the foundation upon which all other patterns are built.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, error handling patterns are not library implementations—they are architectural decisions that affect system-wide behavior. The choice of retry policy in one service interacts with the timeout configuration in another, which interacts with the circuit breaker thresholds in a third. These interactions can create feedback loops: if every service retries aggressively with aligned timeouts, a transient degradation becomes a retry storm that overloads every dependency. Designing error handling patterns requires understanding not just individual patterns but their composition and interaction across service boundaries.
         </p>
@@ -50,6 +54,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/error-classification.svg`}
@@ -58,12 +65,12 @@ export default function ArticlePage() {
         />
 
         <h3>Error Classification</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Error classification is the process of categorizing failures into distinct groups, each with a prescribed handling strategy. <strong>Transient errors</strong> are failures that may resolve themselves without intervention: network timeouts, rate-limiting responses (HTTP 429), temporary authentication failures (token expiration), and temporary dependency unavailability. These errors warrant retry with bounded attempts and exponential backoff. <strong>Permanent errors</strong> are failures that will not resolve through retries: schema validation errors, authorization failures (HTTP 403), permanent dependency failures, and business logic violations. These should bypass retries entirely and be routed to error handling or dead letter queues. <strong>Expected errors</strong> are failures that represent valid business outcomes: validation failures, insufficient inventory, quota exceeded, and resource not found. These should return structured error responses to the caller rather than triggering retries or circuit breaks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The classification must happen at the point of failure, not at a central error handler. The code that detects the failure knows whether it is transient or permanent. If classification is deferred to a generic error handler, the handler lacks the context to make correct decisions. Each service should encode its error classification in the error response itself, using structured error codes that downstream services can interpret and act upon.
-        </p>
+        </HighlightBlock>
         <p>
           A shared error taxonomy across services is essential for distributed systems. If Service A classifies a timeout as transient and retries while Service B classifies the same timeout as permanent and fails immediately, the system exhibits unpredictable behavior that is impossible to reason about. Define a standard set of error classifications—transient, permanent, expected—and ensure all services in the system use the same classification for the same failure modes. This alignment enables predictable retry behavior, consistent circuit breaker triggering, and meaningful cross-service error aggregation.
         </p>
@@ -124,12 +131,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust error handling architecture layers patterns in a specific order to prevent harmful interactions. The outermost layer is the timeout, which bounds the total time a request is allowed to take. Inside the timeout boundary is the retry layer, which attempts the call multiple times with exponential backoff and jitter for transient errors. Inside the retry layer is the circuit breaker, which monitors failure rates across all requests and stops sending traffic to failing dependencies. Inside the circuit breaker is the bulkhead, which isolates resource pools by dependency. The innermost layer is the error classification logic, which determines whether an error is transient, permanent, or expected and routes it accordingly.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This layering order is critical. If retries execute before the circuit breaker checks the failure rate, retries can overwhelm a dependency that the circuit breaker is trying to protect. If the circuit breaker executes before timeouts are applied, the circuit breaker may not have accurate failure data because calls are still in-flight rather than definitively failed. If bulkheads are not in place, a failing dependency can consume all available resources and prevent the circuit breaker from operating correctly because there are no resources available to serve the probe request during half-open state.
-        </p>
+        </HighlightBlock>
         <p>
           The error response flow is equally structured. When a call fails, the error is classified at the point of failure and encoded in a structured response. The response travels back through the service chain, and each service in the chain inspects the classification to determine its handling strategy. Transient errors trigger retry (if within budget) or immediate failure (if the retry budget is exhausted). Permanent errors trigger circuit breaker counting and immediate failure to the caller. Expected errors are translated into user-facing error responses and returned without retry or circuit breaker impact. This structured flow ensures consistent error handling across the entire service graph.
         </p>
@@ -143,12 +153,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The core trade-off in error handling is between consistency and availability. Retries improve availability by giving transient failures a chance to resolve, but they increase latency (each retry adds delay) and can harm consistency if the retried operation is not idempotent. Circuit breakers protect system resources by failing fast when a dependency is down, but they cause abrupt feature loss for all users of that dependency during the open period. Fallbacks maintain user experience by serving cached or degraded responses, but they risk serving stale or incorrect data. The choice of which pattern to prioritize depends on the specific operation: read operations can safely use fallbacks with stale data, write operations require consistency and should fail rather than risk incorrect side effects.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Retry aggressiveness presents another trade-off. Aggressive retries—with high attempt counts and short backoff intervals—reduce the visible error rate for individual requests but increase the total load on struggling dependencies. In a scenario where a database is experiencing elevated latency, aggressive retries from hundreds of consumers can push the database from degraded to fully unavailable. Conservative retries—with low attempt counts and longer backoff intervals—reduce the retry load but increase the visible error rate, requiring better fallback mechanisms and clearer user communication. The correct balance depends on the dependency's capacity and the system's overall retry budget.
-        </p>
+        </HighlightBlock>
         <p>
           Circuit breaker sensitivity involves a trade-off between protection and availability. A sensitive circuit breaker (tripping after a small number of failures) protects the dependency from overload but may open during normal error rate fluctuations, causing unnecessary feature loss. A lenient circuit breaker (requiring many failures) allows more damage before tripping but reduces false positives. The practical approach is to use a rolling window with a percentage-based threshold rather than a fixed count, which adapts to varying traffic volumes and reduces sensitivity to absolute failure counts.
         </p>
@@ -162,12 +175,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Establish a shared error taxonomy across all services in the system. Define clear classifications—transient, permanent, expected—and ensure every service uses the same classification for the same failure modes. Encode classifications in structured error responses with machine-readable error codes, the originating service identifier, and correlation IDs. This alignment enables predictable retry behavior, consistent circuit breaker triggering, and meaningful cross-service error aggregation. Without a shared taxonomy, each service makes independent error handling decisions that compound unpredictably.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement retry policies with exponential backoff and jitter, bounded by both attempt count and total time budget. The retry budget should be a fraction of the end-to-end request deadline, leaving time for fallback execution or graceful error response. At the system level, enforce a global retry budget that limits total retry traffic to 10-20% of baseline capacity. When retry traffic exceeds this budget, reject new retries immediately to prevent amplification. Never retry operations that are classified as permanent or expected—route them to appropriate error handling paths instead.
-        </p>
+        </HighlightBlock>
         <p>
           Configure circuit breakers with rolling window thresholds that adapt to traffic volume. Use percentage-based error rate thresholds (e.g., 50% failure rate over the last 30 seconds) rather than fixed failure counts. Set cooldown periods long enough for dependencies to recover (typically 30-60 seconds) and use lightweight probe requests for half-open state testing. Ensure that circuit breaker state is observable: teams should know which dependencies have open circuit breakers, how long they have been open, and what the recovery rate is during half-open probing.
         </p>
@@ -181,12 +197,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most dangerous pitfall is retry amplification across service layers. When multiple services in a call chain independently implement retries with aligned timeouts, the cumulative retry count multiplies exponentially. A three-service chain with three retries at each layer can generate up to 27 attempts at the leaf service for a single original request. This amplification transforms a minor leaf-service degradation into a system-wide outage as the retry traffic overwhelms the struggling dependency. The solution is to coordinate retry policies across the chain: limit total retry attempts end-to-end, use decreasing deadlines at each hop, and ensure retry intervals are not synchronized.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A second common pitfall is retrying non-idempotent write operations. When a payment service times out and the caller retries the charge, the original charge may have actually succeeded—the timeout was in the response path, not the processing path. The retry creates a duplicate charge. Every write operation that may be retried must be idempotent, with idempotency keys that are unique and bound to a specific request shape. Operations that cannot be made idempotent should use compensating actions rather than retries.
-        </p>
+        </HighlightBlock>
         <p>
           A third pitfall is silent fallbacks that mask errors. When a fallback serves cached data or a degraded response without surfacing the fact that the primary dependency is failing, operators cannot detect system degradation until users report issues. Fallbacks should always be observable: fallback usage rate, staleness age of cached data, and the proportion of responses served via fallback should be exposed as metrics and included in alerting. A system that appears healthy because of fallbacks but is actually serving stale data is more dangerous than a system that openly reports its degraded state.
         </p>
@@ -200,16 +219,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce: Payment Gateway Degradation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           During a peak shopping event, a payment gateway begins responding slowly (5-8 seconds instead of the usual 200ms). Without circuit breakers, the checkout service's requests pile up, consuming all available threads. The checkout service becomes unresponsive for all users, not just those using the affected payment gateway. With circuit breakers configured, the checkout service detects the elevated error rate after a threshold of slow responses, opens the circuit breaker for that payment gateway, and immediately redirects traffic to an alternative gateway. Users experience a brief delay during the transition but checkout continues to function. The circuit breaker prevents a single gateway degradation from taking down the entire checkout flow.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS: Multi-Dependency API Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A SaaS platform's API service depends on an identity service, a data service, and a notification service. The notification service begins failing with HTTP 500 errors. Without bulkheads, the notification service's failures consume the API service's entire connection pool, making the identity and data services unreachable as well. With bulkhead isolation, each dependency has its own connection pool. The notification service's failures are contained within its pool, and the identity and data services continue to function normally. Users can still authenticate and access data—the only degraded feature is notifications.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Services: Idempotent Transaction Processing</h3>
         <p>
@@ -227,14 +249,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: When are retries harmful?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Retries are harmful in three scenarios: when they amplify load on a saturated dependency, transforming a small degradation into a full outage; when they retry non-idempotent write operations, creating duplicate side effects like double charges or duplicate emails; and when multiple service layers retry simultaneously with aligned timeouts, creating multiplicative retry storms that overwhelm every dependency in the call chain.
-            </p>
+            </HighlightBlock>
             <p>
               The solution is to classify errors before retrying (never retry permanent or expected errors), enforce idempotency for all retried writes, bound retries by both attempt count and total time budget, enforce a system-wide retry budget that limits total retry traffic to 10-20% of baseline, and coordinate retry policies across service layers to prevent multiplicative amplification.
             </p>

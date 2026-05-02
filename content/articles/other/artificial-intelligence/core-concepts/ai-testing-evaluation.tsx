@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>AI testing and evaluation</strong> encompasses the practices,
           frameworks, and processes for ensuring that AI systems produce
           correct, safe, and high-quality outputs. Unlike traditional software
@@ -33,8 +37,8 @@ export default function ArticlePage() {
           the same input can produce different valid outputs, and the quality
           of those outputs exists on a spectrum rather than being simply
           pass-or-fail.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental challenge of AI testing is that traditional unit tests
           (assert output equals expected value) do not work for LLM outputs.
           An LLM can produce a correct answer in many different ways — different
@@ -43,7 +47,7 @@ export default function ArticlePage() {
           as failures. AI testing requires semantic evaluation (does the output
           mean the right thing?) rather than syntactic evaluation (does the
           output match the expected string?).
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, AI testing is a first-class quality concern
           that must be designed into the system from day one. Without automated
@@ -78,7 +82,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Golden datasets</strong> are the foundation of AI testing —
           curated collections of input-output pairs that represent the expected
           behavior of the AI system. Each golden example includes an input
@@ -88,8 +95,8 @@ export default function ArticlePage() {
           examples), production sampling (collecting real user inputs and
           labeling the correct outputs), and synthetic generation (using a more
           capable model to generate examples that are then validated by humans).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Evaluation frameworks</strong> provide automated scoring of
           AI outputs against quality criteria. The dominant frameworks are{" "}
           <strong>RAGAS</strong> (Retrieval-Augmented Generation Assessment)
@@ -102,7 +109,7 @@ export default function ArticlePage() {
           toxicity scoring. Both frameworks use LLM-as-a-judge (a separate LLM
           evaluating the primary model&apos;s outputs) combined with rule-based
           checks for comprehensive evaluation.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/ai-testing-pipeline.svg"
@@ -237,7 +244,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An AI testing architecture consists of several components. The{" "}
           <strong>dataset management layer</strong> maintains golden datasets,
           tracks dataset versions, and ensures dataset quality (no duplicates,
@@ -248,7 +258,7 @@ export default function ArticlePage() {
           baseline scores and detects regressions, improvements, and neutral
           changes. The <strong>reporting layer</strong> generates quality
           reports, dashboards, and alerts for the engineering team.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/evaluation-framework-architecture.svg"
@@ -256,7 +266,7 @@ export default function ArticlePage() {
           caption="Evaluation architecture — dataset management, evaluation execution, scoring, comparison, and reporting"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>continuous evaluation pipeline</strong> integrates AI
           testing into the CI/CD pipeline. On every code change (prompt update,
           system modification), the CI pipeline runs the golden dataset
@@ -265,7 +275,7 @@ export default function ArticlePage() {
           provider update), the pipeline runs a comprehensive evaluation that
           includes not just the golden dataset but also safety testing,
           performance testing, and cost testing.
-        </p>
+        </HighlightBlock>
         <p>
           Integrating AI evaluation into the CI/CD pipeline requires careful
           orchestration to balance thoroughness with pipeline speed. A typical
@@ -310,7 +320,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Automated versus human evaluation</strong> presents a
           quality-versus-cost trade-off. Automated evaluation
           (LLM-as-a-judge, rule-based checks) is fast, cheap, and consistent
@@ -320,8 +333,8 @@ export default function ArticlePage() {
           inconsistent across evaluators. The pragmatic approach is automated
           evaluation for routine quality checks and human evaluation for
           periodic calibration and edge case analysis.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Offline versus online evaluation</strong> involves a
           speed-versus-representativeness trade-off. Offline evaluation
           (running the golden dataset) is fast and controlled but may not
@@ -331,7 +344,7 @@ export default function ArticlePage() {
           risks exposing users to lower-quality variants. The recommended
           approach is offline evaluation as a gate before deployment, followed
           by online evaluation (canary release) after deployment.
-        </p>
+        </HighlightBlock>
         <p>
           The distinction between offline and online evaluation extends beyond
           timing and encompasses fundamentally different risk profiles, cost
@@ -402,21 +415,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Build the golden dataset from production inputs</strong> —
           the golden dataset should represent the actual distribution of
           production inputs, not idealized examples. Collect real user queries,
           categorize them by type and difficulty, and label the correct outputs
           with domain experts. Update the golden dataset regularly as new input
           patterns emerge and new edge cases are discovered.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement evaluation before deployment</strong> — run the
           golden dataset evaluation on every change (prompt update, model
           change, system modification) and block deployment if quality regresses.
           This is the single most effective practice for preventing quality
           regressions in production.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Use multiple evaluation metrics</strong> — no single metric
           captures all aspects of quality. Use a combination of faithfulness
@@ -503,22 +519,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>testing on the training data</strong>{" "}
           — evaluating the AI system on the same examples used to develop the
           prompt or fine-tune the model. This produces inflated quality scores
           that do not generalize to production inputs. Always maintain a
           held-out test set that is never used during development and is only
           used for final evaluation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Insufficient golden dataset size</strong> — a golden dataset
           with fewer than 100 examples is unlikely to represent the full input
           distribution and will miss edge cases. Aim for at least 500-1000
           examples covering the full range of input types, difficulties, and
           edge cases. The dataset should be stratified by category and
           difficulty to ensure balanced coverage.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Ignoring false positives in evaluation</strong> — automated
           evaluators (especially LLM-as-a-judge) can flag correct outputs as
@@ -595,20 +614,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>CI/CD quality gates for prompt changes</strong> — every
           prompt update is tested against the golden dataset before deployment.
           If the average quality score drops by more than 5% or if any critical
           examples fail, the change is blocked. This prevents prompt regressions
           from reaching production.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Model comparison before migration</strong> — before switching
           from one model to another (e.g., GPT-4 to a newer version), run both
           models against the golden dataset and compare quality scores. This
           ensures the new model meets or exceeds the quality of the current
           model before committing to the migration.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Customer support AI at a Fortune 500 financial services
           company</strong> — a major bank deployed an LLM-powered customer
@@ -659,27 +681,30 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: How do you test an AI system when the output is non-deterministic?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Testing non-deterministic AI outputs requires statistical evaluation
             rather than exact matching. Instead of asserting that the output
             equals an expected string, evaluate whether the output meets quality
             criteria: does it contain the correct information (faithfulness),
             does it address the query (relevance), is it free of harmful content
             (safety), and is it complete (coverage).
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             Run each test example multiple times (5-10 runs at different
             temperatures) and measure the consistency of quality scores. A
             reliable system should produce consistently high-quality outputs
             across runs. Additionally, use a temperature of 0 for testing to
             maximize determinism, and evaluate at the production temperature
             separately to measure the quality distribution.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

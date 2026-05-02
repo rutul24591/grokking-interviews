@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,18 +28,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Secrets rotation</strong> is the practice of periodically replacing secrets (API keys, database
           passwords, TLS certificates, signing keys) with new values — it limits the window of opportunity if a
           secret is compromised. If a secret is stolen, the attacker can only use it until the secret is rotated —
           after rotation, the old secret is revoked and the attacker&apos;s access is terminated.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Secrets rotation is required by major compliance standards (PCI-DSS requires 90-day rotation for all
           credentials, SOC 2 requires regular rotation with audit trail, HIPAA requires access logging and
           rotation policies). Beyond compliance, secrets rotation is a fundamental security practice — it limits
           the blast radius of a breach and ensures that secrets do not remain valid indefinitely.
-        </p>
+        </HighlightBlock>
         <p>
           The challenge of secrets rotation is doing it without service disruption — if a secret is rotated
           abruptly (old secret revoked before applications update to the new secret), applications that use the
@@ -76,22 +80,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The secrets rotation lifecycle consists of four phases: (1) Old Secret Active — only the old secret is
           valid, applications use the old secret. (2) New Secret Generated — the secrets manager generates a new
           secret and stores it alongside the old secret. Both secrets are valid. (3) Migration — applications
           migrate to the new secret. During the overlap period (typically 7-14 days), both secrets remain valid
           so that applications that have not yet migrated can continue to use the old secret. (4) Old Secret
           Retired — after the overlap period, the old secret is revoked. Only the new secret is valid.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Zero-downtime rotation is the practice of rotating secrets without disrupting active applications. It
           requires an overlap period where both the old and new secrets are valid — applications migrate to the
           new secret during the overlap period, and the old secret is revoked after all applications have
           migrated. Zero-downtime rotation is essential for production systems — abrupt rotation (revoking the
           old secret before applications migrate) causes service disruption (database connection failures, API
           authentication errors, TLS handshake failures).
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/secrets-rotation-diagram-1.svg"
           alt="Secrets rotation lifecycle showing old secret active, new secret generation, migration overlap period, and old secret retirement"
@@ -140,21 +147,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The secrets rotation architecture consists of the secrets manager (which generates, stores, and rotates
           secrets), the notification system (which notifies applications of new secrets), the application secret
           cache (which stores the current secret in memory), and the audit logger (which logs all rotation
           events). The secrets manager is the core component — it generates new secrets, stores them alongside
           old secrets, notifies applications, and retires old secrets after the overlap period.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The secrets rotation flow begins with the secrets manager generating a new secret (using a CSPRNG) and
           storing it alongside the old secret. The secrets manager notifies applications of the new secret (via
           webhook or polling). Applications fetch the new secret from the secrets manager and update their
           in-memory secret cache. During the overlap period, both the old and new secrets are valid —
           applications that have not yet migrated can continue to use the old secret. After the overlap period,
           the secrets manager revokes the old secret — only the new secret is valid.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/secrets-rotation-diagram-3.svg"
           alt="Database credential rotation showing automatic password rotation with overlap period for zero-downtime migration"
@@ -189,7 +199,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Scheduled rotation versus event-driven rotation is a trade-off between predictability and responsiveness.
           Scheduled rotation (rotate every 90 days) is predictable — it occurs on a fixed schedule, making it
           easy to plan and audit. However, scheduled rotation does not respond to compromise — if a secret is
@@ -199,8 +212,8 @@ export default function ArticlePage() {
           time, and it may cause service disruption (if applications have not migrated to the new secret). The
           recommended approach is both — scheduled rotation for regular rotation, event-driven rotation for
           emergency rotation when compromise is detected.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Overlap period versus immediate rotation is a trade-off between availability and security. Overlap
           period (both old and new secrets are valid for a period) ensures zero-downtime rotation — applications
           can migrate to the new secret at their convenience. However, overlap period increases the attack
@@ -209,7 +222,7 @@ export default function ArticlePage() {
           surface — the attacker&apos;s access is terminated immediately. However, immediate rotation may cause
           service disruption (applications using the old secret will fail). The recommended approach is overlap
           period for scheduled rotation and immediate rotation for emergency rotation.
-        </p>
+        </HighlightBlock>
         <p>
           Manual rotation versus automated rotation is a trade-off between control and reliability. Manual
           rotation (administrators rotate secrets manually) provides full control — administrators can review
@@ -239,17 +252,20 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Automate secrets rotation — use a secrets manager (HashiCorp Vault, AWS Secrets Manager, GCP Secret
           Manager) to generate, distribute, and retire secrets automatically. Automated rotation eliminates
           human error (forgotten rotations, incorrect rotations) and ensures that secrets are rotated on schedule.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use an overlap period for zero-downtime rotation — generate the new secret, activate it alongside the
           old secret, notify applications to migrate to the new secret, and revoke the old secret after the
           overlap period (7-14 days). Overlap period ensures that applications that have not yet migrated can
           continue to use the old secret, preventing service disruption.
-        </p>
+        </HighlightBlock>
         <p>
           Monitor rotation events — track the rotation success rate, secret usage rate (old vs new), and stale
           secret usage rate. Alert on rotation failures (secret generation failed, notification failed,
@@ -279,20 +295,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rotating secrets without an overlap period is a common pitfall — revoking the old secret before
           applications migrate to the new secret causes service disruption (database connection failures, API
           authentication errors, TLS handshake failures). The fix is to use an overlap period — generate the
           new secret, activate it alongside the old secret, notify applications to migrate, and revoke the old
           secret after the overlap period.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not monitoring stale secret usage is a common operational pitfall — applications that do not migrate
           to the new secret during the overlap period will fail when the old secret is revoked. The fix is to
           monitor stale secret usage — track the percentage of requests using the old secret, and alert when
           the percentage exceeds a threshold (e.g., 5 percent of requests still using old secret after 7 days).
           Investigate stale secret usage and notify the application owners to migrate.
-        </p>
+        </HighlightBlock>
         <p>
           Not rotating secrets on schedule is a common compliance pitfall — if secrets are not rotated on
           schedule, they remain valid indefinitely, increasing the risk of compromise. The fix is to automate
@@ -320,15 +339,18 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses automated secrets rotation for its API keys — HashiCorp Vault
           generates new API keys every 90 days, activates them alongside the old keys, and notifies clients via
           webhook. Clients migrate to the new keys during a 14-day overlap period, and the old keys are revoked
           after the overlap period. The platform monitors secret usage rate (old vs new) and alerts on stale
           secret usage (clients still using old keys after 7 days). The platform achieves PCI-DSS compliance in
           part due to its secrets rotation controls.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses automated database credential rotation — AWS Secrets Manager
           generates new database passwords every 90 days, adds them to the database user (keeping the old
           password active), and notifies applications via Lambda function. Applications update their connection
@@ -336,7 +358,7 @@ export default function ArticlePage() {
           company monitors rotation success rate and alerts on rotation failures (password generation failed,
           notification failed, application failed to migrate). The company achieves SOC 2 compliance in part
           due to its secrets rotation controls.
-        </p>
+        </HighlightBlock>
         <p>
           A healthcare organization uses automated TLS certificate rotation — cert-manager requests new
           certificates from Let&apos;s Encrypt every 60 days (well before the 90-day expiration), installs them on
@@ -359,14 +381,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How do you rotate database passwords without disrupting active connections?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Use an overlap period: (1) Generate a new database password. (2) ALTER USER to add the new password (keeping the old password active — most databases support multiple passwords per user). (3) Notify applications to update their connection strings. (4) Wait for the overlap period (all applications have migrated to the new password). (5) ALTER USER to remove the old password.
-            </p>
+            </HighlightBlock>
             <p>
               Alternatively, use IAM database authentication (AWS RDS, Google Cloud SQL) — applications authenticate using IAM tokens instead of passwords, and tokens expire automatically (typically 15 minutes). IAM database authentication eliminates the need for password rotation — tokens are generated on-demand and expire automatically, limiting the attacker&apos;s access window.
             </p>

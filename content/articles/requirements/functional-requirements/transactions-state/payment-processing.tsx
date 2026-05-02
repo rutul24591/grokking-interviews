@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function PaymentProcessingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Payment processing is the backbone of e-commerce, handling the secure transfer of funds from customer to merchant. The process involves multiple parties: the customer (cardholder), merchant (business), payment gateway (technical intermediary), acquiring bank (merchant&apos;s bank), issuing bank (customer&apos;s bank), and card networks (Visa, Mastercard, etc.). For staff and principal engineers, payment processing involves navigating security requirements (PCI DSS compliance), handling failures gracefully (declined cards, network timeouts), and optimizing for conversion (minimizing friction while preventing fraud).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The technical complexity of payment processing extends far beyond simple API calls. Authorization must happen in real-time (&lt;3 seconds typical SLA), with proper handling of 3D Secure challenges (SCA requirements in Europe). Capture timing varies by business model—immediate for digital goods, on-shipment for physical goods, periodic for subscriptions. Refunds and chargebacks require idempotent processing to prevent double-refunds. The system must handle partial authorizations (split tender), recurring billing (card updater services), and cross-border transactions (currency conversion, international fees).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, payment architecture involves distributed systems challenges. Payment state must be consistent across services (order service, inventory service, notification service). Webhooks from payment gateways arrive asynchronously and may be delayed or duplicated—idempotency is critical. Retry logic must handle transient failures without duplicate charges. The system must support multiple payment gateways (redundancy, geographic optimization, cost optimization) with a unified abstraction layer. Monitoring must detect authorization rate drops, gateway latency spikes, and fraud pattern changes before they impact revenue.
         </p>
@@ -47,13 +51,16 @@ export default function PaymentProcessingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Payment Lifecycle</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Payment processing follows a defined lifecycle: Authorization → Capture → Settlement → Refund (optional). Authorization verifies the card is valid and has sufficient funds, placing a hold on the amount. The hold reduces the customer&apos;s available credit but doesn&apos;t transfer funds. Authorization expires if not captured (7-30 days depending on card network and issuer). Capture transfers funds from customer to merchant. Capture can be full (entire authorized amount) or partial (less than authorized—remaining amount is released). Settlement is the batch process where captured funds are deposited to the merchant&apos;s bank account (typically 1-3 business days after capture).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authorization types vary by use case. Standard authorization is used for immediate purchases. Pre-authorization (auth-only) verifies funds without immediate capture—used for hotels (incidentals), car rentals (deposits), and restaurants (tips added later). Incremental authorization allows adding to an authorized amount—used when final amount is uncertain (restaurant tips, gas stations). Re-authorization is needed when the original authorization expires before capture (long pre-order windows, backorders).
-        </p>
+        </HighlightBlock>
         <p>
           Void vs. refund distinction is critical. Void cancels an uncaptured authorization—no funds change hands, no fees charged. Refund reverses a captured payment—funds return to customer, fees typically not refunded. Void is instantaneous, refund takes 3-10 business days to appear on customer statement. Always void uncaptured authorizations rather than capturing and refunding—saves interchange fees and improves customer experience.
         </p>
@@ -105,9 +112,12 @@ export default function PaymentProcessingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Payment processing architecture spans client-side tokenization, backend payment service, gateway integration, and webhook handling. Client collects card data securely (hosted fields, payment SDK), receives payment method token. Backend payment service orchestrates authorization, capture, refund. Gateway communicates with card networks, issuing banks. Webhooks handle async events (authorization success, capture success, disputes).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/payment-processing/payment-architecture.svg"
@@ -118,9 +128,9 @@ export default function PaymentProcessingArticle() {
         />
 
         <h3>Client-Side Tokenization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           PCI compliance requires secure card data handling. Never touch raw card data—use hosted fields (Stripe Elements, Braintree Hosted Fields) or payment SDKs (Stripe.js, PayPal SDK). Hosted fields are iframes served from gateway—merchant page never sees card data. SDKs tokenize card data in browser, return payment method token. Token is safe to send to your backend—no PCI scope (SAQ A).
-        </p>
+        </HighlightBlock>
         <p>
           Payment method types vary by gateway. Card tokens represent card details (tokenized card number, expiry, CVV verification). Digital wallet tokens represent Apple Pay/Google Pay payment methods (device account number, cryptogram). Bank account tokens represent ACH/SEPA details (account number, routing number). Each token type has different processing flows, fees, and failure modes.
         </p>
@@ -180,14 +190,17 @@ export default function PaymentProcessingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Payment processing design involves trade-offs between conversion optimization, fraud prevention, compliance requirements, and operational complexity. Understanding these trade-offs enables informed decisions aligned with business goals and risk tolerance.
-        </p>
+        </HighlightBlock>
 
         <h3>Authorization Timing: Immediate vs. Delayed</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Immediate authorization on checkout. Pros: Confirms payment capability, reduces order cancellations, customer sees charge immediately. Cons: Authorization expires if not captured quickly (7-30 days), may impact customer&apos;s available credit, capture must happen before expiry. Best for: Digital goods (immediate fulfillment), in-stock items (quick shipment), services (immediate access).
-        </p>
+        </HighlightBlock>
         <p>
           Delayed authorization on shipment. Pros: Authorization fresh at capture (no expiry risk), charge only for shipped items (no partial captures), better cash flow (authorize when ready to fulfill). Cons: Risk of payment failure after order confirmed (customer expects immediate confirmation), customer may not see charge until shipment (confusion). Best for: Physical goods with fulfillment delay, backorders, pre-orders, custom-made items.
         </p>
@@ -233,13 +246,16 @@ export default function PaymentProcessingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Never touch raw card data:</strong> Use hosted fields (Stripe Elements, Braintree Hosted Fields) or payment SDKs. Tokenize in browser, send token to backend. PCI scope reduced to SAQ A (simplest). Never log card data, never store card data (even encrypted).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement idempotency everywhere:</strong> Idempotency keys for all payment operations (authorize, capture, refund). Store key with operation result. Duplicate request returns cached result. Critical for retry logic—network timeout doesn&apos;t mean failure.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle webhooks asynchronously:</strong> Verify signature, acknowledge quickly (200 OK &lt;3 seconds), queue for processing. Idempotency for duplicate webhooks. Handle out-of-order events (process by timestamp, not arrival). Monitor webhook delivery (latency, failure rate).
           </li>
@@ -269,13 +285,16 @@ export default function PaymentProcessingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Storing card data:</strong> Even encrypted, increases PCI scope dramatically. Solution: Use tokenization, never store raw card data. Gateway vaults store cards securely (PCI DSS Level 1).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No idempotency:</strong> Network retries create duplicate charges. Solution: Idempotency keys for all operations, store with result, return cached result on duplicate.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring webhooks:</strong> Relying only on synchronous responses misses async events (disputes, refunds). Solution: Implement webhook handlers for all event types, verify signatures, process idempotently.
           </li>
@@ -305,16 +324,19 @@ export default function PaymentProcessingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Stripe Payment Processing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe uses Payment Intents API for unified payment flow. Payment Intent created with amount, currency, payment method. Handles 3DS automatically (frictionless when possible). Webhooks for async events (payment_intent.succeeded, payment_intent.payment_failed). Smart retries for failed payments (exponential backoff, optimal timing). Account updater for subscription retention.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Amazon Pay</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon Pay leverages existing Amazon customer data (shipping address, payment methods). One-click checkout for Amazon customers. Authorization on order, capture on shipment. A-to-Z guarantee protects customers (Amazon handles disputes). Recurring payments for subscriptions. Cross-border (Amazon customers in one country, merchant in another).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">PayPal Checkout</h3>
         <p>
@@ -334,12 +356,15 @@ export default function PaymentProcessingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle payment idempotency?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle payment idempotency?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Client generates unique idempotency key (UUID) per payment operation. Key sent in Idempotency-Key header. Backend stores key with payment ID and result. Duplicate request with same key returns cached result (not new charge). Key expires after TTL (24 hours). Storage: Redis with TTL, or database with cleanup job. Critical for retry logic—network timeout doesn&apos;t mean payment failed, check idempotency before retrying.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

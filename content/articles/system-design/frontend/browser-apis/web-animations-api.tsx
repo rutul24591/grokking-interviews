@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,15 +34,15 @@ export default function WebAnimationsAPIArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>Web Animations API</strong> is a W3C standard that provides a programmatic JavaScript interface for creating, controlling, and inspecting animations in the browser. Unlike CSS animations, which are defined declaratively in stylesheets and have limited runtime control, the Web Animations API enables dynamic animation creation with full runtime control over playback state, timing, speed, direction, and sequencing. Animations created through the Web Animations API run on the browser&apos;s compositor thread — the same optimized rendering path used by CSS animations — providing GPU-accelerated performance that is significantly smoother than JavaScript-driven animations that manipulate DOM properties on the main thread.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Web Animations API was designed to unify the animation capabilities of the web platform. Before its introduction, developers faced a choice between CSS animations, which are performant but inflexible, and JavaScript animations, which are flexible but potentially slow. CSS animations excel at simple, predefined transitions such as hover effects, loading spinners, and page transitions, but struggle with interactive animations that respond to user input, animations that depend on runtime data, and complex animation sequences that require precise timing coordination. JavaScript animation libraries like GSAP and Anime.js filled this gap by providing programmatic animation control, but they operate on the main thread and can cause jank when competing with other JavaScript execution for CPU time.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Web Animations API bridges this gap by providing JavaScript-based animation control that runs on the compositor thread. The API exposes the same animation model that underlies CSS animations — keyframes, timing functions, iteration counts, and fill modes — but makes it accessible and controllable from JavaScript. This means that animations created through the API benefit from the same hardware acceleration and optimization as CSS animations while gaining the flexibility of programmatic control. The API provides methods for playing, pausing, reversing, seeking, and canceling animations, as well as properties for inspecting animation state, current time, playback rate, and finished status.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, the Web Animations API represents a tool for building rich, interactive user experiences that respond to user input, data changes, and application state transitions. The API is particularly valuable for data visualization animations, interactive UI animations such as drag-and-drop feedback and gesture-based interactions, and complex animation sequences that require precise timing coordination. The decision to use the Web Animations API versus CSS animations or third-party libraries depends on the animation&apos;s complexity, interactivity requirements, and performance constraints.
         </p>
@@ -50,15 +51,15 @@ export default function WebAnimationsAPIArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>keyframe model</strong> is the foundation of the Web Animations API. A keyframe is an object that specifies the CSS property values at a particular point in the animation timeline. Keyframes are defined as an array of objects, where each object contains CSS property-value pairs and an optional offset property — a number between 0 and 1 indicating the position in the animation timeline. When offsets are not specified, keyframes are distributed evenly across the timeline. A fade-in animation can be defined as an array with two objects, the first setting opacity to 0 and the second setting opacity to 1. More complex animations can include multiple keyframes with explicit offsets for precise control over the animation&apos;s progression through different visual states.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>timing model</strong> controls how the animation progresses through its keyframes over time. Timing options are specified as an object passed to the animate method and include duration in milliseconds, delay before the animation starts, end delay after the animation ends, iteration count for repetition, direction for forward or reverse playback, easing function for acceleration curves, and fill mode for controlling whether the animation&apos;s keyframe values persist before or after the active animation period. The easing function is particularly important for creating natural-feeling animations — linear easing produces mechanical motion, while ease-in-out or custom cubic-bezier curves produce more organic, physically plausible motion.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Animation object</strong> is returned by the element animate method and provides full runtime control over the animation. The play method starts or resumes the animation. The pause method pauses the animation at its current position. The reverse method plays the animation backward from its current position. The finish method jumps to the end. The cancel method stops the animation and removes its effects. The currentTime property gets or sets the animation&apos;s current position in milliseconds, enabling seeking to any point. The playbackRate property controls the animation speed — a rate of 2 plays at double speed, 0.5 plays at half speed, and negative values play in reverse. The finished property returns a Promise that resolves when the animation completes, enabling async/await patterns for animation sequencing.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>compositor thread execution model</strong> is what makes the Web Animations API performant. When an animation is created, the browser analyzes the animated properties and determines whether they can be handled by the compositor thread. Properties that only affect compositing — transform and opacity — are handled entirely on the compositor thread, which runs independently of the main thread and is typically GPU-accelerated. This means that animations of transform and opacity continue to run smoothly even when the main thread is busy with JavaScript execution, layout calculation, or event handling. Properties that affect layout (width, height, top, left) or paint (color, background, box-shadow) require main thread involvement and can cause jank if the main thread is busy.
         </p>
@@ -81,15 +82,15 @@ export default function WebAnimationsAPIArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A production Web Animations API implementation requires an architecture that manages animation creation, performance optimization, sequencing coordination, and cleanup. The architecture must ensure that animations run smoothly without causing jank, that they respond appropriately to user interactions and application state changes, and that they are properly cleaned up when no longer needed to prevent memory leaks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>animation creation layer</strong> is responsible for defining keyframes and timing options for each animation. In a well-architected system, animation definitions are centralized in a configuration module or design token system, rather than scattered throughout component code. This enables consistent animation behavior across the application, easy adjustment of animation timing and easing curves, and A/B testing of different animation parameters. Each animation definition includes the keyframe array, timing options, and metadata such as the animation&apos;s purpose (entrance, exit, emphasis, transition) and its performance characteristics (compositor-only or main-thread-involved).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>performance optimization layer</strong> ensures that animations run smoothly by restricting animated properties to compositor-only properties (transform and opacity) and using the will-change CSS property to hint the browser about upcoming animations. The will-change property tells the browser to promote the element to its own compositor layer before the animation starts, avoiding the layer promotion cost during the animation. However, will-change should be used sparingly — promoting too many elements to compositor layers consumes GPU memory and can degrade overall performance. The optimization layer should also implement animation throttling — reducing animation complexity or disabling animations entirely when the device is under heavy load or when the user has enabled reduced motion preferences.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>animation sequencing layer</strong> coordinates multiple animations to create complex, choreographed effects. Sequencing can be achieved through several patterns. The Promise-based pattern uses the finished Promise to trigger the next animation: <code>animation1.finished.then(() =&gt; animation2.play())</code>. The event-based pattern uses the onfinish event handler to trigger subsequent animations. The timeline-based pattern uses the AnimationTimeline interface to synchronize multiple animations to a shared timeline, enabling them to start, progress, and end in coordination. The staggered pattern creates multiple animations with incremental delays, producing a cascading effect where elements animate one after another with a small offset.
         </p>
@@ -121,15 +122,15 @@ export default function WebAnimationsAPIArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The Web Animations API involves trade-offs between control and complexity, between performance and flexibility, and between native capabilities and library convenience. Understanding these trade-offs is essential for choosing the right animation approach for each use case.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most significant trade-off is <strong>control versus implementation complexity</strong>. The Web Animations API provides granular control over every aspect of animation — keyframes, timing, playback state, sequencing — but this control comes with implementation complexity. Creating complex animations requires defining keyframe arrays, configuring timing options, managing animation objects, handling events, and implementing cleanup logic. CSS animations, by contrast, are defined declaratively in stylesheets with minimal JavaScript — typically just adding or removing a class. For simple animations (hover effects, loading spinners, page transitions), CSS animations are simpler and more maintainable. For complex, interactive animations (drag-and-drop feedback, scroll-driven animations, data visualization transitions), the Web Animations API&apos;s control justifies its complexity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>performance versus property flexibility</strong> trade-off affects which properties can be animated smoothly. The Web Animations API runs on the compositor thread only for transform and opacity properties. Animating other properties — width, height, top, left, color, background — requires main thread involvement and can cause jank. Third-party animation libraries like GSAP can animate any CSS property, but they do so on the main thread, accepting the performance trade-off for greater flexibility. The solution is to restrict Web Animations API usage to transform and opacity properties and use CSS transitions or third-party libraries for properties that require main thread animation, accepting the performance cost where necessary.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>native API versus library convenience</strong> trade-off affects development velocity and feature richness. The Web Animations API is a native browser API with no dependencies, small bundle size (zero — it is built into the browser), and optimal performance. However, it lacks many features that animation libraries provide out of the box: spring physics, morphing between shapes, path-based animation, stagger utilities, timeline scrubbing, and a rich ecosystem of plugins and presets. Libraries like GSAP provide these features with polished APIs and extensive documentation. The trade-off is bundle size (GSAP is approximately 20KB minified + gzip) and dependency management. For applications with simple animation needs, the native API is sufficient. For applications requiring advanced animation features, a library may be more productive.
         </p>
@@ -157,15 +158,15 @@ export default function WebAnimationsAPIArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The most critical best practice is <strong>animating only compositor properties</strong> — transform and opacity. These properties are handled entirely by the compositor thread, which runs independently of the main thread and is typically GPU-accelerated. Animating transform (translate, scale, rotate, skew) and opacity produces smooth, jank-free animations even when the main thread is busy. Avoid animating layout properties (width, height, top, left, margin, padding) and paint properties (color, background, border, box-shadow), as these require main thread involvement and can cause jank. If you need to animate a layout property, consider whether it can be replaced with a transform — for example, animating transform: translateX instead of left, or transform: scaleY instead of height.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Using will-change strategically</strong> improves animation performance by hinting the browser to promote elements to compositor layers before animations start. Apply will-change to elements that will be animated: <code>will-change: transform, opacity</code>. This causes the browser to create a compositor layer for the element during the next style recalculation, avoiding the layer promotion cost during the animation. However, use will-change sparingly — each compositor layer consumes GPU memory, and promoting too many elements can degrade overall performance. Apply will-change only to elements that are about to be animated, and remove it after the animation completes by setting <code>will-change: auto</code>.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Respecting reduced motion preferences</strong> is essential for accessibility. Detect the <code>prefers-reduced-motion</code> media query using <code>window.matchMedia(&apos;(prefers-reduced-motion: reduce)&apos;)</code> and adapt animations accordingly. For users who prefer reduced motion, replace complex animations with simple opacity transitions or disable animations entirely. This is not optional — it is a WCAG requirement and provides a better experience for users with vestibular disorders. Design your animations so that they enhance the experience but are not required for understanding the content.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Centralizing animation definitions</strong> improves maintainability and consistency. Define animation configurations (keyframes, timing options, easing curves) in a centralized module or design token system rather than scattering them throughout component code. This enables consistent animation behavior across the application, easy adjustment of animation parameters, and A/B testing of different animation configurations. Use named animation presets (e.g., &quot;fadeIn&quot;, &quot;slideUp&quot;, &quot;scaleIn&quot;) that components reference by name, ensuring that the same animation looks the same everywhere it is used.
         </p>
@@ -180,15 +181,15 @@ export default function WebAnimationsAPIArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The most common pitfall is <strong>animating layout and paint properties</strong>, which causes jank by forcing main thread involvement. Animating properties like width, height, top, left, margin, padding triggers layout recalculation on every animation frame, which is expensive and competes with other main thread work. Animating properties like color, background, border triggers paint on every frame, which is also expensive. The solution is to restrict animations to transform and opacity properties. If you need the visual effect of animating a layout property, achieve it through transform instead — use translateX instead of left, scaleY instead of height, and scale instead of width/height changes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Not cleaning up animations</strong> leads to memory leaks. Each animation created through the Web Animations API is stored in the element&apos;s animations list. If animations are not canceled or removed, they accumulate in memory, particularly in long-running applications or single-page applications where components are mounted and unmounted frequently. The solution is to always cancel animations when they are no longer needed. In component frameworks, implement cleanup in the unmount lifecycle hook. For infinite animations, ensure they are canceled when the component is destroyed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Ignoring reduced motion preferences</strong> creates accessibility barriers. Users with vestibular disorders experience nausea, dizziness, and headaches when exposed to motion-heavy animations. If the application does not respect the <code>prefers-reduced-motion</code> preference, these users may be unable to use the application comfortably. The solution is to detect the preference and adapt animations — replace motion-based animations with opacity transitions, reduce animation duration, or disable animations entirely for users who prefer reduced motion.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Overusing will-change</strong> degrades performance instead of improving it. The will-change property tells the browser to promote an element to its own compositor layer, which consumes GPU memory. If many elements have will-change set, the GPU memory consumption can become significant, particularly on mobile devices with limited GPU memory. This can cause the browser to evict layers, resulting in worse performance than if will-change had not been used. The solution is to apply will-change only to elements that are about to be animated and remove it after the animation completes.
         </p>
@@ -205,19 +206,19 @@ export default function WebAnimationsAPIArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>Data Visualization Transitions</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Data visualization libraries and custom chart implementations use the Web Animations API to animate transitions between data states. When a chart&apos;s data updates, the bars, lines, or points animate from their old positions to their new positions, providing visual continuity that helps users understand how the data has changed. The animation is created dynamically based on the old and new data values, with keyframes computed at runtime — something that is difficult to achieve with CSS animations but straightforward with the Web Animations API. The animations use transform for position changes (translateX, translateY, scale) and opacity for entrance and exit effects, ensuring smooth, jank-free transitions even for charts with hundreds of data points.
-        </p>
+        </HighlightBlock>
 
         <h3>Interactive Drag-and-Drop Interfaces</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Drag-and-drop interfaces use the Web Animations API to provide visual feedback during drag operations. When an item is picked up, it animates with a scale-up transform and shadow effect to indicate it is being dragged. As the item is moved, other items in the drop target area animate out of the way with slide transforms, creating space for the dragged item. When the item is dropped, it animates into its final position with a spring-like easing effect. If the drop is invalid, the item animates back to its original position with a bounce effect. All of these animations are created dynamically based on the drag position, drop target, and surrounding elements — requiring the programmatic control that the Web Animations API provides.
-        </p>
+        </HighlightBlock>
 
         <h3>Scroll-Driven Animations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Scroll-driven animations tie animation progress to the scroll position, creating effects like parallax backgrounds, elements that fade in as they enter the viewport, and progress indicators that fill as the user scrolls through content. The Web Animations API is ideal for scroll-driven animations because the animation&apos;s currentTime can be set directly based on the scroll position: as the user scrolls, the animation seeks to the corresponding position. This provides smooth, scroll-synchronized animation without the complexity of calculating CSS keyframes for every scroll position. The animation runs on the compositor thread, ensuring smooth performance even during heavy scroll events.
-        </p>
+        </HighlightBlock>
 
         <h3>Page Transitions and Route Changes</h3>
         <p>
@@ -236,15 +237,15 @@ export default function WebAnimationsAPIArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: How does the Web Animations API differ from CSS animations, and when would you choose each?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: CSS animations are defined declaratively in stylesheets using @keyframes rules and applied to elements through the animation property. They are triggered by adding or removing CSS classes, and their control from JavaScript is limited to starting, stopping, and inspecting the animation state through the getAnimations method. CSS animations run on the compositor thread, providing optimal performance, and are ideal for simple, predefined animations that do not require runtime control.
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               The Web Animations API provides programmatic animation creation through the element.animate method, returning an Animation object with full runtime control — play, pause, reverse, seek, speed adjustment, and cancellation. Animations also run on the compositor thread for transform and opacity properties. The API is ideal for interactive animations that respond to user input, dynamic animations with runtime-computed keyframes, and complex animation sequences that require precise timing coordination.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               Choose CSS animations for simple, static animations (hover effects, loading spinners, page load transitions) where the animation parameters are known at build time. Choose the Web Animations API for dynamic, interactive animations (drag-and-drop feedback, scroll-driven animations, data visualization transitions) where the animation parameters depend on runtime data or user input.
             </p>

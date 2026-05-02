@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>DOM reference management</strong> is the practice of designing how your application holds, uses, and releases references to DOM nodes. In production SPAs, it is one of the most important (and most frequently misunderstood) aspects of memory management because DOM nodes are not just lightweight objects: they often anchor large subtrees with associated style/layout state, event listeners, and framework wrappers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A common failure mode is the <strong>detached DOM leak</strong>: a DOM subtree is removed from the document, but remains alive because JavaScript still holds a reference to a node in that subtree (directly or indirectly). Over time, repeated mount/unmount cycles accumulate detached nodes and the tab degrades: GC pauses become more frequent, interactions stutter, and memory pressure rises.
-        </p>
+        </HighlightBlock>
         <p>
           In React/Next.js client components, references are introduced through refs, event handlers, observers, third-party widgets, and caches that store elements. Preventing retention is less about avoiding the DOM entirely and more about <strong>defining lifetimes</strong>: references to nodes should not outlive the UI they represent unless they are explicitly bounded and safe.
         </p>
@@ -62,6 +66,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/memory-management/dom-reference-detached.svg"
@@ -70,12 +77,12 @@ export default function ArticlePage() {
         />
 
         <h3>DOM Nodes Are Part of a Larger Object Graph</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When you keep a DOM reference, you often keep a graph: the node, its descendants (if referenced), event listeners attached to it, and closures captured by those listeners. Frameworks add wrappers and bookkeeping. This is why detached DOM retention can dominate memory even when JS heap "looks fine".
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A single DOM node can retain:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Child Nodes:</strong> All descendants if you reference a parent node.
@@ -180,9 +187,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The lifecycle of a DOM node in a modern SPA involves multiple layers: framework render, DOM insertion, event binding, observers, and teardown. Leaks occur when teardown does not remove all retention edges.
-        </p>
+        </HighlightBlock>
 
         <h3>Typical Flow</h3>
         <ol className="space-y-2">
@@ -202,9 +212,9 @@ export default function ArticlePage() {
             <strong>Cleanup:</strong> Handlers, observers, and refs should be cleared. If not, retention occurs.
           </li>
         </ol>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The critical phase is cleanup (step 5). If any retention edge survives, the entire subtree remains reachable and cannot be collected.
-        </p>
+        </HighlightBlock>
 
         <h3>Reference Lifetime Patterns</h3>
         <p>
@@ -278,9 +288,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           DOM reference management is a trade-off between ergonomics, CPU efficiency, and memory safety.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -323,9 +336,9 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level bias is to minimize long-lived DOM references and prefer patterns that automatically release references (WeakMap, scoped refs, delegation).
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -333,13 +346,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Clear Refs on Unmount:</strong> Set ref.current = null in useEffect cleanup.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Disconnect Observers:</strong> Call observer.disconnect() in cleanup for all observers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Virtualization:</strong> For lists with 100+ items, use react-window or similar.
           </li>
@@ -372,13 +388,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Clearing Refs:</strong> useRef.current not set to null on unmount. Element retained even after component unmounts.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Observer Without Disconnect:</strong> IntersectionObserver/ResizeObserver not disconnected. Observed elements retained.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Closure Capture of Element:</strong> Event handler or callback captures element reference in closure. Closure outlives element.
           </li>
@@ -405,14 +424,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Image Gallery with Lazy Loading</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Problem:</strong> Image gallery causes memory growth as user scrolls. Tab crashes after viewing ~100 images.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Root Cause:</strong> IntersectionObserver not disconnected on unmount. Observed image elements retained even after scrolling out of view.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Disconnect observer in useEffect cleanup. Unobserve images that scroll out of view. Use loading="lazy" for native lazy loading. Memory stabilized, no more crashes.
         </p>
@@ -467,14 +489,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is a detached DOM node and why does it cause memory leaks?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               A detached DOM node is a node that has been removed from the document (via removeChild, innerHTML = &apos;&apos;, etc.) but is still referenced by JavaScript. Because it&apos;s still reachable from the root set (via the JavaScript reference), GC cannot collect it.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               Detached nodes cause memory leaks because:
             </p>

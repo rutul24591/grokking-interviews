@@ -879,27 +879,31 @@ export default function MemoizationReactMemoArticle() {
           ============================================================ */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: memoization is a trade. You should be able to justify when it reduces re-render cost vs when
+          it adds complexity (stale deps, over-memoization), and how React 19+ tooling (Compiler) changes the default.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://react.dev/reference/react/memo" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               React Docs — React.memo
             </a> — Official documentation for React.memo.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://react.dev/reference/react/useMemo" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               React Docs — useMemo
             </a> — Official documentation for useMemo.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://react.dev/reference/react/useCallback" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               React Docs — useCallback
             </a> — Official documentation for useCallback.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://react.dev/learn/react-compiler" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               React Compiler Documentation
             </a> — Guide to the React Compiler (React 19+).
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://epicreact.dev/memoization-and-react-memo/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Epic React — Memoization

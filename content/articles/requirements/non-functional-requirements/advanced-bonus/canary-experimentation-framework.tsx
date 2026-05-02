@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function CanaryExperimentationFrameworkArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Canary Experimentation Framework</strong> encompasses the systems, processes, and
           tools used to safely deploy changes to production and run controlled experiments on user
           populations. It combines canary deployments, which gradually roll out changes to detect
@@ -32,15 +36,15 @@ export default function CanaryExperimentationFrameworkArticle() {
           feature flags, to enable data-driven product decisions while minimizing the risk of
           production failures. The framework represents a fundamental shift from the traditional
           deploy-and-pray model to a measured, evidence-based approach to releasing software.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The term canary originates from coal mining practices where canaries served as early warning
           systems for dangerous gases. In software engineering, a canary deployment releases changes
           to a small subset of users first, allowing teams to detect issues through monitoring before
           the changes affect the entire user population. This approach has become essential for
           high-traffic services where even brief outages impact millions of users and generate
           significant revenue loss.
-        </p>
+        </HighlightBlock>
         <p>
           Modern engineering practice separates deployment, meaning the code is running in production
           infrastructure, from release, meaning users can actually access the feature. Feature flags
@@ -66,7 +70,10 @@ export default function CanaryExperimentationFrameworkArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Canary deployments minimize production risk by gradually exposing changes to users while
           continuously monitoring for issues. A typical canary progression follows a staged approach
           starting with internal deployment to staging environments for internal testing, then advancing
@@ -78,8 +85,8 @@ export default function CanaryExperimentationFrameworkArticle() {
           required. High-traffic services can progress faster because statistical significance is
           reached more quickly, while critical changes may require longer monitoring periods to
           capture edge cases and periodic failure patterns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Traffic routing determines which users receive the new version during canary progression.
           Random percentage routing sends a defined percentage of requests to the canary version and
           is simple to implement but may not catch user-specific issues. Header-based routing directs
@@ -90,7 +97,7 @@ export default function CanaryExperimentationFrameworkArticle() {
           the canary, enabling regional rollouts that limit blast radius geographically. Employee or
           beta user routing routes internal employees or registered beta users first, leveraging
           users who are more tolerant of potential issues.
-        </p>
+        </HighlightBlock>
         <p>
           Automated rollback defines the metrics that trigger automatic reversal of a canary
           deployment. Error rate thresholds trigger rollback when 5xx errors increase beyond a
@@ -111,7 +118,10 @@ export default function CanaryExperimentationFrameworkArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature flags enable runtime control of feature availability without code deployment,
           forming the backbone of the canary experimentation framework. Different flag types serve
           different purposes within the system. Release flags are short-lived flags used for gradual
@@ -121,8 +131,8 @@ export default function CanaryExperimentationFrameworkArticle() {
           Permission flags control access based on user roles or subscription tiers and are long-lived.
           Regional flags enable features in specific regions for compliance or phased launches and
           are typically long-lived.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Flag evaluation determines how flags are resolved at runtime. Server-side evaluation
           happens on the backend, providing security, consistency, and compatibility with all client
           types. Client-side evaluation occurs in the browser or mobile app, providing fast response
@@ -131,7 +141,7 @@ export default function CanaryExperimentationFrameworkArticle() {
           limited computational capability. The evaluation context includes user ID, device type,
           geographic location, subscription tier, and experiment assignment, all of which determine
           which variant a user receives for a given flag.
-        </p>
+        </HighlightBlock>
         <p>
           The build-versus-buy decision for flag management platforms requires careful analysis.
           Building a custom platform provides full control and deep integration with existing systems
@@ -163,7 +173,10 @@ export default function CanaryExperimentationFrameworkArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A/B testing compares two or more variants to measure their impact on key metrics, and
           proper experiment design is critical for producing valid, actionable results. A well-designed
           experiment begins with a clear hypothesis stating the expected impact, such as changing a
@@ -175,8 +188,8 @@ export default function CanaryExperimentationFrameworkArticle() {
           required number of users per variant to achieve statistical significance, and experiment
           duration must cover full business cycles of at least one week to capture weekday and weekend
           pattern variations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Randomization methodology is critical for experiment validity. User-level randomization
           assigns each user to one variant consistently, which is the most common approach and
           prevents users from seeing different variants across sessions. Session-level randomization
@@ -186,7 +199,7 @@ export default function CanaryExperimentationFrameworkArticle() {
           contamination between variants but significantly reduces effective sample size. Hash-based
           assignment using the formula variant equals hash of user ID plus experiment ID modulo the
           number of variants ensures consistent assignment and even distribution across variants.
-        </p>
+        </HighlightBlock>
         <p>
           Statistical significance determination separates real effects from random variation. The
           p-value represents the probability of observing the results if the null hypothesis is true,
@@ -228,7 +241,10 @@ export default function CanaryExperimentationFrameworkArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Building an experimentation platform requires careful architectural decisions across
           several core components. The assignment service determines which variant a user receives
           and must be fast, consistent, and highly available because every user interaction depends
@@ -238,8 +254,8 @@ export default function CanaryExperimentationFrameworkArticle() {
           dashboard visualizes experiment results and enables filtering and segmentation for
           deeper analysis. The flag service stores and serves flag configurations and integrates
           with the assignment service to provide a unified experimentation experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The data pipeline for experiment analysis follows a well-defined flow. The client captures
           user interactions with events that include experiment assignments. Events are sent to a
           tracking endpoint, which may be a service like Segment or a custom collector. Events flow
@@ -249,7 +265,7 @@ export default function CanaryExperimentationFrameworkArticle() {
           The analysis stage computes metrics and runs statistical tests to determine experiment
           outcomes. This pipeline must handle millions of events per day with minimal latency to
           support timely experiment analysis.
-        </p>
+        </HighlightBlock>
         <p>
           Running multiple experiments simultaneously without interference requires layered
           experimentation architecture. Non-overlapping layers allow different feature areas such
@@ -288,7 +304,10 @@ export default function CanaryExperimentationFrameworkArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           One of the most damaging pitfalls is peeking at experiment results before the planned
           duration completes and making decisions based on interim data. Early stopping inflates
           the false positive rate dramatically because statistical significance calculations assume
@@ -297,8 +316,8 @@ export default function CanaryExperimentationFrameworkArticle() {
           without correction, and the false positive rate can exceed 30% with just a few interim
           checks. The correct approach commits to a pre-determined sample size and duration and
           does not examine results until the experiment completes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature flag debt represents another significant pitfall. Release flags are intended to
           be short-lived and removed after full rollout, but teams frequently leave them in place
           indefinitely. As flag count grows, flag evaluation adds latency to every request, flag
@@ -306,7 +325,7 @@ export default function CanaryExperimentationFrameworkArticle() {
           conditional branches that serve no purpose. Organizations should enforce flag expiration
           policies, track flag age, and require justification for flags that exceed their planned
           lifespan.
-        </p>
+        </HighlightBlock>
         <p>
           Insufficient guardrail metrics lead to decisions that improve the primary metric while
           degrading other important aspects of the system. An experiment might improve conversion
@@ -328,7 +347,10 @@ export default function CanaryExperimentationFrameworkArticle() {
 
       <section>
         <h2>Real-world use cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms rely heavily on canary deployments and A/B testing to optimize
           conversion funnels while minimizing deployment risk. A major online retailer implemented
           a canary deployment pipeline that progresses from 1% to 100% over six hours with automated
@@ -337,8 +359,8 @@ export default function CanaryExperimentationFrameworkArticle() {
           results, using layered experimentation with orthogonal assignment to prevent interference.
           Feature flags enable them to deploy code during business hours while releasing features
           during optimal marketing windows.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Social media companies use experimentation frameworks to optimize engagement and retention
           metrics across billions of daily active users. A leading social platform runs thousands
           of concurrent experiments testing feed ranking algorithms, notification strategies, and
@@ -347,7 +369,7 @@ export default function CanaryExperimentationFrameworkArticle() {
           employ sequential testing to reach conclusions faster while controlling false positive
           rates, and their canary deployment system automatically rolls back changes that degrade
           core engagement metrics.
-        </p>
+        </HighlightBlock>
         <p>
           Financial services companies use canary deployments for risk mitigation in systems where
           errors have direct financial consequences. A payment processor deploys changes to their
@@ -371,10 +393,13 @@ export default function CanaryExperimentationFrameworkArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design a canary deployment strategy?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design a canary deployment strategy?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Define progression stages typically from 1% to 5% to 25% to 50% to 100%, establishing
               monitoring metrics at each stage including error rate, latency percentiles, and business
               metrics. Set automated rollback thresholds that trigger when metrics degrade beyond
@@ -382,7 +407,7 @@ export default function CanaryExperimentationFrameworkArticle() {
               for simplicity, user ID hash for consistency, or geographic for regional control. Determine
               stage duration based on traffic volume and the confidence level required, with high-traffic
               services progressing faster and critical changes requiring longer monitoring at each stage.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

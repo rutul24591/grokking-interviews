@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -79,18 +80,21 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Sharding Methods</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Hash-Based Sharding</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Hash-based sharding</strong> applies a hash function to the shard key, then
           uses the hash value to determine the shard. Formula: <code className="inline-code">shard = hash(shard_key) % num_shards</code>. Example: hash(user_id) % 4 determines which of 4 shards stores the user's data.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Hash-based sharding provides <strong>even distribution</strong>—hash functions spread
           values uniformly across shards. This prevents hot spots (one shard overloaded). It's
           ideal for workloads with uniform access patterns (social media posts, IoT telemetry).
-        </p>
+        </HighlightBlock>
 
         <p>
           Trade-offs: <strong>Range queries are inefficient</strong>—querying users 1-100K
@@ -171,18 +175,21 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Cross-Shard Operations &amp; Rebalancing</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Cross-Shard Joins</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cross-shard joins (joining tables on different shards) are the primary challenge of
           sharding. A query like <code className="inline-code">SELECT * FROM users JOIN orders ON users.id = orders.user_id</code> requires network calls between shards if users and orders are on different shards. This is 10-100x slower than single-shard joins due to network overhead, parallel coordination, and result merging.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           At scale, cross-shard joins become bottlenecks. A single slow join can consume
           resources across multiple shards, affecting overall throughput. Many sharded databases
           limit or don't support cross-shard joins.
-        </p>
+        </HighlightBlock>
 
         <p>
           Mitigation strategies: <strong>Denormalization</strong>—duplicate data to avoid joins
@@ -244,19 +251,22 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Sharding vs Alternatives</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Sharding is one of several scaling strategies. Understanding the trade-offs helps
           you choose the right approach—or combine multiple strategies.
-        </p>
+        </HighlightBlock>
 
         <h3>Sharding Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Write scaling</strong> is the primary advantage. Sharding distributes writes
           across shards, enabling linear write throughput scaling. Add more shards for more
           write capacity. This is essential for write-heavy workloads (social media posts,
           IoT telemetry, event logs).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Storage scaling</strong> enables databases to exceed single-machine storage
@@ -344,19 +354,22 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Sharding</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Start with single node.</strong> Don't shard prematurely. Modern databases
           handle millions of rows on single nodes. Shard when you hit limits (storage, write
           throughput), not before. Use read replicas for read scaling first.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Choose shard key carefully.</strong> This is the most critical decision.
           Analyze query patterns: what fields are in WHERE clauses? Choose high-cardinality,
           evenly-distributed fields. Avoid monotonically increasing values (timestamps,
           auto-increment IDs). Test with production-like data before committing.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Design for query patterns.</strong> Structure shards so common queries hit
@@ -393,18 +406,21 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Premature sharding.</strong> Sharding before hitting limits adds complexity
           without benefit. Solution: Start with single node, monitor metrics, shard when you
           hit limits (storage more than 80% full, write latency increasing, queries slowing down).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Poor shard key selection.</strong> Choosing low-cardinality or skewed keys
           causes hot spots (one shard overloaded). Solution: Analyze data distribution before
           choosing, test with production-like data, monitor shard sizes after deployment.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Ignoring cross-shard operation cost.</strong> Cross-shard joins and
@@ -435,20 +451,23 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Social Media (Twitter, Instagram)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms shard by user_id (tweets by author_id, posts by user_id).
           High-volume users may have dedicated shards. Benefits: write scaling (each shard
           handles its users' posts), query efficiency (user timeline hits single shard),
           isolation (influencer load doesn't affect regular users).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This pattern works because social media queries are user-centric (fetch user's
           posts, user's followers). Cross-shard queries (global search) use separate search
           infrastructure (Elasticsearch).
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce (Shopify, Amazon)</h3>
         <p>
@@ -497,13 +516,16 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: When would you shard a database? What are the signs that sharding is needed?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Shard when you hit single-node limits. Signs: (1)
               Storage—database approaching disk capacity, (2) Write throughput—write latency
               increasing, write queue building up, (3) Query performance—queries slowing down
@@ -512,7 +534,7 @@ export default function ArticlePage() {
               modern databases handle millions of rows on single nodes. Shard when metrics
               show limits, not based on arbitrary row counts. Start with read replicas and
               query optimization before sharding.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What's the first step before sharding? Answer:
               Analyze query patterns. Identify most common queries, ensure they can be served

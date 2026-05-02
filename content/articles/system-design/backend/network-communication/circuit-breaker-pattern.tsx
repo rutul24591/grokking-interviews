@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -91,18 +92,21 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: State Machine and Failure Detection</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>The Three States</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The circuit breaker operates as a three-state finite state machine. In the closed state,
           the circuit breaker allows all requests to pass through to the downstream service. It
           monitors each call for failures (timeouts, exceptions, HTTP 5xx responses) and maintains
           a rolling count of failures within a configurable time window. As long as the failure
           count remains below the threshold, the circuit breaker stays closed. This is the normal
           operating state where the downstream service is considered healthy.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           When the failure count exceeds the configured threshold (for example, five failures
           within a 30-second rolling window), the circuit breaker transitions to the open state.
           In the open state, all subsequent requests are rejected immediately without being
@@ -112,7 +116,7 @@ export default function ArticlePage() {
           fail, and it reduces load on the struggling downstream service, giving it time to
           recover. The circuit breaker remains open for a configurable timeout period
           (typically 10-30 seconds), after which it transitions to the half-open state.
-        </p>
+        </HighlightBlock>
 
         <p>
           In the half-open state, the circuit breaker allows a limited number of probe requests
@@ -205,9 +209,12 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Client-Side vs Server-Side Circuit Breakers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Circuit breakers can be embedded in the client application (client-side) or deployed
           as a proxy (server-side). Client-side circuit breakers are implemented as libraries
           within the application code (Resilience4j for Java, Polly for .NET, go-breaker for Go).
@@ -215,9 +222,9 @@ export default function ArticlePage() {
           and fallback behavior because they have access to the application&apos;s full context.
           However, they require each service to implement its own circuit breaker logic, leading
           to inconsistent configurations across the fleet.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Server-side circuit breakers are deployed as part of a service mesh sidecar proxy
           (Envoy, Istio) or an API gateway. The proxy intercepts all outgoing traffic from the
           service and applies circuit breaker policies configured centrally. This approach provides
@@ -228,7 +235,7 @@ export default function ArticlePage() {
           Most mature organizations use a hybrid approach: client-side circuit breakers for
           application-specific error handling and server-side circuit breakers for fleet-wide
           baseline protection.
-        </p>
+        </HighlightBlock>
 
         <h3>Fallback Strategies</h3>
         <p>
@@ -309,8 +316,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The circuit breaker pattern introduces a fundamental trade-off between responsiveness
           and stability. A sensitive circuit breaker (low failure threshold, short window)
           responds quickly to failures but may trip unnecessarily during transient spikes,
@@ -319,17 +329,17 @@ export default function ArticlePage() {
           before opening, increasing the duration and severity of the failure&apos;s impact.
           The right balance depends on the downstream service&apos;s failure characteristics and
           the cost of a false positive versus a false negative.
-        </p>
+        </HighlightBlock>
 
         <h3>Fail-Fast vs Fail-Safe Behavior</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When the circuit breaker is open, the application must decide whether to fail fast
           (return an error immediately) or fail safe (return a fallback response). Fail-fast
           behavior is appropriate for operations where a fallback would be incorrect or
           misleading: processing a payment, updating inventory, or modifying user data. In these
           cases, returning an error to the client is the correct behavior because the operation
           cannot be safely completed without the downstream service.
-        </p>
+        </HighlightBlock>
 
         <p>
           Fail-safe behavior is appropriate for operations where a fallback provides a reasonable
@@ -359,8 +369,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Circuit Breaker Design</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use a hybrid threshold (minimum request count plus failure percentage).</strong>
           A pure count-based threshold is too sensitive during high traffic and too conservative
           during low traffic. A pure percentage-based threshold requires a minimum sample size
@@ -370,9 +383,9 @@ export default function ArticlePage() {
           Tune the minimum request count based on your service&apos;s normal traffic volume:
           high-traffic services can use higher minimums (50-100 requests), while low-traffic
           services should use lower minimums (5-10 requests).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement exponential backoff for the open-state timeout.</strong> When the
           circuit breaker transitions from half-open back to open (because a probe failed),
           double the timeout period before the next half-open transition: 15 seconds, then 30
@@ -381,7 +394,7 @@ export default function ArticlePage() {
           that is still recovering, which would add load and delay recovery. Reset the backoff
           to the initial timeout when the circuit breaker successfully closes after a half-open
           probe sequence.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Classify errors carefully and exclude client errors.</strong> Not all failures
@@ -430,8 +443,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Overly sensitive thresholds causing unnecessary trips.</strong> Setting the
           failure threshold too low causes the circuit breaker to open during transient failure
           spikes that would have resolved on their own. This is particularly problematic during
@@ -441,9 +457,9 @@ export default function ArticlePage() {
           rate, set the threshold at 10-20 times that rate (1-2%) to avoid false positives.
           Monitor false positive rate (circuit openings that were followed by successful probes
           within the first attempt) and adjust thresholds accordingly.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Unbounded retries that bypass the circuit breaker.</strong> If retries are
           applied outside the circuit breaker wrapper, each retry attempt is a new call that
           the circuit breaker evaluates independently. A client that retries 10 times for each
@@ -453,7 +469,7 @@ export default function ArticlePage() {
           the circuit breaker wrapper so that the circuit breaker sees the final outcome of the
           retry sequence, not each individual retry. Additionally, implement retry budgets that
           cap the total number of retries across all clients.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Missing fallback paths leading to user-facing errors.</strong> When the circuit
@@ -505,9 +521,12 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Netflix: Hystrix and the Evolution to Resilience4j</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix pioneered the use of circuit breakers at scale with Hystrix, implementing a
           circuit breaker for every downstream service call in their microservices architecture.
           Each Hystrix command (a wrapper around a service call) maintained its own circuit
@@ -520,10 +539,10 @@ export default function ArticlePage() {
           programming-based library) and to Envoy proxy (for infrastructure-level circuit
           breaking), but the fundamental pattern remains the same: every dependency call is
           wrapped in a circuit breaker with carefully tuned thresholds and meaningful fallbacks.
-        </p>
+        </HighlightBlock>
 
         <h3>GitHub: Circuit Breakers for Third-Party API Dependencies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           GitHub uses circuit breakers to protect against failures in third-party API dependencies
           such as external authentication providers, email delivery services, and CI/CD
           integrations. When the email delivery service (SendGrid) experiences an outage, GitHub&apos;s
@@ -534,7 +553,7 @@ export default function ArticlePage() {
           are delayed. GitHub publishes circuit breaker state transitions to their internal
           observability dashboard, allowing engineers to see which dependencies are degraded
           and which fallbacks are active during an incident.
-        </p>
+        </HighlightBlock>
 
         <h3>Shopify: Circuit Breakers During Flash Sales</h3>
         <p>
@@ -554,11 +573,14 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg bg-panel-soft p-6">
-            <p className="font-semibold">Q1: What is the circuit breaker pattern, and what problem does it solve?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: What is the circuit breaker pattern, and what problem does it solve?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> The circuit breaker pattern wraps protected function calls
               in a state machine that monitors for failures and prevents repeated calls to failing
               dependencies. It has three states: closed (normal operation, requests pass through),
@@ -569,7 +591,7 @@ export default function ArticlePage() {
               wasting resources (threads, connections) and potentially causing the callers themselves
               to fail. The circuit breaker detects the failure, stops calls to the failing service,
               and automatically resumes when the service recovers.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg bg-panel-soft p-6">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function EditContentUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Edit Content UI</strong> allows users to modify existing content while maintaining
           version history, tracking changes, and preventing conflicts with concurrent editors. Edit
           UI is distinct from create UI — it loads existing content with full version metadata,
           shows comprehensive version history, enables detailed change tracking with audit trails,
           and handles collaborative editing with real-time synchronization. The edit UI must balance
           editing flexibility with content integrity and collaboration support.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/edit-content-flow.svg"
@@ -48,7 +52,7 @@ export default function EditContentUIArticle() {
           caption="Edit Content Flow — showing load existing content, edit with change tracking, version management, collaborative editing, conflict resolution, and save with auto-save"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing edit UI requires deep understanding of
           editor architecture with version management integration, change tracking with visual diff
           rendering, collaborative editing with operational transforms or CRDTs for conflict-free
@@ -57,7 +61,7 @@ export default function EditContentUIArticle() {
           through save status visibility and non-destructive editing patterns. The implementation
           must balance editing flexibility with content integrity and collaboration support while
           maintaining performance and accessibility.
-        </p>
+        </HighlightBlock>
 
         <p>
           Modern edit UIs have evolved from simple text areas to sophisticated collaborative
@@ -73,13 +77,16 @@ export default function EditContentUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content editing is built on fundamental concepts that determine how users modify, track,
           and collaborate on content effectively. Understanding these concepts is essential for
           designing edit interfaces that balance flexibility with integrity.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Editor Architecture:</strong> The editor forms the foundation of edit UI with
           three primary types serving different user needs. WYSIWYG editors like TinyMCE and
           CKEditor provide visual editing with immediate formatting feedback ideal for non-technical
@@ -89,7 +96,7 @@ export default function EditContentUIArticle() {
           blocks that can be rearranged and transformed enabling flexible layout creation. Edit UI
           typically uses the same editor type as create UI for consistency but adds version
           management and change tracking capabilities.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Version Management:</strong> Every edit operation creates a new version rather
@@ -131,12 +138,15 @@ export default function EditContentUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Edit UI architecture separates editor, version management, change tracking, and
           collaboration into modular components enabling maintainable implementation with clear
           boundaries. This architecture is critical for user experience, reliability, and the
           ability to evolve features independently.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/edit-content-flow.svg"
@@ -144,7 +154,7 @@ export default function EditContentUIArticle() {
           caption="Edit Content Flow — showing load existing content, edit with change tracking, version management, collaborative editing, conflict resolution, and save with auto-save"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The edit flow begins when a user clicks Edit on existing content. The backend loads
           content from the database including full version metadata with version number, author
           identity, and timestamp. The editor loads based on content type and user preference
@@ -157,7 +167,7 @@ export default function EditContentUIArticle() {
           backend creates a new version in the content_versions table without overwriting history,
           maintains the continuous version chain, and notifies collaborators of the save event.
           Users can view version history at any time to compare versions or restore previous states.
-        </p>
+        </HighlightBlock>
 
         <p>
           Version management architecture provides load operations fetching specific versions by
@@ -192,14 +202,17 @@ export default function EditContentUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing edit UI involves fundamental trade-offs between flexibility, control, and
           collaboration that shape the user experience and system architecture. Understanding these
           trade-offs is essential for making informed architecture decisions aligned with product
           requirements.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Real-time collaboration as implemented by Google Docs shows others edits immediately with
           sub-100ms latency enabling multiple users to edit simultaneously with operational
           transforms or CRDTs handling conflicts automatically. This approach provides the most
@@ -213,7 +226,7 @@ export default function EditContentUIArticle() {
           users expect Google Docs-like experiences, async for code with pull requests and explicit
           review processes, and hybrid for wikis with real-time editing but async review before
           publishing.
-        </p>
+        </HighlightBlock>
 
         <p>
           Locking edit as used in checkout/checkin systems has users lock content before editing
@@ -247,19 +260,22 @@ export default function EditContentUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing edit content UI requires following established best practices to ensure
           usability, version integrity, and collaboration support while maintaining performance and
           accessibility.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Editor selection should match the create UI editor for consistency so if content was
           created with WYSIWYG it should be edited with WYSIWYG. Support multiple editors and let
           users choose their preference remembering it for next time. Ensure feature parity so the
           edit UI has the same formatting options as create UI. Preserve formatting when loading
           content so styles are not lost on load.
-        </p>
+        </HighlightBlock>
 
         <p>
           Version management should show version info including version number, author, and
@@ -291,18 +307,21 @@ export default function EditContentUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing edit content UI to ensure usability, version
           integrity, and collaboration support while maintaining user trust and data safety.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Missing version history prevents users from seeing what changed or restoring previous
           versions. Fix this by saving versions on every edit, showing comprehensive version
           history, and enabling compare and restore operations. Overwriting on save destroys history
           and prevents recovery. Fix this by creating new versions on save, maintaining continuous
           version chains, and never overwriting existing versions.
-        </p>
+        </HighlightBlock>
 
         <p>
           Missing change tracking leaves users unaware of what changed during their session. Fix
@@ -334,13 +353,16 @@ export default function EditContentUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Edit content UI is critical for content maintenance across different domains. Here are
           real-world implementations from production systems demonstrating different approaches to
           editing challenges.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Document collaboration at Google Docs addresses real-time collaborative editing with
           multiple users on the same document, no lost edits, and comprehensive version history.
           The solution uses real-time sync via WebSocket so edits appear instantly for all users,
@@ -351,7 +373,7 @@ export default function EditContentUIArticle() {
           collaboration with multiple users editing simultaneously, no lost edits from real-time
           sync plus auto-save, comprehensive version history, and suggesting mode enabling review
           workflows.
-        </p>
+        </HighlightBlock>
 
         <p>
           Code editing at GitHub addresses code editing with version control, multiple
@@ -400,14 +422,17 @@ export default function EditContentUIArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of edit content UI design, implementation, and
           operational concerns for staff and principal engineer interviews.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you implement version management?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you implement version management?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Load version by fetching specific version by version number or timestamp (SELECT *
               FROM content_versions WHERE content_id = ? AND version_number = ?). Compare versions

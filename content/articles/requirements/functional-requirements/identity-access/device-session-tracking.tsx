@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function DeviceSessionTrackingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Device Session Tracking</strong> is the practice of recording and monitoring
           device information for each user session. It enables security features like recognizing
           trusted devices (skip MFA on known devices), detecting suspicious logins (new device +
           different location), and providing users visibility into their active sessions (session
           management UI). Device tracking is critical for modern security — without it, you can't
           detect account takeover or provide session management.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/device-session-tracking.svg"
@@ -48,14 +52,14 @@ export default function DeviceSessionTrackingArticle() {
           caption="Device Session Tracking — showing device fingerprint collection, session storage with device metadata, location tracking, and activity logging"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing device session tracking requires deep
           understanding of device fingerprinting (collecting signals, creating hash, detecting
           changes), session metadata (device info, location, activity timestamps), security use
           cases (trusted devices, anomaly detection, session hijacking prevention), and privacy
           considerations (minimize data, hash not raw data, user control). The implementation must
           balance security (detailed tracking) with privacy (not exposing too much device data).
-        </p>
+        </HighlightBlock>
         <p>
           Modern device tracking has evolved from simple user agent logging to sophisticated
           fingerprinting with multiple signals (user agent, screen resolution, fonts, timezone,
@@ -68,18 +72,21 @@ export default function DeviceSessionTrackingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Device session tracking is built on fundamental concepts that determine how devices are
           identified and tracked. Understanding these concepts is essential for designing effective
           tracking systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Device Fingerprinting:</strong> Collect device signals (user agent, screen
           resolution, fonts, timezone, WebGL, canvas — 10+ signals), create hash (SHA256 of
           concatenated signals — unique device ID), store fingerprint with session, detect changes
           (if fingerprint changes significantly, treat as new device). Fingerprint enables device
           recognition without cookies.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Session Metadata:</strong> Device info (type — desktop/mobile/tablet, browser —
           Chrome/Safari/Firefox with version, OS — Windows/macOS/iOS/Android), location (city,
@@ -104,11 +111,14 @@ export default function DeviceSessionTrackingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Device tracking architecture separates fingerprint collection from session storage,
           enabling device recognition with privacy. This architecture is critical for security
           features without compromising privacy.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/device-session-security.svg"
@@ -116,7 +126,7 @@ export default function DeviceSessionTrackingArticle() {
           caption="Device Session Security — showing device fingerprinting flow, anomaly detection (new device, location mismatch), session binding, and revocation flow"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Device tracking flow: User logs in. Frontend collects device signals (user agent, screen
           resolution, fonts, timezone, WebGL, canvas — via JavaScript). Backend receives signals.
           Backend creates fingerprint (SHA256 hash of concatenated signals). Backend stores
@@ -124,7 +134,7 @@ export default function DeviceSessionTrackingArticle() {
           (device type from user agent, location from IP). On subsequent logins: compare
           fingerprint — if match, recognized device (skip MFA if trusted). If mismatch, new device
           (require MFA, alert user).
-        </p>
+        </HighlightBlock>
         <p>
           Security architecture includes: device fingerprinting (collect signals, create hash,
           detect changes), anomaly detection (new device + different location = high risk, alert
@@ -152,24 +162,27 @@ export default function DeviceSessionTrackingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing device tracking involves trade-offs between security, privacy, and user
           experience. Understanding these trade-offs is essential for making informed architecture
           decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Detailed vs Minimal Device Data</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Detailed:</strong> Full device info, precise location, IP address. Better
               security (accurate device recognition). Limitation: privacy concerns, regulatory
               risk.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Minimal:</strong> Device type, approximate location, masked IP. Better
               privacy, simpler compliance. Limitation: less accurate device recognition.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Balanced approach — device type + browser, city +
               country (not precise), masked IP (192.168.x.x). Hash fingerprints (don't store raw
@@ -218,18 +231,21 @@ export default function DeviceSessionTrackingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing device tracking requires following established best practices to ensure
           security, privacy, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Device Fingerprinting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Collect 10+ signals (user agent, screen resolution, fonts, timezone, WebGL, canvas —
           more signals = more unique). Create SHA256 hash (don't store raw signals — privacy).
           Detect significant changes (if 50%+ signals change, treat as new device). Update
           fingerprint on legitimate changes (browser update).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Session Metadata</h3>
         <p>
@@ -257,20 +273,23 @@ export default function DeviceSessionTrackingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing device tracking to ensure effective
           security without privacy violations.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Storing raw device data:</strong> Privacy violation, regulatory risk.{" "}
             <strong>Fix:</strong> Hash device signals (SHA256 fingerprint). Don't store raw data.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Precise location:</strong> Shows exact address, privacy violation.{" "}
             <strong>Fix:</strong> Show city, country only (approximate from IP). Don't show
             precise coordinates.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Full IP address:</strong> Exposes user's IP, privacy/security risk.{" "}
             <strong>Fix:</strong> Mask last 2 octets (192.168.x.x). Show only for audit logs.
@@ -314,16 +333,19 @@ export default function DeviceSessionTrackingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Device session tracking is critical for account security. Here are real-world
           implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer Platform (Google)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Billions of users, multiple devices per user. Need to
           recognize trusted devices. Detect unauthorized access.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Device fingerprinting (10+ signals). Trusted device
           recognition (skip MFA on known devices). Session list with device info, location, last
@@ -416,14 +438,17 @@ export default function DeviceSessionTrackingArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of device session tracking design, implementation,
           and operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What device info should you display to users?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What device info should you display to users?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Device type with icon (desktop, mobile, tablet), browser with version (Chrome 120,
               Safari 17), approximate location (city, country — not precise), masked IP

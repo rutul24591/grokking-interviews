@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function ClientSideSearchArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Client-side search</strong> refers to search functionality
           implemented entirely in the browser, operating on data already loaded
           in the client. Unlike server-side search that queries a backend
@@ -45,8 +49,8 @@ export default function ClientSideSearchArticle() {
           network latency. This approach is ideal for datasets under 10,000-50,000
           items where the entire dataset can be loaded upfront without
           performance degradation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Client-side search has become increasingly viable as browser
           JavaScript engines have improved and devices have more memory. Modern
           implementations can search through tens of thousands of records in
@@ -54,7 +58,7 @@ export default function ClientSideSearchArticle() {
           sites, contact lists, and data tables. The key advantage is
           responsiveness — results appear instantly as users type, without the
           round-trip delay of server requests.
-        </p>
+        </HighlightBlock>
         <p>
           However, client-side search has fundamental limitations. The entire
           dataset must be loaded into memory upfront, which becomes problematic
@@ -78,22 +82,25 @@ export default function ClientSideSearchArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Linear Search:</strong> The simplest approach — iterate
             through every item and check if it matches the query. O(n) time
             complexity. Suitable for small datasets (&lt;1,000 items) but
             becomes slow for larger datasets. Easy to implement but doesn&apos;t
             scale well.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Index-Based Search:</strong> Pre-process data into an
             index structure (inverted index, trie, suffix tree) that enables
             faster lookups. Inverted indexes map terms to documents containing
             them, enabling O(1) or O(log n) lookups. Tries (prefix trees)
             enable efficient prefix matching for autocomplete. Indexing adds
             upfront cost but dramatically speeds up repeated searches.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Fuzzy Matching:</strong> Match queries even when they
             don&apos;t exactly match the data. Levenshtein distance measures
@@ -144,14 +151,17 @@ export default function ClientSideSearchArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Client-side search architecture consists of several components: a data
           loading layer that fetches and prepares the dataset, an indexing layer
           that builds searchable data structures, a query processing layer that
           normalizes and tokenizes user input, a search execution layer that
           matches queries against the index, and a results layer that ranks and
           displays matches.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/search-filtering/client-side-search/search-architecture.svg"
@@ -162,7 +172,7 @@ export default function ClientSideSearchArticle() {
         />
 
         <h3>Search Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The search flow begins when a user types a query. The input is
           normalized (lowercased, accents removed) and tokenized (split into
           words). Each token is looked up in the index to find matching items.
@@ -170,7 +180,7 @@ export default function ClientSideSearchArticle() {
           weights, term frequency). Results are sorted by score and displayed to
           the user. For large datasets, results may be paginated or virtualized
           to maintain UI performance.
-        </p>
+        </HighlightBlock>
 
         <h3>Indexing Strategies</h3>
         <p>
@@ -189,10 +199,13 @@ export default function ClientSideSearchArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Client-side search involves trade-offs between speed, memory usage,
           and search capabilities.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/search-filtering/client-side-search/search-flow.svg"
@@ -202,14 +215,14 @@ export default function ClientSideSearchArticle() {
           height={500}
         />
 
-        <p className="mt-4">
+        <HighlightBlock as="p" tier="important" className="mt-4">
           The search flow diagram illustrates how queries are processed from
           user input to displayed results. Each stage—normalization,
           tokenization, index lookup, scoring—adds computational cost but
           improves result quality. Understanding this flow helps identify
           optimization opportunities: caching normalized queries, using
           incremental indexing, or pre-computing common aggregations.
-        </p>
+        </HighlightBlock>
 
         <h3>Client-Side vs Server-Side Search</h3>
         <p>
@@ -263,17 +276,20 @@ export default function ClientSideSearchArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounce Search Input:</strong> Wait 150-300ms after the
             user stops typing before executing search. This prevents excessive
             computation during active typing and improves perceived performance.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Pre-build Indexes:</strong> Build search indexes when data
             loads, not on each search. Indexing is O(n) but only needs to happen
             once. Search then becomes O(1) or O(log n) per query.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Limit Result Count:</strong> Display top 10-50 results even
             if more matches exist. Rendering hundreds of DOM nodes degrades UI
@@ -306,18 +322,21 @@ export default function ClientSideSearchArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Searching on Every Keystroke:</strong> Executing search on
             every input event causes excessive computation and UI flickering.
             Always debounce or throttle search execution.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No Input Normalization:</strong> Searching for
             &quot;Café&quot; won&apos;t match &quot;cafe&quot; without
             normalization. Always normalize both indexed data and queries
             (lowercase, remove accents).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Rendering All Results:</strong> Attempting to render
             hundreds or thousands of results freezes the browser. Limit
@@ -346,25 +365,28 @@ export default function ClientSideSearchArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Documentation Site Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Documentation sites (like MDN, React docs) use client-side search to
           provide instant results across hundreds of pages. The entire
           documentation is indexed at build time, and search runs entirely in
           the browser. This provides sub-100ms results without server load.
           Lunr.js or FlexSearch are common choices for this use case.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce Product Filtering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Product listing pages often combine server-side pagination with
           client-side filtering. The server returns a page of products (e.g.,
           50 items), and client-side search filters within that page for instant
           feedback. For full catalog search, a hybrid approach loads popular
           products client-side while deferring to server search for comprehensive
           queries.
-        </p>
+        </HighlightBlock>
 
         <h3>Contact List Search</h3>
         <p>
@@ -387,13 +409,16 @@ export default function ClientSideSearchArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you decide between client-side and server-side search?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The decision depends on dataset size, search complexity, and
               latency requirements. Client-side search is appropriate for
               datasets under 50,000 items where the entire dataset can be loaded
@@ -404,7 +429,7 @@ export default function ClientSideSearchArticle() {
               search logic must remain private. Hybrid approaches combine both —
               client-side for immediate feedback on loaded data, server-side for
               comprehensive queries.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

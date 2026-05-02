@@ -829,23 +829,23 @@ export default function PerformanceBudgetsArticle() {
         </HighlightBlock>
 
         <div className="space-y-6">
-          <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <h3 className="text-lg font-semibold mb-3">Question 1: What is a performance budget and why is it important?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="important" className="mb-3">
-              A performance budget is a set of measurable, enforceable limits on metrics that impact user 
-              experience — including bundle size (JavaScript, CSS, images), Core Web Vitals (LCP, INP, CLS), 
-              and page load time. When any metric exceeds its budget, the violation triggers a failure: the 
-              CI build fails, the PR is blocked, or an alert fires.
-            </HighlightBlock>
-            <HighlightBlock as="p" tier="crucial" className="mb-3">
-              Performance budgets are important because <strong>performance regression is invisible until 
-              it&apos;s catastrophic</strong>. Each feature adds &quot;just a few kilobytes,&quot; each 
-              library seems &quot;worth the trade-off,&quot; and collectively they compound into a 
-              5-megabyte page. Budgets make this invisible creep visible and enforceable. They shift 
-              conversations from subjective (&quot;is this fast enough?&quot;) to objective (&quot;does 
-              this exceed our limit?&quot;).
-            </HighlightBlock>
+	          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+	            <h3 className="text-lg font-semibold mb-3">Question 1: What is a performance budget and why is it important?</h3>
+	            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+	            <p className="mb-3">
+	              A performance budget is a set of measurable, enforceable limits on metrics that impact user 
+	              experience — including bundle size (JavaScript, CSS, images), Core Web Vitals (LCP, INP, CLS), 
+	              and page load time. When any metric exceeds its budget, the violation triggers a failure: the 
+	              CI build fails, the PR is blocked, or an alert fires.
+	            </p>
+	            <p className="mb-3">
+	              Performance budgets are important because <strong>performance regression is invisible until 
+	              it&apos;s catastrophic</strong>. Each feature adds &quot;just a few kilobytes,&quot; each 
+	              library seems &quot;worth the trade-off,&quot; and collectively they compound into a 
+	              5-megabyte page. Budgets make this invisible creep visible and enforceable. They shift 
+	              conversations from subjective (&quot;is this fast enough?&quot;) to objective (&quot;does 
+	              this exceed our limit?&quot;).
+	            </p>
             <p>
               Industry research shows direct business impact: Amazon found every 100ms of latency cost 1% 
               in sales; Google found a 500ms delay reduced traffic by 20%. Budgets protect against these 
@@ -1001,27 +1001,31 @@ export default function PerformanceBudgetsArticle() {
           ============================================================ */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: budgets are an enforcement mechanism, not a one-time spreadsheet. Use these to ground your
+          answer in concrete gates (CI), field truth (CrUX/RUM p75), and sustained org discipline.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://web.dev/performance-budgets-101/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev — Performance Budgets 101
             </a> — Comprehensive introduction to performance budget concepts and implementation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://web.dev/your-first-performance-budget/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev — Your First Performance Budget
             </a> — Step-by-step guide for setting initial budgets.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://github.com/ai/size-limit" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               GitHub — size-limit
             </a> — Tool for enforcing JavaScript size budgets.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://github.com/GoogleChrome/lighthouse-ci" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               GitHub — Lighthouse CI
             </a> — Tool for running Lighthouse audits in CI/CD.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://webpack.js.org/configuration/performance/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Webpack — Performance Configuration

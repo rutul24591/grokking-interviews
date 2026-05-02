@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,12 +38,15 @@ export default function GitOpsArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>GitOps</strong> is an operational framework that uses Git as the single source of truth for infrastructure and application configuration. All configuration (infrastructure as code, application manifests, environment configuration) is stored in Git repositories. Automated synchronization agents (ArgoCD, Flux) continuously compare the actual state of the infrastructure with the desired state defined in Git, and automatically reconcile any differences (deploying changes, correcting drift). GitOps combines the benefits of version control (change tracking, code review, rollback) with automated deployment (continuous synchronization), enabling reliable, auditable, and reproducible infrastructure management.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, GitOps represents a fundamental shift from push-based deployment (CI/CD pipelines push changes to infrastructure) to pull-based deployment (agents pull changes from Git and apply them). In push-based deployment, the CI/CD pipeline has access to production credentials and pushes changes directly to infrastructure. In pull-based deployment (GitOps), the agent running in the production environment pulls changes from Git and applies them — the CI/CD pipeline does not need production credentials, reducing the attack surface. This pull-based model is more secure (agents have minimal permissions, only pull from Git), more reliable (agents continuously reconcile, correcting drift automatically), and more auditable (all changes are tracked in Git).
-        </p>
+        </HighlightBlock>
         <p>
           GitOps involves several technical considerations. Git repository structure (monorepo vs. multi-repo — where configuration is stored, how environments are organized), synchronization agent (ArgoCD, Flux — the tool that pulls changes from Git and applies them to infrastructure), drift detection (detecting when actual infrastructure differs from desired state defined in Git), automated reconciliation (automatically correcting drift by applying the desired state from Git), and rollback (reverting to a previous Git commit to rollback infrastructure changes). GitOps is particularly well-suited for Kubernetes environments (where infrastructure state is declarative and can be continuously reconciled), but can be applied to any infrastructure that supports declarative configuration.
         </p>
@@ -54,12 +58,15 @@ export default function GitOpsArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Git as Source of Truth:</strong> All infrastructure and application configuration is stored in Git repositories. This includes infrastructure as code (Terraform, CloudFormation), application manifests (Kubernetes YAML, Helm charts), environment configuration (development, staging, production), and secrets (encrypted, via SOPS, SealedSecrets, or external secret managers). Git provides version control to track changes over time, code review through pull requests for reviewing changes, rollback by reverting to previous commits, and complete auditability of all changes made to infrastructure. Storing all configuration in Git ensures that every change is traceable, reviewable, and reproducible across environments.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Synchronization Agent:</strong> The tool that continuously compares the actual state of the infrastructure with the desired state defined in Git, and automatically reconciles any differences. ArgoCD (developed by Intuit, CNCF project) and Flux (developed by Weaveworks, CNCF project) are the dominant GitOps synchronization agents. The agent runs in the production environment, pulls changes from Git, and applies them to infrastructure such as applying Kubernetes manifests to the cluster. The agent runs continuously, ensuring that the infrastructure always matches the desired state defined in Git without manual intervention.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Drift Detection:</strong> Detecting when actual infrastructure differs from the desired state defined in Git. Drift is caused by manual changes where someone clicks through the cloud console to change a configuration, automated processes where auto-scaling creates or destroys instances, or external events such as cloud provider updates to resource configuration. GitOps agents detect drift by comparing actual state queried from infrastructure APIs with desired state defined in Git. Drift is corrected by applying the desired state from Git, recreating or updating resources to match the desired state and preventing configuration divergence.
         </p>
@@ -85,12 +92,15 @@ export default function GitOpsArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           GitOps architecture consists of the Git repository (storing desired state — infrastructure configuration, application manifests, environment configuration), the synchronization agent (ArgoCD, Flux — pulling changes from Git and applying them to infrastructure), and the infrastructure (the actual running infrastructure — Kubernetes clusters, cloud resources, applications). The flow begins with developers committing changes to Git (infrastructure changes, application updates), the synchronization agent detecting the change (polling Git or receiving webhook notifications), pulling the changes from Git, and applying them to the infrastructure. The agent continuously reconciles the actual state with the desired state, correcting any drift.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For production deployments, the GitOps workflow is integrated into the CI/CD pipeline — the pipeline commits changes to Git (does not apply them to infrastructure), and the GitOps agent pulls the changes from Git and applies them. The pipeline runs tests and validation before committing (ensuring that changes are correct), and the GitOps agent applies the changes to infrastructure (after the commit is merged to the main branch). This workflow ensures that all infrastructure changes are tested, validated, reviewed, and tracked before being applied.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/gitops-workflow.svg"
@@ -120,14 +130,17 @@ export default function GitOpsArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           GitOps involves trade-offs between push-based and pull-based deployment, monorepo and multi-repo configuration, and automated and manual reconciliation. Understanding these trade-offs is essential for designing effective GitOps strategies.
-        </p>
+        </HighlightBlock>
 
         <h3>Push-Based vs. Pull-Based Deployment</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Push-Based (Traditional CI/CD):</strong> CI/CD pipeline pushes changes to infrastructure. Advantages: familiar workflow (most teams already use CI/CD pipelines), direct control over deployment timing (pipeline deploys when ready). Limitations: CI/CD pipeline needs production credentials (security risk — compromised pipeline can access production), drift is not detected or corrected automatically (manual changes persist), rollback requires redeploying previous version (slower than Git revert). Best for: non-Kubernetes infrastructure, teams already using CI/CD pipelines.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Pull-Based (GitOps):</strong> Synchronization agent pulls changes from Git and applies them. Advantages: CI/CD pipeline does not need production credentials (more secure — only agent has credentials), drift is detected and corrected automatically (agent continuously reconciles), rollback via Git revert (faster and more reliable than redeploying). Limitations: requires synchronization agent (additional infrastructure to manage), learning curve (teams must adapt to Git-based workflow). Best for: Kubernetes environments, organizations wanting secure, reliable, auditable deployment.
         </p>
@@ -152,12 +165,15 @@ export default function GitOpsArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Store All Configuration in Git:</strong> Store all infrastructure and application configuration in Git — infrastructure as code (Terraform, CloudFormation), application manifests (Kubernetes YAML, Helm charts), environment configuration (development, staging, production), and secrets (encrypted, via SOPS, SealedSecrets, or external secret managers). Do not store configuration outside Git through cloud console changes or manual commands — all changes must be committed to Git to be tracked, reviewed, and reproducible. This ensures that every piece of configuration is versioned, auditable, and can be rolled back if needed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use Pull Requests for All Changes:</strong> All configuration changes must go through pull requests, reviewed by team members before being merged to main. Pull requests enable code review where team members review changes before they are applied, change tracking where Git tracks who changed what and when, and rollback by reverting to a previous commit to rollback changes. Do not commit changes directly to main — always use pull requests for review to catch errors before they reach infrastructure.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Automate Drift Detection and Reconciliation:</strong> Configure the GitOps agent to continuously reconcile by polling Git every few minutes or receiving webhook notifications when Git changes. Automated reconciliation ensures that drift is detected and corrected automatically — manual changes are overwritten by the next reconciliation. Set up alerts for drift detection to notify the team when drift is detected, so they can investigate why drift occurred — whether it was a manual change or an automated process — and take corrective action.
         </p>
@@ -175,12 +191,15 @@ export default function GitOpsArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Manual Infrastructure Changes:</strong> Making manual changes to infrastructure by clicking through the cloud console or running imperative commands outside of Git causes drift where actual infrastructure differs from desired state defined in Git. Manual changes are difficult to detect and correct, are not tracked with no record of who changed what and when, are not reviewable since changes are not reviewed before applying, and are not reproducible because changes cannot be reapplied to other environments. Always make infrastructure changes through Git commits to maintain consistency and auditability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Not Encrypting Secrets:</strong> Storing secrets in plain text in Git makes them accessible to anyone with repository access, which is a significant security risk. Secrets should always be encrypted before committing to Git using tools like SOPS, SealedSecrets, or external secret managers, and decrypted at runtime using encryption keys stored securely and not in Git. This protects sensitive credentials while still maintaining version control over secret configurations.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Skipping Pull Request Review:</strong> Committing changes directly to main without pull request review allows unreviewed changes to reach infrastructure. Unreviewed changes may contain errors such as syntax errors, incorrect values, or incompatible changes that break infrastructure. Always use pull requests for review so that team members review changes before they are applied to infrastructure, catching errors before they cause outages.
         </p>
@@ -198,16 +217,19 @@ export default function GitOpsArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Kubernetes Application Deployment</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Organizations managing Kubernetes clusters use GitOps (ArgoCD, Flux) to deploy applications to Kubernetes. Application manifests (Kubernetes YAML, Helm charts) are stored in Git, and the GitOps agent continuously reconciles the actual state of the cluster with the desired state defined in Git. This pattern is used by companies like Intuit, Capital One, and Niantic to manage large-scale Kubernetes deployments — all changes are tracked in Git, reviewed through pull requests, and automatically synchronized by the GitOps agent.
-        </p>
+        </HighlightBlock>
 
         <h3>Multi-Environment Infrastructure Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Organizations managing multiple environments (development, staging, production) use GitOps to maintain consistent infrastructure across environments. Infrastructure configuration (Terraform, CloudFormation) is stored in Git, with separate directories for each environment. Changes are tested in development, validated in staging, and deployed to production — with the same configuration, eliminating environment-specific infrastructure bugs. This pattern is used by organizations of all sizes to maintain consistent, reproducible environments.
-        </p>
+        </HighlightBlock>
 
         <h3>Automated Drift Correction</h3>
         <p>
@@ -223,15 +245,18 @@ export default function GitOpsArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is GitOps and why is it important?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: GitOps is an operational framework that uses Git as the single source of truth for infrastructure and application configuration. All configuration is stored in Git, and automated synchronization agents (ArgoCD, Flux) continuously compare actual state with desired state defined in Git, correcting drift automatically. GitOps is important because it ensures that all infrastructure changes are tracked in Git (auditable), reviewed through pull requests (safe), and automatically synchronized (reliable). It enables rapid rollback (revert to a previous Git commit), reduces deployment risk (changes are reviewed before being applied), and improves compliance (complete audit trail).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

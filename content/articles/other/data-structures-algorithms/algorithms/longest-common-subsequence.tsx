@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,19 +25,22 @@ export default function LcsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The Longest Common Subsequence (LCS) of two sequences A and B is the longest sequence
           appearing in both as a subsequence — elements in order but not necessarily contiguous.
           For A = &ldquo;ABCBDAB&rdquo;, B = &ldquo;BDCABA&rdquo;, one LCS is &ldquo;BCBA&rdquo;
           (length 4). Distinct from longest common substring, which requires contiguity. LCS is
           NP-hard for k sequences; for k = 2 it admits the classical O(mn) DP.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           LCS is the algorithmic core behind Unix&rsquo;s diff, Git&rsquo;s three-way merge, and
           bioinformatics tools like BLAST and ClustalW. Every time you rebase a branch, resolve a
           merge conflict, or align DNA sequences, an LCS-style DP (often Myers&rsquo; algorithm, a
           space-optimized variant) is running under the hood.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           LCS also matters because it generalizes: edit distance is LCS with insert/delete/
           substitute costs; shortest common supersequence is m + n − LCS(A, B); longest
@@ -47,17 +51,20 @@ export default function LcsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">State:</span> dp[i][j] = length of LCS of A[0..i) and
           B[0..j). Answer is dp[m][n]. Base case dp[0][*] = dp[*][0] = 0 (empty prefix → empty
           LCS).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Transition:</span> if A[i−1] == B[j−1], dp[i][j] =
           dp[i−1][j−1] + 1 (extend). Else dp[i][j] = max(dp[i−1][j], dp[i][j−1]) (skip one
           character from either prefix). The recurrence encodes the decision: match-and-advance,
           or advance one pointer.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Recovery of the subsequence:</span> walk backward from
           dp[m][n]. If A[i−1] == B[j−1], include that character and decrement both. Else move to
@@ -80,20 +87,23 @@ export default function LcsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Fill the (m+1) × (n+1) table row by row. Each cell examines its diagonal neighbor (for
           match) and its left/top neighbors (for skip). The computation is embarrassingly parallel
           along anti-diagonals — GPU implementations exploit this for sequence alignment at
           hardware speed.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Hunt-Szymanski algorithm</span> (1977): instead of the
           full O(mn) DP, precompute for each distinct character c in B the sorted list of its
           positions. For each character of A, update only the positions where it occurs in B.
           Runtime O((r + n) log n) where r is the number of matching pairs. Excellent when
           sequences have few matches — typical for diff of source code, where most lines are
           distinct.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Myers&rsquo; algorithm</span> (1986), what git actually
           uses: reframe LCS as shortest-edit-script on an edit graph. Runtime O((m + n) · d) where
@@ -116,17 +126,20 @@ export default function LcsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">LCS vs Edit Distance:</span> edit distance counts
           insert/delete/substitute operations; LCS counts matches. edit = m + n − 2·LCS for
           indel-only cost model. Adding substitute breaks the equivalence, giving a separate DP.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">LCS vs Longest Common Substring:</span> substring
           requires contiguity. DP is similar but resets to 0 on mismatch: dp[i][j] = dp[i−1][j−1]
           + 1 on match, 0 otherwise. Answer is max over all cells, not dp[m][n]. Different
           problem, commonly confused.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">LCS vs Myers:</span> classical DP is pedagogically
           clear but always O(mn). Myers achieves O((m+n)·d) where d is edit distance — faster for
@@ -142,17 +155,20 @@ export default function LcsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           For production diff, use Myers or a battle-tested library (difflib in Python,
           diff-match-patch in JS). Re-implementing LCS for diff is rarely worth it — edge cases
           around line endings, common prefixes/suffixes, and heuristic improvements matter more
           than the core algorithm.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           For bioinformatics, use BLAST or minimap2. These are heuristic variants (seed-and-
           extend, k-mer matching, banded DP) that skip unpromising regions. Running raw LCS on
           genome-scale data is computationally infeasible.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Preprocess by removing common prefixes and suffixes before running the DP. A diff of
           two files that share the first 1000 lines runs the DP only on the actual changes,
@@ -167,16 +183,19 @@ export default function LcsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Confusing with longest common substring:</span>
           subsequence allows gaps; substring does not. Different DPs, different answers. A common
           error is to write one when asked for the other.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Returning LCS length instead of the LCS itself:</span>
           many problem statements ask for the actual sequence, requiring traceback. Keeping only
           the 1D rolled array loses traceback — you need the full 2D table.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Off-by-one on prefix length vs index:</span> dp[i][j]
           is the LCS of the first i characters (A[0..i)), not A[0..i]. Mixing half-open and
@@ -191,17 +210,20 @@ export default function LcsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Unix diff and git diff:</span> core version-control
           operation. Myers&rsquo; algorithm (an LCS variant) identifies matching lines and
           inserted/deleted lines. Git&rsquo;s xdiff implements it with further optimizations
           (low-occurrence line prioritization).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Three-way merge:</span> git merge runs LCS between the
           common ancestor and each branch, then combines the non-conflicting portions. Merge
           conflicts arise when both branches modify lines that LCS didn&rsquo;t match up.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">DNA and protein alignment:</span> Needleman-Wunsch
           (global) and Smith-Waterman (local) alignments are LCS with substitution-cost
@@ -227,14 +249,17 @@ export default function LcsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Implement LCS.</span> 2D DP with match/skip transitions.
           Expect to derive the recurrence, identify base cases, and analyze O(mn) complexity.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Return the actual LCS.</span> 2D table plus traceback.
           Keep the full table (not rolled 1D) so the traceback works.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">LCS in O(m + n) space.</span> Hirschberg&rsquo;s
           divide-and-conquer: split B, compute forward and backward LCS lengths meeting at

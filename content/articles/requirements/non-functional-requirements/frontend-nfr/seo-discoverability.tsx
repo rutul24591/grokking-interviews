@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function SEODiscoverabilityArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>SEO (Search Engine Optimization)</strong> encompasses
           techniques to improve a website&apos;s visibility in search engine
           results pages (SERPs). For frontend engineers, SEO involves technical
@@ -48,8 +52,8 @@ export default function SEODiscoverabilityArticle() {
           and content syndication. Proper Open Graph tags, Twitter Cards, and
           structured data ensure content looks compelling when shared on social
           platforms, driving referral traffic and brand awareness.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff engineers, SEO is a business-critical non-functional
           requirement. Organic search drives 40-60% of traffic for content
           sites, e-commerce, and SaaS companies. Poor SEO directly impacts
@@ -60,7 +64,7 @@ export default function SEODiscoverabilityArticle() {
           Unlike paid advertising, which stops driving traffic when the budget
           ends, SEO investment compounds over time — well-optimized content
           continues attracting visitors for months or years.
-        </p>
+        </HighlightBlock>
         <p>
           SEO impact factors span content quality (relevant, keyword-optimized
           content), technical implementation (crawlability, site speed,
@@ -76,7 +80,10 @@ export default function SEODiscoverabilityArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Meta tags provide search engines and social platforms with information
           about each page. The title tag (50-60 characters, primary keyword
           first, unique per page) is the most important on-page SEO factor — it
@@ -88,8 +95,8 @@ export default function SEODiscoverabilityArticle() {
           URLs. The viewport meta tag is required for mobile-friendly ranking.
           The robots meta tag controls crawling behavior (index/noindex,
           follow/nofollow) for each page.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Structured data (Schema.org) provides explicit clues about page
           content to search engines, enabling rich results — enhanced search
           listings with star ratings, prices, images, FAQs, and event
@@ -102,7 +109,7 @@ export default function SEODiscoverabilityArticle() {
           LocalBusiness (address, hours, reviews). Rich results achieve higher
           click-through rates due to their enhanced appearance and eligibility
           for special features like carousels and knowledge panels.
-        </p>
+        </HighlightBlock>
         <p>
           Open Graph tags and Twitter Cards control how pages appear when shared
           on social media. Open Graph (used by Facebook, LinkedIn, and most
@@ -130,7 +137,10 @@ export default function SEODiscoverabilityArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Technical SEO architecture ensures search engines can discover, crawl,
           and index all important pages. XML sitemaps list all important URLs
           with their last modified date, helping search engines discover content
@@ -142,8 +152,8 @@ export default function SEODiscoverabilityArticle() {
           administrative paths (/admin/, /api/) but must not block CSS or
           JavaScript files because Google needs them to render and evaluate
           pages.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           URL structure affects both SEO and user experience. Descriptive,
           keyword-rich URLs (example.com/products/wireless-headphones) rank
           better than opaque URLs (example.com/p?id=12345). URLs should be
@@ -155,7 +165,7 @@ export default function SEODiscoverabilityArticle() {
           homepage, use descriptive anchor text, implement breadcrumbs, and
           avoid orphan pages (pages with no incoming links that crawlers cannot
           discover).
-        </p>
+        </HighlightBlock>
         <p>
           Mobile-first indexing means Google primarily uses the mobile version
           of a site for indexing and ranking. Ensure the mobile and desktop
@@ -176,7 +186,10 @@ export default function SEODiscoverabilityArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rendering strategy is the most impactful SEO decision. Server-Side
           Rendering sends full HTML to crawlers — content is immediately
           available without JavaScript execution, providing the best SEO. Static
@@ -188,8 +201,8 @@ export default function SEODiscoverabilityArticle() {
           platforms do not execute JavaScript when generating link previews.
           The recommendation is SSR/SSG/ISR for all public, SEO-critical pages
           and CSR only for authenticated areas where SEO does not matter.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Core Web Vitals are confirmed Google ranking signals — poor
           performance directly impacts search rankings. LCP under 2.5s, INP
           under 200ms, and CLS under 0.1 are the thresholds for &quot;good&quot;
@@ -200,7 +213,7 @@ export default function SEODiscoverabilityArticle() {
           compression all improve both Core Web Vitals and search ranking.
           Monitor Core Web Vitals in Google Search Console to identify pages
           that need performance improvement for SEO.
-        </p>
+        </HighlightBlock>
         <p>
           SEO investment must be prioritized by business impact. For content
           sites and e-commerce, SEO is a primary traffic driver and deserves
@@ -217,7 +230,10 @@ export default function SEODiscoverabilityArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement a per-page SEO checklist for every new page or content
           update. Each page needs a unique title (50-60 characters, keyword
           first), unique meta description (150-160 characters, compelling
@@ -230,8 +246,8 @@ export default function SEODiscoverabilityArticle() {
           page with Lighthouse SEO audit, validate structured data with Google
           Rich Results Test, and submit new URLs to Google Search Console for
           indexing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Optimize images for both performance and SEO. Use descriptive,
           keyword-rich file names (wireless-headphones-black.jpg, not
           IMG_1234.jpg). Provide meaningful alt text that describes the image
@@ -241,7 +257,7 @@ export default function SEODiscoverabilityArticle() {
           below-the-fold images but do not lazy-load the LCP image (usually the
           hero or featured image) because it delays the most important
           performance metric.
-        </p>
+        </HighlightBlock>
         <p>
           Monitor SEO health continuously using Google Search Console and
           automated auditing. Search Console provides data on search queries
@@ -258,7 +274,10 @@ export default function SEODiscoverabilityArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using CSR for public-facing content is the most damaging SEO mistake.
           When search engine crawlers encounter a CSR page, they receive an
           empty HTML shell with no content. While Google can execute JavaScript
@@ -270,8 +289,8 @@ export default function SEODiscoverabilityArticle() {
           migrating an existing CSR application, prioritize the homepage,
           landing pages, and high-traffic content pages for server rendering
           first.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Duplicate content across multiple URLs dilutes search ranking. When
           the same content is accessible at multiple URLs (example.com/products
           and example.com/products?page=1, or HTTP and HTTPS versions, or www
@@ -280,7 +299,7 @@ export default function SEODiscoverabilityArticle() {
           is to use canonical URLs to designate the preferred version, implement
           301 redirects from duplicate URLs to the canonical URL, and ensure
           internal links consistently point to the canonical URL.
-        </p>
+        </HighlightBlock>
         <p>
           Blocking CSS and JavaScript in robots.txt prevents Google from
           rendering pages correctly. Google needs to execute JavaScript and
@@ -295,7 +314,10 @@ export default function SEODiscoverabilityArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms invest heavily in SEO because product search is a
           primary customer acquisition channel. Amazon, Shopify stores, and
           direct-to-consumer brands optimize product pages with unique titles
@@ -307,8 +329,8 @@ export default function SEODiscoverabilityArticle() {
           The result is product pages that rank for both branded searches
           (specific product names) and unbranded searches (&quot;best wireless
           headphones under $100&quot;).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           News and media websites depend on SEO for traffic and revenue. The
           New York Times, The Guardian, and Bloomberg use SSR for article pages
           (full HTML for crawlers), structured data (Article and NewsArticle
@@ -317,7 +339,7 @@ export default function SEODiscoverabilityArticle() {
           blog structured data for ongoing events. Their SEO strategy includes
           optimizing for Google News and Google Discover, which drive
           significant referral traffic for timely content.
-        </p>
+        </HighlightBlock>
         <p>
           SaaS companies use SEO for content marketing and lead generation. The
           marketing site (SSG for speed) hosts blog posts, case studies,
@@ -334,12 +356,15 @@ export default function SEODiscoverabilityArticle() {
 
       <section>
         <h2>Advanced SEO Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           JavaScript SEO challenges stem from the fundamental tension between modern SPA architectures and search engine crawling capabilities. When Googlebot encounters a CSR page, it goes through a two-wave indexing process: first, it indexes the initial HTML (which is empty for CSR), and second, it queues the page for JavaScript rendering in a separate rendering wave that may be delayed by hours, days, or weeks. During this delay, the page has no indexed content and ranks for no queries. Other search engines (Bing, DuckDuckGo, Baidu, Yandex) have varying JavaScript execution capabilities — some do not execute JavaScript at all, meaning CSR pages are completely invisible to them. The solution is server-side rendering (SSR, SSG, or ISR) for all public content, ensuring that the initial HTML contains the full content. For applications that cannot migrate to SSR immediately, dynamic rendering provides a transitional approach — the server detects whether the request comes from a search engine crawler (based on the User-Agent header) and serves a pre-rendered HTML version to crawlers while serving the CSR application to regular users. Dynamic rendering is a temporary solution because Google considers it a form of cloaking if the content differs between the crawler and user versions, and it requires maintaining a rendering infrastructure (Puppeteer, Rendertron) that adds operational complexity. The permanent solution is to adopt SSR/SSG/ISR through a modern framework like Next.js, Nuxt, or SvelteKit, which provides server rendering as a first-class feature.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Structured data implementation patterns enable rich results that significantly improve click-through rates from search engine results pages. JSON-LD (JavaScript Object Notation for Linked Data) is Google&apos;s recommended format, placed in a script tag with type=&quot;application/ld+json&quot; in the page head or body. The implementation strategy for dynamic pages (product pages, article pages, event pages) is to generate the JSON-LD dynamically on the server during rendering, embedding the page-specific data (product name, price, availability, reviews; article headline, author, date published, image; event name, date, location, ticket URL) directly into the JSON-LD script. This ensures that the structured data is present in the initial HTML response, available to crawlers without JavaScript execution. For SPAs, the JSON-LD must be injected into the document head during client-side navigation, and Googlebot must execute the JavaScript to discover it — a riskier approach that may result in delayed or missed structured data processing. The structured data should be validated using Google&apos;s Rich Results Test tool before deployment, and monitored in Google Search Console&apos;s Rich Results report after deployment to detect errors (missing required fields, invalid values, deprecated schema types). Common structured data types for web applications include Article (blog posts, news), Product (e-commerce with price, availability, reviews, aggregate rating), FAQ (questions and answers, eligible for FAQ rich results), HowTo (step-by-step instructions, eligible for HowTo rich results), LocalBusiness (address, hours, reviews, geo coordinates), Event (dates, locations, tickets, performers), and BreadcrumbList (navigation hierarchy, eligible for breadcrumb rich results in search listings).
-        </p>
+        </HighlightBlock>
         <p>
           International SEO addresses the complexity of serving content in multiple languages and regions, ensuring that search engines understand which language/region version of a page to show to users in different locations. The hreflang attribute is the primary mechanism — it tells search engines the language and regional targeting of each page variant. For example, a page available in English (US), English (UK), and German (DE) would include hreflang tags pointing to each variant: link rel=&quot;alternate&quot; hreflang=&quot;en-us&quot; href=&quot;https://example.com/en-us/page&quot;, link rel=&quot;alternate&quot; hreflang=&quot;en-gb&quot; href=&quot;https://example.com/en-gb/page&quot;, and link rel=&quot;alternate&quot; hreflang=&quot;de&quot; href=&quot;https://example.com/de/page&quot;. Each variant must include hreflang tags pointing to all other variants (reciprocal linking), and each variant should include an x-default hreflang tag pointing to the default/fallback version for users whose language does not match any variant. The hreflang tags should be implemented in the HTML head (as link elements) or in the XML sitemap (as hreflang annotations on each URL), and the implementation must be consistent across all pages. Geo-targeting in Google Search Console allows setting a target country for a domain or subdomain, which helps Google understand which users the content is intended for. For country-specific domains (example.fr, example.de), the geo-targeting is automatic based on the ccTLD. For subdirectories (example.com/fr/, example.com/de/), the geo-targeting must be set manually in Search Console. The URL structure choice (ccTLDs, subdomains, subdirectories) has SEO implications — ccTLDs provide the strongest geo-targeting signal but require separate domains for each country, subdomains are treated as separate properties by Google, and subdirectories consolidate domain authority across all languages within a single property.
         </p>
@@ -356,12 +381,15 @@ export default function SEODiscoverabilityArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What meta tags are essential for SEO?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Title (50-60 characters, primary keyword first, unique per
               page), meta description (150-160 characters, compelling summary),
               canonical URL (prevents duplicate content), viewport
@@ -370,7 +398,7 @@ export default function SEODiscoverabilityArticle() {
               1200×630) and Twitter Cards (twitter:card, twitter:title,
               twitter:image). Each page needs unique values — duplicate or
               missing meta tags hurt ranking and social sharing.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

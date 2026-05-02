@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function ReactionPickerArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Reaction picker extends binary like buttons into a spectrum of emotional responses, enabling users to express nuanced sentiment through emoji reactions. Facebook pioneered mainstream reaction pickers in 2016 with six reactions (Like, Love, Care, Haha, Wow, Sad, Angry), transforming how users engage with content. The reaction picker appears on long-press (mobile) or hover (desktop) over the like button, with the default tap action remaining a simple like for speed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Reactions serve multiple purposes beyond simple engagement. They provide richer sentiment data for ranking algorithms—angry reactions may indicate controversial content that drives engagement but requires moderation attention. Care reactions on memorial posts signal respectful acknowledgment. Different reaction types carry different weight in feed ranking—Love and Care typically indicate stronger positive sentiment than simple Like. For users, reactions enable emotional expression without composing comments, lowering the barrier for engagement.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, reaction picker implementation involves technical challenges beyond simple emoji display. The picker must appear instantly on trigger without jank, requiring careful animation optimization. Reactions must sync in real-time across viewers—when someone reacts, others should see the count update immediately. The backend must store reaction types efficiently, support reaction changes (users can change their reaction), and aggregate reaction counts for display. The system must handle reaction spam prevention, rate limiting, and integration with notification systems to alert content creators.
         </p>
@@ -47,13 +51,16 @@ export default function ReactionPickerArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Reaction Types and Taxonomy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Reaction sets vary by platform but typically include 5-8 emotions covering positive, neutral, and negative sentiment. Facebook uses six reactions plus Like: Love (heart), Care (hugging heart), Haha (laughing face), Wow (surprised face), Sad (crying face), Angry (red angry face). LinkedIn uses Celebrate (party), Support (heart), Love (heart), Insightful (lightbulb), Funny (laugh), Interesting (eyes). Slack provides extensive emoji reactions with thousands of options organized by category.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Reaction selection reflects platform culture and use cases. Professional networks like LinkedIn emphasize positive, work-appropriate reactions (Celebrate, Insightful) while avoiding negative reactions—there's no Angry or Sad option. Social platforms include full emotional range including negative reactions for controversial content. Some platforms allow custom emoji reactions (Slack, Discord) while others restrict to curated sets for consistency.
-        </p>
+        </HighlightBlock>
         <p>
           Reaction ordering matters for engagement. Most-used reactions appear first (typically Love, Haha). Positive reactions usually precede negative reactions. Some platforms reorder reactions based on content type—Care reaction appears earlier for memorial or illness-related content detected through ML classification. The default Like action remains fastest to access—single tap—while reactions require long-press or hover plus selection.
         </p>
@@ -105,9 +112,12 @@ export default function ReactionPickerArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Reaction picker architecture spans client interaction, animation system, API design, real-time synchronization, and reaction storage. The client component manages picker visibility, reaction selection, and optimistic updates. The API layer validates reactions, enforces rate limits, and persists reaction records. Real-time infrastructure delivers reaction updates to connected viewers. Storage efficiently handles reaction types and counts.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/interaction-engagement/reaction-picker/reaction-picker-architecture.svg"
@@ -118,9 +128,9 @@ export default function ReactionPickerArticle() {
         />
 
         <h3>Client Component Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Picker component manages visibility state, trigger detection, and reaction selection. For long-press trigger, the component uses touch events with timer—touchstart starts timer, touchend before timer completes triggers normal like, touchend after timer shows picker. Timer duration typically 300ms, adjustable based on user testing. For hover trigger, mouseenter shows picker after short delay (100ms), mouseleave hides picker.
-        </p>
+        </HighlightBlock>
         <p>
           Animation system handles picker appearance, emoji transitions, and selection feedback. CSS animations work for simple cases but may jank on low-end devices. JavaScript animation libraries (Framer Motion, GSAP) provide smoother animation with GPU acceleration. Key considerations: animate transform and opacity only (avoid animating layout properties), use will-change CSS property sparingly, and clean up animation frames on unmount.
         </p>
@@ -191,14 +201,17 @@ export default function ReactionPickerArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Reaction picker design involves numerous trade-offs affecting user experience, engagement rates, system complexity, and content moderation. Understanding these trade-offs enables informed decisions aligned with platform goals and community values.
-        </p>
+        </HighlightBlock>
 
         <h3>Curated vs Custom Reactions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Curated reactions (Facebook, LinkedIn, Instagram) limit users to 5-8 predefined emoji. This ensures consistent sentiment capture, simplifies analytics, and prevents inappropriate reactions. Curated sets can be tuned for platform culture—professional networks exclude negative reactions. However, curated sets limit expression—users may want reactions not included.
-        </p>
+        </HighlightBlock>
         <p>
           Custom reactions (Slack, Discord) allow any emoji from extensive library. This maximizes expression and aligns with community culture—communities create inside-joke emoji. However, custom reactions complicate analytics—thousands of reaction types are difficult to aggregate. Moderation becomes challenging—communities may create offensive emoji. Storage and display complexity increases significantly.
         </p>
@@ -250,13 +263,16 @@ export default function ReactionPickerArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use long-press for mobile, hover for desktop:</strong> Detect input type and use appropriate trigger. Long-press prevents accidental activation while browsing. Hover provides quick desktop access. Hybrid approach delivers best experience for each platform.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Animate picker appearance under 200ms:</strong> Fast, snappy animation feels responsive. Use GPU-accelerated animations (transform, opacity). Stagger emoji appearance for polished feel. Respect prefers-reduced-motion.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Provide haptic feedback on mobile:</strong> Light tap haptic on reaction selection confirms action. Make haptics subtle and optional. Users can disable in device settings.
           </li>
@@ -286,13 +302,16 @@ export default function ReactionPickerArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Accidental picker activation:</strong> Picker appears when user intended to like. Solution: Use long-press (300ms) for mobile, hover delay (100ms) for desktop. Test extensively with users.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Janky animation:</strong> Picker animation stutters or lags. Solution: Use GPU-accelerated animations, avoid animating layout properties, test on low-end devices.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No optimistic updates:</strong> Waiting for server confirmation before updating UI makes reactions feel slow. Solution: Always use optimistic updates with rollback on failure.
           </li>
@@ -316,16 +335,19 @@ export default function ReactionPickerArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Facebook Reactions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook launched reactions in 2016 with six emoji (Love, Haha, Wow, Sad, Angry) plus Like. Long-press on mobile, hover on desktop triggers picker. Reactions weighted differently in News Feed algorithm—comments and shares carry more weight than reactions, but Love indicates stronger positive sentiment than Like. Facebook uses real-time sync for active posts, batched updates for older content. Notification batching groups reactions: "John Smith and 49 others reacted with Love".
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">LinkedIn Reactions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           LinkedIn uses five positive reactions (Celebrate, Support, Love, Insightful, Funny) appropriate for professional context. No negative reactions available. Reactions appear on click rather than long-press, simpler interaction model. LinkedIn emphasizes professional encouragement—Celebrate is most-used reaction for job announcements and work achievements. Reaction analytics inform content creators about professional resonance.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Slack Emoji Reactions</h3>
         <p>
@@ -345,12 +367,15 @@ export default function ReactionPickerArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle reaction changes?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle reaction changes?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> When a user changes reaction, the client sends PUT request with new reaction_type. The API performs atomic update: decrement old reaction count, increment new reaction count, update user's reaction record. Use database transaction to ensure all three operations succeed or fail together. Client uses optimistic update—immediately shows new reaction, reverts on API failure. For rapid changes (user changes reaction multiple times quickly), queue changes and process sequentially to prevent race conditions.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

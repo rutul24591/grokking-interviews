@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,15 +28,18 @@ export default function ArticlePage() {
       <section>
         <h1>Cache Invalidation</h1>
         <h2>Definition &amp; Context</h2>
-        <p className="text-lg leading-relaxed">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="text-lg leading-relaxed">
           Cache invalidation is widely regarded as one of the hardest problems in computer science —
           not because the mechanism of evicting a key is complex, but because <em>knowing what to
           evict, when to evict it, and what happens when you evict it incorrectly</em> touches every
           layer of a distributed system. At a staff or principal engineer level, cache invalidation
           is not a tactical caching detail — it is a correctness control plane that defines the
           contract between your system&apos;s performance guarantees and its consistency guarantees.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Every caching decision is a trade-off between how fast the system responds (hit ratio,
           latency) and how current the data is (staleness, correctness). TTL-based expiration
           provides bounded staleness with zero coordination overhead. Event-driven invalidation
@@ -47,7 +51,7 @@ export default function ArticlePage() {
           invalidation with at-least-once delivery semantics. Each strategy has a distinct failure
           profile, operational cost, and suitability profile that maps to specific data domains
           within a production system.
-        </p>
+        </HighlightBlock>
         <p>
           The central thesis of this article is that cache invalidation should be treated as a
           first-class system design concern — not a bolt-on optimization. In production systems at
@@ -72,9 +76,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>TTL-Based Invalidation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Time-to-Live (TTL) invalidation is the simplest and most widely deployed strategy. Every
           cached entry is assigned an expiration timestamp at write time, and the cache
           automatically evicts the entry once that timestamp passes. The implementation is
@@ -82,8 +89,8 @@ export default function ArticlePage() {
           and CDN edge caches support Cache-Control max-age directives. The operational simplicity
           of TTL is its greatest strength — there are no coordination channels, no message queues,
           and no failure modes beyond the cache itself.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           However, TTL introduces a fundamental correctness problem: bounded staleness. Between the
           moment data changes in the source of truth and the moment the TTL expires, the cache
           serves stale data. The staleness window is bounded by the TTL duration, but it is
@@ -91,7 +98,7 @@ export default function ArticlePage() {
           produce near-maximum staleness, while a write occurring one second before TTL expiration
           will produce near-zero staleness. This variance is acceptable for many data domains but
           catastrophic for others.
-        </p>
+        </HighlightBlock>
         <p>
           The TTL selection problem is deceptively complex. Setting TTL too low reduces the cache
           hit ratio, increasing load on the origin database and negating the performance benefit of
@@ -220,12 +227,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cache invalidation architectures can be understood as a spectrum from loosest coupling
           (TTL-only, zero coordination) to tightest coupling (synchronous write-invalidation within
           the application transaction). Each architecture occupies a specific point on this spectrum
           based on its coordination requirements, failure modes, and consistency guarantees.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/cache-invalidation-architecture.svg`}
@@ -233,14 +243,14 @@ export default function ArticlePage() {
           caption="Architecture spectrum — from TTL-only (loosest coupling, bounded staleness) to synchronous write-invalidation (tightest coupling, strongest consistency)"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The TTL-only architecture is the simplest. The application writes to the database, writes
           to the cache (or relies on lazy cache-fill on next read), and the cache manages its own
           lifecycle through expiration. There is no invalidation channel, no message transport, and
           no coordination between the database and the cache beyond the initial write. This
           architecture is appropriate when the correctness budget permits bounded staleness and the
           operational simplicity of zero-coordination is valued over freshness.
-        </p>
+        </HighlightBlock>
         <p>
           The event-driven architecture introduces an asynchronous invalidation channel. The
           application writes to the database, emits an event to a message broker, and a consumer
@@ -315,13 +325,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Selecting an invalidation strategy is not a binary choice between &quot;simple&quot; and
           &quot;correct&quot; — it is a multi-dimensional optimization problem that balances
           consistency, latency, operational complexity, memory overhead, and cost. The right
           strategy depends on the data domain&apos;s correctness budget, the system&apos;s traffic
           profile, the team&apos;s operational maturity, and the infrastructure available.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -374,14 +387,14 @@ export default function ArticlePage() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">When to Use Each Strategy</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <strong>TTL-only</strong> is appropriate for analytics aggregates, social feed rankings,
             product recommendations, and any data domain where staleness within a bounded window
             does not cause user harm or financial loss. It is also the default strategy for systems
             that lack the infrastructure for event-driven invalidation and need a working caching
             layer immediately. The key is to set TTLs empirically based on observed staleness
             tolerance, not arbitrarily.
-          </p>
+          </HighlightBlock>
           <p className="mt-3">
             <strong>Event-driven invalidation</strong> is appropriate for user profiles, session
             data, configuration settings, and any data domain where users expect near-immediate
@@ -417,8 +430,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Define correctness budgets per data domain and map invalidation strategies
           accordingly.</strong> Not all cached data has the same freshness requirements. Pricing
           data, authentication tokens, and inventory counts have tight correctness budgets measured
@@ -428,9 +444,9 @@ export default function ArticlePage() {
           budget, and monitor staleness as a first-class metric. This approach prevents the common
           anti-pattern of applying a single invalidation strategy uniformly across all cached data,
           which either over-engineers low-risk domains or under-protects high-risk ones.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Always layer a TTL safety net beneath any explicit invalidation strategy.</strong>
           Event-driven invalidation can miss events due to broker failures, consumer crashes, or
           network partitions. CDC pipelines can lag during high database write throughput.
@@ -439,7 +455,7 @@ export default function ArticlePage() {
           mechanism fails. The TTL should be set to the maximum acceptable staleness for the data
           domain — if the primary invalidation works correctly, the TTL is never reached; if it
           fails, the TTL provides a bounded staleness guarantee.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Implement progressive invalidation for bulk updates to prevent cache stampede.</strong>
@@ -490,11 +506,14 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <h3 className="mb-2 text-base font-semibold">Pitfall: Missed Invalidation Events</h3>
-            <p>
+            <HighlightBlock as="p" tier="important">
               When an invalidation event is lost due to broker failure, network partition, or
               consumer crash, the corresponding cache key remains stale until its TTL expires. If
               the TTL is long (hours or days), this can cause prolonged incorrect data serving.
@@ -503,14 +522,14 @@ export default function ArticlePage() {
               missed events are eventually resolved through natural expiration. During incident
               response, identify the stale keys by comparing cache values to the database and
               manually trigger invalidation for affected keys.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <h3 className="mb-2 text-base font-semibold">
               Pitfall: Cache Stampede from Mass Invalidation
             </h3>
-            <p>
+            <HighlightBlock as="p" tier="important">
               Invalidating a large number of keys simultaneously (bulk data migration, schema
               change, system-wide cache flush) causes a flood of cache misses that can overwhelm
               the origin database and trigger cascading failures. The fix is progressive
@@ -519,7 +538,7 @@ export default function ArticlePage() {
               data is written under a new version, and old data expires naturally via TTL. During
               the transition, both versions coexist in the cache, and the origin database only
               receives reads for uncached new-version keys, which is a manageable load increase.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -589,17 +608,20 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Pricing with CDC-Based Invalidation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform caches product prices in a distributed Redis layer to serve
           product listing pages with sub-10ms latency. Prices change frequently due to dynamic
           pricing algorithms, promotional campaigns, and supplier cost adjustments. A TTL-only
           strategy with a 5-minute TTL resulted in users seeing incorrect prices for up to 5
           minutes after a price change, leading to checkout failures when the actual price at
           checkout time differed from the cached listing price.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The solution was CDC-based invalidation using Debezium to read the MySQL binlog from the
           pricing database. Every committed price change triggered an immediate invalidation of the
           corresponding Redis cache key. The CDC pipeline added approximately 200ms of invalidation
@@ -608,7 +630,7 @@ export default function ArticlePage() {
           TTL safety net ensured that even if the CDC pipeline failed, prices would eventually
           correct. The key mapping layer maintained a simple one-to-one mapping between product ID
           and cache key, keeping the CDC consumer lightweight and maintainable.
-        </p>
+        </HighlightBlock>
 
         <h3>Social Media Feed with Versioned Keys</h3>
         <p>
@@ -671,21 +693,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: You have a system that caches user profiles in Redis with a 10-minute TTL. Users
               report that profile updates take up to 10 minutes to appear. How do you fix this,
               and what are the trade-offs of your approach?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The root cause is that TTL-only caching allows up to 10 minutes of staleness. The
               fix is to introduce event-driven invalidation: when a user profile is updated, emit
               an invalidation event (via Kafka, Redis Pub/Sub, or a direct API call) that deletes
               the cached profile key. This reduces staleness from up to 10 minutes to the event
               delivery latency (typically under 100ms). Keep the 10-minute TTL as a safety net in
               case the invalidation event is lost.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               Trade-offs: Event-driven invalidation adds infrastructure complexity (message broker,
               consumer service, monitoring) compared to TTL-only. It introduces a new failure mode

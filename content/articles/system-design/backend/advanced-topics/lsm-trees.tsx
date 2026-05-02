@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +30,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>LSM trees</strong> (Log-Structured Merge trees) are a storage engine architecture
           optimized for high write throughput by batching random writes into sequential writes.
           Unlike B-trees, which update data in place (random I/O), LSM trees buffer writes in
@@ -37,8 +41,8 @@ export default function ArticlePage() {
           (SSTables). When multiple SSTables accumulate, a background process called compaction
           merges them into larger files, discarding obsolete entries and tombstones (delete
           markers).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider a time-series database that ingests 1 million writes per second from IoT
           sensors. With a B-tree, each write would require a random disk I/O (seek + write),
           limiting throughput to approximately 10,000 writes per second on a typical disk.
@@ -47,7 +51,7 @@ export default function ArticlePage() {
           enables the database to ingest 1 million writes per second using only sequential
           disk I/O, which is the fastest type of disk I/O available on spinning disks and
           still significantly faster than random writes on SSDs.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, LSM trees require understanding the trade-offs
           between write amplification (compaction rewrites the same data multiple times),
@@ -78,6 +82,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/lsm-tree-architecture.svg`}
@@ -86,22 +93,22 @@ export default function ArticlePage() {
         />
 
         <h3>The Memtable</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The memtable is an in-memory data structure (typically a skip list or balanced tree)
           that buffers incoming writes. Writes are appended to the memtable in O(1) time (for
           a skip list) or O(log N) time (for a balanced tree), which is significantly faster
           than the random disk I/O required by B-tree updates. When the memtable reaches a
           configured size threshold (typically 64-256 MB), it is converted to an immutable
           memtable (read-only), and a new mutable memtable is created to accept new writes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The immutable memtable is flushed to disk as an SSTable (Sorted String Table), which
           is an immutable file containing key-value pairs sorted by key. The flush is a
           sequential write (write the entire SSTable in one contiguous disk operation), which
           is 10-100x faster than the random writes required by B-tree updates. After the
           flush completes, the immutable memtable is deleted from memory, freeing space for
           the next flush.
-        </p>
+        </HighlightBlock>
 
         <h3>SSTables and Bloom Filters</h3>
         <p>
@@ -156,24 +163,27 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Write Path</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The LSM tree write path is optimized for sequential I/O. When a write arrives, it is
           first written to the write-ahead log (WAL) for durability, then inserted into the
           memtable. The WAL ensures that the write is durable even if the system crashes before
           the memtable is flushed to disk. When the memtable reaches its size threshold, it is
           frozen (becomes immutable), a new memtable is created, and the immutable memtable is
           flushed to disk as an SSTable in Level 0.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The flush is a sequential write: the entire SSTable is written as one contiguous
           operation, which is the fastest type of disk I/O. After the flush, a background
           compaction process merges SSTables from Level 0 into Level 1, from Level 1 into
           Level 2, and so on. Each compaction run reads SSTables from Level N, merges their
           entries (discarding obsolete entries and tombstones), and writes the merged result
           to Level N+1.
-        </p>
+        </HighlightBlock>
 
         <h3>Read Path</h3>
         <p>
@@ -202,15 +212,18 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           LSM trees trade read performance for write performance. Compared to B-trees, LSM
           trees provide 10-100x higher write throughput (sequential vs random I/O) but 2-5x
           higher read latency (checking multiple SSTables vs single B-tree lookup). The
           trade-off is favorable for write-heavy workloads (time-series, logging, event
           sourcing) where write throughput is the primary concern, but unfavorable for
           read-heavy workloads (OLAP, analytics) where read latency is the primary concern.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           LSM trees also introduce write amplification: compaction rewrites the same data
           multiple times as it moves from Level 0 to Level N. With leveled compaction, write
           amplification is approximately 10-50x (each entry is rewritten 10-50 times before
@@ -219,7 +232,7 @@ export default function ArticlePage() {
           trade-off is managed through compaction throttling (limiting the compaction I/O
           bandwidth to leave headroom for client operations) and choosing a compaction
           strategy that minimizes write amplification for the workload.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -227,21 +240,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Choose the compaction strategy based on the workload. For write-heavy workloads
           (time-series, logging), use size-tiered compaction to minimize write amplification.
           For read-heavy workloads (OLTP, key-value lookups), use leveled compaction to
           minimize read amplification. For mixed workloads, use tiered-leveled compaction
           (RocksDB&apos;s default) to balance both.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Size the memtable appropriately for the workload. A larger memtable (256 MB) reduces
           the flush frequency and improves write throughput, but increases recovery time after
           a crash (the WAL must be replayed to rebuild the memtable). A smaller memtable (64 MB)
           reduces recovery time but increases the flush frequency, which can cause compaction
           to fall behind. The recommended memtable size is 128 MB for most workloads, with
           tuning based on observed flush and compaction rates.
-        </p>
+        </HighlightBlock>
         <p>
           Monitor compaction health continuously. Track the compaction pending bytes (data
           waiting to be compacted), the compaction flush rate, and the read amplification
@@ -263,21 +279,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is choosing leveled compaction for a write-heavy workload.
           Leveled compaction minimizes read amplification but maximizes write amplification
           (10-50x), which can overwhelm the disk I/O bandwidth and cause compaction to fall
           behind. The fix is to use size-tiered or tiered-leveled compaction for write-heavy
           workloads, which reduces write amplification to O(log N) while accepting higher
           read amplification.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not monitoring compaction health means you won&apos;t know when compaction is falling
           behind until the system runs out of disk space or read latency spikes. The fix is to
           instrument compaction with metrics (pending bytes, flush rate, read amplification)
           and set alerts on abnormal values (pending bytes &gt; 50% of disk space, read
           amplification &gt; 10 SSTables per read).
-        </p>
+        </HighlightBlock>
         <p>
           Using a memtable that is too large causes long recovery times after a crash. The
           WAL must be replayed to rebuild the memtable, and a large memtable means a large
@@ -299,25 +318,28 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>RocksDB: LSM Tree for High-Throughput Storage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           RocksDB (forked from Google&apos;s LevelDB) is the most widely used LSM tree
           implementation, powering Cassandra, MongoDB, TiDB, CockroachDB, and many other
           databases. RocksDB implements tiered-leveled compaction, bloom filters, and
           configurable memtable size. It is used by Meta (Facebook) for its social graph
           database, where it ingests billions of writes per day with sub-millisecond latency
           and serves millions of reads per second.
-        </p>
+        </HighlightBlock>
 
         <h3>InfluxDB: Time-Series Data with LSM Trees</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           InfluxDB uses an LSM tree variant (TSM tree) for time-series data storage. Time-series
           data is inherently write-heavy (continuous ingestion from sensors, applications, and
           infrastructure), making LSM trees the ideal storage engine. InfluxDB&apos;s TSM tree
           uses size-tiered compaction to minimize write amplification, enabling ingestion of
           millions of data points per second with minimal I/O overhead.
-        </p>
+        </HighlightBlock>
 
         <h3>Apache Cassandra: Wide-Column LSM Storage</h3>
         <p>
@@ -335,18 +357,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is an LSM tree and when should you use it?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               An LSM tree is a storage engine architecture optimized for high write throughput
               by batching random writes into sequential writes. Writes buffer in a memtable
               (memory), flush to immutable SSTables (disk), and compact in the background.
               LSM trees provide 10-100x higher write throughput than B-trees but 2-5x higher
               read latency.
-            </p>
+            </HighlightBlock>
             <p>
               Use LSM trees for write-heavy workloads (time-series, logging, event sourcing,
               wide-column stores). Use B-trees for read-heavy workloads (OLTP, analytics)

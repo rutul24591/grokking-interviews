@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function FeatureDetectionArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2>Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           <strong>Feature detection</strong> is the practice of programmatically
           testing whether a browser or runtime environment supports a specific
           API, property, or behavior before attempting to use it. Rather than
@@ -49,8 +50,8 @@ export default function FeatureDetectionArticle() {
           philosophy that determines how entire product experiences are tiered,
           how polyfill budgets are managed, and how teams ship confidently to a
           fragmented device landscape without maintaining parallel codebases.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature detection rose to prominence as the web matured beyond the
           early browser wars, where developers relied on <strong>user-agent
           sniffing</strong> to determine which browser was rendering a page.
@@ -63,8 +64,8 @@ export default function FeatureDetectionArticle() {
           device manufacturer shipped a custom WebView. Feature detection
           eliminated this fragility by testing actual capability rather than
           inferred identity.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The principle is straightforward: test whether a property exists on a
           global object, whether a CSS declaration is understood by the
           rendering engine, or whether constructing a particular object
@@ -76,7 +77,7 @@ export default function FeatureDetectionArticle() {
           experience strips functionality that the environment cannot support.
           Both strategies depend on accurate, performant feature detection as
           their decision mechanism.
-        </p>
+        </HighlightBlock>
         <p>
           For senior architects, feature detection also serves as the gateway
           to <strong>adaptive loading</strong> — an advanced pattern where the
@@ -103,7 +104,7 @@ export default function FeatureDetectionArticle() {
         <h2>Core Concepts</h2>
 
         <h3>JavaScript API Detection</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           The most fundamental form of feature detection is checking whether a
           JavaScript property or method exists on a known object. The canonical
           pattern is the <code>in</code> operator or a truthiness check against
@@ -114,8 +115,8 @@ export default function FeatureDetectionArticle() {
           <code>{`typeof IntersectionObserver !== "undefined"`}</code> confirms
           whether the Intersection Observer API is present before instantiating
           one.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Property existence checks divide into several categories. A{" "}
           <strong>simple property check</strong> verifies that a namespace or
           property exists on a global like <code>window</code>,{" "}
@@ -134,8 +135,8 @@ export default function FeatureDetectionArticle() {
           expose a <code>Notification</code> constructor but not support the{" "}
           <code>actions</code> property on notification options. A deeper duck
           type check can probe for these specifics.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the staff level, it is essential to understand the difference
           between an API being <strong>present</strong> and being{" "}
           <strong>functional</strong>. Some browsers expose an API on the global
@@ -146,7 +147,7 @@ export default function FeatureDetectionArticle() {
           API in a controlled way and observing whether it succeeds — rather
           than merely checking for property existence. This is the approach
           Modernizr pioneered for many CSS and HTML5 features.
-        </p>
+        </HighlightBlock>
 
         <h3>CSS Feature Queries</h3>
         <p className="mb-4">
@@ -303,18 +304,22 @@ export default function FeatureDetectionArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2>Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           The following diagrams illustrate the key architectural patterns
           behind feature detection — from decision trees that guide runtime
           branching, to comparisons of detection strategies, to adaptive
           loading architectures that leverage device capability signals.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Architecturally, feature detection is a <strong>capability gate</strong> that should be centralized
+          (one module) and reused consistently so you don't ship conflicting behavior across the app.
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/feature-detection-diagram-2.svg"
           alt="Comparison of user-agent sniffing vs feature detection showing reliability differences"
           caption="Figure 2: User-Agent sniffing vs feature detection reliability"
         />
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           This comparison highlights the reliability gap between the two
           approaches. User-agent sniffing introduces a layer of indirection —
           parsing a string to infer a browser, then mapping that browser to a
@@ -324,7 +329,7 @@ export default function FeatureDetectionArticle() {
           eliminates the indirection by testing the capability directly,
           producing a ground-truth result that holds regardless of which
           browser, version, or configuration the user has.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -332,22 +337,22 @@ export default function FeatureDetectionArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Choosing the right strategy for handling browser differences depends
           on your application&apos;s constraints, team size, and target device
           landscape. The following comparison evaluates four common approaches
           across key engineering dimensions.
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-theme text-sm">
             <thead>
-              <tr className="bg-panel">
+              <HighlightBlock as="tr" tier="important">
                 <th className="border border-theme p-3 text-left">Dimension</th>
                 <th className="border border-theme p-3 text-left">Feature Detection</th>
                 <th className="border border-theme p-3 text-left">UA Sniffing</th>
                 <th className="border border-theme p-3 text-left">Polyfills</th>
                 <th className="border border-theme p-3 text-left">Transpilation</th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody>
               <tr>
@@ -395,7 +400,7 @@ export default function FeatureDetectionArticle() {
             </tbody>
           </table>
         </div>
-        <p className="mb-4 mt-4">
+        <HighlightBlock as="p" tier="important">
           In practice, mature applications use a combination of these
           strategies. Transpilation handles syntax compatibility at build time.
           Polyfills fill missing APIs conditionally, often loaded only when
@@ -404,7 +409,7 @@ export default function FeatureDetectionArticle() {
           branching. And UA data is reserved for analytics and targeted bug
           workarounds. The goal is to minimize the runtime cost of compatibility
           while maximizing the reliability of each strategy layer.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -413,7 +418,7 @@ export default function FeatureDetectionArticle() {
       <section className="mb-12">
         <h2>Best Practices</h2>
         <ul className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Test capability, never identity.</strong> Every feature
             detection check should test whether a specific API, property, or
             behavior exists — never whether the browser is Chrome, Safari, or
@@ -421,8 +426,8 @@ export default function FeatureDetectionArticle() {
             capabilities that will drift over time. Testing capability produces
             code that automatically adapts as browsers evolve, new browsers
             emerge, and existing browsers enable or disable features.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Prefer <code>@supports</code> for CSS before reaching for
               JavaScript.
@@ -433,8 +438,8 @@ export default function FeatureDetectionArticle() {
             Only use <code>CSS.supports()</code> in script when the detection
             result must influence JavaScript logic, such as choosing between
             animation strategies or conditionally loading a layout component.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Detect early and cache results.</strong> Feature detection
             checks should run once during application initialization, and the
             results should be stored in a capabilities object or module-level
@@ -442,7 +447,7 @@ export default function FeatureDetectionArticle() {
             event handlers, or hot code paths adds unnecessary overhead. A
             centralized capabilities module also gives teams a single location
             to audit which features are being detected and what fallbacks exist.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Provide meaningful fallbacks, not just feature removal.
@@ -512,7 +517,7 @@ export default function FeatureDetectionArticle() {
       <section className="mb-12">
         <h2>Common Pitfalls</h2>
         <ul className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>False positives from partially implemented APIs.</strong>{" "}
             A browser may expose an API on the global object without fully
             implementing it. The <code>Notification</code> constructor might
@@ -525,8 +530,8 @@ export default function FeatureDetectionArticle() {
             application depends on. This is one of the most common mistakes in
             feature detection and accounts for a disproportionate share of
             cross-browser bugs in production.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Checking the wrong property or object.</strong> Developers
             sometimes check a related but different property than the one
             their code actually uses. For example, checking{" "}
@@ -537,8 +542,8 @@ export default function FeatureDetectionArticle() {
             exists but does not guarantee that the network allows WebSocket
             connections (corporate proxies often block them). Feature detection
             must precisely match the API surface your code depends on.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-reliance on Modernizr increasing bundle size.</strong>{" "}
             Including the full Modernizr library adds 15-25 KB of JavaScript
             that parses and executes during the critical rendering path. Many
@@ -547,7 +552,7 @@ export default function FeatureDetectionArticle() {
             Always use Modernizr&apos;s custom build tool to include only the
             detects you need, and evaluate whether manual checks would be
             simpler and lighter for small detection sets.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Feature detection that breaks with new browser versions.</strong>{" "}
             If your detection logic is too clever — for example, relying on a
@@ -589,7 +594,7 @@ export default function FeatureDetectionArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>YouTube — Adaptive Streaming Quality</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           YouTube serves video to an extraordinarily diverse device landscape,
           from high-end desktop browsers to low-cost smart TVs and feature
           phones. The player employs extensive feature detection to determine
@@ -606,10 +611,10 @@ export default function FeatureDetectionArticle() {
           approach ensures that every device gets the best possible experience
           its hardware and network can support, without YouTube needing to
           maintain a database mapping every device model to a capability set.
-        </p>
+        </HighlightBlock>
 
         <h3>Google Search — Tiered Experiences for Device Classes</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Google Search serves billions of queries daily across every conceivable
           device class. Rather than serving a single codebase and hoping it
           performs well everywhere, Google uses feature detection and device
@@ -625,10 +630,10 @@ export default function FeatureDetectionArticle() {
           devices could not run smoothly. The lesson for architects is that
           feature detection is as much about what you choose not to load as
           what you choose to enable.
-        </p>
+        </HighlightBlock>
 
         <h3>Spotify Web Player — Audio API Feature Detection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Spotify web player must deliver high-quality audio streaming
           across browsers that differ substantially in their audio API support.
           The player detects whether the Web Audio API is available for
@@ -644,7 +649,7 @@ export default function FeatureDetectionArticle() {
           reduced features. Each capability check is independent, allowing the
           player to enable the maximum feature set that each browser supports
           without an all-or-nothing approach.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/feature-detection-diagram-3.svg"
@@ -658,13 +663,16 @@ export default function FeatureDetectionArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="mb-2 font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: Why is feature detection preferred over user-agent sniffing
               for determining browser capabilities?
-            </p>
-            <p>
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               Feature detection tests the actual capability of the browser
               rather than inferring it from an unreliable identity string.
               User-agent strings are spoofed by browsers for compatibility,
@@ -677,14 +685,14 @@ export default function FeatureDetectionArticle() {
               uses for UA data are analytics and targeted workarounds for
               known browser-version-specific bugs that cannot be detected via
               capability probing.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="mb-2 font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How does CSS <code>@supports</code> work, and when would you
               use <code>CSS.supports()</code> in JavaScript instead?
-            </p>
+            </HighlightBlock>
             <p>
               The <code>@supports</code> at-rule lets you conditionally apply
               CSS blocks based on whether the browser understands a

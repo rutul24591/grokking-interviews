@@ -94,10 +94,10 @@ export default function WebRtcPeerToPeerArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           WebRTC is built on six foundational concepts that govern how
           peer-to-peer connections are established and maintained:
-        </HighlightBlock>
+        </p>
         <ul>
           <HighlightBlock as="li" tier="crucial">
             <strong>RTCPeerConnection:</strong> The core WebRTC API that
@@ -178,12 +178,12 @@ export default function WebRtcPeerToPeerArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           The WebRTC connection lifecycle involves signaling exchange, ICE
           gathering, connectivity checks, and finally media/data transfer.
           Understanding this flow is essential for debugging connection issues
           and building robust applications.
-        </HighlightBlock>
+        </p>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
@@ -206,14 +206,14 @@ export default function WebRtcPeerToPeerArticle() {
               <strong>4. Send Offer via Signaling:</strong> Offer is sent to
               remote peer via WebSocket, HTTP, or custom signaling channel
             </HighlightBlock>
-            <HighlightBlock as="li" tier="important">
+            <li>
               <strong>5. Create Answer:</strong> Remote peer calls
               setRemoteDescription(offer), createAnswer(), gets SDP answer
-            </HighlightBlock>
-            <HighlightBlock as="li" tier="important">
+            </li>
+            <li>
               <strong>6. Send Answer via Signaling:</strong> Answer is sent back
               to initiating peer
-            </HighlightBlock>
+            </li>
             <HighlightBlock as="li" tier="crucial">
               <strong>7. Exchange ICE Candidates:</strong> Both peers discover
               and exchange ICE candidates incrementally
@@ -706,8 +706,12 @@ export default function WebRtcPeerToPeerArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Staff-level focus: WebRTC is never “just P2P”. You must design signaling, NAT traversal (STUN/TURN),
+          bandwidth adaptation, and abuse controls, and you must plan for TURN cost.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.w3.org/TR/webrtc/"
               className="text-accent hover:underline"
@@ -716,7 +720,7 @@ export default function WebRtcPeerToPeerArticle() {
             >
               W3C WebRTC Specification 
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             MDN Web Docs: <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API"
@@ -727,7 +731,7 @@ export default function WebRtcPeerToPeerArticle() {
               WebRTC API 
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             IETF RFC 8825: <a
               href="https://datatracker.ietf.org/doc/html/rfc8825"
               className="text-accent hover:underline"
@@ -736,7 +740,7 @@ export default function WebRtcPeerToPeerArticle() {
             >
               WebRTC Overview 
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://webrtc.org/"
@@ -747,7 +751,7 @@ export default function WebRtcPeerToPeerArticle() {
               Google WebRTC Documentation 
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://github.com/coturn/coturn"
               className="text-accent hover:underline"
@@ -756,8 +760,8 @@ export default function WebRtcPeerToPeerArticle() {
             >
               coturn TURN Server 
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://webrtcforthecurious.com/"
               className="text-accent hover:underline"
@@ -766,7 +770,7 @@ export default function WebRtcPeerToPeerArticle() {
             >
               WebRTC for the Curious 
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

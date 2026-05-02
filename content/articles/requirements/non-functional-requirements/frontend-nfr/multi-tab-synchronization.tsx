@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -32,7 +33,10 @@ export default function MultiTabSynchronizationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Multi-Tab Synchronization</strong> ensures consistent state
           across multiple browser tabs or windows from the same origin. Users
           frequently open multiple tabs — viewing the same dashboard in
@@ -46,8 +50,8 @@ export default function MultiTabSynchronizationArticle() {
           message protocol, handling edge cases (tab close, leader departure,
           concurrent updates), and ensuring the sync infrastructure does not
           degrade application performance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The use cases for multi-tab synchronization span many application
           domains. Authentication sync ensures that logging out in one tab logs
           out all tabs, and that session expiry in one tab notifies all tabs.
@@ -59,7 +63,7 @@ export default function MultiTabSynchronizationArticle() {
           Collaborative editing requires the most sophisticated sync — changes
           in one tab must appear in other tabs in near real-time with conflict
           resolution.
-        </p>
+        </HighlightBlock>
         <p>
           Cross-tab communication mechanisms have evolved from workarounds
           (localStorage events, cookie polling) to purpose-built APIs
@@ -77,7 +81,10 @@ export default function MultiTabSynchronizationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The BroadcastChannel API provides the simplest and most direct
           mechanism for cross-tab communication. A channel is created with a
           name (<code>new BroadcastChannel(&apos;app-sync&apos;)</code>), and
@@ -88,8 +95,8 @@ export default function MultiTabSynchronizationArticle() {
           arrays, primitives, and most built-in types (but not functions or
           DOM elements). Browser support is 95%+ — all modern browsers except
           Internet Explorer.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The localStorage event mechanism provides cross-tab communication as
           a side effect of storage changes. When one tab writes to localStorage
           (<code>localStorage.setItem(key, value)</code>), all other tabs from
@@ -100,7 +107,7 @@ export default function MultiTabSynchronizationArticle() {
           that made the change, and excessive localStorage writes can impact
           storage performance. It is best used as a fallback for browsers that
           do not support BroadcastChannel.
-        </p>
+        </HighlightBlock>
         <p>
           SharedWorker provides a more powerful cross-tab coordination
           mechanism. A SharedWorker is a JavaScript worker that is shared
@@ -129,7 +136,10 @@ export default function MultiTabSynchronizationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The cross-tab synchronization architecture follows a publish-subscribe
           pattern. Each tab subscribes to the BroadcastChannel on initialization
           and registers a message handler. When a tab performs an action that
@@ -139,8 +149,8 @@ export default function MultiTabSynchronizationArticle() {
           relevant to the update. All other tabs receive the message, evaluate
           whether it applies to their current state, and update accordingly.
           The source tab ignores its own message to avoid redundant processing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The message protocol defines the structure and semantics of cross-tab
           communication. Each message includes a type identifier
           (<code>AUTH_CHANGE</code>, <code>CART_UPDATE</code>,{" "}
@@ -152,7 +162,7 @@ export default function MultiTabSynchronizationArticle() {
           specific data for the message type — for auth changes, the
           authentication state; for cart updates, the new cart contents or a
           delta.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/tab-leadership-pattern.svg"
@@ -178,7 +188,10 @@ export default function MultiTabSynchronizationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Communication mechanism selection involves trade-offs between
           simplicity, browser support, and capability. BroadcastChannel is the
           recommended default — it is simple to use (three API calls: create,
@@ -190,8 +203,8 @@ export default function MultiTabSynchronizationArticle() {
           impact storage performance with frequent writes. SharedWorker enables
           complex shared state management but has a significantly more complex
           API and limited mobile browser support (not supported on iOS Safari).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           State reconciliation strategy determines how concurrent updates from
           multiple tabs are resolved. Last-write-wins is the simplest approach
           — the most recent message (by timestamp) overwrites previous state.
@@ -202,7 +215,7 @@ export default function MultiTabSynchronizationArticle() {
           editing. CRDTs provide automatic convergence for complex collaborative
           scenarios but introduce significant implementation complexity and are
           overkill for most multi-tab sync needs.
-        </p>
+        </HighlightBlock>
         <p>
           Real-time sync versus periodic sync presents a performance trade-off.
           Real-time sync (BroadcastChannel messages posted immediately on every
@@ -219,7 +232,10 @@ export default function MultiTabSynchronizationArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Define a structured message protocol for all cross-tab communication.
           Each message should have a type, timestamp, source tab identifier,
           and payload. The type determines which handler processes the message.
@@ -229,8 +245,8 @@ export default function MultiTabSynchronizationArticle() {
           payload contains the specific data for the message type. Document the
           protocol so all team members understand the message structure and can
           add new message types consistently.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement a fallback strategy for browser compatibility. Try
           BroadcastChannel first, and if it is not supported (older browsers),
           fall back to localStorage events. The fallback layer should provide
@@ -240,7 +256,7 @@ export default function MultiTabSynchronizationArticle() {
           implementation detail and ensures consistent behavior across browsers.
           Test the fallback path explicitly because it is the most likely to
           have subtle bugs.
-        </p>
+        </HighlightBlock>
         <p>
           Handle tab close gracefully to maintain system integrity. When a tab
           closes, it should broadcast a <code>TAB_CLOSE</code> message so other
@@ -255,7 +271,10 @@ export default function MultiTabSynchronizationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Infinite rebroadcast loops are the most common multi-tab sync bug.
           When Tab A receives a message from Tab B and rebroadcasts it, Tab B
           receives it back and rebroadcasts it again, creating an infinite loop
@@ -265,8 +284,8 @@ export default function MultiTabSynchronizationArticle() {
           tab, skip processing. Alternatively, include a unique message ID and
           maintain a set of recently processed message IDs, skipping any
           duplicates.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Message ordering issues occur when messages arrive out of sequence
           due to varying processing speeds across tabs. If Tab A sends an
           update at time T1 and Tab B sends an update at time T2, but Tab
@@ -276,7 +295,7 @@ export default function MultiTabSynchronizationArticle() {
           timestamp order. For critical operations where ordering is essential,
           use sequence numbers (monotonically increasing counters) instead of
           wall-clock timestamps to avoid clock skew issues.
-        </p>
+        </HighlightBlock>
         <p>
           Memory leaks from unclosed BroadcastChannel instances are a subtle
           issue that accumulates over long browsing sessions. Each
@@ -292,7 +311,10 @@ export default function MultiTabSynchronizationArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authentication synchronization is the most universally needed
           multi-tab sync scenario. When a user logs out in one tab, all other
           tabs must be logged out to prevent orphaned sessions and security
@@ -303,8 +325,8 @@ export default function MultiTabSynchronizationArticle() {
           response (session expired), it broadcasts a session expiry message so
           all tabs handle the expiry consistently — showing a re-login prompt
           rather than continuing to make failed API requests.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Shopping cart synchronization in e-commerce ensures a consistent
           experience across tabs. When a user adds a product to cart in one
           tab, the cart count in the header of all other tabs updates
@@ -316,7 +338,7 @@ export default function MultiTabSynchronizationArticle() {
           for complex cart operations. During checkout, the checkout tab
           becomes the leader and other tabs display a &quot;checkout in
           progress&quot; indicator to prevent duplicate purchases.
-        </p>
+        </HighlightBlock>
         <p>
           Collaborative document editing represents the most sophisticated
           multi-tab sync use case. Google Docs, Notion, and Figma use CRDTs or
@@ -335,12 +357,15 @@ export default function MultiTabSynchronizationArticle() {
 
       <section>
         <h2>Advanced Multi-Tab Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SharedWorker architecture provides a fundamentally different cross-tab coordination model compared to BroadcastChannel. A SharedWorker is a JavaScript worker process that is shared across all tabs from the same origin — unlike dedicated workers which are created per-tab. When the first tab creates a SharedWorker, the browser spawns a single worker process. When subsequent tabs create a SharedWorker with the same script URL, the browser connects them to the existing worker process rather than spawning a new one. The worker maintains a list of connected ports (one per tab) and can send messages to all ports, specific ports, or route messages between ports. This architecture enables centralized state management — the worker can maintain shared data structures (a global state object, a message queue, a connection pool) that all tabs access through the worker. The worker can also manage a single WebSocket connection on behalf of all tabs, receiving real-time updates and distributing them to each tab, which eliminates the need for each tab to maintain its own persistent connection. This is particularly valuable for applications where WebSocket connections are expensive (rate-limited by the server, or consuming significant mobile battery). The trade-off is that SharedWorker has limited mobile browser support — it is not supported on iOS Safari, which means mobile users fall back to BroadcastChannel or localStorage events. Production implementations must detect SharedWorker support and fall back gracefully, providing the same message interface to the application code regardless of the underlying mechanism.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Leader election algorithms coordinate which tab handles expensive coordination tasks when multiple tabs are open. The simplest approach is age-based election — the first tab to open becomes the leader, and when the leader closes, the next-oldest tab takes over. This is implemented by having each tab broadcast a join message with its timestamp on initialization. If no existing leader responds, the tab becomes the leader. If a leader already exists, the tab becomes a follower. When the leader tab closes, it broadcasts a departure message, and the remaining tabs hold a new election based on their join timestamps. More sophisticated approaches use timeout-based election — if no leader is detected within a configurable timeout (typically 2-3 seconds), the tab declares itself leader and broadcasts its claim. Other tabs accept the claim if they have not already accepted a different leader. This approach handles edge cases where the leader crashes without sending a departure message (network disconnection, browser crash) — after the timeout expires without a heartbeat from the leader, the remaining tabs elect a new leader. The broadcast-channel library provides a built-in leader election implementation that handles these edge cases, including network partitions and split-brain scenarios. For applications with simple coordination needs, a lightweight custom implementation using BroadcastChannel is sufficient and avoids an additional dependency.
-        </p>
+        </HighlightBlock>
         <p>
           Conflict resolution for concurrent edits across tabs becomes critical when users actively modify the same data in multiple tabs simultaneously. The last-write-wins strategy — applying the most recent message by timestamp — is the simplest approach and works adequately for settings, preferences, and other data where conflicts are rare and the cost of losing one change is low. However, for document editing, form data, or shopping cart modifications, last-write-wins can silently discard user work, which is unacceptable for production applications. Field-level merging provides a more sophisticated approach — when two tabs modify different fields of the same object, both changes are applied automatically; when both tabs modify the same field, the more recent change wins and the user is notified that their change was overwritten. This requires the application to track changes at the field level rather than the object level, and to include field-level timestamps or version numbers in the sync messages. For the most complex scenarios — collaborative editing where multiple tabs may modify overlapping regions of a document simultaneously — CRDTs (Conflict-free Replicated Data Types) provide automatic convergence without coordination. CRDTs like Yjs or Automerge represent data structures (text, maps, arrays) as mathematical objects that converge to the same state regardless of the order in which operations are applied. The trade-off is significant implementation complexity and larger bundle size (Yjs adds approximately 40KB to the bundle), which is justified for collaborative applications but overkill for simple multi-tab sync.
         </p>
@@ -357,12 +382,15 @@ export default function MultiTabSynchronizationArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you synchronize state across browser tabs?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use the BroadcastChannel API — create a channel with a shared
               name, post messages with postMessage(data), and receive messages
               via the onmessage handler. Define a message protocol with type,
@@ -371,7 +399,7 @@ export default function MultiTabSynchronizationArticle() {
               localStorage changes). For complex shared state, use SharedWorker.
               Handle tab close with beforeunload to broadcast departure and
               trigger leader re-election if needed.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Stream processing</strong> is the continuous computation on unbounded streams of events, where
           results are produced incrementally as events arrive, rather than periodically on bounded datasets as in batch
           processing. Stream processing is used for real-time analytics, fraud detection, alerting, event-driven
           microservices, and any use case where results must be available within seconds or milliseconds of the events
           that trigger them.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental challenge of stream processing is that the data is unbounded — it has no end — so the
           computation must run continuously, maintaining state as events arrive and producing results incrementally.
           This is fundamentally different from batch processing, where the computation starts with a bounded dataset,
           processes it to completion, and terminates. Stream processing requires mechanisms for state management, fault
           tolerance, and time semantics (event-time vs processing-time) that are not needed in batch processing.
-        </p>
+        </HighlightBlock>
         <p>
           Stream processing engines (Apache Flink, Kafka Streams, Spark Streaming) provide the infrastructure for
           continuous computation — they handle event ingestion, state management, fault tolerance, and result output.
@@ -74,7 +78,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Stateful operators are the core of stream processing. Unlike stateless operators (filter, map) that process
           each event independently, stateful operators (aggregate, join, windowed count) maintain state across events.
           For example, a streaming aggregation operator maintains a running count or sum, updating it as each event
@@ -82,15 +89,15 @@ export default function ArticlePage() {
           events arrive. The state must be managed carefully — it must be stored durably (for fault tolerance),
           accessed efficiently (for low latency), and cleaned up when it is no longer needed (to prevent unbounded
           growth).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Time semantics is the most complex concept in stream processing. There are two notions of time: event-time
           (the time the event occurred, as recorded by the producer) and processing-time (the time the event is
           processed by the stream processor). Event-time is the correct notion of time for most computations — for
           example, a &quot;count of events per minute&quot; should count events by the minute they occurred, not the minute
           they were processed. However, event-time processing is complicated by out-of-order events — events may
           arrive late due to network delays, clock skew, or retries.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/stream-processing-diagram-1.svg"
           alt="Stream processing architecture showing event source, processing operators (filter/map, windowed aggregate, join/enrich), and output sink with state management"
@@ -136,19 +143,22 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The stream processing architecture consists of the event source (Kafka, Kinesis, Pulsar), the stream
           processor (Flink, Kafka Streams, Spark Streaming), and the output sink (database, cache, API). Events flow
           continuously from the source through the processor&apos;s operators (filter, map, aggregate, join) to the sink,
           where results are stored or served to consumers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The stream processor executes the computation as a directed graph of operators. Each operator processes
           events from its input stream and produces events on its output stream. Stateless operators (filter, map)
           process each event independently, while stateful operators (aggregate, join) maintain state across events.
           The graph is partitioned for parallelism — each operator has multiple parallel instances, each processing a
           subset of the events.
-        </p>
+        </HighlightBlock>
         <p>
           State management is a critical component of the stream processor&apos;s architecture. State is stored locally on
           the node where the operator runs (for fast access), and it is checkpointed periodically to durable storage
@@ -181,7 +191,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Stream processing versus batch processing is the primary trade-off between latency and complexity. Stream
           processing provides low latency (results available within seconds or milliseconds) but requires complex
           mechanisms for state management, fault tolerance, and time semantics. Batch processing provides higher
@@ -189,8 +202,8 @@ export default function ArticlePage() {
           dataset, processes it to completion, and terminates. The choice depends on the latency requirements — if
           results must be available within seconds, stream processing is necessary. If results can tolerate minutes or
           hours, batch processing is simpler and more cost-effective.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Continuous processing versus micro-batch processing is a trade-off within stream processing. Continuous
           processing (Flink, Kafka Streams) processes events one at a time, providing the lowest latency (milliseconds)
           but requiring complex state management and exactly-once mechanisms. Micro-batch processing (Spark Streaming)
@@ -198,7 +211,7 @@ export default function ArticlePage() {
           batch is a small batch job, with the same fault tolerance mechanisms as batch processing). The choice depends
           on the latency requirements — if milliseconds are required, continuous processing is necessary. If seconds
           are acceptable, micro-batch processing is simpler.
-        </p>
+        </HighlightBlock>
         <p>
           Event-time versus processing-time is a trade-off between correctness and simplicity. Event-time processing
           produces correct results based on when events occurred, but it requires handling out-of-order events and
@@ -212,18 +225,21 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use event-time processing for time-sensitive computations. Event-time ensures that results are based on
           when events occurred, not when they were processed. Use watermarks to track progress in event-time and to
           handle late events. Set the watermark delay based on the observed latency of events — the percentile that
           balances accuracy (few late events) and latency (short wait time).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design stateful operators to be idempotent whenever possible. Idempotent operators produce the same result
           when reprocessing events (due to failures or retries), which simplifies fault tolerance. For example,
           setting a value (SET count = N) is idempotent, while incrementing a value (count += 1) is not — if the
           increment is applied twice, the result is incorrect.
-        </p>
+        </HighlightBlock>
         <p>
           Monitor state size and checkpoint duration — track the size of each operator&apos;s state and the duration of
           each checkpoint, and alert when they exceed defined thresholds. Large state sizes can cause out-of-memory
@@ -246,21 +262,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Unbounded state growth causing out-of-memory errors is the most common stream processing failure. Stateful
           operators maintain state across events, and if the state is not cleaned up when it is no longer needed, it
           grows unbounded. For example, a streaming join operator maintains a buffer of events from each stream, and
           if the join condition is never satisfied, the buffer grows indefinitely. The fix is to use windowed joins
           (with a time bound on the buffer) or to evict events from the buffer when they are older than a defined
           threshold.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Processing-time instead of event-time causing incorrect results for time-sensitive computations is a subtle
           pitfall. If the computation is time-sensitive (for example, &quot;count of events per minute&quot;), using
           processing-time will produce incorrect results when events arrive late (they will be counted in the wrong
           minute). The fix is to use event-time processing with watermarks, so that events are counted in the minute
           they occurred, not the minute they were processed.
-        </p>
+        </HighlightBlock>
         <p>
           Not handling late events causing data loss is a common failure. When late events arrive (events with
           event-time timestamps earlier than the current watermark), the default behavior is to drop them. If the
@@ -279,21 +298,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses stream processing for its fraud detection pipeline, where transaction
           events are processed in real-time to produce risk scores for each transaction. The stream processor maintains
           a rolling 30-day history of each customer&apos;s transaction pattern, updating the risk score as each new
           transaction arrives. The pipeline uses event-time processing with watermarks to handle late transactions, and
           exactly-once semantics to ensure that each transaction is scored exactly once. The risk scores are written to
           a database where the fraud detection system queries them in real-time to approve or reject transactions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses stream processing for its real-time analytics pipeline, where user activity
           events (page views, clicks, purchases) are processed to produce real-time engagement metrics. The stream
           processor computes windowed aggregations (page views per minute, per user, per product) and writes the
           results to a time-series database for dashboards. The pipeline uses tumbling windows (1-minute windows) for
           real-time metrics and sliding windows (5-minute windows with 1-minute slides) for trend analysis.
-        </p>
+        </HighlightBlock>
         <p>
           A technology company uses stream processing for its monitoring pipeline, where system metrics (CPU, memory,
           network) are processed to produce real-time health scores. The stream processor computes moving averages and
@@ -312,25 +334,28 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: What is the difference between event-time and processing-time, and when would you use each?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Event-time is the time the event occurred, as recorded by the producer. Processing-time is the time the
             event is processed by the stream processor. Event-time is the correct notion of time for most computations
             — for example, a &quot;count of events per minute&quot; should count events by the minute they occurred, not the
             minute they were processed. Processing-time is simpler but incorrect for time-sensitive computations,
             because it is affected by network delays, clock skew, and processing delays.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Use event-time for time-sensitive computations (aggregations by time, anomaly detection, sessionization)
             where the result depends on when events occurred. Use processing-time for non-time-sensitive computations
             (filtering, enrichment, routing) where the result does not depend on when events occurred. Event-time
             processing requires handling out-of-order events and late data (through watermarks), while processing-time
             processing does not.
-          </p>
+          </HighlightBlock>
           <p>
             In practice, most stream processing computations use event-time, because the results are expected to
             reflect the actual timeline of events. Processing-time is used for operational monitoring (for example,

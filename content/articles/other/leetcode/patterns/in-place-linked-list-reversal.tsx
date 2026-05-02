@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,22 +24,25 @@ export default function InPlaceLinkedListReversalArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         In-place linked-list reversal is the technique of reversing the direction of a singly linked
         list — or a contiguous sub-range of one — by re-pointing existing next pointers, without
         allocating new nodes. The core is a four-line loop body that walks three pointers (prev, curr,
         next) and produces a reversed list in O(n) time and O(1) extra space. The pattern earns its own
         article (separate from the broader linked-list pattern) because it is the single most reused
         sub-routine in linked-list problems.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The pattern serves two roles. First as a <strong>standalone operation</strong> — reverse the
         whole list, reverse a sub-range [m, n], reverse in groups of k. Second as a <strong>building
         block</strong> — palindrome check (reverse the second half, walk both halves comparing),
         reorder list (reverse second half, merge by alternation), maximum twin sum (reverse second
         half, walk pairs), add two numbers stored in forward order (reverse, add, reverse). Whenever a
         singly linked list needs to be walked backwards, in-place reversal is the answer.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Recognition signals are concrete. &quot;Reverse&quot;, &quot;reverse between m and n&quot;,
         &quot;reverse in groups of k&quot;, &quot;palindrome linked list&quot;, &quot;reorder
@@ -54,19 +58,22 @@ export default function InPlaceLinkedListReversalArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>The three pointers.</strong> prev starts at null and tracks the head of the
         already-reversed prefix. curr is the node currently being processed; its next pointer is
         re-pointed at prev each iteration. next is a temporary saved before curr.next is mutated, so we
         can advance curr without losing the rest of the list. After the loop ends, prev is the new
         head and curr is null.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>The four-line invariant.</strong> Each iteration: save next, re-point curr.next at
         prev, advance prev to curr, advance curr to next. The order matters — re-pointing before
         saving loses next; advancing prev before re-pointing produces a self-loop. The same four lines
         appear verbatim across every reversal-based algorithm.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Sub-range reversal needs two boundary fixups.</strong> To reverse positions m through
         n: walk prev_outer to position m − 1, save its next as the head of the sub-list (which becomes
@@ -105,20 +112,23 @@ export default function InPlaceLinkedListReversalArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Whole-list reversal template (206).</strong> prev = null, curr = head. While curr:
         next = curr.next; curr.next = prev; prev = curr; curr = next. Return prev. Four lines in the
         loop body. The base case (empty or single-node list) is handled implicitly because curr is
         immediately null and the loop does not execute.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Sub-range reversal template (92).</strong> Use a dummy head pointing at head. Walk
         prev_outer m − 1 steps from dummy. Save sub_head = prev_outer.next (this becomes the tail of
         the reversed sub-list). Reverse n − m + 1 nodes using the triple-step starting at
         prev_outer.next. After the loop: sub_head.next = curr (the post-range successor, which curr
         points at after the loop ends); prev_outer.next = prev (the new sub-list head). Return
         dummy.next.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>k-group reversal template (25).</strong> Loop until fewer than k nodes remain.
         Per chunk: identify the k-th node by walking k steps; reverse the chunk; connect the previous
@@ -150,18 +160,21 @@ export default function InPlaceLinkedListReversalArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Iterative vs. recursive reversal.</strong> Both are O(n) time. Iterative is O(1)
         space; recursive is O(n) stack. For Leetcode constraints up to 10⁴ nodes recursion is
         borderline; for production code, iteration is mandatory. Recursion is shorter to write but
         slower in practice due to call overhead.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Reverse-then-walk vs. stack-based backwards walk.</strong> Both achieve backwards
         traversal. Reversal is O(1) extra space (in-place modification); stack is O(n) extra space
         (stores all nodes). Reversal mutates the input — if the original order must be preserved,
         either reverse twice (once to read, once to restore) or use the stack.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Reverse vs. doubly linked list.</strong> A doubly linked list supports O(1) backwards
         walk natively. If the data structure is fixed (singly linked) and the design allows in-place
@@ -185,16 +198,19 @@ export default function InPlaceLinkedListReversalArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Memorise the four lines.</strong> next = curr.next; curr.next = prev; prev = curr;
         curr = next. In that order. Anyone who has done linked-list interviews more than once should
         be able to type these lines in their sleep.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Use a dummy head for sub-range reversal.</strong> Walking to position m − 1 is
         cleaner from a dummy than from the head, because the m = 1 case (reverse from the start)
         otherwise needs special handling.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Save the original sub-head before reversing.</strong> After sub-range reversal, the
         original head of the sub-list is now its tail; you need a reference to it to connect to the
@@ -217,15 +233,18 @@ export default function InPlaceLinkedListReversalArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Re-pointing curr.next before saving next.</strong> The classic bug — once curr.next
         becomes prev, the original successor is lost and the loop traverses the already-reversed
         prefix instead of the rest of the list.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Returning curr instead of prev.</strong> At loop end, curr is null and prev is the
         new head. Returning curr returns null and breaks the contract.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Forgetting the boundary fixups in sub-range reversal.</strong> After the inner loop,
         the original sub-head&apos;s next still points at the first node past the range — but the
@@ -253,14 +272,17 @@ export default function InPlaceLinkedListReversalArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode Problems)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>206. Reverse Linked List.</strong> The base template — four-line loop body. Both
         iterative and recursive are expected answers.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>92. Reverse Linked List II.</strong> Sub-range reversal with two boundary stitch
         assignments. The interview test for the pattern beyond the base case.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>25. Reverse Nodes in k-Group.</strong> Repeated sub-range reversal with a fewer-than-k
         check. The hardest of the pure-reversal problems.
@@ -304,13 +326,16 @@ export default function InPlaceLinkedListReversalArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why save next before re-pointing curr.next?</strong> Because re-pointing curr.next at
+        <HighlightBlock as="li" tier="important"><strong>Why save next before re-pointing curr.next?</strong> Because re-pointing curr.next at
         prev clobbers the only reference to the rest of the list. Saving next first preserves the
-        ability to advance.</li>
-        <li><strong>Why does the iterative version need O(1) space?</strong> Only three local pointers
+        ability to advance.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Why does the iterative version need O(1) space?</strong> Only three local pointers
         across the whole call; no stack, no auxiliary structure. Each node is visited exactly once
-        and modified in place.</li>
+        and modified in place.</HighlightBlock>
         <li><strong>What does prev hold at loop end?</strong> The new head of the reversed list. curr
         holds null (the original tail&apos;s old next was null, so the loop terminates).</li>
         <li><strong>How does sub-range reversal connect the boundaries?</strong> Two assignments:

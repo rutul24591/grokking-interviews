@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -25,19 +26,22 @@ export default function ConsistencyModelArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>consistency model</strong> defines the guarantees a distributed system provides about
           how and when updates to data become visible to clients. It is a contract between the system and
           its users about the behavior of reads and writes when multiple copies of data exist across
           different nodes, regions, or data centers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In single-node systems, consistency is trivial — every read sees the most recent write because
           there is only one copy of the data. In distributed systems with replication, consistency becomes
           a fundamental design challenge: when multiple copies of data exist, which copy does a read
           return? What happens when two clients write to different replicas simultaneously? How long can
           replicas disagree before the system must force convergence?
-        </p>
+        </HighlightBlock>
         <p>
           Consistency is not a binary property — it is a spectrum from strong consistency, where all reads
           see the most recent write and the system behaves as if there were a single copy of data, to weak
@@ -77,20 +81,23 @@ export default function ConsistencyModelArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding consistency models requires grasping several foundational concepts that govern how
           replicated data systems behave. These concepts form the vocabulary of consistency discussions in
           both production architecture and system design interviews.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Replication and Divergence</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Replication creates multiple copies of data across nodes for availability, durability, and
           performance. When a write occurs on one replica, it must propagate to other replicas. During the
           propagation window — which may be milliseconds within a data center or hundreds of milliseconds
           across regions — replicas diverge. Different replicas hold different values for the same data.
           The consistency model defines what clients observe during this divergence period.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Causality and Happens-Before</h3>
         <p>
@@ -126,11 +133,14 @@ export default function ConsistencyModelArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The consistency model shapes the entire data access architecture — from how clients route reads
           and writes, to how replicas synchronize, to how conflicts are detected and resolved. The
           architecture flows from the chosen consistency guarantees.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/consistency-models-spectrum.svg"
@@ -139,13 +149,13 @@ export default function ConsistencyModelArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Strong Consistency Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Strong consistency (linearizability) requires synchronous coordination among replicas before
           acknowledging a write. The typical architecture uses a leader-based replication model: one node
           (the leader) accepts writes and synchronously replicates to follower nodes. The write is
           acknowledged only after a majority (or all) of followers have persisted the data. Reads are
           routed to the leader or to followers that have confirmed receipt of the latest write.
-        </p>
+        </HighlightBlock>
         <p>
           Systems like PostgreSQL with synchronous replication, ZooKeeper, and etcd implement strong
           consistency through consensus protocols (Paxos, Raft). These protocols guarantee that all nodes
@@ -199,20 +209,23 @@ export default function ConsistencyModelArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Every consistency model involves trade-offs between correctness, availability, latency, and
           operational complexity. Understanding these trade-offs and articulating them clearly is essential
           for senior engineering decisions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Latency vs Consistency</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Strong consistency adds latency proportional to the distance to the farthest replica that must
           acknowledge the write. Within a single data center, this adds 1-10ms. Across regions, it adds
           100-200ms due to the speed of light. Eventual consistency adds zero coordination latency — the
           write is acknowledged immediately by the local node. The trade-off is between user-perceived
           latency and data correctness.
-        </p>
+        </HighlightBlock>
         <p>
           For globally distributed systems, this latency differential is often the deciding factor. A
           payment system that requires strong consistency across three regions will have write latency of
@@ -254,22 +267,25 @@ export default function ConsistencyModelArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Per-Domain Consistency Selection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most effective approach is to apply different consistency models to different data domains
           within the same system. Financial data — balances, transactions, payments — requires strong
           consistency. Social data — likes, shares, feed rankings — tolerates eventual consistency. User
           session data — profile updates, preferences — needs read-your-writes consistency. This hybrid
           approach optimizes each data domain for its specific requirements rather than applying a
           one-size-fits-all model.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement this by using different databases or different configurations of the same database
           for different data types. PostgreSQL with synchronous replication for financial data. DynamoDB
           with eventual consistency for social data. Redis with session affinity for user session data.
           Route reads and writes to the appropriate store based on data domain.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Read-Your-Writes for User-Facing Operations</h3>
         <p>
@@ -305,25 +321,28 @@ export default function ConsistencyModelArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Assuming Strong Consistency by Default</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Engineers often assume that their database provides strong consistency when it actually defaults
           to eventual consistency. DynamoDB, Cassandra, and many NoSQL databases default to eventual
           consistency for reads. PostgreSQL with asynchronous replication provides eventual consistency
           for reads from replicas. Always verify the consistency guarantees of your database
           configuration — and test for stale reads explicitly in your integration tests.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Clock Skew Undermining Last-Write-Wins</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Last-write-wins conflict resolution relies on timestamps. If node clocks are not synchronized
           (NTP drift, timezone misconfiguration), the &quot;last&quot; write may actually be an earlier
           write with a later timestamp. This causes data loss that appears random and is extremely
           difficult to debug. Always use logical clocks (vector clocks, Lamport timestamps) or ensure
           NTP synchronization with tight bounds (&lt; 10ms drift) before relying on timestamp-based
           conflict resolution.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Ignoring the Cost of Strong Consistency</h3>
         <p>
@@ -348,9 +367,12 @@ export default function ConsistencyModelArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">E-Commerce Platform (Amazon)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon&apos;s e-commerce platform uses a hybrid consistency model. Inventory management uses strong
           consistency within a region to prevent overselling — the inventory database uses synchronous
           replication so that a &quot;last item&quot; sell is visible to all concurrent shoppers before any
@@ -358,10 +380,10 @@ export default function ConsistencyModelArticle() {
           user sees their own cart updates immediately through session-based routing. Product reviews and
           ratings use eventual consistency with 5-second replication lag — a review that takes 5 seconds
           to appear globally has no business impact.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Social Media Platform (Twitter/X)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter handles over 6,000 tweets per second with eventual consistency for feed generation. The
           fan-out-on-write approach pushes tweets to followers&apos; feed caches asynchronously. During the
           push window, followers may not see the latest tweet — but this staleness (typically under 5
@@ -369,7 +391,7 @@ export default function ConsistencyModelArticle() {
           eventual consistency with CRDT-based counters (G-Counters per region, summed globally) that
           converge within seconds. Direct messages use causal consistency to ensure that reply threads
           appear in logical order.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Banking System (Traditional Finance)</h3>
         <p>
@@ -397,13 +419,16 @@ export default function ConsistencyModelArticle() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-6">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               1. Design a globally distributed e-commerce platform. What consistency model do you choose for inventory, shopping cart, and product reviews? Justify each choice.
-            </p>
+            </HighlightBlock>
             <div className="mt-4 p-4 bg-panel rounded-lg">
-              <p className="font-semibold text-accent">Answer:</p>
+              <HighlightBlock as="p" tier="important" className="font-semibold text-accent">Answer:</HighlightBlock>
               <p className="mt-2">
                 Inventory requires strong consistency within each region to prevent overselling. If two
                 users simultaneously attempt to purchase the last item, only one must succeed. Use a
@@ -596,19 +621,22 @@ export default function ConsistencyModelArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consistency models have direct security implications. Incorrect consistency choices can lead to data corruption, financial loss, and unauthorized access.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Consistency-Related Vulnerabilities</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Stale Authentication Data:</strong> If authentication tokens are served from eventually consistent replicas, a revoked token may remain valid on stale replicas. Mitigation: use strong consistency for authentication data, implement token validation against the primary, set short TTLs for auth caches.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Double-Spend Attacks:</strong> Eventual consistency in financial systems enables double-spending — a user spends the same balance on two replicas before they converge. Mitigation: use strong consistency for all financial operations, implement idempotency keys, use distributed transactions with two-phase commit for cross-service payments.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Race Conditions in Authorization:</strong> Concurrent permission changes may grant or revoke access inconsistently. Mitigation: use strong consistency for permission changes, implement authorization checks against the primary, use optimistic concurrency control with version numbers.
             </li>
@@ -646,19 +674,22 @@ export default function ConsistencyModelArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consistency models must be validated through systematic testing — especially the edge cases that only appear under concurrent writes and network partitions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Consistency Test Suite</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Linearizability Tests:</strong> Verify that all reads see the latest write. Use Jepsen-style tests with concurrent writers and readers. Validate that no stale reads occur under normal operation. Tools: Jepsen, Knossos, Elle.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Partition Testing:</strong> Introduce network partitions and verify CAP behavior. For CP systems: verify that writes are rejected during partition. For AP systems: verify that writes are accepted and conflicts are resolved correctly after partition heals.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Concurrent Write Tests:</strong> Execute concurrent writes to the same key from multiple clients. Verify that conflict resolution produces deterministic results. Test with LWW, vector clocks, and CRDTs to validate each strategy&apos;s behavior.
             </li>

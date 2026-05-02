@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function InventoryManagementArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Inventory management tracks product availability across warehouses and stores, reserves stock for pending orders, and prevents overselling while optimizing stock levels. The inventory system is critical for e-commerce operations—customers expect accurate stock information, fast fulfillment, and no cancellations due to stockouts. For staff and principal engineers, inventory management involves distributed systems challenges (consistency across warehouses, real-time sync, high-concurrency updates) and business complexity (multi-location fulfillment, safety stock, reorder points, demand forecasting).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of inventory management extends beyond simple quantity tracking. Stock levels have multiple states: available (can sell), reserved (held for pending orders), committed (allocated to confirmed orders), in-transit (moving between warehouses), on-order (ordered from supplier, not yet received). Each state transition must be atomic—overselling occurs when concurrent orders both see available stock and both reserve. The system must handle high-concurrency scenarios (flash sales, Black Friday) where thousands of orders compete for limited stock in seconds.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, inventory architecture involves trade-offs between consistency and availability. Strong consistency (distributed locking, pessimistic updates) prevents overselling but reduces throughput. Eventual consistency (optimistic updates, async reconciliation) improves throughput but risks temporary overselling. The system must support multi-warehouse coordination (which warehouse fulfills which order), real-time inventory sync (online stock reflects warehouse reality), and integration with warehouse management systems (WMS), enterprise resource planning (ERP), and point-of-sale (POS) systems.
         </p>
@@ -47,13 +51,16 @@ export default function InventoryManagementArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Inventory States and Quantities</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Inventory quantities have multiple states representing different availability levels. On-hand quantity: physical stock in warehouse (counted, verified). Available quantity: on-hand minus reserved (can sell to customers). Reserved quantity: stock held for pending orders (soft allocation, released on timeout or cancellation). Committed quantity: stock allocated to confirmed orders (hard allocation, will ship). In-transit quantity: stock moving between warehouses (not available, will be available on arrival). On-order quantity: stock ordered from supplier (not yet received, expected delivery date).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           State transitions manage inventory flow. On order → in transit: supplier ships, tracking available. In transit → on hand: warehouse receives, quality check. On hand → reserved: order created, soft hold. Reserved → committed: payment authorized, hard allocation. Committed → shipped: package handed to carrier, inventory deducted. Shipped → (return received): customer returns, inspected, restocked (or written off if damaged).
-        </p>
+        </HighlightBlock>
         <p>
           Safety stock prevents stockouts. Buffer quantity above expected demand (reorder point = lead time demand + safety stock). Reorder point triggers purchase order (when available + on-order &lt; reorder point). Economic order quantity (EOQ) balances ordering cost vs. holding cost. Demand forecasting predicts future demand (seasonal trends, promotions, historical patterns).
         </p>
@@ -105,9 +112,12 @@ export default function InventoryManagementArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Inventory management architecture spans inventory tracking, reservation service, warehouse coordination, and external integrations. Inventory tracking maintains stock levels per SKU per warehouse. Reservation service handles soft and hard reservations. Warehouse coordination allocates orders to warehouses. External integrations sync with WMS, ERP, POS, and marketplaces.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/inventory-management/inventory-architecture.svg"
@@ -118,9 +128,9 @@ export default function InventoryManagementArticle() {
         />
 
         <h3>Inventory Tracking Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Inventory data model stores stock per SKU per warehouse. Table: sku_id, warehouse_id, on_hand, reserved, committed, in_transit, on_order, version. Index on sku_id (global stock query) and warehouse_id (per-warehouse query). Optimistic locking with version column prevents concurrent oversell.
-        </p>
+        </HighlightBlock>
         <p>
           Stock adjustment handles non-order changes. Receiving: on_order → in_transit → on_hand (supplier shipment). Cycle count: adjust on_hand to match physical count (shrinkage, damage, theft). Transfer: on_hand at source → in_transit → on_hand at destination. Write-off: on_hand → 0 (damaged, expired, lost). Each adjustment logged (who, what, when, why) for audit.
         </p>
@@ -180,14 +190,17 @@ export default function InventoryManagementArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Inventory management design involves trade-offs between consistency, availability, complexity, and cost. Understanding these trade-offs enables informed decisions aligned with business requirements and operational capabilities.
-        </p>
+        </HighlightBlock>
 
         <h3>Consistency: Strong vs. Eventual</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Strong consistency (distributed locking, pessimistic updates). Pros: No oversell, accurate stock always. Cons: Reduced throughput (serialization), lock contention under load, single point of failure (lock service). Best for: High-value items, limited stock, flash sales.
-        </p>
+        </HighlightBlock>
         <p>
           Eventual consistency (optimistic updates, async reconciliation). Pros: Higher throughput (no lock wait), better availability (no lock service dependency). Cons: Temporary oversell risk, reconciliation complexity (backorder, cancel, notify customer). Best for: High-volume retailers with reliable suppliers (can backorder quickly).
         </p>
@@ -239,13 +252,16 @@ export default function InventoryManagementArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement reservation with TTL:</strong> Soft hold on checkout, hard commit on payment. TTL for soft holds (15-30 minutes). Cleanup job releases expired reservations. Monitor timeout rate (abandonment indicator).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use optimistic locking:</strong> Version column for concurrency control. Update with version check. Retry on conflict with exponential backoff. Monitor conflict rate (high = oversell risk).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Maintain safety stock:</strong> Buffer above expected demand. Reorder point = lead time demand + safety stock. Auto-generate purchase orders when below reorder point. Adjust safety stock based on demand variability.
           </li>
@@ -275,13 +291,16 @@ export default function InventoryManagementArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No reservation timeout:</strong> Abandoned carts lock inventory forever. Solution: TTL on soft reservations, cleanup job, monitor timeout rate.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No concurrency control:</strong> Concurrent orders oversell same stock. Solution: Optimistic locking (version check), distributed locking for high-demand items.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No safety stock:</strong> Stockouts from demand variability. Solution: Safety stock based on demand variability, auto-replenishment.
           </li>
@@ -311,16 +330,19 @@ export default function InventoryManagementArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Amazon Inventory Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon inventory spans fulfillment centers worldwide. Real-time stock tracking per SKU per warehouse. Virtual pooling (show &quot;in stock&quot; if any warehouse has). Multi-warehouse allocation (nearest, fastest). Prime eligibility based on warehouse stock. FBA (Fulfillment by Amazon) for third-party sellers.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Zara Fast Fashion Inventory</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Zara inventory turns over weekly (new items constantly). Store-level inventory tracking (RFID per item). Automated replenishment (sales trigger restock). Transfer between stores (balance stock). Limited safety stock (fast fashion model). End-of-season clearance (make room for new).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Walmart Omnichannel Inventory</h3>
         <p>
@@ -340,12 +362,15 @@ export default function InventoryManagementArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you prevent overselling during flash sales?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you prevent overselling during flash sales?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Pre-allocate inventory (reserve for sale, separate from regular stock). Queue orders (process sequentially, not first-come). Rate limit per customer (prevent bots). Distributed locking (Redis SETNX) for stock deduction. Optimistic locking with retry (version check). Oversell buffer (small buffer, backorder if exceeded). Show &quot;selling fast&quot; to manage expectations.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

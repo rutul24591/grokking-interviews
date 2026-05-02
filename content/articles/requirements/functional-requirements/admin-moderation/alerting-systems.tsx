@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function AlertingSystemsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Alerting systems enable administrative alert management through programmatic interfaces. The alerting systems system is the primary tool for administrators, operations teams, and automated systems to manage alerts, route alerts, perform escalations, and ensure platform reliability. For staff and principal engineers, alerting systems involve alert configuration (configure alerts), alert routing (route alerts), escalation policies (manage escalation policies), notification channels (manage notification channels), alert suppression (suppress alerts), and alerting service security (secure alerting services).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of alerting systems extends beyond simple alert management. Alert configuration must configure alerts (configure alerts). Alert routing must route alerts (route alerts). Escalation policies must manage escalation policies (manage escalation policies). Notification channels must manage notification channels (manage notification channels). Alert suppression must suppress alerts (suppress alerts). Alerting service security must secure alerting services (secure alerting services).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, alerting systems architecture involves alert configuration (configure alerts), alert routing (route alerts), escalation policies (manage escalation policies), notification channels (manage notification channels), alert suppression (suppress alerts), and alerting service security (secure alerting services). The system must support multiple alert types (system alerts, application alerts, infrastructure alerts), multiple routing types (priority routing, skill-based routing, load-based routing), and multiple notification types (email notifications, SMS notifications, push notifications). Performance is important—alerting systems must be fast and reliable.
         </p>
@@ -47,13 +51,16 @@ export default function AlertingSystemsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Alert Configuration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           System alerts configure system alerts. System alerts (configure system alerts). System alerts validation (validate system alerts). System alerts enforcement (enforce system alerts). System alerts reporting (report on system alerts).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Application alerts configure application alerts. Application alerts (configure application alerts). Application alerts validation (validate application alerts). Application alerts enforcement (enforce application alerts). Application alerts reporting (report on application alerts).
-        </p>
+        </HighlightBlock>
         <p>
           Infrastructure alerts configure infrastructure alerts. Infrastructure alerts (configure infrastructure alerts). Infrastructure alerts validation (validate infrastructure alerts). Infrastructure alerts enforcement (enforce infrastructure alerts). Infrastructure alerts reporting (report on infrastructure alerts).
         </p>
@@ -116,9 +123,12 @@ export default function AlertingSystemsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Alerting systems architecture spans alert configuration, alert routing, escalation policies, and notification channels. Alert configuration configures alerts. Alert routing routes alerts. Escalation policies manage escalation policies. Notification channels manage notification channels.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/admin-moderation/alerting-systems/alerting-systems-architecture.svg"
@@ -129,9 +139,9 @@ export default function AlertingSystemsArticle() {
         />
 
         <h3>Alert Configuration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Alert configuration configures alerts. System alerts (configure system alerts). Application alerts (configure application alerts). Infrastructure alerts (configure infrastructure alerts).
-        </p>
+        </HighlightBlock>
         <p>
           System alerts validation validates system alerts. System alerts validation (validate system alerts). System alerts validation enforcement (enforce system alerts validation). System alerts validation verification (verify system alerts validation). System alerts validation reporting (report on system alerts validation).
         </p>
@@ -191,14 +201,17 @@ export default function AlertingSystemsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Alerting systems design involves trade-offs between comprehensiveness and complexity, routing and performance, and notification and noise. Understanding these trade-offs enables informed decisions aligned with alerting needs and platform constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Alerting: Comprehensive vs. Minimal</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comprehensive alerting (comprehensive alerting). Pros: Comprehensive (comprehensive alerting), effective alerting. Cons: Complex (complex alerting), expensive. Best for: Alerting-intensive platforms, critical platforms.
-        </p>
+        </HighlightBlock>
         <p>
           Minimal alerting (minimal alerting). Pros: Simple (simple alerting), cheap. Cons: Not comprehensive (not comprehensive alerting), not effective. Best for: Non-alerting-intensive platforms, non-critical platforms.
         </p>
@@ -250,13 +263,16 @@ export default function AlertingSystemsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement alert configuration:</strong> System alerts, application alerts, infrastructure alerts. Alert configuration management. Alert configuration enforcement.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement alert routing:</strong> Priority routing, skill-based routing, load-based routing. Alert routing management. Alert routing enforcement.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement escalation policies:</strong> Escalation levels, escalation timing, escalation notification. Escalation policies management. Escalation policies enforcement.
           </li>
@@ -286,13 +302,16 @@ export default function AlertingSystemsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No alert configuration:</strong> Don&apos;t configure alerts. Solution: Alert configuration (system, application, infrastructure).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No alert routing:</strong> Don&apos;t route alerts. Solution: Alert routing (priority, skill-based, load-based).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No escalation policies:</strong> Don&apos;t manage escalation policies. Solution: Escalation policies (levels, timing, notification).
           </li>
@@ -322,16 +341,19 @@ export default function AlertingSystemsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Alert Configuration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Alert configuration for alert configuration. System alerts (configure system alerts). Application alerts (configure application alerts). Infrastructure alerts (configure infrastructure alerts). Alert configuration management (manage alert configuration).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Alert Routing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Alert routing for alert routing. Priority routing (route alerts by priority). Skill-based routing (route alerts by skills). Load-based routing (route alerts by load). Alert routing management (manage alert routing).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Escalation Policies</h3>
         <p>
@@ -351,12 +373,15 @@ export default function AlertingSystemsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design alerting that wakes people up for real problems but doesn&apos;t cause alert fatigue?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design alerting that wakes people up for real problems but doesn&apos;t cause alert fatigue?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement tiered alerting strategy based on severity and urgency. System alerts: infrastructure failures, service outages, security incidents—page immediately. Application alerts: error rate spikes, latency degradation, feature failures—page during business hours, ticket off-hours. Infrastructure alerts: capacity warnings, performance degradation—ticket only, review daily. The critical principle: pages should be rare and actionable—if you&apos;re paging more than a few times per month per person, alerts are too noisy. Implement alert validation: every alert should have clear owner, runbook (what to do when alert fires), escalation path. The operational challenge: alert fatigue causes people to ignore alerts. Implement alert review process (weekly review of fired alerts, remove noisy alerts), alert metrics (track alert volume, page volume, time to acknowledge), alert budgets (team has budget for pages per week—exceeding budget triggers alert quality review). Design alerts for humans—clear subject lines, actionable messages, relevant context (what changed, what&apos;s impacted).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

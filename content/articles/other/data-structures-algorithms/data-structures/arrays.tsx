@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -40,7 +41,10 @@ export default function ArraysArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An <strong>array</strong> is an ordered collection of elements stored
           in a contiguous block of memory, indexed by a zero-based integer. The
           defining property is not the API surface — every modern language ships
@@ -50,8 +54,8 @@ export default function ArraysArticle() {
           characteristic that follows: O(1) random access, cache-line
           friendliness, predictable iteration, and the friction associated with
           growth, insertion, and deletion.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Arrays predate almost every other software data structure. Fortran I
           (1957) shipped with fixed-size, statically-dimensioned arrays designed
           around the column-major memory layout of the IBM 704. C formalized the
@@ -63,7 +67,7 @@ export default function ArraysArticle() {
           (<code>ArrayList</code>), Python (<code>list</code>), Go
           (<code>slice</code>), and JavaScript (<code>Array</code>) each
           offering their own flavor of the same amortized-growth pattern.
-        </p>
+        </HighlightBlock>
         <p>
           Within the JavaScript ecosystem, the word &quot;array&quot; is
           overloaded. The core <code>Array</code> is a heterogeneous,
@@ -98,7 +102,10 @@ export default function ArraysArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundational property of an array is its{" "}
           <strong>address arithmetic</strong>. Given a base address{" "}
           <code>b</code>, an element size <code>s</code>, and an index{" "}
@@ -109,12 +116,12 @@ export default function ArraysArticle() {
           in order means walking adjacent memory locations; random access means
           jumping directly; bounds-checking means comparing <code>i</code> to
           the stored length.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Spatial locality and cache lines
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Modern CPUs do not read individual bytes from DRAM. They read{" "}
           <strong>cache lines</strong> — typically 64 bytes on x86-64 and
           ARM64 — and buffer them in a hierarchy of L1, L2, and L3 caches. When
@@ -127,7 +134,7 @@ export default function ArraysArticle() {
           requests them. The net effect is that sequential array traversal is
           typically one to two orders of magnitude faster than pointer-chasing
           through equivalent data stored in a linked structure.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Homogeneous vs heterogeneous representations
@@ -183,7 +190,10 @@ export default function ArraysArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A dynamic array is really two numbers and a buffer. The two numbers
           are <strong>length</strong> (how many elements are logically present)
           and <strong>capacity</strong> (how many slots the backing buffer can
@@ -194,12 +204,12 @@ export default function ArraysArticle() {
           is allocated, existing elements are copied over, and the old buffer
           is released. The expensive copy-on-grow step is the part that
           demands an amortized-analysis lens.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Amortized O(1) append
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The standard trick is geometric growth: every time capacity is
           exhausted, multiply it by a constant factor — typically 2 (Java
           <code> ArrayList</code>, Python <code>list</code> for small sizes),
@@ -215,7 +225,7 @@ export default function ArraysArticle() {
           <code> tcmalloc</code> recycle buddy blocks. The trade-off is more
           frequent copies for better memory locality — a classic
           time-vs-space balance point.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Insert and delete in the middle
@@ -261,13 +271,16 @@ export default function ArraysArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity table is well-known, but the constants behind each
           Big-O entry tell the real story. &quot;O(n) shift&quot; for insertion
           in the middle is cheap when the shift fits in L1 cache and is painful
           when it spills to DRAM. Comparisons between arrays and alternatives
           should always carry these constants in mind.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Operation complexity
@@ -303,7 +316,7 @@ export default function ArraysArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Arrays vs linked lists
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Linked lists offer O(1) insertion and deletion given a node
           reference, but they pay for that flexibility with cache hostility
           (every node is a random memory hop), higher per-element overhead
@@ -314,7 +327,7 @@ export default function ArraysArticle() {
           linked lists until collection sizes run into the tens of thousands,
           because the O(log n) binary search on a sorted array beats the
           linked-list traversal&apos;s cache misses.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Arrays vs hash tables
@@ -351,20 +364,23 @@ export default function ArraysArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Pre-allocate when size is known.</strong> Passing a
             capacity hint (<code>new Array(n)</code>, <code>Vec::with_capacity</code>,{" "}
             <code>make([]T, 0, n)</code>) eliminates intermediate resizes and
             keeps tail latency predictable.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Keep element kinds stable in JavaScript.</strong> Avoid
             mixing types within a single array. A numeric-only array that
             later accepts a string silently deoptimizes every subsequent
             read. If you need heterogeneous storage, prefer an explicit object
             shape.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Reach for TypedArrays in hot numeric code.</strong>{" "}
             <code>Float64Array</code> and <code>Int32Array</code> give you
@@ -402,20 +418,23 @@ export default function ArraysArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Iterator invalidation.</strong> Mutating an array during
             iteration — pushing, splicing, or reassigning indices — produces
             skipped elements, infinite loops, or runtime errors depending on
             the language. Always iterate a copy or use a two-pass pattern.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Holey arrays in JavaScript.</strong> Using{" "}
             <code>delete arr[i]</code> leaves a hole that transitions the
             array to <code>HOLEY_ELEMENTS</code>, disabling fast paths on every
             subsequent read for the array&apos;s lifetime. Use{" "}
             <code>splice</code> or overwrite with a sentinel value instead.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Unbounded growth.</strong> Doubling capacity with no upper
             bound can quietly consume memory. Pair growth with explicit size
@@ -455,11 +474,14 @@ export default function ArraysArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           V8 internal elements kinds
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           V8&apos;s object model treats array storage as a first-class
           optimization target. The engine tracks an <em>elements kind</em> on
           every <code>Array</code> and specializes the machine code for each
@@ -469,19 +491,19 @@ export default function ArraysArticle() {
           <code>DICTIONARY_ELEMENTS</code> for the same nominal operation.
           Libraries like React&apos;s reconciler explicitly structure their
           fiber sibling arrays to stay in the fast path.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           React reconciler fiber siblings
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           React keeps the children of each fiber node in an array-like
           structure and iterates siblings by index. The reconciler is careful
           to keep these arrays packed and to avoid sparse indices during
           diffing, since any transition to dictionary mode degrades render
           throughput. This is one reason that reordering arrays of children
           without stable keys triggers so much wasted work.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Canvas and WebGL pixel buffers
@@ -536,12 +558,15 @@ export default function ArraysArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: Why is dynamic array append amortized O(1)?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: With a geometric growth factor <em>k</em> (typically 1.5 or
               2), the sum of all copy costs across <em>n</em> appends forms a
               geometric series dominated by its last term, which is O(n).
@@ -552,7 +577,7 @@ export default function ArraysArticle() {
               amortized result. A linear growth strategy (adding a fixed{" "}
               <em>c</em> slots each time) would produce O(n²) total copies and
               O(n) amortized append.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,15 +25,18 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Database monitoring</strong> is the systematic practice of measuring, recording, and analyzing database
           behavior so that application latency, correctness, and availability objectives remain satisfied as load, data
           volume, and query patterns evolve over time. In a distributed system the database almost always sits on the
           critical path: it is the shared stateful dependency that every service ultimately converges on. When the
           database degrades, the degradation radiates outward through every downstream call, cache miss, and retry loop
           that depends on it. When the database fails, the blast radius is typically total for the data domain it owns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Monitoring a stateful database is fundamentally different from monitoring a stateless compute tier. A stateless
           service can be killed and replaced with minimal consequence; a database holds durable state, participates in
           consistency protocols, runs background work such as vacuuming and checkpointing, and manages replication to
@@ -41,7 +45,7 @@ export default function ArticlePage() {
           growing replication lag that creeps past recovery objectives, or a subtle query-plan regression that pushes
           p99 latency over the error-budget threshold. Catching these trends early requires a monitoring strategy that
           captures both the database&apos;s internal state and the symptoms that applications experience as a result.
-        </p>
+        </HighlightBlock>
         <p>
           The distinction matters for staff and principal engineers because database incidents demand a different
           diagnostic vocabulary than application incidents. Instead of asking which microservice is overloaded, you ask
@@ -54,7 +58,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Effective database monitoring rests on three conceptual pillars. The first is the <strong>dual-view
           principle</strong>: every database should be observed from the inside-out and from the outside-in. The
           inside-out view captures what the database engine itself sees: query execution plans, lock-grant graphs,
@@ -63,13 +70,13 @@ export default function ArticlePage() {
           and retry amplification. These two views are complementary because the same underlying bottleneck often
           manifests differently in each. CPU on the primary may appear perfectly healthy while lock-wait time silently
           absorbs incoming requests into a queue.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/database-monitoring-diagram-1.svg"
           alt="Database monitoring overview showing inside-out and outside-in views"
           caption="Two views of database health: outside-in application symptoms (latency, errors, pool wait) and inside-out database internals (queries, locks, I/O, replication). Correlating both views is essential for fast diagnosis."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The second pillar is the <strong>golden-signal framework adapted for databases</strong>. The classic
           latency-throughput-errors-saturation model extends with contention and replication as first-class signals.
           Query latency distributions must be tracked per fingerprint rather than as a global average, because a small
@@ -78,7 +85,7 @@ export default function ArticlePage() {
           timeouts but database-specific errors such as deadlocks, serialization failures, constraint violations, and
           connection-rejection events. Saturation expands beyond CPU to include IOPS headroom, disk usage percentage,
           buffer-pool effectiveness, and connection-pool depth.
-        </p>
+        </HighlightBlock>
         <p>
           The third pillar is <strong>contention awareness</strong>. Queueing theory tells us that as utilization
           approaches capacity, small increases in demand produce disproportionate increases in latency. In databases,
@@ -98,12 +105,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production-grade database monitoring architecture consists of four logical layers: signal collection,
           aggregation and storage, alerting and visualization, and incident response. Each layer has specific design
           choices that determine whether the system helps or hinders during an active incident.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Signal collection begins at the database engine itself. Modern relational databases expose rich internal
           telemetry through system catalogs, dynamic management views, and extended-event or slow-query-log facilities.
           PostgreSQL provides <code>pg_stat_statements</code> for normalized query fingerprints with per-query latency
@@ -112,7 +122,7 @@ export default function ArticlePage() {
           checkpoint and buffer-pool activity. MySQL offers the performance schema and the slow query log with similar
           capabilities. Managed database services on cloud providers layer additional metrics on top of these primitives,
           including enhanced monitoring agents that capture OS-level I/O, memory, and CPU at sub-minute granularity.
-        </p>
+        </HighlightBlock>
         <p>
           The aggregation layer normalizes these signals into a time-series store that supports efficient percentile
           queries over rolling windows. This is where cardinality management becomes critical. Tracking query latency
@@ -142,7 +152,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Database monitoring involves several inherent trade-offs that staff engineers must navigate deliberately. The
           first is the <strong>telemetry overhead versus signal fidelity</strong> trade-off. Enabling per-query
           instrumentation, extended events, and high-frequency metric collection imposes CPU and I/O overhead on the
@@ -151,8 +164,8 @@ export default function ArticlePage() {
           enable full telemetry on staging and canary environments at all times, and on production at a sampling rate
           that balances signal quality with overhead. Many teams use continuous sampling for production and switch to
           full collection during active incidents through a feature flag.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The second trade-off concerns <strong>polling versus streaming</strong> telemetry. Polling the database for
           metric snapshots at fixed intervals is simple and avoids additional infrastructure, but it introduces blind
           spots between polling windows and can itself add load during incidents when the database is already
@@ -161,7 +174,7 @@ export default function ArticlePage() {
           overwhelming the collector during traffic spikes. The pragmatic choice for most organizations is a hybrid:
           streaming for high-priority signals like connection count and lock-wait time, and periodic polling for
           lower-priority signals like index usage statistics.
-        </p>
+        </HighlightBlock>
         <p>
           The third trade-off is <strong>centralized versus decentralized monitoring</strong>. In a centralized model, a
           single platform team owns the monitoring infrastructure, dashboard templates, and alert definitions for all
@@ -192,20 +205,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Contention, Locks, and Tail Latency</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Lock contention is the single most common cause of unexpected tail-latency spikes in production databases. The
           mechanism is straightforward but its effects are disproportionately severe. When a transaction holds a lock on
           a resource and does not release it promptly, every subsequent transaction that needs the same resource must
           wait. If the holding transaction is long-running, the queue of blocked transactions grows, and the latency
           experienced by each blocked request becomes the sum of its own execution time plus the wait time accumulated
           in the queue.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/database-monitoring-diagram-2.svg"
           alt="Lock contention diagram showing long transaction blocking short transactions and tail latency amplification"
           caption="A single long transaction holds a lock on Row X, blocking four short transactions (A through D) in sequence. The p99 latency becomes the sum of all blocked transactions, turning a healthy system into a queueing system."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The monitoring implications are significant. A system that only tracks average query latency will not detect
           this pattern because the short transactions that are blocked still complete quickly once they acquire the lock;
           it is the wait time before acquisition that inflates tail latency. Monitoring must therefore track lock-wait
@@ -214,7 +230,7 @@ export default function ArticlePage() {
           correlating <code>pg_locks</code> with <code>pg_stat_activity</code> to identify which process ID is holding
           the contested lock and which process IDs are waiting. In MySQL, the performance schema provides similar
           correlation through the <code>data_locks</code> and <code>data_lock_waits</code> tables.
-        </p>
+        </HighlightBlock>
         <p>
           The operational response to lock contention incidents follows a predictable pattern. First, identify the
           longest-running transaction that is actively holding locks. Second, assess whether terminating that
@@ -238,14 +254,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Replication and High Availability Signals</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Replication health is both a correctness concern and an availability concern. In read-heavy workloads,
           replicas absorb the majority of read traffic, and replication lag directly translates into stale reads. In
           write-heavy workloads, replication lag determines the recovery-point objective during a failover event.
           Monitoring must track replication lag with enough granularity to distinguish between transient spikes during
           bulk writes and sustained drift that indicates the replica cannot keep up with the write rate.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The definition of replication lag itself requires care. In PostgreSQL, <code>pg_stat_replication</code>
           reports <code>write_lag</code>, <code>flush_lag</code>, and <code>replay_lag</code>, each measuring a
           different stage of the replication pipeline. Write lag measures the time for WAL data to reach the standby,
@@ -254,7 +273,7 @@ export default function ArticlePage() {
           current the visible data is. For failover readiness, flush lag matters because it determines how much data
           would be lost if the primary failed. Monitoring dashboards should display all three, with alert thresholds set
           on replay lag for read-routing decisions and on flush lag for failover decisions.
-        </p>
+        </HighlightBlock>
         <p>
           Replication slot pressure is a subtle but dangerous failure mode. PostgreSQL replication slots prevent WAL
           files from being recycled until all standbys have consumed them. If a standby falls behind and cannot keep up,
@@ -276,7 +295,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of effective database monitoring is <strong>query-centric observability</strong>. Most database
           incidents are, at their core, query incidents. A new deployment introduces a query plan regression, a missing
           index causes a sequential scan on a growing table, or a schema change alters join cardinality in unexpected
@@ -284,8 +306,8 @@ export default function ArticlePage() {
           most total time, which query classes have the highest p99 latency, and which queries have changed their
           behavior recently. Answering these questions requires normalized query fingerprints, per-fingerprint percentile
           tracking, and a mechanism for detecting plan changes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The second best practice is to <strong>enforce transaction-duration budgets</strong>. Every critical
           application endpoint should have a defined maximum transaction duration, enforced through statement timeouts
           at the database level. This is not a substitute for application-level timeouts; it is a safety net that
@@ -293,7 +315,7 @@ export default function ArticlePage() {
           set based on p99 latency observed during load testing with an appropriate safety margin, and it should be
           monitored as a compliance metric: the percentage of queries that exceed their budget should be visible on a
           dashboard and should trigger alerts when the breach rate increases.
-        </p>
+        </HighlightBlock>
         <p>
           The third best practice is to <strong>monitor connection-pool dynamics</strong> as rigorously as database
           internals. Connection pools are the shock absorbers between application load and database capacity. When they
@@ -324,21 +346,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most pervasive pitfall in database monitoring is <strong>averaging away the problem</strong>. Tracking
           only average query latency or average CPU utilization hides the tail of the distribution, where the most
           impactful incidents live. A database can have a healthy average latency while p99 latency is ten times higher,
           and that p99 is what users experience during peak demand. Monitoring must track and alert on percentile
           distributions, not averages.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The second pitfall is <strong>cardinality explosion from uncontrolled fingerprinting</strong>. When query
           monitoring tracks every unique query string literally, the number of distinct fingerprints grows without bound
           as applications generate ad-hoc queries with embedded literal values. This exhausts memory in the monitoring
           agent, degrades database performance, and makes dashboards unreadable. The solution is consistent
           normalization: replace literal values with placeholders, group queries by their structural template, and
           configure cardinality limits that trigger alerts when new fingerprint discovery exceeds a threshold.
-        </p>
+        </HighlightBlock>
         <p>
           The third pitfall is <strong>monitoring the database in isolation from the application</strong>. Database
           dashboards that show only database-internal metrics create a blind spot: responders can see that the database
@@ -376,7 +401,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider a financial services platform processing millions of transactions daily. The primary PostgreSQL
           database handles both OLTP writes for transaction recording and OLAP reads for real-time dashboards. During
           peak trading hours, the platform experiences intermittent p99 latency spikes on the transaction confirmation
@@ -390,8 +418,8 @@ export default function ArticlePage() {
           storage panel. The response team terminates the reporting query, triggers an index creation during off-peak
           hours, and adds a query budget for reporting queries that prevents full-table scans on tables exceeding ten
           million rows without explicit approval.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A second scenario involves a multi-region e-commerce platform with a primary database in one region and
           read replicas in three other regions. After a deployment that modifies the product-catalog schema, the
           monitoring system detects that replication lag on one replica has grown from under one second to over thirty
@@ -402,7 +430,7 @@ export default function ArticlePage() {
           for that region to a different replica, monitors the lagging replica as it catches up after the index rebuilds
           complete, and adds a migration-review checkpoint that requires I/O impact assessment for any schema change
           affecting indexed columns on large tables.
-        </p>
+        </HighlightBlock>
         <p>
           A third scenario involves a SaaS platform where a gradual increase in data volume over six months causes the
           database to silently transition from a memory-resident workload to an I/O-bound workload. The buffer-pool hit
@@ -428,19 +456,22 @@ export default function ArticlePage() {
 
       <section>
         <h2>Database Governance</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Monitoring alone cannot prevent database incidents; it can only detect them. Governance is the discipline of
           making database changes safer so that incidents become less frequent. Effective database governance encompasses
           four interconnected practices: change control, query budgets, capacity targets, and failover readiness.
           Monitoring serves as the feedback loop that tells the organization whether these governance practices are
           working.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/database-monitoring-diagram-3.svg"
           alt="Database governance framework with four pillars and monitoring feedback loop"
           caption="Database governance rests on four pillars: change control, query budgets, capacity targets, and failover readiness. Monitoring provides the continuous feedback loop that validates all four."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Change control</strong> ensures that every schema migration, index change, and configuration
           modification is observable, reversible, and reviewed. Reversibility is the most critical property: a migration
           that cannot be undone without data loss or extended downtime should not be deployed without explicit
@@ -448,7 +479,7 @@ export default function ArticlePage() {
           correlated with monitoring signals so that any regression can be attributed to the migration within seconds.
           Review means that migrations are evaluated against a checklist that includes index strategy, expected I/O
           impact, lock duration, and impact on replication.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Query budgets</strong> define the maximum acceptable cost for queries on critical application paths.
           A query budget specifies the maximum rows scanned, the maximum execution time, and the maximum concurrency for
@@ -477,13 +508,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How would you design a monitoring system for a production database that serves both OLTP and
             OLAP workloads on the same instance?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The core challenge with mixed OLTP and OLAP workloads is resource contention: OLTP queries are
             latency-sensitive and require predictable sub-millisecond response times, while OLAP queries are
             throughput-oriented and can consume significant CPU, memory, and I/O. The monitoring system must be able to
@@ -492,15 +526,15 @@ export default function ArticlePage() {
             typically target indexed lookups with small result sets, while OLAP queries involve aggregations, joins, and
             full-table scans. The monitoring dashboard would have separate panels for each class, showing latency
             percentiles, throughput, and resource consumption.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             I would track buffer-pool hit ratio as a key shared-resource signal: a declining hit ratio suggests that
             OLAP queries are evicting OLTP-relevant pages from memory. I would also monitor I/O queue depth and
             distinguish between random I/O (typical of OLTP) and sequential I/O (typical of OLAP). For alerting, I would
             set OLTP-specific alerts on p99 latency and lock-wait time, and OLAP-specific alerts on query duration and
             rows scanned. If the monitoring system supports it, I would implement workload isolation policies that
             automatically deprioritize OLAP queries when OLTP latency exceeds its SLO.
-          </p>
+          </HighlightBlock>
           <p>
             Finally, I would recommend architecturally separating OLTP and OLAP onto different instances or using a read
             replica for OLAP, but until that separation is achieved, monitoring must make the contention visible and

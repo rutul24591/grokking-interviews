@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,21 +28,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>CORS (Cross-Origin Resource Sharing)</strong> is a browser security mechanism that controls how
           web pages from one origin can request resources from a different origin. It is built on top of the
           same-origin policy — the foundational security model of the web that prevents a page from one origin
           (protocol, domain, and port) from reading resources from another origin. CORS provides a controlled
           exception to the same-origin policy, allowing servers to selectively permit cross-origin requests through
           HTTP headers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The same-origin policy exists to prevent malicious websites from reading sensitive data from other
           websites — without it, a malicious page could make requests to your bank&apos;s API and read your account
           balance, because the browser would automatically include your session cookies with the request. CORS allows
           legitimate cross-origin requests (e.g., a frontend app on app.example.com calling an API on
           api.example.com) while blocking malicious ones.
-        </p>
+        </HighlightBlock>
         <p>
           CORS is often misunderstood as a server-side security feature — it is not. CORS is enforced by the
           browser, not the server. The server sends CORS headers to indicate which origins are allowed, but the
@@ -79,21 +83,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CORS works by adding HTTP headers to requests and responses that indicate which origins are allowed to
           access the resource. When a browser makes a cross-origin request, it includes an Origin header indicating
           the requesting page&apos;s origin. The server responds with Access-Control-Allow-Origin indicating which
           origins are allowed to read the response. If the Origin matches an allowed origin, the browser allows the
           JavaScript to read the response. If not, the browser blocks the response and logs a CORS error to the
           console.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           There are two types of cross-origin requests: simple requests and preflighted requests. Simple requests
           are GET, HEAD, or POST requests with &quot;simple&quot; headers (Accept, Accept-Language, Content-Language,
           Content-Type with values application/x-www-form-urlencoded, multipart/form-data, or text/plain). Simple
           requests are sent directly — the browser checks the response&apos;s Access-Control-Allow-Origin header and
           allows or blocks the response accordingly.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/cors-cross-origin-resource-sharing-diagram-1.svg"
           alt="CORS architecture showing same-origin policy vs cross-origin requests with preflight flow"
@@ -143,20 +150,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The CORS architecture consists of the browser (which enforces the same-origin policy and CORS headers),
           the client-side JavaScript (which makes cross-origin requests), and the server (which sends CORS headers
           to indicate which origins are allowed). The browser intercepts all cross-origin requests, checks the
           server&apos;s CORS headers, and allows or blocks the response accordingly. The server&apos;s role is to send the
           appropriate CORS headers — it does not enforce CORS, it merely informs the browser of its policy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The simple request flow begins with the browser sending the cross-origin request with an Origin header
           (indicating the requesting page&apos;s origin). The server processes the request and responds with the
           Access-Control-Allow-Origin header (indicating which origins are allowed to read the response). The browser
           checks whether the requesting origin matches the allowed origin — if yes, the JavaScript can read the
           response; if not, the browser blocks the response and logs a CORS error.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/cors-cross-origin-resource-sharing-diagram-3.svg"
           alt="CORS misconfigurations showing insecure vs secure CORS configurations"
@@ -199,7 +209,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Wildcard origin (*) versus explicit origin whitelist is the primary trade-off in CORS configuration.
           Wildcard origin allows any website to make cross-origin requests and read the response — it is the
           simplest configuration but provides no access control. Explicit origin whitelists allow only specific
@@ -207,15 +220,15 @@ export default function ArticlePage() {
           added. For public APIs (where any website should be able to read the data), wildcard origin is
           appropriate. For authenticated APIs (where data is user-specific), explicit origin whitelists are
           required.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Preflight caching (Access-Control-Max-Age) versus no caching is a trade-off between performance and
           flexibility. Caching preflight results reduces latency — the browser does not need to send an OPTIONS
           request before every non-simple request. However, caching means that changes to the CORS policy (adding
           a new origin, removing a method) are not reflected until the cache expires. The recommended approach is
           to set a moderate max-age (e.g., 86400 seconds = 24 hours) — this provides performance benefits while
           ensuring that policy changes take effect within a reasonable time.
-        </p>
+        </HighlightBlock>
         <p>
           Credentials enabled versus credentials disabled is a trade-off between functionality and security. With
           credentials enabled (Access-Control-Allow-Credentials: true), cross-origin requests include cookies and
@@ -239,18 +252,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use explicit origin whitelists — never use wildcard origins (*) for authenticated APIs. Maintain a
           whitelist of allowed origins and validate the request&apos;s Origin against the whitelist. If the Origin is
           not in the whitelist, do not send the Access-Control-Allow-Origin header. Explicit whitelists ensure that
           only trusted origins can access the resource.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Never reflect the Origin header without validation — a common CORS misconfiguration is to reflect the
           request&apos;s Origin header in the Access-Control-Allow-Origin response header without checking whether the
           origin is trusted. This allows any website to access the resource, defeating the purpose of CORS. Always
           validate the Origin against a whitelist before reflecting it.
-        </p>
+        </HighlightBlock>
         <p>
           Minimize allowed methods and headers — only include methods (GET, POST, PUT, DELETE) and headers
           (Authorization, Content-Type) that the API actually needs. Overly permissive methods and headers increase
@@ -280,19 +296,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Reflecting the Origin header without validation is the most common CORS misconfiguration. Servers that
           dynamically set Access-Control-Allow-Origin to the request&apos;s Origin without checking a whitelist allow
           any website to access the resource. This is equivalent to having no CORS policy at all. The fix is to
           validate the Origin against a whitelist before setting Access-Control-Allow-Origin.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using wildcard origin (*) with credentials is a misconfiguration that browsers reject, but misconfigured
           servers may still expose data. The combination of Access-Control-Allow-Origin: * and
           Access-Control-Allow-Credentials: true is explicitly forbidden by the CORS specification — browsers will
           block the response. However, some servers misconfigure CORS in a way that exposes data despite the
           browser&apos;s rejection. The fix is to use explicit origin whitelists when credentials are enabled.
-        </p>
+        </HighlightBlock>
         <p>
           Allowing null origin is a common oversight. The null origin is used in specific contexts (sandboxed
           iframes, local file access, redirects from HTTPS to HTTP). Allowing null origin in
@@ -318,22 +337,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses explicit origin whitelists for its API — the frontend app
           (https://app.example.com) is allowed to make cross-origin requests to the API
           (https://api.example.com), and the admin dashboard (https://admin.example.com) is allowed to make
           cross-origin requests to the admin API. The platform maintains a whitelist of allowed origins and
           validates the Origin header against the whitelist. The platform sets Access-Control-Max-Age to 86400
           seconds (24 hours) to cache preflight results and includes Vary: Origin in all CORS responses.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A SaaS platform uses CORS for its public API — the API allows any origin to make GET requests
           (Access-Control-Allow-Origin: *) for public data, but requires explicit origin whitelists for
           authenticated requests (POST, PUT, DELETE) that include credentials. The platform implements CORS
           middleware that checks the request method — for GET requests, it returns wildcard origin; for other
           methods, it validates the Origin against a whitelist and includes credentials only for whitelisted
           origins.
-        </p>
+        </HighlightBlock>
         <p>
           A financial services company uses strict CORS policies for its banking API — only the official banking
           app (https://bank.example.com) is allowed to make cross-origin requests. The company validates the Origin
@@ -355,14 +377,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the same-origin policy, and how does CORS relate to it?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               The same-origin policy is the foundational security model of the web — it prevents a web page from one origin (protocol, domain, port) from reading resources from another origin. Without it, a malicious website could make requests to your bank&apos;s API and read your account balance, because the browser would automatically include your session cookies.
-            </p>
+            </HighlightBlock>
             <p>
               CORS is a controlled exception to the same-origin policy — it allows servers to selectively permit cross-origin requests through HTTP headers. The server sends Access-Control-Allow-Origin to indicate which origins are allowed, and the browser enforces the policy. CORS does not replace the same-origin policy — it provides a mechanism for servers to opt in to cross-origin access.
             </p>

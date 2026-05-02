@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function ContentVersioningArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Content Versioning</strong> maintains a history of content changes, enabling
           users to view past versions, compare changes, and restore previous states. Versioning is
           critical for collaboration (multiple editors working on same content), audit trails
           (compliance — who changed what when), and recovery from mistakes (rollback to known good
           state). Without versioning, content changes are lost, mistakes can't be undone, and
           compliance requirements can't be met.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/versioning-strategies.svg"
@@ -48,7 +52,7 @@ export default function ContentVersioningArticle() {
           caption="Versioning Strategies — showing full snapshots (store complete content per version), diff-based (store only changes), and hybrid approach (snapshot every N versions with diffs in between)"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing versioning requires deep understanding of
           versioning strategies (full snapshots — store complete content per version, diff-based —
           store only changes/deltas between versions, hybrid — snapshot every N versions with diffs
@@ -61,7 +65,7 @@ export default function ContentVersioningArticle() {
           user_id, timestamp, change description, compliance reporting). The implementation must
           balance storage efficiency (diff-based uses less storage) with restore performance
           (snapshots restore faster) and user experience (fast version history, clear diff view).
-        </p>
+        </HighlightBlock>
         <p>
           Modern versioning systems have evolved from simple snapshots to sophisticated version
           control with branching, merging, and conflict resolution. Platforms like Git (code
@@ -75,12 +79,15 @@ export default function ContentVersioningArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content versioning is built on fundamental concepts that determine how versions are
           stored, compared, and restored. Understanding these concepts is essential for designing
           effective versioning systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Versioning Strategies:</strong> Full snapshots (store complete content per
           version — version 1: full content, version 2: full content — simple, fast restore, but
           storage inefficient for large content), diff-based (store only changes/deltas — version 1:
@@ -88,7 +95,7 @@ export default function ContentVersioningArticle() {
           diffs sequentially), hybrid (snapshot every N versions — version 1, 5, 10 are full
           snapshots, versions 2-4, 6-9 are diffs — balances storage efficiency with restore
           performance). Choose based on content size, version frequency, restore performance needs.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Version History:</strong> View past versions (list all versions with metadata —
           version number, timestamp, author, change description), compare versions (side-by-side
@@ -119,11 +126,14 @@ export default function ContentVersioningArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Versioning architecture separates version storage (snapshots, diffs) from version
           management (history, restore, rollback), enabling flexible versioning with efficient
           storage. This architecture is critical for performance and scalability.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/version-history.svg"
@@ -131,7 +141,7 @@ export default function ContentVersioningArticle() {
           caption="Version History — showing version list with metadata (version number, timestamp, author), side-by-side diff view (additions in green, deletions in red), and restore functionality"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Versioning flow: User edits content. User clicks "Save" (or auto-save triggers). Backend
           creates new version (INSERT INTO content_versions (content_id, version_number, body,
           author_id, change_description) VALUES (...)). Backend stores version (full snapshot or
@@ -141,7 +151,7 @@ export default function ContentVersioningArticle() {
           versions (load two versions, compute diff — or load pre-computed diff). User restores
           version (create new version with restored content — don't overwrite history, maintain
           audit trail).
-        </p>
+        </HighlightBlock>
         <p>
           Version history architecture includes: version list (query versions with metadata —
           version_number, created_at, author_id, change_description, size), side-by-side diff view
@@ -170,25 +180,28 @@ export default function ContentVersioningArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing versioning involves trade-offs between storage efficiency, restore performance,
           and complexity. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Full Snapshots vs Diff-based vs Hybrid</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Full Snapshots:</strong> Store complete content per version. Simple
               implementation, fast restore (load one record), easy comparison. Limitation: storage
               inefficient (10 versions of 1MB content = 10MB storage).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Diff-based:</strong> Store only changes between versions. Storage efficient
               (10 versions of 1MB content with small changes = ~2MB storage). Limitation: complex
               restore (apply diffs sequentially), slow for old versions (many diffs to apply).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Hybrid:</strong> Snapshot every N versions (e.g., every 5th version is full
               snapshot, others are diffs). Balances storage efficiency with restore performance.
@@ -243,19 +256,22 @@ export default function ContentVersioningArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing content versioning requires following established best practices to ensure
           storage efficiency, restore performance, and user experience.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Strategy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choose based on content size (small content &lt;1MB — full snapshots, large content &gt;1MB
           — diff-based or hybrid). Consider version frequency (frequent versions — diff-based to
           save storage, infrequent versions — snapshots for simplicity). Balance storage efficiency
           with restore performance (hybrid for best balance). Compress versions (gzip version
           content — 50-80% reduction for text content).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Version History</h3>
         <p>
@@ -287,21 +303,24 @@ export default function ContentVersioningArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing content versioning to ensure storage
           efficiency, restore performance, and user experience.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Only storing current version:</strong> No history, can't rollback, no audit
             trail. <strong>Fix:</strong> Store all versions (or at least last N versions). Maintain
             version history table.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Full snapshots for large content:</strong> Storage inefficient (10 versions of
             100MB = 1GB). <strong>Fix:</strong> Use diff-based or hybrid strategy for large
             content. Compress versions.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No version metadata:</strong> Users don't know what changed, who changed, when.{" "}
             <strong>Fix:</strong> Store metadata (author_id, timestamp, change_description). Show
@@ -346,16 +365,19 @@ export default function ContentVersioningArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content versioning is critical for collaboration, compliance, and recovery. Here are
           real-world implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Code Versioning (Git)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Code changes must be tracked. Multiple developers on same
           codebase. Branching for features. Merge conflicts.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Diff-based storage (store deltas — efficient for code).
           Branching (create branch from base — develop features independently). Merging (merge
@@ -456,14 +478,17 @@ export default function ContentVersioningArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of content versioning design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you choose between snapshots and diffs?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you choose between snapshots and diffs?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Based on content size and version frequency. Small content (&lt;1MB) — full
               snapshots (simple, fast restore). Large content (&gt;1MB) — diff-based (storage

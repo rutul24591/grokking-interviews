@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,22 +28,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Single Sign-On (SSO)</strong> is an authentication scheme that allows a user to authenticate once
           and access multiple applications without re-authenticating. Instead of maintaining separate credentials for
           each application, the user authenticates to a centralized identity provider (IdP), which issues a token or
           assertion that the applications trust. SSO is the foundation of modern enterprise identity management — it
           powers corporate access to SaaS applications (Salesforce, Slack, GitHub), cloud platforms (AWS, GCP, Azure),
           and internal systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SSO is implemented using two primary protocols: SAML 2.0 (Security Assertion Markup Language) and OpenID
           Connect (OIDC). SAML is an XML-based protocol designed for enterprise SSO — it is older, well-established,
           and widely supported by enterprise applications. OIDC is a JSON/REST-based protocol built on top of OAuth
           2.0 — it is modern, developer-friendly, and preferred for web and mobile applications. Both protocols
           enable the same outcome (authenticate once, access multiple applications), but they differ in implementation
           complexity, token format, and ecosystem support.
-        </p>
+        </HighlightBlock>
         <p>
           The evolution of SSO has been driven by the proliferation of SaaS applications — as organizations adopt
           dozens or hundreds of SaaS tools, managing separate credentials for each becomes operationally
@@ -78,7 +82,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The SAML authentication flow begins with the user attempting to access an application (the SP). The SP
           redirects the user to the IdP with a SAML Authentication Request. The IdP authenticates the user (password,
           MFA), generates a SAML Assertion (signed XML containing the user&apos;s identity and attributes), and redirects
@@ -86,15 +93,15 @@ export default function ArticlePage() {
           identity, creates a session, and grants access. The flow is initiated by either the SP (SP-initiated SSO,
           where the user accesses the application first) or the IdP (IdP-initiated SSO, where the user starts from
           the IdP&apos;s dashboard).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The OIDC authentication flow is similar but uses OAuth 2.0 mechanisms. The client redirects the user to
           the IdP with an authentication request (including scopes like &quot;openid&quot; and &quot;profile&quot;). The IdP authenticates
           the user and redirects back with an authorization code. The client exchanges the code for tokens (ID token,
           access token, refresh token). The ID token is a JWT containing the user&apos;s claims (sub, name, email). The
           client validates the ID token&apos;s signature and extracts the user&apos;s identity. The flow uses PKCE (Proof Key
           for Code Exchange) to prevent authorization code interception attacks.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/single-sign-on-sso-diagram-1.svg"
           alt="SSO architecture showing user authentication through identity provider to access multiple applications"
@@ -143,21 +150,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The SSO architecture consists of the identity provider (IdP), the service providers (SPs, the applications
           the user accesses), and the user. The IdP manages user identities, authenticates users, issues tokens or
           assertions, and handles lifecycle events (password resets, MFA enrollment, account deactivation). The SPs
           trust the IdP&apos;s tokens/assertions and grant access based on the claims contained within them. The user
           authenticates to the IdP once and accesses all connected applications without re-authentication.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The authentication flow begins with the user attempting to access an application. If the user is not
           authenticated, the SP redirects the user to the IdP (SP-initiated SSO) or the user starts from the IdP&apos;s
           dashboard (IdP-initiated SSO). The IdP authenticates the user (password, MFA, or existing SSO session),
           generates a token or assertion containing the user&apos;s identity and attributes, and redirects the user back
           to the SP. The SP validates the token/assertion, extracts the user&apos;s identity, creates a session, and
           grants access.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/single-sign-on-sso-diagram-3.svg"
           alt="OIDC authorization code flow and SSO security risks and best practices"
@@ -194,21 +204,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SAML versus OIDC is the primary trade-off in SSO protocol selection. SAML is older, well-established, and
           widely supported by enterprise applications. It uses XML-based assertions, which are verbose but carry
           rich attribute data. OIDC is modern, built on OAuth 2.0, and uses JWT-based ID tokens, which are compact
           and developer-friendly. SAML is preferred for enterprise SSO (legacy applications, government systems),
           while OIDC is preferred for new applications, web/mobile apps, and APIs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Centralized versus decentralized identity is a trade-off between control and convenience. Centralized
           identity (all users managed in a single IdP) provides centralized control — provisioning, deprovisioning,
           MFA enforcement, and audit logging are all managed through the IdP. However, it introduces a single point
           of failure — if the IdP is unavailable, all connected applications are affected. Decentralized identity
           (each application manages its own users) eliminates the single point of failure but requires managing
           credentials for each application separately, which is operationally unsustainable for large organizations.
-        </p>
+        </HighlightBlock>
         <p>
           SP-initiated versus IdP-initiated SSO is a trade-off between user experience and control. SP-initiated
           SSO (user accesses the application first, then redirected to the IdP) is the most common flow — it is
@@ -233,17 +246,20 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enforce MFA at the IdP level for all users. SSO centralizes authentication — if the IdP is compromised,
           all connected applications are affected. MFA at the IdP level adds a second factor of authentication,
           significantly reducing the risk of credential-based attacks. Use TOTP or security keys (WebAuthn) for MFA
           — avoid SMS-based MFA due to SIM swapping vulnerabilities.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use PKCE for all OIDC flows, even confidential clients. PKCE prevents authorization code interception
           attacks and is now the recommended flow for all OAuth 2.0/OIDC implementations. Do not use the Implicit
           flow — it is deprecated and exposes tokens in the URL.
-        </p>
+        </HighlightBlock>
         <p>
           Validate IdP signatures on all SAML assertions and OIDC ID tokens. Never trust an unsigned assertion or
           token. Use well-tested libraries (for SAML: OneLogin SAML, Passport-SAML; for OIDC: passport-openidconnect,
@@ -275,18 +291,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not validating SAML assertion signatures is a critical vulnerability. Some SP implementations accept
           unsigned SAML assertions by default — if the signature is not validated, an attacker can forge assertions
           and authenticate as any user. The fix is to configure the SP to require signed assertions and to validate
           the signature using the IdP&apos;s public key.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Misconfigured redirect URIs in OIDC enable open redirect attacks. If the redirect URI is not validated
           strictly (allowing wildcards or partial matches), an attacker can redirect the authorization code to a
           malicious endpoint and exchange it for tokens. The fix is to configure exact redirect URIs (no wildcards)
           and to validate the redirect URI on every authentication request.
-        </p>
+        </HighlightBlock>
         <p>
           Excessive attribute sharing with SPs violates the principle of least privilege. If the IdP shares all user
           attributes with every SP, each SP receives more data than it needs, increasing the risk of data exposure.
@@ -314,22 +333,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large enterprise uses Okta as its IdP for SSO across 200+ SaaS applications — employees authenticate
           through Okta (using password + MFA) and access all connected applications (Salesforce, Slack, GitHub,
           Workday) without re-authentication. The enterprise uses SAML for legacy applications (Workday, ServiceNow)
           and OIDC for modern applications (Slack, GitHub). Just-in-Time provisioning creates user accounts
           automatically on first access, and attribute mapping ensures each application receives the expected claims.
           The enterprise audits connected applications quarterly and revokes access for unused applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A university uses SAML federation (InCommon) to enable students to access research platforms using their
           university credentials. Students authenticate through their university&apos;s IdP (Shibboleth), and the research
           platforms trust the university&apos;s SAML assertions. The federation enables cross-organizational SSO — students
           from 500+ universities can access the platform without creating separate accounts. The platform uses JIT
           provisioning to create student accounts automatically, and attribute mapping ensures the platform receives
           the student&apos;s university affiliation and enrollment status.
-        </p>
+        </HighlightBlock>
         <p>
           A healthcare organization uses Azure AD as its IdP for SSO across its clinical systems — healthcare
           providers authenticate through Azure AD (using password + MFA via Microsoft Authenticator) and access
@@ -354,14 +376,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between SAML and OIDC, and when would you use each?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               SAML 2.0 is an XML-based protocol designed for enterprise SSO. It uses SAML Assertions (signed XML documents) to carry user identity and attributes. SAML is older, well-established, and widely supported by enterprise applications (Salesforce, Workday, ServiceNow). It is preferred for enterprise SSO, legacy systems, and government applications.
-            </p>
+            </HighlightBlock>
             <p>
               OIDC is a JSON/REST-based protocol built on OAuth 2.0. It uses ID Tokens (JWTs) to carry user claims. OIDC is modern, developer-friendly, and preferred for web and mobile applications. Use OIDC for new applications, APIs, and mobile apps. Use SAML for legacy enterprise applications that only support SAML.
             </p>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,7 +27,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cache breakdown</strong> is the phenomenon where a single highly accessed
           cache key — often referred to as a <em>hot key</em> — expires or is evicted from the
           cache, causing a sudden flood of requests to hit the origin database or upstream
@@ -34,8 +38,8 @@ export default function ArticlePage() {
           many keys, breakdown concentrates the entire request volume for that key onto a
           narrow bottleneck: the origin system that must now regenerate the value for every
           concurrent caller.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The term is sometimes conflated with <em>cache stampede</em>, but the distinction
           matters operationally. A stampede describes a broad wave of cache misses across
           many keys, often triggered by a cache restart, a configuration change, or a
@@ -44,7 +48,7 @@ export default function ArticlePage() {
           of read traffic. When one of those keys disappears, the origin receives not a
           distributed increase in load but a concentrated spike that can exhaust connection
           pools, saturate CPU, and trigger cascading failures across dependent services.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, cache breakdown is not merely an operational
           nuisance — it is an architectural risk. Systems that scale horizontally often
@@ -61,7 +65,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The root cause of cache breakdown lies in the intersection of three factors: key
           popularity, synchronized expiration, and insufficient serialization of
           regeneration. A hot key is defined by its access pattern — a small number of keys
@@ -71,8 +78,8 @@ export default function ArticlePage() {
           been served from cache are instead forwarded to the origin, and if thousands of
           concurrent clients are requesting the same value, the origin must process
           thousands of identical queries simultaneously.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Synchronized expiration amplifies the problem. When multiple hot keys share the
           same TTL value and were populated at approximately the same time, they tend to
           expire in a tight window. This is especially common in batch-driven systems where
@@ -81,7 +88,7 @@ export default function ArticlePage() {
           data at midnight. If the TTL is set to exactly one hour and all keys are written
           within a narrow time window, they will all expire within that same narrow window
           one hour later, creating a synchronized collapse.
-        </p>
+        </HighlightBlock>
         <p>
           The third factor is the absence of serialization. Without a mechanism to ensure
           that only one request is responsible for regenerating the expired value, every
@@ -123,14 +130,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing a system that is resilient to cache breakdown requires deliberate
           architectural choices at multiple layers. The defense-in-depth approach applies
           protections at the cache layer, the application layer, and the origin layer,
           recognizing that any single mechanism can fail and that redundancy in safeguards
           is essential for production reliability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the cache layer, the primary strategy is to prevent the key from disappearing
           without warning. This can be achieved through <strong>stale-while-revalidate
           (SWR)</strong> semantics, where the cache continues to serve the expired value
@@ -143,7 +153,7 @@ export default function ArticlePage() {
           regeneration occurs. Memcached does not have native SWR support, so the
           application must implement it by storing a separate metadata key that tracks
           logical expiration and triggers background refreshes.
-        </p>
+        </HighlightBlock>
         <p>
           At the application layer, <strong>distributed locking</strong> or <strong>single-flight
           coalescing</strong> ensures that when a hot key does expire, only one request is
@@ -211,13 +221,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Every mitigation strategy for cache breakdown introduces trade-offs that must be
           evaluated against the specific characteristics of the system. There is no
           universally optimal approach; the right choice depends on freshness requirements,
           traffic patterns, operational maturity, and the cost of failure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Stale-while-revalidate is the most operationally mature pattern because it
           decouples freshness from availability. Users receive a response from cache
           regardless of whether the key has expired, and the origin is queried
@@ -231,7 +244,7 @@ export default function ArticlePage() {
           vary by key, a tiered approach is needed: critical keys have short or zero grace
           periods with locking-based regeneration, while non-critical keys use generous SWR
           windows to minimize origin load.
-        </p>
+        </HighlightBlock>
         <p>
           Distributed locking provides strong consistency guarantees — only one
           regeneration occurs, and all waiters receive the fresh value — but it introduces
@@ -284,7 +297,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of breakdown resilience is <strong>hot key identification</strong>.
           Systems should continuously monitor cache access patterns and maintain a ranked
           list of keys by request frequency. This is not a one-time analysis — traffic
@@ -293,8 +309,8 @@ export default function ArticlePage() {
           specific event, such as a product launch or a sports final. Automated detection
           pipelines that scan cache access logs and surface newly hot keys enable proactive
           application of protections before breakdown occurs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Once hot keys are identified, they should be <strong>classified by criticality</strong>
           and assigned a protection policy. A three-tier model works well in practice.
           Tier-one keys are mission-critical — their absence would cause immediate
@@ -305,7 +321,7 @@ export default function ArticlePage() {
           Tier-three keys are the long tail of cache entries that receive standard
           protection — TTL jitter alone — and are allowed to break down without special
           safeguards, as the origin is expected to handle the resulting load.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>TTL jitter should be applied universally</strong> as a baseline protection,
           even for keys that receive additional safeguards. The jitter range should be
@@ -355,7 +371,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           One of the most frequent mistakes is <strong>applying uniform TTLs to batch-refreshed
           data</strong>. When a nightly job refreshes thousands of keys and assigns each a
           twenty-four-hour TTL, all keys expire at the same time the following day. The
@@ -365,8 +384,8 @@ export default function ArticlePage() {
           eliminates the synchronized expiration. Teams often discover this issue only after
           a morning traffic spike causes an outage, at which point the pattern has likely
           been occurring at lower severity for weeks or months.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common pitfall is <strong>implementing distributed locks without a circuit
           breaker</strong>. When the origin query that regenerates a hot key begins to fail —
           perhaps due to a slow query, a lock contention issue in the database, or a
@@ -377,7 +396,7 @@ export default function ArticlePage() {
           full TTL duration. The circuit breaker pattern must be integrated with the locking
           mechanism so that after a configurable number of consecutive failures,
           regeneration is disabled for a cooldown period and stale data is served instead.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Over-pinning keys</strong> is a capacity management failure that often goes
           unnoticed until the cache runs out of memory. When engineers respond to a
@@ -418,7 +437,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Leaderboard and ranking systems</strong> are a canonical example of cache
           breakdown risk. During a live event — a sports tournament, an esports
           competition, or a sales leaderboard — the top-ranking page can receive tens of
@@ -429,8 +451,8 @@ export default function ArticlePage() {
           leaderboard key during the event window, using SWR with a short grace period so
           that users see rankings that are at most a few seconds behind, and pre-warming
           the key before the event begins with a higher refresh frequency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>E-commerce product detail pages</strong> for popular items face similar
           challenges. A flash sale on a high-demand product can generate millions of page
           views in minutes. The product detail page — which includes pricing, inventory
@@ -442,7 +464,7 @@ export default function ArticlePage() {
           pinning the product key during the sale window, staggering TTLs for the
           sub-components (pricing might have a shorter TTL than reviews), and using
           distributed locking to ensure that only one regeneration occurs per component.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Content delivery for news and media</strong> sites experience breakdown
           during breaking news events. When a major story breaks, the homepage and the
@@ -482,20 +504,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q1: What is the difference between cache breakdown and cache stampede, and how does this distinction affect your mitigation strategy?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Cache breakdown is a concentrated phenomenon where a single hot key or a small
               number of hot keys expire or are evicted, causing a sharp spike of origin requests
               for those specific keys. Cache stampede is broader — it describes a wave of cache
               misses across many keys simultaneously, typically caused by a cache restart, a
               mass invalidation, or a traffic surge that exceeds cache capacity. The distinction
               matters because the mitigation strategies differ in scope and cost.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               For breakdown, the response is targeted: identify the hot key, apply per-key
               protections like distributed locking, SWR, or pinning, and ensure that only one

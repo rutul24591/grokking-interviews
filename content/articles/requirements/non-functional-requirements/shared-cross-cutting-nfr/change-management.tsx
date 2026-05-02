@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function ChangeManagementArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Change Management</strong> encompasses the processes, tools, and practices for managing
           changes to systems, infrastructure, and processes in a controlled, low-risk manner. In complex
           distributed systems, uncontrolled changes are a leading cause of incidents. Change management
           balances velocity with stability—enabling rapid iteration while minimizing disruption.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Change management applies to code deployments, infrastructure changes, configuration updates,
           database migrations, and process changes. The rigor should be proportional to risk—a typo fix
           does not need the same process as a database schema change. For staff and principal engineers,
           change management is both a technical and organizational concern—the decisions you make about
           change processes, automation, and culture have lasting impact on system reliability and team
           productivity.
-        </p>
+        </HighlightBlock>
         <p>
           Industry data consistently shows that over 70% of incidents are caused by changes. This does not
           mean changes are bad—it means change management is essential. The goal is not to prevent all
@@ -63,13 +67,16 @@ export default function ChangeManagementArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Change classification is the foundation of effective change management. Not all changes are equal,
           and classification determines the level of review and approval required. This enables a fast path
           for low-risk changes while ensuring appropriate scrutiny for high-risk ones.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Standard changes are pre-approved, low-risk, routine changes that follow a well-defined procedure.
           These changes have been done before, have a low failure rate, and minimal impact if they fail.
           Examples include deploying known-good code through an established pipeline, scaling infrastructure
@@ -77,7 +84,7 @@ export default function ChangeManagementArticle() {
           targets, updating non-critical DNS records, and renewing certificates. Standard changes require no
           CAB review, should be automated where possible, follow documented standard operating procedures,
           and include post-implementation verification.
-        </p>
+        </HighlightBlock>
 
         <p>
           Normal changes are moderate-risk changes requiring review and approval. Most code deployments and
@@ -121,15 +128,18 @@ export default function ChangeManagementArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A modern change management system is built on several architectural pillars: the CI/CD pipeline
           integration that automates the build, test, and deployment flow; the feature flag infrastructure
           that enables controlled rollout without redeployment; the monitoring systems that provide
           visibility during and after changes; and the rollback mechanisms that enable rapid recovery when
           changes fail.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The CI/CD pipeline serves as the primary execution path for changes. Code commits trigger
           automated builds that run unit tests, integration tests, and security scans. Successful builds
           produce deployable artifacts that are promoted through environments—development, staging, and
@@ -138,7 +148,7 @@ export default function ChangeManagementArticle() {
           production deployment proceeds. Automated gates in the pipeline can block deployment if test
           coverage drops below thresholds, if security scans find vulnerabilities, or if performance
           benchmarks regress beyond acceptable limits.
-        </p>
+        </HighlightBlock>
 
         <p>
           Feature flag infrastructure decouples deployment from release. A feature flag management system
@@ -181,11 +191,14 @@ export default function ChangeManagementArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Change management decisions involve trade-offs between speed, safety, operational overhead, and
           organizational impact. Understanding these trade-offs enables teams to choose the right approach
           for their context.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Centralized vs Decentralized Change Approval</h3>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
@@ -307,7 +320,7 @@ export default function ChangeManagementArticle() {
           </table>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The change management process itself should follow a structured flow: request, review, approval,
           scheduling, testing, implementation, verification, and documentation. The change initiator
           submits a request with description, business justification, risk assessment, rollback plan, test
@@ -327,12 +340,15 @@ export default function ChangeManagementArticle() {
           sign-off from stakeholders. Documentation records the actual outcome versus planned, updates
           runbooks if procedures changed, documents any issues encountered, shares learnings with the team,
           and closes the change request.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The change management process should enable safe changes, not prevent them. If the process is too
           burdensome, teams will find workarounds that undermine the entire system. Keep the process
           proportional to risk, automate low-risk changes, and measure and improve process efficiency
@@ -340,9 +356,9 @@ export default function ChangeManagementArticle() {
           high-risk changes and enabling engineering velocity. Investment in automation for deployments,
           scaling, certificate renewal, and other routine changes pays dividends in both speed and
           reliability.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Risk-based process design means different paths for different risk levels. Standard changes are
           pre-approved and automated, normal changes get lightweight review, and high-risk changes receive
           full CAB scrutiny. Clear approval paths ensure everyone knows who needs to sign off at each risk
@@ -351,7 +367,7 @@ export default function ChangeManagementArticle() {
           stack should include a change tracking system, automated testing in CI/CD, feature flag
           management, monitoring and alerting, and communication channels like Slack or email for stakeholder
           notifications.
-        </p>
+        </HighlightBlock>
 
         <p>
           Phased rollout strategy is essential for high-risk changes. Deploy to a canary group of 1 to 5% of
@@ -411,21 +427,24 @@ export default function ChangeManagementArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A one-size-fits-all process applying the same rigor to all changes creates friction for low-risk
           changes while potentially missing important details in high-risk ones. The fix is risk-based
           classification with different paths for different risk levels. The CAB becoming a bottleneck where
           changes wait days for review is equally problematic—address this with more frequent CAB meetings,
           delegated approval for lower-risk changes, and async review processes.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Changes without documented rollback plans are gambling with production reliability. Every change
           must have a rollback plan, and if rollback is not possible, the change carries higher risk and
           needs more scrutiny. Testing the rollback procedure before implementing the change validates that
           it actually works. Poor communication that surprises stakeholders is avoidable through pre-change
           communication, status updates during execution, and post-change confirmation.
-        </p>
+        </HighlightBlock>
 
         <p>
           Emergency change abuse—where too many changes are classified as &quot;emergency&quot; to bypass
@@ -449,7 +468,10 @@ export default function ChangeManagementArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Netflix pioneered canary deployment practices through their Spinnaker project, an open-source
           continuous delivery platform. Netflix deploys thousands of times per day using automated canary
           analysis where new deployments are compared against baseline deployments across hundreds of
@@ -457,16 +479,16 @@ export default function ChangeManagementArticle() {
           is automatically rolled back. Netflix&apos;s approach demonstrates that high deployment frequency
           and low failure rate are not mutually exclusive—they achieve both through heavy investment in
           automated testing, canary analysis, and feature flags.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon deploys every few seconds on average across their microservices architecture. Their change
           management approach emphasizes automation at every level—automated testing, automated deployment,
           and automated rollback. Amazon uses a &quot;you build it, you run it&quot; model where teams own
           their services end-to-end, including change management. This decentralized approach scales because
           each team has the tooling and authority to manage their own changes while adhering to organizational
           standards for risk assessment and rollback capability.
-        </p>
+        </HighlightBlock>
 
         <p>
           Google uses change approval processes integrated into their deployment infrastructure. Their
@@ -490,10 +512,13 @@ export default function ChangeManagementArticle() {
 
       <section>
         <h2>Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is a change advisory board (CAB) and when is it needed?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What is a change advisory board (CAB) and when is it needed?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: A CAB is a group that reviews and approves high-risk changes, typically including
               representatives from engineering, operations, security, and business stakeholders. It meets
               regularly, often weekly, to review change requests, assess risk, and approve or reject proposed
@@ -502,7 +527,7 @@ export default function ChangeManagementArticle() {
               automated checks, or delegated approval where team leads can approve changes within their risk
               threshold. The CAB should focus on cross-team impact changes and high-risk changes that affect
               core services, not every routine deployment.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,21 +28,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>CSRF (Cross-Site Request Forgery)</strong> is an attack where a malicious website tricks an
           authenticated user&apos;s browser into making an unwanted request to a different website where the user is
           authenticated. The attack exploits the fact that browsers automatically include cookies (session
           identifiers) with cross-origin requests — if the user is logged into their bank, and a malicious site
           submits a form to the bank&apos;s transfer endpoint, the browser will include the user&apos;s session cookie,
           making the request appear legitimate to the bank&apos;s server.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CSRF is fundamentally different from XSS (Cross-Site Scripting). XSS exploits a vulnerability in the
           target website to inject malicious scripts — the attacker needs a vulnerability in the target site.
           CSRF does not require any vulnerability in the target site — it exploits the browser&apos;s automatic
           cookie inclusion behavior. A user can be victimized by CSRF even if the target site has no security
           vulnerabilities, as long as the site does not implement CSRF protections.
-        </p>
+        </HighlightBlock>
         <p>
           The CSRF attack works in three steps: the user authenticates to the target site (bank.com) and receives
           a session cookie; the user visits a malicious site (evil.com) that contains a hidden form or script
@@ -78,19 +82,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The synchronizer token pattern (CSRF tokens) is the most widely deployed CSRF defense. The server
           generates a unique, unpredictable token (using a CSPRNG) for each user session and embeds it in all
           HTML forms as a hidden input field. When the form is submitted, the server validates that the submitted
           token matches the token stored in the user&apos;s session. If the tokens match, the request is processed;
           if not, it is rejected with a 403 Forbidden response.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CSRF tokens work because the attacker cannot read the token from the legitimate site (same-origin policy
           prevents cross-origin reading). The attacker can forge a request to the target site, but they cannot
           include the valid CSRF token — the token is embedded in the legitimate site&apos;s HTML, which the attacker
           cannot access. Without the valid token, the forged request is rejected by the server.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/csrf-protection-diagram-1.svg"
           alt="CSRF attack flow showing malicious site tricking authenticated user into making unwanted request to target site"
@@ -139,7 +146,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The CSRF protection architecture consists of the token generator (which creates unpredictable CSRF
           tokens), the token embedder (which inserts tokens into forms and responses), the token validator (which
           validates tokens on state-changing requests), and the cookie manager (which sets SameSite attributes on
@@ -147,15 +157,15 @@ export default function ArticlePage() {
           HTML forms (as hidden inputs) and API responses (as headers or meta tags), the token validator compares
           submitted tokens to stored tokens (or cookie values for double-submit), and the cookie manager sets
           SameSite attributes on all session cookies.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The CSRF token flow begins with the user requesting a page that contains a form. The server generates a
           CSRF token (or retrieves the existing token from the user&apos;s session), embeds it in the form as a hidden
           input, and renders the page. When the user submits the form, the browser sends the form data (including
           the CSRF token) and the session cookie to the server. The server validates the CSRF token (comparing it
           to the stored token or cookie value) and, if valid, processes the request; if not, it rejects the
           request with a 403 Forbidden response.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/csrf-protection-diagram-3.svg"
           alt="SameSite cookie attribute modes showing Strict, Lax, and None behavior for cross-site requests"
@@ -191,22 +201,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CSRF tokens versus SameSite cookies is the primary trade-off in CSRF defense. CSRF tokens require
           server-side token generation, form embedding, and validation — they add complexity but are compatible
           with all browsers and all request types. SameSite cookies are simpler to implement (set a cookie
           attribute) and provide CSRF protection at the browser level, but they are not supported by older
           browsers (Internet Explorer, older mobile browsers) and do not protect against subdomain attacks
           (a compromised subdomain can still make cross-site requests with cookies).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Synchronizer token pattern versus double-submit cookie is a trade-off between server-side state and
           simplicity. The synchronizer token pattern requires server-side token storage (in the session), which
           adds complexity for stateless APIs. The double-submit cookie pattern does not require server-side storage
           (the token is stored in the cookie), making it simpler to implement in stateless APIs. However, the
           double-submit pattern is vulnerable to subdomain attacks (a compromised subdomain can set cookies for
           the parent domain) and requires the cookie to be readable by JavaScript (not httpOnly).
-        </p>
+        </HighlightBlock>
         <p>
           SameSite=Strict versus SameSite=Lax is a trade-off between security and compatibility. SameSite=Strict
           blocks all cross-site cookies, providing maximum CSRF protection but breaking OAuth flows, external link
@@ -229,19 +242,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use defense-in-depth — implement both SameSite cookies and CSRF tokens. SameSite cookies provide the
           primary defense (preventing cookies from being sent with cross-site requests), and CSRF tokens provide
           a fallback defense (validating that the request includes a valid token). This ensures that CSRF is
           prevented even if one defense fails (e.g., SameSite is not supported by the browser, or the CSRF token
           is inadvertently omitted).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Set SameSite=Lax on all session cookies — this is the recommended default for most applications. It
           prevents cookies from being sent with cross-site POST requests (the most common CSRF vector) while
           allowing cookies to be sent with top-level GET requests (link clicks, OAuth redirects). For high-security
           applications, use SameSite=Strict.
-        </p>
+        </HighlightBlock>
         <p>
           Generate CSRF tokens using a CSPRNG with at least 128 bits of entropy. Tokens must be unpredictable —
           if an attacker can guess or brute force the token, the defense is broken. Use a well-tested CSRF library
@@ -273,19 +289,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not protecting all state-changing endpoints is a common CSRF pitfall. Developers often protect HTML
           form submissions but forget to protect API endpoints, GraphQL mutations, or WebSocket messages. Any
           endpoint that modifies state (POST, PUT, DELETE, PATCH) must be protected against CSRF. The fix is to
           implement CSRF protection as middleware that applies to all state-changing requests, not just form
           submissions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using predictable CSRF tokens is a critical vulnerability. If the token is generated using a weak random
           number generator (Math.random, timestamp-based), an attacker can guess or brute force the token,
           bypassing the CSRF defense. The fix is to use a CSPRNG (crypto.randomBytes, SecureRandom) with at least
           128 bits of entropy.
-        </p>
+        </HighlightBlock>
         <p>
           Setting SameSite=None without Secure is a common misconfiguration. SameSite=None requires the Secure
           attribute (the cookie is only sent over HTTPS) — without Secure, browsers will reject the cookie. The
@@ -311,20 +330,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses SameSite=Lax cookies and CSRF tokens for its web application — all
           session cookies are set with SameSite=Lax, and all HTML forms include CSRF tokens generated by the
           server. The platform&apos;s API endpoints are protected by the double-submit cookie pattern — the CSRF token
           is set in a cookie and required in a custom header (X-CSRF-Token) for all state-changing requests. The
           platform has had zero successful CSRF attacks since implementing these controls.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses SameSite=Strict cookies for its banking application — all session
           cookies are set with SameSite=Strict, blocking all cross-site cookies. The company also implements CSRF
           tokens for all state-changing requests, with one-time-use tokens (regenerated after each validation).
           The company monitors CSRF validation failures and alerts on unusual patterns (which may indicate CSRF
           attack attempts).
-        </p>
+        </HighlightBlock>
         <p>
           A SaaS platform uses the double-submit cookie pattern for its SPA — the server sets a CSRF token in a
           cookie (not httpOnly), and the SPA reads the token from the cookie and includes it in a custom header
@@ -346,14 +368,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How does CSRF work, and why can&apos;t the attacker read the CSRF token?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               CSRF works by exploiting the browser&apos;s automatic cookie inclusion behavior — when a user visits a malicious site, the site submits a request to the target site (where the user is authenticated), and the browser includes the user&apos;s session cookie automatically. The target site processes the request as legitimate because the cookie is valid.
-            </p>
+            </HighlightBlock>
             <p>
               The attacker cannot read the CSRF token because of the same-origin policy — the CSRF token is embedded in the legitimate site&apos;s HTML, and the same-origin policy prevents the malicious site from reading the legitimate site&apos;s HTML. The attacker can forge a request to the target site, but they cannot include the valid CSRF token, so the request is rejected.
             </p>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function LikeButtonArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The like button represents the most fundamental unit of digital engagement, enabling users to express approval, appreciation, or acknowledgment with a single interaction. Despite its apparent simplicity, the like button serves as a critical engagement signal that drives content ranking, user retention, and platform monetization. When a user clicks like, they are not merely expressing sentiment—they are generating valuable behavioral data that informs recommendation algorithms, content moderation systems, and advertiser targeting.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Major platforms have evolved their like implementations significantly over time. Facebook introduced the thumbs-up like in 2009, later expanding to six reaction types in 2016 to capture more nuanced emotional responses. Instagram uses a heart icon that fills with red when activated. Twitter transitioned from a star (favorites) to a heart (likes) in 2015 to better communicate the action's meaning. LinkedIn employs a thumbs-up icon consistent with professional endorsement. Each platform's design choices reflect their unique user expectations and engagement goals.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, implementing a production-ready like button involves navigating significant technical challenges beyond the surface-level toggle behavior. The system must provide instant visual feedback through optimistic updates while handling network failures gracefully. It must scale to handle millions of concurrent likes during viral events while maintaining data consistency. The architecture must integrate with real-time notification systems, feed generation pipelines, and analytics infrastructure. Additionally, engineers must consider abuse prevention through rate limiting, bot detection, and vote manipulation prevention.
         </p>
@@ -47,13 +51,16 @@ export default function LikeButtonArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Toggle State Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The like button operates as a binary toggle control with two distinct states: liked and unliked. In the unliked state, the button typically appears as an outlined icon in a neutral color such as gray. When activated, the icon fills with a distinctive color—commonly red for hearts, blue for thumbs-up—and may include an animation to provide satisfying visual feedback. The transition between states must be instantaneous from the user's perspective, which necessitates optimistic UI updates that precede server confirmation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           State management becomes more complex when considering edge cases. What happens when a user clicks rapidly multiple times? The system must debounce or queue these actions to prevent race conditions. What occurs when the server response contradicts the optimistic update? The UI must gracefully revert while informing the user of the failure. How does the system handle offline scenarios? The action should queue for later synchronization when connectivity resumes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Optimistic Update Pattern</h3>
         <p>
@@ -82,9 +89,12 @@ export default function LikeButtonArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production like button architecture spans client, API, and infrastructure layers. The client component manages user interaction, optimistic state updates, and server synchronization. The API layer validates requests, enforces rate limits, and persists engagement data. The infrastructure layer handles high-volume write throughput, real-time count distribution, and cross-region replication for global audiences.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/interaction-engagement/like-button/like-button-architecture.svg"
@@ -95,9 +105,9 @@ export default function LikeButtonArticle() {
         />
 
         <h3>Client Component Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The client component maintains local state for the liked status, pending action queue, and error state. On user interaction, it immediately updates the visual state and increments the displayed count. It then dispatches an API request with an idempotency key to ensure that network retries don't create duplicate likes. If the API responds successfully, the pending state clears. If the API fails, the component reverts the visual state and displays an error notification.
-        </p>
+        </HighlightBlock>
         <p>
           Accessibility considerations require keyboard support with Enter or Space to toggle the like state. Screen readers must announce the current state and the action that will occur on activation. Focus indicators must be clearly visible for keyboard navigation. The touch target should meet the minimum 44x44 pixel requirement for mobile accessibility. Color alone should not indicate state—icon fill changes and text labels provide redundant visual cues for colorblind users.
         </p>
@@ -137,14 +147,17 @@ export default function LikeButtonArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Like button implementation involves numerous design trade-offs that vary by platform and use case. Understanding these trade-offs enables engineers to make informed decisions aligned with their product goals and technical constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Optimistic vs Pessimistic Updates</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Optimistic updates prioritize perceived performance by updating the UI before server confirmation. This approach delivers the best user experience when the success rate is high, which is typical for like operations in stable network conditions. However, optimistic updates require careful error handling for the failure cases. Users who repeatedly experience rollbacks due to network issues will lose trust in the interface.
-        </p>
+        </HighlightBlock>
         <p>
           Pessimistic updates wait for server confirmation before updating the UI. This approach guarantees consistency but introduces noticeable latency, particularly on mobile networks. The loading spinner or disabled button state creates friction that reduces engagement rates. Pessimistic updates may be appropriate for high-stakes actions like financial transactions, but they are generally unsuitable for engagement features where speed is paramount.
         </p>
@@ -176,13 +189,16 @@ export default function LikeButtonArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement optimistic updates with rollback:</strong> Update the UI immediately on user interaction, then synchronize with the server. On failure, revert the UI state and notify the user with a clear error message and retry option.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounce rapid clicks:</strong> Prevent multiple simultaneous requests by disabling the button during pending operations or implementing a debounce window of 200-300 milliseconds.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use idempotency keys:</strong> Include a client-generated idempotency key with each API request to safely handle network retries without creating duplicate likes.
           </li>
@@ -206,13 +222,16 @@ export default function LikeButtonArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing optimistic updates:</strong> Waiting for server confirmation before updating the UI introduces noticeable latency that reduces engagement rates. Users expect instant feedback for simple actions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No error handling:</strong> Failing to handle API failures leaves the UI in an inconsistent state. Users may believe their like registered when it did not, leading to confusion and frustration.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Race conditions from rapid clicks:</strong> Without debouncing or queuing, rapid clicks can send conflicting requests that result in incorrect final state.
           </li>
@@ -230,16 +249,19 @@ export default function LikeButtonArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Facebook Reactions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook evolved from a simple like button to six reaction types in 2016. The implementation uses optimistic updates with immediate visual feedback. Reactions are weighted differently in the News Feed algorithm—comments and shares carry more weight than likes, while angry reactions may indicate controversial content. Facebook shards like counters across multiple data centers for global availability and uses eventual consistency to reconcile counts across regions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Instagram Like Animation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Instagram's like button features a distinctive heart animation with particle effects that plays when users double-tap a photo. The animation provides satisfying visual feedback that has become iconic to the platform. Instagram hides like counts by default in many markets to reduce social pressure, though users can optionally re-enable count display. The backend uses sharded Redis counters with periodic aggregation to handle billions of daily likes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Twitter Like Implementation</h3>
         <p>
@@ -254,12 +276,15 @@ export default function LikeButtonArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle like failures after optimistic update?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle like failures after optimistic update?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> When the API call fails after an optimistic update, immediately revert the UI to its previous state—unfill the heart icon and decrement the displayed count. Display a toast notification informing the user that the action failed with a message like "Couldn't like this post. Tap to retry." Include a retry mechanism that resends the request with exponential backoff. Log the failure with context including error type, network conditions, and user agent for debugging. For persistent failures, consider disabling the like button temporarily to prevent repeated failed attempts.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

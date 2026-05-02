@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,12 +38,15 @@ export default function ContainerOrchestrationArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Container orchestration</strong> is the practice of automating the deployment, scaling, networking, and management of containers across multiple hosts. While containerization packages applications into portable units, orchestration manages those units at scale — scheduling containers on hosts, load balancing traffic between containers, auto-scaling based on demand, self-healing failed containers, rolling out updates without downtime, and managing configuration and secrets. Without orchestration, managing containers across dozens or hundreds of hosts requires manual intervention, which is impractical for production systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, container orchestration is the foundation of modern cloud-native infrastructure. Kubernetes (the dominant container orchestration platform, originally designed by Google and now maintained by the Cloud Native Computing Foundation) has become the industry standard, adopted by organizations of all sizes. Kubernetes provides a declarative API (you describe the desired state — how many replicas, what image, what ports, what resource limits — and Kubernetes makes it happen), a rich ecosystem of extensions (Helm charts, operators, service meshes), and a large talent pool (Kubernetes skills are widely available). Alternative orchestration platforms exist (Docker Swarm, Amazon ECS, Nomad) but have significantly smaller market share.
-        </p>
+        </HighlightBlock>
         <p>
           Container orchestration involves several technical concepts. Pods (the smallest deployable unit in Kubernetes — one or more containers that share network, storage, and lifecycle — containers in a pod are scheduled together on the same host). Services (stable network endpoints that load balance traffic across pods — services provide a stable IP address and DNS name, even as pods are created, destroyed, and rescheduled). Deployments (declarative specifications for pod replicas — you specify the desired number of replicas, the container image, and the update strategy, and Kubernetes manages the rollout). Auto-scaling (automatically adjusting the number of pod replicas based on metrics — CPU usage, memory usage, custom metrics). Self-healing (automatically restarting failed pods, rescheduling pods from failed nodes, replacing unhealthy pods).
         </p>
@@ -54,12 +58,15 @@ export default function ContainerOrchestrationArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Pods</strong> are the smallest deployable unit in Kubernetes. A pod contains one or more containers that share network namespace (same IP address, same port space), storage volumes (shared file system), and lifecycle (containers in a pod are scheduled together on the same host, start together, and stop together). Most pods contain a single container (the application), but sidecar patterns use multiple containers in a pod (application container plus logging container, application container plus proxy container). Pods are ephemeral — they are created, destroyed, and recreated frequently during scaling, updates, and node failures.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Services</strong> are stable network endpoints that load balance traffic across pods. Pods are ephemeral (they are created and destroyed frequently, with changing IP addresses), so services provide a stable IP address and DNS name that does not change. Services route traffic to healthy pods based on readiness probes, distribute traffic across pods using round-robin or least connections, and provide service discovery (other pods can reach the service by its DNS name, without knowing individual pod IPs). Service types include ClusterIP (internal only, reachable within the cluster), NodePort (exposed on each node&apos;s IP, reachable from outside the cluster), and LoadBalancer (provisioned cloud load balancer, reachable from the internet).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Deployments</strong> are declarative specifications for pod replicas. You specify the desired number of replicas, the container image, resource requests and limits, and the update strategy (rolling update, recreate, blue-green). Kubernetes manages the deployment — creating pods, monitoring their health, replacing failed pods, and rolling out updates according to the strategy. Deployments are the primary way to run stateless applications in Kubernetes (web servers, APIs, microservices).
         </p>
@@ -85,12 +92,15 @@ export default function ContainerOrchestrationArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Kubernetes architecture consists of the control plane (managing the cluster state — API server, etcd, scheduler, controller manager) and worker nodes (running workloads — kubelet, container runtime, kube-proxy). The flow begins with users submitting declarative specifications to the API server (desired state — deploy 3 replicas of this image, with these resource limits, behind this service). The scheduler assigns pods to worker nodes (based on resource availability, constraints, affinity rules). The kubelet on each worker node ensures that pods are running as specified (pulling images, starting containers, running probes). The controller manager monitors the cluster state and makes adjustments (scaling, self-healing, rolling updates).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For application deployments, the flow involves creating a Deployment (specifying replicas, image, resource limits), a Service (exposing the deployment internally or externally), and optionally a HorizontalPodAutoscaler (auto-scaling based on metrics). Kubernetes manages the lifecycle — creating pods, monitoring their health, replacing failed pods, scaling up and down, and rolling out updates without downtime.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/pod-service-deployment.svg"
@@ -123,14 +133,17 @@ export default function ContainerOrchestrationArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Container orchestration involves trade-offs between complexity and capability, managed services and self-hosted, and Kubernetes and alternatives. Understanding these trade-offs is essential for choosing the right orchestration strategy.
-        </p>
+        </HighlightBlock>
 
         <h3>Managed vs. Self-Hosted Kubernetes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Managed Kubernetes (GKE, EKS, AKS):</strong> Cloud providers manage the control plane (API server, etcd, scheduler, controller manager). Advantages: reduced operational overhead (cloud provider handles upgrades, backups, high availability), faster time to production (no need to set up and maintain the control plane), built-in integrations (cloud load balancers, storage, monitoring). Limitations: higher cost (cloud provider markup), less control (limited control plane configuration), vendor lock-in (managed services are cloud-specific). Best for: most organizations, teams without dedicated Kubernetes expertise.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Self-Hosted Kubernetes (kubeadm, Kops):</strong> You manage the entire cluster (control plane and worker nodes). Advantages: lower cost (no cloud provider markup), full control (customize control plane configuration), no vendor lock-in (runs on any infrastructure). Limitations: high operational overhead (you handle upgrades, backups, high availability, troubleshooting), slower time to production (setup and maintenance take time), requires Kubernetes expertise. Best for: organizations with dedicated Kubernetes teams, on-premises deployments, multi-cloud strategies.
         </p>
@@ -158,12 +171,15 @@ export default function ContainerOrchestrationArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Set Resource Requests and Limits.</strong> Always specify CPU and memory requests (guaranteed resources for the pod) and limits (maximum resources the pod can use). Requests ensure that pods are scheduled on nodes with sufficient resources, preventing oversubscription. Limits prevent runaway pods from consuming all node resources, which would cause node crashes. Without requests and limits, Kubernetes cannot schedule pods efficiently because it does not know how much resources each pod needs, and runaway pods can crash nodes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use Liveness and Readiness Probes.</strong> Configure liveness probes to restart failed containers and readiness probes to remove unhealthy pods from service endpoints. Liveness probes enable self-healing by automatically restarting failed containers. Readiness probes enable zero-downtime deployments because traffic is routed only to ready pods — during deployment, new pods are not added to the service until they pass the readiness probe. Without probes, Kubernetes cannot detect or recover from application-level failures where the container is running but the application is not responding.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Use Namespaces for Isolation.</strong> Organize resources into namespaces such as development, staging, production, team-a, and team-b. Namespaces provide logical isolation where resources in different namespaces do not conflict, enable resource quotas to limit resource usage per namespace, and support access control through RBAC policies per namespace. Namespaces are essential for multi-tenant clusters where multiple teams or environments share the same cluster.
         </p>
@@ -181,12 +197,15 @@ export default function ContainerOrchestrationArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Not Setting Resource Limits.</strong> Running pods without CPU and memory limits is one of the most common causes of cluster instability. Without limits, a single pod can consume all node resources including CPU and memory, crashing other pods and the node itself. Always set resource requests and limits for all pods to prevent this.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Ignoring Probe Configuration.</strong> Running pods without liveness and readiness probes means Kubernetes cannot detect application-level failures. The container may be running, but the application is not responding, and traffic is routed to unhealthy pods causing user-facing errors. Always configure liveness and readiness probes for all pods.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Running Single Replicas.</strong> Running production workloads with a single replica provides no high availability. If the pod fails, the service is down until Kubernetes restarts it. Always run at least 2 replicas for production workloads, distributed across multiple nodes using pod anti-affinity.
         </p>
@@ -204,16 +223,19 @@ export default function ContainerOrchestrationArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Microservices Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Organizations running microservices architectures use Kubernetes to deploy and manage hundreds or thousands of services. Each service runs as a Deployment (with multiple replicas for high availability), exposed via a Service (internal ClusterIP for inter-service communication, external LoadBalancer for user-facing services). Kubernetes manages the lifecycle — auto-scaling based on demand, self-healing failed pods, rolling out updates without downtime. This pattern is used by companies like Spotify, Airbnb, and Pinterest to manage large-scale microservices deployments.
-        </p>
+        </HighlightBlock>
 
         <h3>CI/CD Pipeline Environments</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CI/CD pipelines use Kubernetes to provide ephemeral build environments. Each build runs in a pod (with isolated dependencies, clean state), and pods are discarded after the build (clean state for the next build). Kubernetes manages the lifecycle — creating pods for builds, scaling based on build demand, discarding pods after builds. This pattern is used by Jenkins (Kubernetes plugin), GitLab CI (Kubernetes executor), and GitHub Actions (self-hosted runners on Kubernetes).
-        </p>
+        </HighlightBlock>
 
         <h3>Multi-Tenant Platform</h3>
         <p>
@@ -229,15 +251,18 @@ export default function ContainerOrchestrationArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between a Pod, a Deployment, and a Service in Kubernetes?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: A Pod is the smallest deployable unit — one or more containers that share network, storage, and lifecycle. Pods are ephemeral (created, destroyed, recreated frequently). A Deployment manages pod replicas — you specify the desired number of replicas, the container image, and the update strategy, and Kubernetes creates and manages the pods. A Service is a stable network endpoint that load balances traffic across pods — pods are ephemeral (changing IPs), so services provide a stable IP and DNS name. Deployments manage pods, services expose pods. You create a Deployment (to run pods), and a Service (to expose the deployment).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

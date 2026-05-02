@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function BubbleSortArticle() {
       {/* SECTION 1 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Bubble sort</strong> is the simplest adjacent-swap sorting
           algorithm: repeatedly walk the array, swapping any neighboring pair
           found out of order, until a full pass completes with no swaps. Each
@@ -48,8 +52,8 @@ export default function BubbleSortArticle() {
           in the average and worst case and O(n) in the best case when the
           input is already sorted and the optimized variant terminates after
           one pass.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Historically, bubble sort is a cautionary tale. Donald Knuth, in{" "}
           <em>The Art of Computer Programming, Volume 3</em>, famously wrote
           that bubble sort &quot;seems to have nothing to recommend it,
@@ -62,7 +66,7 @@ export default function BubbleSortArticle() {
           whiteboards, and occasionally in interviews — not because you
           would ship it, but because its O(n²) worst case is the baseline
           from which every better algorithm is justified.
-        </p>
+        </HighlightBlock>
         <p>
           In an interview context, asking a candidate to implement bubble
           sort is almost never about bubble sort itself. It is a probe for
@@ -88,11 +92,14 @@ export default function BubbleSortArticle() {
       {/* SECTION 2 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           The adjacent-swap invariant
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A bubble-sort pass compares positions <code>i</code> and{" "}
           <code>i+1</code> for <code>i</code> from 0 to <code>n-2</code>,
           swapping whenever <code>a[i] &gt; a[i+1]</code>. After the k-th
@@ -102,12 +109,12 @@ export default function BubbleSortArticle() {
           terminates when a pass produces zero swaps, which — by the
           contrapositive of the invariant — means every adjacent pair is
           already ordered and therefore the entire array is sorted.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Stability and the strict comparison
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stability requires that the swap condition be <em>strict</em>{" "}
           greater-than, never greater-than-or-equal. If two equal elements
           ever swap, their relative order flips, and stability is lost. In
@@ -117,7 +124,7 @@ export default function BubbleSortArticle() {
           fields. The single-character bug of writing <code>&gt;=</code>{" "}
           instead of <code>&gt;</code> converts stable bubble sort into an
           unstable variant and is the archetypal stability pitfall.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Early-termination optimization
@@ -155,11 +162,14 @@ export default function BubbleSortArticle() {
       {/* SECTION 3 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Pass-by-pass execution
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Consider the array <code>[5, 1, 4, 2, 8]</code>. Pass 1 compares
           (5,1) swap → (5,4) swap → (5,2) swap → (5,8) no swap, leaving{" "}
           <code>[1, 4, 2, 5, 8]</code>. The 8 was already in place; the 5
@@ -170,12 +180,12 @@ export default function BubbleSortArticle() {
           insertion sort only four shifts and terminates in a single pass
           through the data — already a visible efficiency gap on five
           elements.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Cocktail shaker (bidirectional) sort
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A variant that alternates left-to-right and right-to-left passes.
           The motivation is the asymmetric cost of moving a small element
           stranded at the end: on each left-to-right pass, small elements
@@ -186,7 +196,7 @@ export default function BubbleSortArticle() {
           rabbits, typically halving the wall-clock time on worst-case
           inputs. The asymptotic complexity remains O(n²); only the constant
           factor improves.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Comb sort — the respectable descendant
@@ -230,6 +240,9 @@ export default function BubbleSortArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Complexity summary
@@ -264,7 +277,7 @@ export default function BubbleSortArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Bubble sort vs insertion sort
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Insertion sort dominates bubble sort on essentially every
           practical metric. Both are O(n²) worst case; both are stable; both
           are O(1) space. But insertion sort performs roughly half the
@@ -276,12 +289,12 @@ export default function BubbleSortArticle() {
           easier to visualize than insertion sort&apos;s shifting. In
           production hybrid sorts like Tim Sort or Pdqsort, insertion sort
           is the small-array base case; bubble sort is never the base case.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Bubble sort vs selection sort
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Selection sort is also O(n²) but performs exactly n−1 swaps total
           — the minimum possible for a comparison sort. On workloads where
           writes are expensive (e.g., sorting pointers to large structs, or
@@ -291,7 +304,7 @@ export default function BubbleSortArticle() {
           performs exactly O(n). The trade-off is that selection sort is
           not stable and not adaptive — early termination does not help
           because each outer iteration always performs one swap.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Why bubble sort is educational despite being bad
@@ -313,21 +326,24 @@ export default function BubbleSortArticle() {
       {/* SECTION 5 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Never ship bubble sort in production.</strong> The
             language default (Tim Sort in Python and Java, Pdqsort in Rust,
             introsort in C++) is always better. The one legitimate exception
             is embedded systems sorting tiny fixed arrays (n ≤ 8) where
             code size matters more than performance — and even there,
             insertion sort is the standard choice.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Always include the early-termination flag</strong> if
             you do implement it. Without the flag, the best case is
             indistinguishable from the worst, and the algorithm loses
             adaptiveness.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Shrink the inner loop bound by the pass index.</strong>{" "}
             The tail of length k after pass k is sorted; do not re-examine
@@ -357,22 +373,25 @@ export default function BubbleSortArticle() {
       {/* SECTION 6 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Forgetting the early-termination flag
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common interview mistake. Candidates implement the double
           loop, argue O(n²) average, and move on — forgetting that without
           the swap flag the algorithm is O(n²) even on sorted input. This is
           the difference between &quot;I know bubble sort&quot; and &quot;I
           understand adaptive algorithms.&quot;
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Using <code>&gt;=</code> and breaking stability
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stability is quietly destroyed by a single character. Candidates
           and junior engineers often use <code>&gt;=</code> because it
           feels more &quot;inclusive,&quot; not realizing they just unmade
@@ -380,7 +399,7 @@ export default function BubbleSortArticle() {
           sorting by a primary key (the standard technique for
           lexicographic sort), the loss of stability silently scrambles
           results.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Claiming bubble sort is ever the best choice
@@ -425,11 +444,14 @@ export default function BubbleSortArticle() {
       {/* SECTION 7 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Teaching and first exposure
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The overwhelmingly dominant use case. Bubble sort is the first
           sort in Cormen, Sedgewick, and most introductory textbooks; the
           first sort in CS 101 at most universities; and the first sort in
@@ -437,12 +459,12 @@ export default function BubbleSortArticle() {
           of a comparison-based sort before the student is equipped to
           reason about recursion, divide-and-conquer, or logarithmic
           behavior.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Sorting networks and GPU primitives
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Odd-even sort is used as a building block in bitonic sorting
           networks on GPUs when sorting fixed small batches (e.g., 32 or
           256 elements per warp). The regular structure — every pair
@@ -451,7 +473,7 @@ export default function BubbleSortArticle() {
           Thrust library and many BVH-construction pipelines in graphics
           rely on this family of algorithms for the fixed-size innermost
           sort.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Embedded systems and ROM-constrained firmware
@@ -494,13 +516,16 @@ export default function BubbleSortArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Common Interview Questions
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q1. Why does bubble sort have a best case of O(n)?
-            </p>
-            <p className="mt-2">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2">
               The best case depends on the early-termination optimization. On
               a pre-sorted array, the first pass performs n−1 comparisons and
               zero swaps. The swapped flag stays false, the outer loop exits,
@@ -508,7 +533,7 @@ export default function BubbleSortArticle() {
               bubble sort is Θ(n²) unconditionally — the loop structure does
               not self-detect sortedness. The n-vs-n² gap is entirely a
               consequence of the optimization.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

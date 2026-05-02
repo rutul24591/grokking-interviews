@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function RefundRequestUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Refund request UI enables customers to self-serve returns and refunds: request refund, select items, choose reason, select refund method (original payment, store credit, exchange), print return label, and track refund status. A well-designed refund UI reduces support tickets (customers help themselves), improves customer satisfaction (easy returns), and provides valuable data (why customers return). For staff and principal engineers, refund UI involves eligibility rules (return window, item condition), refund calculation (proration, restocking fees), return logistics (shipping labels, drop-off locations), and fraud prevention (return abuse detection).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of refund UI extends beyond simple form submission. Eligibility varies by item (some non-returnable), purchase date (return window), condition (used vs. new), and reason (defective vs. changed mind). Refund calculation includes original price, shipping cost (refundable?), restocking fees (electronics), return shipping cost (free for defective, customer-paid for changed mind). Return logistics: print label (PDF), QR code (drop-off without printing), pickup scheduling (carrier pickup). The UI must handle edge cases (partial returns, gift returns, international returns) gracefully with clear communication.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, refund UI architecture involves backend integration (order API, refund API, shipping API), state management (refund request status, return tracking), and customer communication (email notifications, status updates). Analytics track return rate (returns / purchases), return reasons (defective, wrong size, changed mind), refund method preference (original payment, store credit), and return abuse (frequent returners). The system must support multiple return policies (30-day, 90-day, lifetime), multiple refund methods (original payment, store credit, exchange), and multiple return shipping options (drop-off, pickup, mail).
         </p>
@@ -47,13 +51,16 @@ export default function RefundRequestUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Refund Eligibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Return window defines when returns are accepted. Standard: 30 days from delivery (most e-commerce). Extended: 60-90 days (holiday season, premium customers). Lifetime: defective items only (warranty). Display: &quot;Return by Dec 30&quot; (specific date), &quot;30 days from delivery&quot; (relative). Expired: &quot;Return window closed&quot; (no refund, may offer store credit as exception).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Item eligibility varies by product type. Returnable: most items (clothing, electronics, home goods). Non-returnable: personalized items (custom engraving), perishables (food, flowers), intimate items (underwear, earrings), digital goods (software, ebooks), gift cards. Condition requirements: new with tags (clothing), original packaging (electronics), unused (all items). Display: &quot;Eligible for return&quot; (green checkmark), &quot;Non-returnable&quot; (gray, tooltip why).
-        </p>
+        </HighlightBlock>
         <p>
           Refund amount calculation includes price, shipping, fees. Original price: full refund (defective, wrong item), partial refund (used, damaged by customer). Shipping cost: refundable (defective, wrong item), non-refundable (changed mind). Restocking fee: electronics (15%), opened software (25%), special order items (50%). Return shipping: free (defective, wrong item), customer-paid (changed mind). Display: &quot;Refund: $99.00 (item) + $9.99 (shipping) - $14.85 (restocking) = $94.14&quot;.
         </p>
@@ -105,9 +112,12 @@ export default function RefundRequestUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Refund request UI architecture spans eligibility check, return form, label generation, and status tracking. Eligibility check validates return window, item eligibility, condition. Return form captures items, reason, refund method. Label generation creates shipping label (PDF, QR code). Status tracking shows return and refund progress.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/refund-request-ui/refund-request-architecture.svg"
@@ -118,9 +128,9 @@ export default function RefundRequestUIArticle() {
         />
 
         <h3>Eligibility Check Component</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Order selection shows eligible orders. Filter: date range (last 30 days, last 90 days, custom), status (delivered, partially delivered). Display: order number, delivery date, items, &quot;Return by&quot; date. Expired: grayed out (&quot;Return window closed&quot;), may offer store credit exception. Multiple orders: select items from different orders (consolidated return).
-        </p>
+        </HighlightBlock>
         <p>
           Item eligibility shows which items can be returned. Eligible: green checkmark, &quot;Eligible until Dec 30&quot;. Non-returnable: gray, tooltip (&quot;Personalized items cannot be returned&quot;). Already returned: gray, &quot;Returned on Nov 15&quot;. Partial returns: &quot;2 of 3 items remaining&quot; (some already returned). Display: checkbox (select items to return), quantity (if multiple of same item).
         </p>
@@ -180,14 +190,17 @@ export default function RefundRequestUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Refund UI design involves trade-offs between customer convenience, fraud prevention, operational cost, and customer experience. Understanding these trade-offs enables informed decisions aligned with business model and customer expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Return Window: Short vs. Long</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Short return window (14-30 days). Pros: Lower return rate (customers must decide quickly), faster inventory turnover (returned items resold quickly), lower fraud (less time for return abuse). Cons: Customer pressure (must decide fast), competitive disadvantage (competitors offer longer), lower satisfaction (may miss window). Best for: Fast fashion (trend-driven), electronics (rapid depreciation), perishables.
-        </p>
+        </HighlightBlock>
         <p>
           Long return window (60-90 days, holiday extended). Pros: Customer-friendly (plenty of time), competitive advantage (better than competitors), higher satisfaction (no pressure). Cons: Higher return rate (customers buy multiple, return later), slower inventory turnover, higher fraud (more time for abuse). Best for: Clothing (try at home), high-value items (considered purchase), holiday season (gifts).
         </p>
@@ -239,13 +252,16 @@ export default function RefundRequestUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Make eligibility clear:</strong> Show &quot;Return by&quot; date, eligible items (green checkmark), non-returnable (gray, tooltip). Expired: clear message, may offer store credit exception.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Simplify reason selection:</strong> Categories (product, fit, preference), sub-options (dynamic), follow-up (text/dropdown). Analytics: track reasons (improve product, sizing).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Offer refund method choice:</strong> Original payment (standard), store credit (instant, bonus), exchange (different size/item). Display processing time, bonus amount.
           </li>
@@ -275,13 +291,16 @@ export default function RefundRequestUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Unclear eligibility:</strong> Customer doesn&apos;t know if eligible. Solution: Show &quot;Return by&quot; date, eligible items, non-returnable tooltip.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Hidden fees:</strong> Customer surprised by restocking, return shipping. Solution: Show refund estimate upfront (all fees itemized).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Limited refund methods:</strong> Only original payment (slow). Solution: Offer store credit (instant, bonus), exchange (different size/item).
           </li>
@@ -311,16 +330,19 @@ export default function RefundRequestUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Amazon Returns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon returns: self-service portal. Features: select order, items, reason, refund method (original, Amazon credit). Return shipping: QR code (Whole Foods, UPS), print label, pickup. Instant refund: for trusted customers (refund before return received). Drop-off: Amazon Locker, Whole Foods, UPS Store. Tracking: return and refund status in order history.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Zara Returns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Zara returns: in-store or mail. Features: select order, items, reason. Refund method: original payment, store credit. Return shipping: free (mail or in-store). In-store: instant refund (card or store credit). Mail: print label, drop-off at post office. Tracking: email notifications (received, refund issued). Timeline: 30 days from purchase.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Best Buy Returns</h3>
         <p>
@@ -340,12 +362,15 @@ export default function RefundRequestUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you determine refund eligibility?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you determine refund eligibility?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Check return window (delivery date + policy days), item eligibility (non-returnable items), condition (new, used, damaged), previous returns (already returned). Display: &quot;Eligible until Dec 30&quot; (green), &quot;Non-returnable&quot; (gray, tooltip), &quot;Return window closed&quot; (expired, may offer store credit).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

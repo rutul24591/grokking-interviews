@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,12 +37,15 @@ export default function ImmutableInfrastructureArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Immutable infrastructure</strong> is an operational model where servers and infrastructure components are never modified in-place after deployment. Instead of updating existing servers (installing new packages, changing configuration files, patching the OS), new servers are provisioned with the updated configuration, and old servers are terminated and replaced. This approach eliminates configuration drift (servers do not diverge from their desired state over time, because they are never modified), ensures reproducibility (every server is built from the same image/configuration, eliminating &quot;works on my server&quot; problems), and simplifies rollback (reverting to the previous server image/configuration, rather than undoing in-place changes).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, immutable infrastructure represents a fundamental shift from mutable (changeable) to immutable (unchangeable) server management. Traditional mutable infrastructure involves SSHing into servers and making changes (installing packages, editing configuration files, applying patches) — which causes configuration drift (servers diverge from their desired state over time, different servers have different configurations, making debugging difficult). Immutable infrastructure eliminates this problem — servers are never modified, only replaced. If a server needs updating, a new server is provisioned with the updated configuration, and the old server is terminated. This ensures that all servers are identical (built from the same image/configuration), eliminating configuration drift and simplifying debugging.
-        </p>
+        </HighlightBlock>
         <p>
           Immutable infrastructure involves several technical considerations. Image building (creating server images with all dependencies pre-installed — AMIs for AWS, machine images for GCP, container images for Kubernetes). Image versioning (each image has a unique version — semantic versioning, git SHA, build number — enabling reproducible deployments and rollback). Server replacement (deploying new servers, routing traffic to them, terminating old servers — zero-downtime replacement). Rollback (reverting to the previous server image — fast, reliable, no undo complexity). Configuration management (servers are configured at build time, not at runtime — no runtime configuration changes, no configuration drift).
         </p>
@@ -53,12 +57,15 @@ export default function ImmutableInfrastructureArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>No In-Place Updates:</strong> Servers are never modified after deployment. Instead of updating existing servers (installing new packages, changing configuration, applying patches), new servers are provisioned with the updated configuration, and old servers are terminated. This eliminates configuration drift (servers do not diverge from their desired state), ensures reproducibility (all servers are built from the same image), and simplifies debugging (if a server has an issue, it is replaced with a new server — no debugging in-place changes).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Image Building:</strong> Creating server images with all dependencies pre-installed. Images are built through automated pipelines (Packer, Docker, cloud provider image builders — installing OS packages, application dependencies, application code, configuration). Images are versioned (each image has a unique version — semantic versioning, git SHA, build number), enabling reproducible deployments (same image version produces the same server) and rollback (revert to the previous image version).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Server Replacement:</strong> Deploying new servers and terminating old servers. Server replacement is the core of immutable infrastructure — instead of updating existing servers, new servers are provisioned with the updated image, traffic is routed to the new servers (load balancer updates, DNS changes), and old servers are terminated. Server replacement can be done with zero-downtime (blue-green deployment, rolling deployment — traffic is always served by healthy servers).
         </p>
@@ -84,12 +91,15 @@ export default function ImmutableInfrastructureArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Immutable infrastructure architecture consists of the image building pipeline (creating server images with all dependencies pre-installed), the image registry (storing and versioning server images), the deployment pipeline (provisioning new servers from images, routing traffic to new servers, terminating old servers), and the monitoring system (tracking server health, image versions, deployment status). The flow begins with developers committing code changes to the repository. The image building pipeline builds a new server image (installing OS packages, application dependencies, application code, configuration), versions the image (unique version — semantic versioning, git SHA), and stores it in the image registry. The deployment pipeline provisions new servers from the new image, routes traffic to the new servers, and terminates the old servers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For production deployments, immutable infrastructure is integrated with blue-green or rolling deployment strategies (ensuring zero-downtime server replacement — traffic is always served by healthy servers). The deployment pipeline provisions new servers, runs health checks (verifying that new servers are healthy), routes traffic to new servers (load balancer updates, DNS changes), and terminates old servers (after traffic is fully shifted). If health checks fail, the deployment is rolled back (reverting to the previous image version).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/immutable-deployment-flow.svg"
@@ -122,14 +132,17 @@ export default function ImmutableInfrastructureArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Immutable infrastructure involves trade-offs between mutable and immutable server management, image building and runtime configuration, and replacement speed and complexity. Understanding these trade-offs is essential for designing effective immutable infrastructure strategies.
-        </p>
+        </HighlightBlock>
 
         <h3>Mutable vs. Immutable Infrastructure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Mutable Infrastructure:</strong> Servers are modified in-place (installing packages, changing configuration, applying patches). Advantages: simple (SSH into server, make changes), no image building pipeline needed (changes are applied directly to servers), fast for small changes (no need to build images, provision new servers, terminate old servers). Limitations: configuration drift (servers diverge from their desired state over time, different servers have different configurations), difficult debugging (if a server has an issue, debugging in-place changes is complex), difficult rollback (undoing in-place changes is complex and error-prone). Best for: small server fleets, simple applications, teams without image building expertise.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Immutable Infrastructure:</strong> Servers are never modified — only replaced. Advantages: no configuration drift (servers are never modified, so they do not diverge from their desired state), easy debugging (if a server has an issue, replace it with a new server — no debugging in-place changes), easy rollback (revert to the previous image — fast, reliable, no undo complexity). Limitations: requires image building pipeline (build images with all dependencies, version images, store in registry), slower for small changes (must build images, provision new servers, terminate old servers — even for small changes). Best for: large server fleets, complex applications, teams wanting reliability and reproducibility.
         </p>
@@ -154,12 +167,15 @@ export default function ImmutableInfrastructureArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Automate Image Building:</strong> Build images through automated pipelines (Packer, Docker, cloud provider image builders — triggered by code commits, building images automatically, versioning images, storing in registry). Automated image building ensures that images are built consistently (same dependencies, same configuration, same build process), eliminating manual image building errors. Integrate image building into the CI/CD pipeline (code commit triggers image build, image is tested, image is stored in registry, deployment pipeline uses the new image).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Version Images Clearly:</strong> Use clear, unique image versions (semantic versioning, git SHA, build number). Clear versioning enables reproducible deployments (same image version produces the same server), rollback (revert to the previous image version), and auditability (track which image version is deployed to which environment). Use automated versioning (git SHA for code-based versioning, build number for CI/CD-based versioning) to ensure that each image has a unique, traceable version.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Test Images Before Deployment:</strong> Test images before deploying to production (run tests on servers launched from the new image, verify that the application works correctly, verify that performance is acceptable). Testing images before deployment prevents deploying broken images (images with missing dependencies, incorrect configuration, application bugs). Include image testing in the CI/CD pipeline (build image, launch test server from image, run tests, store image in registry if tests pass, discard image if tests fail).
         </p>
@@ -177,12 +193,15 @@ export default function ImmutableInfrastructureArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Manual Image Building:</strong> Building images manually (SSHing into a server, installing packages, creating an image from the server). Manual image building is error-prone (missing dependencies, incorrect configuration), non-reproducible (different images are built differently), and untrackable (no record of how the image was built). Always build images through automated pipelines (Packer, Docker, cloud provider image builders — triggered by code commits, building images automatically, versioning images).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Not Testing Images:</strong> Deploying images without testing them on servers. Untested images may contain errors (missing dependencies, incorrect configuration, application bugs) that cause production failures. Always test images before deploying to production (launch test server from image, run tests, verify that the application works correctly, verify that performance is acceptable).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Long Server Startup Times:</strong> Images that take a long time to start (installing dependencies at startup, running initialization scripts). Long startup times delay server replacement (new servers take a long time to become healthy, increasing deployment time). Bake all dependencies into the image (no runtime installation), optimize application startup time (reduce warmup delay), and use health checks (verify that servers are healthy before routing traffic to them).
         </p>
@@ -200,16 +219,19 @@ export default function ImmutableInfrastructureArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Container-Based Deployments</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Container-based deployments (Kubernetes, Docker Swarm, ECS) use immutable infrastructure principles — container images are immutable (once built, they do not change), containers are launched from images (no in-place updates), and containers are replaced with new images for updates (not modified in-place). This pattern is used by organizations of all sizes to manage containerized applications — ensuring that containers are reproducible (same image produces the same container), reliable (no configuration drift), and easy to rollback (revert to the previous image).
-        </p>
+        </HighlightBlock>
 
         <h3>Cloud AMI Deployments</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Organizations deploying to AWS use AMIs (Amazon Machine Images) for immutable infrastructure — AMIs are built through automated pipelines (Packer — installing OS packages, application dependencies, application code, configuration), versioned (unique AMI ID), and deployed through server replacement (provisioning new EC2 instances from the new AMI, routing traffic to new instances, terminating old instances). This pattern is used by organizations like Netflix, Airbnb, and Pinterest to manage large-scale EC2 deployments — ensuring that instances are reproducible, reliable, and easy to rollback.
-        </p>
+        </HighlightBlock>
 
         <h3>Golden Image Pipelines</h3>
         <p>
@@ -225,15 +247,18 @@ export default function ImmutableInfrastructureArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is immutable infrastructure and why is it important?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Immutable infrastructure is an operational model where servers are never modified in-place after deployment. Instead of updating existing servers, new servers are provisioned with the updated configuration, and old servers are terminated. Immutable infrastructure eliminates configuration drift (servers do not diverge from their desired state), ensures reproducibility (all servers are built from the same image), simplifies debugging (replace servers instead of debugging in-place changes), and simplifies rollback (revert to the previous image). It is important for large server fleets where consistency, reliability, and reproducibility are critical.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -648,8 +648,12 @@ export default function ChunkedTransferEncodingArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview anchor: in HTTP/1.1, “chunked” is how you stream unknown-length responses; in modern stacks,
+          you usually talk in terms of streaming bodies, backpressure, and progressive rendering.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             RFC 7230: HTTP/1.1 <a
               href="https://datatracker.ietf.org/doc/html/rfc7230#section-4.1"
               className="text-accent hover:underline"
@@ -658,8 +662,8 @@ export default function ChunkedTransferEncodingArticle() {
             >
               Chunked Transfer Coding 
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             MDN Web Docs: <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream"
               className="text-accent hover:underline"
@@ -668,8 +672,8 @@ export default function ChunkedTransferEncodingArticle() {
             >
               ReadableStream 
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Fetch Specification: <a
               href="https://fetch.spec.whatwg.org/#body-interface"
               className="text-accent hover:underline"
@@ -678,7 +682,7 @@ export default function ChunkedTransferEncodingArticle() {
             >
               Body Interface 
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             HTTP/2 Specification: <a
               href="https://datatracker.ietf.org/doc/html/rfc7540#section-6"
@@ -689,7 +693,7 @@ export default function ChunkedTransferEncodingArticle() {
               HTTP Framing 
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="http://ndjson.org/"
               className="text-accent hover:underline"
@@ -698,7 +702,7 @@ export default function ChunkedTransferEncodingArticle() {
             >
               Newline-Delimited JSON (NDJSON) Specification 
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://react.dev/reference/react-dom/server/renderToPipeableStream"

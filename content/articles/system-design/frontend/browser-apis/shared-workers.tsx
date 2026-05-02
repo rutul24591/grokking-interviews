@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,15 +34,15 @@ export default function SharedWorkersArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Shared Workers</strong> are a specialized type of Web Worker defined by the HTML Living Standard that enables a single JavaScript execution context to be shared across multiple browsing contexts — including tabs, windows, and iframes — that share the same origin. Unlike Dedicated Workers, which maintain a strict one-to-one relationship with their creating script, a Shared Worker is instantiated once and persists as long as at least one browsing context maintains an active connection to it. This architectural distinction makes Shared Workers the only browser-native mechanism for efficient cross-tab coordination without relying on polling, storage events, or server-mediated communication.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Shared Worker API was introduced as part of the Web Workers specification to address a fundamental gap in the web platform: the inability of separate browsing contexts to communicate directly and share computational resources. Before Shared Workers, developers attempting cross-tab coordination had to choose between several suboptimal approaches. The BroadcastChannel API provides simple publish-subscribe messaging but offers no shared state and is limited to same-origin contexts. The localStorage event mechanism allows cross-tab notification of storage changes but requires serializing all data to strings, incurs storage quota limitations, and provides no guarantee of delivery order. Server-Sent Events or WebSocket connections in every tab duplicate network connections and server resources, creating unnecessary load when the same data is needed across all tabs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Shared Workers resolve these inefficiencies by providing a single background thread that maintains shared state, coordinates actions across tabs, and consolidates background tasks such as WebSocket connections, periodic polling, or analytics batching. When a tab opens a Shared Worker connection, it receives a dedicated MessagePort through which bidirectional communication flows. The worker itself maintains a registry of all connected ports and can broadcast messages to all tabs, route messages to specific tabs, or maintain aggregated state that reflects the collective status of all connected contexts.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, understanding Shared Workers is essential when architecting multi-tab web applications that require consistent state, efficient resource utilization, and coordinated behavior. Real-world scenarios include authentication state synchronization (logging out in one tab should log out all tabs), presence indicators (showing that a user has the application open in another tab), deduplicated analytics event batching (sending one batched request instead of one per tab), and shared WebSocket connections (maintaining a single real-time connection that distributes messages to all tabs). The decision to use Shared Workers versus alternative approaches involves careful analysis of browser support constraints, complexity trade-offs, and the specific coordination requirements of the application.
         </p>
@@ -50,15 +51,15 @@ export default function SharedWorkersArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Understanding Shared Workers requires mastering several interconnected concepts that distinguish them from other worker types and cross-tab communication mechanisms. The foundational concept is the <strong>shared execution context</strong>. When the first browsing context creates a Shared Worker using the constructor, the browser spawns a single worker thread. Subsequent contexts that construct a Shared Worker with the same script URL and optional name parameter do not create new threads — instead, they receive a connection to the existing worker. This means that variables, caches, and computational state within the worker are inherently shared across all connected contexts, enabling patterns that are impossible with Dedicated Workers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>port-based communication model</strong> is the second critical concept. Each browsing context that connects to a Shared Worker receives a unique MessagePort object. Communication does not flow directly through the worker object itself but through these individual ports. When a context calls <code>new SharedWorker(&apos;worker.js&apos;)</code>, the returned SharedWorker object exposes a <code>port</code> property. Messages are sent via <code>port.postMessage()</code> and received via <code>port.onmessage</code>. Within the worker, the <code>onconnect</code> event fires for each new connection, providing access to the connecting port through <code>event.ports[0]</code>. The worker must explicitly call <code>port.start()</code> on each connected port to begin receiving messages — a requirement that differs from Dedicated Workers where message handling begins immediately.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>lifecycle model</strong> of Shared Workers differs significantly from Dedicated Workers. A Dedicated Worker terminates when its creating context calls <code>terminate()</code> or when the creating context is destroyed. A Shared Worker, however, persists as long as any connected context remains active. The worker only terminates when the last connected port is closed — either because all tabs have been closed or because all contexts have explicitly disconnected. This lifecycle model has important implications for resource management: the worker must track connected ports, handle disconnection events gracefully, and clean up any per-context state when a port closes to prevent memory leaks.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>origin and scoping model</strong> determines which browsing contexts can share a worker. Shared Workers are scoped by origin — the tuple of protocol, hostname, and port. Two pages from <code>https://app.example.com</code> can share a worker, but a page from <code>https://admin.example.com</code> cannot, even though they share the same registered domain. Additionally, the optional <code>name</code> parameter in the SharedWorker constructor allows multiple distinct workers to be created from the same script URL. Two contexts using <code>new SharedWorker(&apos;worker.js&apos;, &apos;analytics&apos;)</code> share one worker, while contexts using <code>new SharedWorker(&apos;worker.js&apos;, &apos;sync&apos;)</code> share a different worker. This enables fine-grained control over which contexts share state.
         </p>
@@ -78,15 +79,15 @@ export default function SharedWorkersArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A production-grade Shared Worker architecture consists of several interconnected layers that must be designed carefully to handle the complexities of multi-context communication. At the highest level, the architecture comprises the <strong>main thread layer</strong> (individual browsing contexts), the <strong>worker layer</strong> (the shared execution context), and the <strong>communication layer</strong> (MessagePort channels connecting the two). Each layer has distinct responsibilities and failure modes that must be addressed independently.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The main thread layer is responsible for establishing and maintaining the connection to the Shared Worker. On page load, each context attempts to create or connect to the Shared Worker. The context must handle the case where the Shared Worker API is not available — most notably in Safari, which has not implemented Shared Worker support despite its presence in the specification for over a decade. When Shared Workers are unavailable, the application must gracefully degrade to an alternative cross-tab communication mechanism such as BroadcastChannel or localStorage events. The main thread also implements a message serialization layer that structures outgoing messages with type identifiers, payload data, and optional routing information, and a message dispatch layer that routes incoming messages to the appropriate handlers based on message type.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The worker layer is the most complex component. It maintains a <strong>port registry</strong> — typically a Map or Set data structure that tracks all currently connected MessagePort objects along with any per-context metadata such as tab identifiers, connection timestamps, or context-specific state. When the <code>onconnect</code> event fires, the worker adds the new port to the registry, initializes any per-context state, and optionally sends a welcome message containing the current shared state to the newly connected context. When a port closes (detected via the <code>onclose</code> event or by catching errors during <code>postMessage</code>), the worker removes the port from the registry, cleans up associated state, and may broadcast a disconnection notification to remaining contexts.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>shared state management</strong> within the worker is a critical architectural decision. The worker can maintain various types of shared state: a connection counter tracking the number of active tabs, a shared cache of API responses that all tabs can access without duplicating network requests, a message queue for coordinating actions across tabs, or a WebSocket connection that distributes incoming messages to all connected contexts. The choice of what state to share depends on the application&apos;s requirements and the trade-off between consistency and complexity. More shared state increases the value of the Shared Worker but also increases the complexity of state synchronization and the potential for race conditions.
         </p>
@@ -131,15 +132,15 @@ export default function SharedWorkersArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The decision to use Shared Workers involves evaluating trade-offs across multiple dimensions including browser support, implementation complexity, performance characteristics, and architectural fit. Understanding these trade-offs is essential for making informed architectural decisions that balance capability with practical constraints.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most significant trade-off is <strong>browser support versus capability</strong>. Shared Workers are supported in Chrome, Edge, Firefox, and Opera, but notably not in Safari on any platform — desktop or mobile. This means that any application relying on Shared Workers for critical functionality must implement a fallback mechanism for Safari users. The fallback typically uses BroadcastChannel for same-origin messaging or localStorage events for broader compatibility. This dual-path architecture increases code complexity and testing burden, as both paths must be maintained and verified. However, for applications where Safari represents a small portion of the user base, or where the Shared Worker functionality is an enhancement rather than a requirement, the trade-off may be acceptable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>complexity versus efficiency</strong> trade-off is another critical consideration. Shared Workers require implementing port management, message serialization, error handling, and lifecycle management — significantly more complex than the single-line BroadcastChannel API. However, the efficiency gains can be substantial. A Shared Worker consolidates what would otherwise be duplicate work across tabs: a single WebSocket connection instead of one per tab, a single polling interval instead of one per tab, a single analytics batch instead of one per tab. For applications with users who commonly have multiple tabs open, these efficiency gains translate directly into reduced server load, lower network costs, and improved battery life on mobile devices.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>shared state versus isolation</strong> trade-off affects data consistency and error handling. With Shared Workers, state is inherently shared, which enables powerful coordination patterns but introduces the risk of race conditions, stale data, and cascading failures. If the worker&apos;s shared state becomes corrupted, all connected tabs are affected. With Dedicated Workers or per-tab state, failures are isolated to individual tabs. The decision depends on whether the benefits of shared state outweigh the risks of shared failure. For read-heavy shared state (caches, configuration), the risk is low. For write-heavy shared state (counters, queues), careful synchronization is required.
         </p>
@@ -170,15 +171,15 @@ export default function SharedWorkersArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Implementing Shared Workers in production requires following established patterns that address the unique challenges of multi-context communication. The most critical best practice is <strong>comprehensive port lifecycle management</strong>. Every port that connects to the worker must be tracked in a registry, and every port that disconnects must be removed from that registry. The worker should maintain the registry as a Map with the port as the key and a metadata object as the value, storing information such as the connection timestamp, any tab-specific identifiers, and the last activity timestamp. When a port closes — detected either through the <code>onclose</code> event or by catching <code>InvalidStateError</code> exceptions during <code>postMessage</code> — the worker must remove the port from the registry, clean up any associated state, and optionally notify other connected contexts of the disconnection. Failing to remove disconnected ports causes memory leaks that grow with each tab open and close cycle.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The second best practice is <strong>always calling <code>port.start()</code></strong> after setting up the message handler. This is a requirement unique to Shared Workers that is frequently overlooked. Unlike Dedicated Workers where message handling begins immediately, Shared Worker ports start in a paused state and must be explicitly started. The correct sequence is: receive the port in the <code>onconnect</code> handler, set up <code>port.onmessage</code>, then call <code>port.start()</code>. If <code>port.start()</code> is omitted, messages sent to that port are queued but never delivered, creating a silent failure that is difficult to debug.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Structured message protocols</strong> are essential for maintainable Shared Worker implementations. Every message exchanged between contexts and the worker should follow a consistent structure that includes a message type identifier, a payload containing the actual data, and optionally a request identifier for request-response patterns. This structure enables the worker to route messages appropriately and enables contexts to handle different message types with dedicated handlers. Using TypeScript interfaces for message types provides compile-time safety and self-documenting code.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Graceful degradation</strong> is mandatory given the lack of Safari support. The application should detect Shared Worker support at startup using <code>&apos;SharedWorker&apos; in window</code> and select the appropriate communication strategy. When Shared Workers are available, use them for their efficiency benefits. When they are not, fall back to BroadcastChannel for same-origin messaging or localStorage events for broader compatibility. The fallback should implement the same message interface so that the rest of the application code is agnostic to the underlying transport mechanism.
         </p>
@@ -193,15 +194,15 @@ export default function SharedWorkersArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The most frequently encountered pitfall is <strong>failing to start ports</strong>, which results in silent message delivery failures. When a context connects to a Shared Worker, the port is initially paused. If the worker sets up the <code>onmessage</code> handler but forgets to call <code>port.start()</code>, messages sent from the context are queued indefinitely and never processed. This is particularly insidious because there is no error message or warning — the messages simply disappear. The solution is to establish a consistent pattern in the worker&apos;s <code>onconnect</code> handler: always set up the message handler, always call <code>port.start()</code>, and always add the port to the registry in that exact order.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Memory leaks from untracked ports</strong> are a common issue in long-running applications. When a tab is closed, the browser fires a close event on the corresponding port, but if the worker does not explicitly remove that port from its registry, the port object remains in memory along with any associated state. Over time, as users open and close tabs, the worker accumulates references to dead ports, consuming memory and potentially degrading performance. The solution is to implement a robust port tracking mechanism that removes ports on close events and periodically audits the registry for stale entries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Assuming universal browser support</strong> leads to broken functionality for Safari users. Shared Workers have been part of the Web Workers specification since 2009, yet Safari has never implemented them. Applications that use Shared Workers without feature detection and fallback mechanisms will silently fail for Safari users. The solution is to always check for Shared Worker support before attempting to use it and to implement a fallback strategy that provides equivalent (if less efficient) functionality.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Race conditions in shared state</strong> occur when multiple contexts modify shared state concurrently without proper synchronization. Since the Shared Worker runs on a single thread, JavaScript&apos;s event loop provides natural serialization of message handling — only one message is processed at a time. However, if message handlers perform asynchronous operations (such as fetching data from a server), the responses may arrive in any order, potentially causing state inconsistencies. The solution is to use sequence numbers, timestamps, or optimistic concurrency control to ensure that state updates are applied in the correct order.
         </p>
@@ -218,19 +219,19 @@ export default function SharedWorkersArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>Authentication State Synchronization</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Multi-tab web applications face a common challenge: when a user logs out in one tab, all other tabs should recognize the logout and update their state accordingly. Without Shared Workers, each tab maintains its own authentication token and session state, leading to inconsistent behavior where one tab shows a logged-out state while others continue making authenticated API calls. A Shared Worker solves this by maintaining the authentication state as shared state. When any tab initiates a login or logout, it notifies the worker, which updates the shared authentication state and broadcasts the change to all connected tabs. Each tab receives the broadcast and updates its local state, redirects to the appropriate page, or clears sensitive data. This pattern is used by applications like Google Workspace, Microsoft 365, and Slack to ensure consistent authentication state across tabs.
-        </p>
+        </HighlightBlock>
 
         <h3>Shared WebSocket Connections</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Real-time applications such as chat platforms, collaborative editors, and live dashboards maintain persistent WebSocket connections to receive updates. Without Shared Workers, each open tab maintains its own WebSocket connection, multiplying server resource consumption and potentially hitting connection limits. A Shared Worker can maintain a single WebSocket connection on behalf of all connected tabs. When the WebSocket receives a message, the worker distributes it to all tabs that need it. When a tab needs to send a message, it routes it through the worker, which forwards it over the shared WebSocket. This pattern reduces server connection count from N (one per tab) to 1 (one per browser instance), significantly reducing server load and improving scalability. Applications like Discord, Figma, and Google Docs use similar patterns to manage real-time connections efficiently.
-        </p>
+        </HighlightBlock>
 
         <h3>Deduplicated Analytics and Telemetry</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Web applications commonly track user interactions for analytics and telemetry purposes. When a user has multiple tabs open, each tab independently tracks and reports the same events — page views, user actions, performance metrics — resulting in duplicated data and inflated analytics. A Shared Worker can serve as a centralized analytics collector, receiving events from all connected tabs, deduplicating them, and batching them into consolidated reports sent to the analytics server at regular intervals. This pattern reduces network overhead, improves data accuracy, and provides a holistic view of user activity across all tabs. The worker can also implement intelligent batching strategies, such as sending reports when a size threshold is reached or when the user becomes idle, further optimizing network usage.
-        </p>
+        </HighlightBlock>
 
         <h3>Shared API Response Cache</h3>
         <p>
@@ -249,15 +250,15 @@ export default function SharedWorkersArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: How do Shared Workers differ from Dedicated Workers, and when would you choose each?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Dedicated Workers maintain a strict one-to-one relationship with their creating script. Each tab that creates a Dedicated Worker gets its own independent worker thread with isolated state and its own message channel. Dedicated Workers have broad browser support, simple APIs (postMessage/onmessage directly on the worker object), and natural failure isolation — if one worker crashes, it does not affect others. They are the appropriate choice for computationally intensive tasks that are specific to a single tab, such as image processing, data parsing, or complex calculations.
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               Shared Workers, by contrast, are instantiated once and shared across all browsing contexts from the same origin that request them. Communication flows through dedicated MessagePort objects rather than directly on the worker. Shared Workers enable cross-tab communication, shared state, and consolidated background tasks. However, they have less browser support (notably absent in Safari), more complex APIs (port management, connection tracking), and shared failure modes — if the worker crashes, all connected tabs lose the shared functionality. Shared Workers are appropriate when cross-tab coordination is required, such as authentication synchronization, shared WebSocket connections, or deduplicated analytics.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               The decision between them depends on whether cross-tab coordination is a requirement. If tabs operate independently, use Dedicated Workers for their simplicity and broad support. If tabs need to share state or coordinate actions, use Shared Workers with a BroadcastChannel fallback for Safari. In many applications, both types are used: Dedicated Workers for per-tab computational offloading and Shared Workers for cross-tab coordination.
             </p>

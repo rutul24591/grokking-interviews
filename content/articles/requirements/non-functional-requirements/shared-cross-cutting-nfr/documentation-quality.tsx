@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function DocumentationQualityArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Documentation Quality</strong> refers to the completeness, accuracy, accessibility, and
           maintainability of technical documentation. Good documentation is a force multiplier—it enables
           rapid onboarding, reduces tribal knowledge, supports effective incident response, preserves
           institutional memory, and accelerates development velocity. Poor documentation creates
           bottlenecks, increases bus factor, slows development, and leads to costly mistakes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Documentation is a product with users (developers, operators, customers, partners). Treat it
           with the same care as code: version control, peer review, automated testing, continuous
           integration/deployment, and regular maintenance. Just as technical debt accumulates when code
           is not refactored, documentation debt accumulates when docs are not updated—and both compound
           over time. The cost of wrong documentation exceeds the cost of no documentation because it
           actively misleads engineers down incorrect paths.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, documentation quality is a leadership concern. You set the
           standards, establish the processes, and model the behaviors that determine whether documentation
@@ -55,7 +59,10 @@ export default function DocumentationQualityArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           API documentation is often the first interaction developers have with your system. Poor API
           documentation creates friction, increases support burden, and reduces API adoption. Excellent
           API documentation enables self-service integration and reduces time-to-first-successful-call.
@@ -71,8 +78,8 @@ export default function DocumentationQualityArticle() {
           Tools like OpenAPI Specification (Swagger) provide machine-readable formats that generate
           interactive documentation, client SDKs, and server stubs, while GraphQL is self-documenting
           through its type system with introspection enabling automatic documentation generation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Architecture Decision Records (ADRs) document significant architectural decisions, their
           context, and consequences. ADRs preserve institutional knowledge and help future engineers
           understand why decisions were made. Each ADR contains a title, status (Proposed, Accepted,
@@ -85,7 +92,7 @@ export default function DocumentationQualityArticle() {
           to either Deprecated or Superseded, with sequential numbering for easy referencing. ADRs
           must be stored with code in version control, remain immutable once accepted (create a new
           ADR to supersede), and go through the same review process as code changes.
-        </p>
+        </HighlightBlock>
         <p>
           Knowledge management encompasses how organizational knowledge is captured, organized, shared,
           and maintained. Effective knowledge management reduces tribal knowledge, accelerates onboarding,
@@ -114,7 +121,10 @@ export default function DocumentationQualityArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A modern documentation system is built on a docs-as-code pipeline that treats documentation
           with the same rigor as software development. Documentation is stored in version control
           alongside source code, typically in Markdown format for simplicity and Git diff readability.
@@ -122,8 +132,8 @@ export default function DocumentationQualityArticle() {
           audit trail through Git history. All documentation changes require pull request review with
           criteria covering accuracy, clarity, completeness, and consistency, routed to relevant subject
           matter experts and designated document owners for approval.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The CI/CD pipeline for documentation automates quality assurance at every stage. On pull
           request creation, the pipeline builds the documentation using static site generators like
           MkDocs, Docusaurus, Hugo, or Next.js, then runs linting to check for style issues, broken
@@ -133,7 +143,7 @@ export default function DocumentationQualityArticle() {
           before merging. On merge to the main branch, the pipeline automatically deploys the updated
           documentation to the production site, with versioned documentation support for maintaining
           separate docs for different API or product versions.
-        </p>
+        </HighlightBlock>
         <p>
           Search infrastructure underpins the entire documentation system by making content discoverable.
           A centralized search index spans all documentation sources, using consistent tagging for
@@ -168,33 +178,36 @@ export default function DocumentationQualityArticle() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Documentation architecture decisions involve significant trade-offs across multiple dimensions.
           Understanding these trade-offs enables staff and principal engineers to choose the right
           approach for their organization&apos;s needs, maturity level, and constraints.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Docs-as-Code vs Wiki-Based Documentation</h3>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-theme">
-                <th className="p-2 text-left">Dimension</th>
+  <tr className="border-b border-theme">
+<th className="p-2 text-left">Dimension</th>
                 <th className="p-2 text-left">Docs-as-Code</th>
                 <th className="p-2 text-left">Wiki-Based</th>
-              </tr>
-            </thead>
+  </tr>
+</thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Version Control</td>
                 <td className="p-2">Full Git history, branching</td>
                 <td className="p-2">Basic revision history</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Review Process</td>
                 <td className="p-2">PR-based, structured</td>
                 <td className="p-2">Ad hoc or none</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">CI/CD Integration</td>
                 <td className="p-2">Native (build, test, deploy)</td>
@@ -225,16 +238,16 @@ export default function DocumentationQualityArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Consistency</td>
                 <td className="p-2">High (single team enforces standards)</td>
                 <td className="p-2">Variable (team-dependent)</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Update Speed</td>
                 <td className="p-2">Slower (bottleneck on doc team)</td>
                 <td className="p-2">Faster (team owns their docs)</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Accuracy</td>
                 <td className="p-2">May lag behind code changes</td>
@@ -260,16 +273,16 @@ export default function DocumentationQualityArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Accuracy</td>
                 <td className="p-2">Always in sync with code</td>
                 <td className="p-2">Prone to drift</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Context & Explanation</td>
                 <td className="p-2">Limited (just structure)</td>
                 <td className="p-2">Rich (narrative, examples)</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Maintenance Cost</td>
                 <td className="p-2">Low (automated)</td>
@@ -295,16 +308,16 @@ export default function DocumentationQualityArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Consistency Risk</td>
                 <td className="p-2">Low (one authoritative source)</td>
                 <td className="p-2">High (divergence between sources)</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Flexibility</td>
                 <td className="p-2">Lower (one format, one tool)</td>
                 <td className="p-2">Higher (best tool per use case)</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Search Complexity</td>
                 <td className="p-2">Simple (one index)</td>
@@ -322,7 +335,10 @@ export default function DocumentationQualityArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Write documentation with the reader in mind, not the writer. Be concise and say what needs
           to be said without unnecessary words. Use examples to show rather than just tell, as real
           examples beat abstract descriptions. Maintain consistent voice, terminology, tone, and style
@@ -330,8 +346,8 @@ export default function DocumentationQualityArticle() {
           annotated images to complement text. Document which documentation version applies to which
           product version, and show the last updated date for each document to establish credibility
           and freshness.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Establish documentation governance through a style guide for consistency, standard templates
           for common document types (ADRs, runbooks, RFCs), a clear review and approval process,
           training for engineers on documentation best practices, and metrics to track documentation
@@ -339,7 +355,7 @@ export default function DocumentationQualityArticle() {
           done for every feature: API changes must be documented, architecture decisions recorded in
           ADRs, runbooks updated for operational impact, onboarding guides revised as needed, and
           changelog entries created.
-        </p>
+        </HighlightBlock>
         <p>
           Treat documentation with the same rigor as code through version control in Git with colocation
           alongside source, code review where pull requests for documentation changes are reviewed by
@@ -353,20 +369,23 @@ export default function DocumentationQualityArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Treating documentation as an afterthought that gets written after code is complete results
           in incomplete or never-written documentation. The fix is to include documentation in the
           definition of done for every feature. Documentation without assigned owners becomes stale
           and unreliable. Assign specific owners to each document with a regular review cadence to
           ensure ongoing accuracy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using the wrong abstraction level—either too high-level and not actionable, or too detailed
           and overwhelming—frustrates readers. Know your audience and provide multiple levels of
           detail for different reader needs. Outdated screenshots from UI changes actively mislead
           readers. Minimize screenshots and use annotated diagrams instead, which are easier to keep
           current.
-        </p>
+        </HighlightBlock>
         <p>
           Documentation without search capability is effectively useless regardless of content quality.
           Invest in search infrastructure that spans all documentation sources. Documentation scattered
@@ -381,7 +400,10 @@ export default function DocumentationQualityArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Stripe&apos;s API documentation is widely considered the gold standard in the industry. It
           features interactive examples where users can make actual API calls from the documentation,
           provides copy-paste code samples in over a dozen programming languages, includes a complete
@@ -389,8 +411,8 @@ export default function DocumentationQualityArticle() {
           that gets developers to their first successful API call in under five minutes. Stripe treats
           documentation as a product with dedicated documentation engineers, and their approach
           demonstrates how API documentation directly impacts developer adoption and revenue.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           AWS documentation spans hundreds of services with a multi-tier approach. Each AWS service
           has a user guide, API reference, CLI reference, and SDK documentation, all versioned and
           updated with each service release. AWS uses automated documentation generation from service
@@ -398,7 +420,7 @@ export default function DocumentationQualityArticle() {
           documentation is integrated into the AWS Management Console, providing context-sensitive help
           directly where developers are working. AWS also maintains a detailed changelog for each
           service with deprecation timelines and migration guides.
-        </p>
+        </HighlightBlock>
         <p>
           Google Cloud documentation follows a consistent structure across all services with a
           &quot;Before you begin&quot; section listing prerequisites, quickstart guides for getting
@@ -421,15 +443,18 @@ export default function DocumentationQualityArticle() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What makes good API documentation?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What makes good API documentation?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Complete endpoint reference with request/response schemas, working code examples in
               multiple languages, clear authentication guide, error code documentation with troubleshooting,
               rate limit information, versioning/deprecation policy, interactive console for testing, and
               quick start guide. Generate from OpenAPI spec to ensure accuracy.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

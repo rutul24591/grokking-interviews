@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,12 +25,15 @@ export default function ProgressiveEnhancementArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Progressive Enhancement is a web development strategy that prioritizes content and core functionality above presentation and advanced interactive features. The approach begins with a solid, semantic HTML foundation that works across all browsers and devices, then incrementally layers on CSS for visual presentation and JavaScript for enhanced interactivity. Users operating with limited browser capabilities, slow network connections, or assistive technologies still receive the core content and essential functionality, while users with modern browsers and robust connectivity enjoy an enriched, fully interactive experience. This philosophy stands in direct contrast to development approaches that build the most sophisticated experience first and then attempt to add fallbacks for less capable environments after the fact.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The term was coined by Steven Champeon at the SXSW Interactive conference in 2003, emerging as a direct response to the browser wars era of the late 1990s and early 2000s. During that period, developers frequently built sites that functioned only in specific browsers or required particular browser versions, effectively excluding significant portions of the user base. Progressive Enhancement fundamentally inverted this paradigm by establishing that the baseline experience must work universally, with enhancements applied selectively where the environment supports them.
-        </p>
+        </HighlightBlock>
         <p>
           The business imperative for progressive enhancement extends far beyond historical browser compatibility concerns. Organizations that adopt this strategy consistently demonstrate improved search engine optimization because crawlers can index content directly from the HTML without requiring JavaScript execution. Accessibility compliance with WCAG standards becomes a natural byproduct of the semantic HTML foundation rather than an afterthought. Performance metrics improve because the initial payload is smaller and more focused on critical content delivery. Most importantly, conversion rates remain resilient because users can always complete core tasks regardless of transient network failures, JavaScript loading errors, or restrictive corporate security policies that block script execution.
         </p>
@@ -40,12 +44,15 @@ export default function ProgressiveEnhancementArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At its foundation, progressive enhancement rests on five interlocking principles that together form a coherent philosophy for building resilient web applications. The first principle establishes that content must remain accessible to all users regardless of their browser capabilities, device limitations, network conditions, or physical disabilities. This is not merely a technical constraint but a fundamental design commitment that shapes every architectural decision from the outset of a project.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The second principle mandates the use of semantic HTML elements for their intended purposes. A button element should be implemented as a button tag with its built-in keyboard navigation, focus management, and screen reader announcements rather than a div element augmented with click event handlers. This semantic correctness provides immediate accessibility benefits, ensures proper behavior when CSS or JavaScript fails to load, and gives search engines the structural information they need to index content accurately. The third principle introduces the concept of layered architecture, where HTML provides the content layer, CSS provides the presentation layer, and JavaScript provides the behavior layer. Each layer builds upon and enhances the previous one without replacing or depending on it for core functionality.
-        </p>
+        </HighlightBlock>
         <p>
           The fourth principle centers on feature detection as the mechanism for determining which enhancements to apply. Rather than checking browser versions or maintaining lists of supported user agents, progressive enhancement tests for the specific capabilities required at the point of use. This approach is inherently more reliable because browser version strings can be spoofed, browser capabilities change rapidly, and a single browser version may have different feature availability based on platform, operating system, or user configuration. The fifth and final principle demands universal usability, meaning that every user must be able to complete the essential tasks the application was designed to support. This principle serves as the ultimate arbiter when deciding whether a particular enhancement is appropriate or whether it introduces unacceptable risk to the baseline experience.
         </p>
@@ -72,12 +79,15 @@ export default function ProgressiveEnhancementArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The architectural pattern for progressive enhancement follows a clear layering strategy where each technology layer adds capability without creating hard dependencies on the layers above it. The HTML layer serves as the absolute foundation and must contain all essential content, semantic structure, and core functionality. Navigation must use anchor elements with valid href attributes that enable standard browser navigation. Forms must use proper form elements with action and method attributes that allow server-side processing without client-side scripting. Media elements must include appropriate fallback sources and descriptive alternative text. This foundational layer must be complete and functional on its own, capable of delivering the core user experience even if no other resources load.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The CSS enhancement layer builds upon the HTML foundation by adding visual presentation, layout refinement, and aesthetic polish. This layer handles responsive layout transitions, typography improvements, color schemes, animations, and visual feedback for interactive states. Critical to this layer is the use of CSS feature queries to conditionally apply styles that depend on capabilities the current browser may not possess. When a browser does not support CSS Grid layout, the CSS layer should provide an alternative layout using Flexbox or float-based approaches rather than leaving the page unstyled. The CSS layer must also account for users who have disabled animations through their operating system preferences by respecting the prefers-reduced-motion media query.
-        </p>
+        </HighlightBlock>
         <p>
           The JavaScript behavior layer adds interactivity, dynamic content loading, client-side validation, and enhanced user experience patterns on top of the functional HTML and CSS layers. This layer intercepts form submissions to provide AJAX-based submission without page reloads, enhances navigation with client-side routing for faster transitions, adds real-time client-side validation with immediate user feedback, and implements complex interactive components like infinite scroll, drag-and-drop interfaces, and real-time collaborative editing. The critical architectural constraint is that every JavaScript enhancement must have a corresponding baseline behavior in the HTML layer. When JavaScript intercepts a form submission to provide an AJAX experience, the form must still submit normally if the interception fails. When JavaScript enhances a standard select element with a custom dropdown component, the underlying select element must remain functional and accessible.
         </p>
@@ -107,12 +117,15 @@ export default function ProgressiveEnhancementArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The decision to adopt progressive enhancement involves significant architectural trade-offs that must be evaluated against the specific requirements of each project. The primary trade-off centers on development complexity and timeline. Building a progressive enhancement compliant application requires designing and testing two complete experiences: the baseline HTML experience and the enhanced JavaScript experience. This dual-development approach increases initial development effort because engineers must ensure that every interactive feature has a non-JavaScript fallback, every dynamic content area has a server-rendered alternative, and every client-side state change has a corresponding server-side endpoint. Organizations that choose graceful degradation instead front-load their development on the modern experience and address compatibility issues later, which can be faster for teams targeting a known, controlled set of modern browsers but carries the risk of excluding users in unanticipated edge cases.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Performance characteristics present another critical trade-off. Progressive enhancement typically delivers superior First Contentful Paint and Largest Contentful Paint metrics because the initial HTML response contains the actual content rather than an empty shell waiting for JavaScript to execute. However, the total JavaScript bundle size may increase if the application must include both the baseline server-rendered HTML and the client-side hydration JavaScript. The hydration process itself introduces a processing cost on the client device, and on lower-end mobile devices this hydration time can be significant. Teams must carefully balance the completeness of the server-rendered HTML against the size and complexity of the hydration JavaScript to avoid shipping duplicate content in two forms.
-        </p>
+        </HighlightBlock>
         <p>
           The SEO implications strongly favor progressive enhancement because search engine crawlers can directly index the HTML content without executing JavaScript. While Google has improved its JavaScript rendering capabilities, many crawlers still do not execute JavaScript, and even Google recommends against relying on JavaScript rendering for critical content. Sites that depend entirely on client-side rendering risk having their content partially or entirely invisible to search engines, with measurable impacts on organic traffic and discoverability. The accessibility implications are similarly weighted in favor of progressive enhancement because the semantic HTML foundation provides immediate compatibility with screen readers, keyboard navigation, and assistive technologies without requiring additional ARIA attributes or JavaScript-based accessibility enhancements.
         </p>
@@ -126,12 +139,15 @@ export default function ProgressiveEnhancementArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing progressive enhancement effectively requires adherence to several established best practices that have emerged from years of production deployment experience across diverse web applications. The foremost practice is to begin every new feature or component with the HTML layer, ensuring that the semantic structure, content hierarchy, and core functionality are complete before any CSS styling or JavaScript behavior is added. This discipline prevents the common anti-pattern of building an interactive component and then attempting to retrofit accessibility and non-JavaScript fallbacks as an afterthought. The HTML-first approach ensures that the baseline experience is treated as a first-class deliverable rather than a degraded version of the real product.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature detection should be performed at the point of use rather than through global capability assessments at application startup. Detecting features locally within the specific module or function that requires them provides more accurate results because feature availability can vary depending on the execution context, security restrictions, or user preferences. Detection results should be cached to avoid redundant checks, but the cache should be scoped to the specific feature and context rather than maintained as a global capability map. When a feature is not detected, the application should provide meaningful fallback behavior that clearly communicates the limitation to the user rather than silently failing or leaving the interface in an ambiguous state.
-        </p>
+        </HighlightBlock>
         <p>
           Polyfill loading must be conditional and targeted rather than universally applied to all users. Loading polyfills for features that the majority of users already support natively wastes bandwidth and processing time for no benefit. The recommended approach uses feature detection to determine which polyfills are needed and then loads them dynamically through dynamic imports or script injection only when the detected gap requires filling. Service workers can be leveraged to cache polyfills after the initial load, reducing the impact on subsequent visits. Teams should regularly audit their polyfill usage and remove polyfills for features that have achieved near-universal browser support, as the browser compatibility landscape shifts continuously.
         </p>
@@ -145,12 +161,15 @@ export default function ProgressiveEnhancementArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most pervasive pitfall in progressive enhancement implementations is the mistake of gating core functionality behind JavaScript execution. When a form requires JavaScript to submit, when navigation requires JavaScript to route between pages, or when essential content is loaded exclusively through JavaScript APIs, the application has violated the fundamental principle of progressive enhancement. The baseline HTML layer must provide a complete, functional experience for all core user tasks. JavaScript enhancements should improve the quality of the experience but must never be the sole mechanism for completing essential tasks. This pitfall frequently occurs when teams adopt a JavaScript framework and build the entire application within the framework without establishing the underlying HTML foundation first.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The misuse of generic container elements instead of semantic HTML elements represents another widespread pitfall that undermines both accessibility and progressive enhancement. When developers use div elements with click handlers to create buttons, span elements with JavaScript to create links, or custom JavaScript dropdowns that replace native select elements without providing equivalent accessibility, they strip away the built-in functionality that browsers provide for semantic elements. Native button elements provide keyboard activation, focus management, and screen reader announcements without any additional JavaScript. Native anchor elements provide right-click open in new tab, bookmarking, and SEO crawlability. Replacing these with generic containers requires replicating all of this functionality manually, and implementations frequently omit critical behaviors.
-        </p>
+        </HighlightBlock>
         <p>
           The assumption that JavaScript will always load and execute correctly is a dangerous misconception that leads to fragile applications. JavaScript loading can fail due to network connectivity issues, restrictive content security policies, ad blockers that block third-party script hosts, corporate firewalls that filter script content, or simply server outages that make the JavaScript bundle unavailable. Applications that assume JavaScript availability will fail silently and completely when these conditions arise, leaving users with blank screens or non-functional interfaces. Resilient applications detect JavaScript availability and provide appropriate feedback when it is absent, ensuring that users understand what functionality is available in their current environment.
         </p>
@@ -164,12 +183,15 @@ export default function ProgressiveEnhancementArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms represent one of the most compelling use cases for progressive enhancement because the direct financial impact of user experience failures is measurable and significant. When an e-commerce site relies entirely on client-side JavaScript rendering, any JavaScript loading failure, network timeout, or compatibility issue directly translates to lost revenue because users cannot browse products, add items to their cart, or complete checkout. Major retailers including Walmart, Target, and eBay have publicly documented significant revenue increases after transitioning from client-side rendered applications to server-side rendered or progressively enhanced architectures. The baseline HTML experience ensures that product catalogs are browseable, search results are displayable, and checkout flows are completable even when JavaScript fails. The enhanced experience provides faster page transitions, real-time inventory updates, personalized recommendations, and interactive product customization, but these enhancements supplement rather than replace the core shopping experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           News and content publishing organizations face unique challenges that make progressive enhancement essential. These organizations depend heavily on search engine traffic, social media referrals, and content syndication partnerships, all of which require that content be directly accessible in the HTML response. When a news article is shared on social media, the link preview must display the headline, summary, and thumbnail image, which requires that this metadata be present in the initial HTML. When search engines crawl the publication, they must be able to index the full article content to rank it appropriately for relevant queries. Publications including The Washington Post, The Guardian, and the BBC have implemented progressively enhanced architectures where article content is server-rendered for immediate consumption and crawling, while JavaScript enhances the experience with related article recommendations, comment systems, advertisement loading, and analytics tracking.
-        </p>
+        </HighlightBlock>
         <p>
           Government and public service websites serve populations with exceptionally diverse browser capabilities, device types, and connectivity conditions. Citizens accessing government services may be using outdated devices provided by social programs, public library computers with restrictive security configurations, mobile devices on slow cellular networks, or assistive technologies for accessibility. Public service websites in multiple countries have adopted progressive enhancement as a mandatory requirement in their digital service standards, recognizing that a citizen who cannot access a government form due to JavaScript incompatibility is being denied access to essential services. The United States Web Design System and the United Kingdom Government Digital Service both explicitly recommend progressive enhancement approaches for all public-facing digital services.
         </p>
@@ -183,12 +205,15 @@ export default function ProgressiveEnhancementArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-6">
-            <p className="font-semibold text-lg">Q: Explain progressive enhancement and describe how it differs from graceful degradation. When would you choose one approach over the other?</p>
-            <p className="mt-3 text-sm leading-relaxed">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">Q: Explain progressive enhancement and describe how it differs from graceful degradation. When would you choose one approach over the other?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm leading-relaxed">
               Progressive Enhancement is a web development strategy that starts with a universal baseline experience built on semantic HTML, then incrementally adds CSS styling and JavaScript interactivity for environments that support these enhancements. The approach is bottom-up, meaning the foundation is built first and verified to work across all target environments before any enhancements are applied. Graceful Degradation follows a top-down approach where the full, feature-rich experience is built first using modern APIs, and then fallbacks and compatibility patches are added to support less capable environments. The fundamental difference lies in the default assumption: progressive enhancement assumes the environment may be limited and proves capability before enhancing, while graceful degradation assumes the environment is capable and handles limitations as exceptions. The choice between them should be driven by the target audience and business priorities. Progressive enhancement is the appropriate choice for public-facing applications where the audience is diverse and unknown, including e-commerce platforms, news publications, government services, and any application where search engine optimization and accessibility are business-critical. Graceful degradation may be acceptable for internal enterprise tools, developer dashboards, or applications where the browser environment is controlled and known, and where the cost of building and maintaining dual experiences cannot be justified. In practice, most production systems benefit from a hybrid approach where the core content and navigation follow progressive enhancement principles while complex interactive features within authenticated sections may rely more heavily on JavaScript capabilities.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-6">

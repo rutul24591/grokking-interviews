@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,15 +24,18 @@ export default function MergeIntervalsArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">Definition & Context</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         The merge-intervals pattern handles problems where the input is a list of pairs{" "}
         <em>[start, end]</em> representing time ranges, numeric ranges, or any one-dimensional
         intervals, and the question concerns their union, intersection, conflict, or coverage.
         The unifying technique is to sort the intervals by an appropriate boundary — typically
         start time — and then sweep through the sorted list, deciding at each step whether to
         merge the current interval with the previous one or to start a new group.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         It is among the highest-leverage patterns in the Leetcode canon. A single mental
         template — sort, walk, merge or append — solves a dozen named problems and forms the
         basis for the more advanced sweep-line and interval-tree algorithms used in calendar
@@ -39,7 +43,7 @@ export default function MergeIntervalsArticle() {
         detectors. The pattern earns its keep by combining a single sort (O(n log n)) with a
         linear sweep (O(n)) for total cost <em>O(n log n)</em> and constant or linear extra
         space.
-      </p>
+      </HighlightBlock>
       <p>
         Recognition signals are obvious in retrospect but easy to miss in the heat of an
         interview. The input is a list of two-element pairs that mean &quot;a continuous range
@@ -51,15 +55,18 @@ export default function MergeIntervalsArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Core Concepts</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         The pattern&apos;s correctness rests on a single observation: if you sort intervals by
         start time, then any interval that overlaps a previous one must overlap the most
         recently kept interval, because the sort guarantees no earlier-starting interval can
         appear later. This means the sweep only needs to compare each new interval to the last
         one in the result list, not to every previously kept interval. That comparison is what
         keeps the sweep linear.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         The merge condition is <em>current.start ≤ last.end</em>. Note the inclusive
         comparison: in problems where touching intervals are considered to overlap (a meeting
         ending at 10 and another starting at 10 share the room), use <em>≤</em>; in problems
@@ -67,7 +74,7 @@ export default function MergeIntervalsArticle() {
         the first ends), use <em>&lt;</em>. The problem statement specifies which; misreading
         it produces an off-by-one bug that is invisible on small examples and obvious on
         adversarial ones.
-      </p>
+      </HighlightBlock>
       <p>
         When intervals merge, the new <em>end</em> is <em>max(last.end, current.end)</em> — not
         just <em>current.end</em>. This is the second classic bug. An interval can be wholly
@@ -84,21 +91,24 @@ export default function MergeIntervalsArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Architecture & Flow</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         The plain-merge skeleton runs as follows. Sort the input by start ascending. Initialise
         the result list with the first interval. For each subsequent interval, compare its
         start to the last interval&apos;s end in the result. If they overlap, extend the last
         interval&apos;s end to the max of the two ends. Otherwise, append the new interval as
         a fresh group. After the loop, the result list holds the merged disjoint intervals.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Variant one is <em>Insert Interval</em> (Leetcode 57). The input is pre-sorted and
         already disjoint; you insert a single new interval. Three phases: append intervals
         ending strictly before the new one&apos;s start (no overlap possible); absorb
         overlapping intervals into the new one by extending its bounds; append the absorbed new
         interval and the remaining intervals. The whole thing runs in O(n) without an extra
         sort.
-      </p>
+      </HighlightBlock>
       <ArticleImage
         src="/diagrams/other/leetcode/patterns/merge-intervals-diagram-1.svg"
         alt="Merge intervals overview"
@@ -128,19 +138,22 @@ export default function MergeIntervalsArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Trade-offs & Comparisons</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Merge-intervals versus brute-force pairwise comparison. Brute force checks every pair
         for overlap in O(n²), which is acceptable for n ≤ a few hundred but unworkable beyond.
         The sort-and-sweep template is O(n log n), the standard for any non-trivial input size.
         The trade-off rarely favours brute force; sort-and-sweep is the default.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Sweep-line versus heap-of-ends. Both solve the room-counting problem. Sweep-line is
         more general — it handles arbitrary event types and works for problems beyond
         resource counting. Heap-of-ends is more direct for problems that explicitly ask
         &quot;how many rooms?&quot; and is sometimes easier to code under time pressure.
         Choose by matching the variant to the question; both are correct.
-      </p>
+      </HighlightBlock>
       <p>
         Merge-intervals versus interval trees. For static problems where intervals are fixed
         and queried once, sort-and-sweep wins on simplicity. For dynamic problems where
@@ -156,16 +169,19 @@ export default function MergeIntervalsArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Best Practices</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Read the problem statement twice for the meaning of overlap. Touching at endpoints is
         sometimes overlap and sometimes not; the comparison operator (<em>≤</em> vs.{" "}
         <em>&lt;</em>) hinges on this. State the convention aloud before coding.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Always max the ends when merging. <em>last.end = max(last.end, current.end)</em>, never
         just <em>last.end = current.end</em>. The covered-interval case (current ends earlier
         than last) is the silent bug that produces wrong answers on a quarter of test cases.
-      </p>
+      </HighlightBlock>
       <p>
         Decide whether to mutate input or to build a new result list. Mutating in place can
         save memory but produces unreadable code; building a fresh result list is almost always
@@ -189,15 +205,18 @@ export default function MergeIntervalsArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Common Pitfalls</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Off-by-one on overlap definition. The single most common bug across all interval
         problems. Treat <em>[1, 3]</em> and <em>[3, 5]</em>: do they merge or not? The answer
         depends on the problem; pick the right comparison and stay consistent.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Forgetting to max the ends. As discussed; the covered-interval case is the silent
         failure mode. Always <em>max(last.end, current.end)</em>.
-      </p>
+      </HighlightBlock>
       <p>
         Re-sorting inside the loop. After sorting once, the data is sorted; do not sort again.
         Beginners sometimes re-sort the result list after each merge, blowing the algorithm to
@@ -227,18 +246,21 @@ export default function MergeIntervalsArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Real-World Use Cases</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Calendar systems use the merge-intervals pattern (or its dynamic interval-tree
         equivalent) to detect double-bookings, suggest free slots, and merge contiguous busy
         ranges across multiple calendars. Google Calendar&apos;s &quot;find a meeting time&quot;
         feature is exactly the <em>Employee Free Time</em> Leetcode problem at scale.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Resource schedulers — Kubernetes pod admission control, GPU allocation, container
         orchestrators — count concurrent resource demand using sweep-line variants. The
         algorithm that decides &quot;can this new pod fit?&quot; is heap-of-ends translated
         into resource units.
-      </p>
+      </HighlightBlock>
       <p>
         On the Leetcode side, the canonical problems are tightly clustered. <em>56. Merge
         Intervals</em> is the canonical problem, the one to solve first and from which every
@@ -263,12 +285,15 @@ export default function MergeIntervalsArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Implement Merge Intervals.</strong> Sort by start, walk, merge or append. Handle
-        the touching-at-endpoint convention as specified.</li>
-        <li><strong>Why is sort-by-start sufficient for the merge step?</strong> Because any
+        <HighlightBlock as="li" tier="important"><strong>Implement Merge Intervals.</strong> Sort by start, walk, merge or append. Handle
+        the touching-at-endpoint convention as specified.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Why is sort-by-start sufficient for the merge step?</strong> Because any
         interval that overlaps an earlier one must overlap the most recently kept interval —
-        the sort precludes any other configuration.</li>
+        the sort precludes any other configuration.</HighlightBlock>
         <li><strong>Implement Insert Interval in O(n).</strong> Three phases without re-sorting:
         append before, absorb during, append after.</li>
         <li><strong>Solve Meeting Rooms II two different ways.</strong> Heap-of-ends: sort by start,

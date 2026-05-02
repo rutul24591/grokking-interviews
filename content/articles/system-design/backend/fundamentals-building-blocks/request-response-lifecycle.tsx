@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function RequestResponseLifecycleArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>request/response lifecycle</strong> encompasses every stage a request traverses from the moment a client initiates a connection to the moment the response is fully rendered. This includes DNS resolution (translating domain names to IP addresses), connection setup (TCP handshake, TLS negotiation), request parsing (headers, body, query parameters), middleware processing (authentication, validation, rate limiting), business logic execution, data access (database queries, cache lookups, external API calls), and response serialization (JSON encoding, compression, headers). Each stage contributes to total latency, and failures at any stage can cause the entire request to fail.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For backend engineers, understanding the request lifecycle is not academic — it is essential for debugging production issues, optimizing performance, and designing resilient systems. When a request fails with a timeout, when latency spikes unexpectedly, or when errors cascade across services, the root cause often lies in a specific lifecycle stage: DNS resolution failures, TLS handshake timeouts, middleware bottlenecks, database connection exhaustion, or serialization overhead. Understanding which stage is the bottleneck enables targeted optimization rather than random guessing.
-        </p>
+        </HighlightBlock>
         <p>
           The request lifecycle is also a latency budget. Each hop (DNS, TLS, middleware, database, downstream calls) consumes time from the total SLO (e.g., 500ms p95 latency). If you do not explicitly budget latency across stages, the slowest dependency will consume all headroom and push p95 into failure. When adding new dependencies, treat them as debt against the budget — if a new call costs 50ms and the budget is already tight, you must remove or cache something else. This mindset prevents slow creep where each change seems harmless but the tail latency grows over months.
         </p>
@@ -36,16 +40,19 @@ export default function RequestResponseLifecycleArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The request/response lifecycle is built on several foundational concepts that govern how requests flow through systems and how latency accumulates at each stage.
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>DNS Resolution:</strong> DNS resolution translates domain names (api.example.com) to IP addresses (93.184.216.34). This happens before any connection can be established. DNS lookups are typically cached at multiple levels (browser, OS, ISP), but cache misses add 10-100ms of latency. DNS failures manifest as "Unknown host" errors. For high-traffic services, use DNS prefetching, maintain local DNS caches, and configure aggressive TTLs for frequently accessed domains. DNS resolution is often overlooked in latency budgets but can be significant for services with many downstream dependencies.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Connection Setup (TCP/TLS):</strong> TCP handshake requires one round trip (SYN, SYN-ACK, ACK). TLS handshake requires 1-2 additional round trips (ClientHello, ServerHello, Certificate, KeyExchange). For HTTPS, this means 2-3 round trips before any application data is sent. Connection reuse (keep-alive, HTTP/2 multiplexing) amortizes this cost across multiple requests. Without connection pooling, every request pays the full handshake penalty, which dominates latency for small payloads. TLS session resumption reduces handshake cost for returning clients, but requires session ticket management.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Middleware Pipeline:</strong> Middleware processes requests before they reach business logic: authentication (validate tokens), authorization (check permissions), validation (parse and validate input), rate limiting (enforce quotas), logging (record request metadata), and caching (serve cached responses). Middleware ordering is critical: authentication before authorization, validation before database calls, rate limiting before expensive operations. Poorly ordered middleware wastes resources (authenticating invalid requests) or creates security gaps (processing unvalidated input). Middleware latency accumulates — 10 middleware functions at 5ms each = 50ms before business logic runs.
           </li>
@@ -69,9 +76,12 @@ export default function RequestResponseLifecycleArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding how requests flow through the lifecycle is essential for debugging and optimization. A typical request traverses multiple stages, each with its own latency characteristics and failure modes.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/fundamentals-building-blocks/middleware-pipeline-order.svg"
@@ -112,9 +122,9 @@ export default function RequestResponseLifecycleArticle() {
           </ol>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Latency Budget Allocation:</strong> A 500ms p95 SLO might allocate: 50ms to DNS/TLS (network), 150ms to middleware and business logic (compute), 300ms to data access (storage). This budgeting forces explicit timeouts and avoids tail-latency blowups when dependencies slow down. When adding a new dependency, treat it as debt against the budget — if a new call costs 50ms and the budget is already tight, you must remove or cache something else.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Failure Paths:</strong> Requests fail in predictable phases: connect timeouts (network unreachable), TLS errors (certificate validation failed), auth failures (invalid token), validation errors (malformed input), dependency timeouts (database slow), response serialization failures (memory exhaustion). Each phase needs distinct handling. Connect errors are retriable; validation errors are not. Instrument errors with phase tags and log timing per phase. This turns debugging into a finite search rather than guesswork.
@@ -123,6 +133,9 @@ export default function RequestResponseLifecycleArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -213,12 +226,12 @@ export default function RequestResponseLifecycleArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When to Use Each Approach</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <strong>Use synchronous processing when:</strong> the client needs immediate results (API responses, real-time queries), the operation is fast (&lt;500ms), failure requires immediate client action (authentication failures, validation errors), or the operation is idempotent and cheap to retry.
-          </p>
-          <p className="mt-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-3">
             <strong>Use asynchronous processing when:</strong> the operation is slow (&gt;1 second), the client can proceed without waiting (email notifications, report generation), traffic is bursty and needs smoothing, or the operation has external dependencies with variable latency.
-          </p>
+          </HighlightBlock>
           <p className="mt-3">
             <strong>Best practice:</strong> Default to synchronous for user-facing APIs. Use asynchronous for background tasks, notifications, and batch operations. For operations that straddle the boundary (e.g., file uploads that trigger processing), use synchronous acknowledgment with asynchronous completion webhooks.
           </p>
@@ -227,16 +240,19 @@ export default function RequestResponseLifecycleArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production request lifecycle management requires discipline and operational rigor. These best practices prevent common mistakes and accelerate incident response.
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Instrument Each Lifecycle Stage:</strong> Add timing metrics for DNS, TCP, TLS, middleware, business logic, data access, and serialization. Use distributed tracing (OpenTelemetry, Jaeger) to correlate spans across services. Without per-stage metrics, you cannot identify bottlenecks — you only know the request was slow, not why. Set up dashboards showing p50, p95, p99 latency per stage.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Connection Pooling Aggressively:</strong> Connection pooling amortizes TCP/TLS handshake costs across multiple requests. Configure pool size based on expected concurrency (10-100 connections per instance). Set idle timeouts (60 seconds) to prevent resource exhaustion. For database connections, use connection poolers (PgBouncer for PostgreSQL) to multiplex connections. Monitor pool utilization — saturation indicates need for more connections or instances.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Validate Middleware Order:</strong> Middleware ordering affects both security and performance. Authentication before authorization (don't check permissions for unauthenticated requests). Validation before database calls (reject invalid input early). Rate limiting before expensive operations (protect downstream services). Logging after authentication (don't log sensitive data from unauthenticated requests). Document middleware order and enforce it in code reviews.
           </li>
@@ -260,16 +276,19 @@ export default function RequestResponseLifecycleArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Even experienced engineers fall into lifecycle traps. These pitfalls are common sources of production incidents and performance degradation.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing Connection Pooling:</strong> Without connection pooling, every request pays the full TCP/TLS handshake penalty. For HTTPS, this is 2-3 round trips before any data is sent. At 100ms RTT, this adds 200-300ms per request. For high-traffic services, this dominates latency. Prevention: enable keep-alive, configure connection pools, use HTTP/2 for multiplexing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Middleware Ordering Mistakes:</strong> Processing unauthenticated requests through full middleware pipeline wastes resources. Running database queries before validation exposes databases to injection attacks. Logging before authentication logs sensitive data from unauthenticated requests. Prevention: document middleware order, enforce in code reviews, add middleware timing metrics to detect slow middleware.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Timeouts Too Long or Missing:</strong> Timeouts that are too long (or missing) cause thread exhaustion during outages. If a database hangs for 60 seconds and you have 100 threads, all 100 threads are blocked for 60 seconds. New requests queue up, causing cascade failure. Prevention: set explicit timeouts per stage, use circuit breakers to fail fast when dependencies degrade.
           </li>
@@ -284,15 +303,18 @@ export default function RequestResponseLifecycleArticle() {
 
       <section>
         <h2>Production Case Studies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-world lifecycle incidents demonstrate how theoretical patterns manifest in production and how systematic debugging accelerates resolution.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Case Study 1: TLS Handshake Timeout Cascade</h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             <strong>Symptom:</strong> API latency spikes from 100ms to 5 seconds during peak traffic. Affects 30% of requests. Errors show "TLS handshake timeout".
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             <strong>Debugging Process:</strong> Tracing showed TLS handshake taking 4+ seconds. TCP connection was fast (&lt;10ms). Certificate validation was not the issue. Further investigation showed TLS session tickets were not being reused.
           </p>
@@ -348,9 +370,12 @@ export default function RequestResponseLifecycleArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding lifecycle performance characteristics helps set realistic SLOs and identify bottlenecks.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Typical Latency by Stage</h3>
@@ -425,12 +450,12 @@ export default function RequestResponseLifecycleArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Connection Pool Sizing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Small Services (&lt;100 RPS):</strong> 10-20 connections per instance.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Medium Services (100-1000 RPS):</strong> 20-50 connections per instance.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Large Services (&gt;1000 RPS):</strong> 50-100 connections per instance, use connection pooler.
             </li>
@@ -443,19 +468,22 @@ export default function RequestResponseLifecycleArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Lifecycle optimization decisions directly impact infrastructure costs. Understanding cost drivers helps optimize architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Latency vs Cost Trade-offs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Connection Pooling:</strong> Reduces latency (no handshake overhead) and cost (fewer connections = less CPU). Free optimization.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Caching:</strong> Reduces database load (cost savings) and latency (cache is faster than database). Cache infrastructure adds cost (Redis cluster: $50-200/month per node).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>CDN:</strong> Reduces origin egress (cost savings) and latency (edge caching). CDN costs $0.05-0.15/GB.
             </li>
@@ -486,12 +514,15 @@ export default function RequestResponseLifecycleArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is TTFB and why does it matter?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What is TTFB and why does it matter?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: TTFB (Time to First Byte) measures the time from request initiation to receiving the first byte of response. It includes DNS resolution, TCP handshake, TLS handshake, server processing, and network transmission. TTFB matters because it is the lower bound on total latency — even with perfect client-side rendering, you cannot display content faster than TTFB. Optimizing TTFB requires identifying the slowest stage (often database queries or external API calls) and addressing that bottleneck.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

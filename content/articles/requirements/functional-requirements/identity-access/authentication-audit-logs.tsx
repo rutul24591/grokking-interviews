@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function AuthenticationAuditLogsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Authentication Audit Logs</strong> are the immutable record of all
           authentication-related events in a system. They capture who authenticated, when, from
           where, with what method, and with what outcome. These logs are critical for security
           analysis, compliance audits, forensic investigations, and threat detection.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/auth-audit-logs.svg"
@@ -46,13 +50,13 @@ export default function AuthenticationAuditLogsArticle() {
           caption="Authentication Audit Logs — showing log structure, retention tiers, and search capabilities"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing authentication audit logs requires deep
           understanding of log schema design, immutable storage patterns, compliance requirements
           (SOC 2, HIPAA, PCI-DSS, GDPR), and analysis patterns for threat detection. The
           implementation must capture comprehensive events while maintaining sub-millisecond write
           latency and supporting high-volume ingestion (millions of events per day).
-        </p>
+        </HighlightBlock>
         <p>
           Modern audit logging systems have evolved from simple text files to sophisticated
           streaming architectures with real-time threat detection, automated compliance reporting,
@@ -64,19 +68,22 @@ export default function AuthenticationAuditLogsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authentication audit logging is built on fundamental concepts that determine how events
           are captured, stored, and analyzed. Understanding these concepts is essential for
           designing effective audit logging systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Logged Events:</strong> Every authentication-related action should be logged:
           login success/failure (with method — password, MFA, SSO), logout (user-initiated,
           timeout, admin-revoked), MFA events (challenge sent, verified, failed), password events
           (change request, success, reset), session events (created, refreshed, revoked), and
           admin actions (user created, permissions changed, account locked). Each event captures
           full context for investigation.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Log Schema:</strong> Every audit log entry has a standardized schema: event_id
           (UUID for uniqueness), timestamp (high-precision ISO 8601 with timezone), event_type
@@ -103,11 +110,14 @@ export default function AuthenticationAuditLogsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authentication audit logging architecture separates log capture from log storage,
           enabling high-throughput ingestion with durable storage. This architecture is critical
           for scaling audit logging across distributed systems.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/auth-audit-schema.svg"
@@ -115,7 +125,7 @@ export default function AuthenticationAuditLogsArticle() {
           caption="Audit Log Schema — showing event structure, required fields, and indexing strategy"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The logging flow starts when an authentication event occurs (login, logout, MFA
           challenge). The application creates a log entry with full context (user, device,
           location, outcome), writes to a local buffer (prevents event loss if logging service is
@@ -124,7 +134,7 @@ export default function AuthenticationAuditLogsArticle() {
           device info from fingerprint), writes to immutable storage, and streams to SIEM for
           real-time analysis. This async, buffered approach ensures logging doesn't impact user
           experience while guaranteeing event durability.
-        </p>
+        </HighlightBlock>
         <p>
           Performance optimization is critical — log writes must complete in sub-millisecond
           latency to avoid impacting authentication flow. This is achieved through async writes
@@ -153,25 +163,28 @@ export default function AuthenticationAuditLogsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing audit logging systems involves trade-offs between durability, performance,
           cost, and compliance. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Sync vs Async Logging</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Sync:</strong> Write logs synchronously before responding. Guaranteed
               durability, simple implementation. Limitation: adds latency to every operation,
               logging outage blocks operations.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Async:</strong> Write logs asynchronously, don't block on response. Low
               latency, resilient to logging outages. Limitation: potential event loss if crash
               before write, more complex implementation.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Hybrid:</strong> Critical events sync (admin actions, permission changes),
               non-critical async (successful logins). Best balance — critical events guaranteed,
@@ -224,13 +237,16 @@ export default function AuthenticationAuditLogsArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing authentication audit logs requires following established best practices to
           ensure security, compliance, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use immutable storage (WORM, append-only) — logs cannot be modified or deleted. Encrypt
           logs at rest and in transit — protect sensitive data from unauthorized access. Implement
           write-only credentials — logging service can write but not read logs (prevents tampering
@@ -238,7 +254,7 @@ export default function AuthenticationAuditLogsArticle() {
           separate account/subscription (prevents attackers from deleting logs after compromising
           application). Implement log integrity verification — hash chains, cryptographic signatures
           to detect tampering.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Log Schema Design</h3>
         <p>
@@ -272,22 +288,25 @@ export default function AuthenticationAuditLogsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing authentication audit logs to ensure secure,
           compliant, and effective logging systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Mutable logs:</strong> Logs can be modified or deleted by attackers or
             administrators. <strong>Fix:</strong> Use immutable storage (WORM, append-only
             databases), implement hash chains for integrity verification, store hashes separately
             from logs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No encryption:</strong> Logs exposed if storage is compromised, revealing
             sensitive information. <strong>Fix:</strong> Encrypt at rest (AES-256) and in transit
             (TLS 1.3), use separate encryption keys for logs, restrict key access.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Insufficient context:</strong> Can't investigate incidents without full
             context. <strong>Fix:</strong> Capture full context (IP, device, location, user agent,
@@ -334,17 +353,20 @@ export default function AuthenticationAuditLogsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authentication audit logs are critical for organizations with security and compliance
           requirements. Here are real-world implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Financial Services (SOC 2, SOX)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Investment platform with SOC 2 and SOX compliance
           requirements. All access must be logged, logs retained for 7 years, immutable storage,
           regular access reviews.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Centralized audit logging service. All authentication events
           logged with full context. Logs written to immutable S3 bucket with Object Lock.
@@ -446,14 +468,17 @@ export default function AuthenticationAuditLogsArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of authentication audit log design, implementation,
           and operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How long should audit logs be retained?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How long should audit logs be retained?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Depends on compliance requirements. SOC 2: 1 year minimum. HIPAA: 6 years from
               creation or last effective date. Financial (SOX): 7 years. PCI-DSS: 1 year total with

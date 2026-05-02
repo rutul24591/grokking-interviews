@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function WebAnimationsApiArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Web Animations API</strong> (WAAPI) is a native browser
           API that provides JavaScript control over the same animation engine
           that powers CSS transitions and keyframe animations. Calling{" "}
@@ -47,8 +51,8 @@ export default function WebAnimationsApiArticle() {
           imperative JavaScript interface for playback control, scrubbing,
           reversing, and dynamic timing adjustments. This is the best of both
           worlds: compositor-thread performance with JavaScript-level control.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Before WAAPI, developers faced a binary choice. CSS animations were
           performant (compositor-thread) but static — you could not pause them
           at arbitrary points, scrub them to a specific progress, or
@@ -59,7 +63,7 @@ export default function WebAnimationsApiArticle() {
           eliminates this trade-off by giving JavaScript the ability to create,
           control, and compose animations that execute natively in the
           browser&apos;s animation engine.
-        </p>
+        </HighlightBlock>
         <p>
           At the staff-engineer level, WAAPI is significant for two reasons.
           First, it dramatically reduces the need for animation libraries in
@@ -88,8 +92,11 @@ export default function WebAnimationsApiArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Element.animate():</strong> The primary entry point. Accepts
             an array of keyframe objects and an options object specifying
             duration, easing, iterations, direction, fill, and delay. Returns
@@ -97,8 +104,8 @@ export default function WebAnimationsApiArticle() {
             keyframes array uses the same property names as CSS (camelCase for
             JavaScript) and the browser interpolates between them on the
             compositor thread.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Animation Object:</strong> The return value of{" "}
             <code>animate()</code>. Provides <code>play()</code>,{" "}
             <code>pause()</code>, <code>reverse()</code>,{" "}
@@ -108,7 +115,7 @@ export default function WebAnimationsApiArticle() {
             (2 for double speed, 0.5 for half, -1 for reverse). The{" "}
             <code>finished</code> property is a Promise that resolves when the
             animation completes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Keyframe Formats:</strong> WAAPI accepts two keyframe
             formats. The array format uses an array of objects, each
@@ -191,12 +198,15 @@ export default function WebAnimationsApiArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/web-animations-api-diagram-1.svg"
           alt="WAAPI architecture showing the relationship between Element.animate, KeyframeEffect, Animation, and Timeline"
           caption="Figure 1: WAAPI object model — KeyframeEffect defines the what, Timeline defines the when, Animation orchestrates both"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The WAAPI object model separates three concerns. The{" "}
           <code>KeyframeEffect</code> describes what happens — which element,
           which properties, which keyframes. The <code>AnimationTimeline</code>{" "}
@@ -207,14 +217,14 @@ export default function WebAnimationsApiArticle() {
           the same KeyframeEffect can be driven by a document timeline during
           initial load and switched to a scroll timeline for scroll-linked
           behavior, without recreating the keyframes.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/web-animations-api-diagram-2.svg"
           alt="Compositor thread execution showing how WAAPI animations run independently of the main thread"
           caption="Figure 2: Thread architecture — WAAPI animations execute on the compositor thread, immune to main thread blocking"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           When <code>Element.animate()</code> is called, the browser creates the
           Animation object on the main thread but immediately transfers the
           interpolation work to the compositor thread. From that point, the
@@ -227,7 +237,7 @@ export default function WebAnimationsApiArticle() {
           libraries. The only caveat is that animated properties must be
           compositor-compatible (transform, opacity, filter); animating layout
           properties still requires main-thread involvement.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/web-animations-api-diagram-3.svg"
@@ -254,6 +264,9 @@ export default function WebAnimationsApiArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr>
@@ -272,7 +285,7 @@ export default function WebAnimationsApiArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2 font-medium">Thread</td>
               <td className="border border-theme p-2">
                 Compositor thread — same as CSS, immune to main thread blocking
@@ -283,8 +296,8 @@ export default function WebAnimationsApiArticle() {
               <td className="border border-theme p-2">
                 Main thread via rAF — blocked by JS execution
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2 font-medium">
                 Dynamic Control
               </td>
@@ -297,7 +310,7 @@ export default function WebAnimationsApiArticle() {
               <td className="border border-theme p-2">
                 Full — complete imperative control with timeline labels
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="border border-theme p-2 font-medium">
                 Dynamic Keyframes
@@ -362,8 +375,11 @@ export default function WebAnimationsApiArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use commitStyles() instead of fill-forwards:</strong>{" "}
             Setting <code>fill: &quot;forwards&quot;</code> keeps the Animation
             object alive indefinitely, preventing garbage collection. Instead,
@@ -371,14 +387,14 @@ export default function WebAnimationsApiArticle() {
             <code>animation.commitStyles()</code> to persist the final values
             as inline styles, then call <code>animation.cancel()</code> to
             release the animation resources.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cancel existing animations before starting new ones:</strong>{" "}
             Call <code>element.getAnimations()</code> and cancel conflicting
             animations before creating new ones. Multiple animations on the
             same property fight each other, producing unpredictable results.
             Cancelling first ensures clean state.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use the ready promise for synchronized starts:</strong>{" "}
             When multiple elements need to animate in perfect sync, create all
@@ -413,23 +429,26 @@ export default function WebAnimationsApiArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory leaks from fill-forwards animations:</strong> Each
             animation with <code>fill: &quot;forwards&quot;</code> is retained
             by the browser and continues to influence rendering. Creating
             hundreds of fill-forwards animations (e.g., entrance animations
             on a long list) leaks memory and slows style recalculation. Always
             commit styles and cancel when possible.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Animation stacking without cancellation:</strong> Rapidly
             triggering <code>element.animate()</code> (e.g., on every mousemove)
             creates a new animation each time without cancelling the previous
             one. Dozens of overlapping animations accumulate, fighting for
             control of the same properties and consuming resources. Always
             store the animation reference and cancel before creating a new one.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Expecting spring physics from WAAPI:</strong> WAAPI
             interpolates between keyframes using standard easing functions
@@ -460,8 +479,11 @@ export default function WebAnimationsApiArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Motion One Library:</strong> Built entirely on WAAPI,
             Motion One provides a tiny (~4 KB) animation library that delegates
             all interpolation to the native browser engine. It adds spring
@@ -469,15 +491,15 @@ export default function WebAnimationsApiArticle() {
             <code>Element.animate()</code> without reimplementing the animation
             engine in JavaScript. This demonstrates that WAAPI is mature enough
             to serve as a library foundation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Chrome DevTools Animations Panel:</strong> Chrome&apos;s
             built-in animation inspector visualizes all active WAAPI and CSS
             animations, showing their timelines, keyframes, and playback state.
             Teams use this to debug timing issues, identify orphaned animations,
             and verify that animations run on the compositor thread rather than
             the main thread.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Google Search Scroll Effects:</strong> Google&apos;s search
             results page uses ScrollTimeline-based WAAPI animations for the
@@ -501,14 +523,17 @@ export default function WebAnimationsApiArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-medium">
+            <HighlightBlock as="p" tier="important" className="font-medium">
               What advantage does the Web Animations API have over
               requestAnimationFrame-based animation libraries?
-            </p>
-            <p className="mt-2">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2">
               WAAPI animations run on the compositor thread, the same thread
               that handles CSS animations. This means they continue rendering
               smoothly at 60 fps even when the main thread is blocked by
@@ -519,7 +544,7 @@ export default function WebAnimationsApiArticle() {
               within the 16.67ms frame budget, the animation frame is dropped.
               WAAPI eliminates this class of jank for compositor-compatible
               properties (transform, opacity, filter).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

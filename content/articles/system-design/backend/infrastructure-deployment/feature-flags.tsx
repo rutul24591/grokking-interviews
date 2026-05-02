@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,12 +37,15 @@ export default function FeatureFlagsArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Feature flags</strong> (also known as feature toggles, feature switches) are a software development technique that enables teams to enable or disable features at runtime without deploying new code. Feature flags wrap feature code in conditional statements that check the flag state — if the flag is enabled, the feature code executes; if disabled, the feature code is skipped. This technique decouples feature deployment from feature release, allowing teams to deploy code to production (with the feature disabled) and enable the feature later when ready. Feature flags are the foundation for gradual rollout, A/B testing, targeted releases, and instant kill switches for problematic features.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, feature flags represent a fundamental shift from code-based release management to configuration-based release management. Instead of deploying code to release a feature, teams deploy code with the feature disabled, then enable the feature through flag configuration. This enables safer releases (features can be disabled instantly if issues are detected), faster iteration (features can be enabled for internal testing before public release), and data-driven decisions (features can be A/B tested with real users before full rollout). Feature flags are essential for continuous deployment pipelines, where code is deployed multiple times per day and features are released independently.
-        </p>
+        </HighlightBlock>
         <p>
           Feature flags involve several technical considerations. Flag management system (centralized service storing flag states, providing SDKs for client access, managing flag lifecycle). Targeting rules (determining which users see the feature — percentage of users, specific user segments, internal users, beta testers). Evaluation performance (flag evaluation must be fast to avoid impacting application performance, typically achieved through client-side caching). Flag cleanup (removing flags after the feature is fully rolled out, preventing flag debt accumulation). Integration with analytics (tracking feature usage, measuring impact on user behavior, comparing A/B test variants).
         </p>
@@ -53,12 +57,15 @@ export default function FeatureFlagsArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Flag Management System</strong> serves as the centralized service that stores flag states, provides SDKs for client access, and manages the complete flag lifecycle. Popular systems include LaunchDarkly, Split.io, Flagsmith, and open-source alternatives like Unleash and GrowthBook. The flag management system provides a dashboard for creating, updating, and deleting flags, configuring targeting rules that determine which users see the feature, and tracking analytics for feature usage and impact measurement. The frontend and backend SDKs connect to the flag management system, evaluate flags based on user context, and cache flag states for performance optimization.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Targeting Rules</strong> determine which users see the feature through various strategies. Percentage-based rollout enables the feature for a configurable percentage of users, gradually increasing from a small cohort to full release. User segment targeting enables the feature for specific user segments such as beta testers, internal users, or premium users. Geographic targeting restricts the feature to users in specific regions, while attribute-based targeting enables the feature for users with specific attributes like device type, browser, or account age. These targeting rules enable controlled, gradual feature rollout that minimizes risk.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Flag Evaluation</strong> is the process of determining whether a flag is enabled for a specific user and must complete in under 10 milliseconds to avoid impacting application performance. Client-side evaluation occurs when the frontend SDK evaluates flags based on user context including user ID, attributes, and targeting rules. Server-side evaluation happens when the backend evaluates flags and sends flag states to the frontend. Client-side caching stores flag states locally and updates them periodically to minimize evaluation latency, ensuring that flag checks remain fast and do not degrade user experience.
         </p>
@@ -84,12 +91,15 @@ export default function FeatureFlagsArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature flag architecture consists of the flag management system (storing flag states, providing SDKs), the frontend/backend SDK (evaluating flags, caching flag states), and the feature code (wrapped in conditional statements checking flag state). The flow begins with the flag management system storing flag configuration (flag name, targeting rules, flag state). When the application loads, the frontend/backend SDK connects to the flag management system, fetches flag states for the current user, and caches them locally. When the feature code executes, it checks the flag state — if enabled, the feature code runs; if disabled, the feature code is skipped.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Flag states can be updated at runtime (without application reload). When a flag state changes in the flag management system, the change is propagated to frontend/backend SDKs (via WebSocket, polling, or server-sent events). The SDK updates its cached flag states, and the feature code re-evaluates the flag on the next render. This enables instant feature enable/disable without redeploying the application.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/flag-evaluation-flow.svg"
@@ -122,14 +132,17 @@ export default function FeatureFlagsArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature flags involve trade-offs between release flexibility and code complexity, performance and functionality, and centralized management and distributed evaluation. Understanding these trade-offs is essential for designing effective feature flag strategies.
-        </p>
+        </HighlightBlock>
 
         <h3>Client-Side vs. Server-Side Evaluation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Client-Side Evaluation:</strong> Frontend SDK evaluates flags based on user context. Advantages: instant evaluation (no backend round-trip), works offline (cached flag states), reduced backend load (no backend evaluation needed). Limitations: flag SDK increases bundle size, flag logic is exposed in client code (targeting rules visible to users), stale flag states (cached flags may not reflect latest changes until cache refresh). Best for: frontend features where instant evaluation is needed, applications requiring offline support.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Server-Side Evaluation:</strong> Backend evaluates flags and sends flag states to frontend. Advantages: centralized flag logic (targeting rules not exposed to client), always up-to-date flag states (no caching staleness), reduced frontend bundle size (no flag SDK needed). Limitations: backend dependency (frontend cannot evaluate flags without backend), evaluation latency (backend round-trip adds latency). Best for: security-sensitive features (targeting rules must not be exposed), applications where backend already evaluates flags.
         </p>
@@ -154,12 +167,15 @@ export default function FeatureFlagsArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use a dedicated flag management system</strong> such as LaunchDarkly, Split.io, or Flagsmith rather than building a custom solution. Flag management systems provide essential features including targeting rules, analytics, A/B testing support, and audit logs that are complex to build correctly. They also provide SDKs for multiple platforms including frontend, backend, and mobile, ensuring consistent flag evaluation across the entire application stack. Building a custom flag management system requires solving distributed systems problems like consistency, caching, and failover that are already solved by mature commercial and open-source solutions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cache flag states locally</strong> to avoid evaluation latency on every flag check. Fetch flag states when the application loads, cache them in memory or localStorage, and use cached values for subsequent flag checks. Update cached flag states periodically via WebSocket or polling to reflect flag changes made in the management system. Proper caching ensures that flag evaluation completes in under 1 millisecond and does not impact application performance. The cache invalidation strategy should balance freshness with performance, typically updating every few minutes or on explicit flag change events.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Clean up flags regularly</strong> after the feature is fully rolled out and stabilized. Flags that are no longer needed add code complexity through conditional statements around feature code, slow flag evaluation by increasing the number of flags to check, and make flag management difficult by making it hard to distinguish active flags from unused ones. Schedule flag cleanup as part of the feature rollout process, typically removing the flag from the codebase and the flag management system two weeks after full rollout when the feature is confirmed stable.
         </p>
@@ -177,12 +193,15 @@ export default function FeatureFlagsArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Flag debt</strong> occurs when unused flags accumulate over time because features are fully rolled out but their flags are not removed. Flag debt increases code complexity through leftover conditional statements around feature code, slows flag evaluation by requiring checks against an ever-growing flag list, and makes flag management increasingly difficult as it becomes hard to distinguish active flags from unused ones. The solution is to establish a regular flag cleanup cadence, removing flags from both the codebase and the flag management system after the feature is fully rolled out and confirmed stable for a reasonable period.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Missing default values</strong> becomes a critical issue when the flag management system is unavailable. If the flag SDK cannot connect to the flag management system due to network errors or service outages, flag evaluation fails and the feature code may execute incorrectly. Always provide sensible default values, typically with the flag disabled by default, to ensure that the application behaves predictably when the flag management system is unreachable. This graceful degradation prevents cascading failures where a flag management system outage causes application-wide dysfunction.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Flag evaluation performance degradation</strong> happens when flags are evaluated synchronously on every render, causing noticeable performance impact. While individual flag evaluation should be fast, evaluating flags on every render is wasteful for flags that do not change frequently. The correct approach is to evaluate flags once when the application loads, cache the results, and use cached values for subsequent renders. Re-evaluation should only occur when flag states change, typically detected via WebSocket events or periodic polling. This pattern keeps flag evaluation latency under 1 millisecond for the vast majority of checks.
         </p>
@@ -200,16 +219,19 @@ export default function FeatureFlagsArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Social Media Feature Rollout</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms (Facebook, Twitter, Instagram) use feature flags for gradual feature rollouts. New features (new UI, new algorithm, new interaction model) are deployed with flags disabled, then enabled for 1% of users, monitored for errors and engagement, and progressively increased to 100%. If engagement drops or errors increase, the flag is disabled instantly (kill switch). This pattern enables safe feature releases with real-user validation before full rollout.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce A/B Testing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms use feature flags for A/B testing checkout flows, product page layouts, and recommendation algorithms. Variant A (control) sees the current design, variant B (treatment) sees the new design. The flag management system tracks variant-specific conversion rates, average order values, and error rates. After statistical significance is reached, the winning variant is rolled out to 100% of users. This pattern enables data-driven design decisions — features are released based on user impact, not opinion.
-        </p>
+        </HighlightBlock>
 
         <h3>Enterprise Beta Testing</h3>
         <p>
@@ -225,15 +247,18 @@ export default function FeatureFlagsArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What are feature flags and how do they enable gradual rollout?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Feature flags wrap feature code in conditional statements that check flag state. The flag state is determined by targeting rules — for gradual rollout, the rule is a percentage of users (e.g., 1%, 5%, 10%, 25%, 50%, 100%). The flag management system assigns users to the feature based on a hash of their user ID, ensuring sticky assignment. As the percentage increases, more users see the feature. At each stage, metrics are monitored — if healthy, the percentage increases; if degraded, the flag is disabled. This enables gradual, controlled feature rollout with real-user validation.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

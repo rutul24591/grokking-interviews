@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,15 +25,18 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Data deduplication</strong> is the process of identifying and removing duplicate records from a
           dataset, ensuring that each unique entity appears exactly once in the output. In data-intensive systems,
           duplicates are not anomalies — they are inevitable. They arise from producer retries after transient failures,
           pipeline replays for bug fixes, out-of-order event delivery, multiple ingestion paths (the same event arriving
           via both an API and a CDC connector), and consumer group rebalances in message brokers. Without deduplication,
           these duplicates inflate counts, distort aggregates, and produce silently incorrect analytical results.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental challenge of deduplication is defining identity: what makes two records &quot;the same&quot;?
           For some datasets, identity is straightforward — a primary key in a database table uniquely identifies a row,
           and two rows with the same primary key are duplicates. For other datasets, identity is ambiguous — two events
@@ -40,7 +44,7 @@ export default function ArticlePage() {
           twice with slightly different metadata) or distinct events (two separate actions by the same user at the same
           time). The deduplication strategy depends critically on how identity is defined, and getting this definition
           wrong is the most common source of deduplication errors.
-        </p>
+        </HighlightBlock>
         <p>
           Deduplication operates at different levels of the data pipeline. At the ingestion level, deduplication
           prevents the same event from being written to the pipeline&apos;s working storage multiple times due to producer
@@ -83,7 +87,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The deduplication state store is the core component that tracks which records have been seen. For exact
           deduplication, the state store is typically a hash set (in memory for streaming pipelines) or a database
           index (for batch pipelines). The hash set provides O(1) lookup and insert, making it efficient for
@@ -91,8 +98,8 @@ export default function ArticlePage() {
           available memory. The solution is to bound the state: use a sliding window (only track keys seen within the
           last N minutes or hours), apply TTL (evict keys older than a threshold), or partition the state (distribute
           keys across multiple nodes in a distributed hash store like Redis).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Bloom filters provide a space-efficient probabilistic alternative for deduplication. A Bloom filter is a
           fixed-size bit array combined with multiple hash functions. To check whether a key has been seen, the Bloom
           filter hashes the key with each hash function and checks the corresponding bits. If any bit is zero, the key
@@ -100,7 +107,7 @@ export default function ArticlePage() {
           there is a small probability of a false positive — the filter incorrectly reports the key as seen when it
           has not been. The false positive rate is configurable: larger Bloom filters have lower false positive rates
           but consume more memory.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/data-deduplication-diagram-1.svg"
           alt="Comparison of exact deduplication (hash-based, correct, unbounded memory) versus probabilistic deduplication (Bloom filters, bounded memory, bounded error)"
@@ -150,7 +157,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The deduplication pipeline architecture consists of three layers: the identity layer (computing the
           deduplication key for each record), the state layer (checking and updating the deduplication state store),
           and the output layer (routing records to the deduplicated or duplicate output stream). The identity layer
@@ -158,14 +168,14 @@ export default function ArticlePage() {
           composite key. The state layer checks whether the key has been seen before and, if not, records it as seen.
           The output layer routes the record to the deduplicated output if it is the first occurrence, or to the
           duplicate output (or discard) if it is a subsequent occurrence.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For streaming deduplication, the state layer is typically an in-memory hash set with TTL or a sliding
           window. Records are processed in arrival order, and the state is updated incrementally as each record
           arrives. The hash set provides O(1) lookup and insert, enabling high-throughput deduplication. The TTL
           or window ensures that the state does not grow unboundedly: keys older than the TTL are evicted, freeing
           memory for new keys. The trade-off is that duplicates arriving after the TTL has expired are not detected.
-        </p>
+        </HighlightBlock>
         <p>
           For batch deduplication, the state layer is typically a distributed sort and group-by operation. The
           pipeline sorts the input records by the deduplication key, groups records with the same key, and applies
@@ -208,7 +218,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Exact versus probabilistic deduplication is the primary trade-off. Exact deduplication using hash sets or
           database indexes is 100 percent correct but requires unbounded memory — the state grows with the number of
           unique keys, which can reach billions for high-volume pipelines. Probabilistic deduplication using Bloom
@@ -217,8 +230,8 @@ export default function ArticlePage() {
           use case where false dedup has financial or legal consequences, exact deduplication is mandatory. For
           analytics, monitoring, or any use case where a small error rate is acceptable, probabilistic deduplication
           may be sufficient and much more cost-efficient.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In-memory versus external state stores is a performance-versus-scalability trade-off. In-memory hash sets
           provide the fastest lookup and insert (nanoseconds) but are limited by the available memory on the worker
           node. External state stores (Redis, DynamoDB) provide scalable, persistent deduplication state but add
@@ -226,7 +239,7 @@ export default function ArticlePage() {
           high-volume pipelines. The recommended approach is to use in-memory state for high-throughput, bounded
           deduplication (with TTL or windowing) and external state for cross-system, global deduplication where the
           state must be shared across multiple ingestion paths.
-        </p>
+        </HighlightBlock>
         <p>
           Keep-first versus keep-latest is a correctness-versus-robustness trade-off. Keep-first (the first occurrence
           of a key is kept) is simple and correct when records arrive in order, but it discards subsequent occurrences
@@ -249,20 +262,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Define record identity explicitly and document it. The deduplication key — whether it is a primary key, a
           content hash, or a composite key — should be defined explicitly and documented so that all stakeholders
           understand what constitutes a duplicate. This is especially important when the deduplication logic is shared
           across multiple pipelines or teams. A documented identity definition also enables testing: you can generate
           test cases with known duplicates and verify that the deduplication logic correctly identifies them.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use windowed deduplication with TTL for streaming pipelines. Instead of tracking all keys indefinitely,
           scope the deduplication state to a time window that covers the maximum expected delay between duplicate
           arrivals. For most pipelines, a 30-minute to 2-hour window is sufficient to catch duplicates from retries,
           network retransmission, and consumer rebalances. The window should be monitored and adjusted based on the
           observed duplicate arrival pattern.
-        </p>
+        </HighlightBlock>
         <p>
           Monitor the duplicate rate continuously and alert on anomalies. The duplicate rate should be tracked as a
           time-series metric and alerted on when it exceeds the normal range. A sudden increase in the duplicate rate
@@ -295,21 +311,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Unbounded deduplication state causing out-of-memory errors is the most common operational failure. When a
           streaming pipeline tracks all unique keys indefinitely without TTL or windowing, the deduplication state
           grows without bound and eventually exhausts available memory. The fix is to scope the deduplication state
           to a time window or to apply TTL, evicting keys older than a threshold. The window size should be chosen
           based on the maximum expected delay between duplicate arrivals, not based on memory availability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Hash collisions causing false deduplication is a correctness failure that occurs when two different records
           produce the same hash value and are incorrectly treated as duplicates. The probability of hash collision
           depends on the hash function and the hash size: a 32-bit hash has a significant collision probability for
           millions of records, while a 128-bit hash (such as MD5) has negligible collision probability for billions
           of records. The fix is to use a hash function with sufficient output size (128 bits or more) and to use a
           composite key (hash plus additional fields) for critical deduplication.
-        </p>
+        </HighlightBlock>
         <p>
           Late events arriving after the deduplication window has closed, bypassing deduplication, is a correctness
           failure that occurs when the deduplication window is too short for the actual duplicate arrival pattern. If
@@ -336,7 +355,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses windowed deduplication in its real-time order processing pipeline to handle
           duplicate events from producer retries. The payment service uses idempotent writes with retry logic, and when
           a retry occurs after a timeout (even though the original write succeeded), the same order event is emitted
@@ -344,15 +366,15 @@ export default function ArticlePage() {
           deduplication key, detects and discards the duplicate, ensuring that the downstream fulfillment system
           processes each order exactly once. The duplicate rate is monitored continuously and averages 0.5 percent,
           with occasional spikes to 5 percent during network incidents.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses global deduplication in its trade reporting pipeline to handle duplicates
           from multiple ingestion paths. Trades are reported to the platform via both a REST API and a FIX protocol
           connection, and the same trade may be reported via both paths due to failover logic. The deduplication layer
           uses a shared Redis state store with the trade ID as the deduplication key, checking both ingestion paths
           against the same state to ensure that each trade is recorded exactly once. The shared state introduces a
           2-millisecond latency per trade, which is acceptable for the reporting pipeline&apos;s 100-millisecond SLA.
-        </p>
+        </HighlightBlock>
         <p>
           A technology company uses Bloom filter-based probabilistic deduplication in its clickstream analytics
           pipeline to handle duplicate events from client-side retries. Mobile and web clients retry failed event
@@ -375,25 +397,28 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How do you define record identity for deduplication when the source system does not provide a unique identifier?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             When the source system does not provide a unique identifier, record identity must be constructed from the
             available fields. The first approach is a content-based hash: compute a cryptographic hash (SHA-256 or
             xxHash) of the entire record content and use the hash as the deduplication key. This identifies exact
             duplicates (records with identical content) but not semantic duplicates (records that represent the same
             real-world entity with different content).
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The second approach is a composite key constructed from a subset of fields that together uniquely identify
             the record. For example, a user action event might be uniquely identified by the combination of user ID,
             action type, and event timestamp. The composite key should be tested against a representative sample of the
             data to verify that it produces no false positives (two different records with the same key) and no false
             negatives (two duplicate records with different keys).
-          </p>
+          </HighlightBlock>
           <p>
             The third approach is to enrich the record with a generated unique identifier at the ingestion point. When
             the event first enters the pipeline, assign it a UUID or a monotonically increasing sequence number, and use

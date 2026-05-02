@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -73,23 +74,26 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: The Three Properties</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Consistency: Linearizability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In CAP terminology, Consistency means linearizability: every read returns the most recent
           write, and all nodes see the same data at the same time. This is a strong guarantee—if you
           write a value to the system, any subsequent read (even from a different node) must return
           that value or a newer one. There is a single, global ordering of operations.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Linearizability is what users expect from a single-machine database. When you update your
           profile picture on a website, you expect to see it immediately—not just on your session,
           but for anyone viewing your profile. This expectation comes from single-node systems where
           consistency is free. In distributed systems, consistency requires coordination, and
           coordination requires communication. When communication fails (network partition),
           consistency becomes impossible without sacrificing availability.
-        </p>
+        </HighlightBlock>
 
         <p>
           It's critical to distinguish CAP Consistency from ACID Consistency. ACID Consistency means
@@ -154,21 +158,24 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: CP vs AP Systems</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>CP Systems: Consistency Over Availability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CP systems prioritize consistency during partitions. When a partition occurs, the system
           blocks writes (and sometimes reads) on one or both sides of the partition to prevent
           divergence. The system remains "correct" but becomes partially unavailable. This is the
           right choice when inconsistency would cause catastrophic failures.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implementation patterns for CP include: quorum-based writes (require majority acknowledgment),
           leader election with fencing (only one leader can write at a time), and synchronous
           replication (wait for all replicas before acknowledging). These mechanisms ensure that
           even during partitions, no two nodes can accept conflicting writes.
-        </p>
+        </HighlightBlock>
 
         <p>
           Example: A CP database with three nodes (A, B, C) requires 2-of-3 acknowledgment for
@@ -230,21 +237,24 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Real-World CAP Decisions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The CAP trade-off isn't abstract—it shapes real system design. The right choice depends
           on your business requirements: what's the cost of inconsistency versus the cost of
           unavailability? Let's examine concrete scenarios.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Systems: CP (Consistency Critical)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Banking, payments, and trading systems must choose CP. Consider a money transfer: debit
           account A, credit account B. If the network partitions and both sides accept withdrawals,
           the same money could be spent twice—catastrophic fraud. CP systems block withdrawals
           during partitions, preventing double-spend. Users see "service temporarily unavailable"
           rather than "your balance is negative."
-        </p>
+        </HighlightBlock>
 
         <p>
           The trade-off is explicit: during outages, users can't access their money. This is
@@ -310,19 +320,22 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for CAP-Aware Design</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Design for the partition case, not the happy path.</strong> Any distributed
           system will experience partitions. Design your failure modes explicitly: will you block
           or diverge? Document this choice and ensure stakeholders understand the trade-off.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use tunable consistency when available.</strong> Don't choose CP or AP globally.
           Use strong consistency for critical operations (payments, inventory) and eventual
           consistency for non-critical ones (feeds, analytics). This optimizes both correctness
           and availability.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Make inconsistency visible to users.</strong> Don't hide eventual consistency.
@@ -355,22 +368,25 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and Misconceptions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Misconception: "Pick 2 of 3."</strong> This is the most common misunderstanding.
           CAP doesn't mean you permanently sacrifice one property. During normal operation (no
           partitions), you can have all three. The choice is only forced during partitions. A
           well-designed system provides C, A, and P most of the time—it just degrades gracefully
           when partitions occur.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Misconception: "P is optional."</strong> Some believe you can choose CA and
           ignore partitions. This is wrong for distributed systems. Networks will fail—fiber gets
           cut, routers crash, data centers lose power. If your system can't tolerate partitions,
           it will fail catastrophically when they occur. The only way to avoid P is to use a
           single node, which isn't distributed.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Misconception: "ACID = CAP Consistency."</strong> ACID Consistency (invariants
@@ -411,21 +427,24 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Google Spanner: CP with Global Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Spanner is a globally distributed SQL database that provides external consistency
           (stronger than linearizability) across continents. It achieves CP through synchronous
           replication with two-phase commit and TrueTime (atomic clocks + GPS for synchronized
           timestamps). During partitions, Spanner blocks writes on the minority side, preserving
           consistency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The trade-off: latency is bounded by speed of light. A write spanning US and Europe
           takes ~150ms minimum. Spanner accepts this latency cost to provide CP semantics at
           global scale. Use case: Google Ads billing, where correctness is non-negotiable.
-        </p>
+        </HighlightBlock>
 
         <h3>Amazon DynamoDB: AP with Tunable Consistency</h3>
         <p>
@@ -474,14 +493,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: Explain the CAP theorem. During normal operation (no partitions), can a system
               provide all three properties?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> The CAP theorem states that during a network partition, a
               distributed system must choose between Consistency (all nodes see the same data)
               and Availability (every request gets a response). Partition Tolerance is mandatory
@@ -490,7 +512,7 @@ export default function ArticlePage() {
               availability, and partition tolerance. The CAP choice is only forced when the
               network actually partitions. This is a common misconception—CAP doesn't mean you
               permanently sacrifice one property.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> Why is Partition Tolerance not optional? Answer: In
               distributed systems, nodes communicate over networks. Networks fail—fiber cuts,

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -41,14 +42,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Widget embedding</strong> is the integration pattern where a
           third-party (or separately-owned internal) UI capability is rendered
           inside your application: chat widgets, support desks, marketing
           personalization, payments, identity providers, maps, scheduling, and
           social embeds.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Embedding is deceptively simple at the "hello world" level—paste a
           snippet and a widget appears. At scale, it becomes a{" "}
           <strong>system design problem</strong>: widgets introduce a new trust
@@ -57,7 +61,7 @@ export default function ArticlePage() {
           high-severity frontend incidents (performance regressions, CSP
           breakages, privacy compliance violations) originate from embedded
           widgets.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, widget embedding requires balancing
           three competing concerns:
@@ -117,6 +121,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/third-party-integration/iframe-isolation.svg"
@@ -125,16 +132,16 @@ export default function ArticlePage() {
         />
 
         <h3>Isolation Mechanisms</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           There are three primary approaches to isolating third-party widgets,
           each with different security and complexity trade-offs:
-        </p>
+        </HighlightBlock>
 
         <h4>Mechanism 1: Iframe Isolation</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Iframes provide the strongest isolation by creating a separate
           browsing context with its own DOM, JavaScript context, and CSS scope.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Security:</strong> Widgets cannot directly access parent
@@ -325,14 +332,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust widget embedding architecture treats widgets as{" "}
           <strong>untrusted micro-frontends</strong> that must be isolated,
           monitored, and controlled.
-        </p>
+        </HighlightBlock>
 
         <h3>Isolation Architecture</h3>
-        <p>The recommended architecture for third-party widgets:</p>
+        <HighlightBlock as="p" tier="important">The recommended architecture for third-party widgets:</HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Iframe Container:</strong> Render widget in an iframe with
@@ -496,10 +506,13 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Widget embedding strategies involve trade-offs between security,
           performance, and integration complexity.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -534,14 +547,14 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that{" "}
           <strong>
             iframes are the default choice for third-party widgets
           </strong>
           . The security benefits far outweigh the minor complexity of
           postMessage communication.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -549,17 +562,20 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Iframe for Third-Party Widgets:</strong> Always isolate
             third-party widgets in iframes with sandbox attribute. Never render
             them directly in your DOM.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Validate postMessage Origins:</strong> Always check
             event.origin before processing messages. Never use '*' as
             targetOrigin.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Lazy Load Widgets:</strong> Don't load widgets until user
             interacts with the feature. Show a placeholder button.
@@ -600,17 +616,20 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No Iframe Isolation:</strong> Rendering third-party widgets
             directly in your DOM allows them to access your data and interfere
             with your app.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Skipping Origin Validation:</strong> Processing postMessage
             without checking event.origin allows attackers to send malicious
             messages.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Passing Raw Tokens:</strong> Passing session tokens or API
             keys to widgets gives them full access to your backend.
@@ -639,17 +658,20 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce: Payment Widget Integration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Problem:</strong> E-commerce site needed to integrate Stripe
           payment widget securely without exposing sensitive payment data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong> Rendered Stripe Elements in iframe with
           strict CSP. Used token-based authentication (not raw card data).
           Implemented webhook for payment confirmation.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Results:</strong> Achieved PCI SAQ-A compliance (lowest
           scope). Zero security incidents. Payment completion rate increased 12%
@@ -711,6 +733,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
@@ -718,12 +743,12 @@ export default function ArticlePage() {
               Question 1: What are the security risks of embedding third-party
               widgets and how do you mitigate them?
             </h3>
-            <p className="text-muted mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3">
               <strong>Answer:</strong>
-            </p>
-            <p className="mb-3">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Third-party widgets introduce several security risks:
-            </p>
+            </HighlightBlock>
             <ul className="space-y-2 mb-3">
               <li>
                 <strong>Data Access:</strong> Widgets can access DOM, cookies,

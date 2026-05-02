@@ -160,11 +160,11 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
         </pre>
 
         <h3 className="mt-6 font-semibold">Edge Compute</h3>
-        <HighlightBlock as="p" tier="important">
+        <p>
           Modern CDNs go beyond simple caching by offering compute at the edge. Cloudflare Workers, Vercel Edge
           Functions, and Fastly Compute run your code at edge PoPs, enabling dynamic responses without origin
           round-trips. This blurs the line between "CDN" and "application server":
-        </HighlightBlock>
+        </p>
         <ul className="space-y-2">
           <li>
             <strong>A/B testing at the edge:</strong> Route users to variants without origin involvement.
@@ -223,17 +223,16 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
           src="/diagrams/system-design-concepts/frontend/caching-strategies/cdn-cache-flow.svg"
           alt="CDN request flow showing DNS resolution, edge cache lookup, origin shield, and origin server"
           caption="Figure 2: Detailed request flow through CDN layers from client to origin and back"
-          captionTier="important"
         />
 
         <p>
           The flow works as follows:
         </p>
         <ol className="space-y-2">
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>DNS Resolution:</strong> The user's browser resolves the domain. Anycast DNS returns the IP
             of the nearest edge PoP (typically {'&lt;'}5ms).
-          </HighlightBlock>
+          </li>
           <HighlightBlock as="li" tier="important">
             <strong>Edge Cache Lookup:</strong> The edge PoP checks its local cache using the cache key. On a
             <strong> cache hit</strong>, the response is returned immediately (1-5ms). The response
@@ -263,6 +262,17 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
         <HighlightBlock as="p" tier="crucial">
           The CDN landscape offers different trade-offs depending on your needs. Here is a comparison of the
           major CDN providers across key dimensions that matter for frontend engineers:
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Staff-level framing: the hard problems are almost always <strong>cache keys</strong> and
+          <strong>invalidation</strong>, not the CDN vendor. If you include too many dimensions in the key (cookies,
+          user-agent, unnormalized query params), hit rate collapses; if you exclude necessary dimensions, you can
+          serve the wrong variant.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Invalidation strategy should be designed up-front. URL purges don&apos;t scale for large surfaces; prefer
+          surrogate keys/tags so a single domain object change can purge all derived pages. Plan for purge propagation
+          delay with bounded staleness (short TTLs, stale-while-revalidate) where correctness allows.
         </HighlightBlock>
 
         <div className="overflow-x-auto">
@@ -402,7 +412,6 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
           src="/diagrams/system-design-concepts/frontend/caching-strategies/cdn-invalidation.svg"
           alt="CDN cache invalidation methods showing purge by URL, purge by tag, purge all, and TTL expiration"
           caption="Figure 3: Cache invalidation strategies and their propagation across edge nodes"
-          captionTier="important"
         />
 
         <ul className="space-y-3">
@@ -412,11 +421,11 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
             bypass cache for responses with <code>Set-Cookie</code>, but if you're using custom cache logic,
             strip these headers before caching. This is a security vulnerability, not just a performance issue.
           </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Cache key explosion from Vary:</strong> Using <code>Vary: User-Agent</code> creates a separate
             cache entry for every unique User-Agent string (thousands of variations). Your cache hit rate drops to
             near zero. Instead, normalize to device classes (mobile, tablet, desktop) at the edge.
-          </HighlightBlock>
+          </li>
           <HighlightBlock as="li" tier="important">
             <strong>Forgetting about browser cache after CDN purge:</strong> Purging the CDN cache doesn't purge
             users' browser caches. If you set <code>max-age=3600</code>, users may still see stale content for up
@@ -524,46 +533,46 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
         </HighlightBlock>
 
         <div className="space-y-6">
-          <div className="rounded-lg border border-theme bg-panel p-4">
-            <h3 className="font-semibold">Q: How would you design a CDN caching strategy for a high-traffic e-commerce site where product pages need to show up-to-date pricing?</h3>
-            <div className="mt-3 space-y-2">
-              <HighlightBlock as="p" tier="important">
-                <strong>A:</strong> The key insight is separating cacheable from non-cacheable content. Product page
-                layouts, images, and descriptions rarely change and can be cached aggressively
-                with <code>s-maxage=3600</code>. For pricing, I would use one of two approaches:
-              </HighlightBlock>
-              <HighlightBlock as="p" tier="important">
-                <strong>Approach 1 (Stale-While-Revalidate):</strong> Cache the full page
-                with <code>s-maxage=60, stale-while-revalidate=3600</code>. Prices are at most 60 seconds stale, and
-                users always get instant responses. When a price changes, use cache tags (<code>product-123</code>) to
-                purge instantly via Fastly's surrogate keys or Cloudflare cache tags.
-              </HighlightBlock>
-              <HighlightBlock as="p" tier="important">
-                <strong>Approach 2 (Edge Compute):</strong> Cache the product page shell at the edge and inject the
-                current price at the edge using a Worker/Edge Function that fetches the price from a fast key-value
-                store (Cloudflare KV, Vercel Edge Config). The shell has a long TTL; the price lookup adds ~5ms.
-              </HighlightBlock>
+	          <div className="rounded-lg border border-theme bg-panel p-4">
+	            <h3 className="font-semibold">Q: How would you design a CDN caching strategy for a high-traffic e-commerce site where product pages need to show up-to-date pricing?</h3>
+	            <div className="mt-3 space-y-2">
+	              <HighlightBlock as="p" tier="important">
+	                <strong>A:</strong> The key insight is separating cacheable from non-cacheable content. Product page
+	                layouts, images, and descriptions rarely change and can be cached aggressively
+	                with <code>s-maxage=3600</code>. For pricing, I would use one of two approaches:
+	              </HighlightBlock>
+	              <p>
+	                <strong>Approach 1 (Stale-While-Revalidate):</strong> Cache the full page
+	                with <code>s-maxage=60, stale-while-revalidate=3600</code>. Prices are at most 60 seconds stale, and
+	                users always get instant responses. When a price changes, use cache tags (<code>product-123</code>) to
+	                purge instantly via Fastly's surrogate keys or Cloudflare cache tags.
+	              </p>
+	              <p>
+	                <strong>Approach 2 (Edge Compute):</strong> Cache the product page shell at the edge and inject the
+	                current price at the edge using a Worker/Edge Function that fetches the price from a fast key-value
+	                store (Cloudflare KV, Vercel Edge Config). The shell has a long TTL; the price lookup adds ~5ms.
+	              </p>
               <p>
                 Both approaches keep P99 latency under 50ms while ensuring prices are current within seconds.
               </p>
             </div>
           </div>
 
-          <div className="rounded-lg border border-theme bg-panel p-4">
-            <h3 className="font-semibold">Q: What is the difference between s-maxage and max-age, and why does it matter for CDN caching?</h3>
-            <div className="mt-3 space-y-2">
-              <HighlightBlock as="p" tier="important">
-                <strong>A:</strong> <code>max-age</code> applies to all caches (browser and CDN),
-                while <code>s-maxage</code> applies only to shared/proxy caches (CDN) and
-                overrides <code>max-age</code> at that layer. This distinction is critical because browser caches
-                cannot be remotely purged, but CDN caches can.
-              </HighlightBlock>
-              <HighlightBlock as="p" tier="important">
-                In practice, you want the CDN to cache aggressively (high <code>s-maxage</code>) because you can purge
-                it instantly when content changes. But you want the browser to cache conservatively
-                (low <code>max-age</code>) because once content is in a user's browser cache, you have no way to
-                invalidate it until the TTL expires.
-              </HighlightBlock>
+	          <div className="rounded-lg border border-theme bg-panel p-4">
+	            <h3 className="font-semibold">Q: What is the difference between s-maxage and max-age, and why does it matter for CDN caching?</h3>
+	            <div className="mt-3 space-y-2">
+	              <HighlightBlock as="p" tier="important">
+	                <strong>A:</strong> <code>max-age</code> applies to all caches (browser and CDN),
+	                while <code>s-maxage</code> applies only to shared/proxy caches (CDN) and
+	                overrides <code>max-age</code> at that layer. This distinction is critical because browser caches
+	                cannot be remotely purged, but CDN caches can.
+	              </HighlightBlock>
+	              <p>
+	                In practice, you want the CDN to cache aggressively (high <code>s-maxage</code>) because you can purge
+	                it instantly when content changes. But you want the browser to cache conservatively
+	                (low <code>max-age</code>) because once content is in a user's browser cache, you have no way to
+	                invalidate it until the TTL expires.
+	              </p>
               <p>
                 Example: <code>Cache-Control: public, s-maxage=86400, max-age=60</code> means the CDN caches for 24
                 hours (and you can purge it anytime), while each user's browser only caches for 60 seconds.
@@ -571,12 +580,12 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
             </div>
           </div>
 
-          <div className="rounded-lg border border-theme bg-panel p-4">
-            <h3 className="font-semibold">Q: You deploy a bug fix but users are still seeing the old version. Walk through your debugging process.</h3>
-            <div className="mt-3 space-y-2">
-              <HighlightBlock as="p" tier="important">
-                <strong>A:</strong> I would systematically check each caching layer:
-              </HighlightBlock>
+	          <div className="rounded-lg border border-theme bg-panel p-4">
+	            <h3 className="font-semibold">Q: You deploy a bug fix but users are still seeing the old version. Walk through your debugging process.</h3>
+	            <div className="mt-3 space-y-2">
+	              <HighlightBlock as="p" tier="important">
+	                <strong>A:</strong> I would systematically check each caching layer:
+	              </HighlightBlock>
               <p>
                 <strong>1. Browser cache:</strong> Open DevTools, check the Network tab. If the response
                 shows <code>(from disk cache)</code>, the browser is serving a cached copy. Hard refresh (Ctrl+Shift+R)
@@ -589,25 +598,30 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: reason across layers (browser, CDN, origin) using HTTP caching semantics, cache keys, and
+          purge primitives. These references help you validate correctness details like Vary and vendor-specific
+          capabilities like surrogate keys/tags.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching" className="text-purple-600 underline dark:text-purple-400" target="_blank" rel="noopener noreferrer">
               MDN: HTTP Caching
             </a>
             {" "} &mdash; Comprehensive guide to HTTP cache headers and semantics.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developers.cloudflare.com/cache/" className="text-purple-600 underline dark:text-purple-400" target="_blank" rel="noopener noreferrer">
               Cloudflare Cache Documentation
             </a>
             {" "} &mdash; Cache rules, cache keys, tiered caching, and Workers cache API.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://docs.fastly.com/en/guides/purging" className="text-purple-600 underline dark:text-purple-400" target="_blank" rel="noopener noreferrer">
               Fastly Purging Documentation
             </a>
             {" "} &mdash; Surrogate keys, instant purge, and soft purge strategies.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://web.dev/articles/love-your-cache" className="text-purple-600 underline dark:text-purple-400" target="_blank" rel="noopener noreferrer">
               web.dev: Love Your Cache

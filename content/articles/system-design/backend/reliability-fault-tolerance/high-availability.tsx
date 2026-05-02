@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>High availability (HA)</strong> is the ability of a system to serve traffic within defined error and latency budgets even while components fail. It is not a binary property—"available" or "unavailable"—but a measurable characteristic defined by availability targets expressed as percentages of uptime over a time period. High availability is a property of the full stack and the organization: architecture choices, capacity policy, deployment discipline, and incident response all contribute.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           High availability is often misunderstood as "never go down." In practice, HA design starts by mapping business impact to an availability target and an error budget. A target of 99.9 percent allows about 43 minutes of downtime per month. A target of 99.99 percent allows about 4 minutes. Designing to the target means ensuring that the most likely failures stay within that window and that rare failures have a fast, rehearsed recovery path. The target drives every architectural decision: redundancy level, failover speed, deployment strategy, and operational budget.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, high availability requires balancing four competing concerns. <strong>Redundancy</strong> means eliminating single points of failure across compute, network, storage, and data layers. <strong>Consistency</strong> means that redundant systems must maintain data correctness—active-active designs with concurrent writes introduce conflict resolution complexity that can itself reduce availability if conflicts are not handled correctly. <strong>Automation</strong> means that detection, failover, and recovery must happen automatically within the error budget window, but automation must be guarded against self-induced outages. <strong>Cost</strong> means that higher availability requires more infrastructure, more operational complexity, and more engineering investment—the right level depends on actual business requirements, not aspirational nines.
         </p>
@@ -48,6 +52,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/reliability-fault-tolerance/ha-architecture-patterns.svg"
@@ -56,12 +63,12 @@ export default function ArticlePage() {
         />
 
         <h3>Nines of Availability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Availability is expressed as a percentage of uptime over a defined period, typically monthly or annually. The "nines" represent the number of 9s in this percentage. Three nines (99.9 percent) allows 43.2 minutes of downtime per month or 8.76 hours per year. Four nines (99.99 percent) allows 4.32 minutes per month or 52.6 minutes per year. Five nines (99.999 percent) allows 26 seconds per month or 5.26 minutes per year.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Each additional nine requires an order-of-magnitude improvement in reliability, which typically means an order-of-magnitude increase in cost and complexity. Moving from two nines to three nines requires eliminating obvious single points of failure. Moving from three to four nines requires automated failover, zero-downtime deployments, and robust monitoring. Moving from four to five nines requires geographic redundancy, automated cross-region failover, and elimination of all manual operations that could cause downtime.
-        </p>
+        </HighlightBlock>
         <p>
           The critical insight is that your system can only be as available as its weakest dependency. If your service has 99.99 percent availability but depends on an authentication provider with 99.9 percent availability, your effective availability is bounded by 99.9 percent unless you implement buffering, caching, or degradation that allows your service to function when the dependency is unavailable. Availability budgets must be allocated across all dependencies, and the sum of dependency downtime must not exceed the overall budget.
         </p>
@@ -122,14 +129,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A high availability architecture follows a pragmatic playbook: detect, isolate, stabilize, and restore. Detection should be tied to SLO burn rather than raw error counts—isolate removes unhealthy nodes and stops risky automation that may amplify the incident. Stabilization reduces work through rate limiting, shedding optional features, or switching to cached reads. Restoration should be controlled and incremental, reintroducing capacity in small waves and validating error budgets at each step.
-        </p>
+        </HighlightBlock>
 
         <h3>Availability Budget Allocation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Start by converting the availability target into a monthly downtime budget. Then allocate portions of this budget to each component and dependency. If the target is 99.9 percent (43 minutes per month), and the system has a web tier, an API tier, a database, and an external authentication provider, allocate the budget based on criticality and historical failure rates. The database might get 15 minutes, the API tier 10 minutes, the web tier 5 minutes, and the auth provider 13 minutes.
-        </p>
+        </HighlightBlock>
         <p>
           This allocation makes trade-offs explicit. If the auth provider's historical downtime exceeds its allocated budget, you must either improve the provider (add caching, add a fallback provider) or reduce the budget allocated elsewhere. Without dependency budgets, availability discussions remain subjective and unproductive.
         </p>
@@ -162,12 +172,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Higher availability costs more and increases operational complexity. Active-active designs reduce downtime but require careful data consistency models and conflict handling. Active-passive designs are cheaper for correctness but increase recovery time and waste standby capacity. The right choice depends on user tolerance for downtime, revenue impact per minute of outage, and the organization's operational maturity to manage complex architectures.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Automation is a double-edged sword in HA. Fast failover is essential for meeting tight availability budgets, but automated decisions can propagate faults if they are wrong. A misconfigured health check triggering automated failover can cause an outage rather than prevent one. Build manual overrides, cap the blast radius of automation, and require guardrails such as "two independent signals" before large actions like cross-region failover.
-        </p>
+        </HighlightBlock>
         <p>
           There is also a trade-off between HA and development velocity. Systems with tight availability budgets require more testing, more cautious deployments, and more operational overhead. Progressive delivery, canary rollouts, and automatic rollbacks reduce the deployment-related downtime that is the most common source of HA breaches in mature systems, but they slow the release pipeline. The balance between velocity and stability should be explicit and tied to the availability budget.
         </p>
@@ -178,12 +191,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Define the availability target explicitly and design every component to fit within the allocated budget. Remove single points of failure across compute, network, storage, and data layers. Reserve capacity headroom so that losing the largest credible failure domain does not saturate remaining capacity. Automate health-based routing so that unhealthy instances are removed from rotation within seconds, not minutes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Run regular failover drills and rehearse dependency outages. Measure detection time, time-to-eject, and time-to-recover, then compare against the availability budget. If measured recovery time exceeds the budget, the architecture needs improvement. Drills should be conducted in production-like conditions with realistic traffic patterns and dependency configurations.
-        </p>
+        </HighlightBlock>
         <p>
           Tie change velocity to error budget burn. When the error budget is healthy, release normally. When the budget is burning fast, slow down releases and focus on stability. This creates a natural feedback loop between reliability and development velocity that keeps the system within its availability target.
         </p>
@@ -197,12 +213,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is designing for the wrong availability target. Teams aspirationally target 99.99 percent without analyzing whether the business actually needs it, and then cannot sustain the cost and complexity. Conversely, teams under-target availability for revenue-critical services and suffer repeated outages that cost more than the investment in HA would have. The target must be derived from business impact analysis, not guesswork.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Correlated failures across failure domains are the most dangerous HA failure mode. Teams build multi-AZ or multi-region redundancy but share a control plane, identity provider, or CI/CD pipeline across all zones or regions. When the shared dependency fails, all redundant instances fail simultaneously. Redundancy planning must explicitly enumerate common-mode dependencies and add diversity where the shared dependency represents a significant risk.
-        </p>
+        </HighlightBlock>
         <p>
           Misconfigured autoscaling and aggressive health checks are common causes of self-induced outages. If the control plane is too eager to scale down or eject unhealthy nodes, it can oscillate the system into instability. Stabilization rules, warm pools, and circuit breakers reduce these dynamics. The system should be conservative about removing capacity, especially during incidents when it is most needed.
         </p>
@@ -216,16 +235,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce: Multi-AZ During Zone Outage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce platform deployed across three availability zones in a single region experienced a complete zone outage when the zone lost network connectivity. Because the platform was designed with multi-AZ redundancy and each zone had sufficient headroom to handle the full load, the remaining two zones absorbed all traffic automatically. The load balancer detected the zone failure within 30 seconds and stopped routing traffic to the affected zone. Users experienced a brief latency spike during the failover but no errors. The platform maintained 100 percent availability during the zone outage, which lasted 4 hours.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Services: Active-Passive Cross-Region DR</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A financial services company maintained an active-passive multi-region setup with synchronous data replication to the passive region. During a regional network outage, the failover process was initiated automatically based on multi-signal confirmation: sustained error rate spikes, elevated tail latency, and loss of routing health checks. The passive region was promoted, DNS was updated, and traffic was redirected within 3 minutes. The RPO was zero due to synchronous replication, and the RTO was under 5 minutes, well within the 99.99 percent availability target.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Platform: Active-Active Read Replicas</h3>
         <p>
@@ -243,14 +265,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How do you translate an availability target into architectural design choices?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Convert the target into downtime minutes per month, then design for the most likely failures within that budget. Remove single points of failure across all layers. Reserve capacity headroom so that losing the largest credible failure domain does not saturate remaining capacity. Automate health-based routing for fast removal of unhealthy nodes. Allocate the downtime budget across dependencies and ensure each dependency fits within its allocation.
-            </p>
+            </HighlightBlock>
             <p>
               Validate the plan with drills—measure detection time, time-to-eject, and time-to-recover, and compare against the budget. If measured recovery exceeds the budget, the architecture needs improvement. The target drives everything: redundancy level, failover automation, deployment strategy, and operational budget.
             </p>

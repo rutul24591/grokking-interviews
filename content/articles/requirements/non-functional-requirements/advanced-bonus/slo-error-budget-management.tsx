@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,12 +38,15 @@ export default function SloErrorBudgetManagementArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Service Level Objectives (SLOs)</strong> are internal targets for service reliability, expressed as a percentage of successful requests over a defined time window. <strong>Error Budgets</strong> represent the inverse of SLOs -- the acceptable amount of failure or unavailability permitted within a given period. These concepts, popularized by Google&apos;s Site Reliability Engineering practice, provide a quantitative framework for balancing system reliability with feature development velocity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental insight behind error budgets is that aiming for perfect reliability is both impossible and economically irrational. Every additional nine of availability costs exponentially more infrastructure, engineering effort, and operational overhead. Instead of pursuing perfection, teams define &quot;good enough&quot; reliability targets and use the remaining error budget as a resource that can be spent on innovation, risky deployments, or feature experimentation. When budget remains, teams can move fast. When budget is exhausted, teams focus exclusively on reliability improvements.
-        </p>
+        </HighlightBlock>
         <p>
           This framework fundamentally changes the conversation around reliability from an emotional debate between product teams pushing for velocity and operations teams advocating for stability into a data-driven decision-making process. The error budget becomes a shared resource with clear ownership rules and predictable consumption patterns, enabling organizations to make informed trade-offs between reliability and feature delivery without resorting to arbitrary mandates.
         </p>
@@ -56,12 +60,15 @@ export default function SloErrorBudgetManagementArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of effective SLO management begins with selecting the right Service Level Indicators. An SLI must directly reflect user experience rather than internal system metrics that may not correlate with what users actually perceive. For a web application, availability -- measured as the percentage of successful HTTP responses -- serves as a primary SLI. Latency, typically expressed as a percentile such as P95 or P99, captures the tail experience of users encountering slow responses. Quality SLIs measure the correctness of responses, which is particularly critical for data pipelines where a successful HTTP response might still contain corrupted or stale data. Freshness SLIs track data age, essential for real-time dashboards and streaming systems where stale data is functionally equivalent to unavailable data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Selecting appropriate SLO targets requires understanding the economic implications of each additional nine of reliability. A 99% SLO -- commonly called two nines -- permits approximately seven point three hours of downtime per month, which is suitable for internal tools and development environments where occasional unavailability has minimal business impact. Moving to 99.9% -- three nines -- reduces the monthly error budget to roughly forty-three minutes, appropriate for standard production services serving external customers. At 99.95%, the budget shrinks to twenty-two minutes, fitting business-critical services where downtime directly impacts revenue. A 99.99% SLO allows only four point three minutes of monthly downtime, reserved for payment processing, authentication systems, and core APIs where failures cascade to significant business consequences. The leap to 99.999% -- five nines -- permits merely twenty-six seconds of downtime per month, a tier typically reserved for telecommunications infrastructure and emergency services where human safety is at stake.
-        </p>
+        </HighlightBlock>
         <p>
           The time window over which SLOs are measured significantly impacts their operational utility. Rolling windows -- such as a continuously advancing thirty-day lookback -- smooth out transient spikes and provide a stable view of service health, but they introduce lag in alerting since a recent incident is diluted by historical data. Calendar windows -- resetting at the start of each month or quarter -- offer clear boundaries for business reporting and budget reconciliation, but they create edge effects where incidents occurring near window boundaries can be either unfairly penalized or conveniently ignored. Most mature organizations employ rolling windows for operational alerting and day-to-day decision-making while using calendar windows for quarterly business reviews and SLA compliance reporting.
         </p>
@@ -78,12 +85,15 @@ export default function SloErrorBudgetManagementArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Error budget calculation operates on a straightforward arithmetic principle that becomes operationally complex at scale. For a service with a 99.9% SLO measured over a thirty-day window processing one million requests per month, the total permissible failures equal zero point one percent of one million -- one thousand failed requests. Alternatively expressed as a time budget, zero point one percent of thirty days yields forty-three point two minutes of acceptable downtime. The system tracks actual failures against this budget in real time, calculating remaining budget as a percentage and triggering alerts when consumption patterns indicate risk of exhaustion before the window closes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Burn rate is the critical metric that transforms error budget from a retrospective accounting tool into a proactive operational instrument. A burn rate of one indicates that budget is being consumed at exactly the expected pace -- the service will reach one hundred percent consumption precisely at the end of the measurement window. A burn rate of two means budget is being consumed twice as fast as anticipated, predicting exhaustion at the midpoint of the window. Burn rates below one indicate healthier-than-expected performance, accumulating surplus reliability that provides a buffer against future incidents. The burn rate is computed by dividing the actual budget consumption rate by the expected consumption rate, yielding a dimensionless ratio that is intuitive for on-call engineers to interpret during incident response.
-        </p>
+        </HighlightBlock>
         <p>
           Multi-window burn rate analysis addresses the fundamental challenge of distinguishing between transient spikes that self-correct and sustained degradation patterns that will exhaust budgets. A short window -- typically one hour -- detects sudden traffic anomalies, deployment-induced regressions, or infrastructure failures that cause immediate budget consumption. A medium window spanning six hours captures issues that persist beyond the initial burst, such as a misconfigured load balancer gradually draining connections or a database query performing full table scans under increased load. A long window of thirty days tracks the overall reliability trend, informing capacity planning and architectural decisions rather than immediate incident response. Each window produces its own burn rate calculation, and the combination of these signals enables nuanced alerting that pages on-call engineers only when sustained budget exhaustion is imminent.
         </p>
@@ -109,12 +119,15 @@ export default function SloErrorBudgetManagementArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Setting SLO targets involves navigating a complex landscape of trade-offs between reliability, cost, and development velocity. The most fundamental trade-off exists between the stringency of the SLO and the operational cost required to achieve it. Each additional nine of availability demands exponential investment in redundant infrastructure, automated failover systems, comprehensive monitoring, and experienced on-call staffing. A service operating at 99.9% requires minimal redundancy and tolerates occasional outages without significant business impact. Achieving 99.99% typically requires active-active deployment across multiple availability zones, automated health checks, and sub-minute failover capabilities. The jump to 99.999% demands geographic distribution across regions, synchronous data replication with conflict resolution, and infrastructure capable of surviving entire region failures without user-perceptible degradation. The cost curve between these tiers is not linear -- achieving five nines often costs ten to twenty times more than achieving four nines, and the marginal user experience improvement may be imperceptible to the majority of users.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice between rolling and calendar window measurement strategies introduces another significant trade-off. Rolling windows provide superior operational accuracy because they always reflect the current state of service health over the most recent period, unaffected by artificial calendar boundaries. However, they introduce alerting lag because a recent incident is averaged against potentially weeks of healthy data, potentially delaying response to genuinely urgent situations. Calendar windows offer clean accounting boundaries that align with business reporting cycles, SLA compliance periods, and quarterly planning rhythms. They create a perverse incentive near window boundaries, where teams might defer risky deployments to the start of a new window or, conversely, rush deployments before a window resets to avoid compounding existing budget exhaustion. Organizations running mature SRE practices typically operate both systems in parallel, using rolling windows for operational alerting and burn rate calculations while maintaining calendar windows for stakeholder communication and SLA compliance tracking.
-        </p>
+        </HighlightBlock>
         <p>
           Multi-window burn rate alerting trades complexity for precision in incident detection. A single-window approach -- alerting only on thirty-day budget consumption -- is simple to implement and explain but misses both rapid-burn incidents that exhaust budget in hours and slow-burn degradation that accumulates over weeks. Multi-window analysis detects both patterns but introduces significant complexity in alert threshold configuration, requiring teams to calibrate burn rate multipliers for each window size against their specific traffic patterns and failure modes. Getting these thresholds wrong leads to either alert fatigue from false positives or missed incidents from insufficient sensitivity. Teams new to SLO-based alerting typically spend two to three quarters tuning these thresholds, analyzing historical incident patterns to determine what burn rate combinations have historically predicted actual budget exhaustion versus transient noise.
         </p>
@@ -128,12 +141,15 @@ export default function SloErrorBudgetManagementArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Effective SLO programs begin with user-centric SLI selection rather than infrastructure-centric metrics. The indicators chosen must correlate directly with what users experience and care about. For a search service, the relevant SLIs are the percentage of searches returning results within an acceptable latency threshold and the percentage of searches that return relevant results -- not the CPU utilization of search cluster nodes or the queue depth of the indexing pipeline. Infrastructure metrics are essential for debugging and root cause analysis, but they should not serve as SLO targets because they do not directly reflect user satisfaction. Teams that mistakenly set SLOs based on internal system metrics often find themselves meeting their targets while users experience degraded service quality, a disconnect that erodes trust in the entire SLO framework.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Starting with conservative SLO targets and adjusting based on empirical data is a proven strategy for new SLO programs. Beginning at 99.9% for most production services provides a realistic baseline that accommodates typical infrastructure variability without imposing excessive operational burden. After three to six months of measurement, teams should analyze the actual reliability achieved and adjust targets accordingly. If the service consistently achieves 99.97% with minimal incidents, tightening the SLO to 99.95% may be appropriate. If the service struggles to meet 99.9%, the target should be maintained while reliability improvements are prioritized, or the SLO should be reconsidered if it genuinely does not align with user expectations. This iterative calibration process ensures that SLOs remain both aspirational and achievable, avoiding the twin pitfalls of targets that are trivially easy or impossibly difficult.
-        </p>
+        </HighlightBlock>
         <p>
           Defining explicit error budget consumption policies before budget exhaustion occurs is critical for the SLO program to have operational impact. The policy should specify what actions are triggered at various levels of budget consumption -- perhaps at fifty percent consumption the team receives a notification, at seventy-five percent a reliability review is added to the next sprint planning, and at one hundred percent a feature freeze is enacted until reliability improves. These policies must be agreed upon by both product and engineering leadership in advance, removing the need for contentious negotiations during the stress of an active reliability incident. The policy should also define the process for requesting exceptions, the authority level required to grant them, and the documentation required to justify overriding budget-driven restrictions.
         </p>
@@ -147,12 +163,15 @@ export default function SloErrorBudgetManagementArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           One of the most pervasive anti-patterns in SLO programs is the creation of vanity SLOs -- targets set so loosely that they are perpetually and trivially met, providing no operational value while giving leadership a false sense of reliability. A team setting a 99.999% SLO for an internal tool that actually operates at 99.9% availability creates a metric that is technically being missed but so far outside acceptable bounds that it becomes meaningless. Conversely, setting SLOs so tight that they are perpetually violated is equally unproductive, as it normalizes failure and causes teams to ignore SLO signals entirely. Both patterns indicate that the SLO has been decoupled from actual user experience and operational reality, serving as a reporting checkbox rather than a decision-making tool.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The proliferation of too many SLOs per service is another common failure mode that dilutes team focus and creates conflicting priorities. When a single service tracks ten or more SLOs across availability, latency, throughput, error rates, and various business-specific metrics, no single indicator receives the attention it deserves during incident response or planning discussions. Teams naturally prioritize whichever SLO is currently being violated, allowing other reliability concerns to slip through the cracks. The recommended limit of one to three SLOs per service forces disciplined thinking about which aspects of reliability truly matter for user experience and concentrates improvement efforts where they will have the greatest impact.
-        </p>
+        </HighlightBlock>
         <p>
           Establishing SLOs without corresponding enforcement policies is perhaps the most damaging pitfall because it renders the entire exercise performative. When error budget exhaustion carries no consequences -- no feature freeze, no reliability sprint, no escalation to leadership -- teams quickly learn that SLOs are advisory at best and ignorable at worst. This pattern is especially common in organizations adopting SRE practices without committing to the cultural changes that make those practices effective. The SLO numbers get reported in dashboards and reviewed in meetings, but when push comes to shove and business priorities conflict with reliability targets, reliability consistently loses because there is no mechanism to enforce the trade-off.
         </p>
@@ -169,12 +188,15 @@ export default function SloErrorBudgetManagementArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Large-scale e-commerce platforms rely heavily on error budget management during peak shopping seasons such as Black Friday and holiday sales. These organizations typically establish seasonal SLO targets that are stricter than their baseline, recognizing that the cost of downtime during peak periods is orders of magnitude higher than during normal operations. The error budget during these periods becomes a tightly managed resource, with burn rate monitoring operating on accelerated windows -- fifteen-minute and one-hour windows replace the standard one-hour and six-hour baselines. Deployment freezes are enacted days before peak events, and the remaining error budget is carefully rationed across the event duration. Teams monitor dashboards showing real-time budget consumption, and predefined escalation procedures activate when burn rates exceed thresholds that would exhaust budget before the event concludes. This approach has proven essential for platforms processing tens of thousands of transactions per minute, where even minutes of degraded performance translate to millions in lost revenue.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Financial services organizations handling payment processing and trading platforms employ some of the strictest SLOs in the industry, typically operating at 99.99% or higher for core transaction processing systems. The regulatory environment in financial services mandates specific availability and data integrity requirements, making SLO compliance not just an operational concern but a legal obligation. These organizations implement hierarchical SLO structures where the core transaction processing engine maintains a stricter SLO than the user-facing application, which in turn maintains a stricter SLO than the reporting and analytics systems. Error budget consumption in these environments triggers automatic safeguards -- routing traffic away from degraded components, activating standby systems, and engaging specialized incident response teams. The cost of operating at these reliability levels is substantial, often requiring redundant infrastructure across multiple geographic regions with active-active failover capabilities and sub-second data replication, but the regulatory penalties and reputational damage from failures justify the investment.
-        </p>
+        </HighlightBlock>
         <p>
           Content delivery networks and media streaming platforms use SLO frameworks differently, focusing on latency and throughput SLIs rather than pure availability. For a video streaming service, a completely unavailable service is rare; the more common degradation involves increased buffering, reduced video quality, or delayed content loading. SLOs for these platforms target specific latency percentiles -- for example, ninety-nine percent of video start events must begin playback within two seconds -- and error budgets are consumed when latency thresholds are violated even though the service remains technically available. During major live events such as sports championships or product launches, these platforms experience traffic spikes of ten to fifty times normal levels, and error budget management becomes critical for making real-time decisions about traffic shedding, quality degradation, and capacity allocation.
         </p>
@@ -188,14 +210,17 @@ export default function SloErrorBudgetManagementArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between SLI, SLO, and SLA?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: An SLI -- Service Level Indicator -- is the raw measurement of a service&apos;s behavior, such as request latency, error rate, or availability percentage. It answers the question &quot;what are we measuring?&quot; An SLO -- Service Level Objective -- is the target value or acceptable range for that indicator, such as &quot;ninety-nine point nine percent of requests must complete within two hundred milliseconds.&quot; It answers &quot;what level of performance do we consider acceptable?&quot; An SLA -- Service Level Agreement -- is a formal, often contractual commitment to external parties that includes specific consequences -- financial credits, penalty payments, or contract termination rights -- if the agreed-upon targets are not met. SLIs feed into SLO measurements, and SLOs inform SLA compliance. The critical distinction is that SLIs and SLOs are internal operational tools, while SLAs carry external obligations and financial consequences.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

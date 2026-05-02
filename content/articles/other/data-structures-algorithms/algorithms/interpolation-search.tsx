@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function InterpolationSearchArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Interpolation Search locates a target in a sorted array by estimating its probable
           position from the target value&rsquo;s relationship to the endpoints, rather than always
           picking the midpoint. Given a[lo]..a[hi], the next probe is computed as lo + (target −
           a[lo]) × (hi − lo) / (a[hi] − a[lo]) — a linear interpolation between the endpoints. On
           uniformly distributed data, this achieves Θ(log log n) expected time, a dramatic
           improvement over binary search&rsquo;s Θ(log n).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The tradeoff is stability. On non-uniform distributions — exponential, skewed, heavy-
           tailed, clustered — interpolation search degrades catastrophically to Θ(n). A single
           highly skewed region turns each probe into a near-linear scan. This makes interpolation
           search a specialist tool: excellent when you know your data is uniform (sorted integers,
           evenly-indexed records, telephone-book-style data), disastrous when applied blindly.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           It models how humans search. Given a name in a phone book, we don&rsquo;t open to the
           middle — we open to where we expect the name to be. Interpolation search is this
@@ -50,20 +54,23 @@ export default function InterpolationSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The key formula is <span className="font-semibold">pos = lo + (target − a[lo]) × (hi
           − lo) / (a[hi] − a[lo])</span>. It assumes a linear relationship between index and value
           within [lo, hi]. If the data is truly uniform, pos lands close to the target&rsquo;s
           actual index, and one probe eliminates a disproportionately large fraction of the search
           space. Each iteration roughly square-roots the remaining range, hence Θ(log log n).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The O(log log n) bound was proven by Yao &amp; Yao (1976) for independent uniform inputs.
           The proof relies on the expected rank of a random draw being tightly concentrated under
           uniform distribution. Any deviation widens the tail: for exponentially distributed keys,
           the interpolation consistently overshoots or undershoots, and worst-case degrades to
           O(n).
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Implementations must guard against three failure modes: (1) division by zero when a[lo]
           == a[hi] (all duplicates in range), (2) pos outside [lo, hi] due to non-monotone input or
@@ -80,19 +87,22 @@ export default function InterpolationSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Loop invariant: target ∈ [a[lo], a[hi]] if present. Compute pos by interpolation. If
           a[pos] == target, return. If a[pos] &lt; target, lo = pos + 1; else hi = pos − 1.
           Terminate when lo &gt; hi, or when target &lt; a[lo] or target &gt; a[hi] (fast rejection).
           The fast rejection is critical — it turns out-of-range queries into Θ(1).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Robust production implementations add a <span className="font-semibold">probe budget</span>:
           if interpolation fails to converge within O(log n) steps, fall back to binary search for
           the remaining range. This preserves Θ(log log n) best case on good data while bounding
           the worst case at Θ(log n). Similar adaptive strategies appear in introsort (quicksort
           falling back to heapsort on bad pivots).
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/interpolation-search-diagram-2.svg"
           alt="Complexity comparison of interpolation, binary, and linear search"
@@ -109,19 +119,22 @@ export default function InterpolationSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">vs Binary Search:</span> Θ(log log n) vs Θ(log n) on
           uniform. For n = 10⁹, log log n ≈ 5 vs log n ≈ 30 — a 6× speedup. On non-uniform, binary
           dominates because interpolation degrades to linear. Binary is the default; interpolation
           is for when you can prove uniformity.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">vs Hash Table:</span> hash achieves Θ(1) expected, but
           requires preprocessing, O(n) memory for hash buckets, and loses sorted-order operations
           (range queries, predecessor/successor). Interpolation operates directly on a sorted array
           with no extra memory, preserving all sorted-order queries. Choose hash for point lookups,
           interpolation for sorted arrays where you also need range queries.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">vs Exponential Search:</span> different purposes.
           Exponential handles unknown-size bounds; interpolation handles uniform-distribution speed
@@ -139,18 +152,21 @@ export default function InterpolationSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Only use interpolation search when you can characterize the data distribution and verify
           it is approximately uniform. Common safe cases: auto-incrementing IDs, evenly-spaced
           timestamps with regular sampling, densely packed integer keys. Unsafe cases: string
           keys, floating-point values with non-uniform distributions, sparse or clustered integer
           ranges.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Always include a binary-search fallback on probe-budget exhaustion. The worst-case O(n)
           behavior is not acceptable in production; the fallback guarantees O(log n). The extra
           code is small and the cost on good data is zero (the budget is rarely exhausted).
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Guard the interpolation formula against a[lo] == a[hi] (division by zero from duplicate
           endpoints), pos out-of-range (from non-monotonic data or integer overflow), and negative
@@ -161,18 +177,21 @@ export default function InterpolationSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Applying to non-uniform data:</span> the Θ(log log n)
           bound is an average over uniform inputs. On real-world data with skewed distributions
           (Zipfian, exponential, heavy-tail), interpolation degrades silently. Measure with
           representative data.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Integer overflow in the formula:</span> (target − a[lo])
           × (hi − lo) overflows for large n and large values. Use 64-bit arithmetic or reformulate
           as lo + ((hi − lo) / (a[hi] − a[lo])) × (target − a[lo]) — though this loses precision.
           Floating-point is safer for large ranges.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Unbounded worst case:</span> without a probe budget, a
           pathological input can force every probe to advance by one, resulting in Θ(n)
@@ -189,18 +208,21 @@ export default function InterpolationSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Dense integer key arrays:</span> when keys are
           auto-incrementing IDs with no gaps, interpolation search is near-constant-time per
           lookup. This pattern appears in in-memory columnar databases where row IDs are densely
           packed.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Time-series sensor data:</span> evenly sampled
           timestamps (1000 Hz sensor readings, uniform tick intervals) are ideal for interpolation
           search. InfluxDB and Prometheus use similar position-estimation tricks in their block
           indexes.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Learned indexes in modern databases:</span> Google&rsquo;s
           B-tree replacement work, Alibaba&rsquo;s AliSQL, and MIT&rsquo;s RadixSpline build on
@@ -222,17 +244,20 @@ export default function InterpolationSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Derive the interpolation formula.</span> Given linear
           value-to-position mapping, pos = lo + (target − a[lo]) × (hi − lo) / (a[hi] − a[lo]).
           Expect to explain why it assumes uniform distribution.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Why O(log log n)?</span> On uniform data, the expected
           probe lands within √(hi − lo) of the target, so each iteration roughly square-roots the
           range. √n → √√n → √√√n → ... converges in O(log log n) steps. This is a proof sketch;
           the formal proof involves order statistics.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Worst case?</span> O(n) on skewed data. Mitigate with a
           O(log n) probe budget and binary-search fallback.

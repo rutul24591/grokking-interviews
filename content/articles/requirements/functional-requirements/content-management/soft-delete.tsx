@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,10 @@ export default function SoftDeleteArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Soft Delete</strong> marks content as deleted without removing it from the
           database enabling recovery, maintaining referential integrity, and supporting audit
           requirements. Unlike hard delete which permanently removes data, soft delete retains
@@ -41,7 +45,7 @@ export default function SoftDeleteArticle() {
           recovery from accidental deletion, maintaining foreign key relationships, and providing
           audit trail of deletions. Soft delete is critical for production systems where data loss
           is unacceptable and compliance requires deletion audit trails.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/soft-delete-flow.svg"
@@ -49,7 +53,7 @@ export default function SoftDeleteArticle() {
           caption="Soft Delete Flow — showing soft delete with deleted_at timestamp, recovery window, hard delete after retention period, and audit trail"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing soft delete requires deep understanding of
           deletion patterns including deleted_at column approach (timestamp when deleted, NULL for
           active records, NOT NULL for deleted records), is_deleted flag approach (boolean flag
@@ -64,7 +68,7 @@ export default function SoftDeleteArticle() {
           and why for compliance. Storage optimization through partitioning deleted records and
           archiving old deleted data reduces storage costs. The implementation must balance recovery
           capability with storage costs and compliance requirements.
-        </p>
+        </HighlightBlock>
 
         <p>
           Modern soft delete implementations have evolved from simple boolean flags to sophisticated
@@ -78,13 +82,16 @@ export default function SoftDeleteArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Soft delete is built on fundamental concepts that determine how deletion is tracked,
           recovered, and managed. Understanding these concepts is essential for designing effective
           deletion systems.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Deletion Patterns:</strong> Deleted_at column approach uses TIMESTAMP WITH
           TIMEZONE column where NULL indicates active record and NOT NULL indicates deleted record
           with timestamp of deletion. This approach provides deletion timestamp for audit and
@@ -93,7 +100,7 @@ export default function SoftDeleteArticle() {
           Tombstone approach uses separate deleted records table moving deleted records to separate
           table enabling efficient active queries while retaining deleted records for recovery and
           audit.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Recovery Workflows:</strong> Undelete operation restores soft-deleted records by
@@ -126,11 +133,14 @@ export default function SoftDeleteArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Soft delete architecture separates deletion logic, recovery workflows, retention
           management, and compliance handling enabling modular implementation with clear boundaries.
           This architecture is critical for data integrity, recovery capability, and compliance.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/soft-delete-flow.svg"
@@ -138,7 +148,7 @@ export default function SoftDeleteArticle() {
           caption="Soft Delete Flow — showing soft delete with deleted_at timestamp, recovery window, hard delete after retention period, and audit trail"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Soft delete flow begins with user or system initiating delete operation. Application
           validates delete permission ensuring user has right to delete content. Instead of DELETE
           SQL statement, application executes UPDATE setting deleted_at to current timestamp or
@@ -149,7 +159,7 @@ export default function SoftDeleteArticle() {
           through default scope filtering WHERE deleted_at IS NULL. Deleted content remains
           recoverable through recovery interface within retention period. After retention period
           expires, cleanup job permanently deletes records through hard delete.
-        </p>
+        </HighlightBlock>
 
         <p>
           Recovery workflow architecture includes recovery interface (trash or recycle bin) showing
@@ -178,13 +188,16 @@ export default function SoftDeleteArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing soft delete involves trade-offs between recovery capability, storage costs,
           query complexity, and compliance. Understanding these trade-offs is essential for making
           informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Soft delete versus hard delete presents recovery versus storage trade-offs. Soft delete
           retains deleted records enabling recovery from accidental deletion, maintaining
           referential integrity, and providing audit trail but consumes storage for deleted records
@@ -195,7 +208,7 @@ export default function SoftDeleteArticle() {
           recommendation is soft delete for operational data requiring recovery capability, hard
           delete for temporary or regenerated data, and hybrid approach with soft delete for
           recovery window followed by hard delete after retention period.
-        </p>
+        </HighlightBlock>
 
         <p>
           Deleted_at column versus is_deleted flag presents information versus simplicity trade-offs.
@@ -223,18 +236,21 @@ export default function SoftDeleteArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing soft delete requires following established best practices to ensure data
           integrity, recovery capability, compliance, and storage efficiency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Deletion pattern uses deleted_at column (TIMESTAMP WITH TIMEZONE) for production systems
           requiring retention management. Implement default scope filtering WHERE deleted_at IS NULL
           for all queries preventing accidental access to deleted records. Provide scope overrides
           (withDeleted, onlyDeleted) for admin and recovery interfaces. Index deleted_at column for
           efficient scope filtering and cleanup queries.
-        </p>
+        </HighlightBlock>
 
         <p>
           Recovery workflow provides trash or recycle bin interface showing user's deleted content
@@ -270,17 +286,20 @@ export default function SoftDeleteArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing soft delete to ensure data integrity,
           recovery capability, compliance, and storage efficiency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           No default scope allows queries to return deleted records causing data inconsistency. Fix
           by implementing default scope filtering WHERE deleted_at IS NULL for all models. Use ORM
           scopes or database views enforcing filtering. Provide explicit scope overrides for admin
           and recovery interfaces.
-        </p>
+        </HighlightBlock>
 
         <p>
           No retention policy causes storage to grow indefinitely with deleted records. Fix by
@@ -341,19 +360,22 @@ export default function SoftDeleteArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Soft delete is critical for data integrity across different domains. Here are real-world
           implementations from production systems demonstrating different approaches to deletion
           challenges.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Salesforce deletion addresses CRM data recovery with recycle bin. The solution uses
           soft delete with deleted_at timestamp, recycle bin interface showing deleted records for
           30 days, restore and permanent delete options, cascade soft delete for related records,
           and hard delete after 30 days. The result is data recovery capability preventing
           accidental data loss with compliance through audit trail.
-        </p>
+        </HighlightBlock>
 
         <p>
           GitHub repository deletion addresses repository recovery with soft delete. The solution
@@ -391,14 +413,17 @@ export default function SoftDeleteArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of soft delete design, implementation, and compliance
           concerns for staff and principal engineer interviews.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you implement soft delete?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you implement soft delete?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Add deleted_at column (TIMESTAMP WITH TIMEZONE) to table. Implement default scope
               filtering WHERE deleted_at IS NULL for all queries. Provide scope overrides

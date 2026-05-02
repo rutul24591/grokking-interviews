@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,15 +25,18 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The decision between <strong>fine-tuning</strong> and{" "}
           <strong>Retrieval-Augmented Generation (RAG)</strong> is the most
           consequential architectural choice in production AI system design.
           Both approaches adapt a base LLM to domain-specific needs, but they
           operate through fundamentally different mechanisms with distinct
           trade-offs in capability, cost, maintenance, and scalability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Fine-tuning</strong> modifies the model&apos;s weights through
           additional training on domain-specific data, teaching the model new
           knowledge, patterns, and behaviors at the parameter level. The
@@ -42,7 +46,7 @@ export default function ArticlePage() {
           instead provides domain-specific information through the prompt —
           retrieving relevant documents from a knowledge base and including them
           as context alongside the user&apos;s query.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, this decision affects not just the initial
           system design but the ongoing operational model. Fine-tuned systems
@@ -81,7 +85,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Fine-tuning approaches</strong> have evolved significantly.{" "}
           <strong>Full fine-tuning</strong> updates all model parameters,
           producing the highest quality adaptation but requiring the most
@@ -96,8 +103,8 @@ export default function ArticlePage() {
           <strong>QLoRA</strong> combines LoRA with 4-bit quantization of the
           base model, enabling fine-tuning of 65B parameter models on a single
           48GB GPU.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The mathematical foundation of <strong>LoRA</strong> is rooted in the
           observation that the weight updates needed for domain adaptation lie
           in a low-dimensional subspace of the full parameter space. For an
@@ -124,7 +131,7 @@ export default function ArticlePage() {
           quantization constants themselves), and paged optimizers (using GPU
           unified memory to handle optimizer state spikes during gradient
           checkpointing).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>RAG approaches</strong> also have several variants.{" "}
           <strong>Naive RAG</strong> retrieves documents and includes them
@@ -225,7 +232,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>fine-tuning pipeline</strong> consists of data
           preparation (curating and formatting training data), model selection
           (choosing the base model), training configuration (hyperparameters,
@@ -233,8 +243,8 @@ export default function ArticlePage() {
           job on GPU infrastructure), evaluation (testing the fine-tuned model
           against a benchmark), and deployment (serving the fine-tuned model
           alongside or instead of the base model).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>RAG pipeline</strong> consists of document ingestion
           (loading and cleaning source documents), chunking (splitting documents
           into retrievable units), embedding (converting chunks to vectors),
@@ -242,7 +252,7 @@ export default function ArticlePage() {
           relevant chunks for each query), prompt construction (combining
           retrieved context with the user query), and generation (producing the
           grounded response).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/lora-fine-tuning-architecture.svg"
@@ -317,7 +327,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The decision framework between fine-tuning and RAG involves several
           dimensions. <strong>Knowledge freshness</strong>: RAG provides
           immediate access to new information (update the index and new content
@@ -329,8 +342,8 @@ export default function ArticlePage() {
           documents at retrieval time (per-user access control), while
           fine-tuned models internalize the training data and cannot selectively
           exclude information.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cost structure</strong> differs significantly. Fine-tuning has
           high upfront cost (training compute, GPU hours, ML engineering time)
           but lower per-request cost (the fine-tuned model costs the same per
@@ -340,7 +353,7 @@ export default function ArticlePage() {
           database queries, embedding computation). At scale, the cost crossover
           point depends on usage volume — fine-tuning becomes more economical
           when the per-request savings outweigh the training investment.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/cost-crossover-analysis.svg"
@@ -401,7 +414,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Start with RAG, fine-tune only when necessary</strong> — RAG
           is faster to implement, easier to iterate on, and more flexible for
           changing knowledge. Fine-tune only when RAG hits a quality ceiling
@@ -410,8 +426,8 @@ export default function ArticlePage() {
           model needs to adopt a specific response format consistently, the
           model needs to learn domain-specific reasoning patterns, or the
           per-request cost of RAG context is prohibitive at scale.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use PEFT/LoRA for all fine-tuning</strong> — full fine-tuning
           is rarely justified given the quality and efficiency of LoRA. LoRA
           adapters are small (megabytes instead of gigabytes), can be swapped
@@ -419,7 +435,7 @@ export default function ArticlePage() {
           combined with the base model at inference time with negligible
           overhead. QLoRA enables fine-tuning even larger models on modest
           hardware.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Evaluate both approaches on your specific task</strong>{" "}
           before committing to either. Build a RAG prototype and a fine-tuning
@@ -495,22 +511,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>fine-tuning for knowledge</strong>{" "}
           — using fine-tuning to teach the model factual information that
           changes frequently or needs source attribution. Fine-tuned models
           cannot update their knowledge without retraining, cannot cite sources,
           and may confidently produce outdated or incorrect information. Use
           RAG for factual knowledge, fine-tuning for behavioral patterns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Insufficient training data for fine-tuning</strong> — LoRA
           can produce quality results with hundreds to thousands of examples,
           but using fewer than 100 examples typically produces overfitting
           (the model memorizes the training examples but does not generalize).
           Always evaluate on a held-out test set that is distinct from the
           training data to detect overfitting.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>RAG context window mismanagement</strong> — including too
           much retrieved context in the prompt wastes tokens, increases cost,
@@ -581,15 +600,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Customer support with fine-tuned behavior and RAG knowledge</strong>{" "}
           — fine-tune the model for the company&apos;s support tone, response
           format, and escalation patterns, and use RAG to provide product-specific
           information, current policies, and user account data. The fine-tuned
           behavior ensures consistent, on-brand responses, while RAG ensures
           those responses are accurate and current.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Code assistant with fine-tuned coding patterns</strong>{" "}
           — fine-tune the model on the organization&apos;s code style, naming
           conventions, and architectural patterns, and use RAG to provide
@@ -597,7 +619,7 @@ export default function ArticlePage() {
           decisions). The fine-tuned model produces code that matches the
           team&apos;s style, while RAG ensures the code integrates correctly
           with the existing codebase.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Financial compliance analysis at scale</strong> — a regional
           bank with two thousand compliance officers processing forty thousand
@@ -647,12 +669,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: When should you fine-tune versus when should you use RAG?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Use RAG when the knowledge needs to be current (updated frequently),
             sourced (users need to see where information comes from), access-controlled
             (different users see different information), or large (more
@@ -661,13 +686,13 @@ export default function ArticlePage() {
             reasoning approach), when per-request cost of RAG context is
             prohibitive, or when the domain-specific knowledge is stable and
             does not require source attribution.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             The decision matrix is: if the primary need is factual knowledge
             that changes, use RAG. If the primary need is behavioral adaptation
             that is stable, use fine-tuning. If you need both, use the hybrid
             approach — fine-tune for behavior, RAG for knowledge.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

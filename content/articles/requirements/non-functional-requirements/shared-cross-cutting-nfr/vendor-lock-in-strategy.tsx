@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -32,7 +33,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Vendor Lock-in Strategy</strong> addresses the technical,
           financial, and operational dependencies that organizations acquire when
           they adopt third-party services, platforms, or infrastructure. Some
@@ -43,8 +47,8 @@ export default function ArticlePage() {
           what dependencies you are acquiring, what switching costs they create,
           and whether the benefits of the vendor&apos;s capabilities outweigh the
           risks of dependency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Lock-in manifests across four dimensions. Technical lock-in arises from
           proprietary APIs, data formats, protocols, and deep integrations that
           make migration a significant engineering effort. Financial lock-in stems
@@ -57,7 +61,7 @@ export default function ArticlePage() {
           clauses, compliance responsibilities, and liability limitations. Each
           dimension contributes to the total switching cost, and a comprehensive
           vendor strategy evaluates all four before committing.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, vendor decisions are among the most
           consequential architectural choices because they create dependencies
@@ -78,7 +82,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The make-versus-buy decision is the foundational framework for
           evaluating vendor lock-in. Every vendor adoption is fundamentally a
           choice between building a capability internally and accepting the
@@ -91,8 +98,8 @@ export default function ArticlePage() {
           infrastructure that every company needs — email delivery, content
           delivery networks, DNS management — buying from a specialized vendor
           avoids wasting engineering time on non-differentiating work.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cost at scale analysis requires projecting the total cost of ownership
           over a three to five year horizon, not just comparing current vendor
           pricing against current engineering salaries. Vendor costs typically
@@ -103,7 +110,7 @@ export default function ArticlePage() {
           high, predictable usage, the cumulative vendor cost can exceed the cost
           of building and maintaining an internal solution, especially when the
           internal solution can be optimized for the specific workload patterns.
-        </p>
+        </HighlightBlock>
         <p>
           Switching costs determine the vendor&apos;s pricing power and your
           flexibility to change course. High switching costs arise from data
@@ -136,15 +143,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The architecture for managing vendor dependencies involves abstraction
           layers, data portability mechanisms, monitoring systems, and governance
           processes that together reduce the effective switching cost. The goal
           is not to eliminate all vendor-specific code — that would forfeit the
           benefits of vendor capabilities — but to isolate vendor dependencies to
           well-defined boundaries where they can be replaced if necessary.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Infrastructure abstraction begins with tools like Terraform or Pulumi
           that express infrastructure as code in a provider-agnostic format. A
           Terraform configuration that provisions an S3 bucket can be adapted to
@@ -158,7 +168,7 @@ export default function ArticlePage() {
           configurations, storage class mappings, and networking topologies still
           require vendor-specific knowledge, and the abstraction layer itself
           requires maintenance as each provider evolves independently.
-        </p>
+        </HighlightBlock>
         <p>
           Database abstraction operates through ORM layers like Prisma or
           SQLAlchemy that generate database-specific SQL from a common schema
@@ -212,17 +222,20 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Approach</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Approach</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3">
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3">
                 <strong>Single Cloud Optimized</strong>
               </td>
               <td className="p-3">
@@ -234,8 +247,8 @@ export default function ArticlePage() {
                 provider outage takes everything down, price increases must be
                 absorbed.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Active-Passive Multi-Cloud</strong>
               </td>
@@ -248,8 +261,8 @@ export default function ArticlePage() {
                 lag during failover, operational complexity of two platforms,
                 failover procedures must be maintained.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Active-Active Multi-Cloud</strong>
               </td>
@@ -263,7 +276,7 @@ export default function ArticlePage() {
                 spend, cross-cloud data transfer expenses, teams need expertise
                 in multiple platforms, significantly more complex operations.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Abstraction Layer</strong>
@@ -286,7 +299,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Evaluate multiple vendors before committing to any single one. A
           structured evaluation process should include at least two to three
           alternatives, assessed against the same criteria: feature coverage,
@@ -297,8 +313,8 @@ export default function ArticlePage() {
           quality, outage handling, and price negotiation outcomes. This
           due diligence reduces the risk of discovering critical gaps after
           you have already invested heavily in integration.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Negotiate favorable contract terms before signing, when your leverage
           is highest. Key terms to negotiate include price protection that limits
           annual increases to a defined percentage, most-favored-nation clauses
@@ -310,7 +326,7 @@ export default function ArticlePage() {
           license to process it, and exit provisions requiring the vendor to
           provide all data in your chosen format within a defined timeline upon
           contract termination.
-        </p>
+        </HighlightBlock>
         <p>
           Implement continuous cost monitoring with alerts and budgets that
           surface anomalies before they become financial emergencies. Cloud
@@ -339,7 +355,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Defaulting to a single vendor without evaluating alternatives is the
           most common mistake, often driven by inertia — the team already has an
           AWS account, so everything goes on AWS — or by time pressure — we need
@@ -348,8 +367,8 @@ export default function ArticlePage() {
           migration becomes prohibitively expensive. The disciplined approach is
           to evaluate at least two vendors for any capability that will be a
           long-term dependency, even if the evaluation takes an extra sprint.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Over-abstracting by wrapping every vendor service in a custom
           abstraction layer adds complexity without meaningful portability
           benefit. Abstractions leak — you will inevitably need a vendor-specific
@@ -360,7 +379,7 @@ export default function ArticlePage() {
           important, and use vendor-native APIs directly for components where
           the vendor-specific capabilities provide significant value and the
           switching cost is acceptable.
-        </p>
+        </HighlightBlock>
         <p>
           Pursuing multi-cloud architecture without a specific business reason
           is a form of architectural vanity that adds complexity without
@@ -399,7 +418,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Dropbox&apos;s migration from AWS to their own infrastructure is one of
           the most famous examples of the make-versus-buy decision evolving with
           scale. In the early days, AWS provided the infrastructure Dropbox needed
@@ -412,8 +434,8 @@ export default function ArticlePage() {
           savings at their scale justified the investment. This case demonstrates
           that make-versus-buy decisions are not permanent — what makes sense at
           startup scale may be economically unsound at enterprise scale.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           37Signals (Basecamp) famously runs on a single cloud provider with
           minimal abstraction, embracing the vendor&apos;s native services and
           accepting the associated lock-in. Their rationale is that the
@@ -423,7 +445,7 @@ export default function ArticlePage() {
           because their application architecture is relatively simple — a
           monolithic Rails application with a PostgreSQL database — and they have
           documented their exit strategy should the need arise.
-        </p>
+        </HighlightBlock>
         <p>
           Epic Games runs Fortnite on both AWS and Azure simultaneously, using
           active-active multi-cloud to handle the massive, unpredictable traffic
@@ -450,13 +472,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you decide whether to build a capability internally or
               buy from a vendor?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Evaluate four dimensions. Strategic importance: is this a core
               differentiator that provides competitive advantage? If yes, build.
               If it is commodity infrastructure that every company needs, buy.
@@ -470,7 +495,7 @@ export default function ArticlePage() {
               scale justify building. Revisit these decisions periodically as
               circumstances change — what made sense at startup scale may not at
               enterprise scale.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

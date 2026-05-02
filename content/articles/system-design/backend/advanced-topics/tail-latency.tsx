@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +30,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Tail latency</strong> refers to the high end of the latency distribution: the
           P99 (99th percentile), P99.9 (99.9th percentile), or P99.99 (99.99th percentile)
           response times. While the median (P50) latency represents the typical user experience,
@@ -37,8 +41,8 @@ export default function ArticlePage() {
           requests. In large-scale systems, tail latency is critical because even a small
           percentage of slow requests can affect a large number of users and can cascade into
           systemic failures.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider a web page that makes 100 API calls to render. If each call has a P99 latency
           of 500ms, the probability that at least one call exceeds 500ms is 1 - (0.99)^100 ≈
           63%. This means 63% of page loads will experience at least one slow API call, degrading
@@ -46,7 +50,7 @@ export default function ArticlePage() {
           99.99%. This is the <strong>amplification effect</strong>: tail latency is amplified
           by the number of dependent requests, making the user experience significantly worse
           than the median latency suggests.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, tail latency requires understanding the straggler
           problem (why some requests are significantly slower than others), mitigation
@@ -73,6 +77,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/tail-latency-distribution.svg`}
@@ -81,20 +88,20 @@ export default function ArticlePage() {
         />
 
         <h3>Understanding Percentiles</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Latency percentiles describe the distribution of response times. The P50 (median) is
           the response time below which 50% of requests fall. The P99 is the response time below
           which 99% of requests fall (1% of requests are slower). The P99.9 is the response time
           below which 99.9% of requests fall (0.1% of requests are slower).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The tail (P99 and above) is important because it represents the experience of the
           slowest requests, which are the most likely to cause user-facing latency and cascading
           failures. In a system serving 1 million requests per day, the P99 represents 10,000
           slow requests per day, and the P99.9 represents 1,000 slow requests per day. Each of
           these slow requests contributes to user dissatisfaction and can cascade into systemic
           failures if the system is not designed to handle them.
-        </p>
+        </HighlightBlock>
 
         <h3>The Straggler Problem</h3>
         <p>
@@ -140,22 +147,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Hedged Requests</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Hedged requests are a technique for reducing tail latency by sending duplicate requests
           to multiple servers and using the fastest response. When a request exceeds a threshold
           (e.g., P95 latency), a duplicate request is sent to a different server. The first
           response to arrive is used, and the other request is cancelled. This reduces tail
           latency because the probability that both servers are stragglers is much lower than
           the probability that one server is a straggler.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Hedged requests are used by Google&apos;s BigTable and Amazon&apos;s DynamoDB to reduce
           tail latency. The overhead of hedged requests is small (typically 1-2% additional
           requests) because hedged requests are only sent for requests that exceed the P95
           threshold, and the duplicate request is cancelled when the first response arrives.
-        </p>
+        </HighlightBlock>
 
         <h3>Load Balancing for Tail Latency</h3>
         <p>
@@ -185,15 +195,18 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tail latency mitigation involves trade-offs between resource overhead, complexity,
           and effectiveness. Hedged requests reduce tail latency by 50-80% but add 1-2%
           additional request overhead (duplicate requests). Tail-aware load balancing reduces
           tail latency by 30-50% but requires monitoring infrastructure and adds routing
           complexity. Timeout strategies reduce tail latency by bounding the maximum response
           time but may increase error rates (requests that exceed the timeout are aborted).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that the right strategy depends on the workload
           characteristics. For workloads with many dependent requests (web pages, API gateways),
           hedged requests are most effective because they reduce the amplification effect. For
@@ -202,7 +215,7 @@ export default function ArticlePage() {
           servers. For workloads with predictable tail latency (consistent network and server
           performance), timeout strategies are most effective because they bound the maximum
           response time without additional overhead.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -210,19 +223,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Monitor tail latency (P99, P99.9) in addition to median latency. Median latency
           does not reflect the user experience for slow requests, and tail latency is the
           primary contributor to user dissatisfaction and cascading failures. Set SLAs based
           on tail latency (e.g., P99 &lt; 200ms) rather than median latency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement hedged requests for workloads with many dependent requests. Send the
           hedged request after a threshold (e.g., P95 latency) to minimize the overhead
           (only slow requests get hedged). Use a small number of hedged requests (one
           duplicate) to minimize resource overhead. Cancel the hedged request when the
           original response arrives to avoid wasting resources.
-        </p>
+        </HighlightBlock>
         <p>
           Use tail-aware load balancing to route requests away from straggling servers.
           Monitor per-server latency with a sliding window (e.g., last 100 requests per
@@ -244,21 +260,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is focusing on median latency instead of tail latency.
           Median latency does not reflect the user experience for slow requests, and tail
           latency is the primary contributor to user dissatisfaction and cascading failures.
           The fix is to monitor and optimize for tail latency (P99, P99.9) in addition to
           median latency, and to set SLAs based on tail latency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not accounting for the amplification effect is a critical pitfall. With N dependent
           requests, the probability of at least one slow request is 1 - (1-p)^N, where p is
           the probability of a single request being slow. For p = 0.01 (P99) and N = 100,
           the probability is 63%. The fix is to reduce tail latency of individual requests
           (hedged requests, tail-aware load balancing) or reduce the number of dependent
           requests (request batching, caching).
-        </p>
+        </HighlightBlock>
         <p>
           Using hedged requests without cancellation wastes resources. If the original request
           arrives and the hedged request is not cancelled, both requests consume server resources
@@ -279,9 +298,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Google BigTable: Hedged Requests</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google BigTable uses hedged requests to reduce tail latency for read operations.
           When a read request exceeds the P95 latency threshold, BigTable sends a hedged
           request to a different tablet server. The first response to arrive is used, and
@@ -289,17 +311,17 @@ export default function ArticlePage() {
           additional request overhead. Hedged requests are particularly effective in BigTable
           because tablet servers can experience transient slowdowns due to garbage collection
           or disk I/O contention.
-        </p>
+        </HighlightBlock>
 
         <h3>Amazon DynamoDB: Consistent Latency</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon DynamoDB uses a combination of tail-aware load balancing and hedged requests
           to provide consistent low-latency access. DynamoDB&apos;s load balancer monitors
           per-node latency and routes requests away from straggling nodes. For read operations,
           DynamoDB sends hedged requests to multiple nodes when the initial request exceeds
           the P95 threshold. This ensures that DynamoDB provides consistent single-digit
           millisecond latency even when individual nodes experience transient slowdowns.
-        </p>
+        </HighlightBlock>
 
         <h3>Netflix: Tail Latency Monitoring</h3>
         <p>
@@ -317,18 +339,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is tail latency and why is it important?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Tail latency refers to the high end of the latency distribution: the P99 (99th
               percentile), P99.9 (99.9th percentile), or P99.99 (99.99th percentile) response
               times. While median latency represents the typical user experience, tail latency
               represents the experience of the slowest requests, which are the most likely to
               cause user dissatisfaction and cascading failures.
-            </p>
+            </HighlightBlock>
             <p>
               Tail latency is important because of the amplification effect: with N dependent
               requests, the probability of at least one slow request is 1 - (1-p)^N. For

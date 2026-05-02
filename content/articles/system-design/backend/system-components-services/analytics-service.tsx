@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,12 +38,15 @@ export default function AnalyticsServiceArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Analytics service</strong> is the infrastructure that collects, processes, stores, and serves behavioral data about how users interact with a product. It ingests events from client applications (web browsers, mobile apps, server-side services), transforms them into structured records, stores them in systems optimized for aggregation and analysis, and provides query interfaces for dashboards, business intelligence tools, machine learning pipelines, and operational alerting. The analytics service is the data backbone for product teams, executive decision-making, A/B testing, anomaly detection, and personalization systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, designing an analytics service is a distributed systems challenge at the intersection of high-throughput ingestion, data quality guarantees, and cost-effective storage. The volume of events is typically massive — millions to billions of events per day for mid-sized products, trillions for large platforms — and the pipeline must process this volume with bounded loss (a defined maximum acceptable event loss rate, typically 0.01-0.1%), deduplication (to handle client retries and network retransmission), schema evolution (to accommodate new event types without breaking existing consumers), and both real-time and batch processing paths (to support low-latency dashboards and accurate historical analysis simultaneously).
-        </p>
+        </HighlightBlock>
         <p>
           Analytics service design involves several technical considerations. Event schema design (defining the structure of events with context fields like user ID, session ID, device ID, and timestamp, plus event-specific properties, with a versioning strategy for backward and forward compatibility). Ingestion architecture (HTTPS endpoints receiving batched event submissions from client SDKs, validating against schemas, deduplicating, and enqueuing to a message bus for downstream processing). Processing paths (real-time stream processing with frameworks like Flink or Spark Streaming for sub-5-second latency dashboards and alerting, and batch processing with scheduled ETL jobs for accurate historical analysis and machine learning training). Storage layer (columnar data formats like Parquet in a data lake for batch processing, and columnar analytical databases like ClickHouse, Druid, or BigQuery for fast aggregation queries). Data quality (defining and monitoring a loss budget, detecting duplicate events, validating schema compliance, and reconciling real-time and batch results during daily reconciliation).
         </p>
@@ -54,14 +58,17 @@ export default function AnalyticsServiceArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Event Schema Design and Versioning</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every event flowing through an analytics pipeline must conform to a well-defined schema. The schema consists of three layers: context (who sent the event and under what conditions — user ID, session ID, device ID, timestamp, geographic location, application version), event (what happened — event type, event ID, and a dictionary of event-specific properties like page URL, button clicked, or purchase amount), and metadata (provenance — schema version, source SDK version, ingestion timestamp, and processing metadata). The schema must be versioned so that changes to the schema do not break existing event producers or consumers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Schema evolution follows compatibility rules designed to prevent breakage. Adding new fields is always backward compatible — old consumers ignore fields they do not recognize. Removing fields requires a deprecation period during which both old and new fields are emitted, giving consumers time to migrate. Renaming fields should be handled by adding the new name as an additional field while keeping the old name as an alias, then gradually migrating consumers before removing the old name. The schema must be validated at ingestion time — events that do not conform to the current schema are rejected and logged to a dead-letter queue for investigation. A schema registry service maintains the current and historical versions of each event type&apos;s schema and provides validation APIs for both client SDKs and server-side ingestion.
-        </p>
+        </HighlightBlock>
 
         <h3>Deterministic Event Identification and Deduplication</h3>
         <p>
@@ -99,9 +106,12 @@ export default function AnalyticsServiceArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The analytics service architecture follows a pipeline model with four major stages: event sources (client SDKs running in web browsers, mobile apps, and server-side services), the ingestion layer (HTTPS endpoints receiving batched event submissions, validating against schemas, deduplicating, and enqueuing to a message bus), the processing layer (real-time stream processing for low-latency insights and batch processing for accurate historical analysis), and the storage and query layer (columnar analytical databases for fast aggregation and dashboards/APIs for programmatic access). The flow begins with a user interacting with the application — each interaction generates an event in the client SDK, which batches events (typically sending every 30 seconds or when 50 events are accumulated) and submits them to the ingestion endpoint over HTTPS. The ingestion endpoint validates each event against the current schema version, assigns an ingestion timestamp, deduplicates based on event ID, and enqueues the event to a message bus (Kafka topic partitioned by user ID for ordering guarantees).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/system-components-services/analytics-architecture.svg"
@@ -111,9 +121,9 @@ export default function AnalyticsServiceArticle() {
           height={550}
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           From the message bus, events flow through two parallel paths. The real-time path reads events with a stream processor that enriches each event with session context, user profile data, and geographic information, then writes the enriched events to a real-time analytical database (ClickHouse or Druid) optimized for low-latency aggregation queries. Dashboards and alerting systems query this database for sub-5-second response times. The batch path writes raw events to a data lake in Parquet format, partitioned by date and event type. Scheduled ETL jobs run hourly and daily, reading the raw events, applying thorough deduplication and schema validation, computing session-level aggregations, and writing the results to an analytical data warehouse. The daily reconciliation job overwrites real-time results from the previous day with batch results, ensuring that dashboards display accurate historical data.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/system-components-services/analytics-schema.svg"
@@ -159,14 +169,17 @@ export default function AnalyticsServiceArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Analytics service design involves trade-offs between real-time and batch processing, self-managed and managed infrastructure, event-driven and batch-upload SDK patterns, and schema-on-write versus schema-on-read storage models. Understanding these trade-offs is essential for designing analytics pipelines that match your organization&apos;s latency requirements, data quality standards, and operational capacity.
-        </p>
+        </HighlightBlock>
 
         <h3>Real-Time Versus Batch Processing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Real-Time Stream Processing:</strong> Events are processed as they arrive, with sub-5-second latency from event generation to query availability. Advantages: immediate visibility into user behavior (live dashboards, real-time alerting, instant personalization), fast detection of anomalies (traffic spikes, error rate increases, conversion drops), and support for time-sensitive use cases (fraud detection, dynamic pricing). Limitations: approximate results (deduplication may be incomplete, late-arriving events are missed), higher operational complexity (managing stream processors, handling backpressure, ensuring ordering guarantees), and higher cost per event (streaming infrastructure is more expensive than batch compute). Best for: live monitoring, alerting, personalization, fraud detection.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Batch Processing:</strong> Events are processed in scheduled jobs (hourly, daily), with 15-minute to 24-hour latency. Advantages: accurate results (thorough deduplication, complete event view, late-arriving event handling), simpler operational model (scheduled jobs are easier to reason about and debug than continuous streams), and lower cost per event (batch compute can be optimized for throughput). Limitations: delayed visibility (dashboards show stale data until the next batch job completes), slow anomaly detection (issues may persist for hours before the next batch job reveals them), and less suitable for time-sensitive use cases. Best for: historical analysis, A/B testing, business intelligence, machine learning training.
         </p>
@@ -199,16 +212,19 @@ export default function AnalyticsServiceArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Design Schemas for Forward and Backward Compatibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event schemas must evolve without breaking existing producers or consumers. Add new fields freely (old consumers ignore them), deprecate old fields gradually (emit both old and new fields during a transition period), and never rename or remove fields without a coordinated migration plan. Use a schema registry to maintain versioned schemas and validate events at ingestion time against the current schema version. Events that do not conform to the schema are rejected and logged to a dead-letter queue for investigation — they are not silently dropped, which would cause silent data corruption. Publish schema changes to client SDK teams well in advance and support multiple schema versions simultaneously during the transition period.
-        </p>
+        </HighlightBlock>
 
         <h3>Implement Deduplication at Multiple Levels</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Deduplication should be implemented at both the ingestion service level (real-time, using a sliding window of recent event IDs stored in a fast in-memory data structure like a Bloom filter) and the batch processing level (authoritative, using exact deduplication over the complete event set for the day). The ingestion-level deduplication catches the majority of duplicates (from client retries and network retransmission) and prevents them from propagating downstream. The batch-level deduplication catches any remaining duplicates that the ingestion-level deduplication missed (due to Bloom filter false positives or events arriving after the deduplication window expired). This two-level approach provides a balance between real-time efficiency and batch accuracy.
-        </p>
+        </HighlightBlock>
 
         <h3>Define and Monitor a Loss Budget</h3>
         <p>
@@ -234,16 +250,19 @@ export default function AnalyticsServiceArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Not Deduplicating Events Thoroughly</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Failing to deduplicate events at both the ingestion and batch levels leads to inflated counts and wrong conversion rates. Client SDKs retry event submissions on network failures, and without deduplication, each retry creates a duplicate event in the pipeline. A single page view event retried three times produces three page views in the analytics, inflating the page view count by 3x and distorting all downstream metrics (pages per session, conversion rate, time on page). The mitigation is to implement deduplication at the ingestion service (using event IDs and a sliding deduplication window) and again in the batch processing pipeline (using exact deduplication over the complete event set).
-        </p>
+        </HighlightBlock>
 
         <h3>Using Client-Side Timestamps for Aggregations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Using client-side timestamps (generated on the device) for daily aggregations like daily active users produces inaccurate results because device clocks are unreliable — users may have incorrect time zones, their clocks may drift, or they may deliberately set incorrect times. An event generated at 11:59 PM on the device but ingested at 12:01 AM on the server will be counted in the wrong day, distorting daily metrics. The mitigation is to use server-side timestamps (assigned at ingestion time) for daily aggregations and client-side timestamps only for session reconstruction and user journey analysis, with a tolerance window for clock skew.
-        </p>
+        </HighlightBlock>
 
         <h3>Breaking Schema Compatibility</h3>
         <p>
@@ -269,16 +288,19 @@ export default function AnalyticsServiceArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Conversion Funnel Analysis</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms (Amazon, Shopify stores) use analytics services to track conversion funnels — the sequence of events from product page view to purchase completion. Each step in the funnel (product view, add to cart, checkout start, payment submit, purchase complete) is tracked as a separate event, and the analytics pipeline computes the conversion rate at each step (percentage of users who proceed from one step to the next). Real-time funnel monitoring detects drops in conversion rates during deployments or infrastructure changes, enabling immediate investigation and rollback. Batch funnel analysis (daily, weekly) identifies long-term trends, seasonal patterns, and the impact of product changes on conversion. Companies like Amazon use funnel analysis to optimize every step of the shopping experience, from search result relevance to checkout flow design.
-        </p>
+        </HighlightBlock>
 
         <h3>Mobile App Engagement Tracking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mobile applications (Instagram, TikTok, Uber) use analytics services to track user engagement — session duration, screens per session, feature usage, retention rate, and churn indicators. Events are generated for every user action (screen view, button tap, scroll, swipe) and enriched with device context (device type, OS version, app version, network type, geographic location). The analytics pipeline computes engagement metrics in real time (for live dashboards monitoring app health) and in batch (for weekly retention analysis and cohort analysis). Mobile analytics pipelines must handle offline event generation (users interact with the app while offline, events are buffered and submitted when connectivity is restored), high event volume (hundreds of events per user session), and battery-efficient event submission (batched uploads to minimize network activity).
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Product Usage Analytics</h3>
         <p>
@@ -294,15 +316,18 @@ export default function AnalyticsServiceArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you handle event deduplication in a high-throughput analytics pipeline?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Implement deduplication at two levels. At the ingestion service, use a sliding window of recent event IDs stored in a Bloom filter for probabilistic deduplication — this catches the majority of duplicates from client retries with low memory overhead. At the batch processing level, use exact deduplication over the complete event set for the day, processing events by event ID and keeping only the first occurrence. This two-level approach balances real-time efficiency with batch accuracy. Each event must have a unique, deterministically generated event ID assigned at creation time in the client SDK, and the client must not change this ID across retries.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -99,11 +99,11 @@ export default function PeriodicBackgroundSyncConciseArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           Understanding Periodic Background Sync requires grasping six
           fundamental concepts that together define how the API operates, who
           can use it, and what constraints the browser enforces:
-        </HighlightBlock>
+        </p>
         <ul>
           <HighlightBlock as="li" tier="crucial">
             <strong>PeriodicSyncManager API:</strong> The primary interface,
@@ -122,7 +122,7 @@ export default function PeriodicBackgroundSyncConciseArticle() {
             <code>unregister(tag)</code> to remove one. The API is intentionally
             minimal: you register your intent, and the browser decides the rest.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Site Engagement Index:</strong> Chrome maintains an internal
             per-origin engagement score based on a weighted combination of
             signals: number of visits, time spent on the site, interactions
@@ -136,8 +136,8 @@ export default function PeriodicBackgroundSyncConciseArticle() {
             Low-engagement sites may be rejected outright or given intervals of
             12+ hours; high- engagement installed PWAs can achieve intervals
             closer to the requested <code>minInterval</code>.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Browser-Controlled Scheduling:</strong> Even after accepting
             a registration, the browser retains full control over when the{" "}
             <code>periodicsync</code> event actually fires. Chrome batches
@@ -150,7 +150,7 @@ export default function PeriodicBackgroundSyncConciseArticle() {
             JobScheduler and iOS{"'"}s BGTaskScheduler both batch and defer
             background work to optimize battery life. The developer has no
             mechanism to force or predict exact timing.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Minimum Interval:</strong> The <code>minInterval</code>{" "}
             parameter sets the lower bound on how frequently the developer wants
@@ -197,12 +197,20 @@ export default function PeriodicBackgroundSyncConciseArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: periodic sync is “best-effort freshness,” not cron. You design a syncable cache and a
+          server reconciliation strategy; the browser decides when you get CPU/network.
+        </HighlightBlock>
         <p>
           Understanding how Periodic Background Sync operates end-to-end
           requires tracing the lifecycle from registration through content
           delivery. The flow involves the web application, the browser{"'"}s
           internal scheduler, the service worker, and the server.
         </p>
+        <HighlightBlock as="p" tier="important">
+          A strong design includes: ETags/If-None-Match for cheap refreshes, idempotent server endpoints, and a way
+          to surface “last updated” to users when sync is delayed.
+        </HighlightBlock>
         <p>
           <strong>Step 1 — Registration:</strong> The PWA{"'"}s client-side
           JavaScript requests periodic sync by calling{" "}
@@ -524,12 +532,16 @@ export default function PeriodicBackgroundSyncConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The key pitfall is treating periodic sync like a scheduler. Design for long gaps, opaque failures, and
+          mixed browser support with a clear fallback path.
+        </HighlightBlock>
         <p>
           Teams adopting Periodic Background Sync frequently encounter these
           issues:
         </p>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Expecting precise timing:</strong> The most common
             misconception is that <code>minInterval: 3600000</code>
             (1 hour) means the event will fire every hour. It will not. The
@@ -537,8 +549,8 @@ export default function PeriodicBackgroundSyncConciseArticle() {
             entirely. The <code>minInterval</code> is a lower-bound suggestion,
             not a schedule. Design your application to tolerate arbitrarily long
             gaps between syncs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not checking API availability before use:</strong> Calling{" "}
             <code>registration.periodicSync.register()</code>
             in Safari throws a <code>TypeError</code> because{" "}
@@ -549,7 +561,7 @@ export default function PeriodicBackgroundSyncConciseArticle() {
             </code>
             . Failing to do so causes unhandled exceptions that can break
             service worker registration entirely.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Syncing too much data:</strong> Downloading megabytes of
             content in each sync wastes battery and bandwidth, and the browser
@@ -604,20 +616,24 @@ export default function PeriodicBackgroundSyncConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: use periodic sync for low-frequency freshness where “good enough” is acceptable.
+          Anything requiring tight SLAs needs in-app refresh, push, or real-time channels.
+        </HighlightBlock>
         <p>
           Periodic Background Sync is best suited for applications where content
           freshness directly impacts user experience and the content changes on
           a predictable cadence:
         </p>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>News Applications:</strong> Pre-fetch the latest headlines,
             article summaries, and thumbnail images every 12-24 hours. When the
             user opens the app during their morning commute (potentially offline
             on a subway), they see today{"'"}s news rather than yesterday{"'"}s
             cached content. The Google News PWA was an early adopter of this
             pattern.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Email Clients:</strong> Sync inbox metadata (sender, subject
             line, timestamp, snippet) so the inbox renders instantly when
@@ -625,13 +641,13 @@ export default function PeriodicBackgroundSyncConciseArticle() {
             especially valuable for PWA-based email clients competing with
             native Gmail or Outlook apps.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Social Media Feeds:</strong> Pre-load the top 20-50 feed
             items so the user sees fresh content immediately. Social apps live
             and die by the speed of the first meaningful content render —
             periodic sync eliminates the loading skeleton entirely for returning
             users.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Weather Applications:</strong> Update the forecast once or
             twice daily. Weather data changes slowly enough that 12-24 hour
@@ -669,9 +685,13 @@ export default function PeriodicBackgroundSyncConciseArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Staff-level expectation: you can explain scheduling (minInterval is a hint), engagement gating, and how
+          you design a cross-browser freshness strategy with fallbacks.
+        </HighlightBlock>
 
         <h3>How does the browser decide when to fire a periodic sync event?</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The browser uses a multi-factor scheduling algorithm that considers
           the registered <code>minInterval</code>
           as a lower-bound suggestion, not a guarantee. Chrome evaluates the
@@ -689,13 +709,13 @@ export default function PeriodicBackgroundSyncConciseArticle() {
           {'"'} indicator, and implement complementary freshness strategies
           (stale-while-revalidate, client-side polling) to handle cases where
           periodic sync is infrequent.
-        </p>
+        </HighlightBlock>
 
         <h3>
           Why is Periodic Background Sync limited to installed PWAs with high
           engagement?
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The restriction exists to prevent abuse. Without engagement gating,
           any website could register periodic sync and execute arbitrary code in
           the background — fetching tracking pixels, performing cryptocurrency
@@ -714,7 +734,7 @@ export default function PeriodicBackgroundSyncConciseArticle() {
           not build critical functionality that depends on periodic sync
           succeeding, because a significant portion of your users will never get
           it.
-        </p>
+        </HighlightBlock>
 
         <h3>
           How would you design a content freshness strategy for a news PWA
@@ -752,8 +772,12 @@ export default function PeriodicBackgroundSyncConciseArticle() {
 
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          For interviews, cite: (1) Chrome docs for real constraints, (2) MDN/spec for contract and status, and
+          (3) web.dev for practical patterns and fallbacks.
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.chrome.com/docs/capabilities/periodic-background-sync"
               target="_blank"
@@ -763,8 +787,8 @@ export default function PeriodicBackgroundSyncConciseArticle() {
             </a>{" "}
             — Official Chrome documentation covering the API surface, permission
             model, and implementation guidance.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://web.dev/articles/periodic-background-sync"
               target="_blank"
@@ -775,8 +799,8 @@ export default function PeriodicBackgroundSyncConciseArticle() {
             </a>{" "}
             — Comprehensive tutorial with code examples and architectural
             patterns for integrating periodic sync into PWAs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/PeriodicSyncManager"
               target="_blank"
@@ -786,8 +810,8 @@ export default function PeriodicBackgroundSyncConciseArticle() {
             </a>{" "}
             — API reference documentation including method signatures, browser
             compatibility tables, and specification status.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://wicg.github.io/periodic-background-sync/"
               target="_blank"
@@ -797,7 +821,7 @@ export default function PeriodicBackgroundSyncConciseArticle() {
             </a>{" "}
             — The W3C Web Incubator Community Group specification defining the
             formal behavior of the API.
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://www.chromium.org/developers/design-documents/site-engagement/"

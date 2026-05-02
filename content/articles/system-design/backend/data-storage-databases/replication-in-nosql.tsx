@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -79,22 +80,25 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Replication Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Single Leader Replication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Single leader replication</strong> has one leader (primary, master) and multiple
           followers (replicas, slaves). The leader accepts all writes. Followers replicate changes
           from leader and serve read-only traffic. This is the most common pattern, used by MySQL,
           PostgreSQL, MongoDB (default), and Elasticsearch.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Replication is typically <strong>asynchronous</strong>: leader commits writes, then
           sends changes to followers. Followers apply changes independently. Benefits: low write
           latency (leader doesn't wait for followers), high read throughput (reads distributed
           across followers). Trade-off: <strong>replication lag</strong> (followers are behind
           leader by some time), causing stale reads.
-        </p>
+        </HighlightBlock>
 
         <p>
           Some databases support <strong>synchronous replication</strong>: leader waits for all
@@ -160,20 +164,23 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Lag &amp; Conflicts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Replication Lag</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Replication lag</strong> is the time delay between a write committing on
           leader and appearing on followers. Lag is measured in seconds or milliseconds.
           Typical lag: milliseconds on idle systems, seconds under heavy write load.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Lag causes: <strong>Network latency</strong> (changes take time to transmit),
           <strong>Heavy write load</strong> (followers can't keep up with leader),
           <strong>Long-running queries on follower</strong> (blocks replication thread),
           <strong>Resource contention</strong> (follower under-provisioned vs leader).
-        </p>
+        </HighlightBlock>
 
         <p>
           Lag impact: <strong>Stale reads</strong>—users see old data after updates. Example:
@@ -248,19 +255,22 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Replication Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each replication pattern has trade-offs. Understanding them helps you choose the
           right pattern for your use case—or combine patterns (e.g., single-leader within
           region, multi-leader across regions).
-        </p>
+        </HighlightBlock>
 
         <h3>Single Leader Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Simplicity</strong> is the primary advantage. One leader, clear write path,
           no conflicts. Easy to understand, implement, and debug. Most databases support
           single-leader out of the box.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Strong consistency</strong> (within leader). All writes serialized on leader,
@@ -367,18 +377,21 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for NoSQL Replication</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Monitor replication lag.</strong> Track lag continuously, alert on thresholds
           (10 seconds warning, 60 seconds critical). Investigate lag spikes immediately. Lag
           is the #1 issue with replication.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement read-your-writes routing.</strong> After a user writes, route
           their reads to leader for a window (5-10 seconds). This ensures users see their
           own changes. Implement via session tracking or sticky routing.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Choose conflict resolution strategy upfront.</strong> For multi-leader or
@@ -414,18 +427,21 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Ignoring replication lag.</strong> Assuming followers are in sync causes
           stale reads. Solution: Monitor lag, implement read-your-writes routing, educate
           developers about eventual consistency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>No conflict resolution strategy.</strong> Multi-leader without conflict
           resolution causes data divergence. Solution: Choose strategy upfront (LWW, vector
           clocks, CRDTs, application merge), test conflict scenarios.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Writing to followers.</strong> Some databases allow writes to followers.
@@ -455,20 +471,23 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Global Social Media (Facebook, Twitter)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms use multi-leader replication for geographic distribution.
           Leaders in US, EU, Asia. Users post to local leader (low latency), leaders replicate
           to each other. Benefits: low-latency writes globally, regional failover, offline
           posting (queue locally, sync when online).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This pattern works because social media is geographically distributed, eventual
           consistency is acceptable (seeing a post 5 seconds late is fine), and conflicts
           are rare (users typically post to their own timeline, not shared resources).
-        </p>
+        </HighlightBlock>
 
         <h3>Collaborative Editing (Google Docs, Notion)</h3>
         <p>
@@ -517,14 +536,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: Compare single-leader, multi-leader, and leaderless replication. When would
               you use each?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Single-leader: one leader accepts writes, followers
               replicate. Pros: simple, no conflicts, strong consistency on leader. Cons: no
               write scaling, replication lag, single point of failure. Use for: simple
@@ -536,7 +558,7 @@ export default function ArticlePage() {
               availability, tunable consistency, write scaling. Cons: eventual consistency,
               conflict resolution required, complex client logic. Use for: high availability
               critical, write-heavy workloads, can handle eventual consistency.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What is quorum in leaderless replication? Answer:
               Quorum is minimum number of nodes that must acknowledge operation. Write quorum

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,7 +28,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Backup and restore is the foundational data protection strategy that
           ensures an organization can recover from data loss events including
           accidental deletion, malicious corruption, hardware failure, software
@@ -41,8 +45,8 @@ export default function ArticlePage() {
           backups is a mechanical process of copying data, but restoring is an
           operational exercise that tests whether the backups are actually usable,
           complete, and consistent.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The design of any backup and restore strategy is governed by two
           quantitative objectives: the Recovery Point Objective (RPO) and the
           Recovery Time Objective (RTO). The RPO defines the maximum acceptable
@@ -54,7 +58,7 @@ export default function ArticlePage() {
           the backup architecture: the frequency of backups, the storage medium,
           the geographic distribution of backup copies, the level of automation in
           the restore process, and the cost budget for the entire system.
-        </p>
+        </HighlightBlock>
         <p>
           In practice, backup and restore is often the most neglected aspect of
           system design until a data loss incident forces attention. Many
@@ -100,9 +104,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Backup Strategies: Full, Incremental, Differential, and Continuous</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Full backups capture the complete state of a dataset at a point in time.
           They are the simplest to understand and the most straightforward to
           restore from: a single backup artifact contains everything needed to
@@ -112,8 +119,8 @@ export default function ArticlePage() {
           the production system experiences additional load. Full backups are
           typically run on a weekly or monthly cadence, serving as the anchor point
           for other backup strategies.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Incremental backups capture only the changes that occurred since the last
           backup of any kind -- whether full or incremental. This makes them much
           faster and more storage-efficient than full backups. However, restore
@@ -124,7 +131,7 @@ export default function ArticlePage() {
           single corrupted incremental in the chain makes all subsequent
           incrementals unusable. Incremental backup strategies typically reset the
           chain with a new full backup on a regular schedule to limit chain length.
-        </p>
+        </HighlightBlock>
         <p>
           Differential backups capture all changes since the last full backup,
           regardless of any intermediate incrementals. This represents a middle
@@ -279,7 +286,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production backup architecture is a multi-layered system that spans the
           data capture layer, the storage layer, the management layer, and the
           recovery layer. The data capture layer is responsible for producing backup
@@ -289,8 +299,8 @@ export default function ArticlePage() {
           operations. For application state, this may involve exporting data through
           APIs or capturing event streams from the application's event sourcing
           layer.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The storage layer organizes backup artifacts across multiple tiers based
           on access frequency and cost. Hot storage holds the most recent backups
           on fast media for quick restore, typically in the same region as the
@@ -302,7 +312,7 @@ export default function ArticlePage() {
           storage layer also manages the lifecycle transitions between tiers,
           automatically moving backups as they age and deleting them when they
           exceed retention.
-        </p>
+        </HighlightBlock>
         <p>
           The management layer orchestrates the entire backup process: scheduling
           backup jobs, monitoring their success and failure, verifying backup
@@ -334,7 +344,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The central trade-off in backup strategy is between restore speed and
           storage cost. Full backups are the fastest to restore from but the most
           expensive to store and produce. Incremental backups minimize storage cost
@@ -344,8 +357,8 @@ export default function ArticlePage() {
           ensure ordering, and handle gaps. The choice depends on the RPO and RTO
           requirements, the size of the dataset, and the operational maturity of the
           team managing the backup infrastructure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           There is also a trade-off between backup comprehensiveness and operational
           overhead. A complete backup strategy covers every data store, every
           configuration artifact, every secret, and every metadata system in the
@@ -355,7 +368,7 @@ export default function ArticlePage() {
           for each system. Many teams start with a focused approach that covers the
           most critical data stores and expand coverage incrementally, prioritizing
           based on the business impact of data loss for each system.
-        </p>
+        </HighlightBlock>
         <p>
           The logical versus physical backup trade-off is another dimension.
           Logical backups export data in a portable format such as SQL dumps or
@@ -386,7 +399,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Drive backup strategy from explicitly defined RPO and RTO targets for
           each data store, not from generic best practices. Calculate the cost of
           data loss per hour of RPO violation and the cost of downtime per hour of
@@ -395,8 +411,8 @@ export default function ArticlePage() {
           media for tight-RTO systems, and in simpler backup strategies for systems
           with relaxed objectives. This economic framing makes backup investment
           decisions rational rather than emotional.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Test restores regularly and measure the actual RTO achieved. Backup
           success logs are necessary but insufficient evidence of recoverability.
           Schedule automated restore drills that recover backups into isolated
@@ -405,7 +421,7 @@ export default function ArticlePage() {
           incidents with assigned owners and tracked remediation. A backup that
           cannot be restored within the RTO is functionally equivalent to having no
           backup at all.
-        </p>
+        </HighlightBlock>
         <p>
           Implement comprehensive coverage tracking to detect backup scope drift.
           Whenever a new service, data store, or configuration system is deployed,
@@ -431,7 +447,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most prevalent pitfall is untested backups that fail during actual
           recovery attempts. Teams configure backup jobs, monitor their success,
           and assume the backups are usable. During an incident, they discover that
@@ -443,8 +462,8 @@ export default function ArticlePage() {
           should restore into an isolated environment, validate data integrity,
           measure restore time, and alert on any failure. Untested backups provide
           false confidence that is worse than knowing you have no backups at all.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A second pitfall is backup scope drift, where new services and data
           stores are added to the production environment without being added to the
           backup plan. This happens organically as teams deploy new microservices
@@ -456,7 +475,7 @@ export default function ArticlePage() {
           No service is promoted to production without a defined backup
           configuration, and periodic audits compare the backup inventory against
           the service catalog to identify and close gaps.
-        </p>
+        </HighlightBlock>
         <p>
           A third pitfall is treating restore time as purely a data transfer
           problem. Teams estimate restore time based on backup size and storage
@@ -491,9 +510,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Point-in-Time Recovery for Accidental Deletion</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           One of the most common disaster recovery scenarios is accidental deletion
           of data -- a developer runs an incorrect DELETE statement, a migration
           script drops the wrong table, or a misconfigured automation pipeline
@@ -508,10 +530,10 @@ export default function ArticlePage() {
           restoring from the most recent full or incremental backup and manually
           reconciling any data changes that occurred after the backup was taken,
           which significantly increases both data loss and recovery time.
-        </p>
+        </HighlightBlock>
 
         <h3>Cross-Region Disaster Recovery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Organizations operating in regulated industries or serving global
           user bases maintain backup copies in multiple geographic regions to
           survive regional outages caused by natural disasters, cloud provider
@@ -528,7 +550,7 @@ export default function ArticlePage() {
           transactions that were committed on the primary but not yet replicated.
           Organizations manage this trade-off by monitoring replication lag
           continuously and setting alerts when it exceeds the RPO threshold.
-        </p>
+        </HighlightBlock>
 
         <h3>Multi-Tenant Targeted Restore</h3>
         <p>
@@ -568,15 +590,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">
               Question 1: How do you validate that backups are actually usable?
             </h3>
-            <p className="text-muted mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3">
               <strong>Answer:</strong>
-            </p>
-            <p className="mb-3">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               The only reliable way to validate backup usability is to perform
               actual restores into an isolated environment and verify the restored
               data. Checksum validation of backup files confirms that the backup
@@ -585,7 +610,7 @@ export default function ArticlePage() {
               working system. Backup success logs from the backup software only
               confirm that the copy operation completed, not that the result is
               usable.
-            </p>
+            </HighlightBlock>
             <p>
               The validation process should include several steps. First, restore
               the backup into a quarantined environment that mirrors the production

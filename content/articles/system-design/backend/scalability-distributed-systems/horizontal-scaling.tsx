@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -40,7 +41,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Horizontal scaling</strong> (also called <em>scaling out</em>)
           is the practice of increasing a system&apos;s capacity by adding more
           machines (nodes, instances, or pods) to the system, rather than by
@@ -53,8 +57,8 @@ export default function ArticlePage() {
           advantages of cloud computing, enabling systems to handle traffic
           spikes (flash sales, viral content, seasonal peaks) without
           over-provisioning for peak load.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental requirement for horizontal scaling is{" "}
           <strong>statelessness</strong> — each service instance must not store
           any client-specific state locally. If an instance stores session data
@@ -66,7 +70,7 @@ export default function ArticlePage() {
           database, cache, or object store). This allows the load balancer to
           distribute requests to any instance, and instances can be added or
           removed without affecting the client experience.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, horizontal scaling involves solving
           several non-trivial problems: designing the auto-scaling policy
@@ -97,8 +101,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Stateless service design</strong> is the foundation of
           horizontal scaling. A service is stateless if it does not store any
           client-specific data in its local memory or disk. All client state is
@@ -110,9 +117,9 @@ export default function ArticlePage() {
           are trivially scalable — adding a new instance requires only
           registering it with the load balancer, and the load balancer can
           immediately start routing requests to it.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Load balancing</strong> is the mechanism that distributes
           incoming requests across the available service instances. The load
           balancer sits between the clients and the service instances, and it
@@ -129,7 +136,7 @@ export default function ArticlePage() {
           <strong>weighted routing</strong> — requests are distributed
           proportionally to each instance&apos;s capacity (useful when instances
           have different hardware configurations).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Auto-scaling</strong> is the automated process of adding or
@@ -183,6 +190,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/horizontal-scaling-diagram-1.svg"
@@ -190,7 +200,7 @@ export default function ArticlePage() {
           caption="Horizontal scaling — stateless instances behind a load balancer, with shared state stored externally in databases, caches, and object stores"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The request flow in a horizontally scaled system begins with the
           client sending a request to the load balancer. The load balancer
           selects an instance using its routing algorithm (round-robin, least
@@ -205,9 +215,9 @@ export default function ArticlePage() {
           (variable, depending on the request complexity), and the network
           latency from the instance to the external store (typically 1–5 ms for
           a database or cache in the same data center).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The auto-scaling flow begins with the monitoring system collecting
           metrics from each instance (CPU utilization, memory usage, request
           queue length, request latency, error rate) at regular intervals
@@ -224,7 +234,7 @@ export default function ArticlePage() {
           auto-scaling system, and the system does not count the warm-up
           instances toward the metric calculation until the warm-up period
           expires.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/horizontal-scaling-diagram-2.svg"
@@ -259,8 +269,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Horizontal scaling must be compared against vertical scaling. Vertical
           scaling (upgrading to a larger machine) is simpler to implement — it
           requires no load balancer, no service discovery, no distributed
@@ -273,18 +286,18 @@ export default function ArticlePage() {
           the number of available machines (which is practically unlimited in
           the cloud), and the cost per unit of capacity is constant (each
           additional instance costs the same as the previous one).
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Property</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Property</th>
               <th className="p-3 text-left">Vertical Scaling</th>
               <th className="p-3 text-left">Horizontal Scaling</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Max Capacity</strong>
               </td>
@@ -294,8 +307,8 @@ export default function ArticlePage() {
               <td className="p-3">
                 Practically unlimited
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Cost Scaling</strong>
               </td>
@@ -305,7 +318,7 @@ export default function ArticlePage() {
               <td className="p-3">
                 Linear (each instance costs the same)
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Fault Tolerance</strong>
@@ -350,8 +363,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Design services to be stateless from the outset. Store all client
           state externally — in a database (for persistent data), a cache
           (Redis — for frequently accessed data), or an object store (S3 — for
@@ -361,9 +377,9 @@ export default function ArticlePage() {
           be cached for performance, use a distributed cache (Redis Cluster)
           that is independent of the service instances, so that the cache
           survives instance terminations.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Configure auto-scaling with both scale-up and scale-down policies,
           and include a cooldown period to prevent oscillation. The scale-up
           threshold should be set based on the instance&apos;s capacity limit
@@ -374,7 +390,7 @@ export default function ArticlePage() {
           the instance warm-up time (e.g., 5 minutes — long enough for the new
           instance to warm up and begin serving traffic, and long enough for
           the metrics to stabilize after the scaling action).
-        </p>
+        </HighlightBlock>
 
         <p>
           Implement connection draining for all instances that are scheduled for
@@ -423,8 +439,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Scaling the service layer without scaling the shared state layer is
           the most common bottleneck in horizontally scaled systems. When the
           service layer scales from 10 to 100 instances, the database receives
@@ -436,9 +455,9 @@ export default function ArticlePage() {
           capacity alongside the service layer&apos;s capacity, and to scale the
           shared state layer proportionally (read replicas for reads, sharding
           for writes, caching for frequently accessed data).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Setting the auto-scaling thresholds too aggressively causes
           oscillation — the system rapidly adds and removes instances due to
           metric fluctuations. For example, if the scale-up threshold is set to
@@ -451,7 +470,7 @@ export default function ArticlePage() {
           scale-up threshold significantly higher than the scale-down threshold
           (e.g., scale-up at 70%, scale-down at 30%) and to include a cooldown
           period (e.g., 5 minutes) between scaling actions.
-        </p>
+        </HighlightBlock>
 
         <p>
           Not implementing connection draining causes in-flight requests to be
@@ -499,8 +518,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-world Use Cases */}
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix uses horizontal scaling for its streaming service, which
           serves over 200 million subscribers globally. Netflix&apos;s service
           layer consists of hundreds of microservices, each deployed as a set of
@@ -513,9 +535,9 @@ export default function ArticlePage() {
           S3 for video assets) scales independently of the service layer, with
           each state layer component monitored and scaled based on its own
           capacity metrics.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Airbnb uses horizontal scaling for its booking platform, which
           handles millions of bookings per day. Airbnb&apos;s service layer is
           deployed on Kubernetes, with each service deployed as a set of pods
@@ -528,7 +550,7 @@ export default function ArticlePage() {
           traffic from the old version to the new version. If issues are
           detected, the Ingress controller is reconfigured back to the old
           version — an instant rollback.
-        </p>
+        </HighlightBlock>
 
         <p>
           Slack uses horizontal scaling for its real-time messaging platform,
@@ -567,6 +589,9 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
@@ -574,14 +599,14 @@ export default function ArticlePage() {
           You add more instances, but the latency does not improve. What is the
           likely root cause, and how do you diagnose it?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The likely root cause is that the bottleneck is not the service
             layer — it is the shared state layer (database, cache, or external
             dependency). Adding more service instances increases the load on the
             shared state layer (more connections, more queries), which may cause
             it to become even more overloaded, increasing the latency further.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The diagnostic process is: <strong>Step 1:</strong> Check the
             service instances&apos; CPU and memory utilization. If the
             utilization is low (e.g., CPU &lt; 50%), the service layer is not
@@ -598,7 +623,7 @@ export default function ArticlePage() {
             for latency spikes. If an external dependency is slow, the service
             instances are waiting for it, and adding more instances will not
             improve the latency.
-          </p>
+          </HighlightBlock>
           <p>
             The solution depends on the bottleneck. If the database is the
             bottleneck, consider read replicas (for read-heavy workloads),

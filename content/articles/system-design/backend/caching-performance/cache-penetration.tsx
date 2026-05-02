@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cache penetration</strong> occurs when a high volume of requests target keys that do not exist in the cache and do not exist in the backing data store either. Because the key is absent from the cache, every request falls through to the origin — typically a database, an upstream microservice, or an external API — which must perform a full lookup, determine the key is missing, and return a negative response. When this pattern repeats across thousands or millions of distinct non-existent keys, the cache provides zero shielding, and the origin absorbs the full load of traffic that would otherwise have been absorbed at the cache layer.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cache penetration is distinct from cache stampede (also called cache thunder or dog-piling). A stampede happens when a <em>popular</em> key expires and many concurrent requests simultaneously miss the cache and attempt to recompute or reload the same value. Penetration, by contrast, is driven by a <em>long tail of distinct, non-existent keys</em>. There is no single hot key to protect — the attack surface is the entire keyspace. This makes penetration fundamentally harder to detect with conventional cache metrics like aggregate hit ratio, because the miss traffic is distributed across unique keys rather than concentrated on one.
-        </p>
+        </HighlightBlock>
         <p>
           The phenomenon overlaps with but is not identical to cache breakdown. Breakdown refers to the sudden expiration of many keys at once (often due to a misconfigured TTL or a cache flush), leaving a temporarily cold cache. Penetration can occur even when the cache is fully warm and healthy for all existing keys. The root cause is not cache state — it is the presence of traffic patterns that deliberately or accidentally probe for data that does not exist.
         </p>
@@ -42,14 +46,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding cache penetration requires examining the mechanisms that create it, the metrics that reveal it, and the defensive primitives available to mitigate it. The phenomenon is not a single failure mode but a class of failure modes unified by a common characteristic: the cache layer is bypassed because the requested key has no cached representation — not a positive one and not a negative one either.
-        </p>
+        </HighlightBlock>
 
         <h3>The Anatomy of a Penetration Attack</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Consider a user-profile API backed by Redis and PostgreSQL. Valid user IDs are cached with a ten-minute TTL. An attacker writes a script that iterates through sequential integer IDs from one to ten million, sending one request per ID. None of these IDs correspond to real users. Because the keys do not exist, Redis returns a cache miss for every single request. Each miss triggers a PostgreSQL query — <code>SELECT * FROM users WHERE id = $1</code> — which returns zero rows. The database performs an index lookup for each request, consuming CPU, I/O, and connection pool slots. At sufficient request volume, the database connection pool saturates, legitimate user requests queue behind the phantom lookups, and p99 latency spikes across the entire service.
-        </p>
+        </HighlightBlock>
         <p>
           This scenario is not hypothetical. Enumeration attacks of this form are among the most common abuse patterns observed in production APIs. They are trivially easy to automate, require no authentication, and exploit the simplest possible assumption: that the system will perform a full origin lookup for every cache miss. The cost to the attacker is near zero; the cost to the defender scales linearly with the number of distinct keys probed.
         </p>
@@ -93,14 +100,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production-grade cache penetration defense is not a single mechanism but a layered architecture where each stage eliminates a portion of invalid traffic before it can progress to the next stage. The request flow follows a funnel: the widest possible set of requests enters at the edge, and each subsequent layer applies increasingly specific checks, with the origin database serving as the last resort for requests that pass all prior filters.
-        </p>
+        </HighlightBlock>
 
         <h3>Request Processing Pipeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The pipeline begins at the API gateway or edge proxy, where rate limiting rules are applied per client identifier (IP address, API key, or authenticated user ID). Rate limiting at this stage is coarse but effective: a client making more than a threshold number of 404-generating requests within a time window is throttled or blocked entirely. This is not a perfect defense — sophisticated attackers rotate IP addresses or distribute requests across many clients — but it raises the cost of the attack and eliminates the simplest automated scripts.
-        </p>
+        </HighlightBlock>
         <p>
           After rate limiting, the request enters the application layer where input validation is performed. Validation rules are derived from the schema of the requested resource: ID format, length constraints, namespace validation, and range checks. Invalid requests are rejected immediately with a 400 Bad Response, never reaching the cache layer. This stage is particularly effective against malformed or obviously invalid keys — requests that use alphabetic characters where only digits are expected, or IDs that fall outside any plausible range.
         </p>
@@ -139,9 +149,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Each defensive mechanism carries distinct trade-offs in terms of correctness, performance, operational complexity, and attack resilience. The choice of which mechanisms to deploy — and how to configure them — depends on the specific characteristics of the workload, the acceptable false positive rate, the creation frequency of new records, and the threat model for abuse.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -200,9 +213,9 @@ export default function ArticlePage() {
         </table>
 
         <h3>When to Use Which Defense</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For low-traffic internal APIs with minimal abuse risk, input validation combined with short-TTL negative caching is typically sufficient. The operational overhead of maintaining Bloom filters is rarely justified when the total request volume is modest and the keyspace is well-bounded.
-        </p>
+        </HighlightBlock>
         <p>
           For high-traffic public APIs, especially those exposed to the internet without authentication, the combination of all four defenses is warranted. Input validation and rate limiting at the edge, a Bloom filter as a pre-flight check, and negative caching as a fallback for keys that pass the Bloom filter but do not exist in the cache — this layered approach ensures that no single defense failure results in origin saturation.
         </p>
@@ -213,13 +226,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Deploying cache penetration defenses in production requires attention to configuration details, monitoring strategies, and operational procedures. The following practices have emerged from experience running these systems at scale across diverse workloads.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Size Bloom filters for the acceptable false positive rate, not for theoretical efficiency.</strong> The mathematical minimum for a Bloom filter&apos;s size is determined by the number of keys and the target false positive probability. For user-facing systems, a false positive rate of 0.01% (one in ten thousand) is typically the upper bound — any higher, and users will encounter spurious 404 errors at a noticeable rate. For internal systems or systems with a secondary verification step (where a Bloom filter &quot;not present&quot; response triggers a fallback to a direct database check), rates up to 1% may be acceptable. Always calculate filter size as n times ln(1/p) divided by (ln 2)^2, and round up to the next power of two for memory alignment efficiency.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Use negative cache TTLs proportional to the record creation frequency.</strong> If new records are created at a rate of one per second, a negative cache TTL of thirty seconds means a newly created record could be invisible for up to thirty seconds. If the application can tolerate this delay, the TTL is acceptable. If not, the TTL must be reduced — or better, the system should implement cache invalidation on record creation, explicitly deleting the negative cache entry when a new record is written. This eliminates the staleness window entirely at the cost of an additional cache operation on every write.
@@ -246,13 +262,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most frequent mistake teams make when defending against cache penetration is treating it as a purely technical problem solvable with a single mechanism. Cache penetration is an adversarial problem — whether the adversary is a malicious actor or simply a misbehaving client — and adversarial problems require defense-in-depth. Relying solely on negative caching leaves the system vulnerable to non-repeating key attacks. Relying solely on Bloom filters introduces false positive risk that can manifest as user-visible errors. Relying solely on rate limiting fails against distributed attacks.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           A second common pitfall is misconfiguring the negative cache TTL. Teams often set the negative cache TTL equal to the positive cache TTL, reasoning that &quot;if the data would be stale after ten minutes, a &apos;not found&apos; response should also be stale after ten minutes.&quot; This is incorrect reasoning. The staleness concern for negative cache entries is not about data freshness — it is about <em>record creation latency</em>. The negative cache TTL should be set to the maximum acceptable delay between a record being created and it becoming visible through the API. For most systems, this is seconds, not minutes.
-        </p>
+        </HighlightBlock>
 
         <p>
           A third pitfall is failing to account for Bloom filter false positives in the application&apos;s error-handling logic. When a Bloom filter incorrectly indicates that a key does not exist, the application returns a 404. If the application does not log these events separately from genuine 404s, the false positives become invisible in monitoring. Over time, the false positive rate may drift upward (as the filter fills beyond its designed capacity), and the team will not notice until user complaints surface the problem. Every Bloom filter implementation should log false positive detections — which requires a secondary verification mechanism that checks the origin when the Bloom filter says &quot;not present&quot; for a subset of requests (e.g., one percent) to measure the actual false positive rate in production.
@@ -269,13 +288,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>GitHub&apos;s API enumeration defense.</strong> GitHub&apos;s REST and GraphQL APIs serve millions of requests per day from both authenticated users and anonymous clients. Early in GitHub&apos;s history, sequential integer IDs for repositories, issues, and users made enumeration trivial. Attackers systematically scraped public resource IDs, generating enormous cache miss traffic. GitHub transitioned to opaque, non-sequential identifiers (node IDs in the GraphQL API) and implemented Bloom filters populated with all valid resource IDs. The Bloom filter check runs before any database query, eliminating origin load for the vast majority of enumeration probes. Negative caching handles the residual traffic that passes the Bloom filter (due to false positives being acceptable for the small fraction of legitimate requests that reach the origin for non-existent resources).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>CDN-level negative caching for static assets.</strong> Large content delivery networks implement negative caching at the edge for static assets — images, JavaScript bundles, CSS files — that do not exist on the origin. When a browser requests a bundle that has been superseded by a new deployment (e.g., <code>app.abc123.js</code> after <code>app.def456.js</code> has been deployed), the CDN edge node checks its cache, misses, queries the origin, receives a 404, and caches that 404 response with a TTL proportional to the deployment frequency. This prevents subsequent requests for the same stale bundle from reaching the origin, which is particularly important during deployment windows when many users may simultaneously request outdated bundle URLs from cached HTML pages.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>E-commerce product catalog protection.</strong> Large e-commerce platforms with millions of SKUs face cache penetration from competitors scraping product data, from bots testing common product ID patterns, and from users following outdated or mistyped product links. A major platform implemented a three-layer defense: edge rate limiting based on behavioral signals (request velocity, pattern regularity, referrer analysis), a sharded Bloom filter covering all active SKUs (partitioned by product category to enable independent rebuilds), and negative caching with a fifteen-second TTL for confirmed non-existent SKUs. This defense reduced origin database load from enumeration traffic by over 99% while maintaining a false positive rate below 0.005%, well within the platform&apos;s error budget.
@@ -288,15 +310,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Question 1: What is cache penetration, and how does it differ from cache stampede and cache breakdown?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Cache penetration occurs when requests repeatedly target keys that do not exist in either the cache or the backing data store, causing every request to fall through to the origin for a lookup that returns nothing. The defining characteristic is that the traffic targets <em>non-existent</em> keys — not expired keys, not evicted keys, but keys that were never valid in the first place.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               Cache stampede (or dog-piling) is different: it happens when a <em>popular</em> cached value expires, and a large number of concurrent requests simultaneously miss the cache and attempt to recompute or reload the same value. The load on the origin comes from many requests for the <em>same</em> key, not from many requests for <em>different</em> non-existent keys. The standard defense for stampede is request coalescing (having one request rebuild the cache while others wait) or probabilistic early expiration.
             </p>

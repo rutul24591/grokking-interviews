@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,10 @@ export default function ContentStorageArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Content Storage</strong> encompasses the database schemas, object storage, and
           indexing strategies for persisting and retrieving content efficiently at scale. Content
           storage is the foundation of any content management system — without proper storage
@@ -41,7 +45,7 @@ export default function ContentStorageArticle() {
           risk. Storage architecture must handle structured metadata (title, author, status,
           timestamps), unstructured content body (text, HTML, markdown), and media files (images,
           videos, attachments).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/storage-architecture.svg"
@@ -49,7 +53,7 @@ export default function ContentStorageArticle() {
           caption="Storage Architecture — showing metadata database (PostgreSQL), content storage (TEXT column or document store), object storage (S3 for media), and search index (Elasticsearch)"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing content storage requires deep
           understanding of database design (relational vs NoSQL — PostgreSQL/MySQL for structured
           metadata, MongoDB/DynamoDB for flexible schemas), storage architecture (metadata database,
@@ -63,7 +67,7 @@ export default function ContentStorageArticle() {
           connection pooling, caching layers). The implementation must balance query performance
           (fast reads) with storage costs (efficient compression, tiered storage) and data
           durability (replication, backup).
-        </p>
+        </HighlightBlock>
         <p>
           Modern content storage has evolved from monolithic databases to distributed, multi-tier
           architectures. Platforms like Medium, WordPress VIP, and Contentful use hybrid storage —
@@ -76,12 +80,15 @@ export default function ContentStorageArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content storage is built on fundamental concepts that determine how content is persisted,
           indexed, and retrieved. Understanding these concepts is essential for designing effective
           storage systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Metadata Database:</strong> Store structured content metadata (title, author,
           status, category, tags, created_at, updated_at). Technology: PostgreSQL, MySQL for
           relational data (ACID transactions, complex queries, referential integrity). Schema:
@@ -91,7 +98,7 @@ export default function ContentStorageArticle() {
           integrity (foreign keys). Considerations: scaling writes (single leader bottleneck),
           connection pooling (limit concurrent connections), indexing (B-tree for exact match,
           composite indexes for multi-column queries).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Content Storage:</strong> Store actual content body (text, HTML, markdown).
           Options: TEXT column in metadata table (simple, but bloats metadata table), separate
@@ -125,11 +132,14 @@ export default function ContentStorageArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content storage architecture separates metadata, content, media, and search — enabling
           independent scaling and optimization. This architecture is critical for performance and
           scalability.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/database-partitioning.svg"
@@ -137,7 +147,7 @@ export default function ContentStorageArticle() {
           caption="Database Partitioning — showing range partitioning by date, hash partitioning by user_id, and read replicas for read scaling"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Storage flow: User creates content. Frontend sends content (title, body, metadata).
           Backend validates input. Backend writes to metadata database (INSERT INTO content
           (title, author_id, status) VALUES (...) RETURNING content_id). Backend writes content
@@ -148,7 +158,7 @@ export default function ContentStorageArticle() {
           reads from metadata database (SELECT * FROM content WHERE content_id = ...). Backend
           reads content body (separate table or document store). Backend generates media URLs
           (S3 pre-signed URLs or CDN URLs). Backend returns content (metadata + body + media URLs).
-        </p>
+        </HighlightBlock>
         <p>
           Partitioning architecture includes: range partitioning (partition by date —
           content_created_at, each partition holds 1 month/year of data — efficient for time-series
@@ -178,27 +188,30 @@ export default function ContentStorageArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing content storage involves trade-offs between consistency, availability,
           performance, and cost. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Relational vs NoSQL for Metadata</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Relational (PostgreSQL, MySQL):</strong> ACID transactions (atomic updates),
               complex queries (JOINs, aggregations), referential integrity (foreign keys).
               Limitation: scaling writes (single leader bottleneck), schema rigidity (migrations
               required for schema changes).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>NoSQL (MongoDB, DynamoDB):</strong> Horizontal scaling (sharding built-in),
               flexible schema (add fields without migrations), high write throughput. Limitation:
               limited transactions (single-document only in MongoDB), no JOINs (denormalize data),
               eventual consistency (reads may return stale data).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Relational for most content systems (ACID, complex
               queries valuable). NoSQL for massive scale (100M+ documents, high write throughput).
@@ -253,20 +266,23 @@ export default function ContentStorageArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing content storage requires following established best practices to ensure
           performance, durability, and scalability.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Database Design</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Normalize metadata (separate tables for authors, categories, tags — avoid duplication).
           Use appropriate data types (UUID for content_id, TIMESTAMP WITH TIMEZONE for timestamps,
           ENUM for status). Index frequently queried columns (author_id, status, created_at —
           composite indexes for multi-column queries). Use connection pooling (PgBouncer for
           PostgreSQL — limit concurrent connections). Partition large tables (range partitioning by
           date — each partition holds 1 month/year).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Object Storage</h3>
         <p>
@@ -298,21 +314,24 @@ export default function ContentStorageArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing content storage to ensure performance,
           durability, and scalability.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Storing all content in one table:</strong> Metadata and large content bloat
             table, slow queries. <strong>Fix:</strong> Separate metadata table from content body.
             Store large content in object storage.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No indexing:</strong> Slow queries, table scans. <strong>Fix:</strong> Index
             frequently queried columns (author_id, status, created_at). Use composite indexes for
             multi-column queries.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No connection pooling:</strong> Database connection exhaustion, slow queries.{" "}
             <strong>Fix:</strong> Use connection pooler (PgBouncer for PostgreSQL). Limit max
@@ -355,16 +374,19 @@ export default function ContentStorageArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content storage is critical for content management. Here are real-world implementations
           from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Blogging Platform (Medium)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Millions of articles. Fast reads (article views). Full-text
           search. Media storage (images in articles).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> PostgreSQL for metadata (title, author, status — read replicas
           for read scaling). Cassandra for content body (horizontal scaling, high write throughput).
@@ -462,14 +484,17 @@ export default function ContentStorageArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of content storage design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design database schema for content?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design database schema for content?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Separate metadata from content body. Metadata table (content_id UUID PRIMARY KEY,
               title VARCHAR(255), author_id FK, status ENUM, created_at TIMESTAMP, updated_at

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -25,12 +26,15 @@ export default function HighAvailabilityArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>High availability</strong> is the ability of a system to remain operational and accessible
           for a high percentage of time, typically measured as a percentage (availability SLA). It is achieved
           through redundancy, failover mechanisms, and the elimination of single points of failure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Availability is expressed as a percentage of uptime over a given period, usually one year. The
           industry standard uses &quot;nines&quot; to describe availability targets. Two nines (99%) allows
           approximately 3.65 days of downtime per year — acceptable for internal tools and development
@@ -38,7 +42,7 @@ export default function HighAvailabilityArticle() {
           and APIs. Four nines (99.99%) allows 52.6 minutes — required for business-critical systems like
           e-commerce platforms and SaaS products. Five nines (99.999%) allows 5.26 minutes — reserved for
           telecommunications, emergency services, and financial trading systems.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, availability architecture is a core competency.
           Interviewers expect you to design systems that meet specific availability targets, choose appropriate
@@ -69,20 +73,23 @@ export default function HighAvailabilityArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding high availability requires grasping several foundational concepts that govern how
           systems maintain uptime despite component failures.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">RTO and RPO</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Recovery Time Objective (RTO)</strong> is the maximum acceptable duration of downtime — how
           quickly the system must recover after a failure. <strong>Recovery Point Objective (RPO)</strong> is
           the maximum acceptable data loss — how far back in time the system can recover to. These are business
           requirements that drive technical architecture. A payment system with RTO of 5 minutes and RPO of
           zero requires synchronous replication and automatic failover. An analytics dashboard with RTO of 1
           hour and RPO of 15 minutes can use asynchronous replication with manual failover.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Single Point of Failure</h3>
         <p>
@@ -107,10 +114,13 @@ export default function HighAvailabilityArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           High availability architecture is built on redundancy patterns at every layer, with failover
           mechanisms that automatically or manually redirect traffic from failed components to healthy ones.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/high-availability-architecture.svg"
@@ -119,13 +129,13 @@ export default function HighAvailabilityArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Active-Passive Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In active-passive configuration, one component (the primary) handles all traffic while another
           (the standby) remains idle, ready to take over if the primary fails. The standby continuously
           synchronizes state from the primary — synchronously for zero data loss, or asynchronously for
           lower latency. A health monitor checks the primary&apos;s health through heartbeats or health
           checks. On failure detection, the standby is promoted to primary and begins handling traffic.
-        </p>
+        </HighlightBlock>
         <p>
           This pattern is used for databases with strong consistency requirements (MySQL master-slave,
           PostgreSQL streaming replication), stateful services where only one instance can write at a time,
@@ -164,25 +174,28 @@ export default function HighAvailabilityArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Pattern</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Pattern</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Active-Passive</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>Active-Passive</strong></td>
               <td className="p-3">
                 Simple to implement and reason about. No split-brain risk. Strong consistency guaranteed.
               </td>
               <td className="p-3">
                 Wasted capacity — standby sits idle. Failover takes seconds to minutes. Manual promotion may be slow.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Active-Active</strong></td>
               <td className="p-3">
                 Full resource utilization. Near-instant failover (LB removes failed node). Better throughput.
@@ -190,8 +203,8 @@ export default function HighAvailabilityArticle() {
               <td className="p-3">
                 Complex state synchronization. Split-brain risk. Conflict resolution overhead.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Sync Replication</strong></td>
               <td className="p-3">
                 Zero data loss (RPO=0). Strong consistency. Immediate failover with no data loss.
@@ -199,7 +212,7 @@ export default function HighAvailabilityArticle() {
               <td className="p-3">
                 Higher write latency (wait for replica ack). Limited by distance (latency). Replica failure blocks writes.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Async Replication</strong></td>
               <td className="p-3">
@@ -225,25 +238,28 @@ export default function HighAvailabilityArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Design for Failure at Every Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Assume every component will fail — disks corrupt, networks partition, processes crash, and
           engineers make mistakes. Design each layer with redundancy: multiple network paths (BGP with
           multiple ISPs), multiple load balancers (active-active with health checks), multiple application
           servers (auto-scaling groups across AZs), multiple database replicas (primary with standbys), and
           multiple storage copies (distributed file systems with replication factor of 3+).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Automate Failover with Guardrails</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Manual failover is too slow for critical systems — aim for automatic failover with RTO under 2
           minutes. However, automatic failover carries the risk of split-brain (both nodes believing they
           are primary) and false positives (triggering failover for transient issues). Implement guardrails:
           use a consensus mechanism (Paxos, Raft) or a tiebreaker (witness node, quorum) to prevent
           split-brain. Require multiple consecutive health check failures before triggering failover to
           avoid false positives. Log every failover decision with the evidence that triggered it.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Test Failover Regularly</h3>
         <p>
@@ -267,26 +283,29 @@ export default function HighAvailabilityArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Hidden Single Points of Failure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most dangerous SPOFs are the ones you do not know about. A shared DNS provider, a shared
           certificate authority, a shared NTP server, a shared monitoring system, a shared deployment
           pipeline — each of these can bring down your entire system despite redundant application servers
           and databases. Conduct a regular SPOF audit: for every component, ask &quot;what happens if this
           fails?&quot; If the answer is &quot;the system goes down,&quot; you have found a SPOF that needs
           redundancy.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Split-Brain Scenarios</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Split-brain occurs when both the primary and the standby believe they are the active node,
           typically because a network partition prevents them from communicating. Both accept writes,
           creating divergent data that cannot be reconciled. This is one of the most destructive failure
           modes in distributed systems. Prevent split-brain with a quorum mechanism (majority of nodes
           must agree on the primary), a witness node (a third party that breaks ties), or fencing tokens
           (only the node holding the current token can write).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Failover Without Testing</h3>
         <p>
@@ -311,26 +330,29 @@ export default function HighAvailabilityArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">AWS — Multi-AZ RDS</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon RDS provides high availability through multi-AZ deployment. The primary database instance
           runs in one availability zone, with a synchronous standby replica in a different AZ. If the primary
           fails, RDS automatically promotes the standby, updates the DNS record, and resumes service —
           typically within 60-120 seconds. The failover is transparent to the application (DNS propagation
           handles the redirect). RPO is zero because replication is synchronous. This architecture protects
           against AZ-level failures (power loss, network outage) while maintaining strong consistency.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Google — Global Load Balancing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Cloud&apos;s global load balancer distributes traffic across multiple regions automatically.
           If a region becomes unhealthy (detected through health checks), the load balancer redirects traffic
           to healthy regions within seconds. Combined with Cloud Spanner&apos;s globally distributed database
           (synchronous replication within regions, asynchronous across regions), this provides a foundation
           for multi-region high availability. Google&apos;s own services (Search, Gmail, YouTube) run on this
           infrastructure, demonstrating that multi-region HA is achievable at planetary scale.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Netflix — Active-Active Multi-Region</h3>
         <p>
@@ -356,19 +378,22 @@ export default function HighAvailabilityArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           High availability mechanisms introduce security risks that must be addressed to prevent exploitation during failover events.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Failover-Related Vulnerabilities</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Split-Brain Data Corruption:</strong> If split-brain occurs, both nodes accept writes, creating conflicting data. An attacker could exploit this by timing writes during a partition to create inconsistent state. Mitigation: use quorum-based consensus (Paxos, Raft), implement fencing tokens, detect and resolve conflicts automatically.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Failover Credential Exposure:</strong> Automated failover systems require credentials to promote standbys and update DNS. If these credentials are compromised, an attacker can trigger false failovers. Mitigation: use short-lived credentials, restrict failover permissions to specific roles, monitor failover events for anomalies.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Replication Interception:</strong> Asynchronous replication traffic may be intercepted during cross-region transfer. Mitigation: encrypt replication traffic with TLS, use private network connections (VPC peering, Direct Connect), implement mutual authentication between replicas.
             </li>
@@ -394,19 +419,22 @@ export default function HighAvailabilityArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           High availability must be validated through systematic testing — mechanisms that work in theory often fail in practice due to configuration errors, timing issues, or unexpected interactions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Failover Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Planned Failover:</strong> Manually trigger failover during maintenance windows. Measure actual RTO and RPO. Verify that data is consistent after failover. Test both directions (A→B and B→A). Run quarterly at minimum.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Unplanned Failover:</strong> Simulate unexpected failures: kill the primary process, terminate the primary host, sever network connections. Verify that health checks detect the failure, failover triggers automatically, and service resumes within RTO.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Split-Brain Testing:</strong> Introduce network partitions between primary and standby. Verify that only one node remains active (no split-brain). Verify that the partition is detected and resolved when connectivity is restored.
             </li>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function MediaProcessingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Media Processing</strong> transforms uploaded media into optimized formats for
           delivery including image compression, video transcoding, and thumbnail generation. It
           ensures fast loading and consistent quality across devices and network conditions. Media
           processing is critical for user experience — unoptimized media causes slow page loads,
           high bandwidth costs, and poor mobile experience. Without proper processing, users face
           long wait times, excessive data usage, and inconsistent quality across devices.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/media-processing-flow.svg"
@@ -48,7 +52,7 @@ export default function MediaProcessingArticle() {
           caption="Media Processing Flow — showing upload, async processing pipeline, format conversion, optimization, and CDN delivery"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing media processing requires deep
           understanding of image optimization including resize operations maintaining aspect ratio
           with smart cropping for thumbnails, compression balancing quality versus file size through
@@ -62,7 +66,7 @@ export default function MediaProcessingArticle() {
           output with CDN delivery ensuring fast global distribution through edge caching and
           appropriate cache headers. The implementation must balance quality with performance and
           storage costs while supporting diverse devices and network conditions.
-        </p>
+        </HighlightBlock>
 
         <p>
           Modern media processing has evolved from simple resize operations to sophisticated
@@ -78,13 +82,16 @@ export default function MediaProcessingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Media processing is built on fundamental concepts that determine how media is optimized,
           transformed, and delivered. Understanding these concepts is essential for designing
           effective processing pipelines.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Image Optimization:</strong> Resize operations generate multiple sizes from
           original image including thumbnail (150x150), medium (800x600), large (1920x1080) with
           aspect ratio maintenance preventing distortion. Smart cropping identifies important
@@ -93,7 +100,7 @@ export default function MediaProcessingArticle() {
           or lossy methods (JPEG quality adjustment, WebP compression) trading quality for size.
           Format conversion produces modern formats (WebP 30% smaller than JPEG, AVIF 50% smaller)
           with fallback to JPEG/PNG for older browser support.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Video Transcoding:</strong> Converts source video to multiple formats and
@@ -127,11 +134,14 @@ export default function MediaProcessingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Media processing architecture separates upload, processing pipeline, storage, and delivery
           enabling scalable processing with efficient CDN distribution. This architecture is
           critical for performance, cost, and user experience.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/media-processing-flow.svg"
@@ -139,7 +149,7 @@ export default function MediaProcessingArticle() {
           caption="Media Processing Flow — showing upload, async processing pipeline, format conversion, optimization, and CDN delivery"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Media processing flow begins with user uploading original media file. Frontend validates
           file type and size before upload showing progress indicator. Backend receives file
           storing original in object storage with unique key. Processing pipeline triggers
@@ -150,7 +160,7 @@ export default function MediaProcessingArticle() {
           stored in object storage with organized key structure. CDN invalidation purges cache for
           updated media. On request, CDN serves appropriate variant based on device, viewport, and
           format support with fallback logic.
-        </p>
+        </HighlightBlock>
 
         <p>
           Processing pipeline architecture includes queue-based processing through SQS, Kafka, or
@@ -183,13 +193,16 @@ export default function MediaProcessingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing media processing involves trade-offs between quality, performance, storage
           costs, and processing complexity. Understanding these trade-offs is essential for making
           informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Synchronous versus asynchronous processing presents immediacy versus scalability
           trade-offs. Synchronous processing completes during upload request providing immediate
           feedback and processed URLs but blocks upload completion adding latency especially for
@@ -199,7 +212,7 @@ export default function MediaProcessingArticle() {
           progress polling or notification on completion and temporary display of unprocessed media.
           The recommendation is asynchronous for production systems with progress indication,
           synchronous only for small images (thumbnails) where processing is fast.
-        </p>
+        </HighlightBlock>
 
         <p>
           Lossless versus lossy compression presents quality versus size trade-offs. Lossless
@@ -226,18 +239,21 @@ export default function MediaProcessingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing media processing requires following established best practices to ensure
           quality, performance, and cost efficiency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Image optimization generates multiple sizes (thumbnail 150x150, medium 800x600, large
           1920x1080) maintaining aspect ratio. Use smart cropping preserving important content
           (faces, text) through face detection or saliency mapping. Convert to modern formats
           (WebP, AVIF) with JPEG/PNG fallback for older browsers. Apply appropriate compression
           (JPEG quality 80-85 for photos, PNG for graphics) stripping metadata reducing file size.
-        </p>
+        </HighlightBlock>
 
         <p>
           Video transcoding generates adaptive bitrate variants (360p, 720p, 1080p, 4K) enabling
@@ -274,17 +290,20 @@ export default function MediaProcessingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing media processing to ensure quality,
           performance, and cost efficiency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           No image optimization serves original large files causing slow page loads and high
           bandwidth costs. Fix by generating multiple sizes (thumbnail, medium, large) and serving
           appropriate size based on context. Apply compression and format conversion reducing file
           size 50-80%.
-        </p>
+        </HighlightBlock>
 
         <p>
           Serving wrong format displays WebP/AVIF to unsupported browsers showing broken images. Fix
@@ -343,20 +362,23 @@ export default function MediaProcessingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Media processing is critical for content delivery across different domains. Here are
           real-world implementations from production systems demonstrating different approaches to
           media processing challenges.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Instagram image processing addresses consistent feed quality with filters and compression.
           The solution applies consistent filters through preset filters (Clarendon, Juno, Lark),
           generates multiple sizes (thumbnail, feed, story) with smart cropping focusing on subject,
           compresses images (WebP for Android, HEIC for iOS) reducing bandwidth, and delivers
           through CDN with edge caching globally. The result is consistent visual quality across
           billions of daily uploads with fast loading worldwide.
-        </p>
+        </HighlightBlock>
 
         <p>
           YouTube video processing addresses adaptive streaming for billions of users. The solution
@@ -395,14 +417,17 @@ export default function MediaProcessingArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of media processing design, implementation, and
           operational concerns for staff and principal engineer interviews.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you optimize images for web?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you optimize images for web?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Generate multiple sizes (thumbnail 150x150, medium 800x600, large 1920x1080)
               maintaining aspect ratio. Convert to modern formats (WebP, AVIF) with JPEG/PNG

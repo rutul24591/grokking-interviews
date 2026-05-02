@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,7 @@ export default function GlobalErrorHandlersArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Global error handlers</strong> are the last line of defense in a frontend
           application&apos;s error management strategy. They are browser-level or framework-level
           hooks that intercept uncaught exceptions and unhandled promise rejections that have
@@ -47,8 +48,8 @@ export default function GlobalErrorHandlersArticle() {
           <code>window.addEventListener(&quot;unhandledrejection&quot;)</code>. Together, they
           cover synchronous runtime exceptions, resource loading failures, and asynchronous
           promise rejections respectively.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The importance of global error handlers in production cannot be overstated. Research
           consistently shows that the vast majority of frontend errors go unreported by users.
           A user encountering a broken button, a failed API call that silently drops data, or a
@@ -59,8 +60,8 @@ export default function GlobalErrorHandlersArticle() {
           submerged mass beneath. At scale, companies like Google, Meta, and Netflix have found
           that systematic global error capture reduces mean time to detection (MTTD) by orders
           of magnitude compared to relying on user reports alone.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A critical distinction exists between <strong>capturing</strong> errors and{" "}
           <strong>handling</strong> them gracefully. Global error handlers primarily serve the
           capture function: they intercept errors that have already escaped local handling and
@@ -73,7 +74,7 @@ export default function GlobalErrorHandlersArticle() {
           timing. When a global handler fires, it signals that something slipped through the
           local error handling net, making these events valuable signals for identifying gaps
           in defensive coding practices.
-        </p>
+        </HighlightBlock>
         <p>
           Global handlers complement local error handling by forming the outermost ring of a
           defense-in-depth strategy. The innermost layer consists of <code>try-catch</code>{" "}
@@ -102,7 +103,7 @@ export default function GlobalErrorHandlersArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           window.onerror vs addEventListener(&quot;error&quot;)
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <code>window.onerror</code> callback and{" "}
           <code>window.addEventListener(&quot;error&quot;, handler)</code> both intercept
           uncaught runtime exceptions, but they differ in meaningful ways that affect
@@ -118,8 +119,8 @@ export default function GlobalErrorHandlersArticle() {
           handlers without overwriting previous ones), integrates cleanly with the standard
           event model, and can capture resource loading errors when registered on the capture
           phase.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A crucial behavioral difference involves resource loading errors. When an{" "}
           <code>&lt;img&gt;</code>, <code>&lt;script&gt;</code>, or{" "}
           <code>&lt;link&gt;</code> tag fails to load, the browser fires an{" "}
@@ -132,8 +133,8 @@ export default function GlobalErrorHandlersArticle() {
           failed stylesheet loads, or script loading failures at the window level. For
           production monitoring, registering on the capture phase is essential for complete
           error visibility.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cross-origin script errors present a notorious challenge. When a script loaded from a
           different origin throws an error, browsers enforce a security policy that reduces the
           error information to a generic <code>&quot;Script error.&quot;</code> message with no
@@ -144,7 +145,7 @@ export default function GlobalErrorHandlersArticle() {
           server hosting the script must respond with an{" "}
           <code>Access-Control-Allow-Origin</code> CORS header. Without both conditions
           satisfied, the global handler receives almost no actionable information.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Unhandled Promise Rejections
@@ -271,13 +272,18 @@ export default function GlobalErrorHandlersArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Global error handling is best understood as a layered architecture where each layer
           provides progressively broader coverage at the cost of decreasing context about the
           error&apos;s origin. The innermost layers have the most context (they know exactly
           which operation failed and can attempt recovery), while the outermost layers have
           the least context but ensure nothing escapes observation.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          A robust design explicitly covers three capture paths: synchronous runtime errors,
+          unhandled promise rejections, and resource load failures. Missing any one of these
+          produces a systematic blind spot.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/global-error-handlers-diagram-2.svg"
@@ -285,7 +291,7 @@ export default function GlobalErrorHandlersArticle() {
           caption="Figure 2: Different error types and their capture mechanisms"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The propagation paths for different error types diverge significantly, as shown
           above. Synchronous runtime errors (like accessing a property on{" "}
           <code>undefined</code>) propagate up the call stack, through any enclosing{" "}
@@ -298,7 +304,7 @@ export default function GlobalErrorHandlersArticle() {
           these three distinct propagation paths is essential for designing a comprehensive
           error capture system, because missing any one of them creates a blind spot that can
           mask entire categories of production issues.
-        </p>
+        </HighlightBlock>
 
       </section>
 
@@ -307,16 +313,16 @@ export default function GlobalErrorHandlersArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Each global error capture mechanism has distinct strengths and limitations. The
           following comparison helps architects choose the right combination for their
           monitoring strategy.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 overflow-x-auto rounded-lg border border-theme">
           <table className="min-w-full text-sm">
             <thead className="bg-panel-soft">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <th className="px-4 py-3 text-left font-semibold">Dimension</th>
                 <th className="px-4 py-3 text-left font-semibold">window.onerror</th>
                 <th className="px-4 py-3 text-left font-semibold">
@@ -325,7 +331,7 @@ export default function GlobalErrorHandlersArticle() {
                 <th className="px-4 py-3 text-left font-semibold">
                   addEventListener(&quot;unhandledrejection&quot;)
                 </th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody className="divide-y divide-theme">
               <tr>
@@ -428,7 +434,7 @@ export default function GlobalErrorHandlersArticle() {
           </table>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The practical recommendation is to use all three mechanisms together.{" "}
           <code>addEventListener(&quot;error&quot;, handler, true)</code> on the capture phase
           covers synchronous exceptions and resource failures.{" "}
@@ -439,7 +445,7 @@ export default function GlobalErrorHandlersArticle() {
           The trade-off is complexity: three different event shapes must be normalized into a
           single reporting format, and care must be taken to avoid double-reporting the same
           error when it triggers multiple handlers.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -448,7 +454,7 @@ export default function GlobalErrorHandlersArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Install handlers as early as possible:</strong> Global error handlers
             should be registered in a script that loads before the main application bundle.
             Ideally, place a small inline script in the <code>&lt;head&gt;</code> that sets up{" "}
@@ -458,8 +464,8 @@ export default function GlobalErrorHandlersArticle() {
             the bundle loads, those errors are lost. Some monitoring services (Sentry, Datadog
             RUM) provide lightweight loader scripts specifically designed for early
             installation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enrich errors with contextual metadata:</strong> A bare error message and
             stack trace are often insufficient for diagnosis. Attach the current route or page
             URL, the authenticated user&apos;s identifier (anonymized if necessary), the
@@ -468,8 +474,8 @@ export default function GlobalErrorHandlersArticle() {
             report into an actionable investigation starting point. Store this context in a
             module-level variable that the error handler can access synchronously, avoiding
             async lookups during error processing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Rate limit error reports:</strong> A single broken function in a{" "}
             <code>requestAnimationFrame</code> loop or a React component that re-renders in
             an infinite loop can generate thousands of identical errors per second. Without
@@ -478,7 +484,7 @@ export default function GlobalErrorHandlersArticle() {
             threshold (e.g., 10 errors per minute). After the limit is reached, batch
             remaining errors or log a single &quot;rate limit exceeded&quot; event with a
             count.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Deduplicate identical errors:</strong> Maintain a short-lived in-memory
             set (keyed by error message + stack trace hash) that tracks errors reported within
@@ -532,15 +538,15 @@ export default function GlobalErrorHandlersArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Swallowing errors silently:</strong> Returning <code>true</code> from{" "}
             <code>window.onerror</code> or calling <code>event.preventDefault()</code>{" "}
             suppresses the browser&apos;s default error logging. While this makes the console
             cleaner, it can hide errors during development and make debugging extremely
             difficult. Only suppress default behavior in production, and even then, ensure the
             error is captured by your monitoring system before suppression.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring promise rejections entirely:</strong> Many applications install a{" "}
             <code>window.onerror</code> handler but neglect{" "}
             <code>unhandledrejection</code>. In modern codebases where async/await and
@@ -548,8 +554,8 @@ export default function GlobalErrorHandlersArticle() {
             from forgotten <code>await</code> statements, fire-and-forget async calls, and
             race conditions in concurrent operations all slip through silently. Always
             register both handlers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing cross-origin configuration:</strong> Teams deploy their
             JavaScript bundles to a CDN with a different origin than the main domain but
             forget to add <code>crossorigin=&quot;anonymous&quot;</code> to script tags and
@@ -558,7 +564,7 @@ export default function GlobalErrorHandlersArticle() {
             <code>&quot;Script error.&quot;</code> — rendering the entire monitoring system
             useless for the most critical errors. This is surprisingly common and should be
             part of any deployment checklist.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Error handlers that throw:</strong> Accessing properties on the error
             object without null checks, calling JSON.stringify on objects with circular
@@ -604,7 +610,7 @@ export default function GlobalErrorHandlersArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           GitHub&apos;s Client-Side Error Monitoring
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           GitHub processes billions of page views monthly and has built a sophisticated
           client-side error monitoring pipeline. Their approach involves installing a
           lightweight error capture script as one of the first resources loaded on every page.
@@ -618,12 +624,12 @@ export default function GlobalErrorHandlersArticle() {
           Their system also distinguishes between first-party errors (in GitHub&apos;s own
           code) and third-party errors (from browser extensions or injected scripts), routing
           them to different dashboards with different alerting thresholds.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Slack&apos;s Error Aggregation Strategy
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Slack&apos;s desktop and web clients face unique error handling challenges due to the
           long-lived nature of their sessions. A user may keep Slack open for days or weeks,
           accumulating state and encountering errors that only manifest after extended usage
@@ -638,12 +644,12 @@ export default function GlobalErrorHandlersArticle() {
           message send failures, real-time connection drops) are sampled at 100%, while less
           critical categories (layout glitches, non-essential feature errors) are sampled at
           lower rates.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Netflix&apos;s Graceful Error Recovery in the Player
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix&apos;s video player is one of the most error-resilient frontend applications
           in production. The player operates in an environment where errors are not just
           likely but inevitable: network conditions fluctuate, DRM license servers have
@@ -660,7 +666,7 @@ export default function GlobalErrorHandlersArticle() {
           traffic. This closed-loop system, where global error capture feeds directly into
           automated remediation, represents the state of the art in production error handling
           at scale.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/global-error-handlers-diagram-3.svg"
@@ -674,13 +680,16 @@ export default function GlobalErrorHandlersArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: What is the difference between <code>window.onerror</code> and{" "}
               <code>window.addEventListener(&quot;error&quot;)</code>?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Both capture uncaught synchronous exceptions, but they differ in three key
               ways. First, <code>window.onerror</code> is a property assignment, so setting
               it overwrites any previous handler, while <code>addEventListener</code>{" "}
@@ -693,14 +702,14 @@ export default function GlobalErrorHandlersArticle() {
               single <code>ErrorEvent</code> object. In modern applications, prefer{" "}
               <code>addEventListener</code> for its flexibility and broader coverage, but
               consider keeping <code>window.onerror</code> as a legacy fallback.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: Why does &quot;Script error.&quot; appear in my error monitoring, and how do
               I fix it?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: &quot;Script error.&quot; is a browser security feature. When a script loaded
               from a different origin throws an error, the browser strips the error details

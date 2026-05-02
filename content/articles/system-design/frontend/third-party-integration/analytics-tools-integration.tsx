@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Analytics tools integration</strong> is the system design work required to capture user behavior, product events, and performance signals in a way that is accurate, privacy-compliant, and operationally safe. In practice, many teams integrate third-party analytics SDKs, tag managers, and experimentation tools that run in the browser.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Analytics is deceptively risky: it is easy to ship a tracking SDK, but difficult to maintain data quality and performance over time. Analytics integrations often become ungoverned: dozens of event names, inconsistent properties, duplicate beacons, and privacy regressions. At scale, analytics must be treated like an API: versioned, reviewed, and budgeted.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, analytics integration requires balancing four competing concerns:
         </p>
@@ -76,6 +80,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/third-party-integration/analytics-tracking-flow.svg"
@@ -84,9 +91,9 @@ export default function ArticlePage() {
         />
 
         <h3>Event Taxonomy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A well-designed event taxonomy is critical for data quality. Without taxonomy, you get inconsistent event names, missing properties, and unqueryable data:
-        </p>
+        </HighlightBlock>
 
         <h4>Event Naming Convention</h4>
         <ul className="space-y-2">
@@ -126,9 +133,9 @@ export default function ArticlePage() {
             <strong>Review Process:</strong> Require review before adding new events. Prevent event sprawl.
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Key principle:</strong> Treat events like API contracts. Changes require review and versioning.
-        </p>
+        </HighlightBlock>
 
         <h3>Consent Gating</h3>
         <p>
@@ -254,14 +261,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust analytics architecture treats analytics as a <strong>first-class system</strong> with proper governance, monitoring, and error handling.
-        </p>
+        </HighlightBlock>
 
         <h3>Analytics Layer Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement an analytics abstraction layer between your app and analytics SDKs:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Abstraction:</strong> Your app calls `analytics.track()`, not `gtag()` or `mixpanel.track()`.
@@ -349,9 +359,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Analytics integration involves trade-offs between data completeness, performance, and privacy.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -393,9 +406,9 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that <strong>tracking key events with consent gating</strong> is the default choice. Track everything is rarely justified given performance and privacy costs.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -403,13 +416,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Define Event Taxonomy:</strong> Establish naming conventions and property standards. Document all events.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Consent Gating:</strong> Don't track until user consents. Queue events during consent decision.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Batching:</strong> Batch events to reduce requests. Flush on timer, threshold, or page unload.
           </li>
@@ -448,13 +464,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No Event Taxonomy:</strong> Inconsistent event names and properties lead to unqueryable data.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Tracking Without Consent:</strong> Violates GDPR/CCPA. Risk of fines.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Sending PII:</strong> Never send raw email, name, or other PII to analytics.
           </li>
@@ -481,14 +500,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce: Conversion Funnel Tracking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Problem:</strong> E-commerce site needed to track conversion funnel but had inconsistent event tracking.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong> Defined event taxonomy for funnel events (`product_viewed`, `cart_added`, `checkout_started`, `purchase_completed`). Implemented analytics abstraction layer. Added validation and monitoring.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Results:</strong> Data quality improved. Funnel analysis became reliable. Identified 15% drop-off at checkout, fixed, increased conversion 12%.
         </p>
@@ -532,14 +554,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is an event taxonomy and why is it important?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Event taxonomy is a standardized system for naming and structuring analytics events:
-            </p>
+            </HighlightBlock>
             <ul className="space-y-2 mb-3">
               <li>
                 <strong>Naming Convention:</strong> Consistent format (e.g., `[object]_[action]` like `button_clicked`).

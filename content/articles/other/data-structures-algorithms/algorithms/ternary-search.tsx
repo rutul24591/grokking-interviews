@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,22 +25,25 @@ export default function TernarySearchArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Ternary Search finds the extremum (maximum or minimum) of a unimodal function over an
           ordered domain by evaluating at two points that trisect the current range and eliminating
           the third of the range that cannot contain the extremum. For continuous domains, each
           iteration shrinks the range by 1/3 (keeping 2/3), giving O(log₃/₂ n) = O(log n)
           convergence. For discrete domains, termination is when the range narrows to 1–3 elements
           and a direct comparison finishes the work.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Ternary search is often introduced as a variant of binary search, but this is misleading.
           Binary search finds a <em>value</em> in a sorted sequence. Ternary search finds the
           <em> extremum of a unimodal function</em> — a different problem. When the problem
           reduces to &ldquo;find x where a monotone predicate flips&rdquo;, use binary search.
           When it reduces to &ldquo;find x minimizing/maximizing f(x) where f rises then falls&rdquo;,
           use ternary search.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           In practice, ternary search appears in competitive programming (optimizing convex/concave
           cost functions), numerical optimization (when gradients are unavailable), and specific
@@ -51,22 +55,25 @@ export default function TernarySearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A function f is <span className="font-semibold">unimodal</span> on [lo, hi] if there
           exists a point x* such that f is strictly increasing on [lo, x*] and strictly decreasing
           on [x*, hi] (for a maximum; flip for minimum). Ternary search exploits unimodality: pick
           m1 = lo + (hi − lo)/3 and m2 = hi − (hi − lo)/3. If f(m1) &lt; f(m2), the maximum cannot
           lie in [lo, m1] (it would contradict unimodality), so lo = m1 + 1. Otherwise the maximum
           cannot lie in [m2, hi], so hi = m2 − 1.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Each iteration eliminates one-third of the range, keeping two-thirds. After k iterations
           the remaining range is (2/3)^k · (hi − lo). Termination at range size 1 requires
           log₃/₂(n) ≈ 1.71 · log₂ n iterations. Each iteration costs 2 function evaluations, so
           total cost is ≈ 3.42 · log₂ n evaluations — about 3.4× more than binary search&rsquo;s
           log₂ n comparisons. Binary search is strictly cheaper per iteration but solves a
           different problem.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Critical constraint: ternary search <span className="font-semibold">requires strict
           unimodality</span>. On plateaus (f(x1) == f(x2) on a flat region), the elimination logic
@@ -83,18 +90,21 @@ export default function TernarySearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Discrete version: while hi − lo &gt; 2, compute m1 = lo + (hi − lo)/3 and m2 = hi − (hi −
           lo)/3. Compare f(m1) and f(m2). Narrow lo or hi accordingly. When range ≤ 2, evaluate all
           remaining elements directly and return the best. The explicit base case avoids
           off-by-one bugs at the termination boundary.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Continuous version: iterate until hi − lo &lt; ε (absolute tolerance) or (hi − lo) /
           (|lo| + |hi|) &lt; ε (relative tolerance). Typical ε is 1e-9 for doubles; fewer
           iterations (~60) suffice since double precision is ~15 digits. Use relative tolerance
           when the range can span orders of magnitude.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/ternary-search-diagram-2.svg"
           alt="Ternary search vs golden-section search efficiency"
@@ -112,18 +122,21 @@ export default function TernarySearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">vs Binary Search:</span> different problems. Binary
           requires a monotone predicate (sorted order, feasibility boundary). Ternary requires a
           unimodal function. When the derivative f&prime;(x) is available and monotone, binary-
           search f&prime;(x) = 0 instead — solves the same optimization in half the evaluations.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">vs Golden-Section Search:</span> golden-section is
           strictly better than ternary for continuous domains: same convergence, one probe per
           iteration. Ternary persists in teaching materials because of its cleaner
           &ldquo;trisect&rdquo; intuition, but real numerical code uses golden-section.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">vs Gradient Descent:</span> if f is differentiable,
           gradient descent converges faster (quadratically for Newton&rsquo;s method, linearly for
@@ -141,18 +154,21 @@ export default function TernarySearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Before adopting ternary search, verify unimodality. Plot f over the expected domain,
           check for plateaus, kinks, or multiple local extrema. A function that looks unimodal at
           macro scale but has small ripples will lead ternary astray. Multimodal functions need
           global optimization methods (simulated annealing, basin-hopping, multi-start).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           For continuous domains, prefer golden-section search or Brent&rsquo;s method. They are
           faster per iteration and more robust to floating-point imprecision. Use ternary search
           only for teaching, for discrete integer domains, or when algorithmic clarity outweighs
           optimization.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Set tolerance conservatively. For double-precision floats, hi − lo &lt; 1e-9 is typical,
           but cap iterations at 100 to avoid infinite loops from floating-point drift. For integer
@@ -162,16 +178,19 @@ export default function TernarySearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Applying to non-unimodal functions:</span> the algorithm
           silently returns a local extremum — possibly far from the global one. Verify unimodality
           analytically or by dense sampling before trusting the result.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Off-by-one on integer domains:</span> lo = m1 + 1 vs lo
           = m1 matters when extremum sits exactly on m1. Safer pattern: narrow to hi − lo ≤ 2, then
           brute-force the remaining 2–3 elements.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Floating-point termination:</span> hi − lo &lt; ε may
           never be reached due to rounding; always cap iterations. Golden-section is more
@@ -186,17 +205,20 @@ export default function TernarySearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Competitive programming optimization:</span> problems of
           the form &ldquo;minimize cost(x) where cost is convex&rdquo; — parametrized geometry,
           production scheduling with convex penalties, cost-vs-quality trade-off curves.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Peak finding in mountain arrays:</span> given an array
           that rises then falls, find the peak index. Leetcode 162 (Find Peak Element) and 852
           (Peak Index in a Mountain Array) are canonical. Ternary works; binary on the derivative
           sign is faster.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Machine learning hyperparameter tuning:</span>
           one-dimensional hyperparameter scans (learning rate over a fixed range) sometimes use
@@ -218,18 +240,21 @@ export default function TernarySearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Find peak in mountain array.</span> Classic ternary (or
           binary on derivative) question. Binary is cleaner: compare a[mid] vs a[mid+1]; if
           ascending, lo = mid + 1; else hi = mid.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Why not binary search for optimization?</span> Binary
           requires a monotone predicate — a single &ldquo;yes/no&rdquo; boundary. Unimodal
           functions have an extremum, not a boundary, so binary doesn&rsquo;t apply directly.
           However, if the derivative is available and monotone, binary-searching f&prime; = 0 is
           equivalent and faster.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Complexity?</span> O(log n) with base 3/2 ≈ 1.71 · log₂
           n iterations, each with 2 evaluations → ~3.42 · log₂ n function evaluations. Golden-

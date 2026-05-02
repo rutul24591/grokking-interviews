@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function IdempotentRequestsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Idempotent Requests enable systems to handle repeated requests without side effects. Systems can configure idempotency (configure how to handle idempotency), set idempotency keys (set idempotency keys), implement idempotency strategies (implement idempotency strategies), handle repeated requests (handle repeated requests), and manage idempotency (manage idempotency process). Idempotent requests are fundamental to system reliability (maintain system reliability), data integrity (maintain data integrity), and user experience (maintain user experience). For distributed systems, effective idempotent requests are essential for system reliability, data integrity, and user experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, idempotent requests architecture involves idempotency concepts (understand idempotency), idempotency keys (implement idempotency keys), request deduplication (deduplicate requests), idempotency strategies (define idempotency strategies), and idempotency management (manage idempotency process). The implementation must balance reliability (handle repeated requests) with performance (don&apos;t overhead system) and user experience (maintain user experience). Poor idempotent requests lead to data corruption, system failures, and user frustration.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of idempotent requests extends beyond simple request handling. Idempotency concepts (understand idempotency). Idempotency keys (implement idempotency keys). Request deduplication (deduplicate requests). Idempotency strategies (define idempotency strategies). Idempotency management (manage idempotency process). For staff engineers, idempotent requests are a system reliability infrastructure decision affecting system reliability, data integrity, and user experience.
         </p>
@@ -46,13 +50,16 @@ export default function IdempotentRequestsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Idempotency Concepts</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Idempotent operations are operations that can be repeated without side effects. Operation definition defines the operation clearly. Operation repetition allows repeating the operation multiple times. Operation result remains the same regardless of repetition. Idempotent operations enable reliable repeated execution. Benefits include improved reliability (operations succeed even when retried), data integrity (no duplicate side effects from retries). Drawbacks includes increased complexity (implementing idempotency requires careful design), performance overhead (tracking operation state).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Non-idempotent operations are operations that cannot be repeated without side effects. Operation definition defines the operation. Operation repetition may cause different results. Operation result changes with each repetition. Non-idempotent operations enable flexible operations but require careful handling. Benefits include implementation flexibility (simpler to implement), simplicity (no state tracking needed). Drawbacks includes reliability issues (retries may cause problems), data integrity issues (duplicate operations cause data corruption).
-        </p>
+        </HighlightBlock>
         <p>
           Idempotency guarantee guarantees idempotency for operations. Guarantee definition defines idempotency requirements clearly. Guarantee enforcement ensures idempotency is maintained. Guarantee validation verifies idempotency is working. Idempotency guarantee enables reliable operation handling. Benefits include improved reliability (operations are safe to retry), data integrity (no duplicate side effects). Drawbacks includes guarantee overhead (tracking and validation costs), implementation complexity (requires careful design).
         </p>
@@ -104,9 +111,12 @@ export default function IdempotentRequestsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Idempotent requests architecture spans idempotency service, key service, deduplication service, and strategy service. Idempotency service manages idempotency. Key service manages keys. Deduplication service manages deduplication. Strategy service manages strategies. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/idempotent-requests/idempotent-architecture.svg"
@@ -117,9 +127,9 @@ export default function IdempotentRequestsArticle() {
         />
 
         <h3>Idempotency Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Idempotency service manages idempotency. Idempotency storage (store idempotency). Idempotency retrieval (retrieve idempotency). Idempotency update (update idempotency). Idempotency service is the core of idempotent requests. Benefits include centralization (one place for idempotency), consistency (same idempotency everywhere). Drawbacks includes complexity (manage idempotency), coupling (services depend on idempotency service).
-        </p>
+        </HighlightBlock>
         <p>
           Idempotency policies define idempotency rules. Default idempotency (default idempotency). Idempotency validation (validate idempotency). Idempotency sync (sync idempotency). Idempotency policies automate idempotency management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function IdempotentRequestsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Idempotent requests design involves trade-offs between strict and lenient idempotency, automatic and manual deduplication, and aggressive and conservative handling. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Idempotency: Strict vs. Lenient</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Strict idempotency (strictly enforce idempotency). Pros: High reliability (high reliability), no side effects (no side effects), data integrity (data integrity). Cons: Overhead (overhead), may reject legitimate (may reject legitimate), complexity (complexity). Best for: High reliability, data integrity.
-        </p>
+        </HighlightBlock>
         <p>
           Lenient idempotency (leniently enforce idempotency). Pros: Lower overhead (lower overhead), no rejection (no rejection), simplicity (simplicity). Cons: May allow side effects (may allow side effects), data issues (data issues), reliability issues (reliability issues). Best for: Lower overhead, simplicity.
         </p>
@@ -207,13 +220,16 @@ export default function IdempotentRequestsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide idempotency:</strong> Idempotency concepts. Idempotency keys. Idempotency strategies. Let users choose.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement idempotency keys:</strong> Key generation. Key storage. Key validation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Deduplicate requests:</strong> Request identification. Request comparison. Request deduplication.
           </li>
@@ -243,13 +259,16 @@ export default function IdempotentRequestsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No idempotency:</strong> Can&apos;t handle idempotency. <strong>Solution:</strong> Provide idempotency.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No idempotency keys:</strong> No idempotency keys. <strong>Solution:</strong> Implement idempotency keys.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No request deduplication:</strong> Can&apos;t deduplicate requests. <strong>Solution:</strong> Deduplicate requests.
           </li>
@@ -279,16 +298,19 @@ export default function IdempotentRequestsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>API Idempotent Requests</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           API platforms provide idempotent requests. Request idempotency (make requests idempotent). Idempotency keys (use idempotency keys). Request deduplication (deduplicate requests). Users control API idempotent requests.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Payment Idempotent Requests</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Payment platforms provide idempotent requests. Payment idempotency (make payments idempotent). Idempotency keys (use idempotency keys). Request deduplication (deduplicate requests). Users control payment idempotent requests.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Database Idempotent Requests</h3>
         <p>
@@ -308,12 +330,15 @@ export default function IdempotentRequestsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design idempotent requests that balances reliability with performance?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design idempotent requests that balances reliability with performance?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement idempotent requests with performance because users want reliability (safe retries, no duplicate processing) but want performance (not slow down every request). Handle idempotency: handle idempotency (idempotent operations, safe retries, consistent results)—ensure operations safe to retry. Limit overhead: limit overhead (efficient idempotency, minimal latency, cache idempotency)—prevent performance degradation, efficient handling. Monitor performance: monitor performance (idempotency success rate, performance impact, overhead cost)—identify optimization opportunities, balance reliability with cost. The performance insight: users want reliability but want performance—provide idempotency (operations, retries, results) with limits (efficient, minimal, cache), monitoring (success, impact, cost), and balance safe retries with performance.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -966,12 +966,16 @@ export default function DebouncingThrottlingArticle() {
           ============================================================ */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: explain the semantics (debounce vs throttle), the UX trade-offs (latency vs freshness),
+          and how event handling impacts main-thread responsiveness and INP.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://lodash.com/docs/#debounce" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Lodash — debounce
             </a> — Lodash debounce documentation with maxWait and leading/trailing options.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://lodash.com/docs/#throttle" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Lodash — throttle
@@ -987,16 +991,16 @@ export default function DebouncingThrottlingArticle() {
               RxJS — debounceTime
             </a> — RxJS operator for debouncing observable streams.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://web.dev/optimize-long-tasks/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev — Optimize Long Tasks
             </a> — Guide on keeping the main thread responsive.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#improving_scrolling_performance_with_passive_listeners" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN — Passive Event Listeners
             </a> — How passive listeners improve scroll performance.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

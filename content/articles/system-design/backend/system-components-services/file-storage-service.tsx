@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -24,22 +25,25 @@ export default function FileStorageServiceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>file storage service</strong> is a distributed system that provides durable, scalable, and highly
           available storage for binary objects (files) of arbitrary size and type. It serves as the backbone for
           user-generated content, document management, media libraries, backup systems, and data lake architectures. At
           its core, a file storage service must guarantee durability (the file will not be lost), availability (the file
           can be retrieved when needed), and integrity (the file retrieved is identical to the file stored). These three
           guarantees form the foundation of trust between the storage service and its consumers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           File storage services operate at multiple scales. For small applications, a simple object storage bucket with
           presigned URLs may suffice. For enterprise-scale systems serving millions of users with petabytes of data, the
           architecture must encompass multipart upload coordination, content distribution networks, metadata indexing,
           access control enforcement, lifecycle management, and cross-region replication. Each layer adds complexity but
           enables the system to handle production-scale workloads with predictable performance and strong durability
           guarantees.
-        </p>
+        </HighlightBlock>
         <p>
           The fundamental architectural challenge in file storage is balancing the read-heavy access patterns typical of
           content delivery against the write-heavy ingestion patterns of user uploads. Most file storage systems exhibit
@@ -59,7 +63,10 @@ export default function FileStorageServiceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Object storage versus block storage</strong> defines the fundamental data model. Object storage
           treats each file as an immutable blob identified by a unique key, stored in a flat namespace organized into
           buckets. This model provides simplicity, unlimited scalability per bucket, and built-in versioning. Block
@@ -67,8 +74,8 @@ export default function FileStorageServiceArticle() {
           file systems but not for serving files to end users. Modern file storage services are built on object storage
           (Amazon S3, Google Cloud Storage, Azure Blob Storage) because the object model aligns with the access patterns
           of file upload and download: write once, read many, with no need for in-place modification.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Multipart upload</strong> is the mechanism for reliably transferring large files by dividing them into
           chunks (typically five megabytes each) that are uploaded independently and in parallel. The client initiates a
           multipart upload session, receives an upload identifier, uploads each part independently, and then signals
@@ -77,7 +84,7 @@ export default function FileStorageServiceArticle() {
           (multiple parts upload simultaneously, utilizing available bandwidth), and the ability to upload files larger
           than the single-request size limit of the storage API. The minimum part size is typically five megabytes, with
           a maximum of ten thousand parts per upload, enabling files up to five terabytes.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Presigned URLs</strong> are time-limited, cryptographically signed URLs that grant direct access to a
           specific storage object without exposing the storage service credentials. The application server generates a
@@ -125,15 +132,18 @@ export default function FileStorageServiceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The file storage service architecture consists of an API gateway layer for request routing and
           authentication, an upload pipeline for processing incoming files, a download pipeline for serving files to
           consumers, the underlying object storage for durable content persistence, a metadata store for file attribute
           tracking, and a CDN edge cache for low-latency content delivery. The API gateway handles rate limiting,
           authentication, authorization, SSL termination, and request routing to the appropriate backend service. It
           also implements circuit breaking to protect downstream services during degradation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The upload pipeline begins when a client requests a presigned URL from the API server. The server validates
           the user&apos;s authentication and authorization, checks storage quota limits, generates a unique object key,
           and returns a presigned URL with a configurable time-to-live, typically fifteen minutes. The client then
@@ -141,7 +151,7 @@ export default function FileStorageServiceArticle() {
           upload, dividing the file into chunks and uploading them in parallel. During upload, the pipeline performs
           virus scanning on the incoming content, detects the content type from the file signature (not just the
           extension), and extracts metadata such as image dimensions, video duration, or document page count.
-        </p>
+        </HighlightBlock>
         <p>
           The download pipeline handles access control checks, CDN cache lookups, range request support for partial
           content retrieval, streaming responses for large files, bandwidth throttling to prevent a single user from
@@ -177,7 +187,10 @@ export default function FileStorageServiceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The primary trade-off in file storage architecture is between consistency and availability in the metadata
           layer. When a file is uploaded, the metadata record must be created before the file is considered visible to
           the user. In a strongly consistent metadata store, the upload operation blocks until the metadata is
@@ -186,8 +199,8 @@ export default function FileStorageServiceArticle() {
           but the file may not appear in listing queries for a brief period. Most production systems choose strong
           consistency for the metadata store because user experience demands immediate visibility of uploaded files,
           and the latency cost of a single database write is negligible compared to the upload transfer time.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Direct-to-storage uploads via presigned URLs versus proxying uploads through the application server present a
           fundamental architectural choice. Direct uploads eliminate the application server from the data transfer path,
           reducing server CPU and bandwidth costs, enabling parallel multipart uploads without server-side coordination,
@@ -197,7 +210,7 @@ export default function FileStorageServiceArticle() {
           virus scanning before persistence, but they consume server resources and create a bottleneck for large files.
           The recommended approach is direct uploads with presigned URLs for large files and proxy uploads for small
           files that require server-side processing.
-        </p>
+        </HighlightBlock>
         <p>
           CDN caching versus direct origin serving involves a trade-off between performance and freshness. Caching
           objects at the CDN edge dramatically reduces latency for end users and protects the origin from read load, but
@@ -238,20 +251,23 @@ export default function FileStorageServiceArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Always use presigned URLs for client-side uploads to eliminate the application server from the data transfer
           path. The presigned URL should be scoped to the specific object key, HTTP method, and a short time-to-live of
           fifteen minutes or less. Generate the presigned URL server-side after validating the user&apos;s authorization
           and checking storage quota limits. For multipart uploads, generate presigned URLs for each part individually
           or use a session token that authorizes all parts within a single multipart upload session.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement lifecycle policies from the beginning to manage storage costs and prevent unbounded growth. Define
           rules for transitioning objects to cheaper storage classes based on access patterns, expiring incomplete
           multipart uploads after seven days to reclaim storage from abandoned uploads, and permanently deleting old
           versions after the retention period. Lifecycle policies are a cost control mechanism that prevents storage
           costs from growing linearly with time.
-        </p>
+        </HighlightBlock>
         <p>
           Enable server-side encryption for all objects at rest. Use SSE-KMS (server-side encryption with key management
           service) for objects that require audit logging of key usage and the ability to rotate encryption keys. Use
@@ -286,21 +302,24 @@ export default function FileStorageServiceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Failing to clean up incomplete multipart uploads is one of the most common and costly mistakes. When a client
           initiates a multipart upload but never completes it, the uploaded parts remain in storage indefinitely,
           consuming space and incurring costs. Without a lifecycle policy to abort incomplete uploads after a
           configurable period, these orphaned parts accumulate over time and become a significant hidden cost. The fix
           is straightforward: configure a lifecycle rule that aborts incomplete multipart uploads after seven days, and
           regularly audit storage for orphaned parts from before the rule was enabled.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Storing file metadata in the same database as application data creates a scalability bottleneck. As the number
           of files grows, the metadata table becomes large and slow to query, impacting application performance. The
           metadata store should be a dedicated database optimized for file attribute queries, with its own scaling
           strategy and indexing plan. Separating file metadata from application data enables independent scaling and
           prevents file operations from impacting core application performance.
-        </p>
+        </HighlightBlock>
         <p>
           Not implementing rate limiting on upload endpoints allows a single user or tenant to consume disproportionate
           storage and bandwidth resources. Rate limits should be enforced at multiple levels: per-user upload rate
@@ -337,20 +356,23 @@ export default function FileStorageServiceArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Dropbox built its entire product on a file storage architecture with a custom block-level synchronization
           protocol that transfers only the changed blocks of files rather than entire files. This differential sync
           approach dramatically reduces bandwidth consumption for large files with small changes, such as documents and
           virtual machine images. Dropbox&apos;s storage backend uses Amazon S3 for durable object storage with a custom
           metadata layer that tracks file versions, sync state, and sharing permissions across billions of files.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Google Photos serves billions of users with a file storage architecture that combines object storage for
           original-quality photos, compressed storage for storage-saver quality, and a metadata layer for facial
           recognition, object detection, and search indexing. Google Photos uses intelligent storage tiering to move
           rarely accessed photos to cheaper storage while keeping frequently viewed photos in high-performance tiers,
           optimizing cost at petabyte scale.
-        </p>
+        </HighlightBlock>
         <p>
           GitHub stores all repository data, including Git objects, LFS (large file storage) objects, and release
           artifacts, in a file storage architecture backed by Azure Blob Storage. GitHub&apos;s LFS service uses
@@ -377,12 +399,15 @@ export default function FileStorageServiceArticle() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How would you design a file upload system that supports files up to five terabytes with resumable uploads?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The system would use multipart upload with presigned URLs. The client initiates the upload by requesting a
             presigned URL from the server, which validates authorization, generates a unique object key, and returns the
             URL. The client divides the file into five-megabyte chunks and uploads each chunk directly to object storage
@@ -393,14 +418,14 @@ export default function FileStorageServiceArticle() {
             completes the upload: a lifecycle policy aborts incomplete multipart uploads after seven days, cleaning up
             orphaned parts. For resume capability, the client stores its upload state locally and, on restart, queries
             the server for the list of already-uploaded parts to determine which parts need retransmission.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 2: How do you ensure that a file uploaded by a user is not malicious (e.g., contains malware)?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Malware detection in uploaded files requires a multi-layered approach. First, the server validates the
             content type from the file signature, not the user-provided extension, to prevent content-type spoofing.
             Second, the file is scanned using an antivirus engine (such as ClamAV or a cloud provider malware detection
@@ -412,7 +437,7 @@ export default function FileStorageServiceArticle() {
             sniffing, and Content-Security-Policy to restrict script execution. Finally, for user-generated content
             platforms, the system can integrate with content moderation services that scan images and documents for
             prohibited content using machine learning models.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Garbage collection (GC)</strong> is the automatic memory management mechanism that reclaims memory that a program can no longer reach. In modern frontend applications, GC is not a background detail you can ignore: it is a <strong>runtime scheduler</strong> that can introduce pauses, drive tail latency, and amplify performance regressions when allocation rates spike.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In a server context, memory pressure often manifests as process OOM, swapping, or degraded throughput. In the browser, memory pressure shows up as a combination of: degraded responsiveness (GC pauses), UI-thread contention, increased battery use on mobile, background tab throttling, and eventual tab reloads or crashes. For <strong>long-lived SPAs</strong> (dashboards, editors, collaboration tools), the steady-state behavior after 10-60 minutes matters more than the first 30 seconds.
-        </p>
+        </HighlightBlock>
         <p>
           Staff/principal engineers should treat GC as a first-class design constraint because architectural choices (caching strategy, virtualization, data model shape, subscription patterns, and third-party SDK integration) determine allocation rate, object lifetime distribution, and the likelihood of retaining detached DOM subtrees. Understanding GC at a conceptual level enables you to: (1) set realistic performance budgets, (2) reason about why "minor changes" cause major regressions, and (3) build guardrails that keep the app stable as the codebase scales.
         </p>
@@ -68,6 +72,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/memory-management/garbage-collection-heap.svg"
@@ -76,12 +83,12 @@ export default function ArticlePage() {
         />
 
         <h3>Reachability and the Root Set</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Garbage collectors reclaim objects that are <strong>unreachable</strong> from the program&apos;s <strong>roots</strong>. Roots are references that are always considered alive: global objects, active stack frames, currently executing closures, and runtime-managed roots (for example, queued tasks, active timers, and DOM event listener registries). Anything reachable by following references from the root set remains alive; everything else is eligible for collection.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The root set includes:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Global Scope:</strong> window, document, global variables, module-level variables.
@@ -228,9 +235,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At a systems level, the browser runtime continuously interleaves application work (rendering, event handling, network callbacks) with memory management work (allocation, write barriers, marking, sweeping, and sometimes compaction). A simplified lifecycle looks like this:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-2">
           <li>
             <strong>Allocate:</strong> UI events and data processing allocate objects (arrays, strings, closures, DOM wrappers).
@@ -253,9 +263,9 @@ export default function ArticlePage() {
         />
 
         <h3>Frontend Patterns That Drive GC</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Certain patterns consistently cause GC pressure:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Render Loops:</strong> Components that re-render frequently allocate new objects each render (props, state, event handlers).
@@ -349,9 +359,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Garbage collection is a trade-off space between throughput, latency, and memory footprint. Frontend architecture decisions often push you toward one corner of that triangle.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -394,9 +407,9 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level skill is evaluating these trade-offs in context. For a data-heavy dashboard, virtualization and memoization are essential. For a simple marketing site, they add unnecessary complexity.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -404,13 +417,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Profile Before Optimizing:</strong> Use Chrome DevTools Memory panel to identify actual GC pressure points. Don&apos;t optimize based on assumptions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Reduce Allocation in Hot Paths:</strong> Identify frequently executed code and minimize object creation there.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use WeakMap for Caches:</strong> Allow automatic cleanup when cache keys are no longer referenced.
           </li>
@@ -443,13 +459,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Optimizing Averages:</strong> GC issues show up in tail latency, not averages. Focus on p95/p99 metrics.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Mobile:</strong> Mobile devices have less RAM and slower CPUs. GC pressure is amplified.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Over-Memoization:</strong> Memoizing everything can increase memory retention without reducing allocations meaningfully.
           </li>
@@ -476,14 +495,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Data Dashboard with Real-Time Updates</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Problem:</strong> Dashboard updates every second with new data. After 30 minutes, UI becomes sluggish.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Root Cause:</strong> Each update creates new arrays and objects. Old data not cleared, accumulating in memory. High allocation rate + high survivor rate = GC pressure.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Implement sliding window (keep last N data points), reuse arrays where possible, clear old data references. GC pressure reduced, dashboard stays responsive indefinitely.
         </p>
@@ -527,14 +549,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is garbage collection and how does it work in JavaScript?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Garbage collection is automatic memory management that reclaims memory occupied by objects that are no longer reachable from the root set. JavaScript engines use tracing GC: starting from roots (globals, active stack frames, pending callbacks), mark all reachable objects, then sweep (free) unmarked objects.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               Modern JavaScript GCs are generational: young generation for new objects (collected frequently, fast), old generation for long-lived objects (collected infrequently, slower). This is based on the observation that most objects die young.
             </p>

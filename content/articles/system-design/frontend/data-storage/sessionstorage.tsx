@@ -37,7 +37,7 @@ export default function SessionStorageConciseArticle() {
           sessionStorage -- each has a completely independent store. This is the critical architectural property that
           distinguishes sessionStorage from every other client-side persistence mechanism.
         </HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">
+        <HighlightBlock as="p" tier="important">
           <strong>Duplicate-tab behavior</strong> introduces a subtle nuance specified in the HTML Living Standard. When
           a user duplicates a tab (Ctrl+Shift+T in most browsers, or right-click {">"} "Duplicate"), the browser
           creates a <em>snapshot copy</em> of the original tab's sessionStorage and hands it to the new tab. From that
@@ -146,7 +146,7 @@ export default function SessionStorageConciseArticle() {
         </HighlightBlock>
 
         <h3 className="mt-4 font-semibold">The storage Event</h3>
-        <HighlightBlock as="p" tier="crucial">
+        <HighlightBlock as="p" tier="important">
           A critical and often misunderstood fact: the <code>storage</code> event fires for <strong>localStorage
           changes only</strong>. When a key changes in sessionStorage, no <code>storage</code> event is dispatched to
           any window -- not even to same-origin iframes within the same tab. This means there is no built-in cross-frame
@@ -294,16 +294,16 @@ export default function SessionStorageConciseArticle() {
             <code>SecurityError</code>. Wrap the initial access in a try/catch and fall back to an in-memory Map if
             sessionStorage is unavailable.
           </li>
-          <HighlightBlock as="li" tier="crucial">
+          <HighlightBlock as="li" tier="important">
             <strong>Do not store authentication tokens:</strong> sessionStorage is accessible to any JavaScript running
             on the same origin. An XSS vulnerability gives an attacker full read/write access. Use HttpOnly cookies for
             authentication tokens, and reserve sessionStorage for non-sensitive ephemeral state.
           </HighlightBlock>
-          <HighlightBlock as="li" tier="crucial">
+          <li>
             <strong>Account for duplicate-tab behavior:</strong> If your application stores one-time tokens or
             nonces in sessionStorage, a duplicate tab will receive a copy of those values. Design your flow so that
             consuming a token invalidates it server-side, preventing replay from a duplicated tab.
-          </HighlightBlock>
+          </li>
         </ul>
       </section>
 
@@ -392,11 +392,11 @@ export default function SessionStorageConciseArticle() {
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <p className="font-semibold">When NOT to use sessionStorage</p>
           <ul className="mt-2 space-y-2 text-sm">
-            <HighlightBlock as="li" tier="important">
+            <li>
               <strong>User preferences</strong> (theme, language): These must persist across sessions and tabs.
               Use localStorage.
-            </HighlightBlock>
-            <HighlightBlock as="li" tier="crucial">
+            </li>
+            <HighlightBlock as="li" tier="important">
               <strong>Authentication tokens</strong>: XSS-accessible. Use HttpOnly cookies.
             </HighlightBlock>
             <li>
@@ -423,7 +423,7 @@ export default function SessionStorageConciseArticle() {
               Q: A user opens your checkout flow in two tabs simultaneously. How do you ensure the checkout
               state in each tab is independent without cross-contamination?
             </p>
-            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Store the checkout wizard state (current step, selected items, shipping details) in
               sessionStorage rather than localStorage or a global store. Because sessionStorage is scoped
               to the tab, each tab automatically gets its own isolated state. The user can progress through
@@ -484,22 +484,26 @@ export default function SessionStorageConciseArticle() {
       {/* Section 10: References */}
       <section>
         <h2>References</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The key interview-relevant details for sessionStorage are its tab isolation, duplicate-tab snapshot behavior,
+          and the fact that service workers cannot access it.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://html.spec.whatwg.org/multipage/webstorage.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               HTML Living Standard -- Web Storage
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN Web Docs -- Window.sessionStorage
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               OWASP -- HTML5 Security Cheat Sheet
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://web.dev/storage-for-the-web/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev -- Storage for the Web

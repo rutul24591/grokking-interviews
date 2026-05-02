@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +30,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Skip lists</strong> are a probabilistic data structure that provides O(log n)
           search, insert, and delete operations, comparable to balanced binary search trees
           (AVL trees, red-black trees, B-trees) but significantly simpler to implement. A skip
@@ -37,8 +41,8 @@ export default function ArticlePage() {
           is a standard sorted linked list containing all elements, and each higher layer is a
           &quot;express lane&quot; that skips over some elements, enabling faster search by
           skipping large portions of the list.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider a sorted linked list with 1 million elements. A linear search requires O(n)
           comparisons (up to 1 million comparisons in the worst case). A skip list with
           O(log n) layers reduces this to approximately 20 comparisons (log2(1M) ≈ 20), because
@@ -47,7 +51,7 @@ export default function ArticlePage() {
           instead of deterministic rebalancing (rotations, recoloring), skip lists use random
           coin flips to determine how many layers each element participates in, providing
           probabilistic O(log n) performance with a simple implementation.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, skip lists require understanding the probabilistic
           guarantees (expected O(log n) performance with high probability), the trade-offs
@@ -76,6 +80,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/skip-list-structure.svg`}
@@ -84,7 +91,7 @@ export default function ArticlePage() {
         />
 
         <h3>Layered Structure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A skip list consists of L layers, where layer 0 (the bottom layer) contains all n
           elements in sorted order. Each higher layer contains a subset of the elements from
           the layer below it. The probability that an element appears in layer k is p^k, where
@@ -92,14 +99,14 @@ export default function ArticlePage() {
           of the elements appear in layer 1, a quarter in layer 2, an eighth in layer 3, and
           so on. The expected number of layers is log_(1/p)(n), which is approximately log2(n)
           for p = 0.5.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Each element in the skip list has a &quot;tower&quot; of forward pointers: one
           pointer for each layer it participates in. The top pointer points to the next element
           in the highest layer, the next pointer points to the next element in the layer below,
           and so on down to the bottom layer. The head of the skip list has pointers to the
           first element in each layer.
-        </p>
+        </HighlightBlock>
 
         <h3>Search Operation</h3>
         <p>
@@ -146,23 +153,26 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Concurrent Skip Lists</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Concurrent skip lists provide thread-safe access to the skip list without global
           locking. The key insight is that insert and delete operations only modify the forward
           pointers of the preceding elements in each layer, and these modifications can be
           performed atomically using compare-and-swap (CAS) operations. A concurrent skip
           list uses fine-grained locking (one lock per element) or lock-free CAS to ensure
           that concurrent insert and delete operations do not corrupt the list structure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Java&apos;s ConcurrentSkipListMap uses a lock-free CAS-based implementation that
           provides O(log n) expected time complexity for concurrent search, insert, and delete
           operations. The implementation uses a technique called &quot;marker nodes&quot; to
           logically delete elements before physically removing them, ensuring that concurrent
           searches do not encounter partially deleted elements.
-        </p>
+        </HighlightBlock>
 
         <h3>Skip Lists in LSM Trees</h3>
         <p>
@@ -192,21 +202,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Skip lists trade deterministic performance guarantees for simplicity and concurrent
           access. Unlike balanced trees (which guarantee O(log n) worst-case performance),
           skip lists provide O(log n) expected performance with high probability. The
           probability of O(n) worst-case performance is exponentially small (2^(-n)), making
           it practically irrelevant for production systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compared to balanced trees, skip lists have higher space overhead (each element
           participates in approximately 2 layers on average, requiring 2 forward pointers per
           element instead of 2-3 child pointers per node in a balanced tree). However, skip
           lists provide better concurrent access patterns (fine-grained locking or lock-free
           CAS) and simpler implementation (no rotations, no recoloring, no complex rebalancing
           logic).
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -214,21 +227,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use a promotion probability of p = 0.5 for general-purpose skip lists. This
           provides the best balance between space overhead (average 2 layers per element) and
           search performance (expected log2(n) comparisons). For space-constrained
           environments, use p = 0.25 (average 1.33 layers per element, at the cost of slightly
           worse search performance). For performance-constrained environments, use p = 0.75
           (average 4 layers per element, at the cost of higher space overhead).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Set a maximum layer height (typically 32 or 64) to bound the space overhead and
           prevent degenerate cases where an element&apos;s tower height grows excessively
           large. The maximum layer height should be set to log_(1/p)(n), where n is the
           expected number of elements. For n = 1 billion and p = 0.5, the maximum layer
           height is 30 (log2(1B) ≈ 30).
-        </p>
+        </HighlightBlock>
         <p>
           Use a high-quality random number generator for tower height determination. The
           probabilistic guarantees of skip lists depend on the randomness of the tower height
@@ -250,21 +266,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is using a poor random number generator for tower height
           determination. If the random number generator produces biased results (e.g., always
           returning the same tower height), all elements will have the same tower height,
           reducing the skip list to a single linked list with O(n) search performance. The
           fix is to use a high-quality random number generator (Mersenne Twister, PCG, or
           the system&apos;s built-in cryptographic random number generator).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not setting a maximum layer height can cause degenerate cases where an
           element&apos;s tower height grows excessively large, consuming excessive memory
           and degrading search performance (the search must traverse each layer, even if the
           layer contains only one element). The fix is to set a maximum layer height of
           log_(1/p)(n) for the expected number of elements.
-        </p>
+        </HighlightBlock>
         <p>
           Incorrectly updating forward pointers during insert and delete can corrupt the
           skip list structure, causing search to skip over elements or enter an infinite
@@ -286,9 +305,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Redis: Sorted Sets</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Redis uses skip lists to implement sorted sets (ZADD, ZRANGE, ZSCORE commands).
           Each element in the sorted set is stored as a skip list node with a score (for
           ordering) and a value (the element). The skip list provides O(log n) search,
@@ -296,17 +318,17 @@ export default function ArticlePage() {
           and rank operations (ZRANK). Redis&apos;s skip list implementation supports
           concurrent access through fine-grained locking, enabling high-throughput sorted
           set operations.
-        </p>
+        </HighlightBlock>
 
         <h3>LevelDB/RocksDB: Memtable</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           LevelDB and RocksDB use skip lists as the memtable data structure. The memtable
           buffers incoming writes in memory, and the skip list provides O(log n) search for
           reads while accepting writes in O(log n) time. When the memtable reaches its size
           threshold, it is flushed to disk as an SSTable. The skip list is preferred over
           balanced trees because it supports efficient concurrent access and sequential
           iteration (for SSTable flushing).
-        </p>
+        </HighlightBlock>
 
         <h3>Java: ConcurrentSkipListMap</h3>
         <p>
@@ -323,18 +345,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is a skip list and how does it work?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               A skip list is a probabilistic data structure consisting of multiple layered
               linked lists. The bottom layer contains all elements in sorted order, and each
               higher layer skips over some elements (approximately half). Search starts at the
               top layer and moves rightward, moving down one layer when the next element is
               greater than the search key.
-            </p>
+            </HighlightBlock>
             <p>
               The expected time complexity is O(log n) for search, insert, and delete,
               comparable to balanced trees but with a simpler implementation (no rotations or

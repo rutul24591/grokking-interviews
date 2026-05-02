@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,10 @@ export default function ContentTaggingUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Content Tagging UI</strong> enables users to add metadata tags to content for
           organization, discovery, and search. Tags are flat, unstructured metadata (unlike
           hierarchical categories) that enable powerful filtering, faceted search, and content
@@ -41,7 +45,7 @@ export default function ContentTaggingUIArticle() {
           tag, filter by multiple tags, and discover content through tag clouds. Without tagging,
           content discovery relies solely on categories (rigid) or search (requires knowing what to
           search for).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/tagging-interface.svg"
@@ -49,7 +53,7 @@ export default function ContentTaggingUIArticle() {
           caption="Tagging Interface — showing tag input with autocomplete, selected tags as removable chips, tag suggestions with usage count, and tag limit indicator"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing tagging UI requires deep understanding of
           tag input patterns (autocomplete with existing tags, create new tags, tag limits — 5-10
           per content), tag hierarchies (parent/child tags, related tags, tag synonyms), folksonomy
@@ -59,7 +63,7 @@ export default function ContentTaggingUIArticle() {
           (tag chips with remove button, drag-to-reorder, keyboard navigation). The implementation
           must balance ease of tagging (frictionless input) with tag quality (consistency, no
           duplicates) and control (prevent tag spam, enforce limits).
-        </p>
+        </HighlightBlock>
         <p>
           Modern tagging systems have evolved from simple text input to sophisticated tagging
           platforms with autocomplete, ML suggestions, and tag governance. Platforms like Medium,
@@ -72,12 +76,15 @@ export default function ContentTaggingUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content tagging is built on fundamental concepts that determine how tags are created,
           managed, and used. Understanding these concepts is essential for designing effective
           tagging systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Tag Input Patterns:</strong> Autocomplete (show existing tags as user types —
           prevent duplicates, show usage count, highlight matching text), create new (allow users
           to create new tags if not found — validate name, normalize to lowercase, trim whitespace),
@@ -85,7 +92,7 @@ export default function ContentTaggingUIArticle() {
           used", disable input when limit reached). Input must be fast (debounced autocomplete),
           intuitive (keyboard navigation — arrow keys to select, Enter to add), and forgiving
           (allow corrections — remove tags by clicking X).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Tag Hierarchies:</strong> Parent/child tags (tag hierarchy — "programming" is
           parent of "javascript", "python" — enables drill-down), related tags (tags often used
@@ -113,12 +120,15 @@ export default function ContentTaggingUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tagging architecture separates UI (tag input, autocomplete, tag display) from backend
           (tag storage, suggestion engine, tag management), enabling fast, responsive UI with
           intelligent tag handling. This architecture is critical for user experience and tag
           quality.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/tag-input-flow.svg"
@@ -126,7 +136,7 @@ export default function ContentTaggingUIArticle() {
           caption="Tag Input Flow — showing user input, autocomplete API, tag validation, tag creation, and tag association with content"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tagging flow: User types in tag input. Frontend debounces input (wait 300ms after user
           stops typing). Frontend calls autocomplete API (GET /tags/autocomplete?q={'{'}query{'}'} —
           returns matching tags with usage count). Frontend displays suggestions (highlight
@@ -136,7 +146,7 @@ export default function ContentTaggingUIArticle() {
           limit). Backend associates tags with content (INSERT INTO content_tags (content_id,
           tag_id) VALUES (...)). Backend updates tag usage count (UPDATE tags SET usage_count =
           usage_count + 1 WHERE id = ...).
-        </p>
+        </HighlightBlock>
         <p>
           Auto-tagging architecture includes: content analysis (extract title, body, metadata),
           feature extraction (keywords, entities, topics — TF-IDF, word embeddings), ML model
@@ -166,26 +176,29 @@ export default function ContentTaggingUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing tagging involves trade-offs between flexibility, consistency, and user effort.
           Understanding these trade-offs is essential for making informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Folksonomy vs Taxonomy vs Hybrid</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Folksonomy (User-Generated):</strong> Flexible (users create any tag),
               reflects user language (tags match how users think), low barrier (no approval
               needed). Limitation: inconsistent (duplicates — "react" vs "reactjs"), tag spam
               (users create irrelevant tags), no governance.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Taxonomy (Controlled Vocabulary):</strong> Consistent (predefined tags, no
               duplicates), high quality (moderated tags). Limitation: rigid (users can't create new
               tags), slow to adapt (new tags require approval), users frustrated (can't tag with
               their language).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Hybrid:</strong> Users suggest tags, moderators approve (balances flexibility
               with consistency). Limitation: moderation overhead (requires moderator time).
@@ -238,19 +251,22 @@ export default function ContentTaggingUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing content tagging requires following established best practices to ensure
           usability, tag quality, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Tag Input</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Autocomplete with existing tags (debounced input — 300ms, show top 5-10 suggestions with
           usage count). Allow create new (if not found — validate name, normalize to lowercase, trim
           whitespace). Tag limits (max 5-10 per content — show visual indicator "3/5 tags used",
           disable input when limit reached). Keyboard navigation (arrow keys to select suggestions,
           Enter to add, Backspace to remove last tag, Escape to close suggestions).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Tag Display</h3>
         <p>
@@ -281,21 +297,24 @@ export default function ContentTaggingUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing content tagging to ensure usability, tag
           quality, and operational effectiveness.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No autocomplete:</strong> Users create duplicate tags ("react" and "reactjs").{" "}
             <strong>Fix:</strong> Implement autocomplete (show existing tags as user types).
             Highlight matching text. Show usage count.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No tag limits:</strong> Users add too many tags (tag spam, dilutes relevance).{" "}
             <strong>Fix:</strong> Set max tags (5-10 per content). Show visual indicator. Disable
             input when limit reached.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No normalization:</strong> Inconsistent capitalization ("React" vs "react").{" "}
             <strong>Fix:</strong> Normalize to lowercase. Trim whitespace. Validate tag name
@@ -338,16 +357,19 @@ export default function ContentTaggingUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content tagging is critical for content discovery. Here are real-world implementations
           from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Blogging Platform (Medium)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Articles need tags for discovery. Prevent duplicate tags.
           Help authors tag correctly.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Autocomplete (show existing topics as author types). Tag
           limits (max 5 topics per article). Tag suggestions (ML-based on article content). Topic
@@ -445,14 +467,17 @@ export default function ContentTaggingUIArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of content tagging UI design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you implement tag autocomplete?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you implement tag autocomplete?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Debounce user input (300ms — wait after user stops typing). Call autocomplete API
               (GET /tags/autocomplete?q={'{'}query{'}'}&limit=10 — returns matching tags with usage

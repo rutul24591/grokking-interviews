@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,12 +25,15 @@ export default function SerializationFormatsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Serialization</strong> is the process of converting in-memory data structures (objects, arrays, maps) into a format suitable for storage or transmission across a network. <strong>Deserialization</strong> is the reverse process—reconstructing data structures from the serialized format. Serialization is fundamental to all distributed systems: APIs, message queues, databases, caching layers, and inter-service communication all depend on it.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice of serialization format affects:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Performance:</strong> Serialization/deserialization speed (CPU time).</li>
           <li><strong>Payload Size:</strong> Network bandwidth, storage costs, latency.</li>
@@ -58,14 +62,17 @@ export default function SerializationFormatsArticle() {
 
       <section>
         <h2>Text-Based Formats</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">JSON (JavaScript Object Notation)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>JSON</strong> is the most widely used serialization format for web APIs. It&apos;s text-based, language-independent, and human-readable. JSON represents data as key-value pairs with support for strings, numbers, booleans, arrays, and nested objects.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Advantages:</strong>
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Universal support:</strong> Every programming language has JSON libraries.</li>
           <li><strong>Human-readable:</strong> Easy to debug, inspect, and edit manually.</li>
@@ -134,14 +141,17 @@ export default function SerializationFormatsArticle() {
 
       <section>
         <h2>Binary Formats</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Protocol Buffers (Protobuf)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Protobuf</strong> is Google&apos;s binary serialization format. It requires a schema (.proto file) and generates code for multiple languages. The schema defines message types with field numbers for binary encoding.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Advantages:</strong>
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Compact:</strong> 3-10x smaller than JSON (field names not repeated, binary encoding).</li>
           <li><strong>Fast:</strong> 20-100x faster parsing than JSON.</li>
@@ -239,6 +249,9 @@ export default function SerializationFormatsArticle() {
 
       <section>
         <h2>Format Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -320,29 +333,32 @@ export default function SerializationFormatsArticle() {
         </table>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Benchmarks</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Typical performance characteristics (varies by implementation, data size):
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Serialization speed:</strong> Protobuf &gt; MessagePack &gt; Avro &gt; JSON &gt; XML</li>
           <li><strong>Deserialization speed:</strong> Protobuf &gt; MessagePack &gt; Avro &gt; JSON &gt; XML</li>
           <li><strong>Payload size:</strong> Protobuf ≈ Avro ≈ Thrift &lt; MessagePack &lt; BSON &lt; JSON &lt; XML</li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Note:</strong> Benchmarks vary by language, library version, and data structure. Always benchmark with your actual workload.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Schema Evolution</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Why Schema Evolution Matters</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           APIs and data pipelines evolve. Fields are added, deprecated, or renamed. Schema evolution ensures that producers and consumers can evolve independently without breaking compatibility.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Compatibility types:</strong>
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Backward compatibility:</strong> New schema can read old data.</li>
           <li><strong>Forward compatibility:</strong> Old schema can read new data.</li>
@@ -399,19 +415,22 @@ export default function SerializationFormatsArticle() {
 
       <section>
         <h2>Schema Management</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Schema Registry</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A <strong>schema registry</strong> stores and manages schemas for binary formats. It enables:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Version control:</strong> Track schema changes over time.</li>
           <li><strong>Compatibility checking:</strong> Reject incompatible schema changes.</li>
           <li><strong>Discovery:</strong> Producers/consumers can discover schemas.</li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Popular registries:</strong>
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Confluent Schema Registry:</strong> For Avro, Protobuf, JSON Schema.</li>
           <li><strong>AWS Glue Schema Registry:</strong> For Avro, Protobuf, JSON Schema.</li>
@@ -442,11 +461,14 @@ export default function SerializationFormatsArticle() {
 
       <section>
         <h2>Compression and Serialization</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Compression Algorithms</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Compression reduces payload size further:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Gzip:</strong> Good compression, moderate CPU.</li>
           <li><strong>Brotli:</strong> Better compression than Gzip, higher CPU.</li>
@@ -500,9 +522,9 @@ export default function SerializationFormatsArticle() {
         </table>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">To Compress or Not?</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Compress JSON:</strong> Yes—JSON is verbose, compression helps significantly (60-80% reduction).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Compress Protobuf/Avro:</strong> Maybe—already compact, compression adds CPU overhead. Benchmark with your data.
         </p>
@@ -513,14 +535,17 @@ export default function SerializationFormatsArticle() {
 
       <section>
         <h2>Security Considerations</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Deserialization Vulnerabilities</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Deserialization is a common attack vector:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li><strong>Parser exploits:</strong> Malformed input crashes parser (DoS).</li>
-          <li><strong>Memory exhaustion:</strong> Deeply nested structures cause stack overflow.</li>
+          <HighlightBlock as="li" tier="important"><strong>Parser exploits:</strong> Malformed input crashes parser (DoS).</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Memory exhaustion:</strong> Deeply nested structures cause stack overflow.</HighlightBlock>
           <li><strong>Object injection:</strong> Deserializing untrusted data into executable objects (Java serialization exploits).</li>
           <li><strong>XML attacks:</strong> XXE (XML External Entity), billion laughs attack.</li>
         </ul>
@@ -538,14 +563,17 @@ export default function SerializationFormatsArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">1. Public API (JSON)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Serve millions of developers with diverse tools.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong> JSON for universal support, OpenAPI for documentation, SDKs for popular languages.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Why:</strong> Debuggability matters more than performance. Developers need to inspect responses.
         </p>
@@ -608,14 +636,17 @@ export default function SerializationFormatsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Reusing Protobuf field numbers:</strong> After removing a field, reusing its number causes silent corruption. <strong>Solution:</strong> Reserve removed field numbers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No schema registry:</strong> Schema drift causes compatibility issues. <strong>Solution:</strong> Use schema registry with compatibility checks.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Deserializing untrusted data:</strong> Object injection attacks. <strong>Solution:</strong> Validate input, use safe parsers, never deserialize untrusted objects.
           </li>
@@ -639,13 +670,16 @@ export default function SerializationFormatsArticle() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q1: When would you choose Protobuf over JSON? What are the trade-offs?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: When would you choose Protobuf over JSON? What are the trade-offs?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Choose Protobuf for internal services where performance matters (high-throughput RPC, mobile APIs). Trade-offs: Protobuf is 3-10x smaller, 20-100x faster to parse, but requires schema management, code generation, and tooling for debugging. JSON is human-readable, universally supported, no schema required—but verbose and slower. Use Protobuf for internal, JSON for public APIs.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

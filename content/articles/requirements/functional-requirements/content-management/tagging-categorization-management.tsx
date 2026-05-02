@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,10 @@ export default function TaggingCategorizationManagementArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Tagging and Categorization Management</strong> provides backend infrastructure
           for managing taxonomies, enforcing tag policies, and enabling efficient content
           organization at scale. It encompasses tag lifecycle management (creation, approval,
@@ -43,7 +47,7 @@ export default function TaggingCategorizationManagementArticle() {
           Effective tagging management is critical for content discoverability — without it, tag
           quality degrades through duplicates (react vs ReactJS vs reactjs), inconsistent naming
           (javascript vs JavaScript vs JS), and tag sprawl (thousands of unused tags).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/tag-management.svg"
@@ -51,7 +55,7 @@ export default function TaggingCategorizationManagementArticle() {
           caption="Tag Management — showing tag lifecycle (creation, approval, merging, deprecation), usage tracking, and governance workflows"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing tagging management requires deep
           understanding of taxonomy design including hierarchical taxonomy (parent-child
           relationships, category trees), flat taxonomy (single-level tags, folksonomy), and
@@ -66,7 +70,7 @@ export default function TaggingCategorizationManagementArticle() {
           with each tag), trending tags (rapidly growing usage), and unused tags (no content tagged
           for extended period). The implementation must balance flexibility (users can create tags)
           with consistency (controlled vocabulary, quality standards).
-        </p>
+        </HighlightBlock>
 
         <p>
           Modern tagging management has evolved from simple tag creation to sophisticated taxonomy
@@ -81,13 +85,16 @@ export default function TaggingCategorizationManagementArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tagging management is built on fundamental concepts that determine how tags are created,
           managed, and governed. Understanding these concepts is essential for designing effective
           tagging systems.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Taxonomy Design:</strong> Hierarchical taxonomy organizes tags in parent-child
           relationships (Technology → Programming → JavaScript) enabling structured navigation and
           browsing. Flat taxonomy uses single-level tags without hierarchy (javascript, react,
@@ -95,7 +102,7 @@ export default function TaggingCategorizationManagementArticle() {
           structure (primary category) with tags for flexibility (additional tags) enabling both
           structured navigation and flexible tagging. Taxonomy choice depends on content type and
           discovery requirements.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Tag Governance:</strong> Approval workflows control tag creation through
@@ -134,11 +141,14 @@ export default function TaggingCategorizationManagementArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tagging management architecture separates tag lifecycle, governance workflows, bulk
           operations, and usage tracking enabling modular implementation with clear boundaries. This
           architecture is critical for tag quality, consistency, and scalability.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/tag-management.svg"
@@ -146,7 +156,7 @@ export default function TaggingCategorizationManagementArticle() {
           caption="Tag Management — showing tag lifecycle, governance workflows, bulk operations, and usage tracking"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tag lifecycle flow begins with tag creation through user input or system suggestion.
           Governance workflow validates tag name through naming conventions and character limits.
           For approval-required workflow, tag enters pending state awaiting moderator approval.
@@ -156,7 +166,7 @@ export default function TaggingCategorizationManagementArticle() {
           content references and redirecting old URLs. Deprecation workflow marks outdated tags
           preventing new use and suggesting alternatives. Deletion operation removes unused tags
           after extended period of no usage.
-        </p>
+        </HighlightBlock>
 
         <p>
           Bulk operations architecture includes merge operation identifying duplicates through fuzzy
@@ -188,13 +198,16 @@ export default function TaggingCategorizationManagementArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing tagging management involves trade-offs between flexibility, consistency,
           governance overhead, and tag quality. Understanding these trade-offs is essential for
           making informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Auto-create versus approval workflow presents flexibility versus control trade-offs.
           Auto-create enables users to create tags freely providing flexibility and low friction
           but risks tag quality degradation through duplicates, inconsistent naming, and tag sprawl.
@@ -204,7 +217,7 @@ export default function TaggingCategorizationManagementArticle() {
           norms, approval workflow for controlled vocabulary requirements, and hybrid approach
           (auto-create for trusted users, approval for new users) balancing flexibility with
           control.
-        </p>
+        </HighlightBlock>
 
         <p>
           Manual merge versus automatic merge presents accuracy versus efficiency trade-offs.
@@ -231,17 +244,20 @@ export default function TaggingCategorizationManagementArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing tagging management requires following established best practices to ensure
           tag quality, consistency, and usability.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Taxonomy design chooses appropriate taxonomy type (hierarchical for structured navigation,
           flat for flexible tagging, hybrid for both). Define clear naming conventions (lowercase,
           hyphens for spaces, no special characters). Establish character limits (max 50
           characters). Document taxonomy guidelines for users and moderators.
-        </p>
+        </HighlightBlock>
 
         <p>
           Tag governance configures appropriate approval workflow (auto-create for mature
@@ -276,16 +292,19 @@ export default function TaggingCategorizationManagementArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing tagging management to ensure tag quality,
           consistency, and usability.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           No governance leads to tag quality degradation. Fix by implementing approval workflow for
           new tags. Configure validation rules (naming conventions, character limits). Enable
           duplicate detection. Provide tag suggestions.
-        </p>
+        </HighlightBlock>
 
         <p>
           No duplicate detection causes tag sprawl with duplicates. Fix by implementing fuzzy
@@ -344,20 +363,23 @@ export default function TaggingCategorizationManagementArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tagging management is critical for content discoverability across different domains. Here
           are real-world implementations from production systems demonstrating different approaches
           to tagging challenges.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stack Overflow tagging addresses technical Q&A tagging with governance. The solution uses
           approval workflow for new tags (reputation threshold for auto-create), synonym management
           (reactjs → react, javascript → js), tag merging for duplicates through community and
           moderator actions, tag wiki for tag descriptions and usage guidance, and usage tracking
           (tag count, trending tags). The result is high-quality taxonomy with consistent naming
           and minimal duplicates.
-        </p>
+        </HighlightBlock>
 
         <p>
           Medium tagging addresses article discovery with flexible tagging. The solution uses
@@ -395,14 +417,17 @@ export default function TaggingCategorizationManagementArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of tagging management design, implementation, and
           operational concerns for staff and principal engineer interviews.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design taxonomy?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design taxonomy?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Choose taxonomy type (hierarchical for structured navigation, flat for flexible
               tagging, hybrid for both). Define naming conventions (lowercase, hyphens for spaces).

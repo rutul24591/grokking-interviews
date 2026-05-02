@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function PresenceIndicatorsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Presence indicators show user availability and activity status, enabling real-time awareness in communication features. Online/offline status tells users if someone is available for conversation. Typing indicators show when someone is composing a message. Last seen timestamps indicate when a user was last active. These indicators reduce communication friction—users know when to expect immediate responses versus delayed replies.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The technical complexity of presence systems is often underestimated. Presence must update in real-time across all connected clients. Status must accurately reflect user activity—online when active, offline after timeout. Privacy controls allow users to hide their presence while still seeing others (with reciprocal restrictions). The system must scale to millions of users with frequent status changes while maintaining low latency. Network issues, app backgrounding, and device sleep complicate accurate presence detection.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, presence indicator implementation involves distributed systems challenges. WebSocket connections track connected users, but connections can drop without proper disconnect events. Heartbeat mechanisms detect stale connections. Presence state must sync across a user's multiple devices (phone, tablet, desktop). Privacy evaluation happens on every presence query. The architecture must handle presence storms—thousands of users coming online simultaneously after an outage.
         </p>
@@ -47,13 +51,16 @@ export default function PresenceIndicatorsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Presence States</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Online state indicates user is actively using the app. Determined by: active WebSocket connection, recent heartbeat (within 30 seconds), app in foreground. Display: green dot, "Online" label. Some apps show "Active now" for very recent activity (within 1 minute).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Away state indicates user is connected but not actively engaged. Determined by: connection active but no interaction for 2-5 minutes, app in background. Display: yellow/orange dot, "Away" label. Some apps skip away state, go directly from online to offline.
-        </p>
+        </HighlightBlock>
         <p>
           Offline state indicates user is not available. Determined by: no active connection, heartbeat timeout (30-60 seconds), app closed. Display: gray dot, "Offline" or "Last seen X time ago". Last seen timestamp calculated from last heartbeat time.
         </p>
@@ -108,9 +115,12 @@ export default function PresenceIndicatorsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Presence indicator architecture spans client detection, WebSocket synchronization, presence service, and privacy evaluation. Client detects user activity (foreground/background, keystrokes). WebSocket maintains connection, sends heartbeat. Presence service tracks connected users, broadcasts status changes. Privacy service evaluates visibility on each query.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/presence-indicators/presence-architecture.svg"
@@ -121,9 +131,9 @@ export default function PresenceIndicatorsArticle() {
         />
 
         <h3>Client Detection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Activity detection tracks user engagement. Foreground/background: use visibility API (web), lifecycle callbacks (mobile). Keystroke detection: keydown events in input fields. Mouse/touch activity: track last interaction time. Screen lock: detect device sleep (mobile).
-        </p>
+        </HighlightBlock>
         <p>
           Heartbeat mechanism proves connection is alive. Client sends ping every 15-30 seconds. Server updates last_heartbeat timestamp. If no heartbeat for 60 seconds, mark user offline. Heartbeat also keeps connection alive through NAT firewalls.
         </p>
@@ -183,14 +193,17 @@ export default function PresenceIndicatorsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Presence indicator design involves trade-offs between accuracy, privacy, performance, and user experience. Understanding these trade-offs enables informed decisions aligned with product goals and user expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Accuracy vs Battery/Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           High accuracy: frequent heartbeats (every 10 seconds), immediate status updates. Pros: Accurate presence, minimal delay. Cons: Battery drain, network usage, server load. Best for: Desktop apps, plugged-in devices.
-        </p>
+        </HighlightBlock>
         <p>
           Battery optimized: infrequent heartbeats (every 60 seconds), batched updates. Pros: Better battery life, reduced network. Cons: Delayed status updates (up to 60 seconds). Best for: Mobile apps, battery-conscious users.
         </p>
@@ -242,13 +255,16 @@ export default function PresenceIndicatorsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use heartbeat for liveness:</strong> Send ping every 15-30 seconds. Timeout after 60 seconds without heartbeat. Update last_seen on heartbeat. Handle unexpected disconnects gracefully.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounce typing indicators:</strong> Show typing after 500ms of typing. Hide after 2 seconds of inactivity. Prevents flickering from brief pauses. Rate limit typing events (max 1 per 2 seconds).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement privacy controls:</strong> Everyone/Contacts/Nobody settings. Reciprocal privacy enforcement. Per-contact exceptions. Cache privacy evaluation for performance.
           </li>
@@ -278,13 +294,16 @@ export default function PresenceIndicatorsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No heartbeat timeout:</strong> Connection drops, user stays "online" forever. Solution: Heartbeat with timeout, mark offline after 60 seconds without heartbeat.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Typing indicator spam:</strong> Sending typing event on every keystroke. Solution: Debounce, rate limit, send once per typing session.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring privacy:</strong> Showing presence to everyone regardless of settings. Solution: Evaluate privacy on every query, cache results, enforce reciprocal privacy.
           </li>
@@ -314,16 +333,19 @@ export default function PresenceIndicatorsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>WhatsApp Presence</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WhatsApp shows "Online" when app is open and connected. "Last seen" timestamp when offline. Privacy settings: Everyone, My Contacts, Nobody. Typing indicators for 1:1 and group chats. No "away" state—directly online to offline.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Slack Presence</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Slack shows green dot for active (within 10 minutes), yellow for away (10+ minutes), gray for offline. Auto-away after 10 minutes of inactivity. Custom status ("In a meeting", "Out sick"). Per-workspace presence (can be online in one workspace, offline in another).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Discord Presence</h3>
         <p>
@@ -343,12 +365,15 @@ export default function PresenceIndicatorsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you detect if a user is online?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you detect if a user is online?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> WebSocket connection + heartbeat. When user opens app, establish WebSocket connection, send presence_online event. Client sends heartbeat every 15-30 seconds. Server updates last_heartbeat timestamp. If no heartbeat for 60 seconds, mark user offline. Also track app foreground/background state for more accurate detection.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

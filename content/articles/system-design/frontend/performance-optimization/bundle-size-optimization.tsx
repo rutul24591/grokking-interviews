@@ -657,12 +657,12 @@ export default function BundleSizeOptimizationArticle() {
         </HighlightBlock>
 
         <div className="space-y-6">
-          <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <h3 className="text-lg font-semibold mb-3">Question 1: How would you approach reducing a 3 MB JavaScript bundle?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="important" className="mb-3">
-              I would follow a systematic approach:
-            </HighlightBlock>
+            <div className="rounded-lg border border-theme bg-panel-soft p-5">
+              <h3 className="text-lg font-semibold mb-3">Question 1: How would you approach reducing a 3 MB JavaScript bundle?</h3>
+              <p className="text-muted mb-3"><strong>Answer:</strong></p>
+              <p className="mb-3">
+                I would follow a systematic approach:
+              </p>
             <ol className="space-y-2">
               <li>
                 <strong>Measure:</strong> Run webpack-bundle-analyzer to understand bundle composition. 
@@ -685,17 +685,17 @@ export default function BundleSizeOptimizationArticle() {
                 to prevent regression.
               </li>
             </ol>
-            <HighlightBlock as="p" tier="important" className="mt-3">
+            <p className="mt-3">
               Typical result: 3 MB → 500-700 KB (75-85% reduction).
-            </HighlightBlock>
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 2: What native browser APIs can replace common utility libraries?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="important" className="mb-3">
+            <p className="mb-3">
               Several native APIs can replace utility libraries:
-            </HighlightBlock>
+            </p>
             <ul className="space-y-1">
               <li>• <strong>Intl.NumberFormat:</strong> Replaces numeral.js for number formatting</li>
               <li>• <strong>Intl.DateTimeFormat:</strong> Replaces moment.js for date formatting</li>
@@ -816,8 +816,12 @@ export default function BundleSizeOptimizationArticle() {
           ============================================================ */}
       <section>
         <h2>References</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Use references as a decision-support tool: validate which bytes matter (download vs parse/execute),
+          confirm whether an optimization is build-tool specific, and use budgets to prevent regressions.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://web.dev/reduce-javascript-payloads-with-code-splitting/" 
               className="text-accent hover:underline" 
@@ -829,8 +833,8 @@ export default function BundleSizeOptimizationArticle() {
             <p className="text-sm text-muted mt-1">
               Google&apos;s guide on code splitting and bundle optimization strategies.
             </p>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://webpack.js.org/configuration/performance/" 
               className="text-accent hover:underline" 
@@ -842,7 +846,7 @@ export default function BundleSizeOptimizationArticle() {
             <p className="text-sm text-muted mt-1">
               Official documentation on webpack performance hints and optimization settings.
             </p>
-          </li>
+          </HighlightBlock>
           <li>
             <a 
               href="https://bundlephobia.com/" 
@@ -856,7 +860,7 @@ export default function BundleSizeOptimizationArticle() {
               Tool to check the size impact of npm packages before adding them.
             </p>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://github.com/ai/size-limit" 
               className="text-accent hover:underline" 
@@ -868,7 +872,7 @@ export default function BundleSizeOptimizationArticle() {
             <p className="text-sm text-muted mt-1">
               Tool for setting performance budgets and preventing bundle size regression.
             </p>
-          </li>
+          </HighlightBlock>
           <li>
             <a 
               href="https://vitejs.dev/guide/build.html" 

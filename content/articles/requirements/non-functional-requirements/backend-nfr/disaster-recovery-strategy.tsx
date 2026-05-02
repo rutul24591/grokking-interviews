@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function DisasterRecoveryStrategyArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Disaster recovery (DR)</strong> is the process of restoring system operations after
           a catastrophic failure — data center outage, region-wide network failure, natural disaster,
           cyberattack, or human error that causes extended service disruption. Unlike high availability
           (which handles individual component failures automatically), disaster recovery handles
           catastrophic failures that require manual intervention, data restoration, and service
           failover to a secondary site.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Disaster recovery is defined by two key metrics: <strong>Recovery Time Objective (RTO)</strong>
           — the maximum acceptable downtime before service is restored, and <strong>Recovery Point
           Objective (RPO)</strong> — the maximum acceptable data loss measured as the time between the
           last backup and the failure. An RTO of 4 hours means the system must be restored within 4
           hours of the disaster. An RPO of 1 hour means the system can lose at most 1 hour of data.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, disaster recovery architecture demonstrates
           understanding of failure modes at the largest scale, the ability to design recovery strategies
@@ -72,13 +76,16 @@ export default function DisasterRecoveryStrategyArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding disaster recovery requires grasping several foundational concepts about RTO/RPO
           targets, backup strategies, failover mechanisms, and testing methodologies.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">RTO and RPO Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           RTO and RPO are inversely related to cost — shorter RTO and RPO require more infrastructure,
           more automation, and more complex recovery procedures. Near-zero RPO (continuous replication)
           requires synchronous or near-synchronous data replication to the DR site, which adds latency
@@ -87,7 +94,7 @@ export default function DisasterRecoveryStrategyArticle() {
           Organizations typically choose RTO/RPO targets based on business impact analysis — critical
           systems (payment processing, user authentication) get near-zero RTO/RPO, while non-critical
           systems (analytics, reporting) can tolerate longer RTO/RPO.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Backup Strategies</h3>
         <p>
@@ -113,10 +120,13 @@ export default function DisasterRecoveryStrategyArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Disaster recovery architecture spans backup infrastructure, replication mechanisms, failover
           orchestration, recovery testing, and post-recovery validation.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/disaster-recovery-strategy.svg"
@@ -125,14 +135,14 @@ export default function DisasterRecoveryStrategyArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">DR Architecture Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The DR architecture begins with continuous data replication (or periodic backups) from the
           primary site to the DR site. During normal operations, the DR site receives data but does not
           serve traffic (active-passive) or serves a portion of traffic (active-active). When a disaster
           is detected (site outage, data corruption, cyberattack), the failover process begins: the
           primary site is declared unavailable, the DR site is promoted to primary, DNS records are
           updated to route traffic to the DR site, and data consistency is verified.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Recovery Testing</h3>
         <p>
@@ -160,34 +170,37 @@ export default function DisasterRecoveryStrategyArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Strategy</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Strategy</th>
               <th className="p-3 text-left">RTO</th>
               <th className="p-3 text-left">RPO</th>
               <th className="p-3 text-left">Cost</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Backup + Restore</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>Backup + Restore</strong></td>
               <td className="p-3">Hours to days</td>
               <td className="p-3">Hours (last backup)</td>
               <td className="p-3">Low (storage only)</td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Pilot Light</strong></td>
               <td className="p-3">Minutes to hours</td>
               <td className="p-3">Minutes (continuous replication)</td>
               <td className="p-3">Medium (minimal DR site)</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Warm Standby</strong></td>
               <td className="p-3">Minutes</td>
               <td className="p-3">Seconds (near-sync replication)</td>
               <td className="p-3">High (scaled-down DR site)</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Active-Active</strong></td>
               <td className="p-3">Seconds</td>
@@ -201,25 +214,28 @@ export default function DisasterRecoveryStrategyArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Define RTO/RPO by Business Impact</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           RTO and RPO targets should be defined by business impact analysis, not engineering preference.
           A payment processing system that loses data (high RPO) causes financial loss and regulatory
           penalties — it needs near-zero RPO. An analytics dashboard that is unavailable for 4 hours
           (high RTO) causes minimal business impact — it can tolerate longer RTO. Classify systems by
           criticality (critical, important, non-critical) and assign RTO/RPO targets based on the
           business impact of downtime and data loss for each class.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Automate Failover Where Possible</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Manual failover during a disaster is slow, error-prone, and stressful. Automate failover
           procedures — DNS updates, service promotion, data consistency verification, and health checks
           — so that failover can be triggered with a single command or automatically when the primary
           site is detected as unavailable. Automated failover reduces RTO from hours to minutes and
           eliminates human error during the high-stress disaster recovery process.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Test Recovery Procedures Quarterly</h3>
         <p>
@@ -245,26 +261,29 @@ export default function DisasterRecoveryStrategyArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Untested DR Procedures</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common and dangerous DR pitfall is assuming that DR procedures will work without
           testing them. Backup restoration may fail due to backup corruption, format incompatibility,
           or storage issues. Failover scripts may fail due to configuration drift, outdated credentials,
           or network changes. DNS updates may fail due to propagation delays or DNS provider issues.
           Test DR procedures regularly — quarterly for critical systems, annually for non-critical
           systems — and document test results with actual RTO and RPO measurements.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Ignoring Data Consistency During Failover</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Failing over to a DR site without verifying data consistency can result in data corruption,
           data loss, or application errors. After failover, verify data consistency by comparing row
           counts, checksums, and sample records between the primary (pre-failure) and DR (post-failover)
           sites. If continuous replication was used, verify that replication lag was zero at the time
           of failure. If periodic backups were used, verify that the backup is complete and uncorrupted
           before restoring.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Not Planning for Failback</h3>
         <p>
@@ -290,9 +309,12 @@ export default function DisasterRecoveryStrategyArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">AWS — Multi-Region Disaster Recovery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           AWS recommends a multi-region DR strategy where the primary region serves production traffic
           and a secondary region serves as the DR site. Data is continuously replicated between regions
           using cross-region replication (S3), read replicas (RDS), or global tables (DynamoDB). AWS
@@ -300,10 +322,10 @@ export default function DisasterRecoveryStrategyArticle() {
           as unhealthy, Route 53 routes traffic to the DR region. AWS customers can achieve RTO of
           minutes and RPO of seconds using this architecture, with cost proportional to the DR strategy
           (pilot light, warm standby, or active-active).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">GitHub — Incident Recovery from Data Corruption</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In 2018, GitHub experienced a data corruption incident during a database migration that
           resulted in the loss of user data, issues, and comments. GitHub&apos;s DR strategy included
           continuous database replication and immutable backups, enabling them to restore from a backup
@@ -311,7 +333,7 @@ export default function DisasterRecoveryStrategyArticle() {
           loss (RPO). GitHub published a detailed incident report documenting the root cause, recovery
           process, and improvements to their DR strategy — demonstrating transparency and continuous
           improvement in disaster recovery practices.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Capital One — Ransomware Recovery</h3>
         <p>
@@ -340,19 +362,22 @@ export default function DisasterRecoveryStrategyArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Disaster recovery involves security risks — backup data may be targeted by attackers, failover procedures may expose vulnerabilities, and recovery processes may inadvertently expose sensitive data.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Backup Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Ransomware Targeting Backups:</strong> Attackers encrypt production data and then delete backups to prevent recovery. Mitigation: use immutable backups (WORM storage), store backups in a separate account/region with restricted access, test backup restoration regularly, maintain offline backup copies (air-gapped).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Backup Data Exposure:</strong> Backups contain sensitive data that may be less protected than production data. Mitigation: encrypt backups at rest and in transit, restrict backup access to authorized personnel, monitor backup access patterns, include backups in security audits.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -372,19 +397,22 @@ export default function DisasterRecoveryStrategyArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Disaster recovery must be validated through systematic testing — backup restoration, failover execution, data consistency verification, and failback procedures must all be tested regularly.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">DR Testing Scenarios</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Backup Restoration Test:</strong> Restore from the latest backup to a test environment and verify data completeness (row counts, checksums) and integrity (application functions correctly). Test with different backup types (full, incremental, continuous replication) and measure restoration time against RTO target.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Failover Test:</strong> Simulate a primary site failure (disable network, terminate instances) and execute the failover procedure. Measure actual RTO (time from failure detection to service restoration at DR site) and RPO (data lost between last replication and failure). Verify that the DR site serves traffic correctly.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Failback Test:</strong> After the primary site is restored, execute the failback procedure to migrate service from the DR site back to the primary site. Measure failback RTO and RPO, verify data consistency, and verify that the primary site serves traffic correctly after failback.
             </li>

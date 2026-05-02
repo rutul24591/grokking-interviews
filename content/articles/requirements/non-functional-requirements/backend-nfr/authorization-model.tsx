@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function AuthorizationModelArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Authorization</strong> determines what an authenticated identity is allowed to do within
           a system. While authentication answers &quot;who are you?&quot;, authorization answers &quot;what
           are you permitted to access or perform?&quot; Authorization is evaluated after authentication
           succeeds — an unauthenticated request is rejected at the authentication layer, while an
           authenticated request without sufficient permissions is denied at the authorization layer.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authorization models range from simple role-based access control (RBAC), where permissions are
           assigned to roles and users are assigned to roles, to attribute-based access control (ABAC),
           where permissions are evaluated based on user attributes, resource attributes, environmental
           conditions, and action context. More sophisticated models include relationship-based access
           control (ReBAC) used by Google Zanzibar and social platforms, and policy-based access control
           (PBAC) that uses declarative policy languages like OPA/Rego.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, authorization model design demonstrates understanding
           of security architecture, scalability of permission evaluation, and the ability to balance
@@ -74,13 +78,16 @@ export default function AuthorizationModelArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding authorization models requires grasping several foundational concepts about
           permission representation, policy evaluation, and scalability.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">RBAC — Role-Based Access Control</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           RBAC assigns permissions to roles (admin, editor, viewer) and assigns users to roles. When a user
           requests access, the system checks whether any of the user&apos;s roles grant the requested
           permission. RBAC is simple to understand, easy to administer, and scales well for organizations
@@ -88,7 +95,7 @@ export default function AuthorizationModelArticle() {
           can edit documents they own but not documents owned by others&quot;) — this requires either role
           explosion (creating roles for every permission combination) or supplementary logic outside the
           authorization model.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">ABAC — Attribute-Based Access Control</h3>
         <p>
@@ -115,10 +122,13 @@ export default function AuthorizationModelArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authorization architecture spans policy definition, permission storage, evaluation engines, and
           enforcement points throughout the system.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/authorization-models-comparison.svg"
@@ -127,13 +137,13 @@ export default function AuthorizationModelArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Policy Evaluation Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a request arrives at an API endpoint, the authorization enforcement point (middleware, API
           gateway, or service-level interceptor) extracts the user&apos;s identity, the requested action,
           and the target resource. It sends this information to the policy evaluation engine, which loads
           applicable policies, evaluates them against the request context, and returns a decision (allow or
           deny) with optional obligations (require MFA, log the access, redact certain fields).
-        </p>
+        </HighlightBlock>
         <p>
           For high-throughput systems, the policy evaluation engine is a dedicated service (OPA, Cedar, or
           custom) that caches policies in memory and evaluates them in sub-millisecond time. The enforcement
@@ -157,25 +167,28 @@ export default function AuthorizationModelArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Model</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Model</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>RBAC</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>RBAC</strong></td>
               <td className="p-3">
                 Simple to understand and administer. Fast evaluation (role lookup). Good audit trail.
               </td>
               <td className="p-3">
                 Role explosion for fine-grained permissions. Cannot express contextual conditions. Inflexible for dynamic environments.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>ABAC</strong></td>
               <td className="p-3">
                 Fine-grained without role explosion. Contextual evaluation. Supports complex business rules.
@@ -183,8 +196,8 @@ export default function AuthorizationModelArticle() {
               <td className="p-3">
                 Complex policy management. Slower evaluation. Requires attribute infrastructure.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>ReBAC</strong></td>
               <td className="p-3">
                 Natural modeling of sharing and collaboration. Scales to billions of relationships.
@@ -192,7 +205,7 @@ export default function AuthorizationModelArticle() {
               <td className="p-3">
                 Requires graph infrastructure. Complex to reason about. Permission debugging is difficult.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>PBAC (OPA/Rego)</strong></td>
               <td className="p-3">
@@ -209,25 +222,28 @@ export default function AuthorizationModelArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Use RBAC as the Foundation, ABAC for Refinement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most practical approach for most organizations is a hybrid model: RBAC provides the
           coarse-grained permission structure (roles like admin, editor, viewer), and ABAC adds
           fine-grained conditions on top (editors can only edit documents they own, admins can only access
           resources in their region). This avoids role explosion while maintaining the simplicity of RBAC
           for the majority of permission decisions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Centralize Policy Evaluation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Authorization logic should not be scattered across services. Use a centralized policy engine
           (OPA, Cedar, or a custom service) that all services query for authorization decisions. This
           ensures consistent policy evaluation across the system, simplifies policy updates (change once,
           propagate everywhere), and provides a single audit log for all authorization decisions. The
           centralized engine should be highly available — if the policy engine is down, all authorization
           checks fail, effectively denying all access.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Implement Deny-by-Default</h3>
         <p>
@@ -252,25 +268,28 @@ export default function AuthorizationModelArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Role Explosion</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common RBAC pitfall is creating a separate role for every permission combination —
           &quot;engineering-manager-us-east-docs-editor&quot;, &quot;engineering-manager-us-east-docs-viewer&quot;,
           and so on. Role explosion makes role administration unwieldy, causes role assignment errors, and
           makes it difficult to understand who has what access. When you find yourself creating roles with
           compound names, it is time to introduce ABAC conditions instead.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Authorization at the Wrong Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Performing authorization only at the API gateway is insufficient — direct service-to-service
           calls bypass the gateway and its authorization checks. Authorization must be enforced at every
           layer: the API gateway (coarse-grained: is this user allowed to access this API?), the service
           layer (fine-grained: is this user allowed to perform this action on this specific resource?),
           and the data layer (row-level: is this user allowed to see this specific row?). Defense in depth
           ensures that a misconfiguration at one layer does not grant unauthorized access.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Caching Authorization Decisions Too Long</h3>
         <p>
@@ -295,9 +314,12 @@ export default function AuthorizationModelArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Google Zanzibar — Global Authorization Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Zanzibar is a global authorization service that evaluates ReBAC permissions for Google
           Drive, Calendar, Cloud, and Photos. Zanzibar stores relationships as a directed graph (user A
           → owner → document X, group B → viewer → document X, user C → member → group B) and evaluates
@@ -305,17 +327,17 @@ export default function AuthorizationModelArticle() {
           permission checks per second with sub-10ms latency, using a globally distributed architecture
           with consistent hashing for relationship storage and optimistic concurrency for relationship
           updates.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">AWS IAM — Policy-Based Access Control</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           AWS Identity and Access Management (IAM) uses PBAC with JSON policy documents. Each policy
           defines who (principal), can do what (action), on which resources (resource), under what
           conditions (condition). AWS evaluates all applicable policies (identity-based, resource-based,
           permissions boundaries, session policies) and returns an allow only if at least one policy
           allows and no policy denies. This &quot;explicit deny overrides allow&quot; semantics ensures
           that security guardrails cannot be bypassed by overly permissive role policies.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">GitHub — Organization-Level RBAC with ABAC Refinement</h3>
         <p>
@@ -343,19 +365,22 @@ export default function AuthorizationModelArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authorization vulnerabilities are among the most common and impactful security issues — they allow authenticated attackers to access data and perform actions beyond their intended permissions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Authorization Vulnerabilities</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Broken Object Level Authorization (BOLA/IDOR):</strong> Users access resources belonging to other users by manipulating resource IDs (changing /api/documents/123 to /api/documents/124). Mitigation: always verify that the authenticated user has permission to access the specific resource ID, not just the resource type. Implement resource ownership checks at every API endpoint.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Broken Function Level Authorization:</strong> Users access administrative functions by directly calling admin endpoints. Mitigation: enforce role-based checks on every endpoint, not just UI-level visibility. Regularly audit endpoints for missing authorization checks.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Privilege Escalation:</strong> Users gain elevated permissions through policy misconfigurations, transitive relationships, or role assignment errors. Mitigation: implement periodic access reviews, automate detection of excessive permissions, enforce separation of duties for critical roles.
             </li>
@@ -396,19 +421,22 @@ export default function AuthorizationModelArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authorization models must be validated through systematic testing — policy correctness, performance under load, and security against bypass techniques must all be verified.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Policy Correctness Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Unit Tests for Policies:</strong> Test each policy rule independently — given a specific user, resource, action, and context, verify the expected decision. Test both positive cases (should allow) and negative cases (should deny). Test edge cases (missing attributes, invalid values, expired credentials).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Integration Tests:</strong> Test authorization across the full request path — from API gateway through service layer to data layer. Verify that authorization is enforced at every layer and that bypassing one layer does not grant unauthorized access.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Regression Tests:</strong> When policies change, run the full test suite to verify that existing permissions are not inadvertently changed. Maintain a permission matrix that documents expected permissions for key user-resource-action combinations and verify it after every policy change.
             </li>

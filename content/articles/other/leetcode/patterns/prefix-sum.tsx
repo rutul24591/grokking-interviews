@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,20 +24,23 @@ export default function PrefixSumArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Prefix sum is a one-pass preprocessing transform on an array A that exposes any contiguous range-sum as a
         difference of two scalar values. Define P[0] = 0 and P[i] = A[0] + A[1] + ... + A[i − 1]. The array P has
         length n + 1 and obeys the identity sum(A[l..r]) = P[r + 1] − P[l]. Building P is a single forward pass in
         O(n) time and O(n) space; thereafter, any range-sum query is one subtraction.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The pattern matters because a surprising number of interview problems reduce to range-sum queries — sometimes
         explicitly (&quot;sum of A[l..r]&quot;), more often after reformulation. &quot;Count subarrays summing to k&quot;
         becomes &quot;count pairs (l, r) with P[r] − P[l] = k&quot; which becomes &quot;count pairs of equal-difference
         prefix values&quot; — a hash-map problem. &quot;Equal number of 0s and 1s&quot; becomes &quot;subarray of
         mapped values summing to 0&quot;. &quot;Divisible by k&quot; becomes &quot;equal remainders mod k&quot;. The
         recognition skill is mapping the surface problem to a prefix-sum equivalent.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Recognition signals are concrete. Many range-sum queries on a static array — build P once. Subarray
         constraint involving a sum, count, or running aggregate, especially with negatives — prefix + hash. Range
@@ -53,21 +57,24 @@ export default function PrefixSumArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>The (n + 1)-length convention.</strong> Always allocate P with length n + 1 and set P[0] = 0. This
         eliminates the boundary case for subarrays that start at index 0 and makes the formula uniform: sum(A[l..r])
         = P[r + 1] − P[l]. Skipping P[0] = 0 forces an &quot;if l == 0&quot; branch in every query and is a frequent
         off-by-one source. The convention also matches how subarray-sum-equals-k initialises the hash map with
         {`{0: 1}`} — the empty prefix is a real prefix value and must be counted.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Subarray = difference of prefixes.</strong> The single most useful fact: any contiguous-range
         aggregate over a group operation (sum, XOR, additive count) equals the difference of two prefix values. For
         sum, difference is subtraction. For XOR, difference is XOR (since XOR is its own inverse). For count of a
         token, difference is subtraction over per-prefix counts. The pattern generalises to any invertible monoid
         operation; it does not generalise to non-invertible aggregates like max or min — those need different
         structures (sparse tables for static, segment trees for mutable).
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Prefix + hash for subarray-sum-equals-k.</strong> Given target k, count subarrays with sum k. Walk a
         single index i from 0 to n building P incrementally. Before incrementing the map, look up map[P[i] − k] —
@@ -102,18 +109,21 @@ export default function PrefixSumArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Static range-sum template.</strong> Allocate P of size n + 1 with P[0] = 0. Loop i from 0 to n − 1
         setting P[i + 1] = P[i] + A[i]. To answer query (l, r), return P[r + 1] − P[l]. The whole template is four
         lines and answers any number of range-sum queries in O(1) each. This is the answer to Leetcode 303 (Range
         Sum Query — Immutable) and the foundation for all variants.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Subarray-sum-equals-k template.</strong> Initialise count = 0, sum = 0, map = {`{0: 1}`}. For each
         x in A: sum += x; count += map.get(sum − k, 0); map[sum] = map.get(sum, 0) + 1. Return count. The map maps
         prefix-value to number-of-indices-with-that-prefix. The lookup happens before the increment so we don&apos;t
         count zero-length subarrays. The {`{0: 1}`} seed handles prefixes equal to k.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Variant: subarray sum divisible by k.</strong> Replace the key with sum mod k (handle negative sum
         with ((sum mod k) + k) mod k). Two prefixes with the same remainder bracket a subarray whose sum is a
@@ -152,22 +162,25 @@ export default function PrefixSumArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Prefix sum vs. sliding window.</strong> Sliding window requires monotonicity: extending the window
         must not flip a satisfied predicate, and shrinking must not flip a violated one. With non-negative values
         and a sum threshold, monotonicity holds — sliding window is O(n) with O(1) extra space. With negatives,
         adding an element can decrease the sum, breaking monotonicity. Prefix + hash works regardless of sign at the
         cost of O(n) extra space. Default to sliding window when the array is non-negative; reach for prefix +
         hash the moment negatives appear or the predicate is &quot;exact equality&quot; rather than &quot;at most&quot;.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Prefix sum vs. Fenwick / segment tree.</strong> Prefix sum is for static arrays — build once, query
         many times. If updates are interleaved with queries, every update invalidates O(n) prefix entries and the
         amortisation collapses. Fenwick (Binary Indexed Tree) gives O(log n) update and O(log n) query with similar
         code complexity. Segment tree generalises to non-invertible aggregates (max, min, gcd) at O(log n) per op.
         Use prefix sum for offline / immutable, Fenwick for sum with updates, segment tree for max-with-updates or
         custom monoids.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Prefix sum vs. brute-force nested loop.</strong> The nested loop computes sum(A[l..r]) for every
         pair in O(n²). Prefix sum collapses the inner work to O(1). For n = 10⁴ the brute force runs in ~10⁸ ops
@@ -195,17 +208,20 @@ export default function PrefixSumArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Use the (n + 1)-length convention.</strong> Always allocate P with length n + 1 and seed P[0] = 0.
         It removes one off-by-one class entirely. The same logic seeds the hash map with {`{0: 1}`} in
         subarray-count problems — the empty prefix is a real prefix.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Look up before you increment the map.</strong> In subarray-sum-equals-k, the order is: compute
         current prefix, look up (prefix − k) in the map, then update map[prefix]. Reversing the order double-counts
         zero-length subarrays and produces wrong answers when k = 0. The order is part of the template; commit it
         to muscle memory.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Track first-index for &quot;longest&quot;, count for &quot;count&quot;.</strong> Two map shapes serve
         two question shapes. For counting subarrays, store prefix → number of occurrences and sum the counts. For
@@ -230,16 +246,19 @@ export default function PrefixSumArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Off-by-one in range queries.</strong> sum(A[l..r]) = P[r + 1] − P[l]. The +1 on the right is
         non-negotiable. Writing P[r] − P[l] excludes A[r] and produces the wrong sum. The (n + 1)-length convention
         forces the +1 to land naturally because P is sized n + 1 and indexed up to n.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Forgetting the {`{0: 1}`} seed.</strong> Without the seed, subarray-sum-equals-k misses every
         subarray that starts at index 0 and sums to k — the prefix value k looks up an absent key and contributes
         nothing. Always seed.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Misordering map operations.</strong> Lookup before increment is mandatory. Reverse the order and
         a subarray of length 0 (which has sum 0) gets counted whenever k = 0, inflating the answer.
@@ -267,14 +286,17 @@ export default function PrefixSumArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode Problems)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>303. Range Sum Query — Immutable.</strong> The base case: build P in the constructor, answer each
         sumRange in O(1). Use this template as the muscle-memory baseline.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>304. Range Sum Query 2D — Immutable.</strong> The 2D analogue with the four-corner formula.
         Constructor is O(mn), each query O(1). Sets up the technique used in 1314 and 363.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>560. Subarray Sum Equals K.</strong> The canonical prefix + hash problem. Map prefix → count, look
         up (prefix − k), accumulate. O(n). Negatives allowed — sliding window does not work here.
@@ -318,13 +340,16 @@ export default function PrefixSumArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why does prefix + hash beat sliding window for 560 (Subarray Sum Equals K)?</strong> Sliding window
+        <HighlightBlock as="li" tier="important"><strong>Why does prefix + hash beat sliding window for 560 (Subarray Sum Equals K)?</strong> Sliding window
         needs monotone behaviour of the running sum; with negatives, adding an element can decrease the sum, so the
-        L pointer would have to back up — destroying the amortised O(n). Prefix + hash is sign-agnostic.</li>
-        <li><strong>Why initialise the map with {`{0: 1}`}?</strong> The empty prefix has value 0 and is a valid left
+        L pointer would have to back up — destroying the amortised O(n). Prefix + hash is sign-agnostic.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Why initialise the map with {`{0: 1}`}?</strong> The empty prefix has value 0 and is a valid left
         boundary for any subarray that starts at index 0. Without seeding, subarrays starting at 0 with sum k are
-        missed.</li>
+        missed.</HighlightBlock>
         <li><strong>Why is the lookup before the increment?</strong> To exclude the zero-length subarray (the prefix
         looking at itself). Reverse the order and any k = 0 query inflates by n.</li>
         <li><strong>What is the complexity of building a 2D prefix sum, and what is the query complexity?</strong>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -40,7 +41,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>consensus algorithm</strong> is a protocol that enables a set
           of distributed processes (or nodes) to agree on a single value or
           sequence of values, even when some nodes fail, messages are lost, or
@@ -51,8 +55,8 @@ export default function ArticlePage() {
           nodes are in the cluster?), and distributed locking (which node holds
           the lock?). Without consensus, distributed systems cannot guarantee
           that all non-faulty nodes converge to the same state.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The consensus problem is formally defined by three properties:{""}
           <strong>agreement</strong> — all non-faulty nodes decide on the same
           value; <strong>validity</strong> — the decided value must have been
@@ -67,7 +71,7 @@ export default function ArticlePage() {
           unconditionally, and guarantee termination only with high probability
           (using timeouts and randomized elections to break symmetry when the
           system is partitioned).
-        </p>
+        </HighlightBlock>
         <p>
           The two most widely deployed consensus algorithms in production
           systems are <strong>Paxos</strong> and <strong>Raft</strong>. Paxos,
@@ -106,8 +110,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Leader election</strong> is the first sub-problem that any
           practical consensus algorithm solves. In a cluster of{" "}
           <code>2f + 1</code> nodes, one node is elected as the leader, and the
@@ -127,9 +134,9 @@ export default function ArticlePage() {
           election timeouts are randomized (e.g., 150–300 ms), ensuring that
           candidates time out at different times and one candidate is likely to
           start its election before the others.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Log replication</strong> is the second sub-problem. The leader
           maintains a log of entries, each representing a state machine command
           (e.g., &quot;set key X to value Y&quot;). When the leader receives a
@@ -145,7 +152,7 @@ export default function ArticlePage() {
           that even if the leader crashes, the entry exists on at least one
           node that can be elected as the new leader, and the entry will not be
           lost.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Safety</strong> is the property that ensures the consensus
@@ -228,6 +235,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/consensus-algorithms-diagram-1.svg"
@@ -235,7 +245,7 @@ export default function ArticlePage() {
           caption="Raft leader election — a candidate requests votes from a majority, and upon receiving them, becomes the leader for that term"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Raft protocol operates as a continuous state machine with three
           node states: Follower, Candidate, and Leader. All nodes start as
           Followers. A Follower&apos;s only responsibility is to respond to RPCs
@@ -255,9 +265,9 @@ export default function ArticlePage() {
           Followers to replicate the entry. Once a majority of Followers have
           acknowledged the entry, the Leader commits it, applies it to its state
           machine, and returns the result to the client.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The AppendEntries RPC is the workhorse of Raft — it serves both as a
           heartbeat (when it carries no log entries) and as a log replication
           mechanism (when it carries entries). The AppendEntries RPC includes
@@ -275,7 +285,7 @@ export default function ArticlePage() {
           <code>nextIndex</code> and <code>matchIndex</code> for each follower,
           allowing it to efficiently find the correct retry position without
           scanning the entire log.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/consensus-algorithms-diagram-2.svg"
@@ -310,15 +320,18 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The choice of consensus algorithm involves trade-offs across fault
           tolerance, throughput, latency, message complexity, and implementation
           complexity. Raft and Multi-Paxos are the dominant choices for
           crash-fault-tolerant systems (the common case in data center
           environments), while PBFT is used when Byzantine fault tolerance is
           required (blockchain, permissioned ledgers, adversarial environments).
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -432,7 +445,7 @@ export default function ArticlePage() {
           caption="Consensus trade-offs — Raft and Multi-Paxos dominate the crash-fault space; PBFT handles Byzantine faults at lower throughput"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Raft is the recommended default for new systems. Its clear
           decomposition into leader election, log replication, and safety makes
           it easier to implement correctly, debug when things go wrong, and
@@ -447,14 +460,17 @@ export default function ArticlePage() {
           <code>O(N²)</code> message complexity limits it to small clusters (
           <code>N ≤ 7</code>), and the additional cryptographic verification
           (signing every message) adds significant computational overhead.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use an odd number of nodes in the cluster to maximize fault tolerance
           for a given cluster size. A cluster of <code>2f + 1</code> nodes
           tolerates <code>f</code> failures. A 3-node cluster tolerates 1
@@ -469,9 +485,9 @@ export default function ArticlePage() {
           are rarely beneficial — the additional nodes increase the quorum size
           and message overhead without proportionally increasing availability,
           because the probability of 3+ simultaneous failures is extremely low.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Persist the current term and vote to stable storage before responding
           to any RPC. This is the most critical durability requirement in Raft:
           each node must store its current term number and the candidate it
@@ -484,7 +500,7 @@ export default function ArticlePage() {
           the client — if a leader crashes after acknowledging a client but
           before persisting the entry, the entry is lost and the client
           incorrectly believes it was committed.
-        </p>
+        </HighlightBlock>
 
         <p>
           Configure election timeouts based on the network latency between
@@ -534,8 +550,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implementing Raft from scratch without using a production-tested
           library is one of the most error-prone endeavors in distributed
           systems. While Raft is designed to be understandable, the
@@ -553,9 +572,9 @@ export default function ArticlePage() {
           use an existing, production-tested Raft library (etcd, HashiCorp Raft,
           braft) rather than implementing Raft from scratch, unless the learning
           exercise is the primary goal.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Assuming that consensus provides low-latency reads is a common
           misconception. In Raft, a linearizable read (a read that reflects all
           previously committed writes) requires the leader to confirm that it is
@@ -570,7 +589,7 @@ export default function ArticlePage() {
           high read throughput and can tolerate eventual consistency, reads
           should be served by followers without leader confirmation — but the
           application must be designed to handle stale reads.
-        </p>
+        </HighlightBlock>
 
         <p>
           Not handling network partitions correctly can cause split-brain
@@ -631,8 +650,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-world Use Cases */}
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           etcd uses Raft as its core consensus protocol to provide a
           strongly-consistent key-value store that serves as Kubernetes&apos;s
           control plane database. Every Kubernetes operation (creating a pod,
@@ -645,9 +667,9 @@ export default function ArticlePage() {
           Raft protocol ensures that even if etcd nodes crash or are restarted
           during Kubernetes upgrades, the cluster state is preserved and
           consistent across all etcd nodes.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           HashiCorp Consul uses Raft for its service catalog and key-value
           store, providing service discovery and configuration management for
           microservices architectures. Consul&apos;s Raft implementation is
@@ -661,7 +683,7 @@ export default function ArticlePage() {
           service registers with Consul, all Consul agents agree on the
           registration before it is considered committed, preventing the
           scenario where different agents report different service endpoints.
-        </p>
+        </HighlightBlock>
 
         <p>
           Apache ZooKeeper implements Zab (ZooKeeper Atomic Broadcast), a
@@ -700,6 +722,9 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
@@ -707,7 +732,7 @@ export default function ArticlePage() {
           term immediately upon receiving a majority of acknowledgments? What
           safety issue does this prevent?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             This is one of the most subtle and important safety rules in Raft.
             The rule states: a leader can only commit entries from its{" "}
             <em>own</em> term. Entries from previous terms are committed
@@ -715,8 +740,8 @@ export default function ArticlePage() {
             committed. This rule prevents a scenario where an entry from a
             previous term is committed by one leader but then lost when a new
             leader is elected.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Here is the specific scenario that this rule prevents. Consider a
             5-node cluster. In term 2, Leader 1 appends entry X to its log and
             replicates it to one follower (Follower A). Leader 1 crashes before
@@ -732,7 +757,7 @@ export default function ArticlePage() {
             if the rule allowed it, it would commit X — overwriting entry Y,
             which was already committed by Leader 2. This violates safety: a
             committed entry (Y) is lost.
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             The rule prevents this by requiring the leader to commit an entry
             from its <em>own</em> term before committing entries from previous

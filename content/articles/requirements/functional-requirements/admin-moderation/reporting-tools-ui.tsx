@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function ReportingToolsUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Reporting tools UI enables users to create, customize, schedule, and export reports for business intelligence and operational reporting. The interface is the primary tool for analysts, managers, and executives to generate insights from data, track KPIs, and make data-driven decisions. For staff and principal engineers, reporting tools UI involves report builder (drag-drop interface, query builder), scheduled reports (automated report generation and delivery), report templates (pre-defined reports), data export (CSV, PDF, Excel), and report sharing (share reports with team, embed reports).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of reporting tools UI extends beyond simple data display. Report builder must enable non-technical users to create custom reports (drag-drop, visual query builder). Scheduled reports must run on schedule (daily, weekly, monthly), generate reports, and deliver via email or other channels. Report templates must provide pre-defined reports for common use cases (executive summary, operational report, financial report). Data export must support multiple formats (CSV, PDF, Excel) with proper formatting. Report sharing must enable collaboration (share with team, embed in dashboards, public links).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, reporting tools UI architecture involves report generation (query execution, data aggregation), report rendering (chart rendering, table rendering), scheduling infrastructure (cron jobs, queue processing), and delivery infrastructure (email delivery, file storage). The system must support multiple data sources (database, API, data warehouse), multiple report types (tabular, chart-based, mixed), and multiple delivery methods (email, file download, scheduled delivery). Performance is critical—reports must generate quickly even with large datasets.
         </p>
@@ -47,13 +51,16 @@ export default function ReportingToolsUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Report Builder</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Drag-drop report builder enables non-technical users to create reports. Drag fields from data source to report canvas. Drop zones for filters, groupings, columns, charts. Visual query builder (build queries visually, no SQL). Preview mode (preview report before saving). Save report (save for later use).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Query builder constructs data queries. Select data source (database table, API endpoint, data warehouse). Select fields (columns to include). Add filters (filter data by criteria). Add groupings (group by category, date). Add sortings (sort by field, ascending/descending). Aggregations (sum, count, average, min, max).
-        </p>
+        </HighlightBlock>
         <p>
           Chart builder creates visualizations. Chart types (line, bar, pie, area, scatter, funnel, cohort). Configure chart (select data fields, configure axes, colors). Preview chart (preview before saving). Save chart (save as report component).
         </p>
@@ -105,9 +112,12 @@ export default function ReportingToolsUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Reporting tools UI architecture spans report builder, scheduling infrastructure, report generation, and delivery. Report builder enables report creation (drag-drop, query builder). Scheduling infrastructure automates report generation (cron jobs, queue). Report generation executes queries and renders reports. Delivery delivers reports (email, download, share).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/admin-moderation/reporting-tools-ui/reporting-architecture.svg"
@@ -118,9 +128,9 @@ export default function ReportingToolsUIArticle() {
         />
 
         <h3>Report Builder Interface</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Data source selection selects data for report. Select data source (database, API, data warehouse). Select tables/endpoints (select specific tables). Preview data (preview data before building). Connection testing (test data source connection).
-        </p>
+        </HighlightBlock>
         <p>
           Field selection selects fields for report. Drag fields from data source to report canvas. Drop zones (filters area, columns area, charts area). Field configuration (configure field display, formatting). Field calculations (calculated fields, formulas).
         </p>
@@ -180,14 +190,17 @@ export default function ReportingToolsUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Reporting tools UI design involves trade-offs between flexibility and simplicity, power and usability, and automation and control. Understanding these trade-offs enables informed decisions aligned with user needs and technical constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Report Builder: Drag-Drop vs. Query-Based</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Drag-drop builder (visual report builder). Pros: User-friendly (non-technical users), intuitive (drag-drop interface). Cons: Limited flexibility (constrained by UI), complex queries difficult. Best for: Business users, common reports.
-        </p>
+        </HighlightBlock>
         <p>
           Query-based builder (SQL/query builder). Pros: Flexible (any query possible), powerful (complex queries). Cons: Technical (requires SQL knowledge), steep learning curve. Best for: Technical users, custom reports.
         </p>
@@ -239,13 +252,16 @@ export default function ReportingToolsUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Design intuitive report builder:</strong> Drag-drop interface. Visual query builder. Preview mode. Save reports.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Support multiple export formats:</strong> CSV, PDF, Excel, JSON. Configure export options. Compression for large exports.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement flexible scheduling:</strong> Daily, weekly, monthly schedules. Timezone support. Multiple recipients. Pause/resume schedules.
           </li>
@@ -275,13 +291,16 @@ export default function ReportingToolsUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Complex report builder:</strong> Too difficult for users. Solution: Drag-drop interface, visual query builder, preview mode.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Limited export formats:</strong> Can&apos;t export in needed format. Solution: Support CSV, PDF, Excel, JSON.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Poor scheduling:</strong> Inflexible scheduling. Solution: Multiple frequencies, timezone support, multiple recipients.
           </li>
@@ -311,16 +330,19 @@ export default function ReportingToolsUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Tableau Reporting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tableau for business intelligence. Drag-drop report builder. Multiple chart types. Scheduled reports (email, server). Report sharing (share with team, public). Embed reports (embed in web pages). Mobile support (mobile app).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Power BI Reporting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Power BI for Microsoft ecosystem. Report builder (Power BI Desktop). Scheduled refresh (refresh data on schedule). Report sharing (share within organization). Embed reports (embed in SharePoint, Teams). Mobile support (mobile app).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Looker Reporting</h3>
         <p>
@@ -340,12 +362,15 @@ export default function ReportingToolsUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design report builders for non-technical users while maintaining query performance?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design report builders for non-technical users while maintaining query performance?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement drag-drop interface with visual query builder—users drag fields from data source to report canvas without writing SQL. Provide preview mode so users see results before saving. Offer templates for common reports (revenue reports, user activity, conversion funnels) to guide users. The key challenge is balancing flexibility with performance—unrestricted user queries can be expensive. Implement query guards: limit date ranges, enforce aggregation requirements, prevent Cartesian joins. Use query optimization layer that rewrites user queries for performance. At scale, pre-compute common aggregations and route user queries to materialized views where possible. Provide guided workflow with step-by-step report creation for new users.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

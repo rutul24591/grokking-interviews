@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +30,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>HyperLogLog</strong> (HLL) is a probabilistic data structure that estimates
           the number of distinct elements (cardinality) in a dataset using a fixed amount of
           memory. Unlike exact counting, which requires storing every unique element (consuming
@@ -37,8 +41,8 @@ export default function ArticlePage() {
           fixed-size register array (typically 1-12 KB) to estimate cardinality with a known
           error bound (typically 1-2%). This makes it possible to count billions of distinct
           elements using only a few kilobytes of memory.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider a web analytics platform that needs to count the number of unique daily
           visitors (distinct IP addresses or user IDs) across a global user base of 500 million
           users. An exact count using a hash set would require storing all 500 million unique
@@ -49,7 +53,7 @@ export default function ArticlePage() {
           accuracy is typically acceptable, and the memory savings (16 GB → 12 KB, a 1,300x
           reduction) enable the system to track distinct counts for thousands of dimensions
           (page, country, device, browser) simultaneously.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, HyperLogLog requires understanding the mathematical
           foundations (hash-based bucketing, leading-zero counting, harmonic mean estimation),
@@ -76,6 +80,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/hyperloglog-structure.svg`}
@@ -84,22 +91,22 @@ export default function ArticlePage() {
         />
 
         <h3>Hash-Based Bucketing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           HyperLogLog uses a hash function to map each element to a uniformly distributed
           random value. The hash output is split into two parts: the first p bits (the prefix)
           select one of m = 2^p registers (buckets), and the remaining bits (the suffix) are
           used to count the number of leading zeros. The intuition is that if you observe a
           hash value with k leading zeros, you have likely seen approximately 2^k distinct
           elements (because the probability of k leading zeros is 1/2^k).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Each register stores the maximum number of leading zeros observed for elements that
           hash to that register. When a new element is processed, its hash is computed, the
           register is selected by the prefix, and the register is updated to the maximum of its
           current value and the new leading-zero count. After processing all elements, the
           cardinality estimate is computed as the harmonic mean of 2^(register values) across
           all m registers, multiplied by a bias correction constant.
-        </p>
+        </HighlightBlock>
 
         <h3>Harmonic Mean Estimation</h3>
         <p>
@@ -149,22 +156,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Update and Query Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The update flow processes each element through three steps: hash the element to a
           uniformly distributed value, split the hash into prefix (register index) and suffix
           (leading-zero counter), and update the selected register to the maximum of its
           current value and the new leading-zero count. Each update is O(1) time and O(1)
           memory, making HyperLogLog suitable for high-throughput streaming applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The query flow computes the cardinality estimate by calculating the harmonic mean of
           2^(register values) across all registers, applying the bias correction constant α_m,
           and then applying the small-range or large-range correction if needed. The query is
           O(m) time where m is the number of registers (typically 16,384), making it fast
           enough for real-time dashboards.
-        </p>
+        </HighlightBlock>
 
         <h3>Merging HyperLogLog Sketches</h3>
         <p>
@@ -196,14 +206,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           HyperLogLog trades exact counting for massive memory efficiency. An exact count of
           500 million distinct elements requires ~16 GB (hash set), while HyperLogLog requires
           ~12 KB with ±1.5% error. The trade-off is acceptable for analytics (where approximate
           counts are sufficient) but unacceptable for billing or financial applications (where
           exact counts are required).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compared to other probabilistic cardinality estimators, HyperLogLog provides the best
           accuracy-to-memory ratio. Linear Probabilistic Counting uses more memory for the same
           accuracy. Adaptive Counting (used in some implementations) switches between Linear
@@ -211,7 +224,7 @@ export default function ArticlePage() {
           for small cardinalities at the cost of implementation complexity. HyperLogLog++ (used
           by Google BigQuery) adds sparse representation for small cardinalities, reducing
           memory usage from 12 KB to a few hundred bytes for cardinalities below 10,000.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -219,18 +232,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Choose the number of registers based on the required accuracy. For 1% error, use
           m = 16,384 (p = 14, 12 KB). For 2% error, use m = 4,096 (p = 12, 3 KB). For 0.5%
           error, use m = 65,536 (p = 16, 48 KB). The standard error formula 1.04/√m allows
           you to compute the required register count for any target accuracy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use a high-quality hash function (MurmurHash3, CityHash, or xxHash) to ensure
           uniform distribution of hash values. Poor hash functions with non-uniform distribution
           cause biased estimates because some registers are selected more frequently than
           others, leading to underestimation or overestimation of the true cardinality.
-        </p>
+        </HighlightBlock>
         <p>
           Implement sparse representation for small cardinalities: when the number of
           non-zero registers is small (e.g., fewer than 100), store only the non-zero
@@ -252,20 +268,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is using too few registers for the required accuracy. With
           m = 256 registers (p = 8), the standard error is 6.5%, meaning a 95% confidence
           interval of ±13%. This is unacceptable for most analytics use cases. The fix is to
           use at least m = 4,096 registers (p = 12, 2% error) for analytics, and m = 16,384
           (p = 14, 0.8% error) for dashboards that display precise-looking numbers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not applying bias correction for small cardinalities causes overestimation. When the
           true cardinality is smaller than the number of registers, many registers remain at
           zero, and the raw estimate overestimates the true count. The fix is to use linear
           counting (V = m × ln(m/V), where V is the number of zero registers) for small
           cardinalities, as recommended in the HyperLogLog++ paper.
-        </p>
+        </HighlightBlock>
         <p>
           Using a weak hash function (e.g., simple modulo or XOR-based hashing) causes
           non-uniform hash distribution, which biases the estimate. Some registers are selected
@@ -289,9 +308,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Google BigQuery: Approximate Distinct Count</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google BigQuery uses HyperLogLog++ for its APPROX_COUNT_DISTINCT function, which
           estimates the number of distinct values in a column with sub-percent error. BigQuery
           implements sparse representation: for small cardinalities (fewer than 10,000 distinct
@@ -299,16 +321,16 @@ export default function ArticlePage() {
           usage from 12 KB to a few hundred bytes. For large cardinalities, the full dense
           representation is used. This optimization allows BigQuery to process trillions of rows
           while maintaining low memory overhead for distinct counting.
-        </p>
+        </HighlightBlock>
 
         <h3>Redis: HLL for Real-Time Analytics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Redis implements HyperLogLog as a native data type (PFADD, PFCOUNT, PFMERGE commands).
           Each HLL uses 12 KB of memory and provides ±0.81% accuracy. Redis HLL is used for
           real-time unique visitor counting, distinct session tracking, and IP address diversity
           monitoring. The PFMERGE command allows merging HLLs from different Redis instances,
           enabling distributed cardinality estimation across a Redis cluster.
-        </p>
+        </HighlightBlock>
 
         <h3>Cloudflare: Network Flow Tracking</h3>
         <p>
@@ -326,18 +348,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is HyperLogLog and when should you use it?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               HyperLogLog is a probabilistic data structure that estimates the number of
               distinct elements (cardinality) using a fixed amount of memory (typically 12 KB).
               It uses a hash function to map elements to registers, tracks the maximum leading
               zero count per register, and estimates cardinality using the harmonic mean of
               2^(register values).
-            </p>
+            </HighlightBlock>
             <p>
               Use HyperLogLog when you need to count distinct elements at scale and can tolerate
               small estimation errors (±0.8-2%). Typical use cases include unique visitor

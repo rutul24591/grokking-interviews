@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -32,7 +33,7 @@ export default function RobotsTxtArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>robots.txt</strong> is a plain-text file placed at the root of
           a website (example.com/robots.txt) that instructs web crawlers which
           URLs they are allowed or disallowed from accessing. Formally defined
@@ -40,8 +41,8 @@ export default function RobotsTxtArticle() {
           in 2022), robots.txt has been the primary mechanism for managing
           crawler access since 1994, making it one of the oldest and most
           fundamental web standards still in active use.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Every major search engine crawler — Googlebot, Bingbot, Baiduspider,
           Yandex — checks robots.txt before crawling any URL on a domain. The
           file is fetched once and cached (Google caches it for up to 24 hours),
@@ -49,8 +50,8 @@ export default function RobotsTxtArticle() {
           missing robots.txt (404 response) is interpreted as full crawl
           permission, while a server error (5xx response) causes crawlers to
           temporarily halt crawling the entire site.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the staff/principal engineer level, robots.txt is a critical
           infrastructure configuration that directly impacts crawl budget
           allocation, indexation coverage, and security posture. A single
@@ -61,14 +62,14 @@ export default function RobotsTxtArticle() {
           overly permissive robots.txt can expose internal endpoints, admin
           panels, and staging content to crawlers, creating both security and
           SEO problems.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>User-agent Directive:</strong> Specifies which crawler the
             following rules apply to. <code>User-agent: *</code> targets all
             crawlers. Specific crawlers like <code>User-agent: Googlebot</code>{" "}
@@ -76,8 +77,8 @@ export default function RobotsTxtArticle() {
             Crawlers use the most specific matching user-agent block — if both a
             wildcard and Googlebot-specific block exist, Googlebot follows only
             its specific block.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Disallow Directive:</strong> Prevents crawlers from
             accessing URLs matching the specified path prefix.{" "}
             <code>Disallow: /admin</code> blocks all URLs starting with /admin.{" "}
@@ -86,15 +87,15 @@ export default function RobotsTxtArticle() {
             prevents crawling but does not prevent indexing — a page can still
             appear in search results (without a snippet) if other pages link to
             it.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Allow Directive:</strong> Explicitly permits access to URLs
             within a disallowed path. <code>Allow: /admin/public</code> combined
             with <code>Disallow: /admin</code> blocks all /admin paths except
             /admin/public. The Allow directive was not in the original protocol
             but is now standardized in RFC 9309 and supported by all major
             crawlers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Sitemap Directive:</strong> Declares the location of XML
             sitemaps. <code>Sitemap: https://example.com/sitemap.xml</code> can
@@ -137,34 +138,34 @@ export default function RobotsTxtArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Understanding how crawlers evaluate robots.txt is essential for
           writing effective rules and diagnosing crawl issues.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/robots-txt-diagram-1.svg"
           alt="Crawler request flow showing how robots.txt is fetched, cached, and evaluated before each URL request"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a crawler encounters a new domain, it first fetches robots.txt
           and caches the result. For every subsequent URL on that domain, the
           crawler checks the cached rules before making the request. If the URL
           matches a Disallow pattern, the request is skipped. This means
           robots.txt is one of the highest-traffic files on any website — it
           receives a request before any other crawl activity begins.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/robots-txt-diagram-2.svg"
           alt="Robots.txt directive hierarchy showing how specificity rules determine which Allow or Disallow directive takes precedence"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           When multiple directives could apply to a URL, the most specific
           (longest matching) path wins. If an Allow and Disallow directive have
           the same path length, Allow takes precedence (per Google&apos;s
           implementation). This specificity-based resolution enables granular
           control — you can disallow a broad path while allowing specific
           sub-paths within it.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/robots-txt-diagram-3.svg"
           alt="Crawl budget management architecture showing how robots.txt, server capacity, and content signals determine overall crawl allocation"
@@ -182,16 +183,19 @@ export default function RobotsTxtArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="important">
               <th className="p-3 text-left">Mechanism</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
+            </HighlightBlock>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">robots.txt Disallow</td>
               <td className="p-3">
                 Prevents crawling entirely; saves crawl budget; site-wide
@@ -201,8 +205,8 @@ export default function RobotsTxtArticle() {
                 Does not prevent indexing (URLs can still appear in results
                 without snippets); publicly visible; no page-level granularity
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">Meta Robots noindex</td>
               <td className="p-3">
                 Prevents indexing definitively; page-level control; can combine
@@ -212,7 +216,7 @@ export default function RobotsTxtArticle() {
                 Requires crawling the page first (uses crawl budget); must be in
                 every page&apos;s HTML; can be overridden by CMS errors
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3 font-medium">X-Robots-Tag Header</td>
               <td className="p-3">
@@ -243,20 +247,20 @@ export default function RobotsTxtArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Keep robots.txt Simple and Tested:</strong> Complex wildcard
             patterns and extensive rule sets are difficult to maintain and easy
             to get wrong. Prefer simple, clear path prefixes. Test rules with
             Google&apos;s robots.txt tester in Search Console before deploying.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Never Block CSS, JavaScript, or Image Files:</strong>{" "}
             Googlebot needs to render pages to understand content and layout.
             Blocking render-critical resources causes Google to see a broken
             version of the page, negatively impacting rankings and user
             experience assessment.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Use noindex Instead of Disallow for Sensitive Pages:
             </strong>{" "}
@@ -264,7 +268,7 @@ export default function RobotsTxtArticle() {
             still appear in search results if external sites link to it. To
             fully remove a page from search results, use the noindex meta tag or
             X-Robots-Tag header.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Block Low-Value URL Patterns:</strong> Internal search
             result pages, faceted navigation permutations, session-ID URLs, and
@@ -297,26 +301,26 @@ export default function RobotsTxtArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Using robots.txt as Security:</strong> robots.txt is
             publicly accessible — anyone can read it to discover the URLs you
             are trying to hide. Sensitive paths listed in Disallow directives
             (admin panels, internal APIs) become a roadmap for attackers. Use
             authentication, not robots.txt, for security.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Leaving Staging Disallow in Production:</strong> A common
             deployment error where <code>Disallow: /</code> from the staging
             robots.txt is accidentally deployed to production. This immediately
             blocks all crawling. Automated deployment checks should validate
             that production robots.txt does not contain a site-wide disallow.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Blocking JavaScript and CSS:</strong> Legacy robots.txt
             rules that block /js/ and /css/ directories prevent Googlebot from
             rendering pages. Google explicitly warns against this in Search
             Console and may downrank pages it cannot render properly.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Assuming Disallow Prevents Indexing:</strong> Disallow only
             prevents crawling. Google may still index the URL based on external
@@ -342,26 +346,26 @@ export default function RobotsTxtArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Large E-Commerce (Walmart, Target):</strong> Block internal
             search results (/search?q=), cart and checkout flows (/cart,
             /checkout), account pages (/account), and faceted navigation
             parameter combinations that generate millions of low-value URL
             permutations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>News Sites (Reuters, AP):</strong> Allow full crawling of
             article content while blocking print versions, AMP cache endpoints,
             and internal content management paths. News sitemaps are declared
             for Google News crawling.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>SaaS Platforms (Salesforce, HubSpot):</strong> Block
             customer-specific subdomains and tenant paths from public search
             crawling while allowing marketing pages, documentation, and blog
             content. Crawler-specific rules may allow Googlebot access to public
             API documentation while blocking other crawlers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>AI Crawler Blocking:</strong> With the rise of AI training
             data collection, many sites now specifically block AI crawlers like
@@ -375,13 +379,16 @@ export default function RobotsTxtArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: Does robots.txt Disallow prevent a page from appearing in
               Google search results?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: No. Disallow prevents crawling, not indexing. Google may still
               index a disallowed URL and display it in search results — just
               without a content snippet or cached version. This happens when
@@ -391,12 +398,12 @@ export default function RobotsTxtArticle() {
               together — if the URL is disallowed, Google cannot crawl the page
               to see the noindex tag. The URL must be crawlable for noindex to
               work.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: What happens when robots.txt returns a 500 error?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Major crawlers interpret a 5xx error on robots.txt as a
               &quot;full disallow&quot; — they assume the site owner
@@ -466,7 +473,7 @@ export default function RobotsTxtArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://datatracker.ietf.org/doc/html/rfc9309"
               target="_blank"
@@ -475,8 +482,8 @@ export default function RobotsTxtArticle() {
             >
               RFC 9309 — Robots Exclusion Protocol
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developers.google.com/search/docs/crawling-indexing/robots/intro"
               target="_blank"
@@ -485,8 +492,8 @@ export default function RobotsTxtArticle() {
             >
               Google Search Central — robots.txt Introduction
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.robotstxt.org/"
               target="_blank"
@@ -495,7 +502,7 @@ export default function RobotsTxtArticle() {
             >
               robotstxt.org — The Web Robots Pages
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://developers.google.com/search/docs/crawling-indexing/overview-google-crawlers"

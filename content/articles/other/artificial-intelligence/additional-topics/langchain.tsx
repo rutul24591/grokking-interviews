@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>LangChain</strong> is the dominant open-source framework for
           building applications powered by Large Language Models. It provides
           abstractions for the core components of LLM applications: model
@@ -33,8 +37,8 @@ export default function ArticlePage() {
           interactions), tools (external capabilities the LLM can invoke),
           agents (systems that decide which actions to take), and evaluation
           (measuring output quality).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           LangChain addresses the gap between calling an LLM API and building a
           production application. A raw LLM API call is a single function —
           input text in, output text out. A production LLM application requires
@@ -44,7 +48,7 @@ export default function ArticlePage() {
           of these concerns, reducing the amount of boilerplate code and
           providing a consistent architecture that scales from prototype to
           production.
-        </p>
+        </HighlightBlock>
         <p>
           For software engineers, LangChain is both a practical tool and a
           conceptual framework. Its abstractions (chains, agents, tools, memory)
@@ -59,7 +63,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>model interface</strong> in LangChain provides a unified
           API for calling different LLM providers. The <code>ChatModel</code>{" "}
           abstraction normalizes the differences between OpenAI, Anthropic,
@@ -68,8 +75,8 @@ export default function ArticlePage() {
           authentication, rate limiting, retry logic, and response parsing,
           providing a consistent <code>invoke</code> method regardless of the
           underlying provider.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Chains</strong> are the fundamental composition pattern in
           LangChain. A chain is a sequence of steps where the output of one
           step feeds into the next. The simplest chain is the{" "}
@@ -79,7 +86,7 @@ export default function ArticlePage() {
           on input), and <code>RetrievalQA</code> (retrieval augmented
           generation). Chains enable building complex LLM workflows from simple,
           reusable components.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/langchain-architecture.svg"
@@ -133,7 +140,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A LangChain application follows a structured architecture. The{" "}
           <strong>input layer</strong> receives user input (text, files, API
           requests). The <strong>prompt layer</strong> constructs the prompt
@@ -143,7 +153,7 @@ export default function ArticlePage() {
           formats the model&apos;s response. Each layer is implemented as a
           LangChain component that can be composed, replaced, or extended
           independently.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/langchain-chain-composition.svg"
@@ -157,7 +167,7 @@ export default function ArticlePage() {
           caption="LCEL pipeline — Prompt Template | Chat Model | Output Parser | Memory, with features including streaming, async, batching, fallbacks, parallel execution, and full type safety"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>retrieval pipeline</strong> in LangChain integrates
           document loading, text splitting, embedding, vector storage, and
           retrieval into a cohesive RAG pipeline. Documents are loaded from
@@ -166,7 +176,7 @@ export default function ArticlePage() {
           a vector database, and retrieved based on query similarity. The
           retrieved context is then included in the prompt for the LLM to
           generate a grounded response.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Callback system</strong> provides observability into LangChain
           execution. Callbacks are hooks that fire at key events: chain start,
@@ -179,7 +189,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>LangChain versus custom implementations</strong> is the
           primary architectural decision. LangChain provides ready-made
           abstractions for every component of an LLM application, dramatically
@@ -189,8 +202,8 @@ export default function ArticlePage() {
           fully understand every component they are using. Custom
           implementations provide full control and transparency but require
           more development effort.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>LCEL versus legacy chains</strong> is a within-framework
           decision. LCEL is the modern, recommended approach — it provides
           better type safety, streaming support, async execution, and
@@ -199,7 +212,7 @@ export default function ArticlePage() {
           deprecated for new development. The migration path from legacy chains
           to LCEL is straightforward but requires rewriting the chain
           composition logic.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>LangChain versus LlamaIndex</strong> is the framework
           selection decision for RAG applications. LangChain is a general-purpose
@@ -221,20 +234,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use LCEL for all new development</strong> — it provides
           better streaming, async, type safety, and composability than legacy
           chains. The pipe syntax (<code>prompt | model | parser</code>) is
           clean, readable, and composable. Avoid the legacy LLMChain and
           SequentialChain APIs for new code.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement structured output parsing</strong> — never trust
           raw LLM output. Use LangChain&apos;s output parsers (Pydantic, JSON,
           structured list) to validate and structure the model&apos;s response.
           Combine with retry logic to automatically re-prompt the model when
           parsing fails.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Use callbacks for production observability</strong> —
           implement custom callbacks that log token usage, latency, cost, and
@@ -253,22 +269,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>over-engineering with agents</strong>.
           LangChain&apos;s agent framework is powerful but adds significant
           complexity. Many applications that use agents could be implemented
           more reliably with deterministic chains. Agents should be used only
           when the task genuinely requires dynamic tool selection and reasoning.
           If the sequence of steps is known in advance, use a chain instead.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Memory misconfiguration</strong> leads to either context
           window overflow (using ConversationBufferMemory with long
           conversations) or lost context (using ConversationSummaryMemory that
           over-summarizes). Always set explicit token limits for memory
           components and monitor actual token usage to ensure the memory fits
           within the model&apos;s context window.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Ignoring LangChain version compatibility</strong> — LangChain
           has undergone significant API changes between versions. Components
@@ -290,19 +309,22 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>RAG applications</strong> — LangChain&apos;s retrieval
           pipeline integrates document loading, chunking, embedding, vector
           storage, and retrieval into a cohesive RAG system. Combined with an
           LLM and prompt template, it produces answers grounded in retrieved
           documents. This is the most common LangChain use case in production.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Multi-step data processing</strong> — chains that extract
           data from documents, transform it, validate it, and load it into a
           database. Each step is a LangChain component with its own prompt,
           model, and output parser, composed into a sequential pipeline.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Conversational agents</strong> — LangChain&apos;s agent
           framework with tools for web search, database queries, code execution,
@@ -315,21 +337,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: What is LangChain Expression Language (LCEL) and why is it
             preferred over legacy chains?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             LCEL is a declarative composition system that uses pipe syntax to
             build LLM pipelines. Instead of creating chain objects and linking
             them imperatively, LCEL composes components using the pipe operator:{" "}
             <code>prompt | model | parser</code>. This creates a Runnable
             pipeline where each component&apos;s output feeds into the next
             component&apos;s input.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             LCEL is preferred because it provides automatic streaming (output
             streamed as it is generated), parallel execution (independent
             branches run concurrently), async support (native async/await),
@@ -337,7 +362,7 @@ export default function ArticlePage() {
             built-in retry logic (automatic retries on failure), and
             composability (pipelines can be nested and combined). Legacy chains
             lack most of these features and require more boilerplate code.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

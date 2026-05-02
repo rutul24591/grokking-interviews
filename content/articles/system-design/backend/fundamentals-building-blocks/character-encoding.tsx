@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function CharacterEncodingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Character encoding</strong> defines how characters (letters, digits, symbols, emoji) are represented as bytes for storage and transmission. <strong>Unicode</strong> is the universal character set that assigns a unique code point (e.g., U+0041 for 'A', U+1F600 for 😀) to every character in every writing system. <strong>UTF-8</strong> is the dominant encoding that maps Unicode code points to variable-length byte sequences (1-4 bytes per character), designed for backward compatibility with ASCII and efficient storage of Latin text.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For backend engineers, character encoding is not abstract theory — it is a daily operational concern. Encoding mismatches cause data corruption (mojibake — garbled text), search failures (same text doesn't match due to different byte sequences), validation errors (byte-length limits reject valid input), and security vulnerabilities (encoding bypasses input validation). These issues often surface months after deployment, during migrations, internationalization efforts, or when integrating with legacy systems that use different encodings.
-        </p>
+        </HighlightBlock>
         <p>
           The key insight is that encoding is a boundary concern. Within a well-designed system, UTF-8 is used end-to-end. Problems arise at boundaries: browser to server (form submissions with different charsets), server to database (driver defaults), service to service (message queues with raw byte payloads), and legacy system integration (ISO-8859-1, Windows-1252). Understanding how to enforce UTF-8 at ingress, normalize text for equality checks, and handle edge cases (emoji, CJK characters, combining diacritics) is essential for building robust, internationalized systems.
         </p>
@@ -36,16 +40,19 @@ export default function CharacterEncodingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Character encoding encompasses several interconnected concepts that govern how text is stored, transmitted, and compared across systems.
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Unicode Code Points:</strong> Unicode assigns a unique number (code point) to every character. Code points are written as U+XXXX (e.g., U+0041 = 'A', U+00E9 = 'é', U+1F600 = 😀). The Unicode standard defines over 149,000 characters across 167 scripts. Code points are abstract — they do not specify how characters are stored as bytes. That is the job of encodings like UTF-8, UTF-16, or UTF-32.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>UTF-8 Encoding:</strong> UTF-8 encodes Unicode code points as 1-4 byte sequences. ASCII characters (U+0000 to U+007F) use 1 byte (identical to ASCII). Latin-1 Supplement (U+0080 to U+00FF) uses 2 bytes. Most common non-Latin scripts (CJK, Arabic, Cyrillic) use 3 bytes. Emoji and rare characters use 4 bytes. UTF-8 is self-synchronizing (you can find character boundaries without decoding from the start) and backward-compatible with ASCII, which is why it dominates the web (98% of websites use UTF-8).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Normalization (NFC, NFD, NFKC, NFKD):</strong> Unicode allows multiple byte sequences to represent the same visible character. For example, 'é' can be a single code point (U+00E9) or two code points ('e' + combining acute accent: U+0065 U+0301). Normalization converts text to a canonical form. NFC (Canonical Composition) combines characters where possible. NFD (Canonical Decomposition) splits combined characters. NFKC/NFKD (Compatibility Composition/Decomposition) also normalize compatibility characters (e.g., 'ﬁ' ligature → 'fi'). Without normalization, string comparisons fail — two visually identical strings compare unequal because they have different byte sequences.
           </li>
@@ -69,9 +76,12 @@ export default function CharacterEncodingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding how encoding flows through system architecture is essential for preventing corruption. A typical request traverses multiple boundaries, each with potential encoding mismatches.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/fundamentals-building-blocks/mojibake-encoding-mismatch.svg"
@@ -103,9 +113,9 @@ export default function CharacterEncodingArticle() {
           </ol>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Normalization Flow:</strong> Normalization should happen at ingress (when data enters the system). Normalize user input to NFC before storage. This ensures consistent byte sequences for equality checks and indexing. Do not normalize on read — normalize once on write, compare normalized values. For search indexes, normalize both indexed terms and search queries to the same form (NFC or NFKC depending on requirements).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Boundary Validation:</strong> Validate encoding at every boundary. Reject invalid UTF-8 byte sequences at ingress (do not attempt to "fix" corrupted input — reject and log). Log byte length and character length for all text fields. Alert when byte/character ratio changes sharply — this signals upstream encoding changes. For legacy system integration, normalize to UTF-8 immediately and track conversion errors.
@@ -114,6 +124,9 @@ export default function CharacterEncodingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -233,12 +246,12 @@ export default function CharacterEncodingArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">Normalization Form Trade-offs</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <strong>Use NFC (Canonical Composition) when:</strong> storing user-generated content, comparing strings for equality, or indexing for search. NFC is the default for most systems and produces compact storage (combined characters use fewer bytes).
-          </p>
-          <p className="mt-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-3">
             <strong>Use NFD (Canonical Decomposition) when:</strong> implementing text processing that needs to manipulate individual diacritics, or when compatibility with legacy systems that use decomposed forms is required.
-          </p>
+          </HighlightBlock>
           <p className="mt-3">
             <strong>Use NFKC/NFKD (Compatibility) when:</strong> implementing search that should match compatibility variants (e.g., 'ﬁ' ligature should match 'fi', superscript '²' should match '2'). NFKC/NFKD lose information (cannot round-trip), so do not use for storage — only for search indexes.
           </p>
@@ -253,16 +266,19 @@ export default function CharacterEncodingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production encoding management requires discipline and operational rigor. These best practices prevent common mistakes and accelerate incident response.
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Enforce UTF-8 End-to-End:</strong> Use UTF-8 at every layer: HTTP headers (<code>Content-Type: application/json; charset=utf-8</code>), database connections (<code>?charset=utf8mb4</code>), database columns (utf8mb4, not utf8), file storage, message queues, and logs. Explicitly set charset in all configurations. Do not rely on defaults — defaults vary by platform and can change between versions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Normalize on Ingress:</strong> Normalize user input to NFC before storage. This ensures consistent byte sequences for equality checks and indexing. Do not normalize on read — normalize once on write. For search indexes, normalize both indexed terms and search queries to the same form. Document normalization strategy and enforce it in code reviews.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Validate Encoding at Boundaries:</strong> Reject invalid UTF-8 byte sequences at ingress. Do not attempt to "fix" corrupted input — reject and log. Log byte length and character length for all text fields. Alert when byte/character ratio changes sharply — this signals upstream encoding changes. For legacy system integration, normalize to UTF-8 immediately and track conversion errors.
           </li>
@@ -280,16 +296,19 @@ export default function CharacterEncodingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Even experienced engineers fall into encoding traps. These pitfalls are common sources of data corruption and search failures.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Double Encoding:</strong> Encoding UTF-8 bytes as UTF-8 again produces mojibake. For example, 'é' (U+00E9, UTF-8: 0xC3 0xA9) encoded again becomes 'Ã©' (UTF-8: 0xC3 0x83 0xC2 0xA9). This happens when frameworks decode bytes to strings, then application code re-encodes as UTF-8. Prevention: decode once at ingress, work with strings internally, encode once at egress. Log byte length at each boundary to detect double encoding.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Byte-Length Limits on Character Data:</strong> VARCHAR(255) in MySQL limits bytes, not characters. A 255-byte limit accepts 255 ASCII characters but only 63 emoji (4 bytes each). Users with international names get rejected or silently truncated. Prevention: use character-length limits (application-side validation), increase column size (VARCHAR(1024) for UTF-8), or use TEXT columns for unlimited length.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Mixing Normalization Forms:</strong> Storing some data as NFC and other data as NFD causes equality checks to fail. Two visually identical strings compare unequal because they have different byte sequences. Prevention: normalize all input to NFC before storage. For existing data, run migration to normalize all text fields. Add database constraints or triggers to enforce normalization.
           </li>
@@ -304,15 +323,18 @@ export default function CharacterEncodingArticle() {
 
       <section>
         <h2>Production Case Studies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-world encoding incidents demonstrate how theoretical patterns manifest in production and how systematic debugging accelerates resolution.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Case Study 1: Emoji Corruption in Database</h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             <strong>Symptom:</strong> User profiles with emoji in bio display as  (replacement glyphs). Database shows 4-byte sequences corrupted to 3-byte sequences.
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             <strong>Debugging Process:</strong> Database schema showed column charset was utf8 (MySQL's old 3-byte UTF-8), not utf8mb4 (full 4-byte UTF-8). Application was sending valid UTF-8, but database truncated 4-byte sequences to 3 bytes.
           </p>
@@ -368,9 +390,12 @@ export default function CharacterEncodingArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding encoding performance characteristics helps set realistic SLOs and identify bottlenecks.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">UTF-8 Byte Length by Character Type</h3>
@@ -421,12 +446,12 @@ export default function CharacterEncodingArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Normalization Overhead</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>NFC Normalization:</strong> ~10-50ns per character. Negligible for short strings (&lt;1KB). measurable for long strings (&gt;100KB).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>NFKC Normalization:</strong> ~2-3× slower than NFC due to compatibility decomposition. Use only when compatibility matching is required.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Normalize on ingress (once per write), not on read. Cache normalized values for frequently compared strings.
             </li>
@@ -436,19 +461,22 @@ export default function CharacterEncodingArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Encoding decisions directly impact storage and bandwidth costs. Understanding cost drivers helps optimize architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Storage Cost by Encoding</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>UTF-8 (ASCII text):</strong> 1 byte per character. Most efficient for English/Latin text.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>UTF-8 (CJK text):</strong> 3 bytes per character. 3× storage cost vs ASCII.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>UTF-16 (CJK text):</strong> 2 bytes per character. More efficient than UTF-8 for CJK-heavy datasets.
             </li>
@@ -476,12 +504,15 @@ export default function CharacterEncodingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why is UTF-8 preferred over other encodings?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Why is UTF-8 preferred over other encodings?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: UTF-8 supports all Unicode characters (149,000+ characters across 167 scripts), is backward-compatible with ASCII (ASCII text is valid UTF-8), and is self-synchronizing (you can find character boundaries without decoding from the start). UTF-8 dominates the web (98% adoption) because it efficiently stores ASCII/Latin text (1 byte per character) while supporting all languages. UTF-16 and UTF-32 are used internally by some platforms (Java, JavaScript, Windows) but are less efficient for storage and transmission.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

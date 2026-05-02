@@ -454,13 +454,17 @@ export default function FormStateManagementConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: forms combine UI state, validation, and async submission. Prefer patterns that minimize
+          re-renders, preserve accessibility, and provide a clear validation story (schema + server errors).
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://react-hook-form.com/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
               React Hook Form Documentation
             </a>{" "}
             - Official docs covering register, validation resolvers, and performance optimization
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://formik.org/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
               Formik Documentation
@@ -473,18 +477,18 @@ export default function FormStateManagementConciseArticle() {
             </a>{" "}
             - TypeScript-first schema validation with form library integrations
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://react.dev/reference/react-dom/components/input" target="_blank" rel="noopener noreferrer" className="text-accent underline">
               React Docs: Controlled and Uncontrolled Inputs
             </a>{" "}
             - Official React documentation on input component patterns
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://web.dev/learn/forms" target="_blank" rel="noopener noreferrer" className="text-accent underline">
               web.dev: Learn Forms
             </a>{" "}
             - Google's guide to accessible, performant form design
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

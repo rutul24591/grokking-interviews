@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function FileAttachmentsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>File Attachments</strong> enable users to attach documents, spreadsheets, and
           other files to content extending content beyond text and media to include downloadable
           resources. File attachments are critical for collaboration — users need to share PDFs,
           spreadsheets, presentations, and other documents alongside their content. Without proper
           attachment handling, users resort to external file sharing services creating security
           risks and fragmented workflows.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/attachment-flow.svg"
@@ -48,7 +52,7 @@ export default function FileAttachmentsArticle() {
           caption="Attachment Flow — showing upload with progress, virus scanning, storage with access control, and download with time-limited links"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing file attachments requires deep
           understanding of upload patterns including drag-drop for intuitive file selection, file
           picker dialog as fallback, multiple file upload for batch operations, and progress
@@ -63,7 +67,7 @@ export default function FileAttachmentsArticle() {
           by magic bytes not extension, size limits preventing storage abuse, storage encryption at
           rest and in transit, and access logging for audit trails. The implementation must balance
           ease of use with security and storage efficiency.
-        </p>
+        </HighlightBlock>
 
         <p>
           Modern file attachment systems have evolved from simple upload/download to sophisticated
@@ -77,13 +81,16 @@ export default function FileAttachmentsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           File attachments are built on fundamental concepts that determine how files are uploaded,
           stored, accessed, and secured. Understanding these concepts is essential for designing
           effective attachment systems.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Upload Patterns:</strong> Drag-drop provides intuitive file selection by dragging
           files to upload area with visual feedback on drag over and drop to initiate upload. File
           picker dialog serves as fallback through click to open system file dialog supporting all
@@ -92,7 +99,7 @@ export default function FileAttachmentsArticle() {
           percentage, speed, and time remaining enabling users to monitor upload status. Retry
           logic handles transient failures with exponential backoff resuming from checkpoint if
           supported.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Download Management:</strong> Direct download provides one-click access downloading
@@ -126,11 +133,14 @@ export default function FileAttachmentsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           File attachment architecture separates upload handling, storage, access control, and
           download serving enabling modular implementation with clear security boundaries. This
           architecture is critical for security, performance, and scalability.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/attachment-flow.svg"
@@ -138,7 +148,7 @@ export default function FileAttachmentsArticle() {
           caption="Attachment Flow — showing upload with progress, virus scanning, storage with access control, and download with time-limited links"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Attachment flow begins with user selecting files through drag-drop or file picker.
           Frontend validates file type by extension and size before upload rejecting invalid files
           immediately. Upload initiates with progress indicator showing per-file progress. Backend
@@ -150,7 +160,7 @@ export default function FileAttachmentsArticle() {
           permission check verifying user has read access. On authorized request, backend generates
           signed URL with expiration or streams file directly with appropriate headers. Download is
           logged for audit and analytics.
-        </p>
+        </HighlightBlock>
 
         <p>
           Upload architecture includes client-side validation checking file type and size before
@@ -180,13 +190,16 @@ export default function FileAttachmentsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing file attachments involves trade-offs between security, usability, performance,
           and storage costs. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Direct streaming versus signed URLs for download presents control versus performance
           trade-offs. Direct streaming serves file through application server enabling access
           control, download tracking, and transformation but adds server load and bandwidth costs
@@ -196,7 +209,7 @@ export default function FileAttachmentsArticle() {
           is signed URLs for most downloads with CDN for performance and cost, direct streaming for
           sensitive files requiring strict access control or transformation like virus scanning on
           download.
-        </p>
+        </HighlightBlock>
 
         <p>
           Virus scanning on upload versus on download presents security versus performance
@@ -223,19 +236,22 @@ export default function FileAttachmentsArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing file attachments requires following established best practices to ensure
           security, usability, performance, and storage efficiency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Upload handling provides intuitive file selection with drag-drop and file picker
           fallback. Validate file type by magic bytes not extension preventing extension spoofing
           attacks. Enforce size limits per file and total upload preventing storage abuse. Show
           progress indicators with per-file progress, speed, and time remaining. Implement retry
           logic with exponential backoff for transient failures. Support resumable upload for large
           files enabling recovery from network interruptions.
-        </p>
+        </HighlightBlock>
 
         <p>
           Download management provides one-click direct download with appropriate filename and
@@ -271,16 +287,19 @@ export default function FileAttachmentsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing file attachments to ensure security,
           usability, and storage efficiency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Validating file type by extension only allows extension spoofing attacks. Fix by
           validating file type by magic bytes (file signature) not extension. Block dangerous file
           types by signature (.exe, .bat, .scr) regardless of extension.
-        </p>
+        </HighlightBlock>
 
         <p>
           No file size limits enables storage abuse through large file uploads. Fix by enforcing
@@ -339,13 +358,16 @@ export default function FileAttachmentsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           File attachments are critical for collaboration across different domains. Here are
           real-world implementations from production systems demonstrating different approaches to
           attachment challenges.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Drive attachment handling addresses file sharing with real-time collaboration. The
           solution uses drag-drop upload with progress indicator, virus scanning on upload with
           quarantine for infected files, version history keeping all versions with restore
@@ -353,7 +375,7 @@ export default function FileAttachmentsArticle() {
           signed URLs with expiration for external sharing, and real-time collaboration on Office
           documents. The result is seamless file sharing with collaboration, version control, and
           granular access control.
-        </p>
+        </HighlightBlock>
 
         <p>
           Slack file sharing addresses team file sharing with threaded conversations. The solution
@@ -394,14 +416,17 @@ export default function FileAttachmentsArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of file attachment design, implementation, and
           security concerns for staff and principal engineer interviews.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle file upload?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle file upload?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Provide drag-drop and file picker for file selection. Validate file type by magic
               bytes not extension and size before upload. Show progress indicator with per-file

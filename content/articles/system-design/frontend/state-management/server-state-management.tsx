@@ -195,7 +195,6 @@ export default function ServerStateManagementConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/state-management/client-vs-server-state.svg"
           alt="Client State vs Server State comparison diagram"
           caption="Client state is synchronous and app-owned; server state is asynchronous, shared, and potentially stale — they require fundamentally different management approaches"
-          captionTier="important"
         />
       </section>
 
@@ -544,17 +543,21 @@ export default function ServerStateManagementConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: server state is caching + invalidation + freshness under concurrency. Use these to ground
+          answers in query keys, retries, background refetch, and mutation-driven invalidation patterns.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://tanstack.com/query/latest/docs/react/overview" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               TanStack Query (React Query) Official Documentation
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://swr.vercel.app/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               SWR — React Hooks for Data Fetching (Vercel)
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://www.apollographql.com/docs/react/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Apollo Client Documentation — GraphQL Client for React
@@ -565,11 +568,11 @@ export default function ServerStateManagementConciseArticle() {
               Practical React Query — TkDodo&apos;s Blog (community best practices)
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://redux-toolkit.js.org/rtk-query/overview" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               RTK Query Overview — Redux Toolkit Official Docs
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

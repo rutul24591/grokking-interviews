@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function UserMutingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User muting enables users to hide content from specific users without the muted user knowing they&apos;ve been muted. The muting system is a critical user experience tool that allows users to curate their feed, reduce noise, and avoid unwanted content without the confrontation of blocking. For staff and principal engineers, user muting implementation involves mute/unmute workflows (easy muting, reversible unmuting), mute list management (view, edit, organize muted users), muted user experience (what muted users see, no notification), content filtering (hide posts, comments, mentions, replies), and integration with notification systems (mute notifications from muted users).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of user muting extends beyond simple &quot;mute user&quot; buttons. Mute enforcement must be comprehensive across all content types (posts, comments, mentions, replies, reactions) while maintaining platform functionality (group conversations, public discussions). Muted user experience must be truly silent (muted users shouldn&apos;t know they&apos;re muted to avoid confrontation). Content filtering must be effective (muted user content truly hidden) without breaking platform features (shared groups, mutual friend interactions). The system must handle edge cases (quoted posts, shared content, group conversations) while maintaining mute effectiveness.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, user muting architecture involves user-facing components (mute dialogs, mute list management), backend filtering (mute checking at content retrieval), notification integration (suppress notifications from muted users), and content delivery optimization (filter muted content efficiently at scale). The system must handle high scale (popular platforms have billions of mute relationships), provide instant enforcement (mutes must work immediately), and maintain user trust (mutes must be reliable, comprehensive, and truly silent). Privacy is critical—mute lists are sensitive data requiring protection.
         </p>
@@ -46,13 +50,16 @@ export default function UserMutingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Mute/Unmute Workflows</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mute entry points provide multiple ways to mute users. Profile muting (mute from user profile page). Content muting (mute user from their post/comment). Conversation muting (mute user from thread). Search muting (mute user from search results). Each entry point should be accessible (1-2 clicks maximum), clear (confirm mute action), and reversible (easy to unmute if mistake). Mute confirmation dialogs should be minimal (mute is less serious than block, less friction appropriate).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Mute confirmation ensures users understand consequences. Confirmation dialogs explain what muting does (user&apos;s content hidden from you, you won&apos;t see their posts/comments) and doesn&apos;t do (doesn&apos;t notify muted user, doesn&apos;t prevent them from seeing your content, doesn&apos;t remove existing conversations). Reversible option (unmute anytime without confirmation) for easy management. Mute is designed to be low-friction, reversible curation tool.
-        </p>
+        </HighlightBlock>
         <p>
           Unmute workflows enable reversing mutes. Unmute from mute list (view all muted users, unmute individually). Confirm unmute (ensure user wants to unmute, explain consequences). No cool-down periods (unlike blocking, muting is meant to be flexible). Unmute history (track when users were muted/unmuted for pattern analysis). Unmute should be as easy as mute to encourage curation.
         </p>
@@ -104,9 +111,12 @@ export default function UserMutingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User muting architecture spans mute management, content filtering, notification suppression, and platform integration. Mute management provides user-facing interfaces for muting. Content filtering ensures muted user content is hidden. Notification suppression prevents notifications from muted users. Platform integration connects muting with broader platform features.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/user-muting/user-muting-architecture.svg"
@@ -117,9 +127,9 @@ export default function UserMutingArticle() {
         />
 
         <h3>Mute Management Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mute management layer provides user-facing interfaces. Mute dialogs embedded in profiles, content, conversations. Mute list management UI for viewing and editing muted users. Mute settings for configuring mute behavior (search filtering, edge case handling). Mute import/export for backup and transfer. Management layer should be intuitive, accessible, and provide clear feedback about mute status.
-        </p>
+        </HighlightBlock>
         <p>
           Mute storage persists mute relationships. Mute database stores muter ID, muted user ID, mute date, mute category, mute notes. Index optimization for fast mute lookups (critical for content filtering). Privacy protection (mute lists encrypted, limited access). Retention policies (mutes persist until manually removed, no expiration). Storage must be reliable—lost mutes mean failed user experience curation.
         </p>
@@ -179,14 +189,17 @@ export default function UserMutingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User muting design involves trade-offs between comprehensiveness and performance, silence and transparency, and strictness and flexibility. Understanding these trade-offs enables informed decisions aligned with platform values and user experience requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Mute Notification: Silent vs. Explicit</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Silent muting (muted user not notified). Pros: Avoids confrontation (purpose of muting), prevents harassment escalation, enables peaceful curation. Cons: Muted user doesn&apos;t know why engagement dropped, may continue unwanted behavior, can&apos;t adjust behavior. Best for: Most muting use cases, harassment avoidance, feed curation.
-        </p>
+        </HighlightBlock>
         <p>
           Explicit notification (muted user told they&apos;re muted). Pros: Clear communication (muted user knows status), enables behavior adjustment, transparent. Cons: Defeats purpose of muting (confrontation), may escalate harassment, discourages muting. Best for: Professional networks, transparency-focused platforms, rarely appropriate for muting.
         </p>
@@ -238,13 +251,16 @@ export default function UserMutingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Make muting easy and accessible:</strong> Mute buttons on profiles, content, conversations. 1-2 clicks maximum. Minimal confirmation (mute is low-friction). Accessible from all surfaces.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enforce mutes comprehensively:</strong> Filter all content types (posts, comments, mentions, replies). Check mutes at query layer for complete coverage. Real-time filtering with fast lookups.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Provide clear mute list management:</strong> View all muted users. Search and sort mute list. Bulk unmute capability. Import/export for backup. Easy access from settings.
           </li>
@@ -274,13 +290,16 @@ export default function UserMutingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Incomplete content filtering:</strong> Mutes work for posts but not comments. Solution: Audit all content types, filter at query layer, comprehensive testing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Slow mute propagation:</strong> Mutes take minutes to apply across platforms. Solution: Optimize sync latency, cache mutes for fast lookups, monitor sync health.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Notifying muted users:</strong> Muted users told they&apos;re muted. Solution: Never notify muted users, audit notification paths, test thoroughly.
           </li>
@@ -310,16 +329,19 @@ export default function UserMutingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter User Muting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter muting for feed curation. Mute users, keywords, conversations. Muted users&apos; tweets hidden from timeline. Muted users not notified. Mute list management from privacy settings. Mute keywords for event-based muting (spoilers, events). Mute conversations to hide threads. Integration with notification filtering.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Instagram User Muting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Instagram muting for story and post control. Mute posts, stories, or both. Muted users not notified. Mute list management from following list. Granular muting (posts only, stories only, both). Muted users remain followers. Integration with story viewing. Quiet muting for relationship management.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Facebook User Muting</h3>
           <p>
@@ -339,12 +361,15 @@ export default function UserMutingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you ensure mutes are enforced comprehensively across all content types?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you ensure mutes are enforced comprehensively across all content types?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement mute filtering at query layer, not just UI, because UI filtering can be bypassed but query-layer filtering catches all access patterns. Every content retrieval endpoint must check mute status before returning content—feed endpoint filters out posts from muted users, comments endpoint filters out comments from muted users, mentions endpoint filters out mentions from muted users, search endpoint filters out muted users from results. Build mute cache for fast lookups—avoid database query on every content retrieval by caching user&apos;s mute list with TTL (5-15 minutes), check cache first before database. Implement cache invalidation when mutes change—when user mutes or unmutes someone, invalidate cache immediately so changes take effect within seconds, not minutes. Conduct comprehensive audit of all content retrieval points—map every API endpoint that returns user-generated content, ensure each has mute filter, test each endpoint with muted users to verify filtering. The key insight: mutes must be enforced at the data layer—if you filter only in UI, API calls bypass mutes; if you filter only in some endpoints, others bypass mutes. Defense in depth ensures mutes work regardless of how content is accessed.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

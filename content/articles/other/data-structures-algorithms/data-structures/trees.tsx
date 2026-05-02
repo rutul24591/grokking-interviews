@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function TreesArticle() {
       {/* SECTION 1 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>tree</strong> is a connected acyclic graph: a collection
           of nodes arranged in a parent-child hierarchy, with one
           distinguished root, such that every non-root node has exactly one
@@ -48,8 +52,8 @@ export default function TreesArticle() {
           the right subtree are greater — turning the tree into an
           ordered data structure where search, insert, and delete run in
           O(h) time where h is the tree&apos;s height.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The critical fact is that h ranges from log₂ n in a perfectly
           balanced tree to n − 1 in a fully degenerate one. Without
           rebalancing, sorted or adversarial insertion orders produce
@@ -65,7 +69,7 @@ export default function TreesArticle() {
           trees share structure across versions to give immutable snapshots
           without copying, and <strong>interval/k-d trees</strong> index
           geometric data.
-        </p>
+        </HighlightBlock>
         <p>
           In production software, trees are everywhere. Databases index
           rows with B-trees and LSM trees. File systems store directory
@@ -92,9 +96,12 @@ export default function TreesArticle() {
       {/* SECTION 2 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Terminology</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A <strong>node</strong> contains a key and pointers to its
           children. <strong>Root</strong> is the top node, <strong>leaf
           </strong> is any node with no children, <strong>internal</strong>
@@ -104,12 +111,12 @@ export default function TreesArticle() {
           is bounded by a constant factor of log n. The <strong>in-order
           traversal</strong> of a BST visits keys in sorted order — a
           defining property of ordered trees.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           BST operations
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Search</strong>: starting at the root, compare the target
           to the current key; recurse left if smaller, right if larger,
           stop on equality or null. O(h). <strong>Insert</strong>: search
@@ -119,7 +126,7 @@ export default function TreesArticle() {
           in-order successor (or predecessor) and delete that successor.
           O(h). All three reduce to tree height; balanced variants keep h
           logarithmic.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Tree traversals
@@ -147,11 +154,14 @@ export default function TreesArticle() {
       {/* SECTION 3 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           AVL trees
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The first self-balancing BST. Every node stores a balance factor
           — the height of its right subtree minus its left. After every
           insertion or deletion, nodes on the path from the root to the
@@ -161,12 +171,12 @@ export default function TreesArticle() {
           of the standard balanced-BST variants. This tight bound buys
           faster lookups at the cost of more frequent rebalancing on
           insertion.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Red-black trees
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A slightly looser balance invariant with four properties: (1)
           every node is red or black; (2) the root is black; (3) no two
           consecutive reds; (4) every path from root to null has the same
@@ -177,7 +187,7 @@ export default function TreesArticle() {
           C++ <code>std::map</code>, the Linux CFS scheduler, and epoll&apos;s
           interest list. They are the default balanced BST in most
           industrial-grade software.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Rotations
@@ -206,6 +216,9 @@ export default function TreesArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Operation complexity (balanced BST)
@@ -235,18 +248,18 @@ export default function TreesArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           BST vs hash map
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Hash maps give expected O(1); BSTs give worst-case O(log n). For
           random well-distributed keys, hash maps win on average. For
           ordered iteration, range queries, or adversarial-safe worst-case
           guarantees without hash randomization, BSTs win. Many workloads
           use both: a hash index for equality and a BST index for ranges.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           AVL vs red-black
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           AVL trees have tighter height bounds → faster lookups. Red-black
           trees rebalance less aggressively → faster insertions and
           deletions. Benchmarks favor red-black on write-heavy workloads
@@ -254,7 +267,7 @@ export default function TreesArticle() {
           modest (10–30%). Production code overwhelmingly chose red-black
           because it dominates the mixed-workload case and has a simpler
           delete algorithm.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Binary tree vs B-tree
@@ -288,19 +301,22 @@ export default function TreesArticle() {
       {/* SECTION 5 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use the standard library.</strong> Java <code>TreeMap</code>,
             C++ <code>std::map</code>, Rust <code>BTreeMap</code>,
             .NET <code>SortedDictionary</code> give you a tested
             balanced tree. Implementing your own is rarely justified.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Prefer iterative traversals for deep trees.</strong>
             {" "}Recursive traversal blows the stack at a few thousand levels
             of depth. An explicit stack or Morris traversal (threading
             unused child pointers) avoids the limit.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Choose balance by workload.</strong> Read-heavy?
             Consider AVL. Write-heavy? Red-black. Needs lock-free?
@@ -332,19 +348,22 @@ export default function TreesArticle() {
       {/* SECTION 6 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Sorted-insert degeneration.</strong> Inserting a
             pre-sorted sequence into an unbalanced BST produces a linear
             tree — every operation is then O(n). Always use a
             self-balancing variant or shuffle before inserting.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Stack overflow on deep recursion.</strong>{" "}
             Tree-of-depth-100,000 will blow the thread stack on any
             recursive traversal. Convert to iteration or use bounded
             recursion with explicit continuations.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>BST delete bugs.</strong> The two-child case is the
             source of more bugs than any other. The canonical approach
@@ -383,11 +402,14 @@ export default function TreesArticle() {
       {/* SECTION 7 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Linux CFS scheduler
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Completely Fair Scheduler keeps runnable tasks in a
           red-black tree keyed by virtual runtime — each task&apos;s
           vruntime advances as it gets CPU time. The leftmost node is
@@ -395,19 +417,19 @@ export default function TreesArticle() {
           is O(log n). Insert and delete when tasks block or unblock are
           also O(log n). This tree is the reason Linux can schedule
           thousands of threads fairly with bounded overhead.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Java TreeMap and C++ std::map
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Both are red-black trees in their reference implementations.
           They give O(log n) ordered access, range queries via
           <code> subMap</code>/<code>equal_range</code>, and floor/ceiling
           queries. Used heavily in compiler symbol tables (scoped name
           resolution), scheduler state, and any workload that needs
           sorted iteration.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Java HashMap tree-bin fallback
@@ -445,12 +467,15 @@ export default function TreesArticle() {
       {/* SECTION 8 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: Validate that a binary tree is a BST.
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Common trap: checking only that each node&apos;s left
               child is smaller and right child is larger. That&apos;s
               necessary but not sufficient — a node deep in the left
@@ -461,7 +486,7 @@ export default function TreesArticle() {
               narrows the lower bound. O(n) time, O(h) space. Alternatively,
               perform an in-order traversal and verify output is strictly
               increasing.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

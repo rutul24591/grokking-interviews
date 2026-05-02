@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,21 +24,24 @@ export default function TreeArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The tree pattern groups problems whose central data structure is a rooted tree — usually a
         binary tree, often a binary search tree (BST), occasionally a general n-ary tree. The tree&apos;s
         recursive shape means every problem decomposes naturally into &quot;solve for left, solve for
         right, combine&quot;. The four traversal orders — pre-order, in-order, post-order, level-order —
         are the alphabet from which every tree algorithm is composed.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Two algorithmic strategies cover most of the syllabus. <strong>Top-down</strong> carries state
         into the recursion (current path, depth, range bound) and computes results as it descends. The
         action happens <em>before</em> the recursive calls. <strong>Bottom-up</strong> aggregates
         results from children and combines them with the current node. The action happens <em>after</em>
         the recursive calls. Many problems can be solved either way; choosing the right direction is
         often the difference between an O(n) solution and an O(n²) one.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Recognition signals are explicit. The input is a TreeNode root — it is a tree problem. The
         question asks about height, depth, balance, sum, or path — DFS recursion. The question asks
@@ -54,16 +58,19 @@ export default function TreeArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Pre-order traversal.</strong> Process root, then recurse left, then recurse right.
         Used when the answer can be computed before knowing the children — clone, serialise, prefix
         expression evaluation, path tracking from root. The root is visited first.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>In-order traversal.</strong> Recurse left, process root, recurse right. On a BST,
         produces values in sorted order. Used for k-th smallest, validating BST property, and any
         problem that benefits from the sorted view.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Post-order traversal.</strong> Recurse left, recurse right, process root. Used when
         the answer at a node depends on the answers from its children — height, balance, diameter,
@@ -108,18 +115,21 @@ export default function TreeArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Bottom-up template.</strong> def helper(node): if node is null return base; l =
         helper(left); r = helper(right); combine l, r, node.val into the aggregate; return aggregate.
         Maximum depth (104), balanced (110), diameter (543), and path sum (124) all instantiate this
         skeleton.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Top-down template.</strong> def helper(node, state): if node is null return; update
         state with node.val; if leaf, record candidate answer; helper(left, state&apos;); helper(right,
         state&apos;). Path-sum-to-leaf (112), root-to-leaf paths (257), sum-of-numbers (129), and tree
         DP with carried context all instantiate this skeleton.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Validate BST template (98).</strong> Bounds-passing: validate(node, low, high) returns
         true iff node.val ∈ (low, high) AND validate(left, low, node.val) AND validate(right,
@@ -157,18 +167,21 @@ export default function TreeArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Top-down vs. bottom-up.</strong> Top-down can solve some problems in O(n) where naive
         bottom-up would be O(n²) — e.g., path sum from root to leaf is top-down O(n); naively
         recomputing path sums from each node is O(n²). Conversely, diameter requires bottom-up — the
         answer at a node uses heights of both subtrees. Choose by what the answer depends on.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>DFS vs. BFS.</strong> DFS uses O(h) stack space, gives natural pre / in / post
         ordering, and matches recursive problem decomposition. BFS uses O(w) queue space and gives
         level-by-level access. Use DFS for aggregate / path / structural questions; BFS for level /
         view / distance questions.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Recursion vs. explicit stack.</strong> Recursion is shorter; explicit stack avoids
         overflow on deep / skewed trees. For Leetcode constraints up to 10⁴ nodes, recursion is
@@ -194,15 +207,18 @@ export default function TreeArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Choose the traversal order to match the answer.</strong> If the answer at a node
         needs results from children, post-order. If state must be carried down, top-down DFS. If
         levels matter, BFS. The choice is half the algorithm.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Handle null roots first.</strong> Nearly every tree function starts with &quot;if node
         is null return base&quot;. Forgetting it is the most common runtime error.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Pass state explicitly.</strong> For top-down patterns, pass accumulators as function
         arguments rather than mutating shared state. Avoids subtle bugs when recursion backs out.
@@ -224,16 +240,19 @@ export default function TreeArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Validating BST against immediate parent.</strong> Pass bounds, not just parent values.
         The transitive ordering must hold for all ancestors.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Mixing return value with side effect for diameter.</strong> The recursive function
         returns single-direction height; the diameter (bidirectional through the current node) is
         updated as a side effect. Confusing the two — returning diameter and updating height — gives
         wrong answers.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Stack overflow on skewed trees.</strong> 10⁵ nodes in a left-skewed tree overflow
         Java&apos;s default stack. Iterative is required at scale.
@@ -257,14 +276,17 @@ export default function TreeArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode Problems)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>104. Maximum Depth of Binary Tree.</strong> Bottom-up: return 1 + max(left, right)
         with base 0 for null.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>110. Balanced Binary Tree.</strong> Bottom-up: return height or sentinel −1 on
         imbalance. Propagating −1 short-circuits subsequent subtrees.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>543. Diameter of Binary Tree.</strong> Bottom-up height + side-effect best.
       </p>
@@ -306,13 +328,16 @@ export default function TreeArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>How do you choose between pre, in, and post-order?</strong> By what the answer
+        <HighlightBlock as="li" tier="important"><strong>How do you choose between pre, in, and post-order?</strong> By what the answer
         depends on. Pre when the root&apos;s contribution is computable before children; in when the
-        BST sorted property is useful; post when children must finish first.</li>
-        <li><strong>Why does in-order on a BST give sorted output?</strong> Because at every node, the
+        BST sorted property is useful; post when children must finish first.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Why does in-order on a BST give sorted output?</strong> Because at every node, the
         left subtree (smaller values) is fully visited before the node, and the right subtree
-        (larger) afterwards. By induction the whole sequence is sorted.</li>
+        (larger) afterwards. By induction the whole sequence is sorted.</HighlightBlock>
         <li><strong>Why is bounds-passing required for BST validation?</strong> The BST property is
         transitive: a node&apos;s left subtree must have values less than the node and less than every
         ancestor that places it on a left branch. Parent-only checks miss transitive violations.</li>

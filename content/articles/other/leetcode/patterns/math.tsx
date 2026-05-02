@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,21 +24,24 @@ export default function MathArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The math pattern groups problems whose solution depends on a numerical insight rather
         than a data-structure manoeuvre. The toolkit is small but pervasive: GCD via the
         Euclidean algorithm, modular arithmetic for overflow control and counting under a
         modulus, fast exponentiation, the Sieve of Eratosthenes for primes, basic
         combinatorics, and a few geometric primitives. Mastering the toolkit converts many
         seemingly complicated problems into a few lines of closed-form computation.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Recognition signals are direct. The problem mentions divisibility, primes, factorials,
         permutations, modular results, base conversion, digit manipulation, geometry, or
         randomness. Sometimes the signal is implicit: a counting problem with answer modulo
         10^9 + 7 is a math problem dressed up as combinatorics; a problem about overflow on
         Integer.MIN_VALUE is a math problem dressed up as input handling.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         The pattern matters because math-flavoured problems reward asymptotic insight. A naive
         loop over divisors is O(n); checking up to sqrt(n) is O(sqrt(n)); a closed-form is O(1).
@@ -53,17 +57,20 @@ export default function MathArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Euclidean algorithm.</strong> gcd(a, b) = gcd(b, a mod b), with gcd(a, 0) = a.
         Logarithmic in the magnitude of the inputs. The extended Euclidean algorithm
         additionally returns coefficients x, y such that a * x + b * y = gcd(a, b) — used to
         compute modular inverses and solve Bezout-style problems (Leetcode 365 Water and Jug).
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Least common multiple.</strong> lcm(a, b) = a * b / gcd(a, b). Beware overflow:
         compute a / gcd(a, b) * b instead of a * b / gcd, to keep the intermediate within
         bounds.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Modular arithmetic.</strong> Identities (a + b) mod m, (a * b) mod m, (a^n) mod
         m. Subtraction must add m once before the final mod to handle the negative case.
@@ -110,18 +117,21 @@ export default function MathArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/math-diagram-1.svg" alt="Math pattern toolkit" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The fast-exponentiation template: result = 1; base = base mod m. While exp &gt; 0: if
         exp is odd, result = (result * base) mod m; base = (base * base) mod m; exp = exp / 2.
         Return result. Time O(log exp). Used directly for Leetcode 50 (Pow(x, n)) — handle
         negative exponent by computing the positive power and inverting at the end (or, for
         floating-point, divide).
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The Euclidean GCD template (recursive): if b == 0 return a, else return gcd(b, a mod
         b). Iterative variant uses while b != 0: (a, b) = (b, a mod b); return a. Both are O(log
         min(a, b)).
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         The sieve template: bool[] is_prime sized n + 1, all true initially with [0] and [1]
         false. For p from 2 to sqrt(n): if is_prime[p], walk j from p * p to n in steps of p,
@@ -153,16 +163,19 @@ export default function MathArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Closed form vs. iterative.</strong> Many counting problems have a closed form
         in C(n, k) or a polynomial. Always look for it before writing a loop. The closed form
         is O(1) (with O(n) precompute) where the loop is O(n) per query.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Sieve vs. trial division.</strong> Sieve precomputes all primes up to n in
         O(n log log n). Trial division tests one number for primality in O(sqrt(n)). For batch
         queries, sieve. For one-shot, trial division.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Fast exponentiation vs. linear.</strong> O(log n) vs. O(n). Always use fast
         exponentiation when the exponent can be large.
@@ -186,14 +199,17 @@ export default function MathArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/math-diagram-2.svg" alt="Modular arithmetic and fast exponentiation" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Use long for multiplications that risk overflow.</strong> int * int can
         overflow at 2 * 10^9. (long) a * b is the standard cast in Java.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Apply mod after every operation.</strong> Not just at the end. Intermediate
         results can grow well past 64-bit if you delay.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Compute lcm as a / gcd * b, not a * b / gcd.</strong> Prevents overflow.
       </p>
@@ -215,14 +231,17 @@ export default function MathArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Overflow.</strong> The most common math bug. int sums above 2 * 10^9 wrap.
         Test with extreme inputs.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Negative results from mod.</strong> In Java and C++, ((-3) % 5) == -3, not 2.
         Add m before the final mod to normalise.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Modular inverse for non-coprime divisor.</strong> Inverse exists only when gcd
         with modulus is 1. For other divisors, no modular inverse exists.
@@ -245,13 +264,16 @@ export default function MathArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>7. Reverse Integer.</strong> Digit-by-digit reversal with overflow check
         before each multiply.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>9. Palindrome Number.</strong> Reverse half the digits and compare.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>50. Pow(x, n).</strong> Fast exponentiation. Handle negative n by inverting.
       </p>
@@ -291,13 +313,16 @@ export default function MathArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/math-diagram-3.svg" alt="Canonical math Leetcode problems" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why does fast exponentiation work?</strong> Squaring halves the remaining
+        <HighlightBlock as="li" tier="important"><strong>Why does fast exponentiation work?</strong> Squaring halves the remaining
         exponent at each step. Bits of the exponent decide whether the current base square
-        contributes to the result. log n squarings, each O(1).</li>
-        <li><strong>Why is gcd O(log min(a, b))?</strong> Each step reduces the larger number to
+        contributes to the result. log n squarings, each O(1).</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Why is gcd O(log min(a, b))?</strong> Each step reduces the larger number to
         the modulus, which is strictly less than half the previous larger after at most two
-        steps (Lame&apos;s theorem). The total number of steps is O(log).</li>
+        steps (Lame&apos;s theorem). The total number of steps is O(log).</HighlightBlock>
         <li><strong>How do you handle modular division?</strong> Multiply by the modular inverse,
         which exists when divisor and modulus are coprime. For prime modulus, Fermat&apos;s
         little theorem gives the inverse as a^(m - 2) mod m.</li>

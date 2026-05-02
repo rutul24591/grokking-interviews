@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,7 +27,7 @@ export default function ErrorReportingArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           <strong>Error reporting services</strong> are specialized platforms that capture, aggregate, deduplicate, and
           alert on runtime errors occurring in production client-side applications. Tools like <strong>Sentry</strong>,{" "}
           <strong>LogRocket</strong>, and <strong>Bugsnag</strong> instrument your frontend code through lightweight SDKs
@@ -35,8 +36,8 @@ export default function ErrorReportingArticle() {
           actions), and transmit structured error payloads to a centralized service. The service then groups thousands of
           raw error events into discrete &quot;issues,&quot; assigns severity, tracks regressions across releases, and
           integrates with incident response workflows through PagerDuty, Slack, Jira, or OpsGenie.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental limitation of <code>console.log</code> and <code>console.error</code> in production is that
           they are ephemeral and invisible. When a user on a mobile device in Jakarta encounters a TypeError that crashes
           your checkout flow, that error exists only in their browser&apos;s developer tools console — which they will
@@ -44,8 +45,8 @@ export default function ErrorReportingArticle() {
           sessions per day, and you have a significant revenue leak that no amount of QA testing can catch. Production
           environments expose your code to a combinatorial explosion of browsers, operating systems, network conditions,
           browser extensions, ad blockers, and user behaviors that are impossible to fully replicate in staging.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The evolution of client-side error reporting mirrors the maturation of frontend engineering itself. In the
           early 2000s, error monitoring was an exclusively server-side concern — applications were server-rendered, and
           errors manifested as 500 status codes in Apache or Nginx logs. As SPAs emerged and the client took on more
@@ -54,7 +55,7 @@ export default function ErrorReportingArticle() {
           race conditions in state updates, memory leaks from unmounted component subscriptions, and third-party script
           failures. Modern error reporting services emerged to bring the same rigor of server-side observability —
           structured logging, alerting, tracing, and dashboarding — to the client side.
-        </p>
+        </HighlightBlock>
         <p>
           The business case for error reporting is compelling and measurable. Studies consistently show that the majority
           of users who encounter errors never report them — they simply leave. Amazon has documented that every 100ms of
@@ -80,7 +81,7 @@ export default function ErrorReportingArticle() {
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">SDK Integration Patterns</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Error reporting SDKs can be integrated via a script tag injected into the HTML document head or as an npm
           package imported into your application bundle. The script tag approach loads the SDK from a CDN and is useful
           for capturing errors that occur during the initial JavaScript execution — before your application bundle has
@@ -88,22 +89,22 @@ export default function ErrorReportingArticle() {
           render-blocking script to your critical path. The npm package approach bundles the SDK with your application
           code, giving you full control over initialization timing and tree-shaking unused features, but it means the
           SDK cannot capture errors that occur before the bundle loads.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Initialization timing is critical. The SDK should be initialized as early as possible in your application&apos;s
           lifecycle — ideally before any other code runs. In a React application, this means calling{" "}
           <code>Sentry.init()</code> in the entry file before <code>ReactDOM.createRoot()</code>. The initialization
           call configures the DSN (Data Source Name), which is a URL-like string containing the project identifier and
           API key that routes error data to the correct project. While the DSN is technically a client-side credential,
           it is rate-limited and scoped to ingestion only — it cannot be used to read data or modify project settings.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For performance-sensitive applications, lazy loading the SDK is a viable strategy. You can defer the full SDK
           load until after the critical rendering path completes, using a lightweight shim that queues errors in memory
           and flushes them once the full SDK initializes. Sentry&apos;s SDK supports this through its{" "}
           <code>Sentry.lazyLoadIntegration()</code> API. This approach can reduce initial bundle impact from 30-60 KB
           gzipped to under 5 KB for the shim, with the full SDK loaded asynchronously.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Error Capture Mechanisms</h3>
         <p className="mb-4">
@@ -209,11 +210,15 @@ export default function ErrorReportingArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Understanding the end-to-end architecture of error reporting helps staff engineers make informed decisions about
           configuration, performance impact, and failure modes. The pipeline spans from the moment an error occurs in the
           browser to the moment an engineer receives a notification and begins debugging.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Treat error reporting as a production pipeline: capture, enrich (user/session/release), sample, transport,
+          normalize (source maps), group, alert, and route to owners. Each step can drop data or add noise if mis-designed.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/error-reporting-diagram-2.svg"
@@ -221,7 +226,7 @@ export default function ErrorReportingArticle() {
           caption="Figure 2: Event-to-issue grouping and deduplication"
         />
 
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           On the server side, the ingestion service processes incoming events at high throughput (Sentry&apos;s SaaS
           processes billions of events per month). Each event is validated, rate-limited per project, and then passed
           through the grouping engine. The grouping engine computes a fingerprint by normalizing the stack trace using
@@ -229,7 +234,7 @@ export default function ErrorReportingArticle() {
           Events with matching fingerprints are aggregated into a single issue, incrementing the event count and updating
           the &quot;last seen&quot; timestamp. New fingerprints create new issues, which trigger &quot;first seen&quot;
           alerts.
-        </p>
+        </HighlightBlock>
 
       </section>
 
@@ -238,11 +243,11 @@ export default function ErrorReportingArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Choosing an error reporting service involves evaluating multiple dimensions beyond just error capture. The
           following comparison covers the major players in the frontend error reporting space across the criteria most
           relevant to staff-level architectural decisions.
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">
             <thead>
@@ -307,7 +312,7 @@ export default function ErrorReportingArticle() {
             </tbody>
           </table>
         </div>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           The key architectural trade-off is between <strong>depth and breadth</strong>. Sentry excels at deep error
           analysis with best-in-class grouping, source map resolution, and developer ergonomics, but it is primarily an
           error-first tool. LogRocket prioritizes session replay and gives you a video-like recording of what the user
@@ -315,14 +320,14 @@ export default function ErrorReportingArticle() {
           Datadog RUM offers the broadest integration story — correlating frontend errors with backend APM traces, logs,
           and infrastructure metrics in a single platform — but this comes at a higher price point and tighter vendor
           lock-in.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For organizations already invested in Datadog for backend observability, adopting Datadog RUM provides a
           unified experience. For frontend-heavy teams that need the best error debugging experience, Sentry remains the
           industry standard. For teams where product managers and designers need to understand user-facing issues,
           LogRocket&apos;s session replay is a compelling differentiator. Many mature organizations use multiple tools —
           Sentry for error reporting and LogRocket for session replay — recognizing that each tool has distinct strengths.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -331,28 +336,28 @@ export default function ErrorReportingArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Upload source maps during CI/CD, not at runtime.</strong> Integrate source map upload as a build
             pipeline step using the official CLI or webpack/vite plugin. Tag each upload with the release version (git
             SHA) and ensure the same release tag is configured in the SDK initialization. Automate cleanup of old source
             map artifacts to manage storage costs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Set sampling rates appropriate to your traffic volume.</strong> A 100% sample rate on a
             high-traffic consumer application can generate millions of events per day, exceeding your quota and drowning
             signal in noise. Use <code>tracesSampleRate</code> of 0.1-0.2 (10-20%) for performance transactions and
             consider <code>sampleRate</code> of 0.5-1.0 for error events (errors are rarer and more valuable than
             performance samples). Use dynamic sampling based on transaction name to over-sample critical paths like
             checkout while under-sampling high-volume pages like the homepage.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enrich errors with business context.</strong> Set user identity (<code>Sentry.setUser</code>) after
             authentication so you can determine how many unique users an issue affects. Add custom tags for subscription
             tier, feature flag state, A/B test variant, and deployment environment. This metadata transforms error
             reporting from a debugging tool into a business intelligence tool — you can answer questions like &quot;does
             this error only affect users on the free plan?&quot; or &quot;is this regression caused by the new feature
             flag rollout?&quot;
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Configure alert thresholds to prevent fatigue.</strong> Avoid alerting on every new issue — in a
             large application, new issues appear daily from edge cases, browser extensions, and bot traffic. Instead,
@@ -395,28 +400,28 @@ export default function ErrorReportingArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Exposing source maps publicly.</strong> Serving source maps alongside your production JavaScript
             (either via the <code>//# sourceMappingURL</code> comment pointing to a public URL or by deploying .map files
             to your CDN) exposes your entire original source code to anyone who opens developer tools. This includes
             business logic, API endpoint paths, internal comments, and potentially hardcoded configuration values.
             Always remove or neutralize the sourceMappingURL comment in production builds and upload source maps only to
             the error reporting service.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Alert fatigue from noisy rules.</strong> Configuring alerts for every new issue or every error above
             a trivially low threshold leads to notification fatigue. Engineers start ignoring alerts, and when a genuine
             critical issue arises, it gets lost in the noise. The solution is tiered alerting: P1 alerts (PagerDuty) for
             issues exceeding high thresholds in critical paths, P2 alerts (Slack) for new issues in important features,
             and a weekly digest for everything else.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>SDK bloating the bundle.</strong> Error reporting SDKs range from 15 KB to 100 KB gzipped. For
             performance-critical applications, this is non-trivial. The pitfall is importing the full SDK with all
             integrations when you only need basic error capture. Use tree-shakeable imports, disable unused integrations
             (session replay, performance tracing), and consider lazy-loading the SDK after the critical rendering path
             completes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not tracking releases.</strong> Without release tracking, you cannot determine which deployment
             introduced an error, compare error rates between versions, or detect regressions. Every error event appears
@@ -450,7 +455,7 @@ export default function ErrorReportingArticle() {
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Sentry&apos;s Own Dogfooding at Scale</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Sentry uses its own product to monitor its own frontend — a practice known as dogfooding. Their web application
           serves millions of users and processes billions of events. By eating their own dog food, the Sentry team has
           developed features directly from their own pain points: the performance monitoring product emerged because
@@ -460,10 +465,10 @@ export default function ErrorReportingArticle() {
           root cause rather than the top frame). They publicly share their reliability practices, including maintaining
           an error budget for their frontend and treating error rate as a deployment gate — a new release is
           automatically rolled back if the frontend error rate exceeds a threshold within 15 minutes of deployment.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Disney+ Launch Error Monitoring</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           The Disney+ launch in November 2019 is a well-studied case in production error monitoring under extreme load.
           The streaming service attracted 10 million subscribers on its first day — far exceeding projections — and the
           engineering team relied heavily on real-time error reporting to triage issues as they occurred. Client-side error
@@ -475,10 +480,10 @@ export default function ErrorReportingArticle() {
           event would have added unacceptable network overhead. The team used adaptive sampling that increased the sample
           rate for novel error types (to ensure visibility) while aggressively sampling down known issues that were
           already being addressed.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Figma&apos;s Approach to Client-Side Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Figma&apos;s collaborative design tool runs complex rendering and real-time synchronization logic entirely in
           the browser, making client-side reliability especially critical. Their engineering team has written extensively
           about their approach to error monitoring in a WebAssembly + Canvas-heavy application where traditional DOM-based
@@ -490,7 +495,7 @@ export default function ErrorReportingArticle() {
           errors that indicate the application has entered an inconsistent state. Figma also pioneered the practice of
           correlating client-side error reports with their operational CRDT conflict resolution logs, enabling them to
           determine whether a user-visible glitch was caused by a rendering bug or a synchronization issue.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/error-reporting-diagram-3.svg"
@@ -504,25 +509,30 @@ export default function ErrorReportingArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <h3 className="text-lg font-semibold mb-3">How does error grouping work in services like Sentry, and what happens when it produces incorrect groups?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <p className="text-muted mb-3">
+              <strong>Answer:</strong>
+            </p>
+            <HighlightBlock as="p" tier="important">
               Error grouping works by computing a fingerprint for each incoming event. The fingerprint is derived from
               the error type, the normalized stack trace (resolved through source maps to original source locations), and
               the error message with dynamic values stripped. Events with identical fingerprints are grouped into a single
               issue. The normalization step is critical — without it, the same logical error in different minified builds
               would produce different fingerprints and appear as separate issues.
-            </p>
-            <p className="mb-3">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               Incorrect grouping manifests in two ways: over-grouping (distinct errors merged into one issue, hiding
               important bugs) and under-grouping (the same error split across many issues, creating noise). Over-grouping
               typically occurs when stack traces are too shallow or when generic error messages like &quot;Network
               Error&quot; dominate the fingerprint. Under-grouping occurs when irrelevant details like timestamps or
               request IDs are included in the fingerprint.
-            </p>
+            </HighlightBlock>
             <p>
               To fix this, you use custom fingerprinting rules — either client-side via the <code>beforeSend</code>{" "}
               callback (setting <code>event.fingerprint</code>) or server-side via the project&apos;s grouping

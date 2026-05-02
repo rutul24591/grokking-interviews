@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>User journey tracking</strong> is the systematic capture and analysis of the complete path a user takes through an application—from entry point to conversion or exit. Unlike isolated page views or events, journey tracking connects these interactions into a coherent narrative: where did the user start, what steps did they take, where did they encounter friction, and what was the outcome?
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User journey tracking answers critical business questions. What paths do successful users take? Where do users drop off before converting? Which traffic sources produce the highest-quality users? What features correlate with retention? Without journey tracking, you see disconnected data points. With journey tracking, you see user behavior patterns that inform product decisions.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, user journey tracking requires balancing four competing concerns. <strong>Completeness</strong> means capturing the full journey across pages, sessions, and devices. <strong>Privacy</strong> means tracking journeys without violating user privacy or regulations. <strong>Performance</strong> means journey tracking must not impact user experience. <strong>Scalability</strong> means journey data grows quickly, so storage and query performance matter.
         </p>
@@ -48,14 +52,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Journey vs. Session vs. Funnel</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding the distinction between these concepts is fundamental. A <strong>journey</strong> is the complete path a user takes, potentially across multiple sessions and days. A journey can span weeks, such as research to consideration to purchase. A <strong>session</strong> is a continuous period of user activity, typically less than 30 minutes of inactivity. A journey contains multiple sessions. A <strong>funnel</strong> is a predefined sequence of steps toward a goal, such as a checkout funnel. A journey may or may not follow a funnel.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For example, a user visits the homepage (session 1), reads a blog post (session 1), returns 3 days later via email (session 2), views a product (session 2), returns the next day (session 3), and purchases (session 3). This is 1 journey, 3 sessions, and 1 funnel completion. Understanding this distinction matters because journey-level metrics (time to convert, touchpoints before conversion) behave differently from session-level metrics (pages per session, session duration) and funnel-level metrics (step conversion rate, overall conversion rate).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/analytics-tracking/cross-page-journey.svg"
@@ -121,14 +128,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust user journey tracking architecture treats journeys as first-class data products with proper storage, querying, and privacy controls.
-        </p>
+        </HighlightBlock>
 
         <h3>Journey Data Model</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Model journey data for efficient querying. Use an <strong>events table</strong> for raw events with user_id, session_id, timestamp, event_type, and properties. Use a <strong>sessions table</strong> for session metadata including start_time, end_time, entry_page, exit_page, device, and source. Use a <strong>users table</strong> for user profile including user_id, first_seen, last_seen, total_sessions, and conversions. Use a <strong>journeys table</strong> for pre-computed journey summaries for common queries.
-        </p>
+        </HighlightBlock>
         <p>
           For storage, use columnar storage like BigQuery or Snowflake for analytics queries. Use time-series database for real-time journey tracking.
         </p>
@@ -163,12 +173,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User journey tracking involves trade-offs between completeness, privacy, and cost. Full journey tracking provides the best completeness but poor privacy with more data and the highest cost. This is best for logged-in users. Session-level only tracking provides fair completeness with good privacy and medium cost. This is best for anonymous users. Sampled journeys provide good statistical completeness with good privacy and low cost. This is best for high-traffic sites.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that tiered tracking works best: full journeys for logged-in users, session-level for anonymous users, and sampling for high-volume paths.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -176,12 +189,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Define key journeys by identifying 3-5 critical user journeys like signup, purchase, and onboarding. Track these comprehensively. Implement session stitching to connect anonymous sessions to user accounts on login. Capture attribution by recording utm_source, utm_medium, referrer on first touch and each session.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use consistent IDs by using the same user_id across all systems including analytics, CRM, and support. Respect privacy by allowing users to opt-out and anonymizing data after the retention period. Monitor data quality by tracking journey completeness and alerting on gaps in tracking. Pre-compute common queries for fast dashboards. Document journeys with expected paths and success metrics.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -189,12 +205,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Session-only tracking misses cross-session journeys. Not connecting anonymous sessions to user accounts loses journey context. This is missing identity stitching. Ignoring attribution means not tracking traffic sources, which loses marketing insights.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Over-tracking every interaction creates unmanageable data volume. Tracking without consent or retaining data too long violates regulations. This is privacy violations. Not monitoring journey completeness means you won't know when tracking breaks.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -202,16 +221,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce: Checkout Journey Optimization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce site had 70% cart abandonment and didn't understand where users dropped off. The solution was implementing detailed journey tracking through the checkout funnel, tracking time on each step, exit pages, and return visits. They identified the shipping calculator as a major friction point. After simplifying shipping options, cart abandonment decreased to 55% and revenue increased 18%.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS: Onboarding Journey Analysis</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A SaaS company had low activation rate—users signed up but didn't use core features. The solution was tracking the onboarding journey from signup to activation and identifying common paths of successful users versus churned users. They found users who completed the setup tutorial had 3x higher activation. After making the tutorial mandatory, activation rate increased 45%.
-        </p>
+        </HighlightBlock>
 
         <h3>Media Site: Cross-Device Journey</h3>
         <p>
@@ -229,14 +251,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between a user journey, a session, and a funnel?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               A journey is the complete path across multiple sessions and days, spanning from first touch to conversion or exit. A session is a continuous period of activity (less than 30 minutes of inactivity). A journey contains multiple sessions. A funnel is a predefined sequence of steps toward a goal. A journey may or may not follow a funnel.
-            </p>
+            </HighlightBlock>
             <p>
               Understanding the distinction is critical: funnel analysis optimizes specific flows. Journey analysis understands holistic user behavior.
             </p>

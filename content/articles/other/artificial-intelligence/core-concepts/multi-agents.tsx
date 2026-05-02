@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>multi-agent system</strong> is an architecture where two or
           more AI agents collaborate to accomplish tasks that a single agent
           cannot handle effectively alone. Each agent in the system has its own
@@ -32,8 +36,8 @@ export default function ArticlePage() {
           coordinate through a communication protocol to divide work, share
           findings, resolve disagreements, and combine results into a final
           output.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The motivation for multi-agent systems stems from the fundamental
           limitations of single-agent architectures. A single agent with many
           tools struggles to select the right tool (attention dilution), cannot
@@ -46,7 +50,7 @@ export default function ArticlePage() {
           parallel; specialist agents develop deeper expertise in their domain;
           and reviewer/validator agents can check the work of other agents,
           catching errors before they reach the user.
-        </p>
+        </HighlightBlock>
         <p>
           Multi-agent systems are inspired by human organizational structures.
           Just as a company divides work across departments (engineering,
@@ -62,7 +66,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of any multi-agent system is the{" "}
           <strong>agent topology</strong> — the structure of how agents relate
           to each other and communicate. The most common topologies are{" "}
@@ -72,8 +79,8 @@ export default function ArticlePage() {
           (agents form a pipeline where each agent&apos;s output feeds into the
           next), and <strong>debate</strong> (multiple agents independently
           analyze the same problem and their outputs are compared or combined).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Role specialization</strong> is the primary benefit of
           multi-agent architectures. Each agent is given a specific role with a
           focused tool set and domain expertise. A research agent has web search
@@ -82,7 +89,7 @@ export default function ArticlePage() {
           By narrowing each agent&apos;s scope, the LLM within each agent can
           make better tool selection decisions (fewer options to choose from)
           and produce higher-quality outputs (more focused context).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Coordination protocols</strong> define how agents communicate
           and collaborate. The simplest protocol is the{" "}
@@ -129,7 +136,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production multi-agent architecture consists of a{" "}
           <strong>supervisor/router agent</strong> that receives the initial
           request, classifies it, and delegates it to the appropriate specialist
@@ -138,8 +148,8 @@ export default function ArticlePage() {
           combines results into a final output. The supervisor is the only agent
           that communicates directly with the user — specialist agents communicate
           with the supervisor, not with the user.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Specialist agents</strong> each have their own system prompt,
           tool set, and domain expertise. A coding agent has file system access,
           code execution, and testing tools. A research agent has web search,
@@ -147,7 +157,7 @@ export default function ArticlePage() {
           analysis, security scanning, and quality assessment tools. Each agent
           operates its own agent loop independently, and the supervisor can
           query their status at any time.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>communication layer</strong> is the protocol that agents
           use to exchange information. In a simple implementation, this is a
@@ -193,7 +203,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Single-agent vs. multi-agent</strong> is the fundamental
           decision. Single-agent systems are simpler, cheaper, faster, and
           easier to debug. Multi-agent systems are more complex, expensive,
@@ -203,8 +216,8 @@ export default function ArticlePage() {
           set and reasoning capability; use multi-agent for tasks that span
           multiple domains, require independent parallel work, or need a review
           layer before output.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Homogeneous vs. heterogeneous agents</strong> refers to
           whether agents use the same model or different models. Homogeneous
           agents (all using the same model) are simpler to deploy and debug, but
@@ -216,7 +229,7 @@ export default function ArticlePage() {
           difficulty. The debate pattern specifically benefits from
           heterogeneity because diverse models are more likely to produce
           diverse answers.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Tight vs. loose coupling</strong> determines how dependent
           agents are on each other. Tightly coupled agents form a pipeline where
@@ -245,7 +258,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Start with a <strong>single agent and split only when necessary</strong>.
           Begin with a single agent that has all the tools needed for the task.
           If the agent consistently makes errors in tool selection (choosing the
@@ -253,15 +269,15 @@ export default function ArticlePage() {
           information from different domains), or would benefit from parallel
           execution, then split into multiple agents. Each split should be
           motivated by a specific, measurable problem.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Minimize inter-agent communication</strong>. Each message
           between agents costs tokens, adds latency, and introduces potential
           for miscommunication. Design agents to be as self-sufficient as
           possible, communicating only when necessary. When communication is
           needed, make messages structured and information-dense — a single
           comprehensive message is better than multiple back-and-forth exchanges.
-        </p>
+        </HighlightBlock>
         <p>
           Implement <strong>agent-level observability</strong> — track each
           agent&apos;s inputs, outputs, tool calls, errors, and latency. In a
@@ -283,7 +299,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>over-engineering with too many
           agents</strong>. A system with 5+ agents for a task that a single
           agent could handle with better prompting is wasteful — it costs 5x
@@ -291,8 +310,8 @@ export default function ArticlePage() {
           The multi-agent pattern should be used only when there is a clear,
           measurable benefit that cannot be achieved through prompt engineering,
           skill organization, or tool optimization within a single agent.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Coordination overhead</strong> can negate the benefits of
           specialization. If agents spend more time communicating and
           coordinating than doing actual work, the system is inefficient. The
@@ -300,7 +319,7 @@ export default function ArticlePage() {
           below 20% — if agents are exchanging more messages than making
           progress on the task, the topology or communication protocol needs
           redesign.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Error propagation</strong> is more damaging in multi-agent
           systems. When one agent produces incorrect output, it corrupts the
@@ -326,7 +345,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Software development teams</strong> — a multi-agent system
           with a planner agent (decomposes feature requirements into tasks), a
           coding agent (implements the code), a testing agent (writes and runs
@@ -334,8 +356,8 @@ export default function ArticlePage() {
           deployment agent (deploys to staging and production). This pattern is
           used by Devin, OpenDevin, and SWE-agent, where each agent specializes
           in one aspect of the software development lifecycle.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Research and analysis</strong> — a research system with a
           search agent (finds relevant papers and data), an analysis agent
           (extracts key findings and compares approaches), a synthesis agent
@@ -344,7 +366,7 @@ export default function ArticlePage() {
           particularly useful here — multiple analysis agents independently
           evaluate the same paper, and their agreement/disagreement provides
           confidence in the analysis quality.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Customer operations at scale</strong> — a customer support
           system with a triage agent (classifies the request and gathers
@@ -358,26 +380,29 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: When should you use a multi-agent system instead of a single
             agent with more tools?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Use a multi-agent system when: the task spans multiple distinct
             domains that require different tool sets (coding vs. research vs.
             communication), the LLM struggles with tool selection because there
             are too many options (20+ tools), the task has independent
             sub-tasks that can be parallelized for speedup, or you need a
             quality assurance layer where one agent reviews another&apos;s work.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             Stick with a single agent when: the task fits within one
             domain&apos;s tool set, the tool count is manageable (under 15), the
             task requires sequential execution (each step depends on the
             previous), or cost and latency are primary concerns.
-          </p>
+          </HighlightBlock>
           <p>
             The key test is: would splitting into multiple agents measurably
             improve output quality? If the answer is &quot;it would be more

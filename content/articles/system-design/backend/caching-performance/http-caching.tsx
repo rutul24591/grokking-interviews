@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           HTTP caching is the mechanism by which browsers and intermediary proxies (CDNs, reverse proxies, corporate proxies) store HTTP responses and reuse them for subsequent requests, governed by standardized headers defined in RFC 7234 (HTTP/1.1 Caching) and RFC 7232 (Conditional Requests). Unlike application-level caching, which is managed by code within the application process, HTTP caching is a protocol-level contract between the server that produces the response, the caches that store it, and the client that consumes it. The server communicates its caching intent through response headers, the caches enforce those directives, and the client benefits from reduced latency and bandwidth consumption without any application logic.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The HTTP caching model operates on two complementary principles: freshness and validation. Freshness determines how long a cached response can be served without checking with the origin, controlled primarily by the Cache-Control header&apos;s max-age directive. Validation determines how a cache verifies that a cached response is still current after its freshness window expires, controlled by ETag (entity tag) or Last-Modified headers in conjunction with conditional request headers (If-None-Match and If-Modified-Since). When a cached response is fresh, the cache serves it directly. When it is stale, the cache sends a conditional request to the origin: if the origin confirms the response is unchanged (returning 304 Not Modified), the cache extends the freshness window and serves the cached response; if the origin provides a new response (returning 200 OK), the cache replaces the stale entry and serves the new response.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, HTTP caching is both a powerful performance optimization and a significant source of production incidents. Correctly configured, HTTP caching can reduce origin load by 60 to 90 percent, cut bandwidth costs, and dramatically improve user-perceived latency. Misconfigured, it can serve stale content to millions of users, leak personalized data through shared caches, or cause cache poisoning through incorrect Vary headers. The header directives are a precise protocol contract: a single incorrect directive (Cache-Control: public on a personalized response, missing Vary on a content-negotiated response, an ETag that does not change when content changes) can produce subtle correctness bugs that are difficult to detect and expensive to remediate. Understanding the full HTTP caching model, including the interaction between multiple cache participants, the nuances of each header directive, and the production patterns that prevent common failures, is essential for anyone architecting web-scale systems.
         </p>
@@ -39,12 +43,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The HTTP caching model is defined by a set of headers that collectively control what can be cached, by whom, for how long, and how stale content is revalidated. Each header serves a specific purpose, and their interactions determine the overall caching behavior across the entire request-response chain.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Cache-Control header is the primary directive that controls caching behavior. Its most important directives are: max-age, which specifies the number of seconds a response remains fresh; s-maxage, which overrides max-age for shared caches (CDNs, proxies) while leaving browser caching unchanged; public, which allows shared caches to store the response; private, which restricts caching to the browser cache only; no-store, which prohibits any cache from storing the response; no-cache, which allows caching but requires revalidation before serving a stored response; and must-revalidate, which requires the cache to revalidate with the origin once the freshness window expires, rather than serving stale content. The combination of these directives determines the caching behavior for each response, and the correct combination depends on the content type, privacy requirements, and freshness needs of the response.
-        </p>
+        </HighlightBlock>
         <p>
           ETag (entity tag) headers provide a validation mechanism for conditional requests. An ETag is an opaque identifier (typically a hash or version string) that the server generates for a specific version of a response. When the client receives a response with an ETag, it stores the ETag alongside the cached response. On the next request for the same resource, the client includes an If-None-Match header with the stored ETag value. The server compares the If-None-Match value against the current ETag for the resource: if they match, the server returns 304 Not Modified with no body, and the client serves the cached response; if they differ, the server returns 200 OK with the new response body. ETags are preferred over Last-Modified for validation because they are more precise (a hash changes whenever any byte of the response changes, whereas Last-Modified has only second-level granularity) and they handle resources that change without a modification timestamp change (for example, a resource regenerated from the same input data).
         </p>
@@ -58,9 +65,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The HTTP caching architecture spans the entire request-response chain, with caching decisions made at each participant (browser, proxy, CDN, origin) based on the headers present in the request and response. Understanding the flow through each participant is essential for designing systems that cache correctly.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/http-cache-headers.svg`}
@@ -68,9 +78,9 @@ export default function ArticlePage() {
           caption="HTTP caching header interactions: freshness directives, validation mechanisms, and cache key composition through Vary"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The request flow begins with the browser checking its local cache for a fresh entry matching the request URL and cache key (including Vary headers). On a cache hit with a fresh entry, the browser serves the cached response immediately without any network request. On a cache hit with a stale entry, the browser sends a conditional request to the next participant (a proxy, CDN, or the origin) with the If-None-Match or If-Modified-Since header. On a cache miss, the browser sends a full request. Each intermediate participant (proxy, CDN) repeats this process: check its cache for a fresh entry, serve it on a hit, send a conditional request on a stale hit, or forward the full request to the next participant on a miss. The response flows back through the chain, with each participant caching it according to the Cache-Control directives before passing it to the previous participant.
-        </p>
+        </HighlightBlock>
         <p>
           The revalidation flow is where HTTP caching achieves its balance between freshness and efficiency. When a cached response&apos;s freshness window expires, the cache does not immediately discard it. Instead, it sends a conditional request to the origin with the stored ETag or Last-Modified value. If the origin confirms the response is unchanged (304 Not Modified), the cache resets the freshness clock and continues serving the cached response, saving the bandwidth cost of retransmitting the full response body. This is particularly valuable for large responses (images, JavaScript bundles, API responses with substantial payloads) where the conditional request overhead is negligible compared to the full response transfer cost. If the origin detects the response has changed, it returns 200 OK with the new response body, and the cache replaces the stale entry.
         </p>
@@ -104,17 +114,20 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Aspect</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Aspect</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3">
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3">
                 <strong>ETag vs Last-Modified</strong>
               </td>
               <td className="p-3">
@@ -123,8 +136,8 @@ export default function ArticlePage() {
               <td className="p-3">
                 ETags require server-side computation and storage (hash or version). Last-Modified has second-level granularity, cannot detect sub-second changes, and fails for resources without a clear modification timestamp.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Long max-age + Revalidation vs Short max-age</strong>
               </td>
@@ -134,8 +147,8 @@ export default function ArticlePage() {
               <td className="p-3">
                 Long max-age increases staleness window. If the content changes before max-age expires, users see stale content until revalidation. Short max-age keeps data fresh but reduces cache efficiency.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Public vs Private Caching</strong>
               </td>
@@ -145,7 +158,7 @@ export default function ArticlePage() {
               <td className="p-3">
                 Public caching of personalized data is a security vulnerability. Private caching forfeits the origin-load reduction benefit of shared caches, increasing origin load for personalized endpoints.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Stale-While-Revalidate</strong>
@@ -174,13 +187,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Segment Public and Private Responses Clearly:</strong> Every endpoint in your system should be classified as either public (cacheable by shared caches) or private (cacheable only by the browser). Public responses use Cache-Control: public, max-age=N (and optionally s-maxage=M for CDN-specific TTL). Private responses use Cache-Control: private or Cache-Control: no-store. Do not mix public and private content in the same response: if an HTML page contains both public article content and private user recommendations, serve the public content as a cacheable HTML page and fetch the private content via a separate API call marked as private. This separation prevents accidental caching of personalized data in shared caches.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Immutable Asset Fingerprints for Static Content:</strong> Static assets (JavaScript bundles, CSS files, fonts, icons, images) should be served with content-hashed URLs (for example, /static/app.abc123def.css) and Cache-Control: public, max-age=31536000, immutable. The content hash in the URL ensures that the URL changes whenever the content changes, so the long TTL is safe. The immutable directive prevents the browser from sending conditional requests even on page refresh, eliminating all revalidation overhead for static assets. This is the single most effective HTTP caching optimization for web applications, typically reducing total page load bandwidth by 50 to 70 percent.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement ETag-Based Revalidation for Dynamic Content:</strong> Dynamic content (API responses, HTML pages, user-specific data) should use ETag-based revalidation with a short max-age (0 to 300 seconds) and must-revalidate. The ETag should be computed from a content hash or a version number that changes whenever the response changes. The short max-age ensures that the cache checks for updates frequently, and the ETag ensures that unchanged responses return 304 Not Modified with minimal bandwidth. For content that changes rarely, use a longer max-age (hours) with ETag revalidation to balance freshness and efficiency.
           </li>
@@ -198,13 +214,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Cache Poisoning Through Incorrect Vary Headers:</strong> When a response varies by a request header (such as Accept-Language) but the server does not include that header in the Vary response, the first cached variant is served to all subsequent users regardless of their header value. This is a cache poisoning bug that can serve incorrect language, incorrect encoding, or in the worst case, incorrect personalized data to users. The fix is to audit every endpoint that produces content-negotiated responses and ensure that the Vary header includes all headers that affect the response. Automated testing can detect this by sending requests with different header values and verifying that the Vary header reflects the variation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-Caching Personalized Content in Shared Caches:</strong> Marking a personalized response as Cache-Control: public allows shared caches (CDNs, corporate proxies) to store and serve it to other users. This is a data-leakage vulnerability that can expose one user&apos;s personalized content (account information, recommendations, search results) to other users. The fix is to classify every endpoint as public or private during design, and to enforce this classification through automated header validation. Endpoints that return user-specific data must be marked as Cache-Control: private or Cache-Control: no-store.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Short TTLs That Prevent Meaningful Caching:</strong> Setting max-age=0 or max-age=1 for all responses, regardless of content type, prevents HTTP caching from providing any benefit. The origin receives every request, and the bandwidth savings from caching are forfeited. The fix is to set TTLs based on content volatility: static assets with immutable URLs get long TTLs (1 year), rarely changing content gets moderate TTLs (1 hour to 1 day), and frequently changing content gets short TTLs (0 to 5 minutes) with ETag revalidation. A one-size-fits-all TTL policy is a sign that caching has not been thoughtfully designed.
           </li>
@@ -219,13 +238,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Documentation Site (Static-Heavy):</strong> A documentation site serves static HTML pages with Cache-Control: public, max-age=300, must-revalidate, ETag: &quot;version-hash&quot;. Static assets (CSS, JS, images) use fingerprinted URLs with Cache-Control: public, max-age=31536000, immutable. When documentation is updated, the content hash changes, the ETag changes, and the next conditional request returns 200 OK with the new content. The short max-age ensures that updates propagate within 5 minutes, and the ETag ensures that unchanged pages return 304 Not Modified with minimal bandwidth. This pattern balances timely updates with efficient caching.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>REST API with Conditional Requests:</strong> A REST API serves resource representations with Cache-Control: public, max-age=60, ETag: &quot;resource-version&quot;, Vary: Accept. Clients send conditional GET requests with If-None-Match, and unchanged resources return 304 Not Modified. The 60-second max-age provides a short freshness window for clients in the same request burst (for example, a dashboard that polls the API every 30 seconds), while the ETag ensures that clients with stale entries revalidate efficiently. The Vary: Accept header ensures that JSON and XML representations are cached separately.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>E-Commerce Product Pages (Mixed Content):</strong> An e-commerce platform serves product pages with public content (product description, images, reviews) cached at the CDN with Cache-Control: public, max-age=300, stale-while-revalidate=600. Personalized content (price for the user&apos;s region, stock availability, recommendations) is fetched via a separate API call marked Cache-Control: private, no-store. The HTML page is assembled client-side by combining the cached public content with the freshly fetched personalized content. This hybrid approach maximizes caching efficiency for the public portions while ensuring personalized data is always fresh.
           </li>
@@ -237,14 +259,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q1: Explain the difference between Cache-Control: no-cache and Cache-Control: no-store. When would you use each?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Cache-Control: no-cache allows the response to be cached but requires the cache to revalidate with the origin before serving the cached response. In other words, the cache can store the response, but it cannot serve it without first checking with the origin using a conditional request (If-None-Match or If-Modified-Since). If the origin confirms the response is unchanged (304 Not Modified), the cache serves the cached response. If the origin provides a new response (200 OK), the cache replaces the stored response. This is useful for content that changes occasionally but benefits from caching when unchanged, as the conditional request overhead is much smaller than the full response transfer.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               Cache-Control: no-store prohibits any cache from storing the response. The response is never cached, and every request goes to the origin. This is used for sensitive data (authentication tokens, financial transactions, personalized health information) where caching poses a security risk, or for highly dynamic content that changes on every request and would never benefit from caching. Use no-cache for content that should be validated before serving, and no-store for content that should never be cached.
             </p>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>Bloom filter</strong> is a probabilistic data structure for set membership testing that guarantees <strong>no false negatives</strong> and a tunable <strong>false positive rate</strong>. When a Bloom filter says "definitely not present," the key is truly absent—this guarantee is absolute. When it says "maybe present," the key may or may not actually exist, with a probability determined by the filter's sizing parameters. This asymmetric behavior is precisely what makes Bloom filters powerful in production systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The core value proposition of a Bloom filter is <strong>avoiding expensive work</strong>. In a storage engine, a Bloom filter prevents unnecessary disk reads for keys that do not exist. In a distributed cache, it prevents network calls to downstream services for known-missing keys. In a CDN, it avoids origin fetches for resources that were never created. The filter acts as a gate: if the filter says "not present," the expensive operation is skipped entirely, saving I/O, network bandwidth, and latency.
-        </p>
+        </HighlightBlock>
         <p>
           The mathematical foundation is straightforward. A Bloom filter consists of a bit array of size m and k independent hash functions. To insert a key, each of the k hash functions maps the key to a position in the bit array, and those positions are set to 1. To query a key, the same k hash functions are applied, and if all corresponding bits are 1, the filter returns "maybe present." If any bit is 0, the key is definitely absent. The false positive rate is approximately (1 - e^(-kn/m))^k, where n is the number of inserted elements.
         </p>
@@ -48,6 +52,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/advanced-topics/bloom-filter-insertion.svg"
@@ -56,12 +63,12 @@ export default function ArticlePage() {
         />
 
         <h3>Probabilistic Membership Testing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The defining property of a Bloom filter—no false negatives, tunable false positives—stems directly from its insertion-only nature. Once a bit is set to 1, it never returns to 0. This means that if a key was inserted, all its k bit positions are guaranteed to be 1, so the filter will always return "maybe present" for that key (never a false negative). Conversely, if a key was never inserted, its bits may still be 1 due to other keys setting them, which creates false positives.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           False positives occur because the bit array is a shared resource: multiple keys compete for the same bit positions through hash collisions. As more keys are inserted, more bits flip to 1, increasing the probability that a non-member key finds all its k bits already set. The false positive rate grows exponentially as the filter approaches saturation. This is why sizing is the primary design decision: you must know the expected number of elements n, choose a false positive target p, and compute the required bit array size m = -n * ln(p) / (ln(2))^2 and optimal hash count k = (m/n) * ln(2).
-        </p>
+        </HighlightBlock>
         <p>
           The query operation is the symmetric inverse of insertion. Hash the query key with the same k hash functions, check all k bit positions. If any position is 0, return "definitely absent." If all positions are 1, return "possibly present." The query then proceeds to the actual data source only when the filter returns "possibly present," making the false positive rate directly proportional to the fraction of unnecessary work performed.
         </p>
@@ -100,14 +107,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Bloom Filters in LSM Storage Engines</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common production use of Bloom filters is in LSM-tree storage engines like RocksDB, Cassandra, and LevelDB. These engines organize data into sorted string tables (SSTables) at multiple levels. A point lookup must check the memtable first, then each SSTable level from newest to oldest. Without Bloom filters, every miss requires reading every SSTable on disk—an O(L) disk read problem where L is the number of levels.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Each SSTable has an associated Bloom filter stored in memory (or memory-mapped). When a lookup misses the memtable, the engine checks the Bloom filter for each SSTable before reading it. SSTables whose filters return "definitely absent" are skipped entirely. For workloads with high miss rates, this reduces disk reads from O(L) to O(1) in the common case. The memory cost is the sum of all per-SSTable Bloom filters, which is typically a small fraction of the total data size due to the filter's space efficiency.
-        </p>
+        </HighlightBlock>
 
         <h3>Negative Caching and Cache Admission</h3>
         <p>
@@ -137,12 +147,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Bloom filters occupy a specific point in the space-accuracy trade-off spectrum. An exact hash set uses O(n) space with zero false positives but requires storing every key. A Bloom filter uses O(n) space with a constant factor of ~10 bits per element (for 1% false positive rate), accepting some false positives for massive space savings. A quotient filter or cuckoo filter offers similar space with the added ability to delete elements, but with higher implementation complexity and slightly worse cache performance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice between a Bloom filter and no filter depends on the <strong>miss rate</strong> and <strong>miss cost</strong>. If 90% of lookups miss the cache and each miss costs a database round-trip, a Bloom filter that avoids 99% of those misses (at 1% false positive rate) saves enormous I/O. If 95% of lookups are hits, the filter provides marginal benefit. The filter's value is proportional to the expensive work it prevents, not to the total request volume.
-        </p>
+        </HighlightBlock>
         <p>
           Counting Bloom filters trade 4x memory for deletion support. Each bit becomes a small counter (typically 4 bits), allowing increments on insertion and decrements on deletion. The false positive rate increases slightly because counters can overflow (though this is rare with 4-bit counters). Use counting Bloom filters when your key set changes frequently and rebuilding is too expensive. Most storage engines avoid this complexity and rely on compaction-based rebuilding instead.
         </p>
@@ -156,12 +169,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Size your Bloom filter using explicit parameters: expected element count n and target false positive rate p. Compute the required bit array size using the formula m = -n * ln(p) / (ln(2))^2 and the optimal hash count k = (m/n) * ln(2). Round k to the nearest integer. Never guess these values—undersizing causes rapid saturation where the filter approaches all-1s and returns "maybe present" for nearly every query, destroying its value while still consuming CPU on hash computations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Monitor filter effectiveness continuously. Track the ratio of queries returning "definitely absent" versus "possibly present" over time. The "definitely absent" ratio should remain stable. If it trends downward, the filter is saturating and needs rebuilding. Track the downstream cost of false positives: how many unnecessary disk reads or network calls were triggered by false positive results? This metric directly quantifies the filter's operational value.
-        </p>
+        </HighlightBlock>
         <p>
           Use well-tested non-cryptographic hash functions with proven distribution properties. MurmurHash3 and xxHash3 are excellent choices for production Bloom filters. Avoid using truncated cryptographic hashes unless you have a specific security requirement, because the computational overhead reduces throughput without improving distribution quality for Bloom filter purposes. Implement double hashing to reduce k hash computations to 2 per key.
         </p>
@@ -175,12 +191,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>undersizing the filter</strong>, which causes saturation. When a Bloom filter is sized for 1 million keys but receives 10 million, the bit array fills with 1s and the filter returns "maybe present" for nearly every query. The system still works correctly (no false negatives), but the filter provides zero value: every query still hits the downstream data source, and the filter adds CPU overhead for hash computations. Teams often discover this only after weeks of unbounded key growth.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Ignoring the deletion problem</strong> leads to stale filters. Standard Bloom filters cannot delete elements, so removed keys still contribute to false positives. In systems where keys are frequently removed (e.g., expired sessions, deleted records), the filter's false positive rate increases over time even if the current active key set is stable. The fix is to rebuild the filter periodically from the current active key set, but many teams forget to implement the rebuild mechanism.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Poor hash distribution</strong> causes actual false positive rates to exceed theoretical predictions. Using a simple hash function like modulo arithmetic or a truncated MD5 without verifying bit distribution can create hot regions in the bit array where collisions are concentrated. The filter appears correctly sized on paper but performs worse in practice because the independence assumption of the theoretical model is violated. Always validate hash distribution on production-like key sets before deploying.
         </p>
@@ -194,16 +213,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>LSM Storage Engine: Reducing Read Amplification</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A key-value service backed by RocksDB experienced high read amplification on cache misses. With 5 SSTable levels, every miss required reading up to 5 SSTables from disk. Adding per-SSTable Bloom filters (sized at 10 bits per key for 1% false positive rate) allowed the engine to skip 99% of unnecessary SSTable reads. P99 read latency on misses dropped from 50ms to 5ms, and disk I/O reduced by 80%.
-        </p>
+        </HighlightBlock>
 
         <h3>CDN: Negative Caching for Origin Protection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A CDN platform received millions of requests daily for non-existent resources, causing unnecessary origin server fetches. Deploying a Bloom filter at the edge layer, populated with all known resource paths, allowed edge nodes to return 404 immediately for requests that were definitely not in the filter. Origin server load dropped 40%, and response time for missing resources improved from 200ms (origin round-trip) to sub-millisecond (filter check).
-        </p>
+        </HighlightBlock>
 
         <h3>Distributed Database: Join Filter Optimization</h3>
         <p>
@@ -221,14 +243,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: Why do Bloom filters have no false negatives?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Bloom filters have no false negatives because they are insertion-only: once a bit is set to 1, it never returns to 0. When a key is inserted, all k of its hash positions are set to 1. When querying that same key later, the same k hash functions produce the same positions, and since those bits were set during insertion and never cleared, they are guaranteed to still be 1. The filter will always return "maybe present" for any key that was actually inserted.
-            </p>
+            </HighlightBlock>
             <p>
               This guarantee is fundamental to the data structure's utility. It means the filter can safely gate expensive operations: if the filter says "absent," you can skip the expensive operation with 100% confidence that you won't miss a real hit.
             </p>

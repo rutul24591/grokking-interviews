@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function StateMachineImplementationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           State machines manage entity lifecycle through defined states and transitions, ensuring valid state changes and triggering appropriate actions. In e-commerce and payment systems, state machines govern order lifecycle (pending → confirmed → shipped → delivered), payment processing (pending → authorized → captured → refunded), and subscription management (active → past_due → cancelled → expired). For staff and principal engineers, state machine design involves balancing flexibility (supporting business requirements) with rigor (preventing invalid transitions) while handling distributed systems challenges (concurrent updates, eventual consistency).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of state machines extends beyond simple state transitions. Guards validate preconditions before transitions (payment authorized before shipment). Actions trigger side effects on transitions (send email on order shipped). History tracking enables audit trails and debugging (who changed state, when, why). Persistence strategies determine how state is stored (current state only vs. full event log). Concurrent state changes require locking or optimistic concurrency control. The architecture must support state machine evolution (adding states, modifying transitions) without breaking existing entities.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, state machine architecture involves distributed systems patterns. Event sourcing captures state changes as immutable events (OrderCreated, PaymentAuthorized, OrderShipped) enabling replay, debugging, and multiple projections. Saga pattern coordinates state changes across services (order service, payment service, inventory service) with compensating transactions on failure. CQRS separates write model (state machine) from read model (query-optimized projections). The system must handle state machine versioning (v1 orders vs. v2 orders with new states) and migration strategies.
         </p>
@@ -47,13 +51,16 @@ export default function StateMachineImplementationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>State Definition</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           States represent distinct phases in entity lifecycle. Order states: pending (created, awaiting payment), confirmed (payment authorized, processing), shipped (package shipped, tracking available), delivered (completed), cancelled (user or system cancelled), returned (refund processed). Each state has specific invariants (pending order cannot ship, delivered order cannot cancel). States are mutually exclusive—entity is in exactly one state at a time. State enumeration (enum, union type) prevents invalid states.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           State categories group related states. Active states (pending, confirmed, shipped) represent ongoing orders. Terminal states (delivered, cancelled, returned) represent completed orders—no further transitions allowed. Intermediate states (processing, packaging) represent sub-states within active states. Category-based validation simplifies rules (all active states allow status query, only terminal states allow archival).
-        </p>
+        </HighlightBlock>
         <p>
           State metadata enriches state information. Entered timestamp tracks when state was entered (for SLA monitoring). Entered by tracks who/what triggered transition (user, system, webhook). Exit reason captures why state was exited (user cancelled, payment failed, timeout). Metadata enables analytics (average time in each state, cancellation reasons) and debugging (trace state history).
         </p>
@@ -105,9 +112,12 @@ export default function StateMachineImplementationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           State machine architecture spans state definition, transition engine, persistence layer, and action execution. State definition (states, transitions, guards, actions) is configuration-driven (YAML, code). Transition engine processes events, validates guards, executes transitions. Persistence layer stores state and history. Action executor runs side effects asynchronously. Event sourcing captures transitions as immutable events.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/state-machine/state-machine-architecture.svg"
@@ -118,9 +128,9 @@ export default function StateMachineImplementationArticle() {
         />
 
         <h3>State Definition Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           State configuration defines states, transitions, guards, and actions. YAML or JSON format enables non-code changes. State definition: name, type (active/terminal), metadata. Transition definition: from_state, event, guard, to_state, actions. Guard definition: function reference, parameters. Action definition: function reference, parameters, retry policy.
-        </p>
+        </HighlightBlock>
         <p>
           Type-safe state machines use enums and union types. TypeScript: type OrderState = &apos;pending&apos; | &apos;confirmed&apos; | &apos;shipped&apos; | &apos;delivered&apos;. Transition function: transition(state: OrderState, event: OrderEvent): OrderState. Compiler catches invalid states and transitions. Runtime validation ensures configuration matches types.
         </p>
@@ -180,14 +190,17 @@ export default function StateMachineImplementationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           State machine design involves trade-offs between flexibility, rigor, performance, and complexity. Understanding these trade-offs enables informed decisions aligned with business requirements and operational capabilities.
-        </p>
+        </HighlightBlock>
 
         <h3>Persistence: Current State vs. Event Sourcing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Current state persistence stores only current state. Pros: Simple, minimal storage, fast queries. Cons: No history, can&apos;t replay, limited audit. Best for: Simple state machines, no compliance requirements, low-risk operations.
-        </p>
+        </HighlightBlock>
         <p>
           Event sourcing persists all state changes as events. Pros: Full audit trail, replay capability, multiple projections, temporal queries. Cons: Complex implementation, storage growth, query complexity. Best for: Financial transactions, compliance-required, complex business logic, debugging needs.
         </p>
@@ -239,13 +252,16 @@ export default function StateMachineImplementationArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Define states explicitly:</strong> Enumerate all valid states (enum, union type). Prevent invalid states at type level. Document state meanings and invariants. Terminal states clearly marked (no outgoing transitions).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Define transitions explicitly:</strong> Enumerate all valid transitions. Guard functions validate preconditions. Action functions handle side effects. Configuration-driven (YAML/JSON) for non-code changes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Log all transitions:</strong> History table with from_state, to_state, event, user, timestamp. Enables audit trail, debugging, replay. Index on entity_id and timestamp. Archive old records.
           </li>
@@ -275,13 +291,16 @@ export default function StateMachineImplementationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implicit states:</strong> States not explicitly defined, inferred from nulls/flags. Solution: Explicit enum for all states. No null states.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing transitions:</strong> Valid transitions not defined, users blocked. Solution: Enumerate all transitions. Review with business stakeholders.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No guard validation:</strong> Invalid transitions allowed. Solution: Guard functions for all transitions. Validate preconditions.
           </li>
@@ -311,16 +330,19 @@ export default function StateMachineImplementationArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Amazon Order State Machine</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon order state machine: pending → confirmed → processing → shipped → delivered. Guards: payment authorized before confirmed, inventory available before processing. Actions: send confirmation email, notify warehouse, send tracking email. Event sourcing for audit trail. Parallel state for gift options (independent of order state).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Stripe Payment State Machine</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe payment intent state machine: requires_payment_method → requires_confirmation → requires_action → processing → succeeded/failed. Guards: payment method attached before confirmation, 3DS verification before processing. Actions: charge card, send receipt, webhook notification. Event sourcing for dispute handling.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Uber Trip State Machine</h3>
         <p>
@@ -340,12 +362,15 @@ export default function StateMachineImplementationArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle concurrent state changes?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle concurrent state changes?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Optimistic locking with version column. Load state with version. On update: SET state = ?, version = version + 1 WHERE id = ? AND version = ?. If affected rows = 0, concurrent modification detected. Retry with latest state (load, re-validate, re-apply). For high-conflict scenarios, pessimistic locking (SELECT ... FOR UPDATE) serializes access.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

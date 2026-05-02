@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function CountingSortArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Counting Sort is a non-comparative sorting algorithm that runs in Θ(n + k) time and space,
           where n is the number of elements and k is the size of the key range. Harold H. Seward
           introduced it in 1954 as part of his master&apos;s thesis at MIT, years before the classical
@@ -32,14 +36,14 @@ export default function CountingSortArticle() {
           directly with key values as array indices, it breaks the Ω(n log n) lower bound that
           governs comparison sorts — but only under the condition that keys are small integers (or
           can be mapped to small integers).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The algorithm operates in three passes. First, scan the input and build a histogram of
           key frequencies in a count array of size k. Second, convert counts into prefix sums so
           count[v] tells you the final position of the last copy of key v. Third, scan the input
           again (in reverse for stability) and place each element into its final slot, decrementing
           the relevant count. The result is a stably sorted output in linear time.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Counting sort&apos;s real importance is as a subroutine. Every LSD radix sort iteration is
           literally a counting sort over one digit. Bucket sort&apos;s per-bucket placement step is a
@@ -64,23 +68,26 @@ export default function CountingSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">Keys as indices</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The defining trick is using each key value as an index into the count array. For keys in
           [0, k), the count array has size k and count[v] tracks how many times key v appears. This
           sidesteps the comparison model entirely — no key is ever compared against another, only
           counted. The linear-time advantage flows from O(1) array indexing replacing O(log n)
           comparisons.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">The prefix-sum step</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           After counting, count[v] stores the frequency of v. Converting to a prefix sum (count[v]
           += count[v−1] for v from 1 to k−1) transforms it into a placement map: count[v] becomes
           the index one past the last position where v should go. Iterating the input in reverse
           and, for each element x, writing to output[--count[x]] places x correctly and decrements
           the count so the previous copy of x lands one slot earlier. This is the operation that
           preserves stability.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">Range normalization</h3>
         <p className="mb-4">
           Real-world keys rarely start at 0. For keys in [min, max], subtract min at read time and
@@ -114,7 +121,10 @@ export default function CountingSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A production counting sort has three loops plus a normalization pass. The histogram pass
           is a tight loop over input, incrementing count[key(x) − min]. On modern CPUs this is
           memory-bound — if the count array fits in L1 cache (k ≤ 8192 integers on typical
@@ -122,14 +132,14 @@ export default function CountingSortArticle() {
           placement pass reads input in reverse, computes the destination via count[--], and writes
           output. This is scatter-pattern writing, which is less cache-friendly than sequential
           writes but still faster than log-n comparison-based sorts for small k.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The key architectural constraint is the count array size. If k = 10⁷ (say, sorting 10M
           records by a 24-bit key), the count array is 40 MB — already larger than L2/L3 and causing
           TLB pressure. Cache-blocked counting sort processes the input in chunks, building partial
           histograms that fit in L2 and merging them. For truly large k, radix sort is used instead
           — it decomposes a large key into multiple small-k digit sorts.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           When used inside radix sort, counting sort is called once per digit. The inner counting
           sort is often specialized: for 8-bit digits, k = 256, so the count array is a single cache
@@ -148,20 +158,23 @@ export default function CountingSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Comparison sorts</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Counting sort is Θ(n + k) — beats Θ(n log n) when k = O(n) or smaller. For n = 10⁶ with
           keys in [0, 10³], counting sort is ~20× faster than introsort. But when k = n² or larger,
           counting sort degenerates to Ω(k) and becomes worse than comparison sort. The break-even
           point is roughly k ≈ n log n.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Radix Sort</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Radix sort is counting sort applied d times to d-digit keys. For 32-bit integers with
           byte-sized digits, d = 4 and k = 256, giving Θ(4(n + 256)) ≈ Θ(n) — but with 4× more
           passes. Single-pass counting sort is faster if you can afford an array of size 2³² (4 GB)
           for the count; radix wins when keys are large.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Bucket Sort</h3>
         <p className="mb-4">
           Bucket sort distributes elements into k buckets by value range, then sorts each bucket
@@ -178,9 +191,12 @@ export default function CountingSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc pl-6 mb-4 space-y-2">
-          <li><strong>Only use when k = O(n)</strong>. For k ≫ n, fall back to comparison sort or radix.</li>
-          <li><strong>Normalize to [0, k)</strong> by subtracting min; restore after. Avoids sparse count arrays.</li>
+          <HighlightBlock as="li" tier="important"><strong>Only use when k = O(n)</strong>. For k ≫ n, fall back to comparison sort or radix.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Normalize to [0, k)</strong> by subtracting min; restore after. Avoids sparse count arrays.</HighlightBlock>
           <li><strong>Reverse-scan placement</strong> to preserve stability — critical when used inside radix sort.</li>
           <li><strong>Pre-compute min/max</strong> unless you already know the domain (e.g., age ∈ [0, 150]).</li>
           <li><strong>Use byte-sized digits (k=256)</strong> when embedding inside radix sort — count array fits in cache.</li>
@@ -192,9 +208,12 @@ export default function CountingSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc pl-6 mb-4 space-y-2">
-          <li><strong>Forward-scan placement breaks stability</strong> — reverse scan is required. Easy to miss in ad-hoc implementations.</li>
-          <li><strong>k &gt; 2³²</strong>: count array overflows addressable memory. Use radix sort.</li>
+          <HighlightBlock as="li" tier="important"><strong>Forward-scan placement breaks stability</strong> — reverse scan is required. Easy to miss in ad-hoc implementations.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>k &gt; 2³²</strong>: count array overflows addressable memory. Use radix sort.</HighlightBlock>
           <li><strong>Negative keys without offset</strong>: count[−3] crashes. Always normalize by subtracting min.</li>
           <li><strong>Floating-point keys</strong>: counting sort doesn&apos;t work directly. Use bucket sort or quantize first.</li>
           <li><strong>Sparse key distributions</strong>: if 10⁶ elements have keys scattered across [0, 10⁹], count array is 4 GB for 1 MB of data. Use radix or comparison sort.</li>
@@ -205,15 +224,18 @@ export default function CountingSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>LSD radix sort</strong>: inside Rust&apos;s radsort, ska_sort (C++), and Java&apos;s
           DualPivotQuicksort for small ranges, counting sort is the per-digit kernel. Sorting 10M
           32-bit integers via 4-byte radix is ~4× faster than introsort.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Image processing</strong>: histogram equalization uses the same count + prefix-sum
           pattern as counting sort. Every camera ISP and image editor implements this.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>TeraSort benchmark</strong> (Hadoop&apos;s sort benchmark): uses range-partitioned
           counting on the first few bytes of each key to distribute load across reducers, then
@@ -245,9 +267,12 @@ export default function CountingSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <ol className="list-decimal pl-6 mb-4 space-y-2">
-          <li><strong>Why is counting sort linear?</strong> It uses keys as indices, avoiding the comparison model — comparison lower bound Ω(n log n) doesn&apos;t apply.</li>
-          <li><strong>Implement counting sort.</strong> Three passes: histogram, prefix sum, reverse-scan placement.</li>
+          <HighlightBlock as="li" tier="important"><strong>Why is counting sort linear?</strong> It uses keys as indices, avoiding the comparison model — comparison lower bound Ω(n log n) doesn&apos;t apply.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Implement counting sort.</strong> Three passes: histogram, prefix sum, reverse-scan placement.</HighlightBlock>
           <li><strong>When is counting sort better than quicksort?</strong> When k = O(n) and keys are bounded integers. For k ≈ n log n or larger, comparison wins.</li>
           <li><strong>Why is reverse scan important?</strong> Stability — forward scan reverses relative order of equal keys, breaking downstream radix sort.</li>
           <li><strong>How does counting sort fit into radix sort?</strong> Radix sort calls counting sort once per digit; per-digit k is small (e.g., 256 for bytes), giving Θ(d(n+k)) total.</li>

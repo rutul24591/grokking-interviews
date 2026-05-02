@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function StateManagementStrategyArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>State Management Strategy</strong> encompasses how an
           application stores, updates, and shares data across components. This
           includes local component state (form inputs, toggle state), shared UI
@@ -49,8 +53,8 @@ export default function StateManagementStrategyArticle() {
           boilerplate and re-render overhead, while under-engineering (prop
           drilling everywhere) creates maintenance nightmares and makes it
           difficult to track data flow.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff engineers, state management is an architecture decision with
           long-term implications. The choice of state management library affects
           developer onboarding (how quickly can new team members understand the
@@ -60,7 +64,7 @@ export default function StateManagementStrategyArticle() {
           increasing feature complexity). The goal is matching the solution to
           the problem&apos;s complexity — simple state problems need simple
           solutions, complex state problems need structured architecture.
-        </p>
+        </HighlightBlock>
         <p>
           The most important distinction in state management is between server
           state (data from APIs) and client state (UI state). Server state has
@@ -78,7 +82,10 @@ export default function StateManagementStrategyArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           React Context is the built-in option for sharing state without prop
           drilling. It is best suited for low-frequency updates — theme,
           authenticated user, locale — because every context value change
@@ -88,8 +95,8 @@ export default function StateManagementStrategyArticle() {
           requires no external dependencies and has a simple API, making it
           ideal for small to medium applications or for specific use cases
           within larger applications (theme provider, auth provider).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Zustand is a minimal state management library with a hooks-based API
           and no boilerplate. Stores are created with a single function call,
           components subscribe to specific state slices using selectors to avoid
@@ -99,7 +106,7 @@ export default function StateManagementStrategyArticle() {
           excellent TypeScript support, and requires minimal learning curve. It
           is the recommended default for client state when Context is
           insufficient.
-        </p>
+        </HighlightBlock>
         <p>
           Redux (with Redux Toolkit) provides a predictable state container with
           centralized store, immutable update patterns, and a rich middleware
@@ -128,7 +135,10 @@ export default function StateManagementStrategyArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The recommended architecture separates server state from client state
           and handles each with the appropriate tool. Server state is managed by
           React Query (TanStack Query) or SWR — libraries that handle caching,
@@ -141,8 +151,8 @@ export default function StateManagementStrategyArticle() {
           state mechanism. Form state is managed by React Hook Form or Formik —
           specialized libraries that handle validation, dirty tracking, and
           submission efficiently.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The data flow architecture follows a unidirectional pattern. User
           interactions trigger state updates (Zustand actions, React Query
           mutations), which update the store, which triggers re-renders in
@@ -153,7 +163,7 @@ export default function StateManagementStrategyArticle() {
           architecture ensures that server data is always fresh (or explicitly
           stale-marked), client data is reactive, and components only re-render
           when their specific data slice changes.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/server-vs-client-state.svg"
@@ -178,7 +188,10 @@ export default function StateManagementStrategyArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The server state versus client state distinction is the most impactful
           architecture decision. Putting server state in Redux/Zustand means
           re-implementing caching (storing responses and checking staleness),
@@ -189,8 +202,8 @@ export default function StateManagementStrategyArticle() {
           dependency and learning its API, but the benefit is eliminating
           hundreds of lines of custom caching and synchronization code that are
           error-prone and hard to maintain.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Zustand versus Redux involves trade-offs between simplicity and
           features. Zustand requires minimal boilerplate — a store is a single
           function call, and components subscribe with selectors. Redux
@@ -202,7 +215,7 @@ export default function StateManagementStrategyArticle() {
           building a complex enterprise application with audit trails and
           regulatory requirements, Redux&apos;s strict patterns and devtools
           justify the overhead.
-        </p>
+        </HighlightBlock>
         <p>
           Global state versus local state is a granularity trade-off. Global
           state makes data accessible anywhere in the component tree but adds
@@ -220,7 +233,10 @@ export default function StateManagementStrategyArticle() {
 
       <section>
         <h2>React Query Deep Dive</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           React Query (TanStack Query) is a server state management library that
           handles the full lifecycle of server data: fetching, caching,
           background refetching, pagination, and optimistic updates. At its core,
@@ -233,8 +249,8 @@ export default function StateManagementStrategyArticle() {
           stale data exists, it fetches immediately and returns the result.
           Multiple components requesting the same key share a single network
           request (deduplication), preventing redundant API calls.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Caching strategies in React Query are configured through three key
           parameters: staleTime (how long data is considered fresh), gcTime
           (formerly cacheTime, how long unused data remains in cache before
@@ -250,7 +266,7 @@ export default function StateManagementStrategyArticle() {
           after a component unmounts, its data remains cached for 5 minutes, so
           navigating away and back to a page shows instant data from cache rather
           than a loading spinner.
-        </p>
+        </HighlightBlock>
         <p>
           Query invalidation is the mechanism for telling React Query that
           cached data is stale and should be refetched. After a mutation
@@ -299,7 +315,10 @@ export default function StateManagementStrategyArticle() {
 
       <section>
         <h2>Zustand Architecture Deep Dive</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Zustand&apos;s architecture is built around a single store creation
           function that returns a custom hook. The store is defined by a state
           initializer function and optional middleware. Unlike Redux, Zustand has
@@ -312,8 +331,8 @@ export default function StateManagementStrategyArticle() {
           using selector functions, and Zustand uses reference equality
           (Object.is) to determine if the selected value has changed — if not,
           the component does not re-render.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The middleware system extends Zustand&apos;s core functionality
           without adding complexity to the primary API. The <code>devtools</code>{" "}
           middleware connects to Redux DevTools for time-travel debugging, state
@@ -329,7 +348,7 @@ export default function StateManagementStrategyArticle() {
           operations (state.count++) while immer produces immutable state under
           the hood — this eliminates the spread-operator boilerplate that makes
           complex nested state updates hard to read.
-        </p>
+        </HighlightBlock>
         <p>
           Selector memoization is critical for Zustand performance. When a
           component selects a derived value (e.g., <code>state =&gt; state.items.filter(item =&gt; item.active)</code>), the selector function
@@ -364,7 +383,10 @@ export default function StateManagementStrategyArticle() {
 
       <section>
         <h2>State Normalization Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           State normalization is the practice of organizing state as a flat
           collection of entities indexed by unique identifiers, rather than
           deeply nested object hierarchies. In a normalized state, users are
@@ -377,8 +399,8 @@ export default function StateManagementStrategyArticle() {
           (appearing in multiple lists with potentially different values), and
           the state structure naturally mirrors database tables, making it
           straightforward to map API responses to state.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Redux Toolkit&apos;s <code>createEntityAdapter</code> provides a
           battle-tested normalization implementation with CRUD operations
           (addOne, addMany, upsertOne, upsertMany, removeOne, removeMany),
@@ -391,7 +413,7 @@ export default function StateManagementStrategyArticle() {
           type, and actions provide the same CRUD operations. The key insight
           is that normalization is a data pattern, not a library pattern — it
           applies regardless of whether you use Redux, Zustand, or Context.
-        </p>
+        </HighlightBlock>
         <p>
           Handling relational data in normalized state requires managing
           references between entities. When a user has posts, and posts have
@@ -413,7 +435,10 @@ export default function StateManagementStrategyArticle() {
 
       <section>
         <h2>URL State as Single Source of Truth</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The URL is the most accessible and shareable form of application
           state — it survives page refresh, can be bookmarked, shared via link,
           and is the basis for browser history (back/forward navigation). URL
@@ -424,8 +449,8 @@ export default function StateManagementStrategyArticle() {
           and that should be shareable should be represented in the URL, not in
           a JavaScript store. When the URL changes, the application re-renders
           to match; when the application state changes, the URL updates.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The common anti-pattern is duplicating URL state in a store — reading
           <code>page</code> from the URL into a Zustand store, then writing
           changes back to the URL. This creates two sources of truth that can
@@ -436,7 +461,7 @@ export default function StateManagementStrategyArticle() {
           in React Router) and write URL state through the router&apos;s
           navigation API (<code>router.push(&apos;/page?sort=date&apos;)</code>).
           Components that need the current page call <code>searchParams.get(&apos;page&apos;)</code> directly — no intermediate store is involved.
-        </p>
+        </HighlightBlock>
         <p>
           URL state serialization requires careful design because URLs only
           support string values. Complex state (arrays, objects, nested filters)
@@ -470,7 +495,10 @@ export default function StateManagementStrategyArticle() {
 
       <section>
         <h2>Form State Management Patterns</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Form state management is distinct from general application state
           because forms have unique requirements: real-time validation, dirty
           tracking (has the user modified this field?), touched tracking (has
@@ -484,8 +512,8 @@ export default function StateManagementStrategyArticle() {
           registration, validation rules, and error state internally, exposing
           only the values the component needs through the <code>formState</code>{" "}
           object.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Validation strategies in React Hook Form support multiple approaches.
           HTML5 constraint validation (required, minLength, pattern, max) is
           the simplest and works without JavaScript, but provides limited
@@ -500,7 +528,7 @@ export default function StateManagementStrategyArticle() {
           object. The recommended pattern is schema-based validation with Zod
           because the schema can be shared between the frontend form and the
           backend API handler, ensuring consistent validation on both sides.
-        </p>
+        </HighlightBlock>
         <p>
           Form submission architecture involves coordinating form state,
           validation, server communication, and error handling. The submission
@@ -535,7 +563,10 @@ export default function StateManagementStrategyArticle() {
 
       <section>
         <h2>Performance Optimization</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Selector memoization is the single most impactful state management
           performance optimization. When a component subscri to a store slice
           using a selector function, the store calls the selector on every state
@@ -551,8 +582,8 @@ export default function StateManagementStrategyArticle() {
           <code>shallow</code> equality function from zustand/shallow provides
           shallow comparison of objects and arrays, preventing re-renders when
           the selected value has the same content.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Batch updates reduce the number of re-renders when multiple state
           changes occur in quick succession. React 18 automatically batches
           state updates within event handlers and lifecycle methods, but updates
@@ -567,7 +598,7 @@ export default function StateManagementStrategyArticle() {
           <code>ReactDOM.flushSync</code> can force synchronous batching, and
           React 18&apos;s <code>startTransition</code> can mark state updates
           as non-urgent, allowing React to batch them with other pending updates.
-        </p>
+        </HighlightBlock>
         <p>
           Store write optimization ensures that state updates only change the
           values that actually differ from the current values. When a Zustand
@@ -604,7 +635,10 @@ export default function StateManagementStrategyArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Start with the simplest state management that works. Use useState for
           component-local state, lift state only when multiple components need
           it, use Context for low-frequency shared state (theme, locale, auth
@@ -612,8 +646,8 @@ export default function StateManagementStrategyArticle() {
           become cumbersome. Resist the urge to put everything in global state
           — most state is local to a component or a small subtree, and
           colocation makes the data flow easier to understand and debug.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Separate server state from client state. Use React Query or SWR for
           all API data — it handles caching, deduplication, background refetch,
           pagination, and optimistic updates automatically. Do not put API
@@ -622,7 +656,7 @@ export default function StateManagementStrategyArticle() {
           shared across distant components (UI state, user preferences, feature
           flags). Keep the two layers independent — server state invalidation
           triggers refetch, client state changes trigger immediate re-renders.
-        </p>
+        </HighlightBlock>
         <p>
           Normalize state to prevent duplication. Store entities by ID in a flat
           structure (users indexed by ID) rather than nested arrays. This ensures each entity exists in
@@ -635,7 +669,10 @@ export default function StateManagementStrategyArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Premature global state is the most common state management mistake.
           Developers often reach for Redux or Zustand before confirming that
           state actually needs to be global. The fix is to start with local
@@ -644,8 +681,8 @@ export default function StateManagementStrategyArticle() {
           or when state needs to persist across route navigations. Most state
           does not need to be global, and premature globalization adds
           unnecessary complexity and re-render overhead.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Duplicating URL state in a store is a common architectural error. The
           URL is already a global state mechanism — query parameters and route
           params are accessible anywhere in the component tree through the
@@ -655,7 +692,7 @@ export default function StateManagementStrategyArticle() {
           URL state directly through the router&apos;s API (useSearchParams in
           React Router, useSearchParams in Next.js) and treat the URL as the
           single source of truth for navigation state.
-        </p>
+        </HighlightBlock>
         <p>
           Storing derived state instead of computing it on demand adds
           unnecessary complexity and synchronization bugs. If a value can be
@@ -672,7 +709,10 @@ export default function StateManagementStrategyArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enterprise dashboards use a layered state management approach. Server
           state (dashboard widget data, user permissions, notification counts)
           is managed by React Query with configured stale times based on data
@@ -683,8 +723,8 @@ export default function StateManagementStrategyArticle() {
           refresh. URL state (dashboard ID, date range, widget layout) is
           managed by React Router search params, enabling shareable dashboard
           URLs with specific configurations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce applications use React Query for product data (catalog,
           details, reviews) with aggressive caching for product listings (stale
           time 5 minutes) and shorter caching for prices and inventory (stale
@@ -694,7 +734,7 @@ export default function StateManagementStrategyArticle() {
           order summary) uses React Hook Form with multi-step validation. User
           authentication state is managed by Context (simple, low-frequency
           updates) with the token stored in HttpOnly cookies.
-        </p>
+        </HighlightBlock>
         <p>
           Collaborative editing applications (Google Docs, Figma clones) use
           CRDTs (Yjs, Automerge) for the document state — this is a specialized
@@ -710,12 +750,15 @@ export default function StateManagementStrategyArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you decide between Context, Redux, and Zustand?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Start simple — Context for low-frequency shared state (theme,
               auth, locale). Zustand for medium complexity with minimal
               boilerplate. Redux for complex apps needing time-travel debugging,
@@ -724,7 +767,7 @@ export default function StateManagementStrategyArticle() {
               Most apps benefit from React Query for server data, Zustand for
               client state, and Context for theme/locale. Avoid premature
               globalization — start with local state and lift only when needed.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

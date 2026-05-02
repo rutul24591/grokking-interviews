@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,7 +35,10 @@ export default function AccessibilityArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Web Accessibility (a11y)</strong> ensures that websites and
           web applications are usable by people with disabilities, including
           visual, auditory, motor, and cognitive impairments. Accessibility is
@@ -44,8 +48,8 @@ export default function AccessibilityArticle() {
           EN 301 549 in the European Union. Non-compliance carries real legal
           and financial risk, with thousands of digital accessibility lawsuits
           filed annually in the US alone.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The business case for accessibility extends beyond compliance.
           Approximately 16% of the global population — over 1.3 billion people
           — experience significant disability. When including temporary
@@ -55,7 +59,7 @@ export default function AccessibilityArticle() {
           improvements benefit everyone: captioning helps users in loud
           environments, high contrast helps users on mobile screens outdoors,
           and keyboard shortcuts power users who prefer efficiency.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, accessibility is a quality attribute
           on par with performance and security. It requires intentional
@@ -131,7 +135,10 @@ export default function AccessibilityArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of web accessibility rests on the Web Content
           Accessibility Guidelines (WCAG), developed by the World Wide Web
           Consortium (W3C). WCAG is organized around four principles, commonly
@@ -139,8 +146,8 @@ export default function AccessibilityArticle() {
           Robust. Each principle contains guidelines, and each guideline has
           testable success criteria at three conformance levels — A (minimum),
           AA (standard target for most organizations), and AAA (highest level).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Perceivable</strong> principle ensures that users can
           detect and consume content through at least one sense. This means
           providing text alternatives for non-text content (alt text for
@@ -154,7 +161,7 @@ export default function AccessibilityArticle() {
           mechanisms. Finally, the <strong>Robust</strong> principle ensures
           that content works with current and future assistive technologies,
           requiring valid, semantic HTML and proper ARIA implementation.
-        </p>
+        </HighlightBlock>
         <p>
           Most organizations target WCAG 2.1 or 2.2 Level AA as their standard.
           Level AAA, while ideal, is not always achievable for all content — for
@@ -285,7 +292,10 @@ export default function AccessibilityArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An accessible web application requires coordination across multiple
           layers of the technology stack. At the foundation is semantic HTML —
           using the correct HTML element for its intended purpose. Screen readers
@@ -296,8 +306,8 @@ export default function AccessibilityArticle() {
           &quot;Button, clickable&quot;, and heading elements
           (<code>&lt;h1&gt;</code> through <code>&lt;h6&gt;</code>) create a
           document outline that users can navigate hierarchically.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           When native HTML semantics are insufficient, ARIA (Accessible Rich
           Internet Applications) provides additional roles, states, and
           properties. The first rule of ARIA is to avoid it when native HTML
@@ -309,7 +319,7 @@ export default function AccessibilityArticle() {
           <code>aria-describedby</code> to associate error messages with form
           fields, and <code>aria-live</code> regions to announce dynamic content
           changes to screen readers.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/semantic-html.svg"
@@ -413,7 +423,10 @@ export default function AccessibilityArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Building accessible applications involves several architectural
           trade-offs that staff engineers must navigate. Custom UI components
           offer pixel-perfect design control and brand consistency but require
@@ -424,8 +437,8 @@ export default function AccessibilityArticle() {
           proper screen reader announcements. The alternative — using native
           <code>&lt;select&gt;</code> elements — sacrifices design control but
           guarantees accessibility with zero implementation cost.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Automated accessibility testing tools — such as axe-core, Lighthouse,
           and WAVE — are essential for CI/CD integration and regression
           prevention but catch only approximately 30% of accessibility issues.
@@ -436,7 +449,7 @@ export default function AccessibilityArticle() {
           requires manual keyboard testing, screen reader testing with tools
           like NVDA, VoiceOver, and JAWS, and — ideally — user testing with
           people who use assistive technologies daily.
-        </p>
+        </HighlightBlock>
         <p>
           The investment decision presents another trade-off. Building
           accessibility from the ground up costs approximately 1-3% of total
@@ -517,15 +530,18 @@ export default function AccessibilityArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Integrate accessibility linting into the development workflow from day
           one. Tools like <code>eslint-plugin-jsx-a11y</code> catch common
           issues at edit time — missing alt text, invalid ARIA attributes,
           interactive elements without keyboard handlers, and click handlers on
           non-interactive elements. Configure the plugin with the recommended
           preset and treat violations as build-breaking errors in CI.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Adopt a component-level accessibility testing strategy. Every
           component should be tested with axe-core (via jest-axe or
           cypress-axe), keyboard-only navigation, and at least one screen
@@ -535,7 +551,7 @@ export default function AccessibilityArticle() {
           manual QA: verify heading hierarchy with a heading-mapping tool, test
           all interactive paths with keyboard-only navigation, and validate
           screen reader announcements for dynamic content changes.
-        </p>
+        </HighlightBlock>
         <p>
           Design with accessibility in mind from the start. Ensure color
           contrast ratios meet WCAG AA requirements (4.5:1 for normal text,
@@ -617,7 +633,10 @@ export default function AccessibilityArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most pervasive pitfall is using generic container elements
           (<code>&lt;div&gt;</code>, <code>&lt;span&gt;</code>) for interactive
           components. A div with an onClick handler is not
@@ -627,8 +646,8 @@ export default function AccessibilityArticle() {
           <code>&lt;a href="..."&gt;</code> for navigation. When custom elements
           are unavoidable, implement <code>tabIndex="0"</code>,
           appropriate ARIA roles, and keyboard event handlers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common error is skipping heading levels — going from
           <code>&lt;h1&gt;</code> directly to <code>&lt;h4&gt;</code> — which
           confuses screen reader users who rely on heading hierarchy for
@@ -636,7 +655,7 @@ export default function AccessibilityArticle() {
           meaningless alt text like &quot;image&quot; or the filename, provides
           no value to screen reader users. Decorative images should have
           <code>alt=""</code> (empty alt) to be skipped entirely.
-        </p>
+        </HighlightBlock>
         <p>
           Misusing ARIA is a widespread problem. Adding
           <code>role="button"</code> to a <code>&lt;div&gt;</code>
@@ -697,7 +716,10 @@ export default function AccessibilityArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms face significant accessibility challenges during
           checkout flows. Multi-step forms must be navigable by keyboard, with
           clear error messages associated to each field via
@@ -707,8 +729,8 @@ export default function AccessibilityArticle() {
           workflow. Companies like Target settled accessibility lawsuits for $6
           million after their website was found inaccessible to blind users — a
           landmark case that established web accessibility as a civil right.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Financial services applications handle sensitive data and complex
           workflows that demand rigorous accessibility. Trading dashboards with
           real-time data updates must use <code>aria-live</code> regions to
@@ -717,7 +739,7 @@ export default function AccessibilityArticle() {
           label association, error handling, and keyboard navigation. Regulatory
           frameworks like Section 508 mandate accessibility for any application
           used by US federal agencies or their contractors.
-        </p>
+        </HighlightBlock>
         <p>
           Government and public-sector websites serve the broadest possible
           audience and are legally required to meet accessibility standards. The
@@ -783,12 +805,15 @@ export default function AccessibilityArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between accessibility and usability?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Accessibility ensures that people with disabilities can perceive,
               understand, navigate, and interact with a web application. Usability
               ensures that the application is efficient, effective, and satisfying
@@ -798,7 +823,7 @@ export default function AccessibilityArticle() {
               reader-accessible page with poor information architecture is
               accessible but not usable. In interviews, frame accessibility as a
               foundational quality attribute, not an optional enhancement.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

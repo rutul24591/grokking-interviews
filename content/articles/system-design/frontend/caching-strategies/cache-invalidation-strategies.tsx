@@ -196,7 +196,6 @@ export default function CacheInvalidationStrategiesConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/caching-strategies/ttl-vs-event.svg"
           alt="TTL vs Event-Driven Invalidation Timeline"
           caption="Timeline comparison: TTL-based invalidation has a staleness window between data change and cache expiry, while event-driven achieves near-instant freshness"
-          captionTier="important"
         />
 
         <h3>Multi-Layer Invalidation Propagation</h3>
@@ -219,7 +218,6 @@ export default function CacheInvalidationStrategiesConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/caching-strategies/cache-consistency.svg"
           alt="Multi-Layer Cache Consistency Challenges"
           caption="Cache invalidation must propagate through Browser, CDN Edge, and Origin layers — race conditions and ordering issues can cause inconsistency"
-          captionTier="important"
         />
 
         <p>
@@ -548,27 +546,31 @@ export default function CacheInvalidationStrategiesConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: invalidation is where caching systems fail. Use these to anchor on HTTP caching semantics,
+          CDN purge primitives (keys/tags), and client-cache invalidation workflows after writes.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN Web Docs - HTTP Caching
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://web.dev/articles/http-cache" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev - Prevent unnecessary network requests with the HTTP Cache
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://docs.fastly.com/en/guides/purging" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Fastly Documentation - Purging (Surrogate Keys & Tag-Based Invalidation)
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://tanstack.com/query/latest/docs/framework/react/guides/invalidations-from-mutations" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               TanStack Query - Invalidations from Mutations
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://datatracker.ietf.org/doc/html/rfc9111" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               RFC 9111 - HTTP Caching (IETF Standard)

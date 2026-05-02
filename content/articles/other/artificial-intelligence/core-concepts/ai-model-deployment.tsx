@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>AI model deployment</strong> encompasses the practices,
           infrastructure, and processes for serving AI models in production.
           Unlike deploying traditional software (stateless web servers, batch
@@ -34,8 +38,8 @@ export default function ArticlePage() {
           variable latency (depends on input length and output length), and the
           need for rapid rollback when a new model version produces degraded
           quality.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental deployment decision is <strong>hosted API versus
           self-managed serving</strong>. Hosted APIs (OpenAI, Anthropic)
           eliminate the need for GPU infrastructure and serving expertise — you
@@ -43,7 +47,7 @@ export default function ArticlePage() {
           serving (vLLM, TGI, Triton) gives full control over model
           configuration, scaling, optimization, and cost, but requires GPU
           infrastructure, serving expertise, and ongoing operational effort.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, AI model deployment is a critical
           operational concern that affects system reliability, cost, latency,
@@ -80,7 +84,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Model serving patterns</strong> define how models are
           deployed and accessed. <strong>Real-time serving</strong> handles
           individual requests with low latency (sub-second to few seconds),
@@ -91,8 +98,8 @@ export default function ArticlePage() {
           deploys compressed models on edge devices or CDN nodes, reducing
           latency and keeping data on-premise, suitable for privacy-sensitive
           or latency-critical applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>GPU memory management for model serving</strong> is one of
           the most critical engineering challenges when deploying large models.
           When a model exceeds the memory capacity of a single GPU, it must be
@@ -118,7 +125,7 @@ export default function ArticlePage() {
           communication adds overhead to each forward pass, and the optimal
           configuration depends on the model architecture, GPU interconnect
           topology, and the specific memory requirements of the workload.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/gpu-memory-allocation.svg"
@@ -235,7 +242,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production model serving architecture consists of several layers.
           The <strong>gateway layer</strong> handles request routing, load
           balancing, authentication, and rate limiting. The{" "}
@@ -245,7 +255,7 @@ export default function ArticlePage() {
           other serving optimizations. The <strong>monitoring layer</strong>{" "}
           tracks latency, throughput, GPU utilization, error rates, and quality
           metrics for every served request.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/canary-deployment-models.svg"
@@ -253,7 +263,7 @@ export default function ArticlePage() {
           caption="Canary deployment — 5% traffic to new model, monitor quality metrics, gradually increase to 100% if quality is maintained"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>model update pipeline</strong> automates the process of
           deploying a new model version. It starts with model validation
           (checking the model file integrity, compatibility with serving
@@ -264,7 +274,7 @@ export default function ArticlePage() {
           followed by canary deployment (routing a small percentage of traffic
           to the new model), and finally full deployment (switching all traffic
           to the new model).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Rollback procedures</strong> must be automated and immediate.
           When quality monitoring detects a regression (output quality drops
@@ -334,7 +344,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Hosted API versus self-managed serving</strong> is the
           fundamental deployment decision. Hosted APIs offer zero operational
           overhead, automatic scaling, and built-in optimizations, but come
@@ -343,15 +356,15 @@ export default function ArticlePage() {
           control, predictable costs (infrastructure amortization), data
           privacy, and custom optimization, but requires GPU infrastructure,
           serving expertise, and ongoing operational effort.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>GPU versus CPU serving</strong> involves a cost-versus-latency
           trade-off. GPU serving provides the lowest latency and highest
           throughput but requires expensive GPU hardware. CPU serving is
           significantly cheaper but 10-50x slower, making it suitable only for
           small models (under 7B parameters) with relaxed latency requirements.
           For most production LLM serving, GPU is essential.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Cold start versus warm pool serving</strong> represents a
           fundamental trade-off between cost efficiency and latency performance.
@@ -418,14 +431,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement automated quality gates before deployment</strong>{" "}
           — every new model version must pass the golden dataset evaluation
           before it is deployed. If the new model&apos;s quality score is below
           the current model&apos;s score, block the deployment and alert the
           team. This prevents quality regressions from reaching production.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use canary deployment for all model changes</strong> — never
           switch 100% of traffic to a new model version without first testing
           it on a small percentage of traffic. Start with 5%, monitor quality
@@ -433,7 +449,7 @@ export default function ArticlePage() {
           applications), and gradually increase traffic if metrics are stable.
           This catches quality issues that were not detected by offline
           evaluation.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Keep the previous model loaded for instant rollback</strong>{" "}
           — when deploying a new model version, do not unload the previous
@@ -523,7 +539,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>deploying without quality
           evaluation</strong> — deploying a new model version based solely on
           the provider&apos;s claims without testing it against your specific
@@ -531,8 +550,8 @@ export default function ArticlePage() {
           scores higher on general benchmarks may perform worse on your specific
           use case. Always evaluate the new model against your golden dataset
           before deployment.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Not accounting for KV cache memory</strong> — when planning
           GPU capacity, many teams account only for model weights but forget
           the KV cache, which can consume as much or more memory than the model
@@ -552,7 +571,7 @@ export default function ArticlePage() {
           Paged attention helps by eliminating fragmentation, but it does not
           reduce the total memory needed — it only ensures that available
           memory is used efficiently.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Slow rollback procedures</strong> — if rolling back to the
           previous model requires unloading the new model and loading the
@@ -626,7 +645,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Continuous model improvement pipeline</strong> — an AI
           platform that automatically evaluates new model versions against the
           golden dataset, deploys passing models as canaries, monitors quality
@@ -634,15 +656,15 @@ export default function ArticlePage() {
           This pipeline enables the team to deploy model improvements weekly
           rather than monthly, with confidence that each deployment maintains
           or improves quality.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Multi-model serving platform</strong> — a shared serving
           infrastructure that hosts multiple model versions simultaneously,
           routing traffic based on feature flags, user segments, or quality
           scores. This enables A/B testing different models, serving different
           models to different customers based on their SLA tier, and rapid
           failover between models when one experiences issues.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Global conversational AI serving at scale</strong> — a
           customer service platform deploying a 70B parameter LLM across four
@@ -690,12 +712,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: How do you deploy a new model version with zero downtime?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Zero-downtime model deployment uses canary deployment or blue-green
             deployment. With canary deployment, the new model is deployed
             alongside the current model, and a small percentage of traffic
@@ -704,14 +729,14 @@ export default function ArticlePage() {
             increased (5% → 25% → 50% → 100%). The current model remains
             loaded throughout the process, enabling instant rollback by
             switching traffic back.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             With blue-green deployment, two identical serving environments are
             maintained. The new model is deployed to the idle environment,
             tested, and then all traffic is switched at once. This is faster
             than canary but riskier — if the new model has issues, all users
             are affected simultaneously.
-          </p>
+          </HighlightBlock>
           <p>
             Key requirements for zero-downtime deployment: the serving
             infrastructure must support loading multiple models simultaneously,

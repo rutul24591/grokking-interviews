@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,12 +28,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Hexagonal architecture</strong>, also known as <strong>ports and adapters</strong>, is an architectural pattern that organizes an application around a stable, isolated core of business logic surrounded by a set of adapters that connect the core to the external world. The term &quot;hexagonal&quot; is a visual metaphor introduced by Alistair Cockburn in 2005: the application is represented as a hexagon with multiple sides, where each side represents a possible entry point or exit point. In reality, the number of sides is not fixed at six; the shape simply communicates that the system has multiple interfaces and multiple external dependencies, all mediated through well-defined contracts.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental design goal of hexagonal architecture is <strong>dependency control</strong>. The business core should not depend on any specific database technology, web framework, message broker, or external service. Instead, the core defines <strong>ports</strong>, which are interfaces that describe what the core needs from the outside world and what it offers to callers. <strong>Adapters</strong> are concrete implementations of those ports, written in terms of specific technologies like PostgreSQL, Kafka, REST APIs, or command-line interfaces. The dependency rule is strict: adapters depend on ports, and ports live inside the core. The core never depends on an adapter.
-        </p>
+        </HighlightBlock>
         <p>
           This architectural style emerged as a response to the limitations of traditional layered architecture. In layered systems, the business logic layer typically imports directly from the data access layer, creating tight coupling between domain rules and infrastructure concerns. When the database changes, or when a second transport protocol is needed, the business logic layer often requires modification. Hexagonal architecture eliminates this problem by inverting the dependency direction through interfaces that the core itself defines. This is a direct application of the Dependency Inversion Principle from SOLID, elevated from a class-level guideline to a system-level architectural rule.
         </p>
@@ -55,14 +59,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Ports as Contracts</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A port is an interface that defines a contract between the domain core and the outside world. Ports come in two varieties, and understanding the distinction is fundamental to applying the pattern correctly. <strong>Input ports</strong> (also called primary or driving ports) define how external actors can invoke use cases within the core. An input port describes what operations the core can perform, expressed entirely in domain language. For example, an input port for an order processing system might define a method called <code>placeOrder</code> that accepts a domain request object containing customer information, product selections, and payment details. The input port does not mention HTTP, JSON, or any transport mechanism; those concerns belong in the adapter that calls the port.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Output ports</strong> (also called secondary or driven ports) define what external services the core needs to accomplish its work. An output port describes the data the core needs to persist, the external systems it needs to call, or the events it needs to publish, again expressed in domain language. For example, an output port might define a method called <code>saveOrder</code> that accepts a domain order object and returns a persistence result. The core does not know whether the implementation writes to PostgreSQL, MongoDB, or an in-memory store for testing. The adapter implementing the output port handles all technology-specific concerns like connection pooling, query construction, and error translation.
-        </p>
+        </HighlightBlock>
         <p>
           The quality of a hexagonal architecture is determined almost entirely by the quality of its port contracts. A well-designed port expresses intent in domain terms and hides all infrastructure quirks. If a port speaks in database table rows, HTTP status codes, or provider-specific error messages, the boundary is already compromised. The core would then be indirectly coupled to infrastructure concerns, which defeats the entire purpose of the pattern. Ports should define stable, coarse-grained operations that are unlikely to change when technology changes. Fine-grained ports that mirror individual database operations or API endpoints create unnecessary indirection without providing real flexibility.
         </p>
@@ -101,14 +108,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Request Flow Through the Hexagon</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding the flow of a request through a hexagonal application is essential for both implementation and debugging. When an external actor initiates an operation, the request first arrives at a driving adapter. The driving adapter&apos;s responsibility is to handle all transport-specific concerns: parsing the incoming format, validating the request structure, authenticating the caller, and extracting the relevant data. For an HTTP request, this means deserializing the JSON body, checking authorization headers, and validating required fields. For a message queue event, this means deserializing the message payload, verifying the message schema version, and acknowledging receipt.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Once the driving adapter has extracted the relevant data, it constructs a domain request object and calls the appropriate input port on the core. The input port is an interface defined by the core, so the adapter depends on the core, not the other way around. The core&apos;s use case orchestrator receives the request, loads any necessary data through output ports, executes business rules on domain entities, performs state transitions, and determines the outcome. During this process, the core may call multiple output ports: perhaps loading a customer record, checking inventory, reserving stock, and creating an order. All of these interactions happen through interfaces defined by the core, and the core has no knowledge of which concrete adapters are fulfilling those contracts.
-        </p>
+        </HighlightBlock>
         <p>
           After the core completes the use case, it returns a domain result to the driving adapter. The adapter then translates this result into a transport-specific response. For HTTP, this means setting the appropriate status code, serializing the response body, and adding relevant headers. For a message-driven flow, this means publishing a result event or sending an acknowledgment. The key invariant throughout this flow is that the core never reaches outward; it only responds to calls from driving adapters and only initiates calls to driven adapters through its own port interfaces.
         </p>
@@ -141,14 +151,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>Hexagonal vs Layered Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Layered architecture is the most common organizational pattern for enterprise applications. It structures code into horizontal layers: presentation layer, business logic layer, and data access layer. Each layer depends on the layer below it, and the presentation layer ultimately has a transitive dependency on every layer beneath it. This structure is simple to understand and works well for small applications with a single interface and a single database. The primary limitation of layered architecture is that the business logic layer is directly coupled to the data access layer and often to framework-specific abstractions. When a second interface is needed, such as a message-driven API alongside a REST API, the business logic layer is typically invoked from both entry points but remains coupled to the original data access implementation. Testing requires either a running database or complex mocking of repository implementations that leak data access concerns into business logic tests.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Hexagonal architecture addresses these limitations by inverting the dependency direction and introducing port interfaces at the boundary. The business core depends on nothing external; instead, adapters depend on the core. Adding a second interface means writing a new driving adapter that calls the same input port; no business logic duplication is required. Testing the core requires no database because output ports are replaced with fakes. The trade-off is that hexagonal architecture introduces additional indirection through port interfaces and adapter classes, which increases the total number of files and requires developers to understand the dependency inversion pattern. For simple CRUD applications with no anticipated interface changes, this overhead may not be justified.
-        </p>
+        </HighlightBlock>
 
         <h3>Hexagonal vs Clean Architecture</h3>
         <p>
@@ -181,14 +194,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Define Ports at the Right Granularity</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Port granularity is one of the most consequential design decisions in a hexagonal system. Ports that are too coarse become leaky abstractions that expose infrastructure details to the core. A single generic persistence port that accepts arbitrary SQL queries provides no real isolation because the core must still understand database semantics. Ports that are too fine-grained create excessive boilerplate and make the system difficult to navigate. An output port for every individual database table operation generates dozens of interfaces that obscure the actual business workflow.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The right granularity aligns with business use cases. An output port should represent a coherent capability that the core needs from the outside world, such as persisting aggregate roots, publishing domain events, or calling an external payment service. Each port should have a clear, single responsibility expressed in domain language. The number of ports in a well-designed system typically correlates with the number of distinct external capabilities the system requires, not with the number of database tables or API endpoints.
-        </p>
+        </HighlightBlock>
 
         <h3>Keep Port Contracts in Domain Language</h3>
         <p>
@@ -220,14 +236,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Leaky Port Abstractions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common failure mode in hexagonal architecture is port leakage, where infrastructure details seep through port interfaces into the domain core. This happens when port methods accept or return infrastructure-specific types like database entities, HTTP response objects, or provider SDK structures. The core then becomes indirectly coupled to those technologies, and the supposed isolation is reduced to paperwork. Leaky ports often arise gradually: a developer adds a convenience field to a port response to avoid an extra adapter method, or passes a database entity through a port because &quot;it already has all the fields we need.&quot; Each individual change seems harmless, but the cumulative effect is a core that knows about infrastructure concerns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The mitigation strategy is disciplined port contract review. Every port method should be evaluated by asking whether the core would need to change if the underlying technology changed. If the port returns a database connection handle, the core is coupled to that database. If the port accepts a provider-specific configuration object, the core is coupled to that provider. Port contracts should use domain entities, value objects, and result types that have no technology-specific dependencies.
-        </p>
+        </HighlightBlock>
 
         <h3>Adapter Sprawl</h3>
         <p>
@@ -259,14 +278,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Payment Processing Platform with Multiple Gateways</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A fintech company processes payments through multiple payment gateways including Stripe, PayPal, and a regional bank&apos;s proprietary API. Each gateway has different request formats, response structures, error codes, and reliability characteristics. The core payment processing workflow, including fraud detection, transaction logging, and settlement logic, must remain consistent regardless of which gateway processes the transaction.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The hexagonal architecture enables this by defining an output port for payment processing that accepts a domain PaymentRequest and returns a PaymentResult. Each gateway has its own adapter implementing this port, handling the gateway-specific serialization, authentication, error translation, and retry logic. The core workflow calls the payment output port without knowing which gateway is active. Adding a new gateway means writing a new adapter without touching the core logic. During testing, a fake payment adapter returns predetermined outcomes, enabling comprehensive testing of fraud detection and settlement workflows without making real payment calls.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce Platform with Multiple Sales Channels</h3>
         <p>
@@ -298,14 +320,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is hexagonal architecture and how do ports and adapters work?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Hexagonal architecture, also known as ports and adapters, organizes an application around a stable domain core isolated from external dependencies. The core defines port interfaces that describe what it needs from the outside world (output ports) and what it offers to callers (input ports). Adapters are concrete implementations of these ports that connect to specific technologies like databases, external APIs, message queues, or HTTP endpoints.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               The critical rule is dependency direction: adapters depend on ports, and the core depends on nothing external. This means the domain logic can be tested in complete isolation by substituting fake adapters for real ones, and technology changes only require adapter replacements without modifying the core. Driving adapters (inbound) handle incoming requests from HTTP, messaging, or CLI interfaces. Driven adapters (outbound) handle outgoing calls to databases, external services, and infrastructure.
             </p>

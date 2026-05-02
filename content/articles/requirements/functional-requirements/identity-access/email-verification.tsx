@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -32,13 +33,16 @@ export default function EmailVerificationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Email Verification</strong> is the process of confirming that a user owns and has
           access to the email address they provided during signup. It is a critical security
           measure that prevents fake accounts, enables password recovery, and ensures a reliable
           communication channel. Unlike phone verification, email verification is typically free
           (no SMS costs) and has higher user acceptance — most users expect to verify their email.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/email-verification-flow.svg"
@@ -46,7 +50,7 @@ export default function EmailVerificationArticle() {
           caption="Email Verification Flow — showing token generation, email delivery, verification, and account activation"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing email verification requires deep
           understanding of token generation (cryptographically secure, hash storage), secure
           delivery (email authentication, deliverability optimization), verification flows
@@ -54,7 +58,7 @@ export default function EmailVerificationArticle() {
           reminders), and balancing security with user experience. The implementation must handle
           edge cases (typos, disposable emails, delayed delivery, bounces) while preventing abuse
           (email bombing, account enumeration, token guessing).
-        </p>
+        </HighlightBlock>
         <p>
           Modern email verification has evolved from simple token links to multi-channel
           verification (email + code, magic links). Organizations like SendGrid, AWS SES, and
@@ -67,18 +71,21 @@ export default function EmailVerificationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Email verification is built on fundamental concepts that determine how tokens are
           generated, delivered, and verified. Understanding these concepts is essential for
           designing effective email verification systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Token Generation:</strong> Cryptographically random token (256-bit / 32 bytes)
           generated using crypto.randomBytes(). Store bcrypt hash in database (not plaintext) —
           prevents token exposure in database breach. Associate token with user_id and email. Set
           long expiry (24-72 hours) to accommodate delayed email delivery. Single use — token
           invalidates after verification (delete or mark used).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Email Delivery:</strong> Verification email contains HTTPS link with token
           (one-click verification) or 6-digit code (copy-paste). Email template should be branded,
@@ -103,12 +110,15 @@ export default function EmailVerificationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Email verification architecture separates token management from email delivery, enabling
           flexible verification flows (link-based, code-based) with centralized token management.
           This architecture is critical for handling edge cases (bounces, expired tokens) and
           optimizing deliverability.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/email-verification-security.svg"
@@ -116,7 +126,7 @@ export default function EmailVerificationArticle() {
           caption="Security Measures — showing token hashing, rate limiting, email bombing prevention, and enumeration protection"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Email verification flow: User signs up with email. Backend validates email format
           (libphonenumber or regex), checks for existing account (don't reveal if exists — prevent
           enumeration), generates token (crypto.randomBytes(32)), stores bcrypt hash with expiry
@@ -124,7 +134,7 @@ export default function EmailVerificationArticle() {
           email, clicks verification link (or enters code). Backend validates token (constant-time
           comparison), checks expiry, marks email_verified = true, records verification timestamp,
           invalidates token, redirects to login or dashboard with success message.
-        </p>
+        </HighlightBlock>
         <p>
           Security architecture includes: token hashing (bcrypt, not plaintext), rate limiting
           (prevent email bombing — 3/hour per user, 10/hour per IP), enumeration protection (don't
@@ -151,23 +161,26 @@ export default function EmailVerificationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing email verification involves trade-offs between security, user experience, and
           deliverability. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Link-Based vs Code-Based Verification</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Link-Based:</strong> One-click verification, best UX, most common.
               Limitation: requires email client to render HTML, some email clients block links.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Code-Based:</strong> 6-digit code to copy-paste, works in all email clients.
               Limitation: more friction (switch tabs, copy, paste).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Hybrid:</strong> Include both link and code in email. Best of both —
               one-click for most users, code as fallback. Used by most production systems.
@@ -214,19 +227,22 @@ export default function EmailVerificationArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing email verification requires following established best practices to ensure
           security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use cryptographically secure tokens (256-bit) — crypto.randomBytes(32), not
           Math.random(). Store token hashes, not plaintext — bcrypt hash of token, prevents token
           exposure in database breach. Set appropriate token expiry (24-72 hours) — balances
           security and usability. Rate limit verification emails — 3/hour per user, 10/hour per IP,
           prevent email bombing. Invalidate tokens after use — prevent reuse.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
         <p>
@@ -259,20 +275,23 @@ export default function EmailVerificationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing email verification to ensure secure,
           usable, and maintainable verification systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Short token expiry:</strong> Tokens expire before user clicks link,
             frustration. <strong>Fix:</strong> Set 24-72 hour expiry. Allow regeneration.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Storing plaintext tokens:</strong> Database breach exposes all tokens,
             attackers can verify any email. <strong>Fix:</strong> Store bcrypt hash of token, not
             plaintext.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No rate limiting:</strong> Email bombing attacks possible, users spammed,
             reputation damage. <strong>Fix:</strong> Rate limit verification emails (3/hour per
@@ -312,16 +331,19 @@ export default function EmailVerificationArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Email verification is critical for security and fraud prevention. Here are real-world
           implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Platform (Shopify)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Fake emails for discount abuse. Order confirmation delivery.
           Marketing compliance (GDPR/CAN-SPAM). Password recovery requires verified email.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Email verification before first order. Order confirmation
           emails with tracking. Double opt-in for marketing (separate consent). Bounce handling
@@ -415,14 +437,17 @@ export default function EmailVerificationArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of email verification design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you generate and store verification tokens?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you generate and store verification tokens?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Generate 256-bit cryptographically secure random token using
               crypto.randomBytes(32) — not Math.random() (not cryptographically secure). Store

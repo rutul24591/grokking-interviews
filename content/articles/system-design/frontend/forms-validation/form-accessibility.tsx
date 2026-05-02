@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function FormAccessibilityArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Form accessibility</strong> ensures that forms are usable by
           everyone, including people with disabilities who rely on assistive
           technologies (screen readers, voice control, switch devices, screen
@@ -45,15 +49,15 @@ export default function FormAccessibilityArticle() {
           operable (users can operate form controls), understandable (users
           understand what to do), and robust (forms work with various assistive
           technologies).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Form accessibility isn&apos;t optional — it&apos;s a legal requirement
           in many jurisdictions (ADA compliance in the US, EAA in Europe) and
           ethical imperative. Beyond compliance, accessible forms benefit all
           users: clear labels help everyone understand what to enter, keyboard
           navigation helps power users, and good error messages help all users
           recover from mistakes.
-        </p>
+        </HighlightBlock>
         <p>
           Key accessibility concerns for forms include: proper labeling
           (every input needs an associated label), error identification and
@@ -66,8 +70,11 @@ export default function FormAccessibilityArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Labels:</strong> Every form input must have an associated
             label. Use the <code>label</code> element with a <code>for</code>{" "}
             attribute matching the input&apos;s <code>id</code>, or wrap the
@@ -76,8 +83,8 @@ export default function FormAccessibilityArticle() {
             <strong>not</strong> a substitute for labels — it disappears when
             users start typing and isn&apos;t reliably announced by screen
             readers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>ARIA Attributes:</strong> WAI-ARIA (Web Accessibility
             Initiative - Accessible Rich Internet Applications) attributes
             provide additional semantic information. Key ARIA attributes for
@@ -85,7 +92,7 @@ export default function FormAccessibilityArticle() {
             <code>aria-describedby</code> (links input to help text or error
             messages), <code>aria-required</code> (indicates required fields),{" "}
             <code>aria-live</code> (for dynamic announcements).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Focus Management:</strong> Keyboard users navigate forms
             using Tab/Shift+Tab. Focus order should follow visual order. When
@@ -122,12 +129,15 @@ export default function FormAccessibilityArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Accessible form architecture integrates accessibility at every layer:
           semantic HTML structure, proper labeling, ARIA attributes for dynamic
           states, focus management for keyboard navigation, and live regions
           for announcements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/forms-validation/form-accessibility/accessibility-architecture.svg"
@@ -138,13 +148,13 @@ export default function FormAccessibilityArticle() {
         />
 
         <h3>ARIA Attributes Reference</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           ARIA (Accessible Rich Internet Applications) attributes provide
           semantic information to assistive technologies. The key attributes
           for forms are aria-invalid (validation state), aria-describedby
           (linking to help text), aria-required (required fields), and
           aria-live (dynamic announcements).
-        </p>
+        </HighlightBlock>
 
         <h3>Error Handling Flow</h3>
         <p>
@@ -166,20 +176,23 @@ export default function FormAccessibilityArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Semantic HTML:</strong> Use proper HTML elements
             (<code>input</code>, <code>select</code>, <code>textarea</code>,{" "}
             <code>label</code>, <code>fieldset</code>, <code>legend</code>)
             rather than divs styled to look like form elements. Native elements
             have built-in accessibility.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Visible Labels:</strong> Always provide visible labels. If
             design requires hiding labels visually, use a &quot;sr-only&quot;
             class that hides visually but keeps labels available to screen
             readers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Describe Requirements:</strong> Indicate required fields
             with both visual markers (*) and text (&quot;Required&quot; or
@@ -206,20 +219,23 @@ export default function FormAccessibilityArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Accessibility implementation involves trade-offs between completeness,
           development time, and user experience. The goal is progressive
           enhancement — core functionality accessible to all, with enhanced
           experiences for those who can use them.
-        </p>
+        </HighlightBlock>
 
         <h3>Native HTML vs Custom Components</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Native HTML elements</strong> have built-in accessibility —
           labels, focus management, keyboard navigation, and screen reader
           support work out of the box. The trade-off is limited styling
           flexibility and potentially inconsistent appearance across browsers.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Custom components</strong> (divs styled as inputs, custom
           dropdowns) offer complete design control but require implementing all
@@ -261,23 +277,26 @@ export default function FormAccessibilityArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Government Services Portal</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Government forms (tax filing, benefit applications, license renewals)
           must meet strict accessibility standards (WCAG 2.1 AA in most
           jurisdictions, Section 508 in the US). These forms often serve users
           with diverse abilities including elderly users with declining vision,
           users with motor impairments, and users with cognitive disabilities.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Key implementation considerations: provide multiple ways to get help
           (tooltips, expandable help sections, phone support links), use plain
           language (avoid legal jargon where possible), allow saving progress
           and returning later, and provide alternative formats (printable PDF,
           phone submission option). Testing with actual users who have
           disabilities is essential — automated tools miss many usability issues.
-        </p>
+        </HighlightBlock>
 
         <h3>Healthcare Patient Portal</h3>
         <p>
@@ -332,16 +351,19 @@ export default function FormAccessibilityArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Placeholder as Label:</strong> Placeholders disappear when
             typing and aren&apos;t reliably announced. Always use proper labels.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Removing Focus Outlines:</strong> Don&apos;t remove CSS
             outline without providing an alternative focus indicator. Keyboard
             users need to see where focus is.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Color-Only Error Indication:</strong> Red borders alone
             don&apos;t work for colorblind users. Include icons and text
@@ -362,19 +384,22 @@ export default function FormAccessibilityArticle() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you make form validation errors accessible?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Accessible error handling requires multiple techniques: (1) Use
               aria-invalid=&quot;true&quot; on invalid fields, (2) Link error
               messages to fields with aria-describedby, (3) Use role=&quot;alert&quot;
               or aria-live=&quot;assertive&quot; for immediate announcement, (4) On
               submit, move focus to the first invalid field, (5) Provide an error
               summary at the top with links to each invalid field.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

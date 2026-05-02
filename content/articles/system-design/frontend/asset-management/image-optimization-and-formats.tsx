@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -42,22 +43,22 @@ export default function ImageOptimizationAndFormatsArticle() {
       {/* ── Section 1: Definition & Context ── */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Image optimization</strong> is the discipline of delivering
           the highest visual quality at the lowest byte cost, matched precisely
           to each user&apos;s device, viewport, and network conditions. Images
           typically account for 40-60% of a page&apos;s total weight, making
           them the single largest lever for frontend performance improvement.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At staff/principal level, image optimization is not just about
           shrinking files. It is an architectural concern that intersects build
           pipelines, CDN configuration, HTML semantics, runtime rendering
           behavior, and Core Web Vitals (specifically LCP, CLS, and INP). A
           poorly optimized image strategy can single-handedly tank Lighthouse
           scores, increase bounce rates, and inflate infrastructure costs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Modern image optimization requires understanding the full spectrum:
           choosing the right format per use case, encoding at the optimal quality
           level, serving responsive variants via <code>srcset</code> and{" "}
@@ -65,7 +66,7 @@ export default function ImageOptimizationAndFormatsArticle() {
           preventing Cumulative Layout Shift (CLS) with proper sizing, and
           leveraging image CDNs for on-demand transformation. This article
           covers each of these areas with production-grade depth.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">
@@ -85,25 +86,25 @@ export default function ImageOptimizationAndFormatsArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Lossy compression:</strong> Permanently discards visual data
             deemed imperceptible (JPEG, WebP lossy, AVIF). Quality parameter
             (q) controls the trade-off: q=80 JPEG is typically indistinguishable
             from the original for photographs. AVIF achieves comparable quality
             at q=50-65 due to superior perceptual encoding.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Lossless compression:</strong> Reduces file size without any
             data loss (PNG, WebP lossless, SVG with SVGO). Essential when pixel
             accuracy matters: screenshots, diagrams, text overlays, or images
             that will undergo further editing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Chroma subsampling (4:2:0):</strong> Exploits human vision&apos;s
             lower sensitivity to color detail versus luminance. JPEG and AVIF
             default to 4:2:0, halving chrominance resolution in both dimensions
             for ~50% compression gain with near-invisible quality loss on photographs.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Progressive rendering:</strong> Progressive JPEG transmits
             multiple passes of increasing quality, allowing the browser to
@@ -149,12 +150,12 @@ export default function ImageOptimizationAndFormatsArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Image Format Decision Tree
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Choosing the right format is the first and highest-impact optimization
           decision. The decision depends on content type (photograph vs. vector
           vs. transparency needs), browser support, and whether animation is
           required.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/image-optimization-and-formats-diagram-1.svg"
@@ -212,7 +213,7 @@ export default function ImageOptimizationAndFormatsArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Responsive Images Pipeline
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Responsive images ensure each device downloads only the pixels it
           needs. The HTML specification provides three mechanisms:{" "}
           <code>srcset</code> with width descriptors for resolution switching,{" "}
@@ -220,7 +221,7 @@ export default function ImageOptimizationAndFormatsArticle() {
           negotiation, and <code>&lt;picture&gt;</code> with{" "}
           <code>media</code> for art direction (serving entirely different
           crops per breakpoint).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/image-optimization-and-formats-diagram-2.svg"
@@ -231,14 +232,14 @@ export default function ImageOptimizationAndFormatsArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Image Optimization Build Pipeline
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A production image pipeline processes uploads through metadata
           stripping, resizing into multiple width variants, encoding into
           multiple formats, generating placeholders, and finally storing
           results in object storage behind a CDN. Understanding this pipeline
           is critical for architecting systems that handle user-generated
           content at scale.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/image-optimization-and-formats-diagram-3.svg"
@@ -284,11 +285,14 @@ export default function ImageOptimizationAndFormatsArticle() {
       {/* ── Section 4: Trade-offs & Comparisons ── */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
 
         <div className="my-6 overflow-x-auto">
           <table className="min-w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-theme">
+              <HighlightBlock as="tr" tier="important">
                 <th className="px-4 py-3 text-left font-semibold text-theme">Format</th>
                 <th className="px-4 py-3 text-left font-semibold text-theme">Compression</th>
                 <th className="px-4 py-3 text-left font-semibold text-theme">Transparency</th>
@@ -296,10 +300,10 @@ export default function ImageOptimizationAndFormatsArticle() {
                 <th className="px-4 py-3 text-left font-semibold text-theme">Browser Support</th>
                 <th className="px-4 py-3 text-left font-semibold text-theme">Encode Speed</th>
                 <th className="px-4 py-3 text-left font-semibold text-theme">Best For</th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody>
-              <tr className="border-b border-theme/30">
+              <HighlightBlock as="tr" tier="important">
                 <td className="px-4 py-3 font-medium">JPEG</td>
                 <td className="px-4 py-3">Lossy</td>
                 <td className="px-4 py-3">No</td>
@@ -307,8 +311,8 @@ export default function ImageOptimizationAndFormatsArticle() {
                 <td className="px-4 py-3">100%</td>
                 <td className="px-4 py-3">Fast</td>
                 <td className="px-4 py-3">Photos (fallback)</td>
-              </tr>
-              <tr className="border-b border-theme/30">
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="px-4 py-3 font-medium">PNG</td>
                 <td className="px-4 py-3">Lossless</td>
                 <td className="px-4 py-3">Yes (alpha)</td>
@@ -316,7 +320,7 @@ export default function ImageOptimizationAndFormatsArticle() {
                 <td className="px-4 py-3">100%</td>
                 <td className="px-4 py-3">Fast</td>
                 <td className="px-4 py-3">Screenshots, UI</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme/30">
                 <td className="px-4 py-3 font-medium">WebP</td>
                 <td className="px-4 py-3">Both</td>
@@ -395,26 +399,26 @@ export default function ImageOptimizationAndFormatsArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>1. Serve modern formats with fallback:</strong> Always use{" "}
             <code>&lt;picture&gt;</code> with AVIF source, WebP source, and JPEG{" "}
             <code>&lt;img&gt;</code> fallback. This single pattern typically
             saves 40-60% bandwidth versus JPEG-only.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>2. Always specify width and height:</strong> Every{" "}
             <code>&lt;img&gt;</code> must have explicit <code>width</code> and{" "}
             <code>height</code> attributes (or CSS <code>aspect-ratio</code>)
             to let the browser reserve layout space before the image loads. This
             is the primary CLS prevention mechanism.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>3. Prioritize the LCP image:</strong> The Largest Contentful
             Paint image must use <code>loading=&quot;eager&quot;</code>,{" "}
             <code>fetchpriority=&quot;high&quot;</code>, and ideally be
             discoverable via a <code>&lt;link rel=&quot;preload&quot;&gt;</code>{" "}
             with <code>imagesrcset</code>. Never lazy-load the LCP element.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>4. Generate 5-6 width breakpoints:</strong> Common set:
             400w, 640w, 800w, 1200w, 1600w, 2000w. More granularity has
@@ -451,26 +455,26 @@ export default function ImageOptimizationAndFormatsArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Lazy loading the LCP image:</strong> Applying{" "}
             <code>loading=&quot;lazy&quot;</code> to the hero image delays LCP
             because the browser won&apos;t start the request until the image
             enters the viewport threshold. Always audit which image is the LCP
             element and mark it eager.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing <code>sizes</code> attribute:</strong> Without{" "}
             <code>sizes</code>, the browser assumes the image will be 100vw
             wide and may download a larger variant than needed. If an image
             only occupies 50% of the viewport on desktop, specify{" "}
             <code>sizes=&quot;(min-width: 1024px) 50vw, 100vw&quot;</code>.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Serving WebP/AVIF without <code>Vary: Accept</code>:</strong>{" "}
             If a CDN caches a WebP response and serves it to a browser that
             sent <code>Accept: image/jpeg</code>, the image breaks. Always
             include <code>Vary: Accept</code> in image response headers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Over-compressing text-heavy images:</strong> Screenshots,
             UI mockups, and images containing text suffer visibly from lossy
@@ -503,19 +507,19 @@ export default function ImageOptimizationAndFormatsArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Pinterest:</strong> Serves WebP with LQIP placeholders.
             Uses a dominant-color background computed at upload time. Serves
             different crops for mobile (square) and desktop (original aspect
             ratio) using art direction via <code>&lt;picture&gt;</code>.
             Reports 30%+ bandwidth reduction after WebP migration.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Instagram:</strong> Generates 6+ resolution variants per
             uploaded photo. Uses progressive JPEG for feed images. Implements
             BlurHash placeholders in the mobile app. Feed images use
             content-aware cropping to center on detected faces.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Unsplash:</strong> Serves images via Imgix (runtime image
             CDN). URL parameters control width, quality, format, and crop:{" "}
@@ -542,7 +546,7 @@ export default function ImageOptimizationAndFormatsArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Production Image Component with Next.js
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Framework-level integration like Next.js Image component automates most
           optimization concerns. The <code>next.config.js</code> configuration
           specifies allowed image formats (AVIF, WebP), device sizes, and remote
@@ -556,20 +560,23 @@ export default function ImageOptimizationAndFormatsArticle() {
           along with <code>loading=&quot;lazy&quot;</code> for non-LCP images.
           This framework-level integration eliminates developer-facing complexity
           while ensuring consistent optimization across the application.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ── Section 8: Common Interview Questions ── */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel p-4">
-            <p className="font-semibold text-theme">
+            <HighlightBlock as="p" tier="important">
               Q: You&apos;re designing the image pipeline for a social media
               app with 10M daily photo uploads. How do you architect the
               optimization pipeline?
-            </p>
-            <p className="mt-2 text-sm text-muted">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               Use an async processing pipeline: uploads go to object storage
               (S3) and trigger a queue (SQS/Kafka) message. Worker services
               pull messages and generate variants using sharp: 5 widths (400,
@@ -580,14 +587,14 @@ export default function ImageOptimizationAndFormatsArticle() {
               failed processing. For cost optimization, generate AVIF lazily
               on first request rather than eagerly for all images, since AVIF
               encoding is CPU-intensive.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel p-4">
-            <p className="font-semibold text-theme">
+            <HighlightBlock as="p" tier="important">
               Q: How do you prevent CLS from images while still lazy loading
               them?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               Three mechanisms work together: (1) Always include width and
               height attributes on the img element so the browser calculates

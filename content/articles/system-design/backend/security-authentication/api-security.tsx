@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,22 +28,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>API security</strong> is the practice of protecting APIs (Application Programming Interfaces) from
           unauthorized access, abuse, and attacks. APIs are the primary interface for modern applications — they power
           mobile apps, web applications, third-party integrations, and service-to-service communication. Because APIs
           expose application logic and data to external clients, they are a prime target for attackers. According to
           Gartner, API abuses will become the most frequent attack vector by 2026, resulting in data breaches for
           enterprise web applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           API security is fundamentally different from web application security. Web applications render HTML in a
           browser, which provides built-in security controls (same-origin policy, CSP, XSS filters). APIs return
           structured data (JSON, XML) directly to clients, bypassing browser security controls. API security relies
           on application-level controls — authentication (verifying the client&apos;s identity), authorization (verifying
           the client&apos;s permissions), input validation (ensuring input is safe), rate limiting (preventing abuse), and
           encryption (protecting data in transit and at rest).
-        </p>
+        </HighlightBlock>
         <p>
           The OWASP API Security Top 10 (2023) identifies the most critical API security risks: Broken Object Level
           Authorization (BOLA/IDOR), Broken Authentication, Broken Object Property Level Authorization, Unrestricted
@@ -77,7 +81,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Broken Object Level Authorization (BOLA), also known as Insecure Direct Object Reference (IDOR), is the
           most common and impactful API security risk. BOLA occurs when an API endpoint accepts a user-controlled
           identifier (e.g., /api/users/123/orders) and does not verify that the authenticated user is authorized to
@@ -85,13 +92,13 @@ export default function ArticlePage() {
           access another user&apos;s data. BOLA is common because it is easy to introduce — developers often forget to
           add authorization checks when creating new endpoints, assuming that authentication (verifying the user&apos;s
           identity) is sufficient.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Broken Authentication is the second most common API security risk. It occurs when API authentication is
           weak or misconfigured — allowing brute force attacks, using weak tokens (predictable API keys, short-lived
           JWTs without refresh rotation), or implementing flawed password reset flows. Broken Authentication enables
           attackers to compromise user accounts through credential stuffing, token theft, or password reset abuse.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/api-security-diagram-1.svg"
           alt="API security defense-in-depth architecture showing authentication, authorization, input validation, rate limiting, and encryption layers"
@@ -138,14 +145,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The API security architecture consists of the API gateway (which enforces authentication, rate limiting,
           and routing), the authorization service (which evaluates permissions for each request), the input
           validator (which validates and sanitizes input before processing), the encryption layer (which encrypts
           data in transit and at rest), and the monitoring layer (which logs security events and alerts on
           anomalies). Each component is independent — if one component fails, the others still provide protection.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The API security flow begins with the client sending a request to the API gateway. The API gateway
           authenticates the request (validates the JWT, API key, or mTLS certificate) and enforces rate limits. If
           authentication succeeds and the rate limit is not exceeded, the request is forwarded to the application
@@ -153,7 +163,7 @@ export default function ArticlePage() {
           is authorized to perform the requested action. If authorized, the input validator validates and sanitizes
           the request input, and the application processes the request. The response is encrypted (TLS 1.3) and
           returned to the client.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/api-security-diagram-3.svg"
           alt="API security best practices checklist showing authentication, authorization, input validation, rate limiting, encryption, security headers, error handling, logging, versioning, and penetration testing"
@@ -190,7 +200,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           API gateway security versus application-level security is a trade-off between centralization and
           flexibility. API gateway security enforces security controls (authentication, rate limiting, input
           validation) at the gateway level — before requests reach the application. This is centralized — all
@@ -199,8 +212,8 @@ export default function ArticlePage() {
           validation) — these must be implemented at the application level. The recommended approach is defense-in-depth
           — API gateway security for centralized controls, application-level security for application-specific
           controls.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Token-based authentication (JWT) versus API keys is a trade-off between security and simplicity. JWTs
           provide rich claims (user identity, roles, scopes, expiration) and enable stateless authentication — the
           resource server can validate the token without calling the authorization server. However, JWTs are complex
@@ -209,7 +222,7 @@ export default function ArticlePage() {
           immediately but require a database lookup on each request. The recommended approach is JWTs for
           user-facing APIs (where rich claims are needed) and API keys for service-to-service APIs (where
           simplicity and revocation are priorities).
-        </p>
+        </HighlightBlock>
         <p>
           Centralized authorization (policy engine) versus decentralized authorization (each service enforces its
           own policies) is a trade-off between consistency and resilience. Centralized authorization provides
@@ -236,18 +249,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement defense-in-depth — use multiple independent layers of security (authentication, authorization,
           input validation, rate limiting, encryption, monitoring). No single layer is sufficient — if one layer
           fails, the others still provide protection. Each layer should be implemented independently, so that a
           failure in one layer does not affect the others.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enforce authorization on every request — do not trust the API gateway&apos;s authentication without performing
           your own authorization check. Object-level authorization (verifying that the user is authorized to access
           the specific resource being requested) must be enforced at the application level — the API gateway cannot
           enforce object-level authorization because it does not know the application&apos;s data model.
-        </p>
+        </HighlightBlock>
         <p>
           Validate all input against a schema — use JSON Schema, OpenAPI, or a similar schema definition language
           to define the expected input for each endpoint. Validate input against the schema before processing —
@@ -279,21 +295,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not enforcing object-level authorization is the most common API security pitfall. Developers often assume
           that authentication (verifying the user&apos;s identity) is sufficient — they forget to verify that the user
           is authorized to access the specific resource being requested. This leads to BOLA/IDOR vulnerabilities,
           where an attacker can access any resource by changing the resource ID in the request URL. The fix is to
           enforce object-level authorization on every request — verify that the user is authorized to access the
           specific resource before processing the request.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Returning excessive data in API responses is a common pitfall. APIs often return the full resource object
           (including internal fields, metadata, and sensitive data) when the client only needs a subset of fields.
           Attackers can exploit excessive data exposure by intercepting API responses and extracting sensitive data.
           The fix is to filter API responses — return only the fields that the client needs, based on the user&apos;s
           permissions and the client&apos;s role.
-        </p>
+        </HighlightBlock>
         <p>
           Not rate limiting API endpoints is a common pitfall. Without rate limiting, a single client can send
           millions of requests per second, overwhelming the server and degrading service for all other clients. The
@@ -322,7 +341,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform implements defense-in-depth API security for its public API — the API gateway
           enforces authentication (OAuth 2.0 with JWTs), rate limiting (per-user and per-IP limits), and input
           validation (JSON Schema validation). The application server enforces object-level authorization (verifying
@@ -331,8 +353,8 @@ export default function ArticlePage() {
           violations). The platform monitors security events and alerts on anomalous patterns (users accessing many
           different resource IDs, clients sending many expensive requests). The platform has had zero successful API
           security breaches since implementing these controls.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company implements strict API security for its banking API — the API gateway enforces
           mTLS (mutual TLS) for service-to-service authentication, OAuth 2.0 for user-facing authentication, and
           rate limiting (strict limits for login endpoints: 5 attempts per minute per user). The application server
@@ -341,7 +363,7 @@ export default function ArticlePage() {
           company monitors security events and alerts on credential stuffing attempts (multiple failed login attempts
           from the same IP). The company has prevented over 1 million credential stuffing attempts per month through
           API security controls.
-        </p>
+        </HighlightBlock>
         <p>
           A SaaS platform implements API security for its multi-tenant API — the API gateway enforces authentication
           (API keys for service-to-service, OAuth 2.0 for user-facing), rate limiting (per-user limits based on
@@ -369,14 +391,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is BOLA (Broken Object Level Authorization), and how do you prevent it?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               BOLA (also known as IDOR) occurs when an API endpoint accepts a user-controlled identifier and does not verify that the authenticated user is authorized to access the referenced resource. For example, an endpoint GET /api/users/123/orders that returns orders for user 123 without verifying that the authenticated user is user 123 — an attacker can change the ID to access another user&apos;s orders.
-            </p>
+            </HighlightBlock>
             <p>
               Prevent BOLA by enforcing object-level authorization on every request — verify that the user is authorized to access the specific resource before processing the request. Use UUIDs instead of sequential IDs to make resource IDs unpredictable. Implement centralized authorization checks — all services should use the same authorization logic to ensure consistent enforcement.
             </p>

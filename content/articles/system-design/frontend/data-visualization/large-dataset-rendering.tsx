@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Large Dataset Rendering</strong> encompasses techniques for visualizing datasets that exceed typical browser rendering capabilities. While "large" is context-dependent, it typically means 10,000+ data points for interactive visualizations, 100,000+ for static visualizations, and 1,000,000+ for specialized applications. Rendering such volumes requires specialized techniques beyond standard chart library configurations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff/principal engineers, large dataset rendering is a critical skill. Applications increasingly handle massive datasets: financial tick data, IoT sensor streams, clickstream analytics, scientific simulations. Users expect responsive visualizations regardless of data volume. The techniques for handling large datasets fundamentally differ from standard visualization approaches.
-        </p>
+        </HighlightBlock>
         <p>
           Standard rendering techniques fail at scale. SVG DOM overhead becomes prohibitive above 5,000 elements. Canvas rendering slows with excessive draw calls. Memory usage grows linearly with data volume. Interaction handling (hover, click) becomes computationally expensive.
         </p>
@@ -45,6 +49,9 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/large-dataset-techniques.svg"
@@ -53,12 +60,12 @@ export default function ArticlePage() {
         />
 
         <h3>Virtualization (Windowing)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Virtualization renders only data points visible in the current viewport. As users pan or scroll, new data points are rendered and old ones are removed. This keeps DOM element count or draw calls constant regardless of total data volume.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Virtualization is essential for scrollable visualizations (long time series, large tables). It maintains constant memory usage and rendering cost. Implementation requires tracking viewport bounds, mapping data indices to viewport, and efficient data access (indexed arrays, spatial indices).
-        </p>
+        </HighlightBlock>
         <p>
           Challenges include maintaining visual continuity (avoid popping as data loads), handling variable-height elements, and implementing efficient scroll handlers. Libraries like react-window and react-virtualized provide virtualization primitives.
         </p>
@@ -121,9 +128,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Large dataset rendering requires architectural decisions about data flow, rendering pipelines, and interaction handling.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/virtualization-aggregation.svg"
@@ -132,9 +142,9 @@ export default function ArticlePage() {
         />
 
         <h3>Rendering Pipeline Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement a multi-stage rendering pipeline. <strong>Data preparation</strong> stage filters, aggregates, and transforms data. <strong>Visibility culling</strong> stage determines visible data points. <strong>Rendering</strong> stage draws visible points. <strong>Interaction</strong> stage handles hover, click, and selection.
-        </p>
+        </HighlightBlock>
         <p>
           Pipeline stages should be independent and testable. Data preparation doesn't depend on rendering. Visibility culling doesn't depend on interaction. This enables optimization of individual stages.
         </p>
@@ -178,9 +188,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Large dataset techniques involve trade-offs between accuracy, performance, and implementation complexity.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/performance-benchmarks.svg"
@@ -236,16 +249,19 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that techniques are complementary, not mutually exclusive. Combine virtualization for scrolling, aggregation for overview, and GPU acceleration for rendering. Layer techniques based on data volume and interaction requirements.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Profile before optimizing. Measure rendering time, memory usage, and interaction latency. Identify bottlenecks before applying techniques. Different bottlenecks require different solutions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/update-patterns.svg"
@@ -253,9 +269,9 @@ export default function ArticlePage() {
           caption="Update patterns — match pattern to data volume: direct (&lt;1K), batched (1-10K), sampled (10-100K), aggregated (100K+), GPU (1M+)"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Start with simpler techniques (virtualization, sampling) before complex ones (GPU acceleration). Simpler techniques solve many problems with less implementation effort. Reserve GPU acceleration for cases where CPU rendering is insufficient.
-        </p>
+        </HighlightBlock>
         <p>
           Provide visual feedback for data reduction. Indicate when sampling or aggregation is active. Show data point count vs total. Allow users to adjust reduction parameters (sample size, bin size).
         </p>
@@ -272,12 +288,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rendering all data points without reduction causes browser crashes. 100,000+ SVG elements will crash most browsers. 1,000,000+ Canvas points will be extremely slow. Always implement reduction techniques for large datasets.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not indicating data reduction misleads users. Users may think there are fewer data points than actual. Always indicate when sampling or aggregation is active. Show "Showing 1,000 of 1,000,000 points".
-        </p>
+        </HighlightBlock>
         <p>
           Using wrong sampling strategy distorts patterns. Random sampling may miss important features. Systematic sampling may introduce aliasing. Choose sampling strategy based on data characteristics and visualization goals.
         </p>
@@ -294,14 +313,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Financial Platform: Stock Tick Visualization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A financial platform needed to display stock tick data with 1,000,000+ points per day. Traders needed to explore data at multiple time scales (tick, second, minute, hour).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong> Implemented LOD with pre-aggregated data at multiple time scales. GPU acceleration via deck.gl for rendering. Virtualization for scrolling through time. Aggregation (OHLC) for coarser time scales.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Results:</strong> Interactive exploration of 1,000,000+ points at 60fps. Smooth zooming across time scales. Memory usage stable at 200MB. Traders could identify patterns not visible at coarser scales.
         </p>
@@ -342,14 +364,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What techniques would you use to visualize 1,000,000 data points?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Combine multiple techniques based on requirements. GPU acceleration (WebGL) for rendering all points. Aggregation for overview (hexbin or heatmap). Virtualization for scrollable views. LOD for multi-scale exploration.
-            </p>
+            </HighlightBlock>
             <p>
               Specific approach: Use deck.gl or regl for GPU rendering. Implement spatial index (quadtree) for interaction. Provide aggregation options (bin by x, y, or both). Enable drill-down from aggregate to individual points.
             </p>

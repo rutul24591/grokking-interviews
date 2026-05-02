@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function BrowserFeatureDetectionArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Browser feature detection</strong> is the practice of
           programmatically testing whether a browser supports a specific API,
           CSS property, HTML element, or capability before using it in
@@ -48,8 +52,8 @@ export default function BrowserFeatureDetectionArticle() {
           recognized, or a media query evaluates correctly. This approach yields
           reliable, future-proof compatibility decisions because it tests actual
           capability rather than inferred capability from browser identity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature detection became a cornerstone of professional web development
           in the late 2000s as the limitations of user agent sniffing became
           apparent. User agent strings are unreliable: they can be spoofed by
@@ -61,7 +65,7 @@ export default function BrowserFeatureDetectionArticle() {
           systematic feature detection by providing a comprehensive library of
           tests that probed for specific HTML5 and CSS3 features and exposed
           results as CSS classes and JavaScript properties.
-        </p>
+        </HighlightBlock>
         <p>
           At the staff and principal engineer level, feature detection is an
           architectural concern that goes beyond individual API checks. A mature
@@ -93,8 +97,11 @@ export default function BrowserFeatureDetectionArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Direct API Probing:</strong> The most fundamental detection
             technique — testing whether a JavaScript object, constructor, or
             method exists in the runtime environment. Checking for
@@ -103,8 +110,8 @@ export default function BrowserFeatureDetectionArticle() {
             document.createElement(&quot;canvas&quot;).getContext(&quot;webgl&quot;)
             returns a non-null value. Direct probing is fast, reliable, and
             requires no external libraries.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>CSS Feature Queries:</strong> The @supports rule in CSS
             allows stylesheets to conditionally apply rules based on whether the
             browser recognizes a CSS property-value pair. @supports (display:
@@ -113,7 +120,7 @@ export default function BrowserFeatureDetectionArticle() {
             programmatically. Feature queries are the CSS equivalent of
             JavaScript API probing and handle visual degradation without any
             JavaScript execution.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Capability Profiling:</strong> The practice of running a
             suite of feature detection tests at application initialization and
@@ -177,19 +184,22 @@ export default function BrowserFeatureDetectionArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature detection architecture spans initialization-time probing,
           capability profile construction, and runtime integration with
           component rendering. The following diagrams illustrate how mature
           detection systems are structured.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/web-standards-and-compatibility/browser-feature-detection-diagram-1.svg"
           alt="Centralized feature detection service architecture showing probe execution, profile construction, and context distribution"
           caption="Figure 1: Centralized detection service — how feature probes are executed, aggregated into a capability profile, and distributed to components."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The centralized detection service runs at application initialization,
           before the component tree mounts. It executes a battery of feature
           probes — JavaScript API checks, CSS feature queries, hardware
@@ -202,7 +212,7 @@ export default function BrowserFeatureDetectionArticle() {
           context to decide which variant to render. The service also emits the
           capability profile to analytics, creating visibility into the
           capability distribution of the actual user population.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/web-standards-and-compatibility/browser-feature-detection-diagram-2.svg"
@@ -248,6 +258,9 @@ export default function BrowserFeatureDetectionArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr>
@@ -263,7 +276,7 @@ export default function BrowserFeatureDetectionArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2">
                 Feature detection vs. user agent sniffing
               </td>
@@ -277,8 +290,8 @@ export default function BrowserFeatureDetectionArticle() {
                 cannot detect known browser bugs (where a feature exists but
                 behaves incorrectly), and some tests have runtime cost.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2">
                 Centralized detection service vs. inline checks
               </td>
@@ -292,7 +305,7 @@ export default function BrowserFeatureDetectionArticle() {
                 checks are simpler for components that need only one specific
                 detection test and are easier to understand in isolation.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="border border-theme p-2">
                 Synchronous vs. asynchronous detection
@@ -346,8 +359,11 @@ export default function BrowserFeatureDetectionArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Always detect the specific feature you intend to use:
             </strong>{" "}
@@ -357,8 +373,8 @@ export default function BrowserFeatureDetectionArticle() {
             the exact API, property, or method that the application code depends
             on. This discipline prevents false positives where a feature is
             assumed available but is actually missing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Centralize detection in a capability service for applications with
               multiple detection needs:
@@ -369,7 +385,7 @@ export default function BrowserFeatureDetectionArticle() {
             results via context. This eliminates redundant probing, ensures
             consistent tier assignment, and provides a single location to update
             when dropping or adding feature support.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use CSS @supports for visual-only detection:</strong> When
             the detection decision only affects visual presentation (layout
@@ -420,8 +436,11 @@ export default function BrowserFeatureDetectionArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Confusing feature existence with correct behavior:</strong>{" "}
             A browser may expose an API (the property exists, the constructor is
             defined) but implement it incorrectly or incompletely. Early
@@ -431,8 +450,8 @@ export default function BrowserFeatureDetectionArticle() {
             behavior — calling the API with known inputs and checking the
             output. This is more expensive but necessary for APIs with a history
             of inconsistent implementations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Running expensive detection synchronously in the critical path:
             </strong>{" "}
@@ -443,7 +462,7 @@ export default function BrowserFeatureDetectionArticle() {
             expensive detection to requestIdleCallback or a Web Worker, render a
             default variant immediately, and upgrade to the detected variant
             when results arrive.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Feature inference chains:</strong> Assuming that because a
             browser supports feature A, it must also support features B, C, and
@@ -489,7 +508,10 @@ export default function BrowserFeatureDetectionArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>YouTube&apos;s video player capability cascade:</strong>{" "}
           YouTube&apos;s web player uses an extensive feature detection cascade
           to determine the optimal playback pipeline. The detection chain checks
@@ -501,8 +523,8 @@ export default function BrowserFeatureDetectionArticle() {
           video qualities are offered, whether HDR toggle appears, and how the
           player handles DRM-protected content. The fallback cascade ensures
           video playback works even when advanced APIs are unavailable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Figma&apos;s rendering engine selection:</strong> Figma
           detects WebGL support and GPU capabilities to determine whether to use
           its WebGL-based rendering engine (for hardware-accelerated vector
@@ -513,7 +535,7 @@ export default function BrowserFeatureDetectionArticle() {
           with technically available but underperforming WebGL implementations
           are routed to the Canvas 2D path, preventing sluggish editing
           experiences.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Twitter/X adaptive media loading:</strong> Twitter uses the
           Network Information API (navigator.connection) to adapt media loading
@@ -541,28 +563,34 @@ export default function BrowserFeatureDetectionArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature Detection introduces security considerations around information leakage, fingerprinting, and ensuring detection doesn't expose sensitive browser information.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Feature Detection Security Patterns</h3>
-          <ul className="space-y-2">
-            <li>
-              <strong>Fingerprinting Prevention:</strong> Feature detection can be used for browser fingerprinting. Mitigation: use standardized detection libraries, avoid combining multiple detection results, implement server-side detection where possible.
-            </li>
-            <li>
-              <strong>Capability Validation:</strong> Detected capabilities should be validated server-side. Mitigation: never trust client-side detection for security decisions, implement server-side capability checks, validate all feature usage.
-            </li>
-          </ul>
-        </div>
+	          <h3 className="mb-4 text-lg font-semibold">Feature Detection Security Patterns</h3>
+	          <ul className="space-y-2">
+	            <HighlightBlock as="li" tier="important">
+	              <strong>Fingerprinting Prevention:</strong> Feature detection can be used for browser fingerprinting. Mitigation: use standardized detection libraries, avoid combining multiple detection results, implement server-side detection where possible.
+	            </HighlightBlock>
+	            <HighlightBlock as="li" tier="important">
+	              <strong>Capability Validation:</strong> Detected capabilities should be validated server-side. Mitigation: never trust client-side detection for security decisions, implement server-side capability checks, validate all feature usage.
+	            </HighlightBlock>
+	          </ul>
+	        </div>
       </section>
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature Detection performance depends on detection method efficiency, caching strategy, and detection overhead.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -575,16 +603,16 @@ export default function BrowserFeatureDetectionArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Detection Time</td>
                 <td className="p-2">&lt;5ms per feature</td>
                 <td className="p-2">Performance.now()</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Total Detection Overhead</td>
                 <td className="p-2">&lt;50ms total</td>
                 <td className="p-2">Performance.now()</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Cache Hit Rate</td>
                 <td className="p-2">&gt;95% cached</td>
@@ -597,9 +625,12 @@ export default function BrowserFeatureDetectionArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature Detection has minimal direct costs but provides significant benefits for compatibility and user experience.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
@@ -618,21 +649,24 @@ export default function BrowserFeatureDetectionArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">When to Use Feature Detection</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Use feature detection when: (1) you need to support multiple browsers, (2) you're using modern features with varying support, (3) you want to provide enhanced experiences for capable browsers. Avoid when: (1) you only target modern browsers, (2) the overhead outweighs the benefits.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: Why is feature detection preferred over user agent sniffing?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Feature detection tests actual capability — whether the browser
               can do what you need, not what browser it claims to be. User agent
               strings are unreliable because they are spoofable, deliberately
@@ -646,7 +680,7 @@ export default function BrowserFeatureDetectionArticle() {
               analysis adds value is detecting known browser bugs where the
               feature exists but behaves incorrectly — and even then, behavioral
               feature testing is a more robust approach.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

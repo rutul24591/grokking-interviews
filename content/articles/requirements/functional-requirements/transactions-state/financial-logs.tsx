@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,12 +36,15 @@ export default function FinancialLogsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Financial logs capture and store financial transaction data for audit trails, compliance, and record keeping: payment logs (charges, refunds, disputes), billing logs (invoices, credits, debits), subscription logs (subscriptions, upgrades, downgrades, cancellations), and dunning logs (failed payments, retries, communications). For staff and principal engineers, financial logs involve compliance requirements (SOX, PCI, GDPR), log retention policies (how long to keep logs, where to store), search and retrieval (search logs, retrieve for audits), and security/access control (who can access logs, how to secure).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of financial logs extends beyond simple logging. Compliance requirements vary by regulation (SOX requires 7 years, PCI requires 1 year, GDPR requires deletion on request), log formats vary by use case (structured logs for search, human-readable logs for audits), log storage varies by retention (hot storage for recent logs, cold storage for old logs), and log security varies by sensitivity (encryption at rest, encryption in transit, access control). The system must handle edge cases (log volume spikes, log corruption, log deletion requests) gracefully with clear policies.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, financial logs architecture involves log ingestion (capture logs, format logs, store logs), log storage (hot storage, cold storage, archive storage), log search (search logs, filter logs, retrieve logs), and log security (encryption, access control, audit trails). The system must support multiple compliance requirements (SOX, PCI, GDPR), multiple log formats (structured, human-readable), and multiple storage tiers (hot, cold, archive). Analytics track log volume (logs per day, storage growth), search performance (search latency, search success rate), and compliance (retention compliance, deletion compliance).
         </p>
@@ -48,13 +52,16 @@ export default function FinancialLogsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Audit Trails</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Audit trails capture who did what, when, and why. Content: user info (user ID, user name, user role), action info (action type, action target, action result), timestamp (when action occurred, timezone), context info (IP address, user agent, session ID). Formats: structured logs (JSON, key-value pairs), human-readable logs (text logs, readable format), hybrid logs (structured + human-readable). Storage: write-once (logs can&apos;t be modified, only appended), immutable storage (WORM storage, compliance storage), tamper-evident (hash chains, digital signatures).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Audit trail requirements vary by compliance. SOX (Sarbanes-Oxley): 7 years retention (financial records, audit trails), access control (who can access logs, who can modify logs), tamper-evident (logs can&apos;t be modified without detection). PCI (Payment Card Industry): 1 year retention (payment logs, access logs), access control (need-to-know access, role-based access), encryption (encryption at rest, encryption in transit). GDPR (General Data Protection Regulation): deletion on request (right to be forgotten, delete personal data), data minimization (only log necessary data, don&apos;t log excessive data), consent (log consent, log consent withdrawal).
-        </p>
+        </HighlightBlock>
         <p>
           Audit trail use cases: financial audits (SOX compliance, financial records), security audits (PCI compliance, security logs), compliance audits (GDPR compliance, privacy logs), internal audits (internal controls, process audits), external audits (external auditors, regulatory audits). Retrieval: search logs (search by user, action, timestamp), filter logs (filter by action type, filter by result), export logs (export for audits, export for compliance).
         </p>
@@ -117,9 +124,12 @@ export default function FinancialLogsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Financial logs architecture spans log ingestion, log storage, log search, and log security. Log ingestion captures financial logs (payment logs, billing logs, subscription logs, access logs), formats logs (structured logs, human-readable logs, hybrid logs), and stores logs (hot storage, cold storage, archive storage). Log storage stores logs by retention period (hot storage for recent logs, cold storage for old logs, archive storage for very old logs). Log search enables searching financial logs (search by user, action, timestamp, context). Log security protects financial logs (encryption, access control, audit trails).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/financial-logs/logs-architecture.svg"
@@ -130,9 +140,9 @@ export default function FinancialLogsArticle() {
         />
 
         <h3>Log Ingestion</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Log capture captures financial logs. Sources: payment systems (payment logs, charges, refunds, disputes), billing systems (billing logs, invoices, credits, debits), subscription systems (subscription logs, subscriptions, upgrades, downgrades, cancellations), access systems (access logs, who accessed financial data, who modified financial data). Methods: direct logging (systems log directly to log storage), log shipping (systems ship logs to log storage), log forwarding (systems forward logs to log aggregator).
-        </p>
+        </HighlightBlock>
         <p>
           Log formatting formats financial logs. Formats: structured logs (JSON, key-value pairs, for programmatic access), human-readable logs (text logs, readable format, for human review), hybrid logs (structured + human-readable, for both programmatic and human access). Fields: user info (user ID, user name, user role), action info (action type, action target, action result), timestamp (when action occurred, timezone), context info (IP address, user agent, session ID). Validation: validate log format (validate JSON, validate fields), validate log content (validate required fields, validate field values), validate log completeness (validate all logs captured, no gaps).
         </p>
@@ -192,14 +202,17 @@ export default function FinancialLogsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Financial logs design involves trade-offs between compliance, cost, performance, and security. Understanding these trade-offs enables informed decisions aligned with business requirements and operational capabilities.
-        </p>
+        </HighlightBlock>
 
         <h3>Retention: Long vs. Short</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Long retention (7+ years, indefinite for disputes). Pros: Compliance (SOX requires 7 years, indefinite for disputes), audit readiness (logs available for audits, logs available for compliance), legal protection (logs available for legal proceedings, logs available for disputes). Cons: Storage cost (more logs, more storage, higher cost), management complexity (manage more logs, manage multiple retention periods), deletion complexity (delete after retention, delete on request). Best for: Financial logs (SOX compliance, 7 years), dispute logs (indefinite, until resolved), compliance logs (compliance period, indefinite if required).
-        </p>
+        </HighlightBlock>
         <p>
           Short retention (1 year, delete after compliance period). Pros: Lower storage cost (fewer logs, less storage, lower cost), simpler management (manage fewer logs, manage single retention period), simpler deletion (delete after compliance period, delete on request). Cons: Compliance risk (may not meet compliance requirements, may not have logs for audits), audit risk (logs not available for audits, logs not available for compliance), legal risk (logs not available for legal proceedings, logs not available for disputes). Best for: Access logs (PCI compliance, 1 year), non-financial logs (no compliance requirements, delete after period), temporary logs (temporary logs, delete after use).
         </p>
@@ -251,13 +264,16 @@ export default function FinancialLogsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement comprehensive audit trails:</strong> Capture who did what, when, and why (user info, action info, timestamp, context info). Store in write-once, immutable storage (WORM storage, compliance storage). Benefits: compliance (SOX, PCI, GDPR), audit readiness (logs available for audits), legal protection (logs available for legal proceedings).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Follow compliance requirements:</strong> SOX (7 years retention, access control, tamper-evident), PCI (1 year retention, access control, encryption), GDPR (deletion on request, data minimization, consent logging). Benefits: compliance (meet compliance requirements), audit readiness (logs available for audits), legal protection (logs available for legal proceedings).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement tiered storage:</strong> Hot storage (recent logs, last 30-90 days, fast access), cold storage (old logs, 90 days - 7 years, slower access), archive storage (very old logs, 7+ years, slowest access). Benefits: cost optimization (fast access for recent, cheap storage for old), performance optimization (fast access for frequent, slower access for infrequent), compliance optimization (compliance storage for compliance).
           </li>
@@ -287,13 +303,16 @@ export default function FinancialLogsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Incomplete audit trails:</strong> Missing who, what, when, why. Solution: Capture all required fields (user info, action info, timestamp, context info), validate completeness (validate all logs captured, no gaps).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Non-compliant retention:</strong> Wrong retention periods, logs deleted too early. Solution: Follow compliance requirements (SOX 7 years, PCI 1 year, GDPR deletion on request), automatic deletion (delete after retention period, delete on request).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No tiered storage:</strong> All logs in hot storage, expensive. Solution: Tiered storage (hot for recent, cold for old, archive for very old), automatic tiering (move logs between tiers, manage retention).
           </li>
@@ -323,16 +342,19 @@ export default function FinancialLogsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>SOX Compliance for Public Company</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Public company implements SOX-compliant financial logs. Requirements: 7 years retention (financial records, audit trails), access control (who can access logs, who can modify logs), tamper-evident (logs can&apos;t be modified without detection). Implementation: log ingestion (capture payment logs, billing logs, subscription logs, access logs), log storage (hot storage for recent, cold storage for old, archive storage for very old), log search (search logs for audits, retrieve logs for compliance), log security (encryption at rest, encryption in transit, access control, audit trails). Benefits: SOX compliance (meet SOX requirements, pass SOX audits), audit readiness (logs available for audits, logs available for compliance), legal protection (logs available for legal proceedings, logs available for disputes).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">PCI Compliance for Payment Processor</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Payment processor implements PCI-compliant payment logs. Requirements: 1 year retention (payment logs, access logs), access control (need-to-know access, role-based access), encryption (encryption at rest, encryption in transit). Implementation: log ingestion (capture payment logs, access logs, security logs), log storage (hot storage for recent, cold storage for old), log search (search logs for audits, retrieve logs for compliance), log security (encryption at rest, encryption in transit, access control, audit trails). Benefits: PCI compliance (meet PCI requirements, pass PCI audits), security (payment logs secure, payment logs protected), breach mitigation (breach impact reduced, logs encrypted).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">GDPR Compliance for EU Business</h3>
         <p>
@@ -352,12 +374,15 @@ export default function FinancialLogsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you ensure SOX compliance for financial logs?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you ensure SOX compliance for financial logs?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Requirements: 7 years retention (financial records, audit trails), access control (who can access logs, who can modify logs), tamper-evident (logs can&apos;t be modified without detection). Implementation: log ingestion (capture payment logs, billing logs, subscription logs, access logs), log storage (hot storage for recent, cold storage for old, archive storage for very old), log search (search logs for audits, retrieve logs for compliance), log security (encryption at rest, encryption in transit, access control, audit trails). Benefits: SOX compliance (meet SOX requirements, pass SOX audits), audit readiness (logs available for audits, logs available for compliance).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

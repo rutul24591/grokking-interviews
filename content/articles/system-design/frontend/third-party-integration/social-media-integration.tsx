@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Social media integration</strong> covers the set of capabilities that connect your product to social platforms: share buttons, embedded posts (tweets, Instagram posts, TikTok videos), social login (covered separately under OAuth), link preview metadata (Open Graph / Twitter Cards), and platform APIs for publishing or reading content.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These integrations are often owned by growth or marketing, but they have deep system consequences: third-party scripts can degrade performance, embeds can introduce privacy and compliance risk, and platform APIs create rate-limit and availability dependencies. High-performing products treat social integrations as a <strong>governed subsystem</strong> rather than ad hoc snippets.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, social media integration requires balancing three competing concerns:
         </p>
@@ -73,6 +77,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/third-party-integration/social-embed-patterns.svg"
@@ -81,14 +88,14 @@ export default function ArticlePage() {
         />
 
         <h3>Social Embed Loading Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           There are three primary approaches to loading social embeds, each with different performance and privacy trade-offs:
-        </p>
+        </HighlightBlock>
 
         <h4>Pattern 1: Eager Load (Not Recommended)</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Load all embeds on page load. Simplest to implement but worst for performance.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Implementation:</strong> Paste embed code directly. Scripts load immediately.
@@ -261,14 +268,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust social integration architecture treats social embeds as <strong>optional enhancements</strong> that degrade gracefully when unavailable.
-        </p>
+        </HighlightBlock>
 
         <h3>Embed Loading Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The recommended architecture for social embeds:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Static Placeholder:</strong> Show static preview (image, title) initially. Zero third-party requests.
@@ -353,9 +363,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Social integration involves trade-offs between growth, performance, and privacy.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -390,9 +403,9 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that <strong>lazy load or static fallback should be the default</strong>. Eager loading social scripts is rarely justified given the performance and privacy costs.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -400,13 +413,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Custom Share Links:</strong> Don't load official share button scripts. Use simple links to share URLs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Lazy Load Embeds:</strong> Load embeds only when they scroll into viewport. Use IntersectionObserver.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Respect Consent:</strong> Don't load tracking embeds until user consents. Show placeholder until then.
           </li>
@@ -439,13 +455,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Loading Official Share Scripts:</strong> Official scripts are heavy and track users. Use custom links instead.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Eager Loading Embeds:</strong> Loading all embeds on page load wastes bandwidth. Lazy load instead.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Client-Side OG Tags:</strong> Adding OG tags via JavaScript doesn't work. Crawlers don't execute JS.
           </li>
@@ -469,14 +488,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>News Site: Lazy-Loaded Tweet Embeds</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Problem:</strong> News site embedded many tweets in articles. Page load time was 8+ seconds due to Twitter script weight.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong> Implemented lazy loading with IntersectionObserver. Show static tweet preview initially. Load actual embed when scrolled into view.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Results:</strong> Page load time reduced from 8.2s to 3.1s. Bounce rate decreased 22%. Tweet engagement unchanged.
         </p>
@@ -520,11 +542,14 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What are the different approaches to loading social embeds and when do you use each?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
             <ul className="space-y-2 mb-3">
               <li>
                 <strong>Eager Load:</strong> Load all embeds on page load. Simple but worst for performance. Avoid unless single embed on page.
@@ -536,9 +561,9 @@ export default function ArticlePage() {
                 <strong>Static Fallback:</strong> Show static preview with "Load embed" button. Only load if user clicks. Best for privacy and performance. Recommended for privacy-focused sites.
               </li>
             </ul>
-            <p>
+            <HighlightBlock as="p" tier="important">
               The general principle is <strong>don't load embeds until needed</strong>. Lazy load or static fallback should be the default.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">

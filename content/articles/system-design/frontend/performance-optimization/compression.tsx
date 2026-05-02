@@ -768,12 +768,12 @@ export default function CompressionArticle() {
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is HTTP compression and how does it work?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="important" className="mb-3">
+            <p className="mb-3">
               HTTP compression reduces the size of text-based responses by compressing the response 
               body before sending. The browser automatically sends an Accept-Encoding header listing 
               supported algorithms (gzip, br), and the server responds with a Content-Encoding header 
               indicating which algorithm was used.
-            </HighlightBlock>
+            </p>
             <p className="mb-3">
               The browser decompresses the response transparently before passing it to JavaScript or 
               rendering. This typically reduces transfer sizes by 60-85% for text assets.
@@ -814,16 +814,16 @@ export default function CompressionArticle() {
             <h3 className="text-lg font-semibold mb-3">Question 3: When should you use pre-compression vs. dynamic compression?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
             <ul className="space-y-2 mb-3">
-              <HighlightBlock as="li" tier="important">
+              <li>
                 <strong>Pre-Compression:</strong> Best for static assets (JavaScript bundles, CSS 
                 files, fonts) that don&apos;t change frequently. Compress at build time with maximum 
                 compression (Brotli level 11). Zero runtime CPU cost.
-              </HighlightBlock>
-              <HighlightBlock as="li" tier="important">
+              </li>
+              <li>
                 <strong>Dynamic Compression:</strong> Best for dynamic content (HTML, API responses) 
                 that changes per request. Use moderate compression levels (Gzip 6, Brotli 4-6) to 
                 balance compression ratio with CPU cost.
-              </HighlightBlock>
+              </li>
             </ul>
             <p>
               Production setups typically use both: pre-compression for static assets, dynamic 
@@ -899,17 +899,21 @@ export default function CompressionArticle() {
           ============================================================ */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe content negotiation (Accept-Encoding / Content-Encoding), where compression happens
+          (build/CDN/origin), and why CPU cost and caching correctness (Vary) matter for tail latency and reliability.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN — Content-Encoding
             </a> — HTTP Content-Encoding header documentation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN — Accept-Encoding
             </a> — HTTP Accept-Encoding header documentation.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://httpd.apache.org/docs/current/mod/mod_deflate.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Apache mod_deflate
@@ -920,11 +924,11 @@ export default function CompressionArticle() {
               Nginx Gzip Module
             </a> — Nginx Gzip compression configuration.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://github.com/google/brotli" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Brotli GitHub Repository
             </a> — Official Brotli compression library.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://web.dev/http-cache/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev — HTTP Cache

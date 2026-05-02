@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,12 +36,15 @@ export default function OrderManagementServiceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Order Management Service (OMS) orchestrates the complete order lifecycle from creation through fulfillment, managing state transitions and integrating with inventory, payment, shipping, and customer notification systems. The OMS is the central hub of e-commerce operations—receiving orders from multiple channels (web, mobile, marketplace, in-store), coordinating fulfillment across warehouses and stores, and providing visibility to customers and support teams. For staff and principal engineers, OMS architecture involves distributed systems challenges (consistency across services, eventual consistency, failure handling) and business complexity (multi-warehouse fulfillment, split shipments, returns, exchanges).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of order management extends beyond simple CRUD operations. Orders have complex state machines (pending → confirmed → processing → shipped → delivered) with guards (payment authorized, inventory available) and side effects (send email, update inventory, notify warehouse). Orders may split across warehouses (items from different locations), ship in multiple packages (partial fulfillment), or merge (multiple orders to same address). Returns and exchanges create reverse logistics flows (delivered → return_requested → return_received → refunded). The OMS must handle high volume (Black Friday spikes), provide real-time visibility (order tracking), and maintain data integrity (no lost orders, no duplicate shipments).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, OMS architecture involves integration patterns. Event-driven architecture enables loose coupling—order created event triggers inventory reservation, payment authorization, and warehouse notification. Saga pattern coordinates distributed transactions (reserve inventory, authorize payment, create shipment) with compensating transactions on failure (release inventory, void payment). CQRS separates write model (order state machine) from read model (order history, customer timeline). The system must support multi-tenant scenarios (marketplace sellers, B2B customers with custom workflows) and international requirements (cross-border shipping, customs, duties, taxes).
         </p>
@@ -48,13 +52,16 @@ export default function OrderManagementServiceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Order Lifecycle States</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Order states represent distinct phases in order lifecycle. Pending: order created, awaiting payment authorization. Inventory may be reserved (soft hold) or not, depending on business model. Confirmed: payment authorized, order ready for fulfillment. Inventory committed (hard allocation). Processing: order being prepared for shipment (picking, packing, labeling). Shipped: package handed to carrier, tracking number available. Delivered: package confirmed delivered (carrier confirmation or customer confirmation). Terminal states: Cancelled (user or system cancelled before shipment), Returned (customer returned, refund processed).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           State transitions are guarded. Pending → Confirmed requires payment authorization success. Confirmed → Processing requires inventory availability (all items in stock). Processing → Shipped requires carrier scan confirmation. Shipped → Delivered requires carrier delivery confirmation or timeout (7 days after shipped). Guards prevent invalid transitions (can&apos;t ship cancelled order, can&apos;t cancel shipped order). Failed guards return specific errors (payment_declined, inventory_unavailable) for user feedback.
-        </p>
+        </HighlightBlock>
         <p>
           State metadata enriches order information. State entered timestamp (for SLA monitoring—orders must ship within 24 hours). State entered by (user, system, webhook). Exit reason (user_cancelled, payment_failed, inventory_unavailable, timeout). Metadata enables analytics (average time per state, cancellation reasons, fulfillment SLA compliance) and debugging (trace order history, identify bottlenecks).
         </p>
@@ -106,9 +113,12 @@ export default function OrderManagementServiceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Order management architecture spans order ingestion, state machine orchestration, fulfillment coordination, and external integrations. Order ingestion receives orders from multiple channels (web, mobile, marketplace, in-store). State machine manages order lifecycle (state transitions, guards, actions). Fulfillment coordination assigns warehouses, creates shipments, integrates with carriers. External integrations handle payment, inventory, shipping, and notifications.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/order-management/order-management-architecture.svg"
@@ -119,9 +129,9 @@ export default function OrderManagementServiceArticle() {
         />
 
         <h3>Order Ingestion</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Multi-channel order ingestion receives orders from various sources. Web orders (checkout flow) submit order via API. Mobile orders (iOS/Android app) submit via mobile API. Marketplace orders (Amazon, eBay) sync via marketplace API (webhook or polling). In-store orders (POS system) sync via store API. Each channel has different data format—normalization layer converts to canonical order format.
-        </p>
+        </HighlightBlock>
         <p>
           Order validation ensures order integrity before acceptance. Required fields (customer info, shipping address, line items). Address validation (Loqate, SmartyStreets)—correct typos, ensure deliverable. Inventory check (items available, prevent overselling). Price validation (prices match current prices, promo codes valid). Fraud check (risk score, velocity checks, address mismatch). Invalid orders rejected with specific errors (invalid_address, item_unavailable, payment_declined).
         </p>
@@ -181,14 +191,17 @@ export default function OrderManagementServiceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Order management design involves trade-offs between consistency, availability, complexity, and cost. Understanding these trade-offs enables informed decisions aligned with business requirements and operational capabilities.
-        </p>
+        </HighlightBlock>
 
         <h3>Inventory Reservation: Early vs. Late</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Early reservation (on cart add or checkout start). Pros: Guaranteed availability (no disappointment at payment). Cons: Inventory locked up (abandoned carts block sales), requires cleanup (release after timeout). Best for: High-demand items (limited stock, flash sales), long checkout flows (multi-step, account creation).
-        </p>
+        </HighlightBlock>
         <p>
           Late reservation (on payment authorization). Pros: Inventory available longer (higher conversion), no cleanup needed. Cons: Risk of selling out during checkout (customer disappointment), payment may succeed but order can&apos;t fulfill. Best for: High-volume retailers (low stockout risk), short checkout flows (one-click, saved payment).
         </p>
@@ -240,13 +253,16 @@ export default function OrderManagementServiceArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Design idempotent order creation:</strong> Idempotency key prevents duplicate orders. Same key returns same order (not new order). Key persists across retries. Client generates UUID, includes in header.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement state machine with guards:</strong> Explicit states and transitions. Guards validate preconditions (payment before confirm). Actions execute side effects (email, inventory). Log all transitions for audit.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use event-driven integration:</strong> Publish order events (created, shipped, delivered). Subscribers react (inventory, payment, notification). Loose coupling—services independent. Event schema versioning for evolution.
           </li>
@@ -276,13 +292,16 @@ export default function OrderManagementServiceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No idempotency:</strong> Network retries create duplicate orders. Solution: Idempotency keys, duplicate detection, same key returns same order.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Weak state machine:</strong> Invalid transitions allowed (ship cancelled order). Solution: Explicit states and transitions, guards validate preconditions.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Tight coupling:</strong> Order service calls inventory, payment, fulfillment synchronously. Solution: Event-driven integration, async processing, saga for coordination.
           </li>
@@ -312,16 +331,19 @@ export default function OrderManagementServiceArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Amazon Order Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon OMS handles millions of orders daily. Multi-warehouse fulfillment (items from nearest warehouse). Prime eligibility (2-day, 1-day, same-day). Split shipments (items from multiple warehouses). Real-time tracking (carrier integration). Automated returns (self-service, instant approval for eligible). Event sourcing for audit trail.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Shopify Order Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shopify OMS serves millions of merchants. Multi-channel orders (web, mobile, marketplace, POS). Inventory sync across channels. Fulfillment network (Shopify Fulfillment Network). Carrier integration (rate shopping, labels, tracking). Return management (self-service, rules-based). App ecosystem (third-party fulfillment, returns).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Walmart Omnichannel Orders</h3>
         <p>
@@ -341,12 +363,15 @@ export default function OrderManagementServiceArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you prevent overselling in order management?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you prevent overselling in order management?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Inventory reservation on order creation (soft hold). Hard commit on payment authorization. Release on payment failure or timeout. Distributed locking prevents concurrent oversell (Redis SETNX). Optimistic locking on inventory update (version check). Backorder handling (allow oversell with customer notification, estimated restock date).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

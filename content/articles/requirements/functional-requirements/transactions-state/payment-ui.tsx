@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function PaymentUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Payment UI enables secure payment collection with PCI-compliant input, multiple payment methods, and clear processing feedback. The payment form is the most critical part of checkout—poor UX causes abandonment, security concerns prevent trust, and complex flows frustrate users. For staff and principal engineers, payment UI implementation involves security requirements (PCI DSS compliance), accessibility (keyboard navigation, screen reader support), and conversion optimization (minimize friction, maximize trust).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of payment UI extends beyond simple form fields. Card input requires real-time validation (Luhn algorithm, expiry date, CVV format), auto-formatting (spaces every 4 digits, MM/YY for expiry), and error handling (invalid card, declined payment). Digital wallets (Apple Pay, Google Pay, PayPal) require different integration patterns (SDK, redirect, modal). Payment processing states (processing, success, failure) require clear feedback (spinners, progress indicators, error messages). The UI must handle edge cases (network timeout, payment declined, session expired) gracefully without losing entered data.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, payment UI architecture involves security patterns. Hosted fields (Stripe Elements, Braintree Hosted Fields) ensure PCI compliance (card data never touches your server). Tokenization replaces card data with payment method token (safe to store, transmit). 3D Secure authentication requires redirect handling (bank verification page, callback). The UI must support multiple payment methods (cards, wallets, bank transfer, BNPL), each with different flows and requirements. Mobile optimization is critical (50-60% of payments on mobile)—touch-friendly input, appropriate keyboards, auto-fill support.
         </p>
@@ -47,13 +51,16 @@ export default function PaymentUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Card Input and Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Card number input requires specific formatting and validation. Input type: tel (numeric keypad on mobile). Auto-formatting: spaces every 4 digits (1234 5678 9012 3456), auto-advance (cursor jumps to next field). Validation: Luhn algorithm (checksum validation), BIN lookup (card type detection—Visa, Mastercard, Amex). Length varies by card type (15 digits for Amex, 16 for Visa/Mastercard). Error messaging: specific (&quot;Invalid card number&quot; vs. &quot;Card number must be 16 digits&quot;).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Expiry date input requires format enforcement. Input format: MM/YY (01/25, 12/26). Auto-format: slash auto-inserted after month. Validation: month 01-12, year current or future, card not expired (expiry date &gt; current date). Input type: tel (numeric keypad). Auto-complete: expiry-picker dropdown (select month/year). Error messaging: specific (&quot;Card expired&quot; vs. &quot;Invalid expiry date&quot;).
-        </p>
+        </HighlightBlock>
         <p>
           CVV/CVC input requires security handling. Input type: password (masked) or tel (visible, numeric keypad). Length: 3 digits (Visa, Mastercard), 4 digits (Amex). Validation: numeric only, correct length. Security: never log CVV, never store CVV (PCI requirement). Tooltip: &quot;3 digits on back of card&quot; (with diagram for Visa/Mastercard, &quot;4 digits on front&quot; for Amex). Error messaging: specific (&quot;CVV must be 3 digits&quot;).
         </p>
@@ -105,9 +112,12 @@ export default function PaymentUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Payment UI architecture spans form components, payment gateway integration, state management, and security layers. Form components handle card input, validation, formatting. Payment gateway integration handles tokenization, 3D Secure, payment processing. State management handles processing states (idle, processing, success, failure). Security layers ensure PCI compliance (hosted fields, tokenization).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/payment-ui/payment-ui-architecture.svg"
@@ -118,9 +128,9 @@ export default function PaymentUIArticle() {
         />
 
         <h3>Form Components</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Card input component handles card number entry. Hosted field (iframe) for PCI compliance. Real-time validation (Luhn algorithm, length check). Auto-formatting (spaces every 4 digits). Card type detection (BIN lookup, show Visa/Mastercard/Amex logo). Error handling (invalid format, unsupported card). Accessibility (label, aria-describedby, keyboard navigation).
-        </p>
+        </HighlightBlock>
         <p>
           Expiry and CVV components handle security fields. Expiry field: MM/YY format, auto-slash, validation (not expired). CVV field: numeric only, length validation (3-4 digits), tooltip (where to find CVV). Both fields: hosted fields (PCI compliance), auto-advance (tab to next field), error handling (invalid format).
         </p>
@@ -180,14 +190,17 @@ export default function PaymentUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Payment UI design involves trade-offs between security, conversion, complexity, and user experience. Understanding these trade-offs enables informed decisions aligned with business requirements and customer expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Hosted Fields vs. Custom Form</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Hosted fields (Stripe Elements, Braintree). Pros: PCI compliant (SAQ A, simplest), no card data on your server, maintained by provider (security updates). Cons: Less customization (iframe styling limits), dependency on provider (downtime affects you), accessibility challenges (iframe tab order). Best for: Most e-commerce (security priority, compliance simplicity).
-        </p>
+        </HighlightBlock>
         <p>
           Custom form (your own fields). Pros: Full customization (design control), no iframe (better accessibility), no provider dependency. Cons: PCI compliant (SAQ D, complex), card data on your server (security burden), annual audits (cost, effort). Best for: Large enterprises (existing PCI compliance, design requirements).
         </p>
@@ -239,13 +252,16 @@ export default function PaymentUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use hosted fields for PCI compliance:</strong> Stripe Elements, Braintree Hosted Fields. Card data never touches your server. SAQ A compliance (simplest). Style with CSS inheritance. Test accessibility (tab order, labels).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement real-time validation:</strong> Luhn algorithm for card number. Expiry date validation (not expired). CVV length validation (3-4 digits). Inline errors (field-level, specific). Clear errors on valid input.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Support digital wallets:</strong> Apple Pay (iOS), Google Pay (Android), PayPal (both). One-click payment (higher conversion). Biometric auth (Touch ID, Face ID). Display prominently (above card form).
           </li>
@@ -275,13 +291,16 @@ export default function PaymentUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Raw card data on server:</strong> Massive PCI scope, security risk. Solution: Hosted fields, tokenization. Never log/store raw card data.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No real-time validation:</strong> Errors on submit, user frustrated. Solution: Validate on blur, inline errors, clear on valid input.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Clear form on error:</strong> User must re-enter everything. Solution: Preserve entered data, highlight error field, specific error message.
           </li>
@@ -311,16 +330,19 @@ export default function PaymentUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Stripe Elements Payment Form</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe Elements: pre-built, accessible, PCI-compliant components. Card Element (number, expiry, CVV in one). Postal Code Element (billing zip). IBAN Element (SEPA bank transfer). Styling: CSS variables (match your design). Validation: real-time (built-in). 3D Secure: Stripe handles redirect. Mobile: optimized (numeric keypad, auto-format).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Apple Pay Integration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Apple Pay: native iOS payment sheet. Integration: Stripe, Braintree, or Apple Pay JS. Flow: tap Apple Pay button → native sheet (card selection, biometric auth) → token → charge. Benefits: one-click (no form fill), biometric (Touch ID/Face ID), higher conversion. Requirements: HTTPS, domain verification, Safari (iOS/macOS).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">PayPal Checkout</h3>
         <p>
@@ -340,12 +362,15 @@ export default function PaymentUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you ensure PCI compliance for payment forms?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you ensure PCI compliance for payment forms?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use hosted fields (Stripe Elements, Braintree Hosted Fields). Card data entered in iframe served from payment provider (your page never sees raw card data). Token returned (safe to store/transmit). SAQ A compliance (simplest, annual self-assessment). Never log card data, never store card data (even encrypted). HTTPS required (TLS 1.2+).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

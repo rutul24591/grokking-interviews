@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,13 +34,16 @@ export default function RBACArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Role-Based Access Control (RBAC)</strong> is an authorization model where
           permissions are assigned to roles, and users are assigned to roles. This abstraction
           simplifies permission management, enables hierarchical access control, and provides clear
           audit trails for compliance. Instead of managing permissions for each user individually
           (which doesn't scale), you manage roles and assign users to appropriate roles.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/rbac-model.svg"
@@ -47,14 +51,14 @@ export default function RBACArticle() {
           caption="RBAC Model — showing Users → Roles → Permissions flow with role hierarchy"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing RBAC requires deep understanding of role
           hierarchies (parent-child inheritance), permission granularity (coarse vs fine-grained),
           many-to-many relationships (users ↔ roles ↔ permissions), caching strategies (JWT,
           Redis), and the trade-offs between RBAC and ABAC (Attribute-Based Access Control). The
           implementation must support fine-grained permissions while maintaining sub-millisecond
           authorization checks at scale.
-        </p>
+        </HighlightBlock>
         <p>
           Modern RBAC systems have evolved from simple role assignments to sophisticated
           hierarchical models with inheritance, dynamic permissions based on context, and hybrid
@@ -66,12 +70,15 @@ export default function RBACArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           RBAC is built on fundamental concepts that determine how roles, permissions, and users
           interact. Understanding these concepts is essential for designing effective authorization
           systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Core Components:</strong> RBAC has five core components: Users (individual
           accounts in the system), Roles (named collections of permissions like admin, moderator,
           user), Permissions (atomic access rights like create:post, delete:user), Role-Permission
@@ -79,7 +86,7 @@ export default function RBACArticle() {
           Assignment (many-to-many relationship linking users to roles). This separation enables
           flexible permission management — change a role's permissions and all users with that role
           inherit the change.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Role Hierarchy:</strong> Roles can inherit permissions from parent roles, creating
           a hierarchy. Child roles inherit all parent permissions. Example: admin → moderator →
@@ -107,11 +114,14 @@ export default function RBACArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           RBAC architecture separates role management from permission enforcement, enabling
           centralized role management with distributed permission checks. This architecture is
           critical for scaling authorization across distributed systems.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/rbac-schema.svg"
@@ -119,14 +129,14 @@ export default function RBACArticle() {
           caption="RBAC Database Schema — showing users, roles, permissions tables with junction tables"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The authorization flow starts when a request arrives. The system extracts user context
           (user_id from JWT/session), loads user's roles from user_roles table, loads permissions
           for all roles from role_permissions table, caches permissions (JWT or Redis), and checks
           if required permission is in user's permission set. If yes, allow access. If no, return
           403 Forbidden. This flow must complete in sub-millisecond latency to avoid impacting user
           experience.
-        </p>
+        </HighlightBlock>
         <p>
           Caching is critical for performance. JWT approach: include permissions array in token
           claims during authentication, validate signature on each request, extract permissions
@@ -154,25 +164,28 @@ export default function RBACArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing RBAC systems involves trade-offs between simplicity, flexibility, and
           performance. Understanding these trade-offs is essential for making informed architecture
           decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">RBAC vs ABAC</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>RBAC:</strong> Simpler to understand and audit, good for organizational
               hierarchies, clear role definitions. Limitation: coarse-grained, can't express
               context-aware rules (access only during business hours).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>ABAC:</strong> More flexible, context-aware, fine-grained (user.department ==
               resource.department AND time &gt; 9AM). Limitation: complex to manage, harder to
               audit, performance overhead.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Hybrid:</strong> RBAC for coarse-grained access (admin, user), ABAC for
               resource-level checks (user can edit document if owner OR editor). Best of both
@@ -223,20 +236,23 @@ export default function RBACArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing RBAC requires following established best practices to ensure security,
           usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use principle of least privilege for role assignment — grant minimum permissions
           necessary for the role. Implement permission caching with proper invalidation — JWT for
           common permissions, Redis for detailed, invalidate on role change. Log all authorization
           decisions for audit trails — include user, role, permission, resource, decision. Use
           constant-time comparison for permission checks — prevent timing attacks. Separate role
           management from application logic — centralized role management, distributed enforcement.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Role Design</h3>
         <p>
@@ -270,21 +286,24 @@ export default function RBACArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing RBAC to ensure secure, usable, and
           maintainable authorization systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Role explosion:</strong> Too many specialized roles (50+), hard to manage and
             audit. <strong>Fix:</strong> Use permission groups, attribute-based rules for edge
             cases, consolidate overlapping roles.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Hardcoded permissions:</strong> Permissions in code, not database, hard to
             change without deployment. <strong>Fix:</strong> Store permissions in database, load
             dynamically, use policy engine for complex rules.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No permission caching:</strong> Database query on every check, slow performance
             under load. <strong>Fix:</strong> Cache in JWT (for common permissions) or Redis (for
@@ -330,17 +349,20 @@ export default function RBACArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           RBAC is critical for organizations with complex authorization requirements. Here are
           real-world implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS (Salesforce)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Multi-tenant SaaS with complex role requirements. Each
           tenant needs custom roles (Sales Rep, Sales Manager, Admin). Hierarchical permissions
           (Manager inherits from Rep). Multi-tenant isolation.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Tenant-scoped roles (tenant_id in roles table). Role hierarchy
           with inheritance (Manager → Rep). Permission caching per tenant. Custom role builder for
@@ -439,14 +461,17 @@ export default function RBACArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of RBAC design, implementation, and operational
           concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: RBAC vs ABAC — which to choose?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: RBAC vs ABAC — which to choose?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: RBAC for simple, role-based access (admin, moderator, user) — easier to manage,
               clearer audit trail, good for organizational hierarchies. ABAC for fine-grained,

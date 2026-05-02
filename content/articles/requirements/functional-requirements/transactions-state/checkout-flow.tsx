@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function CheckoutFlowArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Checkout flow is the critical conversion funnel where users complete their purchase by providing shipping information, selecting payment methods, and confirming their order. This flow represents the culmination of the entire shopping experience and directly impacts revenue—every second of latency and every additional field increases abandonment risk. For staff and principal engineers, checkout implementation involves balancing security (PCI compliance), user experience (minimal friction), and business requirements (tax calculation, inventory reservation, fraud prevention).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The technical complexity of checkout flows is often underestimated. A production-ready checkout must handle cart validation (items still available, prices unchanged), real-time shipping calculation (carrier APIs, warehouse selection), tax computation (jurisdiction-based rules), payment processing (authorization, 3D Secure, fraud checks), and inventory reservation (prevent overselling). The system must handle failures gracefully—payment declines, inventory conflicts, shipping restrictions—while preserving user-entered data and providing clear recovery paths.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, checkout architecture involves distributed systems challenges. The flow spans multiple services: cart service (item validation), inventory service (stock reservation), pricing service (promotions, discounts), shipping service (carrier integration), tax service (jurisdiction calculation), payment service (gateway integration), and order service (persistence). Each service introduces latency and failure modes. The architecture must handle partial failures—inventory reserved but payment failed, payment authorized but order creation failed—with rollback mechanisms and idempotency to prevent duplicate charges or orphaned reservations.
         </p>
@@ -47,13 +51,16 @@ export default function CheckoutFlowArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Checkout Flow States</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Checkout flows progress through defined states: Cart Review → Shipping → Payment → Confirmation. Each state has specific validation requirements and side effects. Cart Review validates items (availability, price changes, promotions). Shipping collects address, calculates shipping options, and reserves inventory. Payment collects payment details, processes authorization, and handles 3D Secure challenges. Confirmation creates the order, sends notifications, and clears the cart. State transitions must be atomic—if any step fails, rollback previous steps and present clear error messages.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Progress tracking maintains checkout state across sessions. Users may abandon checkout and return hours or days later. State persistence (localStorage for guest, database for authenticated users) enables resume from last step. Cart contents may change during abandonment—items may go out of stock, prices may change, promotions may expire. Validation on resume handles these conflicts gracefully, informing users of changes and offering alternatives.
-        </p>
+        </HighlightBlock>
         <p>
           Checkout expiration handles stale checkouts. Inventory reservations have TTL (typically 10-30 minutes) to prevent indefinite holds. Payment authorizations expire (typically 7-30 days depending on card network). Expired checkouts require user re-confirmation—re-validate cart, re-calculate shipping, re-authorize payment. Clear communication prevents confusion ("Your cart was updated—please review before completing purchase").
         </p>
@@ -105,9 +112,12 @@ export default function CheckoutFlowArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Checkout architecture spans client-side flow orchestration, backend service integration, payment gateway communication, and order persistence. Client manages multi-step form state, validation, and progress. Backend services handle cart validation, shipping calculation, tax computation, payment processing, and order creation. Payment gateway processes payment authorization and capture. Order service persists order and triggers fulfillment.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/checkout-flow/checkout-architecture.svg"
@@ -118,9 +128,9 @@ export default function CheckoutFlowArticle() {
         />
 
         <h3>Client-Side Orchestration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Multi-step form manages checkout progression. Each step (Shipping, Payment, Review) is a separate component with its own validation. Step state persists across navigation—users can go back to modify previous steps without losing data. Form state management (React Context, Zustand, Redux) centralizes checkout data. Local storage backup prevents data loss on browser close.
-        </p>
+        </HighlightBlock>
         <p>
           Validation strategy combines client-side and server-side validation. Client-side validation provides immediate feedback (required fields, format validation, Luhn algorithm for card numbers). Server-side validation ensures data integrity (inventory availability, price accuracy, fraud checks). Validation errors display inline with clear messaging ("Card number is invalid. Please check and try again").
         </p>
@@ -180,14 +190,17 @@ export default function CheckoutFlowArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Checkout flow design involves trade-offs between conversion optimization, security, fraud prevention, and operational complexity. Understanding these trade-offs enables informed decisions aligned with business goals and risk tolerance.
-        </p>
+        </HighlightBlock>
 
         <h3>Guest Checkout vs. Account Required</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Guest checkout enables purchase without account creation. Pros: Lower friction, higher conversion (20-30% improvement), respects user preference. Cons: No order history, harder to re-engage, limited fraud signals. Best for: First-time buyers, low-frequency purchases, impulse buys.
-        </p>
+        </HighlightBlock>
         <p>
           Account required mandates registration before checkout. Pros: Complete order history, easier re-engagement, better fraud signals, loyalty integration. Cons: Higher friction, lower conversion, privacy concerns. Best for: B2B purchases, subscription services, high-value items requiring account management.
         </p>
@@ -239,13 +252,16 @@ export default function CheckoutFlowArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
       <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Minimize form fields:</strong> Every field increases friction. Remove optional fields, combine fields where possible (first/last name), use smart defaults (ship to billing). Progressive disclosure shows additional fields only when needed ("Different billing address?" toggle).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement address autocomplete:</strong> Integration with Loqate, Google Places, or similar reduces typing errors, standardizes formats, validates deliverability. Autocomplete reduces checkout time by 30-50%. Show address suggestions as user types, populate fields on selection.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Support guest checkout:</strong> 25-30% of users abandon if forced to create account. Offer guest checkout with optional account creation post-purchase. Email magic link enables order tracking without password. Account creation after checkout has 3-5x higher opt-in rate.
           </li>
@@ -275,13 +291,16 @@ export default function CheckoutFlowArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Too many form fields:</strong> Asking for unnecessary information increases abandonment. Solution: Audit fields, remove optional fields, combine where possible. Every field should have clear business justification.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No guest checkout:</strong> Forced account creation loses 25-30% of customers. Solution: Offer guest checkout, invite to create account post-purchase. Magic link enables order tracking without password.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Hidden costs revealed late:</strong> Shipping, tax, fees shown only at final step causes sticker shock. Solution: Show costs early (cart page), provide shipping calculator before checkout, be transparent about all fees.
           </li>
@@ -311,16 +330,19 @@ export default function CheckoutFlowArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Shopify Checkout</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shopify processes millions of checkouts daily with 99.99% uptime. Single-page accordion checkout with progressive disclosure. Guest checkout default, account creation post-purchase. Shop Pay (one-click checkout) stores shipping and payment for returning customers across all Shopify stores. Dynamic shipping calculation with carrier integration. Inventory reservation on checkout start (10-minute TTL).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Amazon 1-Click Ordering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon pioneered 1-click ordering for returning customers. Pre-stored shipping address, pre-stored payment method, pre-validated inventory. Order placed with single click/tap. Default for Prime members. Frictionless experience drives impulse purchases. Patent expired 2017, now available to all retailers. Balance convenience with accidental order prevention (confirmation dialog optional).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Stripe Checkout</h3>
         <p>
@@ -340,12 +362,15 @@ export default function CheckoutFlowArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle inventory race conditions during checkout?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle inventory race conditions during checkout?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use optimistic locking with version numbers. When reserving inventory, check version matches expected. If version changed (another checkout reserved same item), fail gracefully with user notification ("Item just sold out. Remove from cart or save for later?"). Alternative: pessimistic locking (database row lock) during reservation—prevents race conditions but impacts concurrency. For high-demand items, use queue system (first-come-first-served) or lottery system (random selection among concurrent checkouts).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

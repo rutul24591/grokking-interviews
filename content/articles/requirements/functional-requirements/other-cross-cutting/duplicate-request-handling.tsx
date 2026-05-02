@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function DuplicateRequestHandlingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Duplicate Request Handling enables systems to detect and handle duplicate requests. Systems can configure deduplication (configure how to deduplicate), set idempotency keys (set idempotency keys), track requests (track requests), detect duplicates (detect duplicate requests), and prevent duplicates (prevent duplicate processing). Duplicate request handling is fundamental to system reliability (maintain system reliability), data integrity (maintain data integrity), and user experience (maintain user experience). For distributed systems, effective duplicate request handling is essential for system reliability, data integrity, and user experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, duplicate request handling architecture involves request deduplication (deduplicate requests), idempotency keys (implement idempotency keys), request tracking (track requests), duplicate detection (detect duplicates), and duplicate prevention (prevent duplicates). The implementation must balance reliability (handle duplicates) with performance (don&apos;t overhead system) and user experience (maintain user experience). Poor duplicate request handling leads to data corruption, system failures, and user frustration.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of duplicate request handling extends beyond simple duplicate detection. Request deduplication (deduplicate requests). Idempotency keys (implement idempotency keys). Request tracking (track requests). Duplicate detection (detect duplicates). Duplicate prevention (prevent duplicates). For staff engineers, duplicate request handling is a system reliability infrastructure decision affecting system reliability, data integrity, and user experience.
         </p>
@@ -46,13 +50,16 @@ export default function DuplicateRequestHandlingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Request Deduplication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Request identification identifies requests. Request ID (identify by ID). Request signature (identify by signature). Request fingerprint (identify by fingerprint). Request identification enables request identification. Benefits include uniqueness (unique requests), tracking (track requests). Drawbacks includes identification overhead (identification overhead), complexity (complexity).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Request comparison compares requests. Request matching (match requests). Request similarity (compare similarity). Request equality (compare equality). Request comparison enables request comparison. Benefits include duplicate detection (detect duplicates), accuracy (accurate detection). Drawbacks includes comparison overhead (comparison overhead), complexity (complexity).
-        </p>
+        </HighlightBlock>
         <p>
           Request deduplication deduplicates requests. Duplicate removal (remove duplicates). Duplicate merging (merge duplicates). Duplicate prevention (prevent duplicates). Request deduplication enables request deduplication. Benefits include system reliability (system reliability), data integrity (data integrity). Drawbacks includes deduplication overhead (deduplication overhead), complexity (complexity).
         </p>
@@ -104,9 +111,12 @@ export default function DuplicateRequestHandlingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Duplicate request handling architecture spans deduplication service, idempotency service, tracking service, and detection service. Deduplication service manages deduplication. Idempotency service manages idempotency. Tracking service manages tracking. Detection service manages detection. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/duplicate-request-handling/duplicate-architecture.svg"
@@ -117,9 +127,9 @@ export default function DuplicateRequestHandlingArticle() {
         />
 
         <h3>Deduplication Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Deduplication service manages deduplication. Deduplication storage (store deduplication). Deduplication retrieval (retrieve deduplication). Deduplication update (update deduplication). Deduplication service is the core of duplicate request handling. Benefits include centralization (one place for deduplication), consistency (same deduplication everywhere). Drawbacks includes complexity (manage deduplication), coupling (services depend on deduplication service).
-        </p>
+        </HighlightBlock>
         <p>
           Deduplication policies define deduplication rules. Default deduplication (default deduplication). Deduplication validation (validate deduplication). Deduplication sync (sync deduplication). Deduplication policies automate deduplication management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function DuplicateRequestHandlingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Duplicate request handling design involves trade-offs between strict and lenient deduplication, real-time and batch detection, and automatic and manual prevention. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Deduplication: Strict vs. Lenient</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Strict deduplication (strictly deduplicate). Pros: High accuracy (high accuracy), no duplicates (no duplicates), data integrity (data integrity). Cons: Overhead (overhead), may reject legitimate (may reject legitimate), complexity (complexity). Best for: High accuracy, data integrity.
-        </p>
+        </HighlightBlock>
         <p>
           Lenient deduplication (leniently deduplicate). Pros: Lower overhead (lower overhead), no rejection (no rejection), simplicity (simplicity). Cons: May allow duplicates (may allow duplicates), data issues (data issues), accuracy issues (accuracy issues). Best for: Lower overhead, simplicity.
         </p>
@@ -207,13 +220,16 @@ export default function DuplicateRequestHandlingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide deduplication:</strong> Request identification. Request comparison. Request deduplication. Let users choose.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement idempotency keys:</strong> Key generation. Key storage. Key validation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Track requests:</strong> Request logging. Request monitoring. Request tracing.
           </li>
@@ -243,13 +259,16 @@ export default function DuplicateRequestHandlingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No deduplication:</strong> Can&apos;t deduplicate. <strong>Solution:</strong> Provide deduplication.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No idempotency keys:</strong> No idempotency. <strong>Solution:</strong> Implement idempotency keys.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No request tracking:</strong> Can&apos;t track requests. <strong>Solution:</strong> Track requests.
           </li>
@@ -279,16 +298,19 @@ export default function DuplicateRequestHandlingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>API Duplicate Handling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           API platforms provide duplicate handling. Request deduplication (deduplicate requests). Idempotency keys (use idempotency keys). Duplicate detection (detect duplicates). Users control API duplicate handling.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Payment Duplicate Handling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Payment platforms provide duplicate handling. Payment deduplication (deduplicate payments). Idempotency keys (use idempotency keys). Duplicate prevention (prevent duplicates). Users control payment duplicate handling.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Database Duplicate Handling</h3>
         <p>
@@ -308,12 +330,15 @@ export default function DuplicateRequestHandlingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design duplicate request handling that balances reliability with performance?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design duplicate request handling that balances reliability with performance?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement duplicate handling with performance because users want reliability (no duplicate processing, data integrity) but want performance (not slow down every request). Deduplicate requests: deduplicate requests (identify duplicates, prevent duplicate processing, ensure single execution)—data integrity, no duplicate charges. Limit overhead: limit overhead (efficient deduplication, minimal latency, cache deduplication)—prevent performance degradation, efficient handling. Monitor performance: monitor performance (deduplication success rate, performance impact, overhead cost)—identify optimization opportunities, balance reliability with cost. The performance insight: users want reliability but want performance—provide deduplication (identify, prevent, single) with limits (efficient, minimal, cache), monitoring (success, impact, cost), and balance data integrity with performance.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

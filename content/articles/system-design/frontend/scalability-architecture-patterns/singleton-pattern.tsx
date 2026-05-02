@@ -717,8 +717,12 @@ export default function SingletonPatternArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: in frontend apps, “singletons” often show up as global caches, client instances, and
+          event buses. The key is to control lifecycle and avoid hidden global state in tests/SSR.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.patterns.dev/vanilla/singleton-pattern"
               className="text-accent hover:underline"
@@ -727,8 +731,8 @@ export default function SingletonPatternArticle() {
             >
               patterns.dev — Singleton Pattern
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://refactoring.guru/design-patterns/singleton"
               className="text-accent hover:underline"
@@ -737,8 +741,8 @@ export default function SingletonPatternArticle() {
             >
               Refactoring Guru — Singleton Pattern
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://wiki.c2.com/?SingletonPattern"
               className="text-accent hover:underline"
@@ -747,8 +751,8 @@ export default function SingletonPatternArticle() {
             >
               C2 Wiki — Singleton Pattern Discussion
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://react.dev/reference/react/createContext"
               className="text-accent hover:underline"
@@ -757,7 +761,7 @@ export default function SingletonPatternArticle() {
             >
               React Documentation — createContext
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

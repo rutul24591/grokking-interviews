@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,7 +24,10 @@ export default function StringArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The string pattern is not a single algorithm but an umbrella over every algorithmic
         family applied to character sequences: sliding window for substrings, hashing for
         anagrams and frequency, stack for parenthesised expressions and decode problems, trie
@@ -32,15 +36,15 @@ export default function StringArticle() {
         that strings impose enough special constraints — immutability, character-set
         assumptions, encoding, comparison semantics — that the engineering practice differs
         from the same algorithms applied to integer arrays.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Recognition is layered. The surface signal is &quot;the input is a string&quot;. The
         deeper signal is the question shape: &quot;substring with property&quot; (sliding
         window), &quot;anagrams or character counts&quot; (hashing), &quot;balanced or nested&quot;
         (stack), &quot;prefix queries against a dictionary&quot; (trie), &quot;find pattern in
         text&quot; (KMP / Rabin-Karp), &quot;palindromic substrings&quot; (expand around centers
         or Manacher).
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Strings dominate the easy and medium tiers of Leetcode and appear everywhere in
         production: log parsing, configuration files, URL routing, search query analysis,
@@ -55,18 +59,21 @@ export default function StringArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Character set assumptions.</strong> Lowercase Latin? Use int[26]. ASCII? int[128].
         Full Unicode? Map&lt;Character, Integer&gt;. The choice determines memory and access
         cost. Always confirm the alphabet before allocating a fixed-size array.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Immutability.</strong> In Java and Python, strings are immutable; in JavaScript,
         too. Repeated concatenation is O(n²) (each + creates a new string copying both
         operands). Use StringBuilder (Java), list-of-chars + join (Python), or Array.join (JS).
         For interview problems, an early sign of senior code is reaching for a buffer instead of
         accumulating with +.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Sliding window for substrings.</strong> Two pointers (left and right) define a
         window over the string. Right expands; left shrinks while a property is violated. The
@@ -107,20 +114,23 @@ export default function StringArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/string-diagram-1.svg" alt="String pattern overview" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The sliding-window template for &quot;longest substring satisfying P&quot;: initialise
         left = 0, an empty state structure, and best = 0. Iterate right; update the state with
         the new character; while the state violates P, increment left and remove that character
         from the state; record best as max(best, right - left + 1). Time O(n) — each character
         enters and leaves the window once.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         For minimum window substring (76), the variant tracks &quot;need&quot; — a count of how
         many characters of the target are still missing from the window. As right advances and
         adds a needed character, decrement need. Once need reaches zero, record the window
         and shrink from the left while need stays at zero. This is the canonical
         variable-window template for &quot;contains all of T&quot; questions.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         For anagrams in a string (438, 567), the window is fixed-size (length of the pattern).
         Maintain a count of characters within the window and compare to the pattern&apos;s
@@ -147,18 +157,21 @@ export default function StringArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Sliding window vs. brute-force.</strong> Brute-force is O(n²) or O(n³) for
         substring problems. Sliding window achieves O(n) when the property is monotonic
         (extending the window only makes it harder to satisfy, shrinking only makes it easier).
         Confirm monotonicity before committing to the window approach.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Sliding window vs. dynamic programming.</strong> For palindromic substring
         counting (647), DP is O(n²) time and space; expand-around-centers is O(n²) time and
         O(1) space. For longest palindromic subsequence, DP is necessary because the structure
         is not contiguous.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>KMP vs. Rabin-Karp.</strong> KMP is deterministic O(n + m). Rabin-Karp is
         expected O(n + m) but worst case O(nm) on hash collisions. Use Rabin-Karp when you
@@ -184,14 +197,17 @@ export default function StringArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/string-diagram-2.svg" alt="Substring search algorithms" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Confirm the alphabet.</strong> Lowercase Latin? ASCII? Unicode? The data
         structure choice depends on this answer.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Use a buffer for accumulation.</strong> Never build a string with repeated +.
         StringBuilder, list-of-chars + join, array push + join.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>For sliding window, prove monotonicity.</strong> &quot;If [l, r] is invalid,
         is [l, r+1] also invalid?&quot; If yes, sliding window is correct. If no, brute-force
@@ -219,13 +235,16 @@ export default function StringArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Concatenation in a loop.</strong> O(n²) silently. Use a buffer.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Comparing strings with == in Java.</strong> Tests reference equality, not
         content. Use equals.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Forgetting to handle empty strings.</strong> Many implementations crash or
         return wrong values on the empty input. Test it explicitly.
@@ -255,14 +274,17 @@ export default function StringArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>3. Longest Substring Without Repeating Characters.</strong> Sliding window
         with a hashmap of last-seen index.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>76. Minimum Window Substring.</strong> Variable window with need-counter and
         frequency map. The canonical &quot;contains all of T&quot; problem.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>567. Permutation in String / 438. Find All Anagrams.</strong> Fixed-size window
         + count comparison.
@@ -303,13 +325,16 @@ export default function StringArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/string-diagram-3.svg" alt="Canonical string Leetcode problems" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why is repeated concatenation O(n²)?</strong> Each concatenation copies both
+        <HighlightBlock as="li" tier="important"><strong>Why is repeated concatenation O(n²)?</strong> Each concatenation copies both
         operands; if the result grows linearly, the total work is the sum of 1, 2, 3, ..., n,
-        which is O(n²).</li>
-        <li><strong>When is sliding window correct?</strong> When the property is monotonic in the
+        which is O(n²).</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>When is sliding window correct?</strong> When the property is monotonic in the
         window: extending makes satisfying harder (so once unsatisfied, must shrink); shrinking
-        makes satisfying easier (so once satisfied, can record and try to shrink further).</li>
+        makes satisfying easier (so once satisfied, can record and try to shrink further).</HighlightBlock>
         <li><strong>How does KMP avoid restarting?</strong> The lps array tells you the longest
         prefix of the pattern that matches a suffix of what you have already compared. On
         mismatch, jump back by that much instead of starting over.</li>

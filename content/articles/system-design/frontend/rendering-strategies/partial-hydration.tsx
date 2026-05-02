@@ -39,7 +39,7 @@ export default function PartialHydrationConciseArticle() {
           granular control over what hydrates, when it hydrates, and under what
           circumstances.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Partial hydration represents the most flexible approach to hydration
           optimization. While progressive hydration uses priority levels and
           selective hydration distinguishes static from interactive, partial
@@ -47,7 +47,7 @@ export default function PartialHydrationConciseArticle() {
           might hydrate when: scrolled into view AND user is on WiFi, OR when
           idle AND screen is desktop-sized, OR immediately if it&apos;s
           above-the-fold on a fast connection.
-        </p>
+        </HighlightBlock>
         <p>
           This technique emerged from real-world performance needs where
           different components require different hydration strategies based on
@@ -57,7 +57,7 @@ export default function PartialHydrationConciseArticle() {
           chart can defer hydration until the user scrolls to it. Analytics
           widgets should wait for idle time regardless of visibility.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Partial hydration is particularly valuable for complex applications
           with diverse component types and varying user interaction patterns. It
           allows developers to optimize each component individually rather than
@@ -65,7 +65,7 @@ export default function PartialHydrationConciseArticle() {
           content platforms, e-commerce sites, and media applications use
           partial hydration to balance performance, interactivity, and
           complexity.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -75,27 +75,27 @@ export default function PartialHydrationConciseArticle() {
           concepts:
         </p>
         <ul>
-          <HighlightBlock as="li" tier="important">
+          <HighlightBlock as="li" tier="crucial">
             <strong>Conditional Hydration Predicates:</strong> Each component
             has a hydration predicate - a condition that must be satisfied
             before hydration occurs. Predicates can be simple (isVisible,
             hasBeenClicked) or complex (isVisible AND isIdle AND connectionSpeed
             &gt; 3G).
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Visibility-Based Hydration:</strong> Using Intersection
             Observer API to detect viewport visibility. Components remain as
             static HTML until they enter the visible area (or approach it within
             rootMargin). Prevents hydrating off-screen content that users may
             never see.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Interaction-Based Hydration:</strong> Deferring hydration
             until user interacts with a component or its vicinity. On first
             click, hover, or focus, the component quickly hydrates and processes
             the interaction. Works for components where slight delay is
             acceptable (modals, dropdowns, tooltips).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Time-Based Hydration:</strong> Hydrating after a specific
             time delay or during browser idle periods. Uses setTimeout,
@@ -134,7 +134,11 @@ export default function PartialHydrationConciseArticle() {
         <h2>Architecture & Flow</h2>
         <p>Partial hydration follows a sophisticated multi-stage process:</p>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
+        <HighlightBlock
+          as="div"
+          tier="important"
+          className="my-6 rounded-lg bg-panel-soft p-6"
+        >
           <h3 className="mb-4 text-lg font-semibold">Partial Hydration Flow</h3>
           <ol className="space-y-3">
             <li>
@@ -211,7 +215,15 @@ export default function PartialHydrationConciseArticle() {
               </ul>
             </li>
           </ol>
-        </div>
+        </HighlightBlock>
+
+        <HighlightBlock as="p" tier="important">
+          The runtime usually boils down to a small{" "}
+          <strong>hydration orchestrator</strong> plus per-component bundles. In
+          system design discussions, call out how you keep the orchestrator
+          small, how you avoid duplicate hydration, and how you prioritize
+          bundles (preload critical, defer the rest).
+        </HighlightBlock>
 
         <HighlightBlock as="p" tier="crucial">
           The key innovation: hydration happens only when explicitly triggered
@@ -219,6 +231,13 @@ export default function PartialHydrationConciseArticle() {
           components users may never interact with or see. The orchestrator is
           lightweight (2-5KB) and efficiently manages multiple observation
           strategies simultaneously.
+        </HighlightBlock>
+
+        <HighlightBlock as="p" tier="important">
+          A practical design detail interviewers probe: what happens when the
+          user interacts before hydration completes. You typically need{" "}
+          <strong>interaction replay</strong> or immediate feedback (disabled
+          state/loading) so clicks don’t get lost.
         </HighlightBlock>
 
         <ArticleImage
@@ -251,7 +270,7 @@ export default function PartialHydrationConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Flexibility</strong>
               </td>
@@ -269,8 +288,8 @@ export default function PartialHydrationConciseArticle() {
                 <br />
                 Less granular control
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Complexity</strong>
               </td>
@@ -288,8 +307,8 @@ export default function PartialHydrationConciseArticle() {
                 <br />
                 Less overhead
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Performance Gains</strong>
               </td>
@@ -307,7 +326,7 @@ export default function PartialHydrationConciseArticle() {
                 <br />
                 Predictable but less optimal
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Developer Experience</strong>
@@ -327,7 +346,7 @@ export default function PartialHydrationConciseArticle() {
                 Easier debugging
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Best For</strong>
               </td>
@@ -345,7 +364,7 @@ export default function PartialHydrationConciseArticle() {
                 <br />
                 Simpler applications
               </td>
-            </tr>
+            </HighlightBlock>
           </tbody>
         </table>
 
@@ -381,24 +400,24 @@ export default function PartialHydrationConciseArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Choose Appropriate Conditions:</strong> Match hydration
             conditions to component purpose. Navigation = immediate. Video
             player = visible. Analytics = idle. Modal = interaction. Don&apos;t
             over-optimize - use simpler conditions when possible.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Generous rootMargin:</strong> For visibility-based
             hydration, start loading 100-200px before component becomes visible.
             This gives time for download and hydration before user reaches it,
             avoiding layout shifts and perceived lag.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Network Awareness:</strong> Check connection type
             and adapt hydration strategy. On fast WiFi, be more aggressive. On
             slow 3G, defer more aggressively. Respect save-data mode by
             minimizing hydration.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Provide Fallbacks:</strong> Ensure components work (or
             degrade gracefully) before hydration. Static buttons should be
@@ -411,12 +430,12 @@ export default function PartialHydrationConciseArticle() {
             analytics. Identify components that are never hydrated (remove
             condition or mark static).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Keep Orchestrator Lightweight:</strong> The hydration
             orchestrator must be small (2-5KB) since it loads immediately.
             Minimize dependencies. Use native APIs (IntersectionObserver,
             requestIdleCallback).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle Edge Cases:</strong> What if component never becomes
             visible? What if JavaScript fails to load? What if user has low
@@ -428,11 +447,11 @@ export default function PartialHydrationConciseArticle() {
             Document why complex conditions are needed. Start simple, add
             complexity only when measurably beneficial.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Cleanup Observers and Listeners:</strong> After hydration,
             disconnect IntersectionObservers, remove event listeners, cancel
             timeouts. Prevent memory leaks and unnecessary observation work.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Test Across Devices and Conditions:</strong> Test on real
             devices with varying network speeds. Test with save-data mode
@@ -445,18 +464,18 @@ export default function PartialHydrationConciseArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Over-Engineering Conditions:</strong> Creating overly
             complex conditions for minor gains. Start simple (visible, idle,
             immediate). Add complexity only when data shows it&apos;s needed.
             Complexity has maintenance cost.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Tight rootMargin:</strong> Using 0px or small rootMargin
             means component starts hydrating when visible, causing delay. Use
             100-200px to prefetch before visible. Balance prefetching with
             over-eager loading.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Forgetting Mobile Constraints:</strong> Desktop may handle
             aggressive hydration, mobile can&apos;t. Test on real mid-range
@@ -475,18 +494,18 @@ export default function PartialHydrationConciseArticle() {
             Track hydration state and short-circuit if already hydrating or
             hydrated.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory Leaks from Observers:</strong> Not disconnecting
             IntersectionObservers or removing event listeners after hydration.
             This causes memory leaks, especially for single-page apps with
             navigation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Interaction Hydration Lag:</strong> User clicks before
             hydration completes, interaction is lost or delayed. Provide
             immediate visual feedback (disabled state, loading indicator) while
             hydrating.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Inconsistent Conditions:</strong> Different conditions for
             similar components confuses users and developers. Establish patterns
@@ -511,20 +530,20 @@ export default function PartialHydrationConciseArticle() {
         <p>Partial hydration excels in these scenarios:</p>
 
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Media-Heavy Sites:</strong> News sites and media platforms
             use partial hydration for videos, image galleries, and interactive
             graphics. Videos hydrate only when visible and on WiFi. Image
             galleries hydrate when user scrolls to them. This prevents hydrating
             expensive components users may never interact with.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>E-commerce Product Pages:</strong> Product pages use
             multiple conditions: image gallery hydrates when visible, variant
             selector hydrates immediately (critical for conversion), reviews
             hydrate during idle, recommendation carousel hydrates when visible.
             Network-aware: on 3G, defer recommendations and reviews.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Long-Form Content:</strong> Articles with embedded
             interactive elements (charts, calculators, quizzes) scattered
@@ -539,21 +558,21 @@ export default function PartialHydrationConciseArticle() {
             This keeps initial load minimal while providing rich interactivity
             on-demand.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Dashboard Applications:</strong> Complex dashboards with
             multiple widgets use partial hydration with priorities. Critical KPI
             widgets hydrate immediately. Charts hydrate when visible. Detailed
             tables hydrate during idle. Settings panels hydrate on interaction.
             Desktop gets aggressive hydration, mobile is more conservative.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Documentation Platforms:</strong> Documentation with
             interactive code examples use partial hydration. Code editors
             hydrate when visible (and user scrolls to them). Search hydrates
             immediately (high priority). API explorers hydrate on interaction.
             This keeps docs fast while providing rich interactivity where
             needed.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Progressive Web Apps:</strong> PWAs use network-aware
             partial hydration. On first visit with slow connection, minimal
@@ -591,7 +610,7 @@ export default function PartialHydrationConciseArticle() {
       <section>
         <h2>References & Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://web.dev/progressive-hydration/"
               className="text-accent hover:underline"
@@ -600,8 +619,8 @@ export default function PartialHydrationConciseArticle() {
             >
               Progressive & Partial Hydration - web.dev
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://docs.astro.build/en/reference/directives-reference/#client-directives"
               className="text-accent hover:underline"
@@ -610,8 +629,8 @@ export default function PartialHydrationConciseArticle() {
             >
               Astro Client Directives (Partial Hydration)
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API"
               className="text-accent hover:underline"
@@ -620,8 +639,8 @@ export default function PartialHydrationConciseArticle() {
             >
               MDN - Intersection Observer API
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback"
               className="text-accent hover:underline"
@@ -630,7 +649,7 @@ export default function PartialHydrationConciseArticle() {
             >
               MDN - requestIdleCallback
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API"

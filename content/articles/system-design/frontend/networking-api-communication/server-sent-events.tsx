@@ -239,6 +239,10 @@ export default function ServerSentEventsConciseArticle() {
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
+        <HighlightBlock as="p" tier="important">
+          For interviews: compare SSE vs WebSockets on directionality and ops cost. SSE is often “good enough” for
+          feeds, while WebSockets are justified for low-latency bidirectional flows.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -410,10 +414,10 @@ export default function ServerSentEventsConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           These are the issues that most frequently surface in production SSE
           deployments, often discovered only after launch:
-        </HighlightBlock>
+        </p>
         <ul className="space-y-3">
           <HighlightBlock as="li" tier="crucial">
             <strong>Hitting the HTTP/1.1 6-Connection Limit:</strong> Opening
@@ -1083,8 +1087,12 @@ export default function ServerSentEventsConciseArticle() {
 
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Strong interview positioning: SSE is “server push, one-way”. It’s ideal for feeds and notifications when
+          you don’t need bidirectional messaging, and it’s simpler to operate than WebSockets in many systems.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://html.spec.whatwg.org/multipage/server-sent-events.html"
               className="text-accent hover:underline"
@@ -1093,8 +1101,8 @@ export default function ServerSentEventsConciseArticle() {
             >
               WHATWG HTML Living Standard - Server-Sent Events
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/EventSource"
               className="text-accent hover:underline"
@@ -1103,7 +1111,7 @@ export default function ServerSentEventsConciseArticle() {
             >
               MDN Web Docs - EventSource API
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events"
@@ -1114,7 +1122,7 @@ export default function ServerSentEventsConciseArticle() {
               MDN Web Docs - Using Server-Sent Events
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://web.dev/articles/eventsource-basics"
               className="text-accent hover:underline"
@@ -1123,8 +1131,8 @@ export default function ServerSentEventsConciseArticle() {
             >
               web.dev - Stream Updates with Server-Sent Events
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.chrome.com/docs/devtools/network/reference/#sse"
               className="text-accent hover:underline"
@@ -1133,7 +1141,7 @@ export default function ServerSentEventsConciseArticle() {
             >
               Chrome DevTools - Inspecting Server-Sent Events
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

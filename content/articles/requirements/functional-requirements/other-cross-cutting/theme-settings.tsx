@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ThemeSettingsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Theme Settings enable users to customize the visual appearance of the application. Users can select theme mode (light mode, dark mode, system theme), customize themes (custom colors, custom styles), persist themes (save theme preferences), and manage themes (view and edit saved themes). Theme settings are fundamental to user experience (personalized appearance), accessibility (appropriate contrast), and user satisfaction (users appreciate customization). For platforms with user interfaces, effective theme settings are essential for user experience, accessibility, and satisfaction.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, theme settings architecture involves theme management (manage themes), theme persistence (persist theme preferences), theme sync (sync across devices), theme application (apply themes), and theme customization (customize themes). The implementation must balance customization (users can customize) with consistency (consistent experience) and performance (fast theme switching). Poor theme settings lead to user frustration, accessibility issues, and inconsistent experience.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of theme settings extends beyond simple light/dark toggle. Theme modes (light, dark, system). Theme customization (custom colors, custom styles). Theme persistence (save preferences). Theme sync (sync across devices). Theme application (apply themes correctly). For staff engineers, theme settings are a user interface infrastructure decision affecting user experience, accessibility, and satisfaction.
         </p>
@@ -46,13 +50,16 @@ export default function ThemeSettingsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Theme Modes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Light mode displays light theme. Light background (light background colors). Dark text (dark text colors). Light icons (light icon colors). Light mode enables light theme. Benefits include readability (readable in bright light), familiarity (familiar appearance). Drawbacks includes eye strain (eye strain in dark), battery usage (higher battery usage on OLED).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Dark mode displays dark theme. Dark background (dark background colors). Light text (light text colors). Dark icons (dark icon colors). Dark mode enables dark theme. Benefits include eye comfort (comfortable in dark), battery saving (saves battery on OLED). Drawbacks includes readability issues (hard to read in bright light), unfamiliarity (unfamiliar appearance).
-        </p>
+        </HighlightBlock>
         <p>
           System theme follows system theme. System detection (detect system theme). Auto switch (automatically switch theme). System override (override system theme). System theme enables system-following theme. Benefits include consistency (consistent with system), automation (automatically switch). Drawbacks includes system dependency (depends on system), may not match preference (may not match user preference).
         </p>
@@ -104,9 +111,12 @@ export default function ThemeSettingsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Theme settings architecture spans theme service, persistence service, sync service, and application service. Theme service manages themes. Persistence service manages theme persistence. Sync service manages theme sync. Application service manages theme application. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/theme-settings/theme-architecture.svg"
@@ -117,9 +127,9 @@ export default function ThemeSettingsArticle() {
         />
 
         <h3>Theme Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Theme service manages user themes. Theme storage (store themes). Theme retrieval (retrieve themes). Theme update (update themes). Theme service is the core of theme settings. Benefits include centralization (one place for themes), consistency (same themes everywhere). Drawbacks includes complexity (manage themes), coupling (services depend on theme service).
-        </p>
+        </HighlightBlock>
         <p>
           Theme policies define theme rules. Default themes (default themes). Theme validation (validate themes). Theme sync (sync themes). Theme policies automate theme management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function ThemeSettingsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Theme settings design involves trade-offs between light and dark mode, local and cloud persistence, and immediate and delayed application. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Mode: Light vs. Dark</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Light mode (light theme). Pros: Readability (readable in bright light), familiarity (familiar appearance), accessibility (accessible for most users). Cons: Eye strain (eye strain in dark), battery usage (higher battery usage on OLED), glare (glare in dark). Best for: Bright environments, general use.
-        </p>
+        </HighlightBlock>
         <p>
           Dark mode (dark theme). Pros: Eye comfort (comfortable in dark), battery saving (saves battery on OLED), reduced glare (reduced glare in dark). Cons: Readability issues (hard to read in bright light), unfamiliarity (unfamiliar appearance), color accuracy (color accuracy issues). Best for: Dark environments, OLED displays.
         </p>
@@ -207,13 +220,16 @@ export default function ThemeSettingsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide theme modes:</strong> Light mode. Dark mode. System theme. Let users choose.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enable theme customization:</strong> Color customization. Style customization. Preset themes. Let users choose.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Persist themes:</strong> Local persistence. Cloud persistence. Hybrid persistence. Let users choose.
           </li>
@@ -243,13 +259,16 @@ export default function ThemeSettingsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No theme modes:</strong> Only one theme. <strong>Solution:</strong> Provide theme modes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No theme customization:</strong> Can&apos;t customize theme. <strong>Solution:</strong> Enable theme customization.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No theme persistence:</strong> Theme not saved. <strong>Solution:</strong> Persist themes.
           </li>
@@ -279,16 +298,19 @@ export default function ThemeSettingsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>OS Theme Settings</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Operating systems provide theme settings. Theme modes (light, dark, system). Theme customization (custom colors, custom styles). Theme persistence (persist themes). Theme sync (sync across devices). Users control OS theme.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Browser Theme Settings</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Browsers provide theme settings. Theme modes (light, dark, system). Theme customization (custom colors, custom styles). Theme persistence (persist themes). Theme sync (sync across devices). Users control browser theme.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">App Theme Settings</h3>
         <p>
@@ -308,12 +330,15 @@ export default function ThemeSettingsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design theme settings that balance customization with consistency?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design theme settings that balance customization with consistency?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement sensible customization with constraints because users want customization (personal expression, accessibility needs) but don&apos;t want inconsistency (broken UI, unreadable text). Provide theme modes: light mode (bright background, dark text), dark mode (dark background, light text), system mode (follow OS preference)—core modes cover most needs. Enable color customization: within constraints (choose accent color from palette, not arbitrary colors; ensure sufficient contrast)—personalization without breaking design. Enable style customization: within constraints (choose font size from range, not arbitrary; choose spacing from options)—accessibility without breaking layout. Ensure consistency: constrain customization (validate choices, enforce minimum contrast, prevent broken combinations)—design system integrity maintained. The consistency insight: users want customization but don&apos;t want inconsistency—provide customization with constraints (palettes, ranges, validation), ensure consistency (validate, enforce minimums), and balance personal expression with design integrity.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

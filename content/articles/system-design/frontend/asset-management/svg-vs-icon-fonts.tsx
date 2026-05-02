@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -43,7 +44,7 @@ export default function SvgVsIconFontsArticle() {
       {/* ── 1. Definition & Context ── */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Every modern web application relies on a system for rendering small
           pictographic elements&mdash;navigation icons, action buttons, status
           indicators, and brand marks. Two dominant approaches have emerged over
@@ -53,21 +54,21 @@ export default function SvgVsIconFontsArticle() {
           the industry has largely shifted toward SVG-based systems due to
           superior accessibility, styling control, and performance
           characteristics.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>SVG icons</strong> use Scalable Vector Graphics&mdash;an
           XML-based image format&mdash;to render icons as first-class DOM
           elements. They can be inlined directly, referenced from external sprite
           sheets, or imported as React components. Each icon is a set of vector
           paths with full access to CSS and JavaScript manipulation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Icon fonts</strong> encode glyphs (icon shapes) into a custom
           web font file. Each icon maps to a Unicode codepoint, and CSS{" "}
           <code>::before</code> pseudo-elements or ligature substitution renders
           the glyph. The browser treats icons as text characters, subject to
           font rendering rules including anti-aliasing and sub-pixel positioning.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Why this matters for staff/principal engineers:</strong>{" "}
           Choosing an icon strategy affects bundle size, render performance,
@@ -86,23 +87,23 @@ export default function SvgVsIconFontsArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Inline SVG:</strong> The SVG markup is embedded directly in
             the HTML document. Each icon becomes a DOM node tree with{" "}
             <code>&lt;svg&gt;</code>, <code>&lt;path&gt;</code>, and other
             elements. This provides maximum styling control and zero additional
             HTTP requests, but increases HTML document size and prevents browser
             caching of individual icons across pages.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>SVG Sprite Sheet:</strong> Multiple icons are combined into a
             single SVG file using <code>&lt;symbol&gt;</code> elements, each
             with a unique <code>id</code> and its own <code>viewBox</code>.
             Icons are referenced via{" "}
             <code>&lt;use href=&quot;#icon-name&quot; /&gt;</code>. The sprite
             can be inlined in the HTML (hidden) or loaded as an external file.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>External SVG References:</strong> Using{" "}
             <code>
               &lt;use href=&quot;/sprites.svg#icon-name&quot; /&gt;
@@ -111,7 +112,7 @@ export default function SvgVsIconFontsArticle() {
             across pages. However, external references have cross-origin
             restrictions and do not work with CSS styling of internal SVG
             elements in some browsers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>SVG-as-React-Component:</strong> Tools like SVGR transform
             SVG files into React components at build time. Each icon becomes an
@@ -157,40 +158,40 @@ export default function SvgVsIconFontsArticle() {
         <h2>Architecture &amp; Flow</h2>
 
         <h3>SVG Sprite Sheet System Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The following diagram illustrates the end-to-end pipeline for building
           and consuming SVG sprite sheets. Source SVG files pass through SVGO for
           optimization, then svg-sprite (or a similar tool) bundles them into a
           single sprite sheet with <code>&lt;symbol&gt;</code> elements.
           Components reference icons via the <code>&lt;use&gt;</code> element,
           either from an inline hidden sprite or an external file.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/svg-vs-icon-fonts-diagram-1.svg"
           alt="SVG sprite sheet system architecture showing symbol defs, use references, and build pipeline from source SVGs through SVGO and svg-sprite to the final sprite sheet"
         />
 
         <h3>Icon Font Rendering Pipeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Icon fonts follow a fundamentally different rendering path. The browser
           downloads a font file via <code>@font-face</code>, maps CSS classes to
           Unicode codepoints, and renders glyphs through the text rendering
           engine. This introduces font-specific issues like FOIT (Flash of
           Invisible Text) and FOUT (Flash of Unstyled Text) during the loading
           period.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/svg-vs-icon-fonts-diagram-2.svg"
           alt="Icon font rendering pipeline showing @font-face loading, Unicode mapping, glyph rendering, and CSS styling limitations"
         />
 
         <h3>Performance and Capability Comparison</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The comparison below summarizes the key differences across six
           critical dimensions. SVG icons hold advantages in most categories,
           while icon fonts retain simplicity for legacy projects with basic
           single-color icon needs.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/svg-vs-icon-fonts-diagram-3.svg"
           alt="Performance comparison chart between SVG icons and icon fonts covering bundle size, rendering, accessibility, styling flexibility, animation, and load performance"
@@ -200,26 +201,29 @@ export default function SvgVsIconFontsArticle() {
       {/* ── 4. Trade-offs & Comparisons ── */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="min-w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-theme">
+              <HighlightBlock as="tr" tier="important">
                 <th className="px-4 py-2 text-left font-semibold">Dimension</th>
                 <th className="px-4 py-2 text-left font-semibold">SVG Icons</th>
                 <th className="px-4 py-2 text-left font-semibold">Icon Fonts</th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody>
-              <tr className="border-b border-theme">
+              <HighlightBlock as="tr" tier="important">
                 <td className="px-4 py-2 font-medium">File Size (50 icons)</td>
                 <td className="px-4 py-2">~15&ndash;25 KB (sprite, gzipped)</td>
                 <td className="px-4 py-2">~20&ndash;40 KB (WOFF2, all glyphs)</td>
-              </tr>
-              <tr className="border-b border-theme">
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="px-4 py-2 font-medium">Tree Shaking</td>
                 <td className="px-4 py-2">Yes &mdash; per-icon imports eliminate unused icons</td>
                 <td className="px-4 py-2">No &mdash; entire font file ships regardless</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme">
                 <td className="px-4 py-2 font-medium">Multi-color Support</td>
                 <td className="px-4 py-2">Yes &mdash; multiple fills, strokes, gradients</td>
@@ -269,7 +273,7 @@ export default function SvgVsIconFontsArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>1. Use SVG-as-component for React projects:</strong> Tools
             like SVGR or <code>@svgr/webpack</code> transform SVG files into
             tree-shakeable React components at build time. This gives you
@@ -277,8 +281,8 @@ export default function SvgVsIconFontsArticle() {
             automatic dead-code elimination, and natural integration with your
             component library. Configure SVGO as part of the SVGR pipeline to
             optimize automatically.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>2. Apply currentColor consistently:</strong> Replace
             hardcoded fill and stroke values with{" "}
             <code>currentColor</code> in your SVG source files. This allows
@@ -286,15 +290,15 @@ export default function SvgVsIconFontsArticle() {
             <code>color</code> property, enabling theme switching and hover
             states without icon-specific CSS. Add an SVGO plugin or custom
             transform to enforce this during the build.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>3. Optimize with SVGO before bundling:</strong> Run SVGO on
             every SVG icon as part of your build pipeline. Key plugins:{" "}
             <code>removeViewBox: false</code> (preserve viewBox for scaling),{" "}
             <code>removeDimensions: true</code> (let CSS control size),{" "}
             <code>removeTitle: false</code> (preserve accessibility). Typical
             savings are 30&ndash;50% per file.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>4. Implement sprite sheets for SSR applications:</strong> For
             server-rendered pages where inline SVG components increase HTML
@@ -337,28 +341,28 @@ export default function SvgVsIconFontsArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Inlining hundreds of SVGs in SSR HTML:</strong> Each inline
             SVG adds to the HTML document size. For pages with 50+ icons,
             the HTML payload can grow by 50&ndash;100 KB. Use sprite sheets or
             component-level code splitting instead of inlining every icon into
             server-rendered markup.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing viewBox on SVG symbols:</strong> Without a{" "}
             <code>viewBox</code> attribute, SVGs cannot scale properly.
             Always preserve <code>viewBox</code> during SVGO optimization
             (<code>removeViewBox: false</code>). If using sprite sheets, each{" "}
             <code>&lt;symbol&gt;</code> must have its own <code>viewBox</code>.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Icon font FOIT causing layout shift:</strong> When the icon
             font hasn&apos;t loaded, browsers either hide the icon (FOIT) or
             show a fallback character (FOUT). Both cause Cumulative Layout Shift
             (CLS). Mitigate with{" "}
             <code>font-display: block</code> and preloading the font file, but
             this is an inherent weakness of the icon font approach.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Hardcoded colors in SVG source files:</strong> Designers
             often export SVGs with hardcoded hex colors. These override{" "}
@@ -403,7 +407,7 @@ export default function SvgVsIconFontsArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>GitHub &mdash; Octicons Migration</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           GitHub maintained Octicons as an icon font from 2012 to 2016. In 2016,
           they migrated to inline SVGs, citing three primary motivations:
           rendering quality (font smoothing caused blurry icons at small sizes),
@@ -412,10 +416,10 @@ export default function SvgVsIconFontsArticle() {
           reduced icon-related accessibility bugs by over 80% and eliminated all
           FOIT-related user complaints. Today, Octicons ships as a React
           component library with tree-shakeable named exports.
-        </p>
+        </HighlightBlock>
 
         <h3>Google &mdash; Material Icons Dual Strategy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google offers Material Icons in both icon font and SVG formats.
           The icon font remains available for backward compatibility and simple
           prototyping (a single CSS import gives access to 2,500+ icons via
@@ -426,10 +430,10 @@ export default function SvgVsIconFontsArticle() {
           tree shaking to eliminate unused icons. A typical Material UI
           application uses 30&ndash;50 icons but only bundles those specific
           components.
-        </p>
+        </HighlightBlock>
 
         <h3>Shopify &mdash; Polaris Design System</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shopify&apos;s Polaris design system uses SVG icons exclusively across
           its admin interface serving millions of merchants. Each icon is a React
           component accepting <code>color</code>, <code>size</code>, and{" "}
@@ -438,7 +442,7 @@ export default function SvgVsIconFontsArticle() {
           <code>currentColor</code> for automatic theme adaptation between light
           and dark modes. The build pipeline runs SVGO with custom plugins that
           enforce stroke width normalization and remove problematic attributes.
-        </p>
+        </HighlightBlock>
 
         <h3>Stripe &mdash; Dynamic Icon Loading</h3>
         <p>
@@ -469,13 +473,16 @@ export default function SvgVsIconFontsArticle() {
       {/* ── 8. Common Interview Questions ── */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel p-4">
-            <p className="font-semibold text-theme">
+            <HighlightBlock as="p" tier="important">
               Q: Why has the industry shifted from icon fonts to SVG icons, and
               what were the primary technical motivations?
-            </p>
-            <p className="mt-2 text-sm text-muted">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               The shift was driven by three key factors. First,{" "}
               <strong>accessibility</strong>: SVG icons carry semantic meaning
               via <code>&lt;title&gt;</code>, <code>&lt;desc&gt;</code>, and
@@ -490,14 +497,14 @@ export default function SvgVsIconFontsArticle() {
               limited to a single CSS <code>color</code> value. Companies like
               GitHub documented measurable improvements in all three areas after
               migrating Octicons from font to SVG.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel p-4">
-            <p className="font-semibold text-theme">
+            <HighlightBlock as="p" tier="important">
               Q: How would you design a tree-shakeable SVG icon system for a
               large React application?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               I would use SVGR to transform each SVG file into a named React
               component export during the build. The icon library would expose a

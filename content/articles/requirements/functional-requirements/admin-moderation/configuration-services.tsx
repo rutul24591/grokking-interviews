@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function ConfigurationServicesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Configuration services enable administrative configuration management through programmatic interfaces. The configuration service system is the primary tool for administrators, operations teams, and automated systems to manage configuration, control feature flags, perform dynamic configuration, and ensure configuration consistency. For staff and principal engineers, configuration services involve configuration management (manage configuration), feature flags (manage feature flags), dynamic configuration (manage dynamic configuration), configuration versioning (version configuration), configuration validation (validate configuration), and configuration service security (secure configuration services).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of configuration services extends beyond simple configuration management. Configuration management must manage configuration (manage configuration). Feature flags must manage feature flags (manage feature flags). Dynamic configuration must manage dynamic configuration (manage dynamic configuration). Configuration versioning must version configuration (version configuration). Configuration validation must validate configuration (validate configuration). Configuration service security must secure configuration services (secure configuration services).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, configuration services architecture involves configuration management (manage configuration), feature flags (manage feature flags), dynamic configuration (manage dynamic configuration), configuration versioning (version configuration), configuration validation (validate configuration), and configuration service security (secure configuration services). The system must support multiple configuration types (system configuration, application configuration, service configuration), multiple feature flag types (boolean flags, multivariate flags, rollout flags), and multiple dynamic configuration types (runtime configuration, dynamic updates, hot reload). Performance is important—configuration services must be fast and reliable.
         </p>
@@ -47,13 +51,16 @@ export default function ConfigurationServicesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Configuration Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           System configuration manages system configuration. System configuration (manage system configuration). System configuration validation (validate system configuration). System configuration enforcement (enforce system configuration). System configuration reporting (report on system configuration).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Application configuration manages application configuration. Application configuration (manage application configuration). Application configuration validation (validate application configuration). Application configuration enforcement (enforce application configuration). Application configuration reporting (report on application configuration).
-        </p>
+        </HighlightBlock>
         <p>
           Service configuration manages service configuration. Service configuration (manage service configuration). Service configuration validation (validate service configuration). Service configuration enforcement (enforce service configuration). Service configuration reporting (report on service configuration).
         </p>
@@ -116,9 +123,12 @@ export default function ConfigurationServicesArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Configuration services architecture spans configuration management, feature flags, dynamic configuration, and configuration versioning. Configuration management manages configuration. Feature flags manage feature flags. Dynamic configuration manages dynamic configuration. Configuration versioning versions configuration.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/admin-moderation/configuration-services/configuration-services-architecture.svg"
@@ -129,9 +139,9 @@ export default function ConfigurationServicesArticle() {
         />
 
         <h3>Configuration Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Configuration management manages configuration. System configuration (manage system configuration). Application configuration (manage application configuration). Service configuration (manage service configuration).
-        </p>
+        </HighlightBlock>
         <p>
           System configuration validation validates system configuration. System configuration validation (validate system configuration). System configuration validation enforcement (enforce system configuration validation). System configuration validation verification (verify system configuration validation). System configuration validation reporting (report on system configuration validation).
         </p>
@@ -191,14 +201,17 @@ export default function ConfigurationServicesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Configuration services design involves trade-offs between flexibility and complexity, validation and performance, and versioning and storage. Understanding these trade-offs enables informed decisions aligned with configuration needs and platform constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Configuration: Centralized vs. Distributed</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Centralized configuration (centralized configuration). Pros: Consistent (consistent configuration), easy to manage. Cons: Single point of failure (single point of failure), may not scale. Best for: Small platforms, consistent configuration platforms.
-        </p>
+        </HighlightBlock>
         <p>
           Distributed configuration (distributed configuration). Pros: Scalable (scalable configuration), no single point of failure. Cons: Complex (complex configuration), hard to manage. Best for: Large platforms, distributed platforms.
         </p>
@@ -250,13 +263,16 @@ export default function ConfigurationServicesArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement configuration management:</strong> System configuration, application configuration, service configuration. Configuration management management. Configuration management enforcement.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement feature flags:</strong> Boolean feature flags, multivariate feature flags, rollout feature flags. Feature flags management. Feature flags enforcement.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement dynamic configuration:</strong> Runtime configuration, dynamic updates, hot reload. Dynamic configuration management. Dynamic configuration enforcement.
           </li>
@@ -286,13 +302,16 @@ export default function ConfigurationServicesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No configuration management:</strong> Don&apos;t manage configuration. Solution: Configuration management (system, application, service).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No feature flags:</strong> Don&apos;t manage feature flags. Solution: Feature flags (boolean, multivariate, rollout).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No dynamic configuration:</strong> Don&apos;t manage dynamic configuration. Solution: Dynamic configuration (runtime, dynamic updates, hot reload).
           </li>
@@ -322,16 +341,19 @@ export default function ConfigurationServicesArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Configuration Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Configuration management for configuration management. System configuration (manage system configuration). Application configuration (manage application configuration). Service configuration (manage service configuration). Configuration management management (manage configuration management).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Feature Flags</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Feature flags for feature flags. Boolean feature flags (manage boolean feature flags). Multivariate feature flags (manage multivariate feature flags). Rollout feature flags (manage rollout feature flags). Feature flags management (manage feature flags).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Dynamic Configuration</h3>
         <p>
@@ -351,12 +373,15 @@ export default function ConfigurationServicesArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you manage configuration across multiple environments and services without configuration drift?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you manage configuration across multiple environments and services without configuration drift?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement centralized configuration management with environment separation. System configuration (infrastructure settings, feature flags, service endpoints) stored in version-controlled configuration repository. Application configuration (app-specific settings) separated from code. Service configuration (service-to-service settings) managed centrally. The critical requirement: configuration promotion workflow—changes flow dev → staging → production with approval gates. Implement configuration validation before deployment (schema validation, dependency checks). Track configuration drift with automated comparison between environments—drift indicates manual changes that bypassed workflow. For multi-service architectures: implement configuration dependencies (service A config depends on service B endpoint), validate dependencies before deployment. The key insight: configuration is code—treat it with same rigor (version control, code review, testing, deployment pipelines).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

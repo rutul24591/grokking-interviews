@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,10 @@ export default function FrontendTestingStrategyArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Frontend Testing Strategy</strong> encompasses the approaches,
           tools, and practices for verifying that web applications work
           correctly across all layers — from individual utility functions and
@@ -45,8 +49,8 @@ export default function FrontendTestingStrategyArticle() {
           is a balancing act — too little testing leads to production bugs and
           deployment fear, while too much testing slows development velocity
           and creates maintenance burden that frustrates the team.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The testing pyramid provides a framework for allocating testing effort
           across different levels. At the base are unit tests — fast, isolated
           tests for individual functions and components that verify specific
@@ -59,7 +63,7 @@ export default function FrontendTestingStrategyArticle() {
           levels. The pyramid shape reflects the recommended distribution: many
           unit tests, fewer integration tests, and only a handful of E2E tests
           for critical user flows.
-        </p>
+        </HighlightBlock>
         <p>
           Modern frontend testing has evolved significantly with better tools
           and patterns. Testing Library shifted the paradigm from testing
@@ -86,7 +90,10 @@ export default function FrontendTestingStrategyArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Unit tests verify individual units of code — utility functions, React
           components, custom hooks, and state management logic — in isolation
           from external dependencies. For utility functions (date formatting,
@@ -99,8 +106,8 @@ export default function FrontendTestingStrategyArticle() {
           implementation — tests should pass regardless of how the component is
           internally structured, as long as the user-visible behavior is
           correct.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Integration tests verify that multiple units work together correctly.
           Rather than testing a component in isolation with mocked children,
           integration tests render the component with its real children and
@@ -111,7 +118,7 @@ export default function FrontendTestingStrategyArticle() {
           authentication) are mocked at the network level using MSW, which
           intercepts HTTP requests and returns predefined responses — this tests
           the real HTTP integration layer rather than mock function calls.
-        </p>
+        </HighlightBlock>
         <p>
           E2E tests verify complete user flows from the user&apos;s perspective
           in a real browser environment. They navigate to pages, interact with
@@ -152,7 +159,10 @@ export default function FrontendTestingStrategyArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The testing architecture organizes tests by type and maps them to
           stages in the CI/CD pipeline. Unit tests and integration tests run on
           every commit, providing immediate feedback to developers — they should
@@ -163,8 +173,8 @@ export default function FrontendTestingStrategyArticle() {
           against baseline images to catch unintended visual changes.
           Accessibility tests run as part of unit tests (axe-core assertions on
           components) and E2E tests (cypress-axe on rendered pages).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The test execution flow in CI/CD follows a parallelized pattern for
           speed. When a PR is opened, the CI system triggers multiple jobs
           simultaneously: linting and type-checking (fast, under 1 minute),
@@ -175,7 +185,7 @@ export default function FrontendTestingStrategyArticle() {
           tests are required to pass before merging, while E2E tests are
           monitored but may not block the merge (depending on the team&apos;s
           risk tolerance).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/e2e-testing-flow.svg"
@@ -212,7 +222,10 @@ export default function FrontendTestingStrategyArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Testing depth versus velocity is the fundamental trade-off.
           Comprehensive test coverage catches more bugs but requires more time
           to write, maintain, and execute. A test suite with 10,000 tests that
@@ -225,8 +238,8 @@ export default function FrontendTestingStrategyArticle() {
           are expensive and behavior is well-defined, and be selective about E2E
           tests, covering only the flows where bugs would cause significant
           user-facing problems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Testing implementation details versus behavior is a common tension.
           Tests that assert specific CSS class names, DOM structure, or internal
           state variables break when the implementation changes even though the
@@ -239,7 +252,7 @@ export default function FrontendTestingStrategyArticle() {
           broken styling that makes it invisible. The solution is to supplement
           behavior tests with visual regression tests that catch styling
           regressions.
-        </p>
+        </HighlightBlock>
         <p>
           Test framework selection involves trade-offs between features,
           performance, and ecosystem. Jest is the most established JavaScript
@@ -266,7 +279,10 @@ export default function FrontendTestingStrategyArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Write tests that resemble how users interact with the application.
           Use Testing Library&apos;s queries in priority order — getByRole for
           accessible elements, getByLabelText for form fields, getByText for
@@ -276,8 +292,8 @@ export default function FrontendTestingStrategyArticle() {
           rather than fireEvent (which fires events directly). Assert on
           outcomes that users can perceive — visible text, element presence,
           page navigation — rather than internal state or CSS classes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Keep tests fast and focused. Each test should verify one behavior —
           if a test fails, it should be immediately clear what broke. Use
           describe blocks to organize tests by feature and scenario. Mock
@@ -286,7 +302,7 @@ export default function FrontendTestingStrategyArticle() {
           internals — trust that React, Testing Library, and your UI component
           library work correctly. Focus your tests on the code you write and
           the business logic it implements.
-        </p>
+        </HighlightBlock>
         <p>
           Integrate testing into the CI/CD pipeline with clear gates and
           feedback. Run linting and type-checking on every commit as the
@@ -314,7 +330,10 @@ export default function FrontendTestingStrategyArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Chasing 100% code coverage is a common anti-pattern. Coverage
           metrics measure what percentage of code is executed during tests, not
           whether the tests verify correct behavior. It is easy to achieve 100%
@@ -325,8 +344,8 @@ export default function FrontendTestingStrategyArticle() {
           target to optimize. Focus on testing critical business logic, edge
           cases, error handling, and user-facing flows — not getters, setters,
           and re-exports.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Flaky tests — tests that pass sometimes and fail intermittently —
           erode team confidence in the entire test suite. When developers learn
           that test failures may be flaky rather than real bugs, they start
@@ -338,7 +357,7 @@ export default function FrontendTestingStrategyArticle() {
           to use auto-waiting assertions (Playwright&apos;s built-in waits),
           isolate test data, mock external services, and quarantine flaky tests
           until the root cause is identified and fixed.
-        </p>
+        </HighlightBlock>
         <p>
           Testing every possible user interaction path creates an unmaintainable
           test suite that slows development. For a form with 10 fields, testing
@@ -366,7 +385,10 @@ export default function FrontendTestingStrategyArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Financial services applications require the most rigorous testing
           because bugs have direct monetary consequences. Payment processing
           flows are tested with E2E tests covering every payment method, error
@@ -378,8 +400,8 @@ export default function FrontendTestingStrategyArticle() {
           (Section 508, EN 301 549). Visual regression tests catch styling
           regressions in forms where a misaligned label could cause users to
           enter data in the wrong field.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms use testing to protect the revenue-generating
           checkout funnel. E2E tests cover the complete checkout flow — add to
           cart, enter shipping details, select shipping method, enter payment
@@ -390,7 +412,7 @@ export default function FrontendTestingStrategyArticle() {
           regression tests ensure product images, prices, and call-to-action
           buttons render correctly across browsers. The testing investment is
           justified by the direct revenue impact of checkout bugs.
-        </p>
+        </HighlightBlock>
         <p>
           Design system teams use testing as a quality gate for component
           releases. Every component has unit tests verifying rendering with
@@ -416,12 +438,15 @@ export default function FrontendTestingStrategyArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is your testing strategy for a React application?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Follow the testing pyramid. Unit tests with Jest or Vitest plus
               React Testing Library for components and utility functions — test
               behavior, not implementation, using user-centric queries.
@@ -431,7 +456,7 @@ export default function FrontendTestingStrategyArticle() {
               scenarios. Visual regression with Chromatic for UI components.
               Accessibility tests with axe-core in CI. Run unit tests on every
               commit, E2E on PRs against staging.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

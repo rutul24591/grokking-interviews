@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,12 +38,15 @@ export default function AutoScalingArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Auto-scaling</strong> is the automated process of adjusting computing resources (instances, containers, serverless functions) based on real-time demand. Auto-scaling monitors metrics (CPU usage, memory usage, request rate, queue depth, custom business metrics) and automatically adds resources when demand increases (scale out/up) or removes resources when demand decreases (scale in/down). This ensures that applications have sufficient capacity to handle traffic spikes without over-provisioning (paying for unused capacity during low-traffic periods).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, auto-scaling is essential for managing production workloads efficiently. Without auto-scaling, organizations must provision for peak capacity (paying for unused resources during low-traffic periods) or risk under-provisioning (causing performance degradation or outages during traffic spikes). Auto-scaling solves this by dynamically adjusting capacity based on actual demand — scaling up during traffic spikes (ensuring performance is maintained) and scaling down during low-traffic periods (reducing costs). Auto-scaling is foundational for cloud-native architectures, where resources are elastic and on-demand.
-        </p>
+        </HighlightBlock>
         <p>
           Auto-scaling involves several technical considerations. Horizontal vs. vertical scaling (horizontal — adding more instances; vertical — increasing instance size — horizontal is preferred for distributed systems, vertical has upper limits). Scaling metrics (CPU, memory, request rate, queue depth, custom metrics — choosing the right metric determines whether scaling actions match actual user demand). Scaling policies (threshold-based — scale when metric exceeds threshold; target tracking — maintain metric at target value; step scaling — scale by different amounts based on metric severity). Scaling delay (time between detecting demand change and new instances being ready — warm pools, predictive scaling, and faster instance types reduce delay).
         </p>
@@ -54,12 +58,15 @@ export default function AutoScalingArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Horizontal Scaling (Scale Out/In)</strong> involves adding or removing instances to adjust capacity. Scale out adds instances, increasing the number of instances serving traffic and thus increasing total capacity. Scale in removes instances, reducing the number of instances serving traffic, which reduces capacity and cost. Horizontal scaling is preferred for distributed systems where applications are designed to run across multiple instances, with load balancing distributing traffic. Its advantages include no upper limit (can scale to hundreds or thousands of instances) and fault tolerance (if one instance fails, others continue serving traffic). The limitations are that it requires a distributed application architecture where the application must be stateless or use shared state stores, and it requires load balancer configuration so traffic can be distributed across instances.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Vertical Scaling (Scale Up/Down)</strong> involves increasing or decreasing the instance size (CPU, memory, disk) of existing instances. Scale up increases instance size to a larger instance with more capacity, while scale down decreases instance size to a smaller instance with less capacity. Vertical scaling is used when horizontal scaling is not possible, such as with legacy applications that cannot be distributed or single-instance databases. Its advantage is simplicity — no distributed architecture is needed and no load balancer configuration is required. The limitations include an upper limit (instance size has a maximum and cannot scale beyond the largest instance type), downtime (resizing an instance requires a restart, causing brief downtime), and a single point of failure (since there is a single instance, if it fails, the application is down).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Scaling Metrics</strong> are the metrics that trigger scaling actions. Common metrics include CPU usage (scale when CPU exceeds a threshold — simple but may not correlate with user demand), memory usage (scale when memory exceeds a threshold — important for memory-intensive applications), request rate (scale when requests per second exceed a threshold — directly correlates with user demand), queue depth (scale when message queue depth exceeds a threshold — important for async processing), and custom metrics which are application-specific metrics such as conversion rate, error rate, or business metrics. Choosing the right metric is essential because scaling based on CPU may not help if the bottleneck is database queries or external API calls.
         </p>
@@ -85,12 +92,15 @@ export default function AutoScalingArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Auto-scaling architecture consists of the scaling controller (monitoring metrics, evaluating scaling policies, triggering scaling actions), the instance pool (running instances — auto-scaling group manages instance lifecycle), and the load balancer (distributing traffic across instances). The flow begins with the scaling controller monitoring metrics (CPU, memory, request rate, queue depth). When metrics exceed the scaling policy threshold, the scaling controller triggers a scaling action (provisioning new instances for scale out, terminating instances for scale in). New instances are provisioned, added to the load balancer pool (after passing health checks), and begin serving traffic.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For production deployments, auto-scaling is configured with minimum and maximum instance counts (ensuring that there are always enough instances for baseline demand, and not too many instances to waste resources). Auto-scaling is also configured with scaling policies (threshold-based, target tracking, or step scaling), cool-down periods (preventing scaling oscillation), and health checks (ensuring that new instances are healthy before serving traffic).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/horizontal-vs-vertical.svg"
@@ -123,14 +133,17 @@ export default function AutoScalingArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Auto-scaling involves trade-offs between horizontal and vertical scaling, reactive and predictive scaling, and scaling speed and cost. Understanding these trade-offs is essential for designing effective auto-scaling strategies.
-        </p>
+        </HighlightBlock>
 
         <h3>Horizontal vs. Vertical Scaling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Horizontal Scaling:</strong> Adding more instances. Advantages: no upper limit (can scale to hundreds or thousands of instances), fault tolerance (if one instance fails, others continue serving traffic), gradual scaling (add one instance at a time, monitoring impact). Limitations: requires distributed application architecture (application must be stateless or use shared state stores), load balancer configuration (traffic must be distributed across instances), complex state management (shared state across instances — databases, caches, session stores). Best for: distributed applications, web servers, microservices, stateless applications.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Vertical Scaling:</strong> Increasing instance size. Advantages: simple (no distributed architecture needed, no load balancer needed), no state management complexity (single instance — state is local). Limitations: upper limit (instance size has maximum — cannot scale beyond largest instance type), downtime (resizing instance requires restart, causing brief downtime), single point of failure (single instance — if it fails, application is down), cost (larger instances are exponentially more expensive). Best for: legacy applications, single-instance databases, applications that cannot be distributed.
         </p>
@@ -155,12 +168,15 @@ export default function AutoScalingArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Choose the Right Scaling Metric.</strong> Scale based on metrics that correlate with user demand rather than just resource utilization. CPU usage is a common metric, but it may not correlate with user demand. For example, if the bottleneck is database queries, CPU may be low while user experience is poor. Use request rate (requests per second) for web applications, queue depth for async processing, and custom metrics such as conversion rate, error rate, or business metrics for application-specific scaling. The key principle is to choose metrics that reflect user experience, not just resource utilization.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Set Appropriate Minimum and Maximum Instance Counts.</strong> Set minimum instances to handle baseline demand, ensuring that there are always enough instances for low-traffic periods. Set maximum instances to prevent runaway scaling, ensuring that auto-scaling does not provision excessive instances that cause cost spikes. The minimum should be based on baseline traffic, typically 2-3 instances for high availability so that if one instance fails, others continue serving traffic. The maximum should be based on budget constraints, representing the maximum number of instances that fit within budget.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Use Warm Pools for Faster Scaling.</strong> Pre-provision instances in a warm pool where instances are running but not serving traffic. When scaling out, instances are moved from the warm pool to the active pool. Since they are already running, there is no provisioning delay. Warm pools reduce scaling delay from 3-15 minutes to 30 seconds to 2 minutes because instances are already running and only need to be added to the load balancer. Warm pools do have a cost because they involve running instances that are not serving traffic, but this cost is offset by reduced performance degradation during traffic spikes.
         </p>
@@ -178,12 +194,15 @@ export default function AutoScalingArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Scaling Based on Wrong Metrics.</strong> Scaling based on metrics that do not correlate with user demand is a common mistake. For example, using CPU usage when the bottleneck is database queries causes scaling to trigger incorrectly — scaling out when user experience is fine and not scaling out when user experience is degrading. The solution is to choose metrics that reflect user experience such as request rate, response time, error rate, and queue depth, rather than just resource utilization metrics like CPU and memory.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Scaling Oscillation.</strong> Rapidly scaling out and in due to metric fluctuations wastes resources and causes performance degradation. For example, CPU spikes to 75% triggering scale out, then CPU drops to 25% triggering scale in, then CPU spikes to 75% again triggering another scale out — this cycle repeats. Scaling oscillation wastes resources because instances are provisioned and terminated frequently, incurring cost, and it causes performance degradation because instances are not stable and performance fluctuates. Prevent oscillation by setting cool-down periods which enforce a minimum time between scaling actions, using target tracking policies that maintain a metric at a target value rather than a threshold, and using step scaling policies that scale by different amounts based on metric severity.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Insufficient Minimum Instances.</strong> Setting minimum instances too low, such as one instance, creates a single point of failure. If the single instance fails, the application is down until auto-scaling provisions a new instance, which takes 3-15 minutes. During this time, users experience errors. Always set minimum instances to at least 2, preferably 3, for high availability so that if one instance fails, others continue serving traffic while auto-scaling provisions a replacement.
         </p>
@@ -201,16 +220,19 @@ export default function AutoScalingArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Flash Sales</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms (Amazon, Shopify stores) use auto-scaling for flash sales and holiday traffic spikes. During flash sales, traffic increases 10-100x within minutes. Auto-scaling provisions additional instances based on request rate metrics, ensuring that the application has sufficient capacity to handle the traffic spike. After the flash sale ends, auto-scaling scales in (removing instances, reducing costs). This pattern is essential for e-commerce — without auto-scaling, flash sales would cause outages (under-provisioned instances, overwhelmed servers).
-        </p>
+        </HighlightBlock>
 
         <h3>Media Breaking News Coverage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Media platforms (CNN, BBC, news websites) use auto-scaling for breaking news traffic spikes. During breaking news events, traffic increases 5-50x within minutes. Auto-scaling provisions additional instances based on request rate and queue depth metrics, ensuring that the application has sufficient capacity to handle the traffic spike. After the breaking news event ends, auto-scaling scales in (removing instances, reducing costs). This pattern is essential for media — without auto-scaling, breaking news events would cause outages (users cannot access news during critical moments).
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Business Hours Scaling</h3>
         <p>
@@ -226,15 +248,18 @@ export default function AutoScalingArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between horizontal and vertical scaling?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Horizontal scaling adds more instances (scale out/in) — distributing traffic across multiple instances, with no upper limit and fault tolerance. Vertical scaling increases instance size (scale up/down) — running on a single larger instance, with upper limits and single point of failure. Horizontal scaling is preferred for distributed systems (web servers, microservices, stateless applications). Vertical scaling is used when horizontal scaling is not possible (legacy applications, single-instance databases). Horizontal scaling requires distributed architecture and load balancing. Vertical scaling is simpler but has upper limits and downtime during resizing.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

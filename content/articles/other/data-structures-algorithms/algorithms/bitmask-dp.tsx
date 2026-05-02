@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,21 +30,24 @@ export default function BitmaskDpArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Bitmask DP</span> is a dynamic programming technique
           in which the state is indexed, in whole or in part, by a subset of a finite ground
           set {`{0, 1, …, n − 1}`} — and that subset is encoded as an n-bit integer. A DP with
           2ⁿ subset states lets us enumerate all subsets in time linear in their number, using
           bitwise operations for union, intersection, inclusion, and popcount.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The canonical application is the <span className="font-semibold">Held-Karp
           algorithm</span> (1962) for the Traveling Salesman Problem. By indexing on (visited
           set, current city), Held-Karp solves TSP in O(n² · 2ⁿ) time — still exponential, but
           astronomically better than the O(n!) brute force. For n = 20 the brute force is
           infeasible (2.4 × 10¹⁸ permutations); Held-Karp runs in about 4 × 10⁸ ops — seconds on
           commodity hardware.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Beyond TSP, bitmask DP is the right hammer whenever a problem has a small universe
           (typically n ≤ 20) and state depends on a subset of that universe: assignment
@@ -55,18 +59,21 @@ export default function BitmaskDpArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Subset encoding.</span> A subset S ⊆ {`{0..n−1}`} is
           stored as an integer whose i-th bit is 1 iff i ∈ S. With this encoding, |S| =
           popcount(mask), union = bitwise OR, intersection = bitwise AND, symmetric difference =
           XOR, and complement (relative to the full set) = mask ^ ((1 &lt;&lt; n) − 1).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">State space.</span> Most bitmask DPs have 2ⁿ states
           (one per subset) or n · 2ⁿ states (one per subset × element). The practical limit is
           n = 20–22; at n = 25 the state count explodes past 32 million, and at n = 30 you need
           a billion-cell table.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Bit tricks you will reuse constantly.</span> To
           iterate the set bits of a mask: while mask, pick bit = mask &amp; −mask, process it,
@@ -98,20 +105,23 @@ export default function BitmaskDpArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Held-Karp flow.</span> Allocate dp[2ⁿ][n] initialized
           to ∞. Set dp[1 &lt;&lt; 0][0] = 0. Iterate masks in increasing order of popcount (or
           in numeric order — a mask only depends on masks with one less bit, which are smaller
           numerically). For each mask with bit 0 set, for each end-city i in mask (i ≠ 0), for
           each predecessor j in mask (j ≠ i), update dp[mask][i] with dp[mask ^ (1&lt;&lt;i)][j]
           + dist(j, i).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Reconstruction.</span> Store a parent pointer
           parent[mask][i] = the j that minimized dp[mask][i]. After finding the argmin at the
           full mask, walk backward: at each step, subtract bit i from mask and move to parent.
           Reverses to the tour.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Assignment problem pattern.</span> dp[mask] = min
           cost of assigning the first popcount(mask) workers to the tasks in mask. Transition:
@@ -147,17 +157,20 @@ export default function BitmaskDpArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Held-Karp vs brute force.</span> Brute force tries
           every permutation: n!. Held-Karp is n² · 2ⁿ. Crossover is at n ≈ 6; beyond that
           Held-Karp dominates. At n = 20, the gap is 10 orders of magnitude.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Held-Karp vs branch-and-bound / LP.</span> Modern TSP
           solvers like Concorde use branch-and-cut with LP relaxation and routinely handle
           n = 85,000 cities exactly. Held-Karp&rsquo;s strength is simplicity and predictability
           for small n; Concorde wins asymptotically but requires a full LP machinery.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Held-Karp vs Christofides.</span> Christofides is an
           approximation algorithm for metric TSP with a 1.5× guarantee, polynomial time.
@@ -187,17 +200,20 @@ export default function BitmaskDpArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Verify n fits before writing.</span> Compute 2ⁿ · n
           before starting; if it exceeds 10⁸ on a 1-second budget, bitmask DP will not finish.
           For n ≤ 20 with simple transitions, budget it. For n = 22 and higher, profile
           carefully.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Use primitive arrays, not hashmaps, for dense
           masks.</span> A flat int array of size 2ⁿ has zero overhead; a hashmap keyed on mask
           costs 20–100× more per access. Only use hashmaps for sparse mask spaces.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Prefer bottom-up for 2ⁿ problems.</span> Top-down
           recursion recurses up to 2ⁿ deep in the worst case and on languages with 10k-stack
@@ -229,17 +245,20 @@ export default function BitmaskDpArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Using n beyond practical limits.</span> Students write
           Held-Karp and feed it n = 30. The 2³⁰ · 30² = 10¹² operations will not finish this
           year. Always sanity-check the state-space size before running.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Wrong iteration order.</span> Held-Karp needs masks
           processed so that mask ^ (1 &lt;&lt; i) has been computed first. Numeric order works
           (removing a bit decreases the integer), but if you process masks in popcount order
           for some other variant, get the order right or you read uninitialized cells.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Forgetting the return edge in TSP.</span> dp[full][i]
           is the cost of a path that ends at i, not a cycle. Answer = min over i of dp[full][i]
@@ -271,19 +290,22 @@ export default function BitmaskDpArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Vehicle routing and small-fleet TSP.</span> Held-Karp
           is the go-to for route optimization when the number of stops is under 20 — last-mile
           delivery with 15 parcels per driver, technician dispatch with 10 on-site visits,
           surgical-ward rounding with 12 patients. Bigger problems use branch-and-bound or
           OR-Tools.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">PCB drilling and CNC toolpaths.</span> Drilling
           sequences for printed circuit boards — classical TSP instances with hundreds of
           holes per board. For small boards (prototypes, service work) Held-Karp produces
           verifiably optimal paths.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Compiler register allocation.</span> For very small
           basic blocks with up to 20 live variables, bitmask DP over subsets of live registers
@@ -329,17 +351,20 @@ export default function BitmaskDpArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">LeetCode 943 — Find the Shortest Superstring.</span>
           Concatenate strings with maximum overlap — reduces to TSP over n ≤ 12 strings where
           &ldquo;distance&rdquo; is the negated overlap. Expected answer: Held-Karp with pre-
           computed overlap table. Classic bitmask DP interview problem.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">LeetCode 847 — Shortest Path Visiting All Nodes.</span>
           BFS over (current node, visited mask) state. Expected answer: O(n² · 2ⁿ) BFS with
           bitmask state — the same skeleton as Held-Karp but unit-weight.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">LeetCode 1125 — Smallest Sufficient Team.</span>
           Partition required skills among people. Expected answer: dp[skill_mask] = min set of

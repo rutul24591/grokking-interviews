@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,15 +25,18 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Apache Spark</strong> is a unified, in-memory distributed computing engine that provides APIs for
           batch processing, stream processing, SQL queries, machine learning, and graph computation. Spark&apos;s core
           abstraction is the Resilient Distributed Dataset (RDD), an immutable, partitioned collection of records that
           can be operated on in parallel across a cluster. Higher-level abstractions &mdash; DataFrame and Dataset &mdash; add
           schema awareness and catalyst optimization, enabling Spark&apos;s query optimizer to generate efficient
           execution plans that are often orders of magnitude faster than hand-written RDD code.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Spark&apos;s defining architectural feature is its in-memory execution model. Unlike MapReduce, which writes
           intermediate results to disk between every stage, Spark keeps intermediate data in memory whenever possible,
           reading from disk only when the data exceeds available memory or when explicitly configured to do so. This
@@ -40,7 +44,7 @@ export default function ArticlePage() {
           training) and interactive queries, where the same dataset is accessed multiple times. The trade-off is that
           Spark jobs are more sensitive to memory pressure &mdash; insufficient memory leads to spill-to-disk operations that
           degrade performance, or to out-of-memory errors that cause task failures.
-        </p>
+        </HighlightBlock>
         <p>
           Spark runs on a cluster manager &mdash; standalone Spark, Apache Mesos, Hadoop YARN, or Kubernetes &mdash; which allocates
           resources (CPU and memory) to Spark executors. The Spark driver program parses the user&apos;s code, builds a
@@ -78,15 +82,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The DAG execution model is the foundation of Spark&apos;s performance. When a Spark job runs, the driver
           analyzes the user&apos;s sequence of transformations and builds a DAG where each node is an RDD or DataFrame
           and each edge is a transformation. The DAG scheduler then splits this graph into stages at shuffle boundaries
           &mdash; points where data must be redistributed across the cluster because records with the same key need to be
           processed together. Transformations within a stage are pipelined: they execute in sequence on each partition
           without writing intermediate results to disk or network.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Narrow transformations &mdash; such as map, filter, and mapPartitions &mdash; produce output partitions that depend on
           only a single input partition. These can be pipelined within a stage because each partition can be processed
           independently. Wide transformations &mdash; such as groupByKey, reduceByKey, and join &mdash; produce output partitions
@@ -94,7 +101,7 @@ export default function ArticlePage() {
           shuffle is the most expensive operation in Spark because it involves disk I/O (writing shuffle output on the
           map side), network I/O (transferring shuffle data between executors), and deserialization (reading shuffle
           input on the reduce side).
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/apache-spark-diagram-1.svg"
           alt="Spark DAG execution model showing transformations split into stages at shuffle boundaries, with tasks distributed across worker executors"
@@ -141,21 +148,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A Spark application consists of a driver process and a set of executor processes. The driver runs the
           user&apos;s main function, creates the SparkContext, builds the DAG of transformations, splits the DAG into
           stages, and schedules tasks on executors. Executors run on worker nodes, execute tasks, store data in memory
           or on disk, and report task status back to the driver. The cluster manager &mdash; whether YARN, Kubernetes, or
           standalone Spark &mdash; allocates resources to executors and monitors their health.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The job submission flow begins when the user calls an action on a DataFrame or RDD. The driver traces the
           lineage back to the source data, builds the DAG of transformations, and submits the DAG to the DAG scheduler.
           The DAG scheduler splits the graph into stages at shuffle boundaries and submits each stage to the task
           scheduler. The task scheduler creates one task per partition in the stage and submits tasks to executors,
           respecting data locality preferences &mdash; preferring to run a task on the node that holds the data (NODE_LOCAL),
           then on a node in the same rack (RACK_LOCAL), and finally on any available node (ANY).
-        </p>
+        </HighlightBlock>
         <p>
           Task execution on an executor involves reading the input partition, applying the pipelined transformations
           for the stage, and writing the output &mdash; either to the next stage (for intermediate stages) or to the final
@@ -198,7 +208,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice of partition count is the most impactful tuning decision in Spark because it determines the
           parallelism, the shuffle cost, and the memory pressure per task. Too few partitions underutilize the cluster
           and create large tasks that are prone to OOM and straggler problems. Too many partitions create excessive
@@ -206,15 +219,15 @@ export default function ArticlePage() {
           recommended starting point is two to four partitions per CPU core, adjusted based on the observed task
           duration distribution: if many tasks complete in under one second, reduce the partition count; if a few tasks
           take much longer than the median, investigate skew before increasing the partition count.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Memory allocation trade-offs between execution and storage memory affect job performance significantly. If a
           job does heavy shuffling, joining, or aggregation, increasing the execution memory fraction reduces spill
           to disk. If a job caches frequently accessed datasets, increasing the storage memory fraction improves cache
           hit rates. The default split (60 percent execution, 40 percent storage) is a reasonable starting point, but
           workloads with specific requirements should be tuned based on observed spill rates and cache hit ratios from
           the Spark UI.
-        </p>
+        </HighlightBlock>
         <p>
           Spark versus MapReduce represents a trade-off between performance and simplicity. Spark is significantly
           faster than MapReduce for most workloads because it pipelines narrow transformations and keeps intermediate
@@ -246,21 +259,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use DataFrame and Dataset APIs instead of RDDs for all workloads that can be expressed relationally. The
           Catalyst optimizer generates execution plans that are almost always superior to hand-written RDD code,
           applying predicate pushdown, column pruning, join strategy selection, and code generation automatically.
           RDDs should be reserved for operations that cannot be expressed in the DataFrame API, such as custom
           partitioning logic, non-relational transformations, or low-level control over serialization.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enable Adaptive Query Execution (AQE) by setting spark.sql.adaptive.enabled to true. AQE dynamically
           optimizes the execution plan based on runtime statistics, coalescing small partitions, converting to broadcast
           joins when appropriate, and handling data skew automatically. AQE reduces the need for manual tuning and
           makes Spark more robust to changes in data distribution. For Spark 3.2 and later, also enable
           spark.sql.adaptive.coalescePartitions.enabled and spark.sql.adaptive.skewJoin.enabled for the full set of
           AQE optimizations.
-        </p>
+        </HighlightBlock>
         <p>
           Monitor shuffle read and write bytes, spill-to-disk rates, and task duration distribution from the Spark UI
           or metrics endpoint. Shuffle volume indicates the cost of wide transformations and opportunities for
@@ -295,7 +311,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data skew causing straggler tasks that dominate stage completion time is the most common Spark performance
           failure. When one partition contains significantly more data than others &mdash; due to a hot key in the group-by
           or join key &mdash; the task processing that partition takes much longer than the others, and the stage cannot
@@ -303,15 +322,15 @@ export default function ArticlePage() {
           detects and splits skewed partitions, but for groupByKey and reduceByKey operations, manual salting may still
           be needed: append a random suffix to the skewed key, aggregate on the salted key, then aggregate the results
           to remove the salt.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Out-of-memory errors during shuffle, join, or aggregation operations are common when executor memory is
           insufficient for the working set. The root cause is often a combination of too few partitions (creating large
           tasks that require more memory), skewed data distribution (creating tasks with disproportionate data), and
           insufficient executor memory configuration. The fix involves increasing the partition count to reduce per-task
           memory requirements, enabling AQE for automatic skew handling, and increasing executor memory or the
           execution memory fraction.
-        </p>
+        </HighlightBlock>
         <p>
           Shuffle spill to disk degrading performance silently is a common but often unnoticed problem. When a
           task&apos;s intermediate data exceeds the available execution memory, Spark spills the data to disk and reads
@@ -343,7 +362,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large retail company uses Spark for its daily data warehouse ETL pipeline, processing terabytes of sales,
           inventory, and customer data from dozens of source systems. The pipeline reads from S3, applies a series of
           DataFrame transformations including joins, aggregations, and window functions, and writes the results to a
@@ -352,8 +374,8 @@ export default function ArticlePage() {
           AQE enabled for automatic skew handling, broadcast joins for dimension tables under 500 MB, and Kryo
           serialization for shuffle operations. The pipeline is scheduled via Apache Airflow, with alerting on job
           duration exceeding 60 minutes or spill-to-disk exceeding 10 percent of total shuffle bytes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses Spark Structured Streaming for real-time fraud detection, processing
           millions of transactions per minute from Kafka topics. The streaming job applies feature engineering
           transformations (aggregating transaction history, computing rolling statistics), joins against a customer
@@ -361,7 +383,7 @@ export default function ArticlePage() {
           model loaded as a Spark UDF. The job runs with a micro-batch interval of 10 seconds, achieving end-to-end
           latency of under 15 seconds from transaction occurrence to fraud score. The streaming state is checkpointed
           to S3 every batch, enabling recovery from failures without data loss or duplicate processing.
-        </p>
+        </HighlightBlock>
         <p>
           A technology company uses Spark for log analytics, processing petabytes of application logs, infrastructure
           metrics, and security events to power its operational dashboards and alerting system. The batch pipeline runs
@@ -385,23 +407,26 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How does Spark&apos;s DAG execution model differ from MapReduce, and why does it matter for performance?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             MapReduce executes computations in a rigid two-stage pattern: map followed by reduce, with every
             intermediate result written to disk between stages. This design is simple and robust but introduces
             significant I/O overhead for computations that require multiple stages, because each stage boundary
             requires writing and reading data from disk.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Spark builds a general DAG of transformations and splits it into stages only at shuffle boundaries. Within
             a stage, all narrow transformations are pipelined &mdash; executed in a single pass over the data without
             writing intermediate results to disk. This means that a sequence of filter, map, and flatMap operations
             executes as a single pass, whereas MapReduce would write and read the data between each operation.
-          </p>
+          </HighlightBlock>
           <p>
             The performance difference is substantial: for workloads that fit in memory, Spark is typically ten to one
             hundred times faster than MapReduce because it avoids unnecessary disk I/O and can keep intermediate data

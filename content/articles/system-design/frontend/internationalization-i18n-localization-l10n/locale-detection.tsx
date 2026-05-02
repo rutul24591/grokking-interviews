@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function LocaleDetectionArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Locale detection</strong> is the process of determining which
           language and regional conventions to use for a user. This involves
           detecting the user&apos;s preferred language from browser settings,
@@ -45,16 +46,16 @@ export default function LocaleDetectionArticle() {
           display content in the user&apos;s language, you must determine which
           language that is. The detection strategy affects SEO, user experience,
           and conversion rates.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, locale detection involves architectural
           decisions about detection priority (which signal takes precedence),
           fallback chains (what if detected locale isn&apos;t supported), and
           persistence (how to remember user&apos;s override). The key insight:
           detection should be automatic but overrideable — users should always
           be able to manually select their preferred language.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Locale detection involves several technical challenges.{" "}
           <strong>Browser language</strong> — navigator.language can be
           misleading (user travels, uses shared computer).{" "}
@@ -63,7 +64,7 @@ export default function LocaleDetectionArticle() {
           preferences</strong> — stored locale should persist across sessions
           and devices. <strong>Fallback chains</strong> — what if user prefers
           es-MX but you only support es? Fall back to base language or default?
-        </p>
+        </HighlightBlock>
         <p>
           The business case for correct locale detection is clear: users expect
           applications to &quot;know&quot; their language. Automatic detection
@@ -79,25 +80,25 @@ export default function LocaleDetectionArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Browser Language (navigator.language):</strong> Returns
             user&apos;s preferred language from browser settings. Example:{" "}
             <code>&apos;en-US&apos;</code>, <code>&apos;es-ES&apos;</code>.
             Advantage: automatic, no user input. Limitation: can be wrong
             (travelers, shared computers, corporate environments).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Accept-Language Header:</strong> HTTP header sent with every
             request. Contains ordered list of preferred languages with quality
             values. Example: <code>en-US,en;q=0.9,es;q=0.8</code>. Server can
             use this for initial locale detection before JavaScript loads.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>URL-Based Detection:</strong> Locale in URL path
             (<code>/en/products</code>, <code>/es/productos</code>). Advantages:
             SEO-friendly, shareable URLs, explicit locale. Limitations: requires
             routing changes, longer URLs.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Subdomain Detection:</strong> Locale in subdomain
             (<code>en.example.com</code>, <code>es.example.com</code>).
@@ -128,14 +129,14 @@ export default function LocaleDetectionArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Locale detection architecture consists of a detection pipeline
           (multiple signals in priority order), a fallback chain (what if
           detected locale isn&apos;t supported), and a persistence layer
           (remember user&apos;s override). The architecture must handle
           detection on first visit, respect user overrides, and work for both
           anonymous and authenticated users.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/internationalization-i18n-localization-l10n/locale-detection-pipeline.svg"
@@ -146,18 +147,18 @@ export default function LocaleDetectionArticle() {
         />
 
         <h3>Fallback Chain Strategy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When detected locale isn&apos;t supported, fall back through a chain:
           specific → base → default. Example: user prefers es-MX (Mexican
           Spanish), you support es (Spanish) but not es-MX. Fall back: es-MX →
           es → en (default). This ensures users get content in a related
           language rather than defaulting to English immediately.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement fallback in your i18n library. react-i18next supports
           language fallback via configuration. For custom implementations: parse
           locale code, try exact match, try base language match, try default.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/internationalization-i18n-localization-l10n/locale-fallback-chain.svg"
@@ -171,25 +172,25 @@ export default function LocaleDetectionArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Locale detection strategies involve trade-offs between automation,
           explicit control, and SEO.
-        </p>
+        </HighlightBlock>
 
         <h3>URL Structure Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Subdirectory (/en/, /es/):</strong> Most common approach.
           Advantages: SEO-friendly (Google recommends), simple implementation,
           works with any hosting. Limitations: longer URLs, requires routing
           changes. Best for: most applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Subdomain (en.example.com):</strong> Separate subdomain per
           locale. Advantages: clean separation, can host locales separately,
           CDN-friendly. Limitations: SSL complexity, cookie domain issues, SEO
           treats as separate sites. Best for: large enterprises with separate
           locale teams.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Query Parameter (?lang=en):</strong> Locale as query param.
           Advantages: simple, no routing changes. Limitations: not SEO-friendly,
@@ -215,23 +216,23 @@ export default function LocaleDetectionArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Always Allow Override:</strong> Provide obvious language
             selector. Users know their preference better than detection
             algorithms. Store override persistently (localStorage + user
             profile).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use URL Paths for SEO:</strong>{" "}
             <code>/en/products</code>, <code>/es/productos</code>. Google
             recommends subdirectories for multi-language sites. Enables
             locale-specific SEO optimization.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Proper Fallback:</strong> Don&apos;t immediately
             default to English. Fall back through base language first (es-MX →
             es → en). Users prefer related language over unrelated default.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Redirect Carefully:</strong> On first visit, redirect based
             on detection. But remember user&apos;s override — don&apos;t
@@ -257,22 +258,22 @@ export default function LocaleDetectionArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Redirecting on Every Visit:</strong> Auto-redirecting based
             on browser language every time frustrates users who manually
             changed locale. Only redirect on first visit, then respect user
             choice.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Accept-Language Quality Values:</strong> Header
             <code>en-US,en;q=0.9,es;q=0.8</code> means user prefers en-US over
             en over es. Respect quality ordering when detecting.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Supporting Base Language:</strong> Supporting es-ES but
             not es means Mexican users (es-MX) get English instead of Spanish.
             Always support base language codes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Geolocation ≠ Language:</strong> IP-based geolocation
             determines country, not language. Switzerland has 4 official
@@ -296,29 +297,29 @@ export default function LocaleDetectionArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>E-Commerce Multi-Region</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Global e-commerce (Amazon, Zara) uses URL subdirectories for
           locale/region: /en-us/, /es-mx/, /de-de/. First-time visitors are
           redirected based on IP + browser language. Returning visitors keep
           their selected locale. Product URLs are locale-specific for SEO.
           Checkout flow maintains locale throughout.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Application</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SaaS apps (GitHub, Notion) store locale in user profile.
           Authentication → load profile → apply locale. For anonymous pages
           (marketing site), use URL paths. For app, use profile preference.
           Language selector in user settings persists across devices.
-        </p>
+        </HighlightBlock>
 
         <h3>Content/Media Sites</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           News sites (BBC, CNN) have separate locale sites (bbc.com/news vs
           bbc.com/mundo). Detection happens on homepage, but users can navigate
           between locale versions. hreflang tags ensure Google shows correct
           locale in search results by region.
-        </p>
+        </HighlightBlock>
 
         <h3>Travel and Hospitality</h3>
         <p>
@@ -336,23 +337,23 @@ export default function LocaleDetectionArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: How do you implement locale detection in a Next.js application?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Use next-intl or next-i18next for built-in detection. For
               custom: (1) Middleware checks Accept-Language header, redirects to
               appropriate locale path. (2) Cookie stores user&apos;s override.
               (3) User profile (if authenticated) takes precedence. (4)
               Implement fallback chain in i18n config. Use
               useLocale() hook to access current locale in components.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do you handle locale detection for SEO?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Use URL subdirectories (/en/, /es/) — Google recommends this.
               Add hreflang tags to each page pointing to alternate locale

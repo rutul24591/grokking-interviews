@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An <strong>AI workflow</strong> is the end-to-end process that takes
           raw input through AI-powered processing to validated output. Unlike
           traditional software workflows which are deterministic (same input
@@ -33,8 +37,8 @@ export default function ArticlePage() {
           of the output depends on the model&apos;s capabilities, the prompt
           design, the context provided, and stochastic elements of the
           generation process.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           AI workflow design encompasses several interconnected concerns.{" "}
           <strong>Pipeline patterns</strong> define the structure of the
           workflow — the sequence of steps, the data flow between them, the
@@ -46,7 +50,7 @@ export default function ArticlePage() {
           and deployment practices for the unique challenges of AI systems —
           prompt versioning, model evaluation, dataset management, and quality
           regression testing.
-        </p>
+        </HighlightBlock>
         <p>
           For software engineers, AI workflow design represents a fundamental
           shift from deterministic to probabilistic engineering. Traditional
@@ -61,7 +65,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>pipeline pattern</strong> is the foundational structure
           of AI workflows. A pipeline consists of sequential or parallel steps,
           where each step transforms the input in some way. The simplest
@@ -69,8 +76,8 @@ export default function ArticlePage() {
           → validation → output. More complex pipelines include retrieval
           (RAG), multi-step reasoning (chain-of-thought), tool use (agents),
           and human review (human-in-the-loop).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Evaluation loops</strong> are quality gates that verify the
           AI&apos;s output at various points in the pipeline. Pre-output
           evaluation checks the output before it reaches the user — validating
@@ -80,7 +87,7 @@ export default function ArticlePage() {
           to continuously assess and improve the system. The evaluation loop
           creates a feedback cycle: production data → evaluation → prompt/model
           optimization → deployment → production data.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/ai-workflow-pipeline.svg"
@@ -132,7 +139,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production AI workflow architecture consists of several layers.
           The <strong>input processing layer</strong> receives, validates, and
           normalizes input data. The <strong>AI processing layer</strong>
@@ -142,7 +152,7 @@ export default function ArticlePage() {
           <strong>output layer</strong> formats and delivers the result. The{" "}
           <strong>feedback layer</strong> collects production metrics and user
           feedback for continuous improvement.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/evaluation-loop-architecture.svg"
@@ -150,7 +160,7 @@ export default function ArticlePage() {
           caption="Evaluation loops — pre-output validation, post-output monitoring, feedback collection, and continuous optimization cycle"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>error handling strategy</strong> in AI workflows must
           account for the probabilistic nature of AI outputs. Unlike
           deterministic workflows where an error means the code crashed, in AI
@@ -161,7 +171,7 @@ export default function ArticlePage() {
           parameters when validation fails), fallback paths (using alternative
           methods when the primary pipeline fails), and escalation (routing to
           humans when automated handling is insufficient).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Workflow versioning</strong> tracks changes to every
           component of the AI pipeline: prompt templates, model versions, tool
@@ -175,7 +185,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Synchronous versus asynchronous workflows</strong> present a
           fundamental trade-off. Synchronous workflows (the user waits for the
           complete result) provide immediate feedback but are limited by the
@@ -186,8 +199,8 @@ export default function ArticlePage() {
           The choice depends on user expectations — if users expect immediate
           responses, the workflow must complete within their patience window
           (typically under 30 seconds for interactive applications).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Automated versus human evaluation</strong> involves a
           quality-versus-cost trade-off. Automated evaluation (LLM-as-a-judge,
           rule-based checks, embedding similarity) is fast, cheap, and
@@ -196,7 +209,7 @@ export default function ArticlePage() {
           inconsistent across evaluators. The pragmatic approach is to use
           automated evaluation for routine quality checks and human evaluation
           for periodic calibration and edge case analysis.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/cicd-for-ai-pipeline.svg"
@@ -220,7 +233,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement quality gates at every pipeline stage</strong> —
           do not assume that the output of one stage is valid input for the
           next. Validate prompt construction (does the prompt contain all
@@ -229,15 +245,15 @@ export default function ArticlePage() {
           schema validation?), and final output (is the result appropriate
           for the user&apos;s request?). Each gate catches a different class of
           errors.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Maintain a benchmark dataset</strong> that represents the
           full distribution of production inputs. Run this benchmark on every
           prompt or model change, and track quality metrics over time. The
           benchmark should include edge cases, adversarial inputs, and
           representative samples of each input category. Without a benchmark,
           you cannot detect quality regressions until users report them.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Design for failure from day one</strong> — assume that every
           component in the AI pipeline can fail, and design fallback paths for
@@ -260,21 +276,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>lack of evaluation</strong> —
           deploying AI workflows without automated quality checks and relying
           on user feedback to detect issues. By the time users report a quality
           problem, thousands of incorrect outputs may have been produced.
           Implement automated evaluation before deployment, not after.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Dataset drift</strong> occurs when the distribution of
           production inputs diverges from the evaluation dataset. A workflow
           that scores 95% accuracy on the benchmark may score 60% on
           production inputs if the benchmark does not represent the actual
           input distribution. Regularly update the benchmark dataset with
           production samples and re-evaluate to detect drift.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Over-reliance on LLM-as-a-judge</strong> for evaluation.
           Using an LLM to evaluate LLM outputs is convenient but introduces
@@ -296,22 +315,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Content generation pipelines</strong> — AI workflows that
           generate marketing copy, blog posts, or product descriptions through
           a multi-step process: outline generation (AI), draft writing (AI),
           fact-checking (AI with retrieval), style review (AI), human editing
           (HITL), and publication (automated). Each step has its own quality
           gates and fallback paths.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Code review automation</strong> — a workflow that analyzes
           pull requests through: code understanding (AI parses the diff),
           issue identification (AI identifies potential bugs, security issues,
           and style violations), suggestion generation (AI proposes fixes),
           human validation (developer reviews AI suggestions), and feedback
           collection (developer acceptance/rejection feeds the evaluation loop).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Customer support triage</strong> — an asynchronous workflow
           that receives support tickets, classifies them by intent and urgency,
@@ -324,12 +346,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: How do you design evaluation loops for an AI workflow?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Evaluation loops should be designed at multiple levels with
             different frequencies and purposes. At the pre-output level,
             implement automated checks that run on every output before it
@@ -338,14 +363,14 @@ export default function ArticlePage() {
             to the expected schema?), safety checks (does the output contain
             inappropriate content?), and factual verification (are claims
             supported by retrieved context?).
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             At the periodic level, run comprehensive evaluations on a sample
             of outputs every hour or day. These evaluations can be slower and
             more thorough: LLM-as-a-judge scoring for helpfulness and
             relevance, embedding similarity against reference answers, and
             rule-based checks for domain-specific criteria.
-          </p>
+          </HighlightBlock>
           <p>
             At the human level, conduct manual evaluation sessions weekly or
             bi-weekly where trained evaluators review a stratified sample of

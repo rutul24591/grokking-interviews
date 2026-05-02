@@ -502,22 +502,22 @@ export default function FactoryPatternArticle() {
             </HighlightBlock>
           </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How would you design a component factory for a form builder?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Define a field schema type with a discriminator (type:
-              &quot;text&quot; | &quot;select&quot; | &quot;date&quot; | ...)
-              and common props (name, label, validation rules). Create a
+	          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+	            <p className="font-semibold">
+	              Q: How would you design a component factory for a form builder?
+	            </p>
+	            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
+	              A: Define a field schema type with a discriminator (type:
+	              &quot;text&quot; | &quot;select&quot; | &quot;date&quot; | ...)
+	              and common props (name, label, validation rules). Create a
               registry Map that maps type strings to component constructors. The
               factory function takes a field schema, looks up the component in
               the registry, and returns the rendered element with the
               appropriate props. Use TypeScript generics to preserve
-              field-specific prop types through the factory. Allow registration
-              of custom field types for extensibility.
-            </p>
-          </div>
+	              field-specific prop types through the factory. Allow registration
+	              of custom field types for extensibility.
+	            </HighlightBlock>
+	          </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
@@ -574,8 +574,12 @@ export default function FactoryPatternArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: factories matter when you need extensibility (plugins), consistent families of UI
+          components (themes), or strict construction invariants. Otherwise, keep it simple.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://refactoring.guru/design-patterns/factory-method"
               className="text-accent hover:underline"
@@ -584,8 +588,8 @@ export default function FactoryPatternArticle() {
             >
               Refactoring Guru — Factory Method Pattern
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://refactoring.guru/design-patterns/abstract-factory"
               className="text-accent hover:underline"
@@ -594,8 +598,8 @@ export default function FactoryPatternArticle() {
             >
               Refactoring Guru — Abstract Factory Pattern
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.patterns.dev/vanilla/factory-pattern"
               className="text-accent hover:underline"
@@ -604,8 +608,8 @@ export default function FactoryPatternArticle() {
             >
               patterns.dev — Factory Pattern
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions"
               className="text-accent hover:underline"
@@ -614,7 +618,7 @@ export default function FactoryPatternArticle() {
             >
               TypeScript Handbook — Discriminated Unions
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

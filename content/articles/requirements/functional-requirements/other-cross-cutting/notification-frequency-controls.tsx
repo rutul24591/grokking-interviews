@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function NotificationFrequencyControlsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Notification Frequency Controls enable users to control how frequently they receive notifications. Users can select notification frequency (immediate, batched, quiet), set quiet hours (don&apos;t notify during certain times), control notification throttling (limit notification rate), and manage frequency (adjust frequency over time). Notification frequency controls are fundamental to notification optimization (right frequency for each user), notification fatigue prevention (prevent notification overload), and user satisfaction (users appreciate control). For platforms with user notifications, effective notification frequency controls are essential for notification optimization, fatigue prevention, and user satisfaction.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, notification frequency controls architecture involves frequency management (manage notification frequency), quiet hours management (manage quiet hours), throttling management (manage notification throttling), and frequency enforcement (enforce frequency controls). The implementation must balance user control (users control frequency) with engagement (send important notifications) and platform needs (communicate with users). Poor notification frequency controls lead to notification fatigue, user churn, and missed important notifications.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of notification frequency controls extends beyond simple immediate/batched toggle. Immediate notifications (notify immediately). Batched notifications (batch notifications). Quiet hours (don&apos;t notify during quiet). Throttling (limit notification rate). For staff engineers, notification frequency controls are a user notification control infrastructure decision affecting user experience, notification fatigue, and user satisfaction.
         </p>
@@ -46,13 +50,16 @@ export default function NotificationFrequencyControlsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Notification Frequency</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Immediate notifications notify immediately. Real-time delivery (deliver immediately). No delay (no delay). Immediate notifications enable instant notification. Benefits include immediacy (instant notification), awareness (immediate awareness). Drawbacks includes interruption (interrupts user), notification fatigue (too many notifications).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Batched notifications batch notifications. Batch delivery (deliver in batches). Batch frequency (daily, weekly). Batch content (summarize content). Batched notifications reduce notification volume. Benefits include reduced volume (fewer notifications), summary (summarize content). Drawbacks includes delay (not immediate), may miss urgent (urgent notifications delayed).
-        </p>
+        </HighlightBlock>
         <p>
           Quiet notifications don&apos;t notify during quiet. Quiet hours (define quiet hours). No notification (don&apos;t notify during quiet). Emergency override (override for emergency). Quiet notifications enable uninterrupted time. Benefits include uninterrupted time (don&apos;t interrupt), user satisfaction (users appreciate). Drawbacks includes missed notifications (may miss important), complexity (manage quiet hours).
         </p>
@@ -104,9 +111,12 @@ export default function NotificationFrequencyControlsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Notification frequency controls architecture spans frequency service, quiet hours service, throttling service, and enforcement service. Frequency service manages frequency. Quiet hours service manages quiet hours. Throttling service manages throttling. Enforcement service enforces frequency controls. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/notification-frequency-controls/frequency-architecture.svg"
@@ -117,9 +127,9 @@ export default function NotificationFrequencyControlsArticle() {
         />
 
         <h3>Frequency Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Frequency service manages user frequency. Frequency storage (store frequency). Frequency retrieval (retrieve frequency). Frequency update (update frequency). Frequency service is the core of notification frequency controls. Benefits include centralization (one place for frequency), consistency (same frequency everywhere). Drawbacks includes complexity (manage frequency), coupling (services depend on frequency service).
-        </p>
+        </HighlightBlock>
         <p>
           Frequency policies define frequency rules. Default frequency (default frequency). Frequency validation (validate frequency). Frequency sync (sync frequency). Frequency policies automate frequency management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function NotificationFrequencyControlsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Notification frequency controls design involves trade-offs between immediate and batched notifications, scheduled and manual quiet hours, and strict and lenient throttling. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Frequency: Immediate vs. Batched</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Immediate frequency (notify immediately). Pros: Immediacy (instant notification), awareness (immediate awareness), engagement (high engagement). Cons: Interruption (interrupts user), notification fatigue (too many notifications), battery drain (drains battery). Best for: Important notifications, time-sensitive notifications.
-        </p>
+        </HighlightBlock>
         <p>
           Batched frequency (batch notifications). Pros: Reduced volume (fewer notifications), summary (summarize content), less interruption (don&apos;t interrupt as much). Cons: Delay (not immediate), may miss urgent (urgent notifications delayed), reduced engagement (lower engagement). Best for: Activity notifications, non-urgent notifications.
         </p>
@@ -207,13 +220,16 @@ export default function NotificationFrequencyControlsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide frequency options:</strong> Immediate frequency. Batched frequency. Quiet frequency. Multiple frequency options.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enable quiet hours:</strong> Scheduled quiet hours. Manual quiet hours. Smart quiet hours. Let users choose.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Provide throttling:</strong> Rate limiting. Coalescing. Prioritization. Let users choose.
           </li>
@@ -243,13 +259,16 @@ export default function NotificationFrequencyControlsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No frequency options:</strong> Only one frequency. <strong>Solution:</strong> Provide frequency options.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No quiet hours:</strong> Can&apos;t set quiet hours. <strong>Solution:</strong> Enable quiet hours.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No throttling:</strong> No notification throttling. <strong>Solution:</strong> Provide throttling.
           </li>
@@ -279,16 +298,19 @@ export default function NotificationFrequencyControlsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Social Media Notification Frequency</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms provide notification frequency controls. Frequency selection (immediate, batched). Quiet hours (set quiet hours). Throttling (limit notification rate). Users control social media notification frequency.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Messaging App Notification Frequency</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Messaging apps provide notification frequency controls. Frequency selection (immediate, batched). Quiet hours (set quiet hours). Coalescing (coalesce similar messages). Users control messaging notification frequency.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Email App Notification Frequency</h3>
         <p>
@@ -308,12 +330,15 @@ export default function NotificationFrequencyControlsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design notification frequency controls that balance user control with engagement?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design notification frequency controls that balance user control with engagement?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement flexible frequency options with intelligent important notification override that respects user preferences while ensuring critical information gets through. Enable immediate frequency: notify user instantly for each event—preferred for urgent notifications (security alerts, direct messages from close contacts, task deadlines). Enable batched frequency: accumulate notifications and send in batches—hourly batch (all notifications in past hour), daily batch (end-of-day summary), weekly batch (weekly digest for low-engagement users). Enable quiet hours: user-specified periods when no notifications are sent (e.g., 10 PM to 7 AM for sleep, 9 AM to 5 PM for focused work). Override only for important: define critical notification criteria (security breach, service outage, legal requirement)—these bypass frequency controls, use sparingly to avoid abuse. Monitor usage: track which frequency options users select, when they override defaults, when they disable notifications entirely—use data to improve defaults and identify problematic notification types. The engagement insight: users want control over notification frequency but don&apos;t want to miss genuinely important information—provide flexible frequency options (immediate, hourly, daily, weekly), intelligent quiet hours, important override for true emergencies, and continuously monitor usage patterns to optimize the balance between user control and engagement.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

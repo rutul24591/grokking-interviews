@@ -382,9 +382,9 @@ export default function PublishSubscribePatternArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           Publish-Subscribe systems introduce unique security considerations around message authentication, authorization, and the potential for denial-of-service attacks through event flooding.
-        </HighlightBlock>
+        </p>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Message Authentication</h3>
@@ -724,8 +724,12 @@ export default function PublishSubscribePatternArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: pub-sub is about decoupling at the cost of delivery semantics. Strong answers mention
+          ordering, fanout, backpressure, and security boundaries (who can publish/subscribe).
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel"
               className="text-accent hover:underline"
@@ -734,8 +738,8 @@ export default function PublishSubscribePatternArticle() {
             >
               MDN — BroadcastChannel API
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage"
               className="text-accent hover:underline"
@@ -744,8 +748,8 @@ export default function PublishSubscribePatternArticle() {
             >
               MDN — Window.postMessage
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.patterns.dev/vanilla/mediator-middleware-pattern"
               className="text-accent hover:underline"
@@ -754,8 +758,8 @@ export default function PublishSubscribePatternArticle() {
             >
               patterns.dev — Mediator/Middleware Pattern
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://redux.js.org/understanding/thinking-in-redux/glossary"
               className="text-accent hover:underline"
@@ -764,7 +768,7 @@ export default function PublishSubscribePatternArticle() {
             >
               Redux — Core Concepts Glossary
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

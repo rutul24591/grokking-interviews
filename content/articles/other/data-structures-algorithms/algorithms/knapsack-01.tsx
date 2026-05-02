@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,14 +25,17 @@ export default function KnapsackArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The 0/1 Knapsack problem: given n items with weights w₁..wₙ and values v₁..vₙ, and a
           knapsack of capacity W, select a subset of items to maximize total value subject to
           total weight ≤ W. Each item may be included at most once — hence &ldquo;0/1&rdquo; (take
           or skip). It is one of the foundational problems of combinatorial optimization and the
           archetypal dynamic programming problem.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Knapsack is <span className="font-semibold">NP-hard</span> in the size of its input (a
           reduction from subset sum establishes this), but admits a
           <span className="font-semibold"> pseudo-polynomial</span> O(nW) DP. The distinction
@@ -39,7 +43,7 @@ export default function KnapsackArticle() {
           given as a binary-encoded integer (then W can be exponentially large in the bit length).
           This is a key interview talking point — knapsack is a go-to example of the
           pseudo-polynomial vs strongly-polynomial distinction.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Beyond toy examples, knapsack models many real problems: capital budgeting (investment
           portfolio with capital constraint), cargo loading, cryptographic subset-sum puzzles
@@ -51,17 +55,20 @@ export default function KnapsackArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">State:</span> dp[i][w] = maximum value using any subset
           of the first i items with total weight ≤ w. Answer is dp[n][W]. There are (n+1)(W+1)
           states, each computed in O(1).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Transition:</span> dp[i][w] = max(dp[i−1][w], dp[i−1][w
           − wᵢ] + vᵢ). The first term skips item i; the second takes it (requires w ≥ wᵢ). The
           recurrence encodes the take-or-skip decision explicitly. Base cases: dp[0][*] = 0 (no
           items → zero value) and dp[*][0] = 0 (no capacity → zero value).
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Space optimization</span>: since dp[i][*] depends only
           on dp[i−1][*], roll to a 1D array. Iterate w from W down to wᵢ so that when computing
@@ -84,20 +91,23 @@ export default function KnapsackArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The DP table fills row by row (item by item), left to right (capacity 0 → W). For each
           item i, the row computes the best value achievable if items 1..i were available. The
           final cell dp[n][W] is the answer. Space-optimized version keeps one row of length W+1,
           overwriting in place — right-to-left for 0/1 (preserve previous values when needed
           again).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Unbounded knapsack</span> is the same problem with
           unlimited copies of each item. The recurrence is dp[w] = max over items i of dp[w − wᵢ]
           + vᵢ. The 1D iteration order reverses: iterate w from wᵢ up to W, so each item
           can be taken repeatedly. This is the same code with one loop direction flipped — a
           subtle difference that&rsquo;s a favorite interview trap.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Subset-sum</span> is the decision-version special case:
           &ldquo;does any subset sum to exactly S?&rdquo; DP: dp[i][s] = can the first i items
@@ -120,20 +130,23 @@ export default function KnapsackArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">DP vs Greedy:</span> greedy by value-to-weight ratio
           works optimally for
           <em> fractional</em> knapsack (items can be split), not 0/1. Counter-example: items
           (w=1, v=5), (w=3, v=12), (w=3, v=12), capacity 4. Greedy takes (1,5) then can&rsquo;t
           fit a 3 → total 5. Optimal: take one (3,12) → 12. DP finds this; greedy
           doesn&rsquo;t. Fractional greedy is O(n log n); 0/1 DP is O(nW).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">DP vs Branch &amp; Bound:</span> B&amp;B with
           value-density bound can outperform DP on small n or sparse weights. Production solvers
           (Gurobi, CPLEX) use hybrid approaches: LP relaxation for bounds, B&amp;B for search,
           DP for small subproblems. For exams and interviews, DP is the reference.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">DP vs FPTAS:</span> Fully Polynomial-Time Approximation
           Scheme. Scale values by ε, solve DP in O(n²/ε) time, get (1−ε) approximation. Allows
@@ -151,16 +164,19 @@ export default function KnapsackArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Check the capacity W before choosing DP. If W is bounded by ~10⁶ and n by ~10⁴, the
           O(nW) DP is fine. If W is given as a 64-bit integer, DP is hopeless — switch to
           meet-in-the-middle, FPTAS, or branch-and-bound.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Always write the 2D DP first. It&rsquo;s easier to reason about and test. Only roll to
           1D after verifying correctness; the direction (high-to-low vs low-to-high) is a
           frequent source of subtle bugs that pass small tests but fail at scale.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           When the problem says &ldquo;items,&rdquo; check reuse semantics carefully. &ldquo;Each
           item at most once&rdquo; → 0/1. &ldquo;Unlimited supply&rdquo; → unbounded. &ldquo;Up
@@ -176,16 +192,19 @@ export default function KnapsackArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Wrong iteration direction in 1D roll:</span>
           low-to-high turns 0/1 into unbounded. Symptom: values exceed what&rsquo;s achievable,
           off by 2× or more. Always iterate high-to-low for 0/1.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Integer overflow on large values:</span> summing values
           across n items with max value 10⁹ overflows int32 at n=3. Use int64. Real-world cargo
           optimization has tripped on this.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Treating fractional greedy result as 0/1 optimum:</span>
           the fractional LP relaxation gives an upper bound, not the 0/1 answer. Using it
@@ -205,17 +224,20 @@ export default function KnapsackArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Cloud bin packing:</span> placing containers onto VMs
           with memory/CPU constraints is a multi-dimensional knapsack variant. Kubernetes&rsquo;
           default scheduler uses heuristic variants; research papers have applied DP to smaller
           clusters with optimal results.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Capital budgeting:</span> project portfolio selection
           under a fixed budget maximizing NPV. Classical OR application; pseudo-polynomial DP
           works when budget granularity is coarse.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Cryptographic knapsacks:</span> Merkle-Hellman
           knapsack-based public-key crypto (1978) relies on the hardness of 0/1 knapsack. It was
@@ -243,16 +265,19 @@ export default function KnapsackArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Implement 0/1 knapsack.</span> Start with 2D DP, then
           roll to 1D explaining the direction choice. Mention Θ(nW) time/space, pseudo-polynomial.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Why is knapsack NP-hard but has a polynomial DP?</span>
           Pseudo-polynomial: O(nW) depends on W&rsquo;s magnitude, not its bit length. With W =
           2⁶⁴, the DP has 2⁶⁴ states. In the input size (log W bits), this is exponential. Any
           strongly NP-hard problem has no pseudo-polynomial algorithm unless P = NP.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Unbounded knapsack.</span> Same recurrence, iterate
           low-to-high in 1D. Each item reusable. O(nW).

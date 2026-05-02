@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -84,24 +85,27 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Constraint Types</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>PRIMARY KEY Constraint</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>PRIMARY KEY</strong> uniquely identifies each row in a table. Combines
           <code className="inline-code">UNIQUE</code> (no duplicates) and
           <code className="inline-code">NOT NULL</code> (required). Each table can have only
           one PRIMARY KEY. Example: <code className="inline-code">CREATE TABLE users (id
           SERIAL PRIMARY KEY, email TEXT)</code>. PRIMARY KEY is automatically indexed
           (fast lookups).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Composite PRIMARY KEY</strong>: Multiple columns form the key.
           <code className="inline-code">CREATE TABLE order_items (order_id INTEGER,
           product_id INTEGER, PRIMARY KEY (order_id, product_id))</code>. Used for junction
           tables (many-to-many relationships). Trade-off: more complex queries, but enforces
           uniqueness across columns.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Surrogate vs Natural keys</strong>: Surrogate (synthetic ID, e.g.,
@@ -205,23 +209,26 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: FK Actions &amp; Enforcement</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Foreign Key Actions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>CASCADE</strong>: Delete/update parent → automatically delete/update children.
           <code className="inline-code">ON DELETE CASCADE</code>. Use for: child records have
           no meaning without parent (order_items without orders, comments without posts).
           Trade-off: convenient, but accidental mass deletes possible (delete user → delete
           all orders).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>SET NULL</strong>: Delete parent → set FK to NULL.
           <code className="inline-code">ON DELETE SET NULL</code>. Use for: optional
           relationships (posts can exist without author if author deleted). Requires FK
           column to allow NULL. Trade-off: preserves child records, but loses relationship
           information.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>RESTRICT / NO ACTION</strong>: Prevent delete/update if children exist.
@@ -280,18 +287,21 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Constraints vs Application Validation</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Constraints can be enforced at database level or application level. Understanding
           the trade-offs helps you choose the right approach.
-        </p>
+        </HighlightBlock>
 
         <h3>Database Constraints Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Data integrity</strong> is the primary advantage. Constraints are enforced
           regardless of application (multiple apps, direct SQL access, bugs). Invalid data
           is rejected at source, not discovered later.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Centralized rules</strong>: One place to define rules (database schema),
@@ -374,18 +384,21 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Database Constraints</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Always use PRIMARY KEY.</strong> Every table needs a unique identifier.
           Use surrogate keys (SERIAL, UUID) for simplicity, natural keys only if stable
           (never change).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use FOREIGN KEY for relationships.</strong> Enforce referential integrity.
           Choose appropriate action (CASCADE for dependent children, SET NULL for optional,
           RESTRICT for critical). Always index FK columns.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Index foreign key columns.</strong> Database doesn't auto-index FKs.
@@ -426,19 +439,22 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>No constraints.</strong> Relying only on application validation. Invalid
           data can slip through (bugs, direct SQL, multiple apps). Solution: Add database
           constraints for critical rules (PK, FK, UNIQUE, CHECK).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>CASCADE everywhere.</strong> Using CASCADE for all FKs. Accidental mass
           deletes possible (delete user → delete all orders, order_items, reviews). Solution:
           Use RESTRICT for critical data (orders), CASCADE only for dependent children
           (order_items).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Missing FK indexes.</strong> Not indexing foreign key columns. JOINs are
@@ -476,24 +492,27 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Orders</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce uses all constraint types: <strong>PRIMARY KEY</strong> (unique order
           ID), <strong>FOREIGN KEY</strong> (user_id → users.id, CASCADE delete),
           <strong>CHECK</strong> (total ≥ 0, quantity &gt; 0), <strong>NOT NULL</strong>
           (user_id, total, created_at). Benefits: prevents orphaned orders, invalid totals,
           missing required fields.
-        </p>
+        </HighlightBlock>
 
         <h3>User Management (RBAC)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Role-based access control: <strong>PRIMARY KEY</strong> (unique user/role IDs),
           <strong>FOREIGN KEY</strong> (user_roles.user_id → users.id, ON DELETE CASCADE),
           <strong>UNIQUE</strong> (email, username), <strong>CHECK</strong> (status IN
           ('active', 'inactive', 'suspended')). Benefits: prevents orphaned role assignments,
           duplicate emails, invalid statuses.
-        </p>
+        </HighlightBlock>
 
         <h3>Content Management (Blog)</h3>
         <p>
@@ -516,13 +535,16 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: What are database constraints? Why are they important?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Constraints are rules enforced at database level to
               ensure data integrity, prevent invalid data, maintain relationships. Types:
               PRIMARY KEY (unique identifier), FOREIGN KEY (referential integrity), UNIQUE
@@ -532,7 +554,7 @@ export default function ArticlePage() {
               query optimization (database knows relationships), (4) Documents data model
               (constraints show intended structure). Trade-off: small write overhead (1-5%),
               but worth it for data integrity.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> Should you validate in database or application?
               Answer: Both (defense in depth). Database for critical rules (uniqueness,

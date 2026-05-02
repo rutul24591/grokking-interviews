@@ -38,41 +38,39 @@ export default function UrlStateQueryParametersConciseArticle() {
           entry in place. The browser fires a <strong>popstate</strong> event whenever the user presses back or forward,
           giving the application a chance to react.
         </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Why does URL state matter at a staff/principal engineer level? Four reasons dominate architectural decisions:
-        </HighlightBlock>
+        <p>Why does URL state matter at a staff/principal engineer level? Four reasons dominate architectural decisions:</p>
         <ul className="space-y-2">
           <HighlightBlock as="li" tier="important">
             <strong>Shareability:</strong> A URL containing filter and sort state can be copied and sent to a colleague.
             No other client-side state mechanism offers this for free.
           </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Bookmarkability:</strong> Users can save complex views (e.g., a filtered dashboard with specific
             date range and grouping) as browser bookmarks and return to the exact same view later.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          </li>
+          <li>
             <strong>SEO & Crawlability:</strong> Search engines index URLs. Encoding paginated, filtered, or sorted
             content as distinct URLs allows crawlers to discover and rank those pages independently.
-          </HighlightBlock>
+          </li>
           <HighlightBlock as="li" tier="important">
             <strong>Back/Forward Navigation:</strong> The browser's native navigation buttons work automatically when
             state changes push new history entries. Users expect the back button to undo the last meaningful state
             change, and URL state delivers this without any custom code for history management.
           </HighlightBlock>
         </ul>
-        <HighlightBlock as="p" tier="crucial">
+        <p>
           At scale, URL state becomes a critical architectural concern because it sits at the intersection of frontend
           rendering, server-side rendering (where the URL is the only input), caching infrastructure (CDNs and reverse
           proxies key on URL), and analytics pipelines (every page view is a URL).
-        </HighlightBlock>
+        </p>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           A thorough understanding of URL state requires familiarity with the URL itself, the APIs for reading and
           writing it, and the libraries that abstract the complexity.
-        </HighlightBlock>
+        </p>
 
         <h3 className="mt-4 font-semibold">URL Anatomy for State</h3>
         <HighlightBlock as="p" tier="important">
@@ -88,7 +86,6 @@ export default function UrlStateQueryParametersConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/state-management/url-anatomy.svg"
           alt="URL anatomy diagram showing pathname, search params, and hash fragment"
           caption="Anatomy of a URL -- Each segment serves a distinct state purpose: route state, filter/sort state, and client-only state"
-          captionTier="important"
         />
 
         <h3 className="mt-4 font-semibold">URLSearchParams API</h3>
@@ -123,13 +120,13 @@ export default function UrlStateQueryParametersConciseArticle() {
         </HighlightBlock>
 
         <h3 className="mt-4 font-semibold">history.state for Hidden State</h3>
-        <HighlightBlock as="p" tier="important">
+        <p>
           The first argument to pushState/replaceState is a <strong>state object</strong> (up to ~640KB in most
           browsers) that is associated with the history entry but not visible in the URL. This is useful for passing
           transient data between navigations (e.g., scroll position, form drafts) without polluting the URL. However,
           it is lost when the user opens the URL in a new tab or shares it, so it should never be the sole source of
           truth for important state.
-        </HighlightBlock>
+        </p>
       </section>
 
       <section>
@@ -159,7 +156,7 @@ export default function UrlStateQueryParametersConciseArticle() {
         </HighlightBlock>
 
         <h3 className="mt-4 font-semibold">SSR Considerations</h3>
-        <HighlightBlock as="p" tier="crucial">
+        <HighlightBlock as="p" tier="important">
           On the server, the URL is the <strong>only</strong> available input. There is no History API, no popstate,
           and no localStorage. Server components in Next.js receive search params as props via the page's searchParams
           parameter. This means URL state is the only client state mechanism that works identically on server and
@@ -253,9 +250,7 @@ export default function UrlStateQueryParametersConciseArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <HighlightBlock as="p" tier="important">
-          These practices are drawn from production experience at scale:
-        </HighlightBlock>
+        <p>These practices are drawn from production experience at scale:</p>
         <ol className="space-y-3">
           <HighlightBlock as="li" tier="important">
             <strong>Define Explicit Defaults:</strong> Every query parameter should have a well-defined default value.
@@ -272,7 +267,7 @@ export default function UrlStateQueryParametersConciseArticle() {
             debounce the URL write (typically 300-500ms) to avoid flooding the history stack with entries. Use
             replaceState during the debounce window and pushState only on the final value.
           </HighlightBlock>
-          <HighlightBlock as="li" tier="crucial">
+          <HighlightBlock as="li" tier="important">
             <strong>Use replaceState for Minor Changes:</strong> Not every state change deserves a history entry.
             Use pushState for meaningful navigation events (changing a filter category, navigating to a new page) and
             replaceState for refinements within the same logical view (typing in a search box, adjusting a slider).
@@ -340,7 +335,7 @@ export default function UrlStateQueryParametersConciseArticle() {
             for the first time) crash or show empty state because the code assumes parameters always exist. Always
             provide fallbacks and handle the "empty URL" case as a first-class scenario.
           </li>
-          <HighlightBlock as="li" tier="crucial">
+          <HighlightBlock as="li" tier="important">
             <strong>Breaking the Back Button Contract:</strong> Using replaceState everywhere to "keep the URL clean"
             means the back button skips over meaningful state changes. Users expect back to undo the last navigation
             action. Map your pushState/replaceState strategy to user intent, not implementation convenience.
@@ -350,11 +345,9 @@ export default function UrlStateQueryParametersConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <HighlightBlock as="p" tier="important">
-          URL state is the right choice for state that is meaningful to share, bookmark, or crawl:
-        </HighlightBlock>
+        <p>URL state is the right choice for state that is meaningful to share, bookmark, or crawl:</p>
         <ul className="space-y-3">
-          <HighlightBlock as="li" tier="crucial">
+          <HighlightBlock as="li" tier="important">
             <strong>Search & Filter Pages:</strong> E-commerce product listings, job boards, and real estate search.
             Every combination of filters, sort order, and pagination offset maps to a unique URL. Example:
             /jobs?role=senior-engineer&location=remote&salary=150k-200k&sort=date&page=3.
@@ -388,9 +381,7 @@ export default function UrlStateQueryParametersConciseArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When NOT to Use URL State</h3>
-          <HighlightBlock as="p" tier="crucial">
-            Avoid URL state for:
-          </HighlightBlock>
+          <p>Avoid URL state for:</p>
           <ul className="mt-2 space-y-2">
             <HighlightBlock as="li" tier="important">
               <strong>Ephemeral UI state:</strong> Hover states, animation progress, tooltip visibility, dropdown
@@ -447,7 +438,7 @@ export default function UrlStateQueryParametersConciseArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you prevent the back button from breaking when using URL state?</p>
-            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The key is the distinction between pushState and replaceState. Use pushState for discrete,
               meaningful state transitions that the user would consider "a step" -- changing a page, selecting a
               category, opening a detail view. Use replaceState for continuous or incremental changes -- typing in a
@@ -463,22 +454,26 @@ export default function UrlStateQueryParametersConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          For interviews, use these references to ground your answers in platform realities: how the History API works,
+          what Next.js expects for search params in SSR, and what “URL as state” implies for caching and SEO.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/API/History_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN - History API (pushState, replaceState, popstate)
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN - URLSearchParams API Reference
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://nuqs.47ng.com/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               nuqs - Type-safe search params state management for React
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://nextjs.org/docs/app/api-reference/functions/use-search-params" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Next.js - useSearchParams Hook Documentation

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Database connection pooling is a resource management pattern that maintains a reusable collection of pre-established database connections, allowing application threads to borrow and return connections rather than creating and tearing down new ones for every request. Establishing a database connection is an expensive operation that involves TCP handshakes, TLS negotiation, authentication, session initialization, and allocation of server-side resources including memory buffers, worker threads, and transaction state. A single connection establishment can take anywhere from twenty to over one hundred milliseconds depending on network distance, authentication mechanism, and database engine. In a high-throughput service handling tens of thousands of requests per second, paying this cost per request is categorically unacceptable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Connection pooling solves this by amortizing the establishment cost across many requests. When an application starts, the pool creates a configured number of connections and keeps them alive, performing periodic health checks to ensure they remain valid. When a request arrives, the application thread acquires a connection from the pool, executes its query or transaction, and returns the connection to the pool for reuse. The connection never closes from the application&apos;s perspective — it is simply checked back in and made available for the next caller. This pattern transforms a per-request O(n) connection cost into an O(1) amortized cost, dramatically reducing tail latency and improving throughput.
-        </p>
+        </HighlightBlock>
         <p>
           The problem becomes significantly more complex at scale. When a microservice fleet scales to hundreds of instances, each running its own pool, the aggregate number of connections can easily exceed the database&apos;s maximum connection limit. PostgreSQL, for example, defaults to a maximum of one hundred connections, and even when raised to several thousand, each connection consumes approximately five to ten megabytes of server-side memory. A fleet of two hundred application instances each holding fifty connections demands ten thousand database connections — far beyond what most databases can sustain without proxying or sharding. Connection pooling is therefore not just an application-level optimization; it is a system-level constraint that shapes architecture, capacity planning, and failure mode analysis for any staff engineer designing data-intensive services.
         </p>
@@ -42,12 +46,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of connection pooling rests on several key abstractions that every engineer managing database infrastructure must understand. The pool itself is a bounded queue of available connections, typically implemented as a concurrent data structure that supports non-blocking acquisition and release. When a thread requests a connection, the pool dequeues an available one. If no connection is available and the pool has not reached its maximum size, a new connection is created. If the pool is at capacity, the requesting thread blocks until a connection is returned or the acquisition timeout elapses. This bounded nature is critical — unbounded pools grow without limit under load, eventually exhausting database resources and causing cascading failures across all services sharing the database.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Connection lifecycle management encompasses creation, validation, idle eviction, and retirement. Connections are not immortal — they can be severed by network partitions, killed by database-side timeout configurations, or corrupted by unrecoverable protocol errors. Pool implementations employ several strategies to maintain connection health. Some perform periodic validation queries, such as executing a lightweight SELECT 1 statement at configurable intervals. Others validate connections at checkout time, ensuring that a connection is alive before handing it to the application thread. A third approach validates connections at check-in time, discarding any connection that has become unhealthy. Each strategy carries a different performance trade-off: checkout validation adds latency to every acquisition, periodic validation introduces background load on the database, and check-in validation means a thread may receive a dead connection and encounter an error. Production systems often combine checkout validation with periodic keepalive to balance safety and performance.
-        </p>
+        </HighlightBlock>
         <p>
           Pool sizing is the most consequential configuration decision and the most commonly misunderstood. The optimal pool size depends on the database&apos;s capacity to handle concurrent work, not on the application&apos;s request rate alone. Every database engine has a finite number of worker threads available for query execution. PostgreSQL uses one backend process per connection, meaning each connection can consume a worker thread. MySQL uses a thread pool model where many connections can share a smaller set of worker threads, reducing per-connection overhead but introducing scheduling complexity. Understanding the database&apos;s concurrency model is prerequisite to sizing pools correctly. If the database has eight CPU cores and each query is CPU-bound, having more than eight concurrently executing queries per core provides no throughput benefit and only increases context-switching overhead. The pool size should reflect the actual concurrent execution capacity of the database, not the number of application threads.
         </p>
@@ -61,9 +68,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production-grade connection pool architecture comprises multiple interacting components that govern how connections are created, distributed, monitored, and recycled. The pool maintains two primary collections: the idle set containing connections ready for immediate use, and the in-use set tracking connections currently held by application threads. Some implementations also maintain a pending queue for threads waiting to acquire a connection when the pool is exhausted. The lifecycle of a connection flows through several states: it is created during pool initialization or scaling events, transitions to idle while waiting in the pool, moves to in-use when borrowed by an application thread, returns to idle upon release, and eventually enters a terminated state when it is retired due to age, errors, or idle eviction.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/connection-pool-lifecycle.svg`}
@@ -71,9 +81,9 @@ export default function ArticlePage() {
           caption="Connection pool lifecycle — connections transition through created, idle, in-use, validating, and terminated states, with health checks and idle eviction governing state transitions"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The request flow through a connection pool follows a deterministic path. When an application thread needs to execute a database operation, it calls the pool&apos;s acquire method. The pool first checks the idle set for an available connection. If one exists, it is removed from the idle set, added to the in-use set, optionally validated, and returned to the caller. If the idle set is empty but the total connection count is below the maximum, a new connection is created, initialized, added to the in-use set, and returned. If the pool is at maximum capacity, the thread is placed in the pending queue and blocks until a connection is released or the acquisition timeout fires. After the application thread completes its database work, it calls the release method, which returns the connection to the idle set or terminates it if validation fails.
-        </p>
+        </HighlightBlock>
         <p>
           HikariCP&apos;s architecture deserves particular attention because it represents the state of the art in application-level connection pooling. HikariCP uses a lock-free design based on the ConcurrentBag data structure, which eliminates the contention that plagued earlier pool implementations. When a thread requests a connection, HikariCP first checks a thread-local cache — a fast path that requires no synchronization. If the thread-local cache is empty, it uses a lock-free scan of the shared bag to find an available connection. Only if both paths fail does it resort to creating a new connection or blocking on the pending queue. This design achieves sub-microsecond acquisition latency under normal conditions, which is orders of magnitude faster than pools that use mutex-based synchronization for every acquisition. The lesson for staff engineers is that the internal data structure of a pool matters as much as its configuration — a lock-free pool can handle significantly higher concurrency without becoming a bottleneck itself.
         </p>
@@ -110,17 +120,20 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The design of a connection pooling strategy involves a series of interconnected trade-offs that vary depending on workload characteristics, database engine, and operational constraints. Understanding these trade-offs at a granular level is essential for making informed architectural decisions that hold up under production load.
-        </p>
+        </HighlightBlock>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4">
           <h3 className="mb-4 text-lg font-semibold">
             Pool Sizing: Conservative vs. Aggressive
           </h3>
-          <p className="mt-2 text-sm">
+          <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
             A conservative pool size minimizes database resource consumption but risks increased queuing latency when concurrent demand exceeds the available connections. An aggressive pool size ensures that connections are always available for application threads but risks overwhelming the database with too many concurrent workers, causing CPU thrashing, lock contention, and memory pressure. The correct sizing depends on the query profile. For I/O-bound workloads with significant waiting time — such as queries that perform large table scans or wait on disk — higher concurrency can improve throughput because connections spend time waiting rather than consuming CPU. For CPU-bound workloads — such as complex aggregations or cryptographic functions — concurrency should not exceed the number of available CPU cores, as additional threads only increase context-switch overhead without improving throughput.
-          </p>
+          </HighlightBlock>
           <p className="mt-2 text-sm">
             A practical approach is to start with a pool size equal to the number of CPU cores on the database server for CPU-bound workloads, or two to three times the core count for I/O-bound workloads, and then adjust based on observed metrics. Monitor the database&apos;s active connection count, CPU utilization, and query latency distribution. If CPU utilization is below sixty percent and query latency is stable, the pool can be increased. If CPU utilization is above eighty percent or lock contention is rising, the pool should be decreased.
           </p>
@@ -202,13 +215,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Cap Total Connections Across the Fleet:</strong> The most critical rule is that the product of instance count and per-instance pool size must remain below the database&apos;s maximum connection limit with a safety margin of at least twenty percent. This margin reserves connections for administrative tasks, maintenance operations, and failover scenarios. In a microservice architecture, assign each service a connection budget and enforce it through configuration management. Services with higher priority receive larger budgets; background processing services receive smaller allocations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Set Acquisition Timeouts Aggressively:</strong> Every connection acquisition should have a timeout in the range of fifty to two hundred milliseconds for latency-sensitive APIs. An infinite or overly generous timeout allows requests to queue indefinitely, masking pool exhaustion and propagating latency through the call chain. A tight timeout forces fast failure, enabling the application to shed load, return degraded responses, or trigger circuit breakers before the situation cascades into a full outage.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement Leak Detection:</strong> Configure the pool to track connection hold times and emit warnings when connections are held beyond an expected threshold — typically one to five seconds for transactional workloads. Leak detection should log the stack trace at the point of acquisition, enabling engineers to identify the exact code path responsible for holding the connection. In severe cases, the pool can be configured to forcibly close connections that exceed a maximum hold time, though this risks data corruption for in-flight transactions and should be used as a last resort.
           </li>
@@ -229,12 +245,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p className="mt-2 text-sm">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           One of the most frequent mistakes is sizing pools based on peak request rate rather than database capacity. Engineers observe that their service handles ten thousand requests per second and set the pool size to a correspondingly large number, not realizing that the database can only execute a few dozen queries concurrently. The result is that the database becomes saturated with concurrent workers, context-switching overhead increases dramatically, and query latency spikes across all services. The pool size should reflect what the database can handle, not what the application can throw at it.
-        </p>
-        <p className="mt-2 text-sm">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           Another common pitfall is scaling the application tier without considering the multiplicative effect on database connections. When a service auto-scales from twenty to two hundred instances, each with a pool of fifty connections, the database suddenly faces ten thousand connection attempts instead of one thousand. Without a connection proxy or carefully managed per-instance pool sizes, this scaling event can bring down the database entirely. The connection storm that accompanies rapid scaling is particularly dangerous because it coincides with a period of increased traffic — precisely when the database needs to be most available.
-        </p>
+        </HighlightBlock>
         <p className="mt-2 text-sm">
           Connection leaks caused by improper exception handling are a persistent source of production incidents. When an application thread acquires a connection, executes a query that throws an exception, and fails to return the connection in the exception handler, that connection is effectively lost until the pool detects the leak or the application restarts. The pattern of using try-finally blocks or language constructs that guarantee resource cleanup is essential. In languages with automatic resource management — such as Go&apos;s defer, Java&apos;s try-with-resources, or Rust&apos;s Drop trait — leverage these mechanisms to ensure connections are always returned.
         </p>
@@ -254,12 +273,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p className="mt-2 text-sm">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           At a large e-commerce platform during peak shopping events, the application fleet scales from fifty to five hundred instances to handle the traffic surge. Each instance runs a connection pool of twenty connections, which would normally demand ten thousand database connections — far exceeding the PostgreSQL cluster&apos;s configured maximum of two thousand. The platform uses PgBouncer in transaction-mode pooling, with three PgBouncer instances each maintaining a pool of six hundred connections to the database. The application instances connect to PgBouncer rather than directly to the database, and PgBouncer multiplexes the ten thousand application connections onto the 1,800 database connections. This architecture allows the application tier to scale independently of the database connection limit, with PgBouncer providing backpressure when the database approaches capacity.
-        </p>
-        <p className="mt-2 text-sm">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           A financial services company operates a microservice architecture where each service connects to a shared Oracle database. The services have different SLA requirements: payment processing requires sub-fifty-millisecond latency, while reporting and analytics can tolerate several seconds. Initially, all services shared a single connection pool, and analytical queries would occasionally monopolize the pool, causing payment processing to time out. The solution was to implement three separate connection pools: a high-priority pool with fifty connections for payment processing, a standard pool with thirty connections for general CRUD operations, and a low-priority pool with twenty connections for analytical queries. Each pool had its own acquisition timeout — fifty milliseconds for the high-priority pool, two hundred milliseconds for the standard pool, and five seconds for the low-priority pool — ensuring that payment processing was never blocked by slower workloads.
-        </p>
+        </HighlightBlock>
         <p className="mt-2 text-sm">
           A SaaS analytics platform experienced a recurring production issue where connection leaks would gradually exhaust the pool over a period of several hours, eventually causing all database operations to fail. The root cause was identified as error paths in a data ingestion pipeline that acquired connections but failed to release them when deserialization errors occurred. The fix involved implementing leak detection with a ten-second hold-time threshold that logged the acquisition stack trace, which pinpointed the exact code paths responsible. The team also added pool utilization alerts that triggered at eighty percent capacity, giving the on-call team early warning before exhaustion occurred.
         </p>
@@ -270,13 +292,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q1: You have a fleet of 200 application instances, each configured with a pool of 50 connections. The database has a max_connections setting of 5,000. What happens during a deployment when you roll out 50 new instances, and how do you prevent it?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: You have a fleet of 200 application instances, each configured with a pool of 50 connections. The database has a max_connections setting of 5,000. What happens during a deployment when you roll out 50 new instances, and how do you prevent it?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               The existing fleet of 200 instances holds 10,000 connections, which already exceeds the database&apos;s max_connections of 5,000. The immediate fix is to reduce the per-instance pool size. With 200 instances and a 5,000-connection limit, each instance can hold at most 20 connections (leaving a 20 percent margin). The deeper architectural fix is to deploy a connection proxy like PgBouncer in transaction-mode pooling, which maintains a bounded pool of server-side connections and multiplexes all application connections onto them, decoupling application instance count from database connection count.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               During the rollout itself, implement gradual warmup: new instances should create connections at a controlled rate — for example, five connections per second — rather than all at once. This prevents a connection storm that would spike database CPU even if the total count is within limits.
             </p>

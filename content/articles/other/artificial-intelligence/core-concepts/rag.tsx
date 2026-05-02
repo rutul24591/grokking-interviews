@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Retrieval-Augmented Generation (RAG)</strong> is an
           architecture that grounds an LLM&apos;s responses in external knowledge
           by retrieving relevant documents from a knowledge base and including
@@ -33,8 +37,8 @@ export default function ArticlePage() {
           or hallucinated) knowledge, RAG ensures the model&apos;s output is
           informed by specific, current, domain-relevant information that the
           system controls.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The RAG architecture follows a three-phase pipeline. In the{" "}
           <strong>indexing phase</strong>, source documents are split into
           chunks, each chunk is converted to an embedding (a dense vector
@@ -46,7 +50,7 @@ export default function ArticlePage() {
           <strong>generation phase</strong>, the retrieved chunks are included
           in the prompt as context, and the LLM generates a response grounded
           in that context.
-        </p>
+        </HighlightBlock>
         <p>
           RAG addresses the fundamental limitations of LLMs: knowledge cutoff
           (the model can&apos;t know about events after its training date),
@@ -70,7 +74,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The quality of a RAG system is determined primarily by the quality
           of its retrieval — if the right documents aren&apos;t retrieved, the
           LLM cannot produce accurate answers, regardless of its capability.
@@ -80,8 +87,8 @@ export default function ArticlePage() {
           embedding model captures semantic similarity), and{" "}
           <strong>retrieval parameters</strong> (how many chunks to retrieve
           and how to rank them).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Chunking strategy</strong> is the most impactful design
           decision in RAG. Documents must be split into chunks small enough to
           fit within the context window budget and focused enough to provide
@@ -97,7 +104,7 @@ export default function ArticlePage() {
           structure but produces variable-sized chunks), and{" "}
           <strong>agentic chunking</strong> (use an LLM to summarize and split
           documents intelligently — highest quality but most expensive).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Chunk overlap</strong> is critical for maintaining context
           across chunk boundaries. When a document is split into chunks,
@@ -163,7 +170,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production RAG pipeline consists of several components. The{" "}
           <strong>document ingestion pipeline</strong> fetches documents from
           source systems (databases, file systems, APIs, web crawlers),
@@ -172,8 +182,8 @@ export default function ArticlePage() {
           and stores the embeddings in the vector database with metadata
           (document source, last updated, document type, access permissions).
           This pipeline runs periodically to keep the index current.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>query processing pipeline</strong> takes the user&apos;s
           query, optionally rewrites it for better retrieval (query expansion,
           hypothetical document embeddings, sub-query decomposition), embeds
@@ -182,7 +192,7 @@ export default function ArticlePage() {
           candidates, selects the top-n chunks for inclusion in the prompt,
           and constructs the augmented prompt with the retrieved context and
           the original query.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/rag-chunking-strategies.svg"
@@ -215,7 +225,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Chunk size</strong> presents a fundamental trade-off. Small
           chunks (100-200 tokens) are precise — when retrieved, they provide
           focused, relevant information without noise — but may lack the
@@ -227,8 +240,8 @@ export default function ArticlePage() {
           technical documentation benefits from smaller chunks (specific API
           references), while analytical reports benefit from larger chunks
           (broader context).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Number of retrieved chunks</strong> involves a trade-off
           between information completeness and context window efficiency.
           Retrieving more chunks increases the chance of including the right
@@ -238,7 +251,7 @@ export default function ArticlePage() {
           (increasing cost). The typical range is 3-10 chunks, with the
           optimal number determined empirically by measuring answer quality
           against the number of retrieved chunks.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>RAG vs. fine-tuning</strong> is the fundamental architectural
           decision for domain-specific AI. RAG provides access to current,
@@ -261,7 +274,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Invest in document preprocessing</strong> — the quality of
           RAG output is bounded by the quality of the indexed documents.
           Remove boilerplate (headers, footers, navigation), extract
@@ -270,8 +286,8 @@ export default function ArticlePage() {
           metadata, and normalize formatting (consistent terminology, resolved
           references). Clean, well-structured documents produce significantly
           better retrieval results than raw, unprocessed documents.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement retrieval evaluation</strong> — measure retrieval
           quality independently of generation quality. Use a benchmark dataset
           of (query, relevant_documents) pairs and measure recall (did we
@@ -280,7 +296,7 @@ export default function ArticlePage() {
           is the first relevant document in the results?). Optimize retrieval
           parameters (chunk size, number of results, hybrid search weights)
           against these metrics before optimizing the generation phase.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Use query rewriting</strong> to improve retrieval. Users
           often phrase queries poorly for retrieval — they use pronouns without
@@ -303,7 +319,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>poor chunking</strong> — using
           fixed-size chunking without considering document structure, resulting
           in chunks that cut across topic boundaries, split tables or code
@@ -312,8 +331,8 @@ export default function ArticlePage() {
           structure-aware chunking that respects document boundaries and
           preserves context (heading ancestry, table headers, code function
           names) as metadata.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Stale index</strong> — the RAG index is only as current as
           the last ingestion run. If documents are updated frequently and the
           ingestion pipeline runs daily, users will receive outdated
@@ -321,7 +340,7 @@ export default function ArticlePage() {
           database timestamps, webhook notifications) to trigger targeted
           re-indexing of changed documents rather than full re-indexing on a
           schedule.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Ignoring access control</strong> — retrieved chunks may
           contain information the user shouldn&apos;t see. If a user queries
@@ -346,7 +365,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Enterprise knowledge base search</strong> — employees query
           a RAG system backed by company documentation, meeting notes, policy
           documents, and technical specifications. The system retrieves
@@ -354,8 +376,8 @@ export default function ArticlePage() {
           Access control ensures employees only see documents they have
           permission to access. This pattern is used by companies like Notion,
           Confluence, and Gong for AI-powered knowledge search.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Customer support with product documentation</strong> — a
           support bot uses RAG to ground its responses in the product&apos;s
           documentation, FAQ, release notes, and known issues database.
@@ -363,7 +385,7 @@ export default function ArticlePage() {
           answers are accurate for the user&apos;s product version. Source
           citations allow users to verify answers and read the full
           documentation for more detail.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Legal and compliance research</strong> — lawyers and
           compliance officers use RAG to search across contracts, regulations,
@@ -377,26 +399,29 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: How do you choose the optimal chunk size for a RAG system?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The optimal chunk size depends on document type, query patterns,
             and embedding model characteristics. The approach is empirical:
             start with a range of chunk sizes (100, 200, 500, 1000, 2000
             tokens) with 10-20% overlap, build a test index for each, and
             evaluate retrieval quality against a benchmark of (query,
             relevant_documents) pairs.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             Measure retrieval recall (percentage of relevant documents
             retrieved in the top-k), precision (percentage of retrieved
             documents that are relevant), and answer quality (generated answers
             evaluated for accuracy). The chunk size that maximizes answer
             quality — not just retrieval quality — is the optimal choice.
-          </p>
+          </HighlightBlock>
           <p>
             As a starting point: 500-token chunks with 50-token overlap work
             well for most document types. Technical documentation (APIs, code)

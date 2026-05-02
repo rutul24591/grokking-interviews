@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,20 +28,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Input validation</strong> is the practice of ensuring that user input conforms to expected types,
           formats, ranges, and constraints before processing. <strong>Sanitization</strong> is the practice of
           removing or encoding dangerous content from user input to prevent it from being interpreted as code
           (SQL, HTML, JavaScript, OS commands). Together, input validation and sanitization form the first line of
           defense against injection attacks — SQL injection, XSS, command injection, LDAP injection, and path
           traversal.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Input validation is not optional — every piece of user input is untrusted and potentially malicious. This
           includes URL parameters, request bodies, headers, cookies, file uploads, and even data from third-party
           APIs (which may be compromised). The principle of &quot;never trust user input&quot; is fundamental to secure
           software design — assuming that user input is safe is the root cause of most injection vulnerabilities.
-        </p>
+        </HighlightBlock>
         <p>
           The evolution of input validation has been shaped by increasingly sophisticated attacks. Early validation
           relied on blacklists (blocking known-bad patterns like &lt;script&gt;, SELECT, DROP), which was easily bypassed
@@ -83,20 +87,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Whitelist validation (allow only known-good patterns) is the recommended approach for input validation.
           Whitelist validation defines what is allowed — alphanumeric characters, specific symbols, expected
           formats — and rejects everything else. This is more restrictive than blacklist validation but
           significantly more secure — attackers cannot bypass whitelist validation using encoding tricks or novel
           attack patterns because anything not explicitly allowed is rejected.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Blacklist validation (block known-bad patterns) is not recommended — it defines what is blocked
           (&lt;script&gt;, SELECT, DROP, javascript:, onerror=) and allows everything else. Blacklists are easily bypassed
           — attackers can use encoding tricks (&#60;script&#62;, java&#115;cript:, onload=), alternative syntaxes
           (&lt;img src=x onerror=alert(1)&gt;), or novel attack patterns that are not on the blacklist. Blacklist
           validation should only be used as a supplementary defense, never as the primary defense.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/input-validation-sanitization-diagram-1.svg"
           alt="Input validation pipeline showing type validation, format validation, length/range check, sanitization, and business rule validation stages"
@@ -147,14 +154,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The input validation architecture consists of the schema validator (which validates input against JSON
           Schema or OpenAPI definitions), the sanitizer (which removes or encodes dangerous content), the business
           rule validator (which validates input within the business context), and the error handler (which returns
           consistent validation error messages). Each component is independent — if one component fails, the
           others still provide protection.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The validation flow begins with the client sending a request to the API. The schema validator validates
           the request body, parameters, and headers against the schema — if the input does not match the schema
           (missing required fields, wrong data types, invalid formats, out-of-range values), the request is
@@ -163,7 +173,7 @@ export default function ArticlePage() {
           URL encoding). The sanitized input is then passed to the business rule validator, which validates the
           input within the business context (user exists, inventory available, date in future). If all validation
           passes, the request is processed.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/input-validation-sanitization-diagram-3.svg"
           alt="JSON Schema validation showing schema definition and validation results for valid and invalid API request bodies"
@@ -200,7 +210,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Whitelist versus blacklist validation is the primary trade-off in input validation. Whitelist validation
           (allow only known-good patterns) is more secure but more restrictive — it may reject legitimate input
           that does not match the whitelist. Blacklist validation (block known-bad patterns) is more permissive
@@ -208,8 +221,8 @@ export default function ArticlePage() {
           recommended approach is whitelist validation for all security-critical input (SQL queries, HTML output,
           file names, URLs) and blacklist validation as a supplementary defense for non-critical input (comments,
           descriptions, free-form text).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Schema validation versus manual validation is a trade-off between automation and flexibility. Schema
           validation (JSON Schema, OpenAPI) defines the expected input structure once and validates all requests
           automatically — it is automated, self-documenting, and provides consistent error messages. However,
@@ -218,7 +231,7 @@ export default function ArticlePage() {
           code) can validate business rules but is error-prone (developers may forget to validate a field) and
           does not provide consistent error messages. The recommended approach is schema validation for structural
           validation and manual validation for business rules.
-        </p>
+        </HighlightBlock>
         <p>
           Client-side versus server-side validation is a trade-off between user experience and security.
           Client-side validation (JavaScript validation in the browser) provides immediate feedback to users —
@@ -245,19 +258,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use whitelist validation for all security-critical input — define what is allowed (alphanumeric
           characters, specific symbols, expected formats) and reject everything else. Whitelist validation is
           more restrictive but significantly more secure — attackers cannot bypass it using encoding tricks or
           novel attack patterns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use JSON Schema or OpenAPI for API input validation — define the expected input structure (required
           fields, data types, formats, value ranges) and validate all requests against the schema. Schema
           validation provides early rejection of invalid input, self-documenting APIs, and consistent error
           messages. Integrate schema validation into the CI/CD pipeline — validate requests in staging before
           deploying to production.
-        </p>
+        </HighlightBlock>
         <p>
           Use context-aware sanitization — encode input differently depending on the output context (HTML body,
           HTML attribute, JavaScript, URL, CSS, SQL). Use well-tested sanitization libraries (DOMPurify for HTML,
@@ -290,18 +306,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Relying solely on blacklist validation is a common pitfall. Blacklists are easily bypassed — attackers
           can use encoding tricks, alternative syntaxes, or novel attack patterns that are not on the blacklist.
           The fix is to use whitelist validation — define what is allowed and reject everything else. Blacklists
           should only be used as a supplementary defense, never as the primary defense.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not validating all input sources is a common pitfall. Developers often validate request body input but
           forget to validate URL parameters, headers, cookies, and file uploads. All input sources are untrusted
           and must be validated. The fix is to validate all input sources — request body, URL parameters, headers,
           cookies, file uploads, and third-party API responses.
-        </p>
+        </HighlightBlock>
         <p>
           Using the wrong encoding for the output context is a common pitfall. Encoding user input for HTML body
           context but placing it in a JavaScript string allows an attacker to break out of the string and inject
@@ -327,7 +346,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses JSON Schema validation for all API endpoints — each endpoint has a
           JSON Schema definition (required fields, data types, formats, value ranges) that is validated
           automatically before processing. The platform uses context-aware sanitization (HTML entity encoding
@@ -336,8 +358,8 @@ export default function ArticlePage() {
           validation failures and alerts on anomalous patterns (multiple validation failures from the same
           client, injection patterns in input). The platform has had zero successful injection attacks since
           implementing these controls.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses whitelist validation for all security-critical input — account numbers
           (numeric only, fixed length), email addresses (validated against email regex), phone numbers (validated
           against phone number regex), and amounts (numeric, positive, two decimal places). The company uses
@@ -345,7 +367,7 @@ export default function ArticlePage() {
           all HTML output. The company logs validation failures and alerts on injection patterns (SQL keywords,
           HTML tags, command injection patterns). The company has achieved PCI-DSS compliance in part due to its
           input validation controls.
-        </p>
+        </HighlightBlock>
         <p>
           A healthcare organization uses JSON Schema validation for its patient data API — each endpoint has a
           JSON Schema definition that is validated automatically. The organization uses context-aware
@@ -371,14 +393,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between whitelist and blacklist validation, and why is whitelist preferred?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Whitelist validation defines what is allowed (alphanumeric characters, specific symbols, expected formats) and rejects everything else. Blacklist validation defines what is blocked (&lt;script&gt;, SELECT, DROP, javascript:) and allows everything else.
-            </p>
+            </HighlightBlock>
             <p>
               Whitelist validation is preferred because it is more secure — attackers cannot bypass whitelist validation using encoding tricks, alternative syntaxes, or novel attack patterns because anything not explicitly allowed is rejected. Blacklist validation is easily bypassed — attackers can use encoding tricks (&#60;script&#62;, java&#115;cript:) or novel attack patterns that are not on the blacklist. Whitelist validation should be used for all security-critical input, with blacklist validation only as a supplementary defense.
             </p>

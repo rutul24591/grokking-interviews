@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,7 @@ export default function WebSocketsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           <strong>WebSockets</strong> are a communication protocol defined in RFC
           6455 that provides persistent, full-duplex communication channels over
           a single TCP connection between a browser and a server. Unlike the
@@ -49,8 +50,8 @@ export default function WebSocketsArticle() {
           the foundational transport layer for real-time web applications
           including chat systems, collaborative editors, live dashboards,
           multiplayer games, and financial trading platforms.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The protocol begins with an HTTP/1.1 upgrade handshake: the client
           sends a standard HTTP request with an <code>Upgrade: websocket</code>{" "}
           header and a <code>Sec-WebSocket-Key</code> for verification. If the
@@ -63,8 +64,8 @@ export default function WebSocketsArticle() {
           latency of establishing new TCP connections and the overhead of
           repeated HTTP header exchange, making WebSockets dramatically more
           efficient than polling for high-frequency real-time communication.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The distinction between WebSockets and HTTP-based alternatives is
           fundamental to architectural decision-making. HTTP long polling holds a
           request open until the server has data, then closes and reopens the
@@ -77,7 +78,7 @@ export default function WebSocketsArticle() {
           operational complexity: WebSocket connections are stateful and
           long-lived, which fundamentally changes how you reason about load
           balancing, scaling, failure recovery, and resource management.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, WebSocket expertise extends beyond
           the API surface into operational territory. A single WebSocket server
@@ -110,7 +111,7 @@ export default function WebSocketsArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           The Upgrade Handshake
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           The WebSocket handshake is a one-time HTTP/1.1 exchange that
           transitions the connection from HTTP to WebSocket protocol. The client
           sends a GET request with <code>Connection: Upgrade</code>,{" "}
@@ -127,12 +128,12 @@ export default function WebSocketsArticle() {
           <code>Sec-WebSocket-Extensions</code>), enabling features like
           per-message compression via the <code>permessage-deflate</code>{" "}
           extension.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Frame Format and Opcodes
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           After the handshake, communication occurs through WebSocket frames.
           Each frame has a compact binary header: a FIN bit (indicating the
           final fragment), three reserved bits (used by extensions), a 4-bit
@@ -146,12 +147,12 @@ export default function WebSocketsArticle() {
           unmasked. The minimal header overhead — as low as 2 bytes for small
           unmasked server messages — is what gives WebSockets their efficiency
           advantage over HTTP for high-frequency messaging.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Connection Management and Heartbeats
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Long-lived WebSocket connections face several threats to reliability:
           network changes (WiFi to cellular transitions), NAT timeout expiration
           (middleboxes typically close idle TCP connections after 30-120
@@ -165,7 +166,7 @@ export default function WebSocketsArticle() {
           implement application-level heartbeats — periodic JSON messages that
           serve double duty as connection liveness checks and state
           synchronization triggers.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Reconnection Strategies
@@ -211,14 +212,20 @@ export default function WebSocketsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Scaling WebSocket infrastructure requires fundamentally different
           patterns than scaling stateless HTTP services. The core challenge is
           that each WebSocket connection is a long-lived, stateful TCP
           connection pinned to a specific server process. When client A on
           server 1 sends a message intended for client B on server 2, a
           cross-server messaging backbone is required to route the message.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The architecture hinges on a fanout backbone plus reconnect strategy:
+          define authentication during upgrades, heartbeats/timeouts, backpressure,
+          and replay/ack semantics so clients can recover from disconnects without
+          losing critical messages.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/real-time-features/websockets-diagram-2.svg"
@@ -226,7 +233,7 @@ export default function WebSocketsArticle() {
           caption="Figure 2: Horizontal scaling architecture with pub/sub backbone"
         />
 
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           The horizontal scaling architecture uses a pub/sub system (Redis,
           NATS, or Kafka) as the messaging backbone. Each WebSocket server
           subscribes to relevant channels. When a message arrives on server 1
@@ -240,7 +247,7 @@ export default function WebSocketsArticle() {
           During deployments, a graceful drain process sends a &quot;reconnect
           to another server&quot; signal to connected clients before shutting
           down, preventing message loss during rolling updates.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -250,16 +257,16 @@ export default function WebSocketsArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Choosing the right real-time transport depends on the communication
           pattern, latency requirements, and operational complexity budget.
           The following comparison evaluates WebSockets against the primary
           alternatives.
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-theme text-sm">
             <thead>
-              <tr className="bg-panel">
+              <HighlightBlock as="tr" tier="important">
                 <th className="border border-theme px-4 py-2 text-left">
                   Aspect
                 </th>
@@ -272,10 +279,10 @@ export default function WebSocketsArticle() {
                 <th className="border border-theme px-4 py-2 text-left">
                   Long Polling
                 </th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody>
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="border border-theme px-4 py-2 font-medium">
                   Direction
                 </td>
@@ -288,7 +295,7 @@ export default function WebSocketsArticle() {
                 <td className="border border-theme px-4 py-2">
                   Simulated push via held requests
                 </td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="border border-theme px-4 py-2 font-medium">
                   Protocol
@@ -370,24 +377,24 @@ export default function WebSocketsArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Implement exponential backoff with jitter for reconnection — start
             at 1 second, double on each failure, cap at 30 seconds, and add
             random jitter of plus or minus 25% to prevent thundering herd
             reconnection storms after server restarts
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Send application-level heartbeats every 15-25 seconds rather than
             relying solely on TCP keepalive or protocol-level ping/pong, as
             many corporate proxies and firewalls strip or interfere with
             WebSocket control frames
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Design idempotent message handlers using unique message IDs — the
             server may redeliver messages during reconnection, and clients must
             handle duplicates gracefully by checking a local set of recently
             processed message IDs
-          </li>
+          </HighlightBlock>
           <li>
             Use a message envelope format with consistent fields (
             <code>type</code>, <code>id</code>, <code>timestamp</code>,{" "}
@@ -426,25 +433,25 @@ export default function WebSocketsArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>No reconnection logic</strong> — browsers do not
             automatically reconnect WebSocket connections. Without explicit
             reconnection implementation, a single network blip permanently
             disconnects the user from all real-time features
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Thundering herd on server restart</strong> — when a
             WebSocket server restarts, all connected clients simultaneously
             attempt to reconnect. Without jitter in the backoff, this creates a
             connection spike that can overwhelm the server or its upstream
             dependencies
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring connection state in the UI</strong> — failing to
             surface connection status to the user leads to confusion when
             messages silently stop arriving. Always display a connection
             indicator and queue outbound messages for retry when disconnected
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Memory leaks from event listeners</strong> — each
             WebSocket connection typically registers multiple event handlers (
@@ -477,7 +484,7 @@ export default function WebSocketsArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Slack: Persistent Messaging Infrastructure
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Slack&apos;s real-time messaging system maintains millions of
           concurrent WebSocket connections across its fleet. Each workspace
           member holds a persistent connection that receives messages, typing
@@ -494,12 +501,12 @@ export default function WebSocketsArticle() {
           sophisticated reconnection with gap detection: when a client
           reconnects, it sends the last received event timestamp, and the server
           replays any missed events from a short-lived message buffer.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Binance: Financial Data Streaming
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Cryptocurrency exchange Binance uses WebSocket connections to stream
           real-time market data — order book updates, trade executions, and
           ticker prices — to millions of traders simultaneously. Their
@@ -514,12 +521,12 @@ export default function WebSocketsArticle() {
           gateways, and each gateway maintains connection pools organized by
           subscription interest. This tiered fanout prevents a single hot
           symbol from overwhelming any single server.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Figma: Collaborative Design Tool
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Figma&apos;s real-time collaboration system uses WebSocket
           connections to synchronize design operations across all users viewing
           the same file. Every cursor movement, shape transformation, and
@@ -534,7 +541,7 @@ export default function WebSocketsArticle() {
           active document is a room, and a specific server is designated as the
           authoritative host for that room, eliminating the need for
           cross-server coordination for operations within the same document.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/real-time-features/websockets-diagram-3.svg"
@@ -548,14 +555,17 @@ export default function WebSocketsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How does a WebSocket connection differ from a standard HTTP
               connection, and when would you choose one over the other?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A WebSocket connection starts as an HTTP request but upgrades to a
               persistent, full-duplex TCP connection via the 101 Switching
               Protocols response. Unlike HTTP&apos;s request-response model where
@@ -566,14 +576,14 @@ export default function WebSocketsArticle() {
               notifications). Choose polling for infrequent updates where the
               operational simplicity of stateless HTTP outweighs the latency
               benefit.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How would you scale a WebSocket service to handle millions of
               concurrent connections?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               Horizontal scaling requires a pub/sub backbone (Redis, NATS,
               Kafka) for cross-server message routing. Each WebSocket server

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,13 +25,16 @@ export default function EndToEndObservabilityArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>End-to-End Observability</strong> is the ability to understand the internal state of a
           system by examining its outputs—across all services, from user request to backend processing
           and back. Unlike monitoring, which tells you when something is wrong, observability enables you
           to ask arbitrary questions about system behavior without knowing the question in advance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Observability rests on three pillars: logs (timestamped records of events), metrics (numerical
           measurements over time), and traces (request flow across services). In distributed systems,
           observability is critical for debugging issues that span multiple services. A single user
@@ -38,7 +42,7 @@ export default function EndToEndObservabilityArticle() {
           cause of latency or failures is nearly impossible. For staff and principal engineers,
           observability is both a technical and organizational concern—the decisions you make about
           instrumentation, data retention, and tooling have lasting impact on operational effectiveness.
-        </p>
+        </HighlightBlock>
         <p>
           The key principles of observability include high cardinality (capturing rich context such as
           user IDs, request IDs, and versions), correlation (linking logs, metrics, and traces via
@@ -57,7 +61,10 @@ export default function EndToEndObservabilityArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Logs are structured, timestamped event records that provide the most detailed form of
           observability data. Application logs capture business events, errors, warnings, and info
           messages, while access logs record HTTP requests, response codes, latency, and user agents.
@@ -68,8 +75,8 @@ export default function EndToEndObservabilityArticle() {
           entry, applying appropriate log levels (DEBUG, INFO, WARN, ERROR, FATAL) consistently, managing
           disk space through log rotation, and shipping logs to a centralized aggregation system such as
           ELK, Splunk, or Datadog.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Metrics are numerical measurements aggregated over time, ideal for alerting and dashboards.
           Counters are monotonically increasing values such as request count and error count. Gauges
           represent point-in-time values such as CPU usage and queue depth. Histograms capture the
@@ -83,7 +90,7 @@ export default function EndToEndObservabilityArticle() {
           use high cardinality labels (service, endpoint, status, region), appropriate aggregation
           to maintain flexibility, SLO burn rate tracking, and consistent naming conventions across
           all services.
-        </p>
+        </HighlightBlock>
         <p>
           Traces track request flow across services and are essential for understanding distributed
           system behavior. A trace represents the complete request flow from start to finish, composed
@@ -119,13 +126,16 @@ export default function EndToEndObservabilityArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The observability infrastructure architecture consists of several interconnected systems that
           collect, process, store, and surface telemetry data. Understanding this architecture is
           essential for designing observability at scale and making informed trade-off decisions about
           tooling, retention, and cost.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The data collection pipeline begins with instrumentation at the service level. OpenTelemetry
           SDKs are embedded in each service to auto-instrument common libraries (HTTP clients, database
           drivers, message queue clients) and provide APIs for manual instrumentation of business logic.
@@ -136,7 +146,7 @@ export default function EndToEndObservabilityArticle() {
           Prometheus, Jaeger, Elasticsearch, or commercial platforms. Sidecar or DaemonSet deployments
           ensure collectors run alongside every service instance, providing local aggregation before
           forwarding to centralized backends.
-        </p>
+        </HighlightBlock>
         <p>
           The sampling infrastructure determines which telemetry data is retained and which is discarded.
           Head-based sampling makes decisions at trace start, using rate-based (sample a fixed percentage
@@ -189,34 +199,37 @@ export default function EndToEndObservabilityArticle() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Observability architecture decisions involve significant trade-offs across data collection,
           storage, and analysis dimensions. Understanding these trade-offs enables staff and principal
           engineers to design observability systems that balance cost, completeness, and operational
           effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Push vs Pull Metrics</h3>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-theme">
-                <th className="p-2 text-left">Dimension</th>
+  <tr className="border-b border-theme">
+<th className="p-2 text-left">Dimension</th>
                 <th className="p-2 text-left">Push (StatsD, Datadog)</th>
                 <th className="p-2 text-left">Pull (Prometheus)</th>
-              </tr>
-            </thead>
+  </tr>
+</thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Service Awareness</td>
                 <td className="p-2">Server knows all targets</td>
                 <td className="p-2">Server discovers targets</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Failure Detection</td>
                 <td className="p-2">Cannot detect dead services</td>
                 <td className="p-2">Can detect scrape failures</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Network Load</td>
                 <td className="p-2">Bursts during high activity</td>
@@ -242,16 +255,16 @@ export default function EndToEndObservabilityArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Decision Timing</td>
                 <td className="p-2">At trace start</td>
                 <td className="p-2">After trace completes</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Important Trace Capture</td>
                 <td className="p-2">May miss (random)</td>
                 <td className="p-2">Guaranteed (content-based)</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Complexity</td>
                 <td className="p-2">Low (simple probability)</td>
@@ -277,16 +290,16 @@ export default function EndToEndObservabilityArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Cost</td>
                 <td className="p-2">Lower license cost, higher ops cost</td>
                 <td className="p-2">Higher license cost, lower ops cost</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Flexibility</td>
                 <td className="p-2">Full control, customizable</td>
                 <td className="p-2">Vendor-defined features</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Integration</td>
                 <td className="p-2">Manual (assemble components)</td>
@@ -312,16 +325,16 @@ export default function EndToEndObservabilityArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Scalability</td>
                 <td className="p-2">Vertical scaling limits</td>
                 <td className="p-2">Horizontal, unlimited</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Operational Complexity</td>
                 <td className="p-2">Lower (single system)</td>
                 <td className="p-2">Higher (manage cluster)</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Query Performance</td>
                 <td className="p-2">Fast for small datasets</td>
@@ -339,7 +352,10 @@ export default function EndToEndObservabilityArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use OpenTelemetry for vendor-neutral instrumentation across all services. Apply
           auto-instrumentation wherever possible through SDK-provided instrumentations for common
           libraries, and reserve manual instrumentation for business logic and critical paths. Maintain
@@ -347,15 +363,15 @@ export default function EndToEndObservabilityArticle() {
           business context such as user ID and order ID in trace tags to enable filtering by business
           dimensions. Define observability requirements before launching any service, including what
           metrics indicate success, what alerts should fire, and what dashboards are needed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement appropriate retention policies for each telemetry type, balancing debugging needs
           against storage costs. Use intelligent sampling for high-volume data to control storage and
           processing costs. Monitor observability costs and optimize continuously, adjusting retention
           and sampling as traffic patterns change. Enforce data governance by scanning logs for PII and
           sensitive data, implementing log scrubbing, and providing developer training on what should
           and should not be logged.
-        </p>
+        </HighlightBlock>
         <p>
           Alert on symptoms rather than causes, using SLO-based alerting with burn rate alerts that
           consider both error rate and time window. Avoid alert fatigue by tuning thresholds based on
@@ -380,21 +396,24 @@ export default function EndToEndObservabilityArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Siloed tools with logs, metrics, and traces in separate systems prevent effective correlation
           and increase mean time to resolution. The fix is to invest in correlation infrastructure and
           either a unified observability platform or well-integrated open-source components. Missing
           trace propagation where traces stop at service boundaries creates blind spots in distributed
           debugging. Instrument all services consistently and propagate context via standard headers
           such as W3C traceparent.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Collecting too much data through 100% sampling and logging everything leads to storage cost
           explosions and performance degradation. Implement intelligent sampling, appropriate log
           levels, and retention policies. Alert fatigue from too many alerts results in ignored pages
           and missed critical incidents. Use SLO-based alerting, tune thresholds regularly, and ensure
           every alert has an actionable runbook.
-        </p>
+        </HighlightBlock>
         <p>
           Dashboard sprawl with hundreds of unused dashboards creates confusion and wastes resources.
           Conduct regular cleanup, assign ownership to dashboards, and track usage to identify and
@@ -413,7 +432,10 @@ export default function EndToEndObservabilityArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Netflix built Atlas, a dimensional time-series metrics platform, to handle the observability
           needs of its microservices architecture serving hundreds of millions of users. Atlas supports
           high cardinality metrics with real-time streaming evaluation of alerts, enabling Netflix
@@ -422,8 +444,8 @@ export default function EndToEndObservabilityArticle() {
           observability data, and Vector for high-performance telemetry data collection. Their approach
           demonstrates how custom observability infrastructure can be built when commercial solutions
           do not meet scale requirements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Uber created Jaeger, a CNCF graduated project that is now one of the most widely used
           distributed tracing systems. Uber&apos;s microservices architecture with thousands of services
           required end-to-end tracing to debug latency issues and service dependencies. Jaeger supports
@@ -432,7 +454,7 @@ export default function EndToEndObservabilityArticle() {
           optimize latency across service chains, and debug production incidents. Jaeger&apos;s success
           demonstrates the value of building and open-sourcing observability tools that solve
           production-scale problems.
-        </p>
+        </HighlightBlock>
         <p>
           Shopify uses a combination of open-source and commercial observability tools to monitor their
           e-commerce platform serving millions of merchants. They use Prometheus and Grafana for metrics,
@@ -457,15 +479,18 @@ export default function EndToEndObservabilityArticle() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is the difference between monitoring and observability?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What is the difference between monitoring and observability?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Monitoring tells you when predefined conditions are met (alerts on known failure modes).
               Observability enables asking arbitrary questions about system behavior without knowing the
               question in advance. Monitoring is for known unknowns; observability is for unknown unknowns.
               You need both.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,10 @@ export default function ContentValidationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Content Validation</strong> ensures content meets quality standards, complies
           with policies, and is free from spam or malicious content before publication. Validation
           is critical for platform quality — without it, low-quality content floods the platform,
@@ -43,7 +47,7 @@ export default function ContentValidationArticle() {
           policy validation (prohibited content, spam patterns, plagiarism), quality validation
           (readability, completeness, duplicate detection), and security validation (XSS
           prevention, SQL injection prevention, CSRF protection).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/validation-layers.svg"
@@ -51,7 +55,7 @@ export default function ContentValidationArticle() {
           caption="Validation Layers — showing format validation (length, required fields), policy validation (prohibited content, spam), quality validation (readability, duplicates), and security validation (XSS, SQL injection)"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing content validation requires deep
           understanding of validation layers (format, policy, quality, security — each layer
           catches different issues), input validation (length limits — min/max character count,
@@ -66,7 +70,7 @@ export default function ContentValidationArticle() {
           implementation must balance validation thoroughness (catch all issues) with user
           experience (fast, clear error messages) and performance (validation shouldn't block
           submission).
-        </p>
+        </HighlightBlock>
         <p>
           Modern content validation has evolved from simple length checks to sophisticated
           multi-layer validation with ML-based spam detection, plagiarism checking, and automated
@@ -80,12 +84,15 @@ export default function ContentValidationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content validation is built on fundamental concepts that determine how content is
           validated for quality, policy compliance, and security. Understanding these concepts is
           essential for designing effective validation systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Format Validation:</strong> Length limits (min/max character count — title 5-100
           chars, body 50-50000 chars — prevent empty or massive submissions), required fields
           (ensure critical data present — title, body, author — return specific error for each
@@ -93,7 +100,7 @@ export default function ContentValidationArticle() {
           encoding attacks), file types (validate by magic bytes not extension — prevent .exe
           renamed to .jpg, allowlist permitted types). Format validation is first line of defense
           — catches obvious issues before deeper validation.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Policy Validation:</strong> Prohibited content (check against policy rules — hate
           speech, harassment, violence — block or flag for review), spam detection (detect spam
@@ -123,11 +130,14 @@ export default function ContentValidationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Validation architecture separates validation layers (format, policy, quality, security)
           enabling modular validation with clear error reporting. This architecture is critical for
           maintainability and user experience.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/validation-flow.svg"
@@ -135,7 +145,7 @@ export default function ContentValidationArticle() {
           caption="Validation Flow — showing client-side validation (instant feedback), server-side validation (security), format validation, policy validation, quality validation, and security validation"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Validation flow: User submits content. Client-side validation runs (instant feedback —
           length checks, required fields, format validation). If client validation passes: submit
           to server. Server-side validation runs (security-critical — never trust client). Format
@@ -145,7 +155,7 @@ export default function ContentValidationArticle() {
           If all validations pass: save content. If any validation fails: return specific errors
           (field-level errors — "Title must be 5-100 characters", "Body contains prohibited
           content").
-        </p>
+        </HighlightBlock>
         <p>
           Validation architecture includes: client-side validation (JavaScript — instant feedback,
           reduces server load, but never trust — always validate server-side), server-side
@@ -176,25 +186,28 @@ export default function ContentValidationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing validation involves trade-offs between security, user experience, and
           performance. Understanding these trade-offs is essential for making informed architecture
           decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Client-Side vs Server-Side Validation</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Client-Side:</strong> Instant feedback (users see errors immediately),
               reduces server load (invalid submissions blocked before network). Limitation: can be
               bypassed (disable JavaScript, direct API calls), never trust for security.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Server-Side:</strong> Authoritative (can't be bypassed), security-critical
               (policy enforcement, XSS prevention). Limitation: slower (network roundtrip), higher
               server load.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Both — client-side for UX (instant feedback),
               server-side for security (authoritative validation). Client-side is optimization,
@@ -248,19 +261,22 @@ export default function ContentValidationArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing content validation requires following established best practices to ensure
           security, quality, and user experience.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Format Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Length limits (min/max character count — title 5-100 chars, body 50-50000 chars — prevent
           empty or massive submissions). Required fields (ensure critical data present — title,
           body, author — return specific error for each missing field). Character encoding (validate
           UTF-8 — reject invalid characters, prevent encoding attacks). File types (validate by
           magic bytes not extension — prevent .exe renamed to .jpg, allowlist permitted types).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Policy Enforcement</h3>
         <p>
@@ -293,21 +309,24 @@ export default function ContentValidationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing content validation to ensure security,
           quality, and user experience.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Client-side only validation:</strong> Can be bypassed, security vulnerabilities.{" "}
             <strong>Fix:</strong> Always validate server-side. Client-side is optimization,
             server-side is requirement.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No XSS sanitization:</strong> User-submitted scripts execute in other users'
             browsers. <strong>Fix:</strong> Sanitize HTML (DOMPurify). Escape output. Implement CSP
             headers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Validate by file extension:</strong> .exe renamed to .jpg bypasses validation.{" "}
             <strong>Fix:</strong> Validate by magic bytes (file signature). Allowlist permitted
@@ -351,16 +370,19 @@ export default function ContentValidationArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content validation is critical for platform quality and security. Here are real-world
           implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Blogging Platform (Medium)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> User-submitted articles must be validated for quality,
           policy compliance, security. Prevent spam, plagiarism, XSS.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Format validation (title 5-100 chars, body 50-50000 chars).
           Policy validation (prohibited content — hate speech, harassment — ML detection). Quality
@@ -463,14 +485,17 @@ export default function ContentValidationArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of content validation design, implementation, and
           security concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you validate user-submitted HTML?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you validate user-submitted HTML?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Sanitize HTML (DOMPurify, sanitize-html — remove dangerous tags like script,
               iframe, remove event handlers like onclick, onerror). Allowlist safe tags (p, h1-h6,

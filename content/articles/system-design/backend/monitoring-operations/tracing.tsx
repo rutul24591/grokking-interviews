@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,22 +25,25 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Tracing</strong> is the practice of representing a request&apos;s journey through a system as a tree of
           timed operations called <strong>spans</strong>. A span captures a single unit of work — an HTTP handler
           invocation, a database query, a cache lookup, a message enqueue or dequeue, a downstream service call — with
           precise start and end timestamps, structured attributes, and optional events that record significant moments
           within that unit of work. A <strong>trace</strong> is the complete tree of spans connected by parent-child
           relationships, anchored by a <strong>root span</strong> that represents the entry point of the request.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tracing exists within the broader observability triad alongside metrics and logs, but it occupies a unique
           position. Metrics answer the question &ldquo;is something wrong&rdquo; by providing aggregate signals — error
           rates, tail latencies, throughput counters. Logs answer the question &ldquo;what happened&rdquo; by providing
           detailed, timestamped events with rich context. Traces answer the question &ldquo;where and why did it
           happen&rdquo; by providing per-request, end-to-end evidence of how time was spent and where failures occurred.
           For a staff-level engineer, tracing is the bridge between noticing an anomaly and understanding its root cause.
-        </p>
+        </HighlightBlock>
         <p>
           This article focuses on trace fundamentals — how spans are modeled, how trace context is propagated across
           service and async boundaries, how sampling decisions shape what evidence is available, and how traces are
@@ -59,19 +63,22 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The trace data model is conceptually simple but operationally nuanced. Understanding each component and its
           purpose is essential for instrumenting systems that produce useful rather than noisy traces.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Trace ID and Span ID.</strong> Every trace is identified by a globally unique trace ID, typically a
           128-bit or 64-bit value. Every span within the trace has a unique span ID. The parent-child relationship
           between spans is expressed through a parent span ID field. Together, these identifiers form a tree structure
           that represents the causal decomposition of a request. The trace ID must remain constant across all services
           that handle the request; if any hop generates a new trace ID, the trace fragments and loses its end-to-end
           value.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Span timing.</strong> Each span records a start timestamp and a duration (or end timestamp). The
@@ -130,20 +137,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding how traces are constructed requires following the lifecycle of trace context from its origin
           through every hop in a distributed request. This lifecycle has three phases: context creation, context
           propagation, and context consumption.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Context creation</strong> happens at the entry point of a request. For an HTTP request arriving at an
           API gateway or load balancer, the entry point generates the trace ID and the root span ID. For a request that
           originates from a message queue consumer or a scheduled job, the context creation point depends on whether the
           triggering event carries trace context from an upstream producer. If it does, the consumer creates a span that
           is a child of the upstream span. If it does not — as is the case with cron jobs or user-initiated background
           tasks — a new root span is created and the trace begins there.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Context propagation</strong> is the mechanism by which trace identifiers travel from one service to the
@@ -210,11 +220,14 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tracing is not a free capability. Every span emitted incurs instrumentation overhead, network transmission
           cost, storage expense, and query complexity. Teams must make deliberate trade-offs between trace fidelity and
           operational cost, and between different approaches to achieving trace coverage.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -333,34 +346,37 @@ export default function ArticlePage() {
           </tbody>
         </table>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common production strategy is a hybrid: automatic instrumentation provides baseline coverage of
           standard operations (HTTP handlers, database clients, HTTP clients), while manual instrumentation adds
           business-specific spans for critical workflows like order processing, payment flows, and recommendation
           pipelines. Sampling is typically head-based at a low rate (1-5%) for normal traffic, with tail-based sampling
           policies that preferentially retain error traces and slow traces above a latency threshold.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Standardize span conventions across all services.</strong> The value of traces multiplies when every
             service follows the same conventions for span naming, attribute keys, and error recording. A span named
             <code>db.query</code> should carry the same attribute set (table name, operation type, row count, duration)
             regardless of which service emits it. Establish these conventions as shared libraries or SDK wrappers so that
             instrumenting a new service is a matter of importing and configuring, not designing. OpenTelemetry provides
             semantic conventions that serve as a strong starting point.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Treat context propagation as a reliability requirement.</strong> Broken propagation is the single
             most common cause of trace fragmentation. Ensure that every HTTP client library, every message queue
             publisher, and every downstream caller is instrumented to propagate trace context. This is best handled by
             shared networking libraries that automatically attach and extract trace context, removing the possibility
             that individual service teams forget or implement it incorrectly. Monitor propagation completeness by
             measuring the fraction of requests that carry trace IDs across every critical hop.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use exemplars to connect metrics to traces.</strong> Exemplars are trace IDs embedded within metric
             samples, enabling a direct pivot from a spike on a dashboard to a representative trace. When a p99 latency
@@ -397,12 +413,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tracing implementations often suffer from predictable failure modes that reduce their operational value.
           Recognizing these pitfalls is essential for maintaining traces as a reliable diagnostic tool.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Inconsistent span semantics across services.</strong> When one service creates a span for each
           individual database query and another service creates a single span for an entire database session, cross-service
           comparisons become misleading. The first service&apos;s traces show fine-grained database latency; the second
@@ -410,7 +429,7 @@ export default function ArticlePage() {
           without enforced conventions. The remedy is to define span semantics at the organizational level — what
           constitutes a span, what attributes it carries, what events it records — and validate compliance through shared
           libraries and code review.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Attribute sprawl.</strong> Teams often start by attaching every available context as a span attribute —
@@ -459,19 +478,22 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tracing is used across the industry to diagnose production issues, optimize performance, and validate
           architectural changes. The following patterns recur across organizations that operate tracing at scale.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Incident diagnosis through critical path analysis.</strong> When a service&apos;s p99 latency
           increases, responders use traces to identify the critical path — the sequence of spans that determines
           end-to-end latency. By examining the critical path, they can pinpoint whether the slowdown originates in a
           specific database query, a downstream service, or an unexpected retry loop. This approach is used by companies
           like Stripe, where each payment request traverses multiple internal services and external banking partners, and
           trace-based diagnosis is the primary method for identifying which hop in the chain is responsible for a delay.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Performance regression detection in CI/CD.</strong> Some organizations capture traces during
@@ -515,13 +537,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-8">
           <div className="my-6 rounded-lg bg-panel-soft p-6">
             <h3 className="mb-3 text-lg font-semibold">
               Question 1: How do you decide what to instrument as spans, and which attributes to attach?
             </h3>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="mb-3">
               The decision of what to instrument should follow architectural boundaries rather than implementation
               details. A span should represent a unit of work that has an identifiable start and end, can be
               independently optimized, and whose performance or failure has observable impact on the user experience.
@@ -529,8 +554,8 @@ export default function ArticlePage() {
               table, not by individual query), cache operations, message queue publish and consume operations, and calls
               to downstream services. Internal function calls within a service are generally too granular to warrant
               individual spans unless they represent a critical bottleneck that has been identified through profiling.
-            </p>
-            <p className="mb-3">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               For attributes, the guiding principle is pivot utility. Ask: &ldquo;During an incident, would I want to
               filter or group traces by this attribute?&rdquo; If the answer is yes, and the attribute has bounded
               cardinality, it should be an indexed attribute. Common indexed attributes include the service name, the
@@ -539,7 +564,7 @@ export default function ArticlePage() {
               unique resource identifiers — should not be indexed. Instead, they can be stored as unindexed span events
               or correlated through logs that reference the trace ID. This distinction is critical because indexing
               high-cardinality fields causes storage costs to grow linearly with traffic volume.
-            </p>
+            </HighlightBlock>
             <p>
               A practical approach is to start with OpenTelemetry&apos;s semantic conventions, which define a
               well-established set of span names and attributes for common operations (HTTP, database, messaging, RPC).

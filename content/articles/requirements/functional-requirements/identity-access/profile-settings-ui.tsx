@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,13 +34,16 @@ export default function ProfileSettingsUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Profile Settings UI</strong> allows users to manage their public-facing profile
           information including display name, bio, avatar, and other personal details. It is one
           of the most frequently accessed settings pages and must provide a seamless editing
           experience while maintaining data integrity. Profile settings is often the first place
           users go to personalize their account.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/profile-settings-flow.svg"
@@ -47,13 +51,13 @@ export default function ProfileSettingsUIArticle() {
           caption="Profile Settings Flow — showing profile edit, validation, optimistic update, avatar upload, and privacy settings"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing profile settings requires deep
           understanding of form design, validation, optimistic updates, image upload handling
           (cropping, CDN delivery), concurrent modification (prevent overwrites), and privacy
           controls. The implementation must balance ease of editing with data quality and abuse
           prevention.
-        </p>
+        </HighlightBlock>
         <p>
           Modern profile settings has evolved from simple form submission to sophisticated editors
           with real-time validation, optimistic updates, image cropping, and privacy controls.
@@ -65,19 +69,22 @@ export default function ProfileSettingsUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Profile settings is built on fundamental concepts that determine how profile data is
           edited, validated, and saved. Understanding these concepts is essential for designing
           effective profile settings UI.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Profile Fields:</strong> Display name (public name shown to other users —
           editable, validated for length/profanity), username/handle (unique identifier — @mention
           format, availability check), bio/about (short description — rich text or markdown,
           character limit 160-500), avatar/profile photo (image upload with cropping, multiple
           sizes generated), location (city, country — optional, privacy-aware), website/social
           links (personal website, Twitter, LinkedIn — URL validation).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Validation:</strong> Real-time validation (on blur, not keystroke), server-side
           validation (never trust client), profanity filter (block inappropriate content),
@@ -99,11 +106,14 @@ export default function ProfileSettingsUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Profile settings architecture separates form handling from data persistence, enabling
           optimistic updates with reliable saves. This architecture is critical for providing
           responsive UX.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/profile-avatar-management.svg"
@@ -111,13 +121,13 @@ export default function ProfileSettingsUIArticle() {
           caption="Profile Avatar Management — showing upload flow, cropping, multiple size generation, CDN delivery, and caching"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Profile edit flow: User navigates to profile settings. Frontend loads profile data (GET
           /profile). User edits fields (real-time validation on blur). User clicks save. Frontend
           updates UI immediately (optimistic update), sends save request (PUT /profile). Backend
           validates, saves, returns updated profile. Frontend confirms save (toast notification).
           On failure: rollback UI changes, show error message.
-        </p>
+        </HighlightBlock>
         <p>
           Avatar upload flow: User clicks avatar. Frontend shows file picker (or drag-drop). User
           selects image. Frontend shows cropping UI (square aspect ratio). User crops, confirms.
@@ -143,24 +153,27 @@ export default function ProfileSettingsUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing profile settings involves trade-offs between flexibility, simplicity, and data
           quality. Understanding these trade-offs is essential for making informed architecture
           decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Real-time vs Save Button</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Real-time (auto-save):</strong> Changes saved automatically, no explicit
               save. Seamless UX. Limitation: users may not know changes saved, accidental changes
               saved.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Save Button:</strong> Explicit save, users control when changes saved. Clear
               state. Limitation: extra click, users may forget to save.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Hybrid — auto-save with "Save" button. Auto-save
               after pause in typing, save button for explicit control. Show "Saving..." indicator.
@@ -207,18 +220,21 @@ export default function ProfileSettingsUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing profile settings requires following established best practices to ensure
           usability, data quality, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Form Design</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use clear labels — above input fields (not placeholder-only). Show character count — for
           fields with limits (bio: 0/160). Provide help text — explain requirements (username:
           "Letters, numbers, underscores only"). Show validation errors inline — below field, not
           at top of page. Preserve user input on error — don't clear fields.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Validation</h3>
         <p>
@@ -247,21 +263,24 @@ export default function ProfileSettingsUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing profile settings to ensure usable,
           maintainable, and secure profile settings.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No character count:</strong> Users don't know limit until error.{" "}
             <strong>Fix:</strong> Show character count (0/160). Change color near limit
             (yellow/red).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Validation on keystroke:</strong> Annoying, shows errors while typing.{" "}
             <strong>Fix:</strong> Validate on blur (when user leaves field). Show errors after
             typing stops.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No username availability check:</strong> Users submit, then learn username
             taken. <strong>Fix:</strong> Real-time availability check (debounce API calls). Show
@@ -302,16 +321,19 @@ export default function ProfileSettingsUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Profile settings is critical for user personalization. Here are real-world
           implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Social Platform (Twitter)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Millions of users editing profiles. Need fast, responsive
           editing. Image upload at scale.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Optimistic updates (UI updates immediately). Image cropping
           for avatar/header. Multiple image sizes (CDN delivery). Real-time username availability.
@@ -399,14 +421,17 @@ export default function ProfileSettingsUIArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of profile settings UI design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle real-time validation?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle real-time validation?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Validate on blur (when user leaves field), not on every keystroke (annoying).
               Debounce API calls (username availability — wait 300ms after typing stops). Show

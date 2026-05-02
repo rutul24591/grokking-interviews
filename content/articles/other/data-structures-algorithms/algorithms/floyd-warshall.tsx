@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function FloydWarshallArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Floyd-Warshall algorithm computes shortest paths between all
           pairs of vertices in a weighted directed graph in O(V³) time and
           O(V²) space. Unlike Dijkstra and Bellman-Ford, which solve the
@@ -48,15 +52,15 @@ export default function FloydWarshallArticle() {
           negative cycle), and generalizes naturally to other algebraic
           structures — transitive closure (Warshall's algorithm proper),
           bottleneck paths, regex-to-DFA conversion, and counting paths.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The algorithm appeared in Robert Floyd's 1962 paper "Algorithm 97:
           Shortest Path," which built on Stephen Warshall's 1962 transitive
           closure algorithm. Warshall and Floyd worked on related problems
           independently and the modern attribution honors both. Bernard Roy
           published essentially the same idea in 1959, so some references use
           Roy-Floyd-Warshall.
-        </p>
+        </HighlightBlock>
         <p>
           Floyd-Warshall is the answer to "give me the distance from any node
           to any other node, all at once." On dense graphs (E = Θ(V²)), it
@@ -87,7 +91,10 @@ export default function FloydWarshallArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The recurrence is the algorithm. Define{" "}
           <code>d[k][i][j]</code> as the weight of the shortest path from i to
           j using only vertices in <code>{"{1, ..., k}"}</code> as intermediate
@@ -98,8 +105,8 @@ export default function FloydWarshallArticle() {
           <code>d[k][i][j] = min(d[k-1][i][j], d[k-1][i][k] + d[k-1][k][j])</code>.
           Base case <code>d[0][i][j] = w(i, j)</code> if (i, j) is an edge,
           else infinity (with d[0][i][i] = 0).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The clever observation: the third dimension can be dropped. When
           computing pass k in place, the values <code>d[i][k]</code> and{" "}
           <code>d[k][j]</code> on the right are read before being written —
@@ -107,7 +114,7 @@ export default function FloydWarshallArticle() {
           <code>d[k][k] = 0</code> implies <code>d[k][i][k] = d[k-1][i][k]</code>.
           So three nested loops over a single V × V matrix produce the right
           answer:
-        </p>
+        </HighlightBlock>
         <p>
           <code>for k: for i: for j: dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])</code>.
         </p>
@@ -157,27 +164,30 @@ export default function FloydWarshallArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The data structure is one V × V matrix of distances, optionally a
           parallel V × V matrix of next/predecessor pointers for
           reconstruction. Initialization: set diagonal to 0, off-diagonal to
           edge weight or infinity. Algorithm: three nested loops. Memory
           O(V²); for V = 1000 with int64, that's 8 MB — comfortable. For V =
           50,000, it's 20 GB — out of reach for a single machine.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/floyd-warshall-diagram-2.svg"
           alt="Floyd-Warshall vs alternatives and path reconstruction"
           caption="Comparison against V × Dijkstra, Bellman-Ford, and Johnson's, plus the next-matrix path-reconstruction pattern."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           For dense graphs in the V ≤ ~1000 range, the tight inner loop
           dominates. Unrolling, SIMD vectorization, and blocking can push
           throughput further. The blocked variant divides the matrix into B ×
           B tiles and processes them in cache-friendly order; this is the
           GPU-friendly variant and the basis for distributed APSP on
           continent-scale graphs.
-        </p>
+        </HighlightBlock>
         <p>
           For sparse graphs, Floyd-Warshall is wasteful — O(V³) on a graph
           with O(V) edges spends most of its time finding that{" "}
@@ -207,20 +217,23 @@ export default function FloydWarshallArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Floyd-Warshall vs V × Dijkstra.</strong> On dense graphs
           (E = Θ(V²)), V × Dijkstra costs O(V·E·log V) = O(V³ log V), losing
           to Floyd-Warshall's O(V³). On sparse graphs (E = O(V)), V × Dijkstra
           is O(V² log V), winning easily. The crossover happens around
           E = V² / log V, but constants matter; profile.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Floyd-Warshall vs Johnson's.</strong> On sparse graphs with
           negative edges, Johnson's (Bellman-Ford + V Dijkstras with
           reweighting) is O(VE + V(V+E) log V). For V = 10⁴ and E = V·log V,
           that's roughly 10⁹ ops — competitive with Floyd-Warshall's 10¹².
           Johnson is the right choice for sparse APSP with negative edges.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Floyd-Warshall vs Bellman-Ford from each vertex.</strong>
           O(V·V·E) = O(V²E) is strictly worse than Floyd-Warshall on dense
@@ -252,20 +265,23 @@ export default function FloydWarshallArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use it for V ≤ ~1000 dense graphs.</strong> The constants
           are unbeatable in this regime. For V = 500 and dense, Floyd-Warshall
           finishes in milliseconds; Dijkstra V times pays log overhead and
           loses.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Initialize diagonal to 0, off-diagonal carefully.</strong>
           Off-diagonal entries should be edge weight or infinity-sentinel.
           Use a sentinel that won't overflow when summed with a negative
           weight: <code>LLONG_MAX / 4</code> or similar. Don't use INT_MAX
           unless you guard with{" "}
           <code>if (dist[i][k] != INF &amp;&amp; dist[k][j] != INF)</code>.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Detect negative cycles before trusting distances.</strong>
           After the main loop, scan dist[v][v] for v in 0..V-1. Any negative
@@ -306,18 +322,21 @@ export default function FloydWarshallArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Wrong loop order.</strong> The k loop must be outermost.
           A common bug — putting i or j outside — produces values that look
           plausible on small examples but are wrong. The recurrence's
           monotone-k property is what makes the in-place update correct.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Integer overflow on infinity.</strong> If INF = INT_MAX and
           dist[i][k] = dist[k][j] = INF, then dist[i][k] + dist[k][j]
           overflows to a negative number that incorrectly relaxes dist[i][j].
           Use INF = INT_MAX / 2 or guard with infinity checks.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Trusting dist after negative cycle.</strong> A negative
           cycle makes some pairwise distances meaningless. Don't return them
@@ -354,26 +373,29 @@ export default function FloydWarshallArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/floyd-warshall-diagram-3.svg"
           alt="Floyd-Warshall applications and when not to use it"
           caption="Production applications and the decision criteria for when Floyd-Warshall is the wrong tool."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Transitive closure.</strong> Warshall's algorithm computes
           reachability for every pair in O(V³ / 64) with bitsets. Used in
           database query optimizers (relational closure), program analysis
           (data dependency closure), and rule-based systems (saturation of
           implication graphs).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Regex-to-DFA conversion.</strong> Kleene's algorithm
           converts a finite automaton to an equivalent regular expression by
           running Floyd-Warshall over the regex semiring (union, concatenation,
           star). Each k-iteration introduces vertex k as a possible
           intermediate state. Theoretical foundation for tools like
           decompiling DFA states back into patterns.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Bottleneck and widest-path.</strong> In computer networks,
           the maximum-bandwidth path uses (max, min) instead of (min, +).
@@ -415,19 +437,22 @@ export default function FloydWarshallArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Find the City With the Smallest Number of Neighbors at a
           Threshold Distance (LeetCode).</strong> Direct Floyd-Warshall: build
           the matrix, count neighbors within threshold per vertex, return
           the vertex with smallest count, breaking ties by largest id. The
           canonical "Floyd-Warshall in disguise" interview question.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Course Schedule IV.</strong> Reachability across a
           prerequisite graph. Warshall's algorithm with bitsets computes
           all-pairs reachability in O(V³ / 64); each query is a matrix
           lookup.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Network Connectivity / Transitive Closure.</strong>
           Classic warm-up. Often phrased as "is there any way to get from A

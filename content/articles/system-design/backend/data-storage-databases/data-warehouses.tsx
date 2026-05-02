@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -79,25 +80,28 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Dimensional Modeling &amp; ETL</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Dimensional Modeling (Star Schema)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Dimensional modeling organizes data into <strong>fact tables</strong> and
           <strong>dimension tables</strong>. <strong>Fact tables</strong> contain measurements
           (sales amount, quantity, clicks) and foreign keys to dimensions. Facts are typically
           numeric, additive, and high-volume (millions/billions of rows). <strong>Dimension
           tables</strong> contain descriptive attributes (product name, customer segment, store
           location). Dimensions provide context for facts—who, what, when, where.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Star schema</strong> is the simplest dimensional model: one fact table
           surrounded by dimension tables (like a star). Each dimension connects directly to
           the fact table. Star schemas are easy to understand, fast for queries (single join
           per dimension), and BI-tool friendly. <strong>Snowflake schema</strong> normalizes
           dimensions (e.g., Product → Category → Department), reducing redundancy but adding
           join complexity. Star schema is preferred for most BI workloads.
-        </p>
+        </HighlightBlock>
 
         <p>
           Example: Sales fact table with columns (date_id, product_id, customer_id, store_id,
@@ -154,22 +158,25 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Modern Cloud Warehouses</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Storage/Compute Separation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Traditional warehouses (on-premise Teradata, Oracle) couple storage and compute—scale
           both together (expensive). Modern cloud warehouses (Snowflake, BigQuery, Redshift)
           <strong>separate storage from compute</strong>. Storage is object storage (S3, GCS)
          —cheap, durable, elastic. Compute is virtual warehouses (clusters) that process
           queries—scale independently, pay per query.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Benefits: <strong>Cost optimization</strong> (storage cheap, compute on-demand),
           <strong>Elastic scaling</strong> (spin up compute for peak queries, down for idle),
           <strong>Concurrency</strong> (multiple compute clusters query same data without
           contention), <strong>Zero management</strong> (no hardware, auto-scaling).
-        </p>
+        </HighlightBlock>
 
         <h3>Data Sharing</h3>
         <p>
@@ -210,18 +217,21 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Warehouse vs Lake vs Lakehouse</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Data warehouses, data lakes, and lakehouses serve different purposes. Understanding
           the trade-offs helps you choose the right architecture—or combine them.
-        </p>
+        </HighlightBlock>
 
         <h3>Data Warehouse Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Data quality</strong> is the primary advantage. ETL enforces schema, validates
           data, and rejects bad records. Business users trust warehouse data—consistent metrics,
           no surprises. This is essential for executive dashboards and regulatory reporting.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Query performance</strong> is optimized for BI. Columnar storage, indexes,
@@ -292,18 +302,21 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Data Warehouses</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use dimensional modeling.</strong> Star schemas are BI-tool friendly and
           query-efficient. Avoid normalized schemas (3NF) for warehouses—they require too
           many joins for BI queries.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement incremental ETL.</strong> Full reloads don't scale. Use CDC or
           timestamp-based incremental loading. Handle deletes, late-arriving data, and
           schema changes gracefully.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Enforce data quality.</strong> Define quality rules (completeness, accuracy,
@@ -332,18 +345,21 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Boiling the ocean.</strong> Trying to load all data at once leads to
           multi-year projects that never deliver. Solution: Start with specific use cases
           (executive dashboards), load data needed for those use cases, expand iteratively.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Ignoring data quality.</strong> Bad data in = bad decisions out. Solution:
           Implement data quality checks during ETL, reject bad data, monitor quality metrics,
           assign data owners responsible for quality.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Over-normalization.</strong> Normalized schemas (3NF) are efficient for
@@ -373,19 +389,22 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Executive Dashboards</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Executives need real-time visibility into business performance. Data warehouses
           consolidate data from all sources (sales, marketing, finance, operations) into
           unified metrics. Dashboards display KPIs (revenue, margin, customer acquisition
           cost), trends (YoY growth), and alerts (metrics below threshold).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This pattern works because executives need consistent metrics (single source of
           truth), fast queries (sub-second dashboards), and trust in data (quality enforced).
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Reporting</h3>
         <p>
@@ -431,14 +450,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: When would you choose a data warehouse over a data lake? Give a concrete
               example.
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Choose data warehouses for BI, reporting, and consistent
               metrics. Example: Executive dashboards for a retail company. Executives need
               trusted metrics (revenue, margin, YoY growth), fast queries (sub-second
@@ -448,7 +470,7 @@ export default function ArticlePage() {
               (trusted), and integrates with BI tools (self-service). Choose warehouse for:
               BI, reporting, compliance, business users. Choose lake for: ML, exploration,
               raw data, cost scale.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What about cost? Answer: Warehouses are more
               expensive than lakes. For large-scale raw data, use lake for storage, warehouse

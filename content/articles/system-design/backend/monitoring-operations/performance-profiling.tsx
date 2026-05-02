@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Performance profiling</strong> is the practice of measuring
           where a program spends time and consumes resources while it executes.
           Unlike distributed tracing, which breaks down wall-clock latency
@@ -48,8 +52,8 @@ export default function ArticlePage() {
           cache misses. Profiling answers the question that metrics and traces
           deliberately cannot -- what is happening <em>inside</em> the process
           when user-facing latency degrades.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The distinction between profiling and other observability pillars is
           foundational. Metrics tell you that CPU utilization crossed a
           threshold or that p99 latency exceeded an SLO objective. Traces tell
@@ -60,7 +64,7 @@ export default function ArticlePage() {
           mutex-protected shared cache is the root cause. Profiling zooms in
           from the macro view of system health to the micro view of
           function-level resource consumption.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, profiling is a critical operational
           skill. Many production incidents are not &quot;the dependency is
@@ -90,7 +94,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Profiling encompasses multiple measurement types, each targeting a
           different class of performance failure. Selecting the correct
           profiling modality is the first and most important decision in any
@@ -104,7 +111,7 @@ export default function ArticlePage() {
           I/O-bound services with high wait times need wait/I/O profiling to
           attribute wall-clock time to disk, network, or kernel scheduling
           delays.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/performance-profiling-diagram-1.svg"
@@ -112,7 +119,7 @@ export default function ArticlePage() {
           caption="Profiling modalities: CPU, allocation/heap, lock contention, and I/O wait analysis each target different classes of performance failure and produce distinct diagnostic signatures."
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>CPU profiling</strong> is the most widely used modality. It
           works by periodically sampling the program&apos;s call stack at a
           fixed frequency -- typically 10 to 1000 samples per second depending
@@ -130,7 +137,7 @@ export default function ArticlePage() {
           because it is caught in a retry loop, re-serializing the same object
           repeatedly, or blocking on a contended lock that manifests as
           busy-wait.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Allocation profiling</strong> (sometimes called memory
           profiling or heap profiling) tracks where and how often objects are
@@ -219,15 +226,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding how profilers collect, aggregate, and present data is
           essential for interpreting profiles correctly and for designing
           profiling architectures that scale across hundreds or thousands of
           service instances. The profiling pipeline consists of four stages:
           collection, aggregation, storage, and visualization, each with
           distinct design trade-offs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the <strong>collection stage</strong>, the profiler runs as an
           agent within or alongside the target process. In sampling profilers, a
           timer interrupt or a dedicated sampling thread periodically reads the
@@ -244,7 +254,7 @@ export default function ArticlePage() {
           running processes without modifying the target process. In Node.js,
           the V8 engine exposes sampling profilers through the inspector
           protocol.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>aggregation stage</strong> is where individual samples are
           combined into a coherent profile. A single sample is just a list of
@@ -346,13 +356,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Profiling decisions are fundamentally trade-off decisions. No
           profiling approach is universally superior; each carries costs and
           limitations that must be weighed against the diagnostic requirements
           and the operational constraints of the production environment.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The first trade-off is <strong>accuracy versus overhead</strong>.
           Sampling profilers sacrifice precision for low overhead. A sampler
           running at 100 Hz captures one sample every 10 milliseconds, which
@@ -365,7 +378,7 @@ export default function ArticlePage() {
           compromise is to use sampling profiling in production and reserve
           instrumentation for controlled benchmarks, load tests, and staging
           environments where overhead is acceptable and reproducibility is high.
-        </p>
+        </HighlightBlock>
         <p>
           The second trade-off is{" "}
           <strong>continuous versus on-demand profiling</strong>. Continuous
@@ -427,13 +440,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Effective production profiling requires disciplined practices that
           balance diagnostic power with operational safety. The following
           practices are derived from real-world experience running profilers at
           scale in production environments.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Start from user impact, not from a hotspot.</strong> The most
           common profiling mistake is to look at a flame graph, identify the
           widest frame, and start optimizing it without confirming that the
@@ -446,7 +462,7 @@ export default function ArticlePage() {
           only then identifies the dominant frame. This ensures that the
           optimization target is connected to actual user experience rather than
           an arbitrary ranking of CPU consumption.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Profile the affected cohort, not the average.</strong>{" "}
           Performance issues are rarely uniform. A latency regression may affect
@@ -521,13 +537,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Profiling can produce misleading results when context is ignored or
           when the profiling setup introduces artifacts that are mistaken for
           genuine performance issues. The following pitfalls are the most common
           in production profiling practice.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Sampling bias across instances.</strong> It is common for
           performance issues to affect only a subset of instances -- perhaps the
           instances in one availability zone, or the instances that received a
@@ -538,7 +557,7 @@ export default function ArticlePage() {
           profile that looks normal while users experience degradation. The
           remedy is to scope profiling to the specific instances identified by
           the cohort isolation step.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Warm-up artifacts masquerading as hotspots.</strong>{" "}
           Just-In-Time compilation, cache warm-up, connection-pool
@@ -611,12 +630,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Performance profiling is most impactful when embedded in a structured
           operational workflow that connects code-level evidence to user-impact
           signals. The following scenarios illustrate how profiling is applied
           in production environments to diagnose and resolve performance issues.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/performance-profiling-diagram-3.svg"
@@ -624,7 +646,7 @@ export default function ArticlePage() {
           caption="Incident workflow: detect user impact, isolate the affected cohort, profile safely with bounded sampling, apply a targeted fix based on the dominant frame, then verify improvement with the same impact signals."
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Post-deployment performance regression.</strong> After a
           feature launch, an API service begins breaching its p99 latency
           objective under peak load. Metrics show rising CPU utilization and
@@ -644,7 +666,7 @@ export default function ArticlePage() {
           behind a lazy-loading mechanism. After the fix, the diff profile shows
           serialization work returning to baseline levels and the p99 latency
           recovers under the same peak traffic mix.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Gradual SLO burn from growing lock contention.</strong> A
           service&apos;s SLO burn rate has been increasing gradually over
@@ -709,13 +731,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: When do you choose profiling over tracing or metrics for
             diagnosing a performance issue?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The choice depends on where the performance issue lives in the
             system architecture stack. Metrics are the first signal -- they tell
             you <em>that</em> something is wrong (p99 is high, CPU is saturated,
@@ -725,8 +750,8 @@ export default function ArticlePage() {
             <em>what code</em> within that service is responsible. Profiling is
             the third and deepest layer -- it tells you <em>which functions</em>
             within the identified service are consuming resources.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             Choose profiling when you have already determined which service is
             the bottleneck (via tracing or metrics) and need to identify the
             specific code path responsible for the resource consumption.
@@ -738,7 +763,7 @@ export default function ArticlePage() {
             pinpoint the code-level hotspot. This layered approach avoids the
             common pitfall of profiling before scoping, which produces unfocused
             profiles that are difficult to interpret.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

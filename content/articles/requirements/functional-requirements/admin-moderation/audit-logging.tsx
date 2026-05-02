@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function AuditLoggingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Audit logging captures all administrative and security-relevant events for compliance, forensics, and accountability. The audit log is the primary record of who did what, when, and why in the system. For staff and principal engineers, audit logging involves event capture (what events to log), immutable storage (append-only storage, tamper-proof), compliance requirements (SOX, GDPR, HIPAA, PCI DSS), log retention (how long to keep logs), search and analysis (search logs, analyze patterns), and security (protect logs from tampering, unauthorized access).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of audit logging extends beyond simple event logging. Events must be captured comprehensively (all admin actions, auth events, data access, config changes). Storage must be immutable (append-only, tamper-proof, write-once). Compliance requirements vary by regulation (SOX requires 7 years, GDPR requires data minimization, HIPAA requires healthcare data protection). Log retention must balance compliance (keep long enough) with cost (storage cost). Search and analysis must enable forensic investigation (search logs, analyze patterns, detect anomalies). Security must protect logs from tampering (hash chaining, write-once storage, access control).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, audit logging architecture involves event capture (event sources, event schema), log storage (immutable storage, write-once), compliance management (compliance requirements, retention policies), search and analysis (log search, pattern analysis, anomaly detection), and security (access control, encryption, tamper-proofing). The system must support multiple event sources (admin actions, auth events, data access, config changes), multiple storage backends (database, file system, dedicated audit log service), and multiple compliance requirements (SOX, GDPR, HIPAA, PCI DSS). Performance is important—logging must not impact application performance.
         </p>
@@ -47,13 +51,16 @@ export default function AuditLoggingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Event Capture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Admin actions log all administrative operations. User management (create user, delete user, change role, reset password). Content moderation (approve content, remove content, ban user). System configuration (change config, enable/disable feature). Data export (export data, download reports). Permission changes (grant permission, revoke permission).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Auth events log authentication and authorization events. Login events (successful login, failed login, logout). Permission changes (role change, permission grant/revoke). Session events (session created, session expired, session terminated). MFA events (MFA enabled, MFA disabled, MFA challenge).
-        </p>
+        </HighlightBlock>
         <p>
           Data access logs access to sensitive data. Data read (read sensitive data, view PII). Data write (modify sensitive data, delete data). Data export (export data, download data). Bulk operations (bulk update, bulk delete).
         </p>
@@ -111,9 +118,12 @@ export default function AuditLoggingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Audit logging architecture spans event capture, log storage, compliance management, and search/analysis. Event capture captures events from multiple sources. Log storage stores logs immutably. Compliance management manages compliance requirements. Search/analysis enables log search and analysis.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/admin-moderation/audit-logging/audit-logging-architecture.svg"
@@ -124,9 +134,9 @@ export default function AuditLoggingArticle() {
         />
 
         <h3>Event Capture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event sources capture events from multiple sources. Application events (admin actions, user actions). System events (auth events, config changes). Database events (data access, data modification). Integration events (integration actions, API calls).
-        </p>
+        </HighlightBlock>
         <p>
           Event schema defines event structure. Event ID (unique event identifier). Timestamp (when event occurred). User ID (who performed action). Action type (what action performed). Resource (what resource accessed). Details (event details, metadata).
         </p>
@@ -186,14 +196,17 @@ export default function AuditLoggingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Audit logging design involves trade-offs between comprehensiveness and performance, security and usability, and retention and cost. Understanding these trade-offs enables informed decisions aligned with compliance needs and technical constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Event Capture: Synchronous vs. Asynchronous</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Synchronous capture (capture before action). Pros: Complete (capture all events), accurate (capture before action). Cons: Performance impact (synchronous capture), latency (add latency to actions). Best for: Critical events (admin actions, security events).
-        </p>
+        </HighlightBlock>
         <p>
           Asynchronous capture (capture after action). Pros: No performance impact (asynchronous), no latency. Cons: May miss events (if action fails), less accurate. Best for: Non-critical events (user actions, non-security events).
         </p>
@@ -245,13 +258,16 @@ export default function AuditLoggingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Capture comprehensive events:</strong> Admin actions, auth events, data access, config changes. Comprehensive event capture.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use immutable storage:</strong> Append-only storage, hash chaining, tamper-proof storage. Immutable log storage.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement compliance management:</strong> Compliance policies, retention management, compliance reporting. Compliance-compliant logging.
           </li>
@@ -281,13 +297,16 @@ export default function AuditLoggingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Incomplete event capture:</strong> Don&apos;t capture all events. Solution: Comprehensive event capture (admin, auth, data, config).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Mutable storage:</strong> Logs can be modified. Solution: Immutable storage (append-only, hash chaining).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No compliance management:</strong> Not compliant with regulations. Solution: Compliance policies, retention management, compliance reporting.
           </li>
@@ -317,16 +336,19 @@ export default function AuditLoggingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>SOX Compliance Logging</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SOX compliance logging for financial companies. Admin actions (who did what, when). Financial data access (who accessed financial data). Config changes (who changed financial config). Retention (7+ years for SOX). Immutable storage (append-only, hash chaining). Compliance reporting (generate SOX reports).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">GDPR Compliance Logging</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           GDPR compliance logging for EU companies. Data access (who accessed personal data). Data modification (who modified personal data). Data export (who exported data). Data deletion (who deleted data). Retention (as long as needed). Privacy-compliant logging.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">HIPAA Compliance Logging</h3>
         <p>
@@ -346,12 +368,15 @@ export default function AuditLoggingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you ensure audit log integrity and prevent tampering in high-security environments?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you ensure audit log integrity and prevent tampering in high-security environments?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement hash chaining where each log entry includes hash of previous entry—any modification breaks the chain and is detectable. Use write-once storage (WORM—Write Once Read Many) that physically prevents modifications. Implement tamper-proof storage with separate credentials from application—audit log admins shouldn&apos;t have app access and vice versa. Regularly verify chain integrity with automated checks. For highest security: use external audit log service or blockchain-based logging where entries are cryptographically signed and distributed. The key principle: make tampering detectable even if not preventable. Implement alerting on integrity check failures—this is a security incident. Maintain chain of custody documentation for compliance audits.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

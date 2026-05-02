@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function HyperLogLogArticle() {
     <ArticleLayout metadata={metadata}>
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition & Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           HyperLogLog (HLL) is a probabilistic data structure that estimates the cardinality (number of distinct elements) of a multiset using sublinear memory. It uses an array of m small registers (typically 6 bits each) to track the maximum number of leading zeros in the hashes of items routed to each register. The estimator combines all m registers via a harmonic mean to produce a cardinality estimate with standard error ≈ 1.04 / √m.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Philippe Flajolet and his collaborators developed the algorithm in 2007, building on the earlier LogLog (2003) and Probabilistic Counting (1985) work. The progression refined the estimator from O(log log n) memory with ~30% error to ~1% error at the same asymptotic memory. Google&apos;s HyperLogLog++ (2013) added engineering refinements — sparse representation, 64-bit hashes, empirical bias correction — that are now the production standard.
-        </p>
+        </HighlightBlock>
         <p>
           HLL is the canonical structure for &quot;count distinct&quot; queries at scale. Redis PFCOUNT, Presto&apos;s approx_distinct, BigQuery&apos;s APPROX_COUNT_DISTINCT, Snowflake&apos;s HLL functions, Cassandra&apos;s nodetool, and Druid&apos;s HLL columns all use it. Counting billions of unique users, IPs, or events with kilobytes of memory and the ability to merge counts across machines is the killer feature.
         </p>
@@ -36,12 +40,15 @@ export default function HyperLogLogArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The intuition starts with a single observation: if you hash items uniformly to bit strings, the probability that a given hash starts with k zeros is 2⁻ᵏ. So if you&apos;ve seen any hash with k leading zeros, you&apos;ve probably drawn at least 2ᵏ samples. Tracking the maximum leading-zero count gives a rough cardinality estimate — but with high variance, since one lucky early zero pattern can wildly inflate the estimate.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           To reduce variance, HLL uses <strong>stochastic averaging</strong>: split the hash into two parts. The first p bits select one of m = 2ᵖ buckets (registers); the remaining bits provide the leading-zero count. Each bucket independently runs the leading-zero estimator. With m independent estimators, averaging cuts the standard error by √m.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           The combination is not arithmetic mean but <strong>harmonic mean</strong>: n̂ = α_m · m² / Σ 2⁻ᴹ⁽ⁱ⁾, where M(i) is the i-th register and α_m is a small bias-correction constant. The harmonic mean suppresses the dominating effect of a single large register, giving the lowest variance of any of the simple averaging schemes Flajolet evaluated.
         </p>
@@ -57,12 +64,15 @@ export default function HyperLogLogArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture & Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A standard HLL is just an array of m 6-bit registers. m is typically 2⁸ to 2¹⁶ — Redis defaults to m = 16384 (12KB). Six bits hold leading-zero counts up to 63, which is plenty for any 64-bit hash. Total memory: m · 6 bits, regardless of how many distinct items you insert.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Insert(x):</strong> compute h = hash(x). Use the first p bits as the register index i; the remaining bits contribute leading-zero count + 1 (the +1 is conventional). Set register[i] = max(register[i], leading_zeros + 1). Operation cost: one hash + one compare-and-write. O(1) per insert, regardless of cardinality.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Count():</strong> compute the raw HLL estimate n̂ = α_m · m² / Σ 2⁻ᴹ⁽ⁱ⁾. If n̂ &lt; 2.5m and there are empty registers, switch to linear counting. If n̂ exceeds 2³² / 30 (for 32-bit hashes), apply a large-cardinality correction. With 64-bit hashes (HLL++), the upper correction is rarely needed.
         </p>
@@ -81,12 +91,15 @@ export default function HyperLogLogArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Trade-offs & Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>HLL vs exact distinct count.</strong> Exact requires storing the entire set (or a hash-set fingerprint of it) — O(distinct items) memory. HLL is O(log log n) memory, fixed up front. For 1B uniques: exact ~30GB hash set vs HLL ~12KB. The trade-off is ~1% error.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>HLL vs Bloom filter.</strong> Different problems. Bloom answers &quot;is x in the set?&quot; (membership); HLL answers &quot;how many distinct x?&quot; (cardinality). Both are sketches over streams, but they don&apos;t replace each other.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>HLL vs count-min sketch.</strong> Different problems. Count-min estimates per-item frequency (&quot;how many times have I seen X?&quot;); HLL estimates total distinct count. They&apos;re complementary — analytics queries often use both.
         </p>
@@ -100,9 +113,12 @@ export default function HyperLogLogArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li><strong>Use HLL++ over plain HLL.</strong> The Google enhancements (sparse encoding, 64-bit hashes, bias correction) are strict improvements — there&apos;s no reason to use the original variant in new code.</li>
-          <li><strong>Pick m by accuracy budget.</strong> m = 2¹² gives ~1.6% error in 3KB; m = 2¹⁴ (Redis default) gives ~0.81% in 12KB; m = 2¹⁸ gives ~0.20% in 192KB. Doubling m halves error and doubles memory.</li>
+          <HighlightBlock as="li" tier="important"><strong>Use HLL++ over plain HLL.</strong> The Google enhancements (sparse encoding, 64-bit hashes, bias correction) are strict improvements — there&apos;s no reason to use the original variant in new code.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Pick m by accuracy budget.</strong> m = 2¹² gives ~1.6% error in 3KB; m = 2¹⁴ (Redis default) gives ~0.81% in 12KB; m = 2¹⁸ gives ~0.20% in 192KB. Doubling m halves error and doubles memory.</HighlightBlock>
           <li><strong>Use a 64-bit hash.</strong> 32-bit hashes saturate around 2³² distinct items (collisions become common). MurmurHash3-64, xxHash64, or SipHash with 64-bit output is the minimum.</li>
           <li><strong>Exploit mergeability.</strong> Compute per-shard HLLs and merge centrally. Don&apos;t ship raw streams just to centralize counting — that defeats the entire point.</li>
           <li><strong>Use the same hash family across systems.</strong> Two HLLs can only be merged if they used the same hash function. Standardize early.</li>
@@ -113,9 +129,12 @@ export default function HyperLogLogArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li><strong>Confusing cardinality with frequency.</strong> HLL counts distinct items. It does not tell you how many times any particular item appeared. If you need frequencies, use count-min sketch.</li>
-          <li><strong>Mismatched hash functions when merging.</strong> Two HLLs built with different hashes cannot be merged correctly — silent corruption with no error indication.</li>
+          <HighlightBlock as="li" tier="important"><strong>Confusing cardinality with frequency.</strong> HLL counts distinct items. It does not tell you how many times any particular item appeared. If you need frequencies, use count-min sketch.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Mismatched hash functions when merging.</strong> Two HLLs built with different hashes cannot be merged correctly — silent corruption with no error indication.</HighlightBlock>
           <li><strong>Using a 32-bit hash for high-cardinality streams.</strong> Hash collisions in the &gt;2³⁰ range bias the estimate downward. Always use 64-bit for high-cardinality work.</li>
           <li><strong>Treating the estimate as exact.</strong> ~1% error means a billion-cardinality count is ±10M. Downstream logic must handle this — don&apos;t use HLL when exact accounting is required (billing, financial reporting).</li>
           <li><strong>Cardinality of intersections.</strong> HLL doesn&apos;t directly support set intersection. The inclusion-exclusion approximation |A ∩ B| ≈ |A| + |B| − |A ∪ B| compounds errors and can produce negative results. Use MinHash or k-MinValues for similarity.</li>
@@ -126,12 +145,15 @@ export default function HyperLogLogArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Analytics &quot;count distinct&quot; queries.</strong> BigQuery&apos;s APPROX_COUNT_DISTINCT, Presto&apos;s approx_distinct, Snowflake&apos;s HLL functions, Redshift&apos;s APPROXIMATE COUNT(DISTINCT), ClickHouse&apos;s uniqHLL12, and Druid&apos;s HLL columns all back the &quot;how many unique X?&quot; query primitive. For dashboards over billions of rows, HLL is 100–1000× faster and more memory-efficient than exact distinct counting.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Redis PFADD/PFCOUNT/PFMERGE.</strong> Redis exposes HLL as a first-class type (PF = Philippe Flajolet). PFADD inserts; PFCOUNT estimates cardinality; PFMERGE combines multiple HLLs. Each Redis HLL uses 12KB regardless of cardinality. Common use: per-page unique-visitor counts, per-event distinct-user counts.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Web analytics.</strong> Google Analytics, Mixpanel, and Amplitude use HLL variants to compute unique users / sessions / pageviews over arbitrary time ranges. Per-day HLLs are stored; queries merge HLLs across the requested range. Storing exact unique-user lists at scale is infeasible; HLL makes it tractable.
         </p>
@@ -150,10 +172,13 @@ export default function HyperLogLogArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How does HyperLogLog estimate cardinality from leading zeros?</p>
-            <p className="mt-2 text-sm">A: For uniformly random hashes, the probability of seeing k leading zeros is 2⁻ᵏ. So if the maximum leading-zero count observed is k, the stream probably contains ≈ 2ᵏ distinct items (otherwise that pattern would be unlikely). To reduce variance, HLL splits items across m buckets via the first hash bits, applies the estimator independently per bucket, and combines via harmonic mean — bringing standard error down to ≈ 1.04 / √m.</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How does HyperLogLog estimate cardinality from leading zeros?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">A: For uniformly random hashes, the probability of seeing k leading zeros is 2⁻ᵏ. So if the maximum leading-zero count observed is k, the stream probably contains ≈ 2ᵏ distinct items (otherwise that pattern would be unlikely). To reduce variance, HLL splits items across m buckets via the first hash bits, applies the estimator independently per bucket, and combines via harmonic mean — bringing standard error down to ≈ 1.04 / √m.</HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: Why harmonic mean and not arithmetic mean?</p>

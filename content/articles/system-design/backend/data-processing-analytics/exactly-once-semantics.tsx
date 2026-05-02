@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Exactly-once semantics</strong> is the guarantee that each record in a data pipeline is processed
           exactly one time — not zero times (loss) and not multiple times (duplication). It is the strongest delivery
           guarantee in distributed data processing and the most difficult to achieve correctly. The alternative
@@ -32,15 +36,15 @@ export default function ArticlePage() {
           lost but may be duplicated). Exactly-once semantics is essential for use cases where data loss or
           duplication has financial, legal, or correctness consequences — billing systems, financial ledgers,
           inventory management, and compliance reporting.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental challenge of exactly-once semantics is that distributed systems fail. Networks partition,
           processes crash, disks fail, and clocks drift. In the face of these failures, a pipeline must ensure that
           each record is processed exactly once, which requires coordination between the source (where records
           originate), the broker (where records are stored and transmitted), the processor (where records are
           transformed), and the sink (where results are written). No single component can guarantee exactly-once
           semantics alone — it requires coordination across the entire pipeline.
-        </p>
+        </HighlightBlock>
         <p>
           The term &quot;exactly-once&quot; is often misunderstood. It does not mean that the system magically prevents
           failures or retries. It means that the system&apos;s design ensures that the <em>effect</em> of processing each
@@ -83,7 +87,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Idempotent processing is the foundation of exactly-once semantics. An operation is idempotent if applying
           it multiple times produces the same effect as applying it once. In the context of data processing, this
           means that processing the same record twice (due to a retry or a redelivery) produces the same output state
@@ -91,15 +98,15 @@ export default function ArticlePage() {
           supports upsert semantics, so writing the same record twice overwrites the first write without creating a
           duplicate) and deduplication keys (the processor maintains a record of processed record IDs and skips
           records that have already been processed).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Transactional writes ensure that the output and the processing offset are committed atomically — either both
           are committed or neither is. This prevents the scenario where the output is written but the offset is not
           committed (causing the record to be reprocessed and the output to be duplicated) or the offset is committed
           but the output is not written (causing the record to be lost). In Kafka, this is achieved through the
           transactional producer API, which allows the processor to write output records and commit the consumer
           offset in a single atomic transaction.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/exactly-once-semantics-diagram-1.svg"
           alt="Comparison of at-most-once, at-least-once, and exactly-once delivery semantics with their trade-offs"
@@ -149,22 +156,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The exactly-once architecture consists of three coordinated components: the idempotent producer, the
           transactional broker, and the transactional consumer. The idempotent producer assigns a unique producer ID
           and sequence number to each record, ensuring that duplicate writes (caused by retries) are detected and
           discarded by the broker. The transactional broker groups records into transactions, committing or aborting
           each transaction atomically. The transactional consumer reads only committed records and commits its
           processing offset atomically with its output write.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The producer flow begins with the application generating a record and assigning it a sequence number. The
           producer sends the record to the broker with its producer ID and sequence number. The broker checks whether
           it has already received a record with the same or higher sequence number from this producer for this
           partition. If yes, the broker discards the record as a duplicate. If no, the broker writes the record to the
           partition and updates its tracked sequence number. The producer then receives an acknowledgment from the
           broker confirming the write.
-        </p>
+        </HighlightBlock>
         <p>
           The transactional broker flow begins when a producer initiates a transaction by sending a begin-transaction
           request to the transaction coordinator. The coordinator creates a transaction log entry and assigns a
@@ -210,7 +220,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Exactly-once versus at-least-once with idempotent sinks is the primary trade-off. Exactly-once provides
           the strongest guarantee — each record is processed exactly once — but carries a 20-50 percent performance
           overhead due to transactional coordination. At-least-once with idempotent sinks provides the same
@@ -220,15 +233,15 @@ export default function ArticlePage() {
           database with UPSERT, or a key-value store with PUT-by-key), at-least-once with idempotent sinks is
           preferred. If it does not (for example, an append-only log or a file-based data lake), exactly-once is
           required.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Exactly-once within a single system versus end-to-end exactly-once across heterogeneous systems is a scope
           trade-off. Kafka&apos;s EOS guarantees exactly-once processing within a single Kafka cluster — from producer to
           broker to consumer to output topic. It does not guarantee exactly-once across multiple Kafka clusters or
           between Kafka and an external sink. End-to-end exactly-once requires custom logic to coordinate the output
           write and the offset commit across the heterogeneous systems, which adds complexity and may not be feasible
           for all sinks.
-        </p>
+        </HighlightBlock>
         <p>
           Checkpoint frequency in stream processors is a trade-off between recovery time and overhead. Frequent
           checkpointing (every few seconds) ensures that the processor can recover to a recent state with minimal
@@ -241,18 +254,21 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use idempotent sinks wherever possible — they provide the same correctness guarantee as exactly-once
           semantics with lower overhead. Design the sink to handle duplicate writes idempotently: use UPSERT instead
           of INSERT, use PUT-by-key instead of append, or maintain a deduplication log that tracks processed record
           IDs and skips duplicates.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enable idempotent producers (enable.idempotence equals true) for all Kafka producers, even if you are not
           using full exactly-once semantics. Idempotent producers prevent duplicate writes caused by producer
           retries, which is the most common source of duplicates in Kafka pipelines. The overhead is negligible —
           less than 1 percent throughput reduction.
-        </p>
+        </HighlightBlock>
         <p>
           Use transactional consumers (isolation.level equals read_committed) when reading from topics written by
           transactional producers. This ensures that the consumer reads only committed records and does not see
@@ -275,21 +291,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Assuming exactly-once semantics applies end-to-end when it only applies within a single system is the most
           common exactly-once misunderstanding. Kafka&apos;s EOS guarantees exactly-once within a single Kafka cluster —
           from producer to broker to consumer to output topic. It does not guarantee exactly-once between Kafka and
           an external sink (a database, a data warehouse, an API). If the pipeline writes to an external sink, the
           sink must support idempotent writes or the processor must implement custom logic to coordinate the output
           write and the offset commit atomically.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using exactly-once semantics when at-least-once with idempotent sinks would suffice is a common
           over-engineering pitfall. Exactly-onse semantics carries a 20-50 percent performance overhead. If the sink
           supports idempotent writes (UPSERT, PUT-by-key), at-least-once with idempotent sinks provides the same
           correctness guarantee with lower overhead. The choice should be based on the sink&apos;s capabilities, not on a
           desire for the strongest semantic regardless of cost.
-        </p>
+        </HighlightBlock>
         <p>
           Not configuring consumers to read only committed records (isolation.level equals read_committed) when
           reading from transactional producers causes the consumer to see uncommitted records that may later be
@@ -309,7 +328,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses exactly-once semantics for its trade settlement pipeline, where each
           trade must be processed exactly once to ensure that the settlement ledger is correct. The pipeline uses
           Kafka&apos;s transactional API to write trades to a Kafka topic, a Flink processor to validate and enrich the
@@ -317,15 +339,15 @@ export default function ArticlePage() {
           to the ledger. The combination of idempotent producers, transactional brokers, and idempotent sinks ensures
           that each trade is settled exactly once, even in the face of producer retries, broker failures, and
           processor restarts.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses at-least-once with idempotent sinks for its order processing pipeline,
           where order events are consumed from Kafka and written to an order database. The sink uses UPSERT by order
           ID, so duplicate order events (caused by consumer restarts) are handled idempotently — the second write
           overwrites the first without creating a duplicate order. The pipeline uses idempotent producers to prevent
           duplicate writes to the Kafka topic, but does not use full exactly-once semantics because the idempotent
           sink provides the same correctness guarantee with lower overhead.
-        </p>
+        </HighlightBlock>
         <p>
           A technology company uses exactly-once semantics for its real-time analytics pipeline, where user activity
           events are consumed from Kafka, aggregated into windowed counts (page views per minute, per user, per
@@ -348,25 +370,28 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: What is the difference between at-least-once and exactly-once, and when would you choose one over the other?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             At-least-once guarantees that each record is processed at least once — it may be processed multiple
             times due to retries or redeliveries, but it is never lost. Exactly-once guarantees that each record is
             processed exactly once — no loss and no duplication. The key difference is that at-least-once requires the
             consumer to handle duplicates (through idempotent processing or explicit deduplication), while exactly-once
             handles duplicates at the infrastructure level through transactional coordination.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Choose exactly-once when the sink does not support idempotent writes (for example, an append-only log or
             a file-based data lake) and duplicates would produce incorrect output. Choose at-least-once with
             idempotent sinks when the sink supports idempotent writes (UPSERT, PUT-by-key) — this provides the same
             correctness guarantee with lower overhead because the sink handles duplicates rather than the
             infrastructure.
-          </p>
+          </HighlightBlock>
           <p>
             Choose at-most-once only for use cases where data loss is acceptable and the performance benefit is
             significant (for example, metrics collection where a small percentage of lost metrics is within the margin

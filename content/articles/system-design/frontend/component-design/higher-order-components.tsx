@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Higher-Order Components (HOC)</strong> are functions that take a component and return a new component with enhanced functionality. This pattern borrows from functional programming's higher-order functions and was one of the primary patterns for sharing logic between React components before hooks were introduced. An HOC wraps the original component, injecting additional props, state, or behavior while preserving the original component's interface.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           HOCs address a fundamental challenge in component design: how do we share common logic across multiple components without duplicating code? Without HOCs or similar patterns, teams end up copying the same data-fetching logic, authentication checks, or performance optimizations across many components. This duplication makes maintenance difficult and introduces bugs when logic needs to change.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, understanding HOCs is important even in the hooks era. Many existing codebases use HOCs extensively. Some patterns are still better served by HOCs than hooks. And understanding HOCs provides deeper insight into component composition and React's mental model.
         </p>
@@ -45,6 +49,9 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/component-design/hoc-pattern.svg"
@@ -53,12 +60,12 @@ export default function ArticlePage() {
         />
 
         <h3>HOC Fundamentals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An HOC is a function that follows a specific signature: it takes a component as input and returns a new component. The returned component typically renders the original component with additional props or behavior. The HOC pattern enables logic reuse without modifying the original component.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A simple HOC might add a loading prop, fetch data and pass it as props, check authentication and conditionally render, or wrap the component in a context provider. The key is that the HOC enhances the component without the component needing to know about the enhancement.
-        </p>
+        </HighlightBlock>
 
         <h3>HOC Implementation Patterns</h3>
         <p>
@@ -95,9 +102,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing HOCs requires careful attention to component identity, prop forwarding, and display names.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/component-design/hoc-wrapper-chain.svg"
@@ -106,9 +116,9 @@ export default function ArticlePage() {
         />
 
         <h3>Proper HOC Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A well-implemented HOC follows several best practices. Forward all props except the ones the HOC explicitly handles. Use React.forwardRef to forward refs through the HOC. Set a meaningful displayName for debugging that includes both the HOC name and the wrapped component name. Copy static methods from the wrapped component if they exist.
-        </p>
+        </HighlightBlock>
         <p>
           The HOC should not mutate the wrapped component. It should return a new component that renders the wrapped component. This preserves the original component and enables the same component to be wrapped multiple times with different enhancements.
         </p>
@@ -140,9 +150,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           HOCs involve trade-offs between reusability, complexity, and developer experience.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -184,19 +197,22 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that hooks are preferred for new code, but HOCs still have valid use cases. Don't refactor working HOCs just to use hooks. Do use hooks for new logic sharing. Understand both patterns to make informed decisions.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use HOCs for cross-cutting concerns that apply to many components. Authentication, logging, and error handling are good candidates. Don't use HOCs for logic that could be a custom hook. Hooks are simpler and don't create wrapper trees.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Set meaningful display names for debugging. Include both the HOC name and wrapped component name. Forward refs properly using React.forwardRef. Document which props the HOC injects and which it consumes. This helps developers understand the component's interface.
-        </p>
+        </HighlightBlock>
         <p>
           Avoid HOCs inside render functions. Creating HOCs during render creates a new component type on every render, causing unmounts and remounts. Define HOCs at module scope. Compose HOCs thoughtfully, considering the order of application. Authentication should wrap data fetching. Performance optimizations should be outermost.
         </p>
@@ -204,12 +220,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Creating HOCs inside render functions causes the wrapped component to unmount and remount on every render. This loses state and is a performance disaster. Always define HOCs at module scope, outside of any component.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not forwarding refs breaks ref access through HOCs. Components wrapped in HOCs won't receive refs unless the HOC uses React.forwardRef. Not setting displayName makes debugging difficult. React DevTools will show anonymous wrappers instead of meaningful names.
-        </p>
+        </HighlightBlock>
         <p>
           Prop namespace collisions occur when multiple HOCs inject the same prop name. The outermost HOC wins, silently overriding inner HOCs. Document injected props and use unique names. Over-using HOCs creates wrapper hell where components are wrapped in many layers. This makes debugging difficult and can impact performance.
         </p>
@@ -220,14 +239,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Enterprise App: Authentication HOC</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An enterprise application needed to protect many routes with authentication. Each protected page needed to check auth status and redirect to login if not authenticated. The solution was a withAuth HOC that checked auth status and either rendered the component or redirected.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Results included consistent authentication across all protected pages, reduced code duplication by centralizing auth logic, and easy addition of new protected pages. The HOC was used across 50+ components.
-        </p>
+        </HighlightBlock>
 
         <h3>Analytics Platform: Data Fetching HOC</h3>
         <p>
@@ -256,14 +278,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is a Higher-Order Component and how does it work?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               An HOC is a function that takes a component and returns a new component with enhanced functionality. The HOC wraps the original component, injecting additional props, state, or behavior. The wrapped component doesn't need to know about the enhancement.
-            </p>
+            </HighlightBlock>
             <p>
               HOCs follow the pattern: const EnhancedComponent = withEnhancement(OriginalComponent). The HOC returns a new component that renders the original with added capabilities.
             </p>

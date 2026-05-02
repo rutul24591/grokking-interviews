@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,14 +28,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>API keys</strong> are credentials used to authenticate applications (not users) to APIs and services.
           Unlike passwords, which authenticate human users, API keys authenticate software — they identify the calling
           application and authorize it to access specific resources with specific permissions. API keys are the
           foundation of service-to-service authentication, third-party API access, and cloud platform authentication
           (AWS access keys, GCP service account keys, Stripe API keys).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Secrets management</strong> is the practice of securely storing, distributing, rotating, and
           revoking sensitive credentials — API keys, database passwords, TLS private keys, OAuth client secrets, and
           signing keys. Secrets must be protected at rest (encrypted in storage), in transit (transmitted over
@@ -42,7 +46,7 @@ export default function ArticlePage() {
           the leading cause of cloud security breaches — API keys and credentials committed to public repositories,
           stored in plaintext configuration files, or shared insecurely are routinely discovered and exploited by
           attackers.
-        </p>
+        </HighlightBlock>
         <p>
           The evolution of secrets management has progressed from plaintext configuration files (credentials stored
           in .env files, hardcoded in source code) to environment variables (credentials injected at runtime) to
@@ -83,15 +87,18 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           API key generation must use a cryptographically secure random number generator (CSPRNG) with at least
           256 bits of entropy. API keys must be unpredictable — if an attacker can guess or brute force valid API
           keys, the authentication mechanism is broken. API keys should include a prefix that identifies the key
           type (sk for secret key, pk for public key, ak for API key) and the environment (live, test, prod, dev).
           Prefixes enable quick identification of key type and environment in logs, error messages, and security
           alerts. Stripe&apos;s key format (sk_live_xxx, pk_test_yyy) is the industry standard for prefix design.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Secrets storage is the mechanism by which API keys and other credentials are stored securely. There are
           three patterns: plaintext files (.env files, configuration files — acceptable only for local development),
           environment variables (injected at runtime — acceptable for simple deployments but not for distributed
@@ -99,7 +106,7 @@ export default function ArticlePage() {
           standard for production systems). Secrets managers encrypt secrets at rest (AES-256), control access
           through policies (which applications can access which secrets), audit all access (who accessed which secret
           when), and automate rotation (generating new secrets and distributing them to applications).
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/api-keys-secrets-management-diagram-1.svg"
           alt="API key lifecycle showing generation, distribution, usage, rotation, and revocation with security best practices"
@@ -146,21 +153,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The secrets management architecture consists of the secrets manager (which stores, encrypts, and controls
           access to secrets), the applications (which retrieve secrets at startup and use them for authentication),
           and the administrators (who manage secrets, configure access policies, and monitor audit logs). The
           secrets manager is the single source of truth for all secrets — applications do not store secrets locally,
           they retrieve them from the secrets manager at startup and cache them in memory.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The secret retrieval flow begins with the application starting up. The application authenticates to the
           secrets manager (using its own credentials — instance IAM role, service account, or bootstrap token),
           retrieves the secrets it needs (database credentials, API keys, signing keys), and stores them in memory.
           The application uses the secrets for authentication (presenting API keys with API requests, using database
           credentials to connect to the database). The application does not write secrets to disk or log them — they
           remain in memory for the lifetime of the application.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/api-keys-secrets-management-diagram-3.svg"
           alt="Zero-downtime key rotation showing overlap period and gradual cutover from old key to new key"
@@ -197,7 +207,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Secrets manager versus environment variables is the primary trade-off in secrets storage. Secrets managers
           (HashiCorp Vault, AWS Secrets Manager) encrypt secrets at rest, control access through policies, audit all
           access, and automate rotation — they are the industry standard for production systems. However, they
@@ -206,8 +219,8 @@ export default function ArticlePage() {
           injected at deploy time, and applications read them from the environment. However, environment variables
           are not encrypted at rest, do not support access policies, do not audit access, and do not automate
           rotation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Automated rotation versus manual rotation is a trade-off between operational complexity and security.
           Automated rotation generates new secrets, distributes them to applications, and disables old secrets
           without human intervention — this eliminates the risk of forgotten rotation and ensures secrets are
@@ -216,7 +229,7 @@ export default function ArticlePage() {
           rotation is simpler — an administrator generates a new secret, distributes it to applications, and disables
           the old secret. However, manual rotation is error-prone — administrators may forget to rotate, or may
           rotate incorrectly, causing service disruption.
-        </p>
+        </HighlightBlock>
         <p>
           Short-lived versus long-lived API keys is a trade-off between security and operational overhead.
           Short-lived API keys (hours to days) limit the window of opportunity if a key is compromised — the
@@ -242,18 +255,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use a centralized secrets manager (HashiCorp Vault, AWS Secrets Manager, GCP Secret Manager) for all
           production secrets. Secrets managers encrypt secrets at rest, control access through policies, audit all
           access, and automate rotation. Do not store secrets in plaintext files, environment variables, or version
           control — these are insecure and do not support access control, auditing, or rotation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Generate API keys using a CSPRNG with at least 256 bits of entropy. API keys must be unpredictable — if
           an attacker can guess or brute force valid API keys, the authentication mechanism is broken. Include a
           prefix that identifies the key type and environment (sk_live_xxx, pk_test_yyy) for easy identification in
           logs and security alerts.
-        </p>
+        </HighlightBlock>
         <p>
           Enforce least-privilege scopes for each API key. Each key should have only the permissions necessary for
           its function — read:orders, write:users, admin:settings — rather than broad permissions (full_access).
@@ -282,19 +298,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Committing API keys to version control is the most common secrets management failure. API keys committed
           to public repositories (GitHub, GitLab) are discovered by attackers within minutes and exploited. The fix
           is to use secrets managers — applications retrieve secrets at startup, and secrets are never stored in
           version control. Additionally, use pre-commit hooks and CI/CD scanning (git-secrets, truffleHog) to
           detect and prevent secrets from being committed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not rotating API keys is a common operational pitfall. If API keys are never rotated, a compromised key
           remains valid indefinitely, giving the attacker persistent access. The fix is to automate rotation — the
           secrets manager generates new keys, distributes them to applications, and disables old keys on a regular
           schedule (every 90 days).
-        </p>
+        </HighlightBlock>
         <p>
           Granting overly broad scopes (full_access) to API keys violates the principle of least privilege and
           increases the blast radius if a key is compromised. The fix is to define granular scopes (read:orders,
@@ -320,22 +339,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses AWS Secrets Manager for all production secrets — database credentials,
           Stripe API keys, SendGrid API keys, and signing keys. Applications retrieve secrets at startup using IAM
           roles (no credentials needed — the instance role authenticates to Secrets Manager). Secrets are rotated
           automatically every 90 days, and the platform monitors secrets access and alerts on anomalous patterns.
           The platform has had zero secrets-related breaches since migrating from environment variables to Secrets
           Manager.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses HashiCorp Vault for secrets management — API keys, database credentials,
           TLS certificates, and signing keys are all stored in Vault. Vault enforces access policies (application A
           can access database credentials but not payment API keys), audits all access, and automates rotation.
           Database credentials are rotated automatically — Vault generates new credentials, updates the database,
           and notifies applications. The company uses Vault&apos;s dynamic secrets feature — database credentials are
           generated on-demand and expire after 24 hours, eliminating the need for rotation.
-        </p>
+        </HighlightBlock>
         <p>
           A SaaS platform uses GCP Secret Manager for secrets management — API keys, OAuth client secrets, and
           signing keys are stored in Secret Manager. Applications retrieve secrets at startup using service account
@@ -359,14 +381,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How do you rotate API keys without causing service disruption?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Use zero-downtime rotation with an overlap period. Generate a new key, store it alongside the old key (both are valid), distribute the new key to applications, and after the overlap period (24-48 hours), disable the old key. During the overlap period, both keys are valid, so applications still using the old key can continue to function while they update to the new key.
-            </p>
+            </HighlightBlock>
             <p>
               Automated rotation is essential — the secrets manager generates the new key, notifies applications (via webhook, polling, or push notification), applications retrieve the new key and update their in-memory copy, and the secrets manager disables the old key after the overlap period. This ensures rotation happens on schedule without human intervention.
             </p>

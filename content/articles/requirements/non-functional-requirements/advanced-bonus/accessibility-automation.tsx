@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,22 +38,25 @@ export default function AccessibilityAutomationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Accessibility Automation</strong> refers to the systematic use of automated tools,
           processes, and pipelines to detect, prevent, and monitor accessibility issues throughout the
           software development lifecycle. While accessibility ultimately requires human judgment and user
           testing with assistive technologies, automation can catch approximately 30-50% of common
           accessibility issues before they reach production, providing a critical first line of defense
           against regressions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Accessibility is not merely a nice-to-have feature but a legal requirement in many jurisdictions
           and a moral imperative for inclusive software development. The Web Content Accessibility Guidelines
           (WCAG) 2.1 defines three conformance levels (A, AA, AAA) across four foundational principles:
           Perceivable, Operable, Understandable, and Robust, collectively known as the POUR framework.
           Organizations worldwide face increasing regulatory pressure, with accessibility-related lawsuits
           growing year over year across industries.
-        </p>
+        </HighlightBlock>
         <p>
           The motivation for automating accessibility stems from several critical factors. Manual accessibility
           audits are time-consuming and expensive, requiring specialized expertise that is in short supply.
@@ -82,7 +86,10 @@ export default function AccessibilityAutomationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The accessibility automation ecosystem comprises several interconnected layers, each serving a
           distinct purpose in the development lifecycle. At the development layer, browser extensions provide
           real-time feedback as developers build interfaces. Tools like axe DevTools integrate directly into
@@ -91,8 +98,8 @@ export default function AccessibilityAutomationArticle() {
           while Lighthouse includes accessibility audits as part of broader performance and quality scoring.
           Microsoft&apos;s Accessibility Insights offers both automated tests and guided manual assessments,
           bridging the gap between automation and human evaluation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the testing layer, JavaScript libraries enable automated accessibility testing within existing
           test suites. The axe-core engine serves as the foundational accessibility testing engine used by
           most tools in the ecosystem and can be integrated into any JavaScript test framework. Jest-axe
@@ -100,7 +107,7 @@ export default function AccessibilityAutomationArticle() {
           <code>{`expect(container).toBeAccessible()`}</code>. The pa11y command-line tool and library
           supports custom configurations and reporting, while testing-library utilities include
           accessibility-related matchers with proper ARIA querying capabilities.
-        </p>
+        </HighlightBlock>
         <p>
           End-to-end testing integration extends accessibility checks into full user journey validation.
           Cypress-axe provides axe-core integration for Cypress E2E tests, while Playwright combined with
@@ -125,19 +132,22 @@ export default function AccessibilityAutomationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Integrating accessibility testing into CI/CD pipelines ensures issues are caught before deployment
           reaches production users. The architecture follows a progressive enforcement model where accessibility
           checks are embedded at multiple stages of the delivery pipeline, each with increasing scrutiny and
           comprehensive coverage.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the pull request stage, accessibility audits trigger automatically when a PR is opened or updated.
           The pipeline deploys a preview environment, runs axe-core against key pages in that preview, and
           posts results as a PR comment or status check. The configuration should fail on critical errors to
           prevent accessibility regressions from being merged. This provides immediate feedback to developers
           while the changes are still fresh in their minds and easy to revert.
-        </p>
+        </HighlightBlock>
         <p>
           The staging environment runs more comprehensive audits with full site crawls and deeper rule sets
           before production deployment. Production smoke tests verify critical path accessibility immediately
@@ -164,15 +174,18 @@ export default function AccessibilityAutomationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding which accessibility rules can be automated versus those requiring human judgment is
           critical for effective tool configuration and realistic expectations. Automated tools reliably
           check for missing alt attributes, empty alt on decorative images, insufficient color contrast
           between text and background, missing form labels, empty link text, skipped heading levels, missing
           language attributes, invalid ARIA roles, missing required ARIA attributes, duplicate IDs, and
           missing skip links. These objective checks form the foundation of any automation strategy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           However, significant categories of accessibility issues remain beyond the reach of automation.
           Alt text quality cannot be assessed by tools that merely detect presence or absence. Focus order
           logic requires understanding the user&apos;s mental model of the interface. Link purpose clarity
@@ -180,7 +193,7 @@ export default function AccessibilityAutomationArticle() {
           reading level assessment, and the quality of instructions and error messages all require human
           assessment. Custom widget accessibility through assistive technologies demands manual testing with
           actual screen readers and keyboard navigation.
-        </p>
+        </HighlightBlock>
         <p>
           The trade-off between strict enforcement and development velocity presents another consideration.
           Zero-tolerance quality gates prevent any accessibility regressions but can block deployments and
@@ -209,7 +222,10 @@ export default function AccessibilityAutomationArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Effective accessibility reporting drives actual remediation, and poor reports invariably get
           ignored by development teams. Accessibility reports should include an executive summary showing
           total violations by severity with trends over time and compliance status against WCAG levels.
@@ -219,15 +235,15 @@ export default function AccessibilityAutomationArticle() {
           clarify which users are affected and how, whether screen reader users, keyboard-only users, or
           those with low vision. Assignment information identifies which team or developer owns the
           remediation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Developer experience around accessibility feedback significantly impacts remediation velocity.
           Inline feedback showing violations directly in the IDE or PR diff reduces context switching.
           Providing copy-paste fixes for common issues lowers the barrier to correction. Component library
           integration flags issues in Storybook or component documentation where developers already look
           for guidance. Learning resources linking to internal accessibility guidelines and training materials
           build institutional knowledge over time.
-        </p>
+        </HighlightBlock>
         <p>
           Trend tracking monitors accessibility posture over extended periods. Violation trends reveal
           whether the overall accessibility health is improving or deteriorating. Remediation velocity
@@ -248,20 +264,23 @@ export default function AccessibilityAutomationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Organizations frequently make the mistake of treating automation as a complete accessibility
           solution rather than one component of a broader program. Relying solely on automated tools creates
           a false sense of security, as the 30-50% detection rate means the majority of accessibility issues
           remain undetected. Teams must understand that automation catches structural and syntactic violations
           but cannot validate the quality or appropriateness of accessibility implementations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common pitfall is implementing quality gates without first establishing baselines and
           remediating existing violations. Blocking deployments on accessibility violations when thousands
           of pre-existing issues exist creates frustration and erodes trust in the automation program.
           The correct approach establishes a baseline, creates a remediation plan for existing issues, and
           then enforces gates to prevent new violations while the backlog is addressed.
-        </p>
+        </HighlightBlock>
         <p>
           Insufficient developer education leads to repeated accessibility violations even with automation
           in place. When developers do not understand why a violation matters or how to fix it, they may
@@ -281,22 +300,25 @@ export default function AccessibilityAutomationArticle() {
 
       <section>
         <h2>Real-world use cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms benefit significantly from accessibility automation due to the legal exposure
           and business impact. An online retailer with thousands of product pages implemented automated
           accessibility checks in their CI/CD pipeline, catching missing alt text on product images, form
           label issues on checkout forms, and keyboard navigation problems on filtering interfaces. The
           automation prevented accessibility regressions that could have resulted in lost revenue and legal
           liability, while trend tracking demonstrated steady improvement toward WCAG AA compliance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Government and public sector organizations face strict accessibility mandates and use automation
           to maintain compliance across large digital estates. A state government agency with hundreds of
           public-facing web properties uses scheduled monitoring to detect accessibility drift caused by
           CMS updates, third-party widget additions, and content editor changes that introduce violations.
           The system alerts the central accessibility team when violations exceed thresholds, enabling
           rapid remediation before citizen complaints or regulatory audits.
-        </p>
+        </HighlightBlock>
         <p>
           Financial services companies leverage accessibility automation as part of their risk management
           programs. A major bank integrated axe-core into their component library testing, ensuring that
@@ -315,12 +337,15 @@ export default function AccessibilityAutomationArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What percentage of WCAG issues can be detected by automation?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Approximately 30-50% of WCAG issues can be detected by automated tools. Automation excels
               at objective checks such as missing alt attributes, color contrast calculations, ARIA attribute
               validity, form label associations, and heading structure. It cannot assess subjective issues
@@ -328,7 +353,7 @@ export default function AccessibilityAutomationArticle() {
               widget usability with assistive technologies. Always complement automation with manual testing,
               assistive technology testing with real screen readers, and user research involving people with
               disabilities.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

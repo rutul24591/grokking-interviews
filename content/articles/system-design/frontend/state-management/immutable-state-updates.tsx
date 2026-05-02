@@ -462,22 +462,26 @@ export default function ImmutableStateUpdatesConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: immutability enables predictable updates, cheap change detection, and safe concurrency.
+          Use these references to reason about structural sharing and how libraries (Immer/RTK) avoid boilerplate.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://react.dev/learn/updating-objects-in-state" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               React Documentation &mdash; Updating Objects in State
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://immerjs.github.io/immer/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Immer Documentation &mdash; Introduction to Immer
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://redux-toolkit.js.org/usage/immer-reducers" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Redux Toolkit &mdash; Writing Reducers with Immer
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://developer.mozilla.org/en-US/docs/Web/API/structuredClone" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN &mdash; structuredClone() Global Function

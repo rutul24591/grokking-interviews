@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,12 +37,15 @@ export default function DarkModeImplementationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Dark mode</strong> is an alternative color scheme that uses light-colored text, icons, and UI elements on dark backgrounds, inverting the traditional light-on-white design. Beyond aesthetic preference, dark mode serves functional purposes: reducing eye strain in low-light environments, decreasing power consumption on OLED and AMOLED screens (where dark pixels are literally turned off), improving readability for users with certain visual impairments, and respecting user system preferences through the <code>prefers-color-scheme</code> media query. Dark mode has evolved from a niche feature requested by developers to a mainstream expectation — major operating systems, browsers, and applications universally support it, and users increasingly expect every web application to offer a dark variant.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing dark mode correctly is significantly more complex than swapping background and text colors. Colors that work well in light mode rarely translate directly to dark mode — pure white text on a pure black background creates excessive contrast that causes halation (a glowing halo effect around text), dark surfaces need subtle elevation differentiation rather than shadows (which are invisible against dark backgrounds), semantic colors like red for errors and green for success need to be adjusted for legibility on dark backgrounds, and images, icons, and illustrations designed for light backgrounds may become illegible or visually harsh against dark surfaces. A proper dark mode implementation requires a comprehensive design token system that maps semantic color intentions to specific color values for each theme.
-        </p>
+        </HighlightBlock>
         <p>
           At the staff and principal engineer level, dark mode is a design system architecture challenge. The theming infrastructure must support multiple color modes (at minimum light and dark, potentially high-contrast variants), switch themes without page reload or visible flash, persist the user&apos;s preference across sessions and devices, respect the operating system&apos;s preference while allowing user override, and work correctly with server-side rendering where the server does not know the user&apos;s preference before the first render. The token system must be organized at the semantic level (background-primary, text-secondary, border-subtle) rather than the literal level (white, gray-800, gray-200) so that tokens map naturally to different themes. And the implementation must handle third-party content (embedded iframes, user-generated content, ads) that may not support dark mode.
         </p>
@@ -52,13 +56,16 @@ export default function DarkModeImplementationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Design Tokens:</strong> Named, platform-agnostic values that represent design decisions — colors, spacing, typography, elevation, opacity. For dark mode, tokens are defined at the semantic level (<code>--color-bg-primary</code>, <code>--color-text-secondary</code>, <code>--color-border-subtle</code>) and mapped to different literal values for each theme. This indirection allows the entire theme to change by swapping token values rather than modifying individual component styles.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>prefers-color-scheme Media Query:</strong> A CSS media query that detects the user&apos;s operating system-level color scheme preference (light or dark). It enables automatic theme matching without user interaction — the website responds to the system setting. This should be the default behavior, with the option for users to override it. The query can be detected in JavaScript via <code>window.matchMedia(&quot;(prefers-color-scheme: dark)&quot;)</code> and monitored for changes with the <code>change</code> event.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Color Inversion vs Semantic Theming:</strong> Naive dark mode implementations simply invert light colors (white becomes black, light gray becomes dark gray), producing a technically functional but visually harsh result. Semantic theming instead defines each color intentionally for its context — dark mode backgrounds are typically dark gray (not pure black) to allow subtle elevation differentiation, text is off-white (not pure white) to reduce contrast harshness, and accent colors are adjusted for legibility on dark surfaces. The difference between inversion and semantic theming is the difference between a quick hack and a professional implementation.
           </li>
@@ -82,18 +89,21 @@ export default function DarkModeImplementationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The first diagram illustrates the dark mode architecture with CSS custom properties. Design tokens are defined at the semantic level in a token definition file — background colors, text colors, border colors, accent colors, surface colors, and shadow definitions. A token compiler generates two CSS custom property sets: one for light mode (applied at <code>:root</code>) and one for dark mode (applied at <code>:root.dark</code> or via <code>@media (prefers-color-scheme: dark)</code>). Components reference tokens through their semantic names (<code>var(--color-bg-primary)</code>) without knowing which theme is active. Theme switching changes which CSS custom property set is applied, and all components update simultaneously without any component re-rendering.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/edge-cases-and-user-experience/dark-mode-implementation-diagram-1.svg"
           alt="Dark mode token architecture showing semantic token definitions, CSS custom property generation for light and dark themes, and component consumption"
           width={900}
           height={500}
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The second diagram shows the theme initialization and switching flow. On page load, an inline script in the HTML head reads the user&apos;s theme preference from localStorage (or a cookie) before the first paint. If a preference exists, the corresponding class (<code>dark</code> or <code>light</code>) is applied to the root element immediately. If no preference exists, the system preference is detected via <code>prefers-color-scheme</code> and applied. This pre-paint initialization prevents the Flash of Incorrect Theme. When the user toggles the theme through the UI, the theme manager updates the root element class, persists the new preference to localStorage, and optionally syncs to the server for cross-device consistency. The theme manager also listens for system preference changes to update the theme when the user changes their OS setting, unless they have explicitly set a preference override.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/edge-cases-and-user-experience/dark-mode-implementation-diagram-2.svg"
           alt="Theme initialization flow showing pre-paint preference detection, Flash of Incorrect Theme prevention, and theme toggle with persistence"
@@ -113,6 +123,9 @@ export default function DarkModeImplementationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -122,16 +135,16 @@ export default function DarkModeImplementationArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="important">
               <td className="px-4 py-2 font-medium">CSS Custom Properties</td>
               <td className="px-4 py-2">Theme switching without re-render, excellent performance, standard CSS with no build tool dependency, supports runtime changes, cascading allows component-level overrides</td>
               <td className="px-4 py-2">Cannot be used in media queries, computed value has no fallback chain, IE11 incompatible (no longer relevant for most projects), debugging requires inspecting computed values</td>
-            </tr>
-            <tr className="border-b border-theme">
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="px-4 py-2 font-medium">CSS Class Toggle (.dark)</td>
               <td className="px-4 py-2">Works with server-side rendering, class can be set before first paint, simple to understand, compatible with Tailwind dark: prefix, allows user override of system preference</td>
               <td className="px-4 py-2">Requires JavaScript for toggle, FOIT risk if script loads late, class must be on root element for utility-based frameworks, localStorage access needed for preference</td>
-            </tr>
+            </HighlightBlock>
             <tr className="border-b border-theme">
               <td className="px-4 py-2 font-medium">prefers-color-scheme Media Query</td>
               <td className="px-4 py-2">Zero JavaScript needed, automatic OS matching, works before JavaScript loads (no FOIT for system preference), SEO-friendly, progressive enhancement</td>
@@ -153,13 +166,16 @@ export default function DarkModeImplementationArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use semantic design tokens, not literal color values.</strong> Define tokens by their purpose (<code>--color-bg-primary</code>, <code>--color-text-muted</code>, <code>--color-border-strong</code>) rather than their appearance (<code>--color-white</code>, <code>--color-gray-400</code>). Semantic tokens map naturally to different themes — <code>bg-primary</code> is white in light mode and dark gray in dark mode. Literal tokens like <code>--color-white</code> break the abstraction because white is not appropriate as a primary background in dark mode. Every color reference in component styles should use a semantic token.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Prevent the Flash of Incorrect Theme with a blocking inline script.</strong> Place a small inline script in the HTML <code>&lt;head&gt;</code> before any stylesheets that reads the theme preference from localStorage and applies the theme class to the document element. This script must execute before the browser&apos;s first paint to prevent the jarring white-to-dark flash. Keep the script minimal (under 500 bytes) to avoid blocking render unnecessarily. The script should also detect the system preference as a fallback when no stored preference exists.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Support three preference states: system, light, and dark.</strong> Rather than a binary toggle, offer three options: follow system preference (the default), force light mode, and force dark mode. The system preference option uses the <code>prefers-color-scheme</code> media query and responds to OS-level changes in real time. Explicit light and dark options override the system preference. Store the user&apos;s selection (system/light/dark) in localStorage, not the resolved theme value, so that &ldquo;system&rdquo; continues to respond to OS changes.
           </li>
@@ -180,13 +196,16 @@ export default function DarkModeImplementationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Hardcoding color values in component styles.</strong> When component styles reference literal colors (<code>background: white</code>, <code>color: #333</code>) instead of design tokens, they do not respond to theme changes. Every component must use semantic token references (<code>var(--color-bg-primary)</code>) so that theme switching affects the entire application consistently. A single hardcoded color can create a visually broken element in the alternate theme.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not testing dark mode during development.</strong> Developers who work exclusively in light mode discover dark mode issues late — missing token references, invisible text, unreadable icons, harsh contrast. Integrate dark mode testing into the development workflow by running visual regression tests in both themes, including dark mode screenshots in design review, and encouraging developers to work in dark mode periodically. Storybook and similar tools can render components side-by-side in both themes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Using saturated colors unchanged across themes.</strong> Saturated accent colors that look vibrant on white backgrounds can appear to glow or vibrate on dark backgrounds due to simultaneous contrast. Reduce saturation and increase lightness for accent colors in dark mode. A brand blue of #1a73e8 on white might need to become #8ab4f8 on dark gray — lighter and less saturated, maintaining the brand identity while being comfortable to view on dark surfaces.
           </li>
@@ -201,12 +220,15 @@ export default function DarkModeImplementationArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Apple (macOS/iOS)</strong> set the modern standard for dark mode with their system-wide implementation. macOS Mojave introduced a comprehensive dark mode that affected every system application, with a semantic color system (dynamic colors that automatically adapt) that third-party developers could adopt. Apple&apos;s approach is notable for its attention to material design — dark mode surfaces use translucency and vibrancy effects to create depth and context rather than flat dark colors. Their developer guidelines specifically address avoiding pure black, using elevated surfaces with lighter tints, and adapting SF Symbols (system icons) for contrast on dark backgrounds.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Slack</strong> implements dark mode with a comprehensive design token system that supports not only light and dark but also custom theme colors for sidebar branding. Their implementation handles the complexity of user-generated content — messages with code blocks, embedded images, custom emoji, and rich link previews must all remain readable in dark mode. Slack uses the prefers-color-scheme media query for initial theme detection and persists the user&apos;s explicit choice to their server-side profile for cross-device consistency. Their approach to inline code blocks is particularly thoughtful — code syntax highlighting colors are adjusted for each theme to maintain readability and aesthetic coherence.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>GitHub</strong> offers a sophisticated theme system with multiple variants — light default, light high-contrast, dark default, dark high-contrast, and dark dimmed. The high-contrast variants serve users with visual impairments who need more distinct color differentiation than standard themes provide. GitHub uses CSS custom properties with a Primer design system that defines hundreds of semantic color tokens. Their implementation handles particularly challenging dark mode scenarios: syntax-highlighted code (where dozens of colors must be theme-aware), contribution graphs (green squares on dark backgrounds), and markdown rendering (user-generated content with arbitrary HTML and images).
         </p>
@@ -217,15 +239,18 @@ export default function DarkModeImplementationArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">
-          <p className="font-medium">
+          <HighlightBlock as="p" tier="important" className="font-medium">
             Q: How would you architect a dark mode implementation for a large
             web application?
-          </p>
-          <p className="mt-2">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-2">
             A: I would build a design token system with three layers: primitive color scales (raw palette values), semantic tokens (purpose-based mappings like <code>bg-primary</code>, <code>text-secondary</code>, <code>border-subtle</code>), and component tokens (component-specific mappings like <code>card-bg</code>, <code>input-border</code>). CSS custom properties would hold the semantic token values, defined at <code>:root</code> for light mode and <code>:root.dark</code> for dark mode. Theme initialization would use a blocking inline script in the HTML head that reads the preference from localStorage before first paint, preventing the Flash of Incorrect Theme. The user would have three options: system (auto), light, or dark. A theme manager would handle switching (toggling the class on the document element), persistence (localStorage), and system preference monitoring (matchMedia change listener). All component styles would reference semantic tokens exclusively — no hardcoded colors. I would verify WCAG contrast compliance for both themes using automated testing, and handle images with a slight brightness reduction in dark mode.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">

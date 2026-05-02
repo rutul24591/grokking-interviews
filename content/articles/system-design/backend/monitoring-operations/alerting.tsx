@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function AlertingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Alerting</strong> is the discipline of converting telemetry into operational decisions. When a system
           crosses a risk or impact threshold, the right humans or automation must be notified with enough context to act
           quickly and safely. Alerting is not synonymous with monitoring, nor is it simply collecting metrics or
           maintaining dashboards. It represents the last mile where monitoring becomes operational behavior—the mechanism
           by which systems demand human attention or trigger automated remediation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In production-scale distributed systems, the volume of telemetry is enormous. A moderately sized microservices
           architecture can emit millions of data points per minute across metrics, logs, and traces. The alerting system
           must distill this ocean of data into a small number of high-signal notifications that consistently correlate
           with user impact or imminent operational risk. If an alert does not change what responders do, it should not
           interrupt them. This principle—actionability as the gate for interruption—is the foundation of mature alerting
           design.
-        </p>
+        </HighlightBlock>
         <p>
           The distinction between alerts, notifications, and tickets is critical and often misunderstood. Alerts require
           timely action to prevent or reduce user impact and typically result in paging or high-priority notification.
@@ -79,21 +83,24 @@ export default function AlertingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of effective alerting begins with understanding what to alert on. The highest-leverage alerts
           are symptom-based, meaning they fire when users are already affected or will be affected imminently. Symptom
           alerts measure what actually matters: availability and latency for core user journeys, plus correctness signals
           for data integrity. These alerts are stable over time because user expectations do not change as frequently as
           system internals do.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cause-based alerts, by contrast, measure system internals such as CPU utilization, disk space, queue depth, or
           dependency error rates. These signals are valuable as diagnostic tools and as early warnings, but they should
           be curated with extreme care. Many cause signals are noisy and do not reliably predict user impact unless you
           have deep knowledge of the system specific bottlenecks. A server running at ninety percent CPU might be
           perfectly healthy if it has adequate headroom for request bursts, while another server at sixty percent might
           be one deploy away from saturation if its thread pool configuration is suboptimal.
-        </p>
+        </HighlightBlock>
         <p>
           Burn-rate alerting has emerged as the dominant pattern for SLO-driven operations because it naturally balances
           sensitivity and noise. Burn rate measures how quickly you are consuming your error budget relative to the
@@ -166,22 +173,25 @@ export default function AlertingArticle() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An alerting pipeline consists of several stages, each of which affects the quality of the final page. The
           first stage is instrumentation, where services emit signals in the form of metrics, logs, and traces. The
           quality of these signals determines everything downstream: if instrumentation is missing, inconsistent, or
           inaccurate, no amount of alerting sophistication can compensate. Services must emit structured telemetry with
           stable semantics, including service name, environment, region, deployment version, and correlation identifiers
           such as trace IDs and request IDs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The second stage is collection and storage, where telemetry is ingested, normalized, and persisted. Metric
           systems such as Prometheus or commercial alternatives scrape or receive metrics and store them as time series.
           Log aggregation systems such as the ELK stack or commercial log platforms collect, parse, and index log data.
           Trace systems such as Jaeger or commercial APM platforms store span data for query and analysis. The collection
           pipeline must handle bursty writes during incidents without dropping data, because dropped telemetry creates
           blind spots exactly when visibility is most critical.
-        </p>
+        </HighlightBlock>
         <p>
           The third stage is rule evaluation, where alert conditions are applied to the collected telemetry. Rule
           engines evaluate expressions such as error rate exceeding a threshold, burn rate consuming budget too quickly,
@@ -227,14 +237,17 @@ export default function AlertingArticle() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental trade-off in alerting design is sensitivity versus noise. A highly sensitive alerting
           configuration catches subtle issues early but generates more false positives, which erodes responder trust and
           creates alert fatigue. A conservative configuration reduces noise but may miss early warning signs and detect
           issues only after users are affected. The optimal balance depends on the criticality of the service, the cost
           of false negatives versus false positives, and the maturity of the operations team.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider the trade-off between static thresholds and burn-rate alerting. Static thresholds are simple to
           understand and configure: alert when CPU exceeds eighty percent, when disk usage exceeds ninety percent, when
           error rate exceeds one percent. However, static thresholds do not account for context. Eighty percent CPU might
@@ -242,7 +255,7 @@ export default function AlertingArticle() {
           for a non-critical internal service but catastrophic for a checkout flow. Burn-rate alerting addresses this by
           tying alerting directly to reliability objectives, but it requires well-defined SLOs and more sophisticated
           rule configuration.
-        </p>
+        </HighlightBlock>
         <p>
           Another trade-off involves per-instance versus service-level alerting. Per-instance alerting fires when
           individual servers or containers exceed thresholds, which provides granular visibility but creates enormous
@@ -281,20 +294,23 @@ export default function AlertingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most important best practice in alerting is to page on user impact. This means defining alerts around SLO
           burn, availability drops, tail latency breaches, and correctness failures for core user journeys. Curiosity
           alerts about interesting system behavior should route to dashboards or tickets, not pages. When every page
           implies that users are affected or will be affected imminently, responders learn to trust the alerting system
           and act immediately.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Aggregate at the service or user journey level to reduce flapping and per-instance noise. Individual instances
           come and go in containerized environments, and paging on instance churn creates alert fatigue without improving
           reliability. Service-level aggregation answers the question that matters: is the service meeting its
           objectives for users? If the answer is no, page. If the answer is yes, even with some unhealthy instances,
           the system is handling instance-level failures gracefully and no page is needed.
-        </p>
+        </HighlightBlock>
         <p>
           Group, deduplicate, and silence alerts safely. Grouping collapses related alerts into coherent incidents so
           responders see one incident with context rather than fifty independent pages. Deduplication prevents the same
@@ -336,7 +352,10 @@ export default function AlertingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Alert fatigue is the most common and destructive pitfall in alerting. It occurs when teams receive too many
           pages for low-impact events, causing responders to ignore or delay responding to all alerts, including
           critical ones. The root cause is typically the creation of alerts during incidents without subsequent review.
@@ -344,14 +363,14 @@ export default function AlertingArticle() {
           alert often fires on benign conditions that resemble the incident metric but do not actually threaten user
           impact. The fix requires tightening severity classifications, adopting burn-rate alerting, and demoting
           cause-based signals to dashboards where they provide diagnostic value without interrupting responders.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Flapping occurs when alerts fire repeatedly around a threshold boundary because the measured metric oscillates
           above and below the threshold. This creates a wall of notifications that obscures the real incident and
           frustrates responders. The fix involves using aggregation windows to smooth transient spikes, applying
           hysteresis so the alert requires the condition to persist before firing and to clear only after sustained
           recovery, and grouping related firings so the responder sees one incident rather than a dozen pages.
-        </p>
+        </HighlightBlock>
         <p>
           Blindness is the opposite of fatigue: the alerting system fails to fire when it should, leaving teams unaware
           of ongoing incidents. This can result from telemetry pipeline outages where data is not being collected,
@@ -386,7 +405,10 @@ export default function AlertingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider a large e-commerce platform during a major sales event. The platform handles millions of requests per
           minute across hundreds of microservices. The alerting system is configured with multi-window burn rate alerts
           for critical user journeys: browsing, cart management, checkout, and payment processing. During the event,
@@ -395,15 +417,15 @@ export default function AlertingArticle() {
           fifteen minutes. The alert routes to the payments on-call rotation with a page payload that includes the
           affected region, the specific payment provider, the current burn rate, links to the checkout runbook, and
           the recommended mitigation of failing over to the alternate payment provider.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The on-call engineer acknowledges the page, opens the runbook, and sees that the recommended action is to
           shift thirty percent of payment traffic to the secondary provider. The engineer executes the traffic shift
           through the deployment platform and watches the burn rate decline over the next five minutes. The alert
           resolves when the burn rate returns to acceptable levels for fifteen consecutive minutes. The entire incident,
           from detection to mitigation to verification, takes approximately twenty-five minutes, with minimal user
           impact because the alert fired before the degradation became a full outage.
-        </p>
+        </HighlightBlock>
         <p>
           In a different scenario, a software-as-a-service platform serving enterprise customers experiences a gradual
           increase in tail latency for their document search endpoint. No single event triggers a major outage, but the
@@ -436,24 +458,27 @@ export default function AlertingArticle() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: What makes an alert actionable, and how do you enforce that standard?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             An actionable alert satisfies three criteria: it has a clear owner who is responsible for responding, a
             clear expected response that describes the first safe action the responder should take, and a clear done
             condition that confirms the issue is resolved. Without all three, the alert is noise.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             To enforce this standard, I implement an alerts-as-code workflow where every alert definition is reviewed
             before deployment. The review checklist requires the alert author to specify the owner team, the runbook
             link, the expected first action, and the recovery signal. If any of these fields is missing or vague, the
             alert is rejected. Additionally, I conduct quarterly alert audits where teams review all pages from the
             previous quarter and remove alerts that did not lead to meaningful action. This continuous pruning prevents
             alert drift where alerts slowly lose their actionability over time.
-          </p>
+          </HighlightBlock>
           <p>
             In practice, enforcement also requires cultural discipline. Teams must resist the urge to add alerts during
             post-incident reviews without going through the actionability checklist. The temptation is strong to say

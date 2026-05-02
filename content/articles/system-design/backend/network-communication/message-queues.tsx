@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -84,18 +85,21 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Delivery Semantics and Guarantees</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Delivery Semantics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Message queues define how messages are delivered from the broker to consumers. There are
           three delivery semantics, each with different trade-offs in reliability and complexity.
           <strong>At-most-once delivery</strong> means a message is delivered zero or one times.
           If the consumer crashes after receiving the message but before processing it, the message
           is lost. This is the simplest and fastest semantic but provides no reliability guarantees.
           It is appropriate for metrics and logging where occasional loss is acceptable.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>At-least-once delivery</strong> means a message is delivered one or more times.
           If the consumer crashes before acknowledging the message, the broker redelivers it. This
           guarantees that no messages are lost, but it introduces the possibility of duplicates:
@@ -103,7 +107,7 @@ export default function ArticlePage() {
           broker redelivers the same message, causing duplicate processing. Consumers must be
           idempotent (processing the same message twice produces the same result as processing it
           once) to handle this correctly.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Exactly-once delivery</strong> means each message is delivered and processed
@@ -180,17 +184,20 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Broker Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Message queue brokers store and forward messages between producers and consumers. The
           broker receives messages from producers, persists them to durable storage, and delivers
           them to consumers based on queue configuration. Brokers can be single-node (simple
           deployment, single point of failure) or clustered (multiple nodes for high availability
           and scalability).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           In a clustered broker architecture, messages are partitioned across broker nodes, and
           each partition is replicated to multiple nodes for fault tolerance. When a producer
           publishes a message, the broker determines which partition the message belongs to (based
@@ -198,7 +205,7 @@ export default function ArticlePage() {
           leader replicates the message to follower nodes, and once a configurable number of
           replicas have acknowledged the write, the message is considered committed and the
           producer receives an acknowledgment.
-        </p>
+        </HighlightBlock>
 
         <h3>Push vs Pull Consumption</h3>
         <p>
@@ -251,16 +258,19 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing a message queue technology involves trade-offs between delivery guarantees,
           throughput, ordering, and operational complexity. Different message queues are optimized
           for different use cases, and the choice depends on the specific requirements of the
           workload.
-        </p>
+        </HighlightBlock>
 
         <h3>RabbitMQ vs Amazon SQS vs Apache Kafka</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           RabbitMQ is a traditional message broker with rich routing capabilities (exchanges,
           bindings, routing keys) and support for multiple messaging protocols (AMQP, MQTT, STOMP).
           It provides at-least-once delivery with publisher confirms and consumer acknowledgments,
@@ -268,7 +278,7 @@ export default function ArticlePage() {
           dead letter exchanges. RabbitMQ is best for complex routing requirements, heterogeneous
           protocol environments, and workloads that need message-level control (per-message TTL,
           priority queues).
-        </p>
+        </HighlightBlock>
 
         <p>
           Amazon SQS is a fully managed message queue service that eliminates operational overhead.
@@ -292,23 +302,26 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Message Queue Design</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Design consumers to be idempotent.</strong> Even with exactly-once delivery
           semantics, transient failures and edge cases can cause duplicate message delivery.
           Design consumers so that processing the same message twice produces the same result as
           processing it once. Use unique message identifiers and track processed message IDs in a
           deduplication store (Redis, database) to detect and skip duplicates. Idempotent consumers
           are the single most important defense against message duplication.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Configure dead letter queues for every consumer.</strong> Every consumer should
           have a DLQ configured with a maximum retry count (typically 3-5 retries with exponential
           backoff). Messages that fail processing after the maximum retries are moved to the DLQ
           for manual inspection and reprocessing. Monitor DLQ depth and alert when messages
           accumulate, as this indicates a systemic processing issue that requires investigation.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Set appropriate message TTLs.</strong> Messages that are not consumed within a
@@ -341,8 +354,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Message ordering violations.</strong> When messages are partitioned incorrectly
           or consumed from multiple partitions without ordering awareness, related messages may be
           processed out of order. For example, an &quot;OrderCreated&quot; message and an
@@ -351,9 +367,9 @@ export default function ArticlePage() {
           to ensure that all messages for the same entity are in the same partition. If cross-partition
           ordering is required, implement a sequencing mechanism (sequence numbers, version vectors)
           that allows consumers to reorder messages before processing.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Consumer lag explosion.</strong> When a consumer crashes and restarts, it may
           have a large lag to catch up. During catch-up, the consumer processes messages at maximum
           speed, consuming CPU, memory, and downstream service capacity. This can cause cascading
@@ -362,7 +378,7 @@ export default function ArticlePage() {
           strategy: start processing at 50 percent of normal speed and increase to 100 percent
           over a configurable period. This prevents catch-up traffic from overwhelming downstream
           services.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Queue overflow.</strong> When producers publish messages faster than consumers
@@ -400,9 +416,12 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Uber: Event-Driven Microservices with Kafka</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uber uses Apache Kafka as the central nervous system for its microservices architecture,
           processing trillions of events per day. Every significant event in Uber&apos;s platform
           (ride requested, driver matched, trip started, trip completed, payment processed) is
@@ -411,15 +430,15 @@ export default function ArticlePage() {
           service uses events to calculate surge pricing, the analytics pipeline uses events to
           generate dashboards and reports, and the machine learning pipeline uses events to train
           ETA prediction models.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uber&apos;s Kafka deployment consists of multiple clusters organized by domain (rides,
           eats, freight), with each cluster handling hundreds of thousands of messages per second.
           Consumer groups are used to parallelize processing across hundreds of consumers, and
           partition keys (ride ID, user ID) ensure that events for the same entity are processed
           in order.
-        </p>
+        </HighlightBlock>
 
         <h3>Netflix: SQS for Asynchronous Workflow Orchestration</h3>
         <p>
@@ -463,11 +482,14 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg bg-panel-soft p-6">
-            <p className="font-semibold">Q1: Explain the difference between at-most-once, at-least-once, and exactly-once delivery semantics.</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: Explain the difference between at-most-once, at-least-once, and exactly-once delivery semantics.</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> At-most-once delivery means a message is delivered zero or
               one times. If the consumer crashes before processing, the message is lost. It is the
               simplest but least reliable. At-least-once delivery means a message is delivered one
@@ -477,7 +499,7 @@ export default function ArticlePage() {
               requires transactional coordination between read, process, and write steps. It is
               the strongest guarantee but the most complex to implement, used by Kafka through
               transactional writes.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg bg-panel-soft p-6">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function DraftSavingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Draft Saving enables users to save work-in-progress content before publishing, preventing data loss and enabling iterative content creation. Users can manually save drafts, benefit from auto-save (automatic saving while editing), recover drafts after crashes, access drafts across devices, and manage multiple draft versions. Draft saving is fundamental to content creation workflows (users need to save work before ready to publish), data loss prevention (protect against crashes, connectivity loss), and user experience (enable iterative creation). For platforms with content creation (blogs, documents, posts, products), effective draft saving is essential for user productivity, data protection, and content quality.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, draft saving architecture involves save mechanisms (auto-save, manual save), draft storage (where drafts are stored), draft versioning (track draft versions), draft recovery (recover lost drafts), multi-device sync (sync drafts across devices), and draft management (organize, search, delete drafts). The implementation must balance reliability (drafts are saved) with performance (saving doesn&apos;t interrupt editing) and storage (drafts don&apos;t consume excessive storage). Poor draft saving leads to data loss, user frustration, and abandoned content creation.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of draft saving extends beyond simple save functionality. Auto-save timing (when to auto-save without interrupting). Conflict resolution (handle edits from multiple devices). Draft organization (organize drafts for easy access). Draft lifecycle (when to delete old drafts). Draft privacy (who can see drafts). For staff engineers, draft saving is a content creation infrastructure decision affecting user productivity, data loss prevention, and content quality.
         </p>
@@ -46,13 +50,16 @@ export default function DraftSavingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Save Mechanisms</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Manual save enables users to explicitly save drafts. Save button (user clicks to save). Keyboard shortcut (Ctrl/Cmd+S to save). Save confirmation (confirm save completed). Manual save gives users control over when to save. Benefits include user control (users decide when to save), clear feedback (users know when saved). Drawbacks includes data loss risk (users may forget to save), interruption (users must remember to save).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Auto-save automatically saves drafts while editing. Time-based (save every X seconds/minutes). Change-based (save after X changes). Idle-based (save when user stops typing). Auto-save prevents data loss without user action. Benefits include data protection (automatic saving), user experience (no need to remember). Drawbacks includes storage overhead (frequent saves), potential interruption (save may lag editing).
-        </p>
+        </HighlightBlock>
         <p>
           Save indicators show save status to users. Saving indicator (show when saving in progress). Saved indicator (show when save completed). Unsaved indicator (show when changes not saved). Error indicator (show when save failed). Save indicators provide transparency (users know save status). Benefits include user confidence (know work is saved), error awareness (know if save failed). Drawbacks includes UI complexity (need indicator space), potential anxiety (users watch indicator).
         </p>
@@ -115,9 +122,12 @@ export default function DraftSavingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Draft saving architecture spans save service, draft storage, version management, and sync service. Save service manages save operations (auto-save, manual save). Draft storage persists drafts (local, cloud, hybrid). Version management manages draft versions. Sync service syncs drafts across devices. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/draft-saving/draft-architecture.svg"
@@ -128,9 +138,9 @@ export default function DraftSavingArticle() {
         />
 
         <h3>Save Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Save service manages save operations. Auto-save manager (manage auto-save timing). Manual save handler (handle manual save requests). Save queue (queue save operations). Save confirmation (confirm save completed). Save service is the core of draft saving. Benefits include centralization (one place for save logic), consistency (same save behavior everywhere). Drawbacks includes complexity (manage save logic), coupling (editors depend on save service).
-        </p>
+        </HighlightBlock>
         <p>
           Save optimization optimizes save operations. Debouncing (delay save until user stops typing). Throttling (limit save frequency). Delta save (save only changes). Save optimization reduces save overhead. Benefits include performance (less save overhead), storage efficiency (save less data). Drawbacks includes complexity (optimize save), data loss risk (delayed save).
         </p>
@@ -170,14 +180,17 @@ export default function DraftSavingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Draft saving design involves trade-offs between auto-save and manual save, local and cloud storage, and version retention and storage cost. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Save: Auto-Save vs. Manual Save</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Auto-save (automatically save while editing). Pros: Data protection (automatic saving), user experience (no need to remember), reduced data loss. Cons: Storage overhead (frequent saves), potential interruption (save may lag), less user control. Best for: Most content creation, preventing data loss.
-        </p>
+        </HighlightBlock>
         <p>
           Manual save (user explicitly saves). Pros: User control (users decide when to save), less storage overhead (save less frequently), clear save points. Cons: Data loss risk (users may forget), interruption (users must remember), frustration (lost work). Best for: Expert users, controlled environments.
         </p>
@@ -218,13 +231,16 @@ export default function DraftSavingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement auto-save:</strong> Auto-save every 30-60 seconds. Save on significant changes. Save on idle (when user stops typing). Prevent data loss.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide save indicators:</strong> Show saving status. Show saved confirmation. Show unsaved warning. Show save errors.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Support offline editing:</strong> Save locally when offline. Queue changes for sync. Sync when connectivity restored. Handle conflicts.
           </li>
@@ -254,13 +270,16 @@ export default function DraftSavingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No auto-save:</strong> Users must remember to save. <strong>Solution:</strong> Implement auto-save, manual save as override.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No save indicators:</strong> Users don&apos;t know save status. <strong>Solution:</strong> Show saving, saved, unsaved, error indicators.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No offline support:</strong> Can&apos;t work without connectivity. <strong>Solution:</strong> Local storage, queue changes, sync when online.
           </li>
@@ -290,16 +309,19 @@ export default function DraftSavingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Google Docs Draft Saving</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Docs provides comprehensive draft saving. Auto-save (save every few seconds). Version history (track all versions). Offline editing (work offline, sync when online). Multi-device sync (access from any device). Crash recovery (recover after browser crash). Draft organization (organize in folders). Users can work confidently knowing work is saved.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">WordPress Post Drafts</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WordPress provides post draft saving. Auto-save (save every 60 seconds). Manual save (save button). Draft versions (track revisions). Draft preview (preview before publish). Draft scheduling (schedule for publish). Draft organization (organize by status). Bloggers can write posts over time without losing work.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Email Draft Saving</h3>
         <p>
@@ -319,12 +341,15 @@ export default function DraftSavingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you implement auto-save that doesn&apos;t interrupt editing?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you implement auto-save that doesn&apos;t interrupt editing?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement debounced auto-save that saves work without disrupting user flow. Wait for user to stop typing: debounce timer (30-60 seconds of inactivity) before triggering save—prevents saving on every keystroke, reduces server load, saves when user pauses naturally. Save in background: use async save operation, don&apos;t block editing—user can continue typing while save happens, no UI freeze. Show save status: display subtle indicator (&quot;Saving...&quot;, &quot;Saved&quot;, &quot;Offline&quot;)—user knows save is happening, builds trust, no need to manually save. Queue saves: don&apos;t initiate new save while save in progress—queue pending changes, save when current save completes, prevents race conditions. Optimistic UI: show content as saved immediately, reconcile if save fails—feels instant, handles failures gracefully. The key insight: auto-save should be invisible—save in background, don&apos;t interrupt flow, but provide feedback so users know work is saved. Users should never wonder &quot;did my work save?&quot;
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

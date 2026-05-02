@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function DurabilityGuaranteesArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Durability</strong> is the guarantee that once a write operation is acknowledged as
           successful, the data will not be lost — even in the event of power failure, disk crash, or
           system crash. Durability is the &quot;D&quot; in ACID (Atomicity, Consistency, Isolation,
           Durability) and is a fundamental requirement for any system that stores critical data —
           financial transactions, user accounts, order records, and audit logs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Durability is achieved through a combination of write-ahead logging (WAL), replication, and
           persistent storage. Write-ahead logging ensures that every write is first recorded in a
           durable log before being applied to the database — if the system crashes after the log write
           but before the database update, the log can be replayed to restore the data. Replication
           ensures that data is stored on multiple nodes — if one node fails, the data is available from
           another node. Persistent storage (SSD, HDD, NVM) ensures that data survives power failures.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, durability architecture demonstrates understanding
           of storage internals, the ability to design systems that provide appropriate durability
@@ -71,20 +75,23 @@ export default function DurabilityGuaranteesArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding durability requires grasping several foundational concepts about write-ahead
           logging, replication factors, consistency levels, and storage engines.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Write-Ahead Logging (WAL)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Write-ahead logging is the primary mechanism for durability in database systems. Before a
           write is applied to the database, it is first written to a sequential log file (the WAL).
           The WAL is flushed to durable storage (fsync), and only after the fsync completes is the
           write acknowledged to the client. The database then applies the write to its data structures
           (B-tree, LSM-tree, hash table) asynchronously. If the system crashes after the WAL write but
           before the database update, the WAL is replayed during recovery to restore the data.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Replication Factor and Consistency Levels</h3>
         <p>
@@ -112,10 +119,13 @@ export default function DurabilityGuaranteesArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Durability architecture spans write-ahead logging, replication mechanisms, consistency level
           selection, storage engine configuration, and durability testing.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/durability-guarantees.svg"
@@ -124,7 +134,7 @@ export default function DurabilityGuaranteesArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Write Path with Durability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a client writes data, the write is first appended to the WAL (sequential write, fast).
           The WAL is flushed to durable storage (fsync, slower — this is the durability boundary).
           After the fsync completes, the write is acknowledged to the client. The database then applies
@@ -132,7 +142,7 @@ export default function DurabilityGuaranteesArticle() {
           system crashes between the WAL flush and the data structure update, recovery replays the WAL
           to restore the data. If the system crashes before the WAL flush, the write is lost — but the
           client was not acknowledged, so it will retry.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Replication and Durability</h3>
         <p>
@@ -162,34 +172,37 @@ export default function DurabilityGuaranteesArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Consistency Level</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Consistency Level</th>
               <th className="p-3 text-left">Durability</th>
               <th className="p-3 text-left">Latency</th>
               <th className="p-3 text-left">Best For</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>ONE</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>ONE</strong></td>
               <td className="p-3">Weakest (one replica)</td>
               <td className="p-3">Lowest</td>
               <td className="p-3">Analytics, logging, non-critical data</td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>QUORUM</strong></td>
               <td className="p-3">Strong (majority of replicas)</td>
               <td className="p-3">Moderate</td>
               <td className="p-3">User data, orders, most application data</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>ALL</strong></td>
               <td className="p-3">Strongest (all replicas)</td>
               <td className="p-3">Highest</td>
               <td className="p-3">Financial transactions, critical config</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>LOCAL_QUORUM</strong></td>
               <td className="p-3">Strong within DC</td>
@@ -203,9 +216,12 @@ export default function DurabilityGuaranteesArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Match Durability to Data Criticality</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Not all data requires the same durability guarantee. Financial transactions require zero data
           loss — use synchronous replication with WAL fsync and QUORUM or ALL consistency level. User
           session data can tolerate some data loss — use asynchronous replication with periodic WAL
@@ -213,17 +229,17 @@ export default function DurabilityGuaranteesArticle() {
           asynchronous replication with no WAL fsync and ONE consistency level. Matching durability
           to data criticality optimizes performance for non-critical writes while ensuring critical
           writes are fully protected.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Use Write-Ahead Logging with Proper Fsync</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Write-ahead logging is only durable if the WAL is flushed to durable storage (fsync) before
           the write is acknowledged. Many databases offer configurable fsync frequency — fsync on every
           write (strongest durability, highest latency), fsync every N seconds (weaker durability,
           lower latency), or no fsync (no durability, lowest latency). Use fsync on every write for
           critical data, and fsync every second for non-critical data. Never disable fsync for data
           that cannot be regenerated.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Test Durability Through Failure Injection</h3>
         <p>
@@ -249,26 +265,29 @@ export default function DurabilityGuaranteesArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Assuming Durability Without Fsync</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Many databases buffer writes in memory before flushing to disk — if the system crashes before
           the flush, buffered writes are lost. Assuming that a write is durable because it was
           acknowledged, without verifying that the acknowledgment occurs after fsync, is a common and
           dangerous pitfall. Verify the database&apos;s durability guarantees — check the configuration
           to ensure that fsync is enabled and that acknowledgments occur after fsync. Test durability
           by writing data, crashing the system, and verifying that the data is present after recovery.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Ignoring Single Points of Failure in Replication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Replication provides durability against node failures, but if all replicas share a single
           point of failure (same rack, same power supply, same network switch), a single failure can
           take down all replicas simultaneously. Distribute replicas across failure domains (different
           racks, availability zones, or regions) to ensure that a single failure does not take down
           all replicas. A replication factor of 3 with all replicas in the same availability zone
           provides no durability against availability zone failures.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Over-Replicating for Non-Critical Data</h3>
         <p>
@@ -293,9 +312,12 @@ export default function DurabilityGuaranteesArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">PostgreSQL — WAL-Based Durability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           PostgreSQL uses write-ahead logging for durability — every write is first written to the WAL,
           which is flushed to disk (fsync) before the write is acknowledged. The WAL is sequential
           (fast writes), while the database update is asynchronous (B-tree update). If PostgreSQL
@@ -303,10 +325,10 @@ export default function DurabilityGuaranteesArticle() {
           synchronous_commit configuration controls the durability guarantee — on (default) means fsync
           before acknowledgment (zero data loss), off means fsync after acknowledgment (lower latency,
           potential data loss on crash).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cassandra — Tunable Durability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cassandra provides tunable durability through configurable consistency levels and commit log
           settings. The commit log (Cassandra&apos;s WAL) is flushed to disk periodically — data between
           flushes may be lost on crash. Consistency level determines how many replicas must acknowledge
@@ -314,7 +336,7 @@ export default function DurabilityGuaranteesArticle() {
           fails), QUORUM means majority acknowledges (balanced), ALL means all replicas acknowledge
           (strongest durability, slowest). Cassandra&apos;s tunable durability allows applications to
           choose the appropriate durability guarantee for each data type.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">MongoDB — Journal-Based Durability</h3>
         <p>
@@ -343,19 +365,22 @@ export default function DurabilityGuaranteesArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Durability mechanisms involve security risks — WAL files and replicas contain copies of all data, including sensitive data, and must be protected accordingly.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">WAL and Replica Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>WAL File Protection:</strong> WAL files contain all writes, including sensitive data. If WAL files are not encrypted, they can be read by anyone with file system access. Mitigation: encrypt WAL files at rest, restrict WAL file access to database processes only, include WAL files in backup encryption.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Replica Access Control:</strong> Replicas contain copies of all data and must have the same access controls as the primary. Mitigation: apply the same authentication and authorization controls to replicas as the primary, monitor replica access patterns, include replicas in security audits.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Durability vs Privacy:</strong> Strong durability guarantees (synchronous replication, WAL fsync) may conflict with privacy requirements (right to erasure). Mitigation: implement cryptographic erasure for replicated data (encrypt with per-record key, delete key to erase), ensure that WAL entries for erased data are also purged or encrypted.
             </li>
@@ -366,19 +391,22 @@ export default function DurabilityGuaranteesArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Durability guarantees must be validated through systematic testing — crash recovery, replication failure, and data loss scenarios must all be tested.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Durability Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Crash Recovery Test:</strong> Write data, crash the database (kill -9), restart, and verify that all acknowledged writes are present. Test with different crash scenarios (power failure simulation, disk full, OOM kill) to verify recovery under different conditions.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Replication Failure Test:</strong> Write data with QUORUM consistency, kill one replica, and verify that writes continue to succeed (remaining replicas form quorum). Kill a second replica and verify that writes fail (quorum lost). Restore replicas and verify that they catch up with missed writes.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Data Loss Simulation:</strong> Write data, simulate data loss (delete data files, corrupt disk), and verify that data is recovered from WAL or replicas. Measure recovery time and verify that no acknowledged writes are lost.
             </li>

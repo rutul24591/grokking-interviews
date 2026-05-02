@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Database query caching is the practice of storing the results of executed database queries so that subsequent identical or semantically equivalent queries can be served from the cache without re-executing the query against the database. The motivation is straightforward: database query execution is expensive, involving disk I/O, index traversal, join computation, aggregation, and result serialization. If a query produces the same result today as it did five seconds ago, serving it from a cache avoids all of that work. The cached result — whether a single scalar value, a row, or a materialized result set — is returned in a fraction of the time required to re-execute the query.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The simplicity of the concept belies the engineering complexity of a correct and performant implementation. Query caching introduces a fundamental tension between performance and correctness. The cache is a denormalized copy of data derived from the underlying tables, and like all denormalized data, it can become stale when the source data changes. Serving stale data is unacceptable for some workloads — financial balances, inventory counts, user authentication state — and tolerable for others — dashboard analytics, search result previews, historical trend lines. The caching strategy must be calibrated to the staleness tolerance of each query class, and the system must provide mechanisms for invalidating cached results when the source data changes in ways that would affect the cached result.
-        </p>
+        </HighlightBlock>
         <p>
           Query caching operates at multiple layers in the system architecture. The database engine itself may maintain a query result cache — MySQL&apos;s query cache (deprecated in 8.0), Oracle&apos;s result cache, and PostgreSQL&apos;s shared buffers all serve this purpose at different levels of sophistication. Application-level caching stores query results in the application&apos;s memory or in an external cache such as Redis, giving the application full control over key design, TTL, and invalidation logic. Dedicated caching layers such as CDN edge caches or API gateway caches can cache the serialized output of query-backed API responses, pushing the cache boundary closer to the client. Each layer has different characteristics in terms of latency, capacity, and invalidation control, and production systems often combine multiple layers to achieve the desired balance of performance and correctness.
         </p>
@@ -42,12 +46,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of query caching rests on the relationship between a query and its result. A query is defined not just by its SQL text but by the complete set of inputs that determine its result: the SQL statement itself, the parameter values bound to placeholders, the session context including the current database user and role, the transaction isolation level, and the point-in-time snapshot of the underlying data. A cache key must encode all of these dimensions to ensure that a cached result is served only when it is semantically identical to the result that would be produced by re-executing the query. Omitting any dimension from the cache key risks serving incorrect results — for example, omitting the user role could cause a query filtered by row-level security to return results from a different user&apos;s perspective.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cache key cardinality is the primary constraint that determines whether query caching is viable for a given query pattern. Cardinality refers to the number of distinct cache keys that a query pattern can generate. A query that selects the total number of users in the system has cardinality of one — there is only one possible result at any point in time. A query that selects a user&apos;s profile by user ID has cardinality equal to the number of users. A query that applies arbitrary filters, sorting, and pagination to a large table can have near-infinite cardinality, producing a unique result for almost every request. When cardinality is high, the cache provides little benefit because most requests miss the cache, and the memory consumed by caching unique results provides no amortization advantage. Identifying and caching only low-cardinality query patterns is essential for an effective strategy.
-        </p>
+        </HighlightBlock>
         <p>
           Cache invalidation is the process of removing cached results when the underlying data changes in a way that would affect the cached result. This is the hardest problem in query caching because the relationship between data changes and affected cache keys is not always straightforward. If a query selects all products in a category and a new product is added to that category, the cached result for that query becomes stale and must be invalidated. But if the same query result is also embedded in a cached dashboard that aggregates data across multiple categories, invalidating the single-category cache key is insufficient — the dashboard cache must also be invalidated. The invalidation graph — the mapping from data mutations to affected cache keys — grows in complexity as the number of cached queries increases, and managing it correctly is the primary operational challenge of query caching.
         </p>
@@ -61,9 +68,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A query caching architecture consists of several components that work together to intercept queries, compute cache keys, serve cached results, populate the cache on misses, and invalidate cached results when data changes. The flow begins when an application thread prepares to execute a query. Before sending the query to the database, the application computes a cache key from the query text, parameter values, and context information. It then checks the cache for the key. On a cache hit, the cached result is deserialized and returned to the caller without touching the database. On a cache miss, the query is executed against the database, the result is serialized and stored in the cache with an appropriate TTL, and then returned to the caller.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/query-caching-layers.svg`}
@@ -71,9 +81,9 @@ export default function ArticlePage() {
           caption="Query caching layers — database engine cache (microsecond latency, limited control), application cache (millisecond latency, full control), and edge cache (variable latency, closest to client)"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The cache key computation is the most critical step in this flow. The key must be deterministic — the same query with the same parameters must always produce the same key — and it must capture all inputs that affect the result. A typical key structure concatenates the normalized SQL text, a sorted representation of parameter values, the tenant or user context, and a version identifier. The SQL text is normalized to ensure that semantically identical queries with different whitespace or formatting produce the same key. Parameter values are sorted by position to ensure that the order of parameter binding does not affect the key. The tenant context is included in multi-tenant systems to prevent data leakage between tenants. The version identifier is used for bulk invalidation — incrementing the version for a query pattern effectively invalidates all cached results for that pattern without requiring individual key deletion.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/query-cache-key.svg`}
@@ -107,17 +117,20 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Query caching decisions involve trade-offs between freshness, performance, memory consumption, and operational complexity that vary by workload. Understanding these trade-offs at a granular level is essential for selecting the right strategy for each query class.
-        </p>
+        </HighlightBlock>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4">
           <h3 className="mb-4 text-lg font-semibold">
             TTL-Based vs. Event-Driven Invalidation
           </h3>
-          <p className="mt-2 text-sm">
+          <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
             TTL-based invalidation is the simplest approach: assign an expiration time to each cached result and let it expire naturally. The advantages are significant — no infrastructure for event delivery, no dependency index to maintain, no risk of missing an invalidation event. The disadvantages are equally significant: cached results can be stale for up to the TTL duration, and all keys with the same TTL expire simultaneously, creating cache stampede risk. TTL is appropriate for query results where staleness is acceptable within the TTL window — analytics dashboards that refresh every thirty seconds, product listings where new items can appear with a delay, search result previews that are not critical for transaction correctness.
-          </p>
+          </HighlightBlock>
           <p className="mt-2 text-sm">
             Event-driven invalidation provides precise freshness guarantees: cached results are invalidated immediately when the underlying data changes. This requires a reliable event delivery mechanism — typically a CDC pipeline (Debezium, Maxwell) or application-level notifications — and a dependency index mapping data changes to cache keys. The advantages are precise invalidation with no staleness window and reduced cache stampede risk because keys are invalidated individually rather than en masse. The disadvantages are infrastructure complexity, the risk of missed invalidations if the event pipeline fails, and the ongoing maintenance burden of keeping the dependency index accurate as queries are added and modified. Event-driven invalidation is appropriate for query results where correctness is critical — user permissions, inventory availability, financial balances.
           </p>
@@ -202,13 +215,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Cache Selectively, Not Globally:</strong> Not every query benefits from caching. Cache only queries with predictable access patterns, bounded cardinality, and results that are stable over time. A useful heuristic is to analyze query logs and identify the top twenty percent of queries that account for eighty percent of execution volume. These are the candidates for caching. Queries with high cardinality — such as arbitrary ad-hoc filters — should not be cached because the cache hit rate will be negligible and the memory cost will be high.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Include All Context in Cache Keys:</strong> The cache key must encode every input that affects the query result: the normalized SQL text, sorted parameter values, tenant identifier, user role or permission level, and a version tag. Omitting any dimension can cause incorrect results to be served — for example, omitting the user role could bypass row-level security, and omitting the tenant identifier could leak data between tenants in a multi-tenant system.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Set TTLs Based on Data Volatility:</strong> Assign TTLs that match the rate at which the underlying data changes. For slowly changing data — product categories, user profiles, configuration settings — a TTL of five to fifteen minutes is appropriate. For moderately volatile data — order statuses, inventory levels — a TTL of thirty to sixty seconds balances freshness with cache efficiency. For rapidly changing data — real-time metrics, live counters — query caching may not be appropriate, and materialized views or streaming aggregation may be better alternatives.
           </li>
@@ -226,12 +242,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p className="mt-2 text-sm">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           The most common pitfall in query caching is caching queries with unbounded cardinality. When a query accepts arbitrary filter combinations, date ranges, sorting criteria, and pagination offsets, the number of possible cache keys approaches infinity. Each unique combination produces a unique cache key that is unlikely to be requested again, meaning the cache provides no hit rate benefit while consuming memory for every cached result. The fix is to identify and cache only the most common query patterns — typically the top filters and sort orders that account for the majority of traffic — and fall back to direct database execution for the long tail of rare query combinations.
-        </p>
-        <p className="mt-2 text-sm">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           Another frequent mistake is failing to include permission or tenant context in the cache key. In a multi-tenant application, the same query with the same parameters can produce different results for different tenants if row-level security or tenant-scoped filters are applied. Caching the result without the tenant identifier in the key means that the first tenant&apos;s result is served to all subsequent tenants, leaking data across tenant boundaries. The same applies to user role: a query that returns different results for administrators and regular users must include the role in the cache key. These errors are particularly dangerous because they manifest as data correctness issues rather than performance problems, making them harder to detect through monitoring alone.
-        </p>
+        </HighlightBlock>
         <p className="mt-2 text-sm">
           Over-reliance on TTL-based invalidation for correctness-critical queries is a subtle but impactful pitfall. If a query result must be accurate — such as an inventory count that determines whether a product is available for purchase — a TTL of even thirty seconds can lead to overselling when the inventory changes within the TTL window. The correct approach for such queries is event-driven invalidation: when inventory changes, the cached result is immediately invalidated, and the next request executes the query against the database. If event-driven invalidation is not feasible, the query should not be cached, and the performance cost of direct execution must be accepted as the price of correctness.
         </p>
@@ -251,12 +270,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p className="mt-2 text-sm">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           An e-commerce platform caches product listing queries for the top twenty category and filter combinations, which account for over ninety percent of all product browsing traffic. Each cached result includes the product names, prices, images, and availability status for the first three pages of results, with a TTL of sixty seconds. When a product&apos;s price or inventory changes, an event-driven invalidation removes the cached results for all queries involving that product&apos;s category. The platform measured an eighty-five percent reduction in database query load for product browsing after implementing this strategy, with the remaining fifteen percent of long-tail filter combinations falling back to direct execution.
-        </p>
-        <p className="mt-2 text-sm">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           A SaaS analytics dashboard serves aggregated metrics — daily active users, revenue trends, conversion rates — computed from queries that take several seconds to execute against a large dataset. The dashboard caches each widget&apos;s query result with a TTL of thirty seconds, and the entire dashboard refreshes every thirty seconds for all users. Because the data is aggregated and the staleness window is acceptable for business analytics, the thirty-second TTL provides a good balance between freshness and database load reduction. The dashboard serves ten thousand concurrent users while the underlying database handles only the aggregated query executions needed for cache refreshes, not the per-user query executions that would occur without caching.
-        </p>
+        </HighlightBlock>
         <p className="mt-2 text-sm">
           A financial services application initially cached user account balance queries with a TTL of five minutes, which led to a production incident where users saw stale balances after large deposits were processed. The root cause was that the five-minute TTL allowed users to see balances that did not reflect recent transactions. The fix was to switch to event-driven invalidation: when any transaction affecting a user&apos;s balance is committed, the cached balance for that user is immediately invalidated. The TTL was retained as a safety net at thirty minutes, but the primary invalidation mechanism became the transaction commit event. This eliminated the stale balance issue while preserving the performance benefit for users whose balances had not changed.
         </p>
@@ -267,13 +289,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q1: A dashboard runs an expensive aggregation query that takes 5 seconds to execute. You decide to cache the result. Walk through your cache key design, TTL strategy, and stampede prevention approach.</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: A dashboard runs an expensive aggregation query that takes 5 seconds to execute. You decide to cache the result. Walk through your cache key design, TTL strategy, and stampede prevention approach.</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               The cache key should include the aggregation query&apos;s normalized SQL text, all filter parameters (date range, segmentation dimensions, tenant ID), and a version identifier. Since this is a dashboard query, the result is likely the same for all users viewing the same dashboard with the same filters, so user-specific context is not needed in the key — only the filter parameters and tenant ID.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               For TTL, I would set it based on the acceptable staleness for dashboard data. If users expect near-real-time data, a TTL of fifteen to thirty seconds is reasonable. If the dashboard is used for periodic review rather than real-time monitoring, a TTL of one to five minutes is acceptable. I would also implement probabilistic early expiration — for example, a ten percent chance of refreshing the cache in the last twenty percent of the TTL window — to spread the refresh load and prevent stampedes.
             </p>

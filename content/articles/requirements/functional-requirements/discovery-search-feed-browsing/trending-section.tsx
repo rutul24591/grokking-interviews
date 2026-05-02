@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,22 +34,25 @@ export default function TrendingSectionArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Trending Section</strong> is the UI component that displays currently
           popular or rapidly rising content to users. It is often the first thing users
           see when visiting a platform—Twitter's Trends sidebar, Reddit's Popular feed,
           YouTube's Trending tab. Trending sections drive 20-30% of content discovery and
           are critical for user engagement, especially for new users who haven't built a
           follow graph yet.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Unlike the backend trending computation (which calculates scores), the trending
           section focuses on presentation: how to display trends clearly, indicate velocity
           (rising vs falling), enable geographic/category filtering, and update in real-time
           without disrupting the user experience. The challenge is balancing information
           density (showing enough context) with scannability (users should grasp trends in
           seconds).
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, trending section implementation involves real-time
           updates (WebSocket or polling), efficient re-rendering (only changed items),
@@ -59,10 +63,13 @@ export default function TrendingSectionArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Trend Display Elements</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Key components of a trending item:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Rank:</strong> Position number (1, 2, 3...). Indicates relative
@@ -91,9 +98,9 @@ export default function TrendingSectionArticle() {
         </ul>
 
         <h3 className="mt-6">Velocity Indicators</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Showing trend momentum is critical:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Arrow + Percentage:</strong> ↑ 50% (rising fast), ↑ 10% (rising),
@@ -199,9 +206,12 @@ export default function TrendingSectionArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production trending section involves real-time data flow and efficient rendering.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery-search-feed-browsing/trending-section/trending-section-ui.svg"
@@ -213,14 +223,14 @@ export default function TrendingSectionArticle() {
 
         <h3>Component Structure</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Trending Container:</strong> Main wrapper component. Manages state
             (trends list, loading, error, filters). Fetches initial data on mount.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Filter Bar:</strong> Location picker, category tabs. Updates query
             params, triggers refetch.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Trend List:</strong> Virtualized list for performance (if 50+ trends).
             Renders TrendItem components.
@@ -329,10 +339,13 @@ export default function TrendingSectionArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Trending section design involves balancing information density, freshness, and
           user experience.
-        </p>
+        </HighlightBlock>
 
         <h3>Update Frequency Trade-offs</h3>
         <div className="overflow-x-auto">
@@ -383,10 +396,10 @@ export default function TrendingSectionArticle() {
         />
 
         <h3 className="mt-6">List Length Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Short (5-10 trends):</strong> Focused, scannable. Users see top trends
           quickly. Risk: Missing long-tail trends, less discovery.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Medium (15-25 trends):</strong> Balanced. Most platforms use this.
           Enough variety without overwhelm.
@@ -413,15 +426,18 @@ export default function TrendingSectionArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Show Velocity:</strong> Always indicate rising/falling. Users want to
             know momentum, not just rank.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Update Timestamp:</strong> Show "Updated 5m ago". Users know how fresh
             data is.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Animate Changes:</strong> Smooth transitions for rank changes. Highlight
             new trends briefly (fade in).
@@ -451,15 +467,18 @@ export default function TrendingSectionArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No Velocity Indicator:</strong> Just showing rank is insufficient.
             Solution: Add arrow + percentage or badge.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Stale Data:</strong> No update indicator, users think trends are
             current. Solution: Show timestamp, auto-refresh.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Jarring Updates:</strong> Entire list re-renders on update. Solution:
             Diff changes, animate only changed items.
@@ -481,17 +500,20 @@ export default function TrendingSectionArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter Trends Sidebar</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter shows 10 trends in sidebar. Each trend has rank, topic, engagement
           count, category (News, Sports). Location picker at top. Updates every 5 minutes.
           Click to see related tweets.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> "Why it's trending" explanation on hover.
           Provides context for trending topics.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Reddit Popular/Rising</h3>
         <p>
@@ -528,15 +550,18 @@ export default function TrendingSectionArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you implement real-time trend updates?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you implement real-time trend updates?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use WebSocket for push updates or polling every 5-15
               minutes. On update, diff new trends with cached trends. Animate rank changes
               (slide up/down), highlight new trends briefly. Use React.memo to prevent
               re-render of unchanged items. Show "Updated Xm ago" timestamp.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

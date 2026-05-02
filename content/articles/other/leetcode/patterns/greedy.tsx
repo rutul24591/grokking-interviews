@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,7 +24,10 @@ export default function GreedyArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">Definition & Context</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Greedy is the problem-solving pattern where you make a locally optimal choice at every
         step, never reconsider it, and arrive at a globally optimal answer by induction. It is
         the cheapest pattern when it works — typically a single sort followed by a linear pass,
@@ -31,15 +35,15 @@ export default function GreedyArticle() {
         because a plausible-looking greedy can pass a dozen test cases and then fail
         spectacularly on the thirteenth. The art of greedy is not in writing the algorithm
         (that part is short) but in proving that the local choice is safe.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Greedy works on problems with two structural properties: the greedy-choice property —
         the local best choice is part of some globally optimal solution — and optimal
         substructure — once a choice is made, the remaining subproblem has the same shape and
         admits the same greedy approach. Both must hold. If only optimal substructure holds, the
         problem is dynamic programming territory; greedy will give the wrong answer. If neither
         holds, the problem may need backtracking, branch-and-bound, or approximation.
-      </p>
+      </HighlightBlock>
       <p>
         The textbook greedy successes are well-known: interval scheduling by earliest finish
         time, Huffman coding by least-frequent-pair merge, Dijkstra&apos;s shortest paths by
@@ -51,7 +55,10 @@ export default function GreedyArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Core Concepts</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         The greedy-choice property is the load-bearing claim. It says that there exists at least
         one globally optimal solution that contains the greedy choice. Note the existential
         framing: greedy does not need to be the unique optimum, only a member of the optimal
@@ -59,15 +66,15 @@ export default function GreedyArticle() {
         optimal solution does not contain the greedy choice, swap one of its elements for the
         greedy choice, and show the value of the solution does not decrease. The swap converts
         any optimum into one that contains the greedy choice, demonstrating the property.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Optimal substructure says that after committing to the greedy choice, the residual
         problem has the same form and the same greedy approach applies. For interval scheduling,
         once you take the earliest-finishing interval, the remaining problem is &quot;schedule
         the intervals that start after this one&apos;s end, using the same rule&quot;. The
         recursion does not need memoisation because the greedy choice removes a chunk of input
         permanently — there is no overlap of subproblems.
-      </p>
+      </HighlightBlock>
       <p>
         Most greedy algorithms run in <em>O(n log n)</em> because of an initial sort followed by
         a linear pass. The sort key is problem-specific and is itself the cleverness: sort
@@ -84,20 +91,23 @@ export default function GreedyArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Architecture & Flow</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         The skeleton is short. Sort the input by the chosen key. Initialise an accumulator —
         whether it is a count, a sum, a list of selected items, or a state machine. Iterate
         through the sorted input; at each step, decide whether the current element fits the
         accumulator&apos;s constraints. If yes, take it and update the accumulator; if no, skip.
         At the end, the accumulator holds the answer. There is no backtracking and no second
         pass.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Variant one is the sort-then-iterate skeleton just described, used by interval problems,
         scheduling, and the heap-based meeting-room problem. Variant two is the running-tally
         skeleton, used by Kadane and gas station, where state is updated based on the local
         comparison rather than the global sort.
-      </p>
+      </HighlightBlock>
       <ArticleImage
         src="/diagrams/other/leetcode/patterns/greedy-diagram-1.svg"
         alt="Greedy template overview"
@@ -117,20 +127,23 @@ export default function GreedyArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Trade-offs & Comparisons</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Greedy versus dynamic programming. Both have optimal substructure; only greedy has the
         greedy-choice property. When greedy works, it is faster — usually by a polynomial factor
         — but DP is the safer fallback when the greedy-choice property cannot be proven.
         Practical advice: try to construct a counterexample to your candidate greedy. If you
         cannot find one, attempt the proof. If the proof is hard, switch to DP.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Greedy versus brute force. Brute force enumerates all possibilities and picks the best
         one; greedy commits at every step. Brute force is correct everywhere but exponential;
         greedy is fast everywhere but correct only when the structure permits. The middle
         ground is dynamic programming, which has greedy&apos;s polynomial cost but brute
         force&apos;s exhaustiveness within a memoised state space.
-      </p>
+      </HighlightBlock>
       <p>
         Greedy versus randomised algorithms. Some problems where greedy fails admit randomised
         approximation algorithms with provable expected ratios — set cover, vertex cover,
@@ -146,18 +159,21 @@ export default function GreedyArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Best Practices</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         State the candidate greedy strategy in one sentence before coding. &quot;At each step,
         take the interval with the earliest end time among those that start after the previous
         interval&apos;s end.&quot; If you cannot fit your strategy into one sentence, the
         strategy is probably not actually greedy.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Sketch a counterexample-search before coding. List two or three small adversarial
         inputs and trace your candidate greedy on them. If you can construct a case where the
         greedy fails, switch patterns. If the greedy survives small adversarial cases, attempt
         the formal proof.
-      </p>
+      </HighlightBlock>
       <p>
         Identify the sort key explicitly and justify it. The sort key is the algorithmic
         insight; if you cannot say <em>why</em> sorting by end time (rather than start time, or
@@ -181,19 +197,22 @@ export default function GreedyArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Common Pitfalls</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Plausible-but-wrong greedy. The most dangerous failure mode is a greedy that looks
         right, passes a few examples, and fails on a slightly larger input. The classic example
         is &quot;coin change with denominations 1, 3, 4 to make 6&quot;: greedy takes 4, then 1,
         1 (three coins); optimal is 3, 3 (two coins). Always counterexample-test before
         committing.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Wrong sort key. Sorting interval scheduling by start time gives a wrong answer; sorting
         by duration gives a wrong answer. Only sorting by end time is correct. Each greedy
         problem has a specific correct key; mixing it up with a similar-looking key produces a
         confidently wrong solution.
-      </p>
+      </HighlightBlock>
       <p>
         Forgetting tie-breaking rules. When two elements compare equal under the primary sort
         key, the tie-breaking key sometimes matters. In <em>Queue Reconstruction by Height</em>{" "}
@@ -219,22 +238,25 @@ export default function GreedyArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Real-World Use Cases</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Greedy underlies a long list of production algorithms. Job schedulers run earliest-deadline-first
         and shortest-job-first variants. Network routing protocols use Dijkstra at the
         edge-by-edge level. Compression algorithms — Huffman, LZW — are greedy at heart.
         Approximation algorithms for NP-hard problems (set cover, vertex cover, makespan) use
         greedy as a baseline because their bounded-ratio guarantees are strong enough for
         practical use.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         On the Leetcode side, greedy clusters into two families. Interval/scheduling family:{" "}
         <em>435. Non-overlapping Intervals</em>, <em>452. Min Arrows to Burst Balloons</em>,{" "}
         <em>56. Merge Intervals</em>, <em>253. Meeting Rooms II</em>, <em>621. Task
         Scheduler</em>, <em>763. Partition Labels</em>. The unifying theme is sort by an
         interval boundary, then iterate. Once you internalise this template, the family becomes
         mechanical.
-      </p>
+      </HighlightBlock>
       <p>
         Jump-and-reach family: <em>55. Jump Game</em>, <em>45. Jump Game II</em>, <em>134. Gas
         Station</em>, <em>122. Best Time to Buy and Sell Stock II</em>, <em>376. Wiggle
@@ -257,14 +279,17 @@ export default function GreedyArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Prove the earliest-finish-first greedy for interval scheduling.</strong> By
+        <HighlightBlock as="li" tier="important"><strong>Prove the earliest-finish-first greedy for interval scheduling.</strong> By
         exchange argument: take any optimal schedule that does not include the earliest-finishing
         interval, swap its first interval for the earliest-finishing one; the swap is feasible
-        because the new interval finishes no later, and the schedule&apos;s size is preserved.</li>
-        <li><strong>When does greedy fail and why?</strong> When the greedy-choice property fails —
+        because the new interval finishes no later, and the schedule&apos;s size is preserved.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>When does greedy fail and why?</strong> When the greedy-choice property fails —
         when the locally best choice forecloses better global solutions. 0/1 knapsack is the
-        canonical example: choosing by ratio leaves capacity that cannot be filled optimally.</li>
+        canonical example: choosing by ratio leaves capacity that cannot be filled optimally.</HighlightBlock>
         <li><strong>How do you decide between greedy and DP?</strong> Try greedy with a
         counterexample-search; if it survives small adversarial cases, attempt the proof. If the
         proof works, ship greedy. If you find a counterexample, the problem has overlapping

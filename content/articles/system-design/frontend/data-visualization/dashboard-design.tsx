@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Dashboard Design</strong> encompasses the architectural and UX decisions for presenting multiple visualizations in a cohesive interface. Dashboards consolidate key metrics, charts, and tables into a single view for monitoring, analysis, and decision-making. Effective dashboard design balances information density with clarity, overview with detail, and static with interactive elements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff/principal engineers, dashboard design requires understanding information architecture, visual hierarchy, and user workflows. Dashboards serve different purposes: monitoring (track metrics), analysis (explore data), and decision support (inform decisions). Each purpose requires different design approaches.
-        </p>
+        </HighlightBlock>
         <p>
           Dashboard challenges include <strong>layout</strong> (arranging multiple visualizations effectively), <strong>density</strong> (showing enough information without overwhelming), <strong>responsiveness</strong> (working across screen sizes), <strong>performance</strong> (rendering multiple visualizations efficiently), and <strong>coherence</strong> (making multiple visualizations feel unified).
         </p>
@@ -42,6 +46,9 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/dashboard-layout-patterns.svg"
@@ -50,12 +57,12 @@ export default function ArticlePage() {
         />
 
         <h3>Dashboard Types</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Monitoring Dashboards</strong> track key metrics over time. Updated frequently (real-time or near real-time). Designed for quick scanning. Alerts highlight anomalies. Examples: operations dashboards, trading dashboards, system monitoring.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Analysis Dashboards</strong> enable data exploration. Interactive (filter, drill-down, compare). Show more detail than monitoring dashboards. Designed for extended use. Examples: business intelligence, data exploration, research dashboards.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Decision Support Dashboards</strong> inform specific decisions. Show relevant metrics and context. Highlight recommendations. Designed for periodic use. Examples: executive dashboards, strategic planning, investment dashboards.
         </p>
@@ -130,9 +137,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Dashboard architecture requires decisions about layout, state management, and data flow.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/responsive-dashboard.svg"
@@ -141,9 +151,9 @@ export default function ArticlePage() {
         />
 
         <h3>Layout Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement a grid-based layout system. Define grid columns and rows. Place visualizations in grid cells. Grid system enables consistent spacing, alignment, and responsive behavior.
-        </p>
+        </HighlightBlock>
         <p>
           Use CSS Grid or Flexbox for layout. CSS Grid is ideal for 2D layouts (rows and columns). Flexbox is ideal for 1D layouts (row or column). Combine for complex layouts.
         </p>
@@ -187,9 +197,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Dashboard design involves trade-offs between information density, clarity, and performance.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -231,16 +244,19 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that dashboard design should match user needs and context. Monitoring dashboards need clarity over density. Analysis dashboards need density over clarity. Design for primary use case, provide flexibility for others.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Start with user goals. What decisions will users make? What questions will they ask? Design dashboard to answer those questions. Don't show data without purpose.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/dashboard-hierarchy.svg"
@@ -248,9 +264,9 @@ export default function ArticlePage() {
           caption="Visual hierarchy — KPIs at top (largest), charts in middle, tables at bottom. Size, position, and color create hierarchy"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Establish visual hierarchy. Most important metrics should be prominent. Use size, position, and color to create hierarchy. Be consistent across dashboards.
-        </p>
+        </HighlightBlock>
         <p>
           Use consistent visualization types. Same metric should use same chart type across dashboards. Users learn chart meanings. Consistency reduces cognitive load.
         </p>
@@ -270,12 +286,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Showing too many metrics overwhelms users. Every metric should serve a purpose. Remove metrics that don't inform decisions. Less is more.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not establishing visual hierarchy confuses users. All metrics appear equally important. Users don't know where to look. Establish clear hierarchy.
-        </p>
+        </HighlightBlock>
         <p>
           Not providing context misleads users. A metric value without context is meaningless. Show targets, trends, and comparisons.
         </p>
@@ -295,14 +314,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Operations Dashboard: Real-Time Monitoring</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An operations team needed to monitor system health across 100+ services. Dashboard needed to show status, alerts, and trends at a glance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong> Implemented grid layout with service status tiles. Color-coded status (green/yellow/red). Click tile for detail. Real-time updates via WebSocket.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Results:</strong> Operators could identify issues in seconds. Alert response time reduced by 70%. Dashboard became primary operations tool.
         </p>
@@ -343,14 +365,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How do you design a dashboard for multiple user types?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Design for primary user type. Provide customization for others. Use role-based views (different default dashboards per role). Enable personalization (users can add/remove visualizations).
-            </p>
+            </HighlightBlock>
             <p>
               Implementation: Define user personas. Design dashboard for primary persona. Provide view switching for other personas. Save preferences per user.
             </p>

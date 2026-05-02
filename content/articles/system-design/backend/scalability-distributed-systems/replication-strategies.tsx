@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -41,7 +42,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Replication</strong> is the process of maintaining copies of
           data on multiple nodes in a distributed system, ensuring that changes
           made on one node are propagated to the others. Replication serves three
@@ -55,8 +59,8 @@ export default function ArticlePage() {
           every distributed data system, from relational databases (MySQL,
           PostgreSQL) to NoSQL stores (Cassandra, DynamoDB, Riak) to in-memory
           caches (Redis Cluster, Memcached).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The central challenge of replication is <strong>consistency</strong> —
           ensuring that all replicas converge to the same state despite network
           delays, node failures, and concurrent writes. The consistency model
@@ -71,7 +75,7 @@ export default function ArticlePage() {
           immediately after applying it to the primary node and propagates the
           change to replicas in the background, providing low write latency but
           eventual consistency (replicas may temporarily have stale data).
-        </p>
+        </HighlightBlock>
         <p>
           The choice of <strong>replication topology</strong> — how nodes are
           organized and how changes flow between them — is equally critical. In{" "}
@@ -105,8 +109,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Single-leader replication</strong> is the most common
           replication topology. The leader node is the sole authority for write
           operations — all writes go to the leader, which applies the change,
@@ -119,9 +126,9 @@ export default function ArticlePage() {
           up-to-date data). If eventual consistency is acceptable, reads can be
           distributed across followers, scaling the read throughput
           proportionally to the number of followers.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The key advantage of single-leader replication is its simplicity:
           there is a single source of truth (the leader), so there are no write
           conflicts to resolve. The write order is determined by the leader, and
@@ -132,7 +139,7 @@ export default function ArticlePage() {
           seconds), the system cannot accept writes. Additionally, the
           leader&apos;s write throughput is bounded by its own capacity — adding
           followers does not increase write throughput, only read throughput.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Multi-leader replication</strong> allows multiple nodes to
@@ -193,6 +200,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/replication-strategies-diagram-1.svg"
@@ -200,7 +210,7 @@ export default function ArticlePage() {
           caption="Replication topologies — single-leader, multi-leader, and leaderless, each with different consistency and availability trade-offs"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The write flow in single-leader replication is straightforward: the
           client sends a write to the leader, the leader applies the write,
           appends it to its WAL, and sends an acknowledgment to the client. In
@@ -212,9 +222,9 @@ export default function ArticlePage() {
           leader and the follower (typically 1–100 ms within a data center,
           100–1000 ms across data centers) and the follower&apos;s processing
           capacity (if the follower is overloaded, it may fall behind).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Synchronous replication modifies this flow: the leader does not
           acknowledge the write until all synchronous followers have applied it.
           This ensures that the write is durable on multiple nodes before the
@@ -228,7 +238,7 @@ export default function ArticlePage() {
           strong durability for the write), and the remaining followers are
           asynchronous (providing read scalability without impacting write
           latency).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/replication-strategies-diagram-2.svg"
@@ -276,8 +286,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The choice of replication strategy involves fundamental trade-offs
           across consistency, availability, latency, and operational complexity.
           Single-leader with synchronous replication provides the strongest
@@ -294,20 +307,20 @@ export default function ArticlePage() {
           availability and write throughput but the weakest consistency
           guarantees, requiring the application to handle conflicts and stale
           reads.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Property</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Property</th>
               <th className="p-3 text-left">Single-Leader (Sync)</th>
               <th className="p-3 text-left">Single-Leader (Async)</th>
               <th className="p-3 text-left">Multi-Leader</th>
               <th className="p-3 text-left">Leaderless</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Write Consistency</strong>
               </td>
@@ -315,8 +328,8 @@ export default function ArticlePage() {
               <td className="p-3">Eventual</td>
               <td className="p-3">Eventual</td>
               <td className="p-3">Tunable (quorum)</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Write Availability</strong>
               </td>
@@ -332,7 +345,7 @@ export default function ArticlePage() {
               <td className="p-3">
                 Highest — any node accepts writes
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Write Throughput</strong>
@@ -389,8 +402,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For single-leader replication, configure at least one follower as
           synchronous to prevent data loss during leader failover. The
           synchronous follower ensures that every acknowledged write exists on at
@@ -402,9 +418,9 @@ export default function ArticlePage() {
           the durability benefit is significant. The remaining followers can be
           asynchronous, providing read scalability without impacting write
           latency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Monitor replication lag continuously and alert when it exceeds
           acceptable thresholds. Replication lag is the most important
           replication-specific metric — it measures the time between the leader
@@ -418,7 +434,7 @@ export default function ArticlePage() {
           follower can consume them. The alert should trigger before the lag
           becomes critical, giving the on-call engineer time to investigate and
           remediate.
-        </p>
+        </HighlightBlock>
 
         <p>
           For multi-leader replication, use conflict-free replicated data types
@@ -469,8 +485,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Assuming that asynchronous replication provides durability guarantees
           is a critical error. In asynchronous replication, the leader
           acknowledges the write before replicating it to followers. If the
@@ -486,9 +505,9 @@ export default function ArticlePage() {
           asynchronous replication is unacceptable — synchronous replication or
           a semi-synchronous approach (acknowledge after at least one follower
           acknowledges) is required.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Using last-writer-wins (LWW) conflict resolution without understanding
           its data loss implications is a common mistake in multi-leader
           systems. LWW resolves conflicts by keeping the write with the latest
@@ -503,7 +522,7 @@ export default function ArticlePage() {
           independently, so the phone number from one write and the email from
           the other are both preserved) or a custom merge function that combines
           the updates semantically.
-        </p>
+        </HighlightBlock>
 
         <p>
           Ignoring the impact of replication lag on application correctness is a
@@ -559,8 +578,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           GitHub uses single-leader MySQL replication with asynchronous
           followers for its core data, with a semi-synchronous configuration for
           critical repositories. The leader handles all writes (push operations,
@@ -575,9 +597,9 @@ export default function ArticlePage() {
           leader is detected as unhealthy, a follower is promoted within 30
           seconds, and the client routing layer (HAProxy) is updated to direct
           writes to the new leader.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           LinkedIn uses multi-leader replication for its Espresso distributed
           data store, which serves the LinkedIn feed, profile, and messaging
           data. Espresso has leaders in multiple data centers, and writes from
@@ -589,7 +611,7 @@ export default function ArticlePage() {
           data centers. The multi-leader topology enables LinkedIn to serve
           writes from any data center, providing high write availability and low
           write latency for its globally distributed user base.
-        </p>
+        </HighlightBlock>
 
         <p>
           Amazon DynamoDB uses leaderless replication with consistent hashing
@@ -627,6 +649,9 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
@@ -635,7 +660,7 @@ export default function ArticlePage() {
             replicating it to any follower. What happens to that write? How do
             you prevent this data loss?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The write is lost. Since the leader acknowledged the write before
             replicating it, the client believes the write was successful, but
             the data exists only on the crashed leader&apos;s disk. When a new
@@ -643,8 +668,8 @@ export default function ArticlePage() {
             write, and the client&apos;s subsequent reads will not see it. This
             is the &quot;replication gap&quot; — the window between
             acknowledgment and replication during which the write is vulnerable.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             There are three approaches to preventing this data loss.{" "}
             <strong>Approach 1: Synchronous replication.</strong> The leader
             does not acknowledge the write until at least one follower has
@@ -667,7 +692,7 @@ export default function ArticlePage() {
             up to the point of the crash, and it can be promoted with minimal
             data loss (only the in-flight WAL entries at the moment of the crash
             are lost, which is typically a few milliseconds of writes).
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             The practical recommendation for most production systems is{" "}
             <strong>semi-synchronous replication with one synchronous

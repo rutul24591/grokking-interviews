@@ -185,6 +185,10 @@ export default function AccessibleModalsAndDialogsArticle() {
       {/* ─── Section 4: Trade-offs & Comparisons ─── */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="important">
+          Interview framing: modals are a focus-management and semantics problem more than a CSS overlay problem.
+          Choose the simplest primitive that guarantees correct focus trapping and background inertness.
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
@@ -209,11 +213,11 @@ export default function AccessibleModalsAndDialogsArticle() {
                 <td className="p-3">Full control over behavior, animations, and styling; can handle complex patterns (nested modals, custom transitions)</td>
                 <td className="p-3">Must implement everything manually (focus trap, Escape, scroll lock, inert), high bug surface, maintenance burden</td>
               </tr>
-              <tr className="border-b border-accent/10">
-                <td className="p-3 font-medium">Headless UI Libraries (Radix, Headless UI)</td>
-                <td className="p-3">Accessibility handled by the library, full styling control, well-tested, community maintained</td>
-                <td className="p-3">External dependency, potential bundle size, API learning curve, may not cover all edge cases</td>
-              </tr>
+	              <HighlightBlock as="tr" tier="important" className="border-b border-accent/10">
+	                <td className="p-3 font-medium">Headless UI Libraries (Radix, Headless UI)</td>
+	                <td className="p-3">Accessibility handled by the library, full styling control, well-tested, community maintained</td>
+	                <td className="p-3">External dependency, potential bundle size, API learning curve, may not cover all edge cases</td>
+	              </HighlightBlock>
               <tr className="border-b border-accent/10">
                 <td className="p-3 font-medium">React Portal-Based Modal</td>
                 <td className="p-3">Renders outside parent DOM hierarchy avoiding CSS overflow issues, clean component tree</td>
@@ -321,13 +325,13 @@ export default function AccessibleModalsAndDialogsArticle() {
             B, closing Modal B should restore focus to Modal A&apos;s trigger (inside Modal A), not
             to the original page trigger. Each modal must maintain its own trigger reference.
           </li>
-          <li>
-            <strong>No Escape key handler:</strong> Users universally expect Escape to close modals.
-            Forgetting this handler traps keyboard users — they must find and activate the close
-            button, which may be difficult to locate.
-          </li>
-        </ul>
-      </section>
+	          <HighlightBlock as="li" tier="important">
+	            <strong>No Escape key handler:</strong> Users universally expect Escape to close modals.
+	            Forgetting this handler traps keyboard users — they must find and activate the close
+	            button, which may be difficult to locate.
+	          </HighlightBlock>
+	        </ul>
+	      </section>
 
       {/* ─── Section 7: Real-World Use Cases ─── */}
       <section>
@@ -382,19 +386,19 @@ export default function AccessibleModalsAndDialogsArticle() {
           </HighlightBlock>
         </div>
 
-        <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
-          <h3 className="mb-2 font-semibold">Q: What is the difference between the native &lt;dialog&gt; element and a custom ARIA dialog?</h3>
-          <p>
-            The native <code>&lt;dialog&gt;</code> with <code>showModal()</code> provides built-in
-            focus trapping, Escape key handling, top layer rendering (no z-index conflicts), and a
-            <code>::backdrop</code> pseudo-element. A custom ARIA dialog using
+	        <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
+	          <h3 className="mb-2 font-semibold">Q: What is the difference between the native &lt;dialog&gt; element and a custom ARIA dialog?</h3>
+	          <HighlightBlock as="p" tier="important">
+	            The native <code>&lt;dialog&gt;</code> with <code>showModal()</code> provides built-in
+	            focus trapping, Escape key handling, top layer rendering (no z-index conflicts), and a
+	            <code>::backdrop</code> pseudo-element. A custom ARIA dialog using
             <code>role=&quot;dialog&quot;</code> on a <code>&lt;div&gt;</code> requires implementing
             all of these features manually in JavaScript. The native element is simpler and more
-            robust but offers less control over animations, custom close behavior, and edge cases
-            like nested dialogs. Modern best practice: use native <code>&lt;dialog&gt;</code> as the
-            baseline and enhance with JavaScript only when needed.
-          </p>
-        </div>
+	            robust but offers less control over animations, custom close behavior, and edge cases
+	            like nested dialogs. Modern best practice: use native <code>&lt;dialog&gt;</code> as the
+	            baseline and enhance with JavaScript only when needed.
+	          </HighlightBlock>
+	        </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: How does the inert attribute improve modal accessibility?</h3>
@@ -474,12 +478,12 @@ export default function AccessibleModalsAndDialogsArticle() {
             </a>{" "}
             — Native HTML dialog element documentation.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.radix-ui.com/primitives/docs/components/dialog" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               Radix UI: Dialog Component
             </a>{" "}
             — Headless, accessible dialog primitive for React.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://github.com/focus-trap/focus-trap-react" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               focus-trap-react

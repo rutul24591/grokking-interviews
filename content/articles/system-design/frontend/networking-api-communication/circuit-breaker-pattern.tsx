@@ -666,9 +666,7 @@ export default function CircuitBreakerPatternConciseArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <HighlightBlock as="p" tier="important">
-          Circuit breakers have development and infrastructure costs.
-        </HighlightBlock>
+        <p>Circuit breakers have development and infrastructure costs.</p>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
@@ -897,8 +895,12 @@ export default function CircuitBreakerPatternConciseArticle() {
 
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview-level takeaway: a circuit breaker is a control loop. You should be able to justify thresholds,
+          windowing, and half-open probing to prevent cascading failures and to protect downstream dependencies.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://martinfowler.com/bliki/CircuitBreaker.html"
               className="text-accent hover:underline"
@@ -907,8 +909,8 @@ export default function CircuitBreakerPatternConciseArticle() {
             >
               CircuitBreaker - Martin Fowler
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://docs.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker"
               className="text-accent hover:underline"
@@ -917,8 +919,8 @@ export default function CircuitBreakerPatternConciseArticle() {
             >
               Circuit Breaker Pattern - Microsoft Azure Architecture Patterns
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://netflixtechblog.com/making-the-netflix-api-more-resilient-a8ec62159c2d"
               className="text-accent hover:underline"
@@ -927,7 +929,7 @@ export default function CircuitBreakerPatternConciseArticle() {
             >
               Making the Netflix API More Resilient - Netflix Tech Blog
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://pragprog.com/titles/mnee2/release-it-second-edition/"
@@ -938,7 +940,7 @@ export default function CircuitBreakerPatternConciseArticle() {
               Release It! Second Edition - Michael Nygard (Pragmatic Bookshelf)
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://resilience4j.readme.io/docs/circuitbreaker"
               className="text-accent hover:underline"
@@ -947,7 +949,7 @@ export default function CircuitBreakerPatternConciseArticle() {
             >
               CircuitBreaker - Resilience4j Documentation
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

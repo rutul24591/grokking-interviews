@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function ShellSortArticle() {
       {/* SECTION 1 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Shell sort</strong> is a generalization of insertion sort
           that compares and shifts elements separated by a gap that
           shrinks over successive passes, ending with gap = 1 where the
@@ -48,8 +52,8 @@ export default function ShellSortArticle() {
           inversion count before the final insertion-sort pass, so the
           cost of the plain insertion-sort step at the end is almost
           always close to linear.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Donald Shell introduced the algorithm in 1959 in{" "}
           <em>Communications of the ACM</em>, originally with gap
           sequence n/2, n/4, …, 1 — a sequence now known to have
@@ -61,7 +65,7 @@ export default function ShellSortArticle() {
           Sedgewick&apos;s 1986 sequence — is Θ(n^{"4/3"}). Ciura&apos;s
           empirical sequence is the fastest in practice on arrays up to
           ~10^6 elements.
-        </p>
+        </HighlightBlock>
         <p>
           The staff-level interest in Shell sort is less about its
           production use — it has essentially none in modern code — and
@@ -90,11 +94,14 @@ export default function ShellSortArticle() {
       {/* SECTION 2 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           h-sorted arrays
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An array is <em>h-sorted</em> if, taking every h-th element
           starting at any offset 0..h−1, the resulting subsequence is
           sorted. Equivalently: for every i with i + h &lt; n,{" "}
@@ -105,19 +112,19 @@ export default function ShellSortArticle() {
           making the array h-sorted for progressively smaller h drives the
           array toward full sortedness without requiring each element to
           be shifted one position at a time.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           The gap sequence drives complexity
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Total work depends on the gap sequence. The algorithm performs
           insertion sort on each h-interleaved subsequence for each gap
           h in the sequence. If the gaps are too few or poorly chosen,
           the final gap=1 pass still has to do most of the work. If
           they are chosen well, each pass removes enough inversions that
           the next pass is close to linear.
-        </p>
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
           <li>
             <strong>Shell (1959)</strong>: n/2, n/4, …, 1 — worst case
@@ -181,11 +188,14 @@ export default function ShellSortArticle() {
       {/* SECTION 3 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Pass-by-pass execution
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Input <code>[8, 3, 7, 1, 5, 9, 4, 2]</code>, n=8, Hibbard
           sequence 7, 3, 1. Gap=7: compare (0,7) → swap → single swap
           gives <code>[2, 3, 7, 1, 5, 9, 4, 8]</code>. Gap=3: insertion
@@ -196,12 +206,12 @@ export default function ShellSortArticle() {
           sorted array, which resolves the remaining small inversions in
           ~4 shifts. Total ~15 operations vs insertion sort&apos;s worst
           case of n(n−1)/2 = 28 on this input.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           The 3-smooth Pratt sequence
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pratt&apos;s 1971 sequence contains all integers of the form
           2^i · 3^j less than or equal to n/2. For n = 32 the gaps are
           {" "}{"{"}1, 2, 3, 4, 6, 8, 9, 12, 16{"}"}. This sequence achieves
@@ -211,7 +221,7 @@ export default function ShellSortArticle() {
           the high per-pass overhead negates the asymptotic advantage.
           Pratt&apos;s sequence is a theoretical benchmark more than a
           practical choice.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           The Ciura empirical sequence
@@ -256,6 +266,9 @@ export default function ShellSortArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Complexity summary (depends on gap sequence)
@@ -291,7 +304,7 @@ export default function ShellSortArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Shell sort vs insertion sort
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shell sort dominates insertion sort for n greater than ~100:
           the sub-quadratic asymptotic beats insertion sort&apos;s
           Θ(n²) even with modest gap sequences. For n ≤ 100, insertion
@@ -299,12 +312,12 @@ export default function ShellSortArticle() {
           dominates the tiny saving in shifts. This is why Shell sort is
           rarely used as a small-n base case — insertion sort is
           simpler and faster there.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Shell sort vs O(n log n) sorts
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Merge sort, heapsort, quicksort, Tim Sort all beat Shell sort
           asymptotically. For n &gt; ~10^4, the gap — even with
           Ciura&apos;s sequence — is visible and growing. Shell
@@ -314,7 +327,7 @@ export default function ShellSortArticle() {
           heapsort. Shell sort has no asymptotic advantage over either,
           so its production use is limited to code-size-constrained
           environments where heapsort&apos;s code is too large.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Shell sort vs Comb sort
@@ -347,18 +360,21 @@ export default function ShellSortArticle() {
       {/* SECTION 5 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Ciura&apos;s sequence for empirical
             performance.</strong>{" "}
             {"{"}1, 4, 10, 23, 57, 132, 301, 701, 1750, …{"}"} is the
             fastest in benchmarks on arrays up to 10^6.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Sedgewick&apos;s sequence if you need a proof
             of worst-case bound.</strong> Θ(n^{"4/3"}) worst case with
             good constants.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Do not use Shell&apos;s original n/2 sequence.</strong>{" "}
             The O(n²) worst case makes it strictly worse than Hibbard or
@@ -389,28 +405,31 @@ export default function ShellSortArticle() {
       {/* SECTION 6 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Using Shell&apos;s original sequence
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shell&apos;s original n/2, n/4, …, 1 sequence has an O(n²)
           worst case because the gaps are all powers of 2 — multiples
           of the same prime never interact before gap=1. Hibbard&apos;s
           2^k−1 avoids this by making gaps odd. Any competent Shell
           sort implementation uses a modern sequence.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Assuming a closed-form average case
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shell sort&apos;s average case is unknown in closed form for
           most sequences, including Ciura&apos;s. Claiming a tight
           average-case bound in an interview is a red flag — the
           honest answer is &quot;empirically around n^{"1.25"} for Ciura,
           no proven tight bound exists.&quot;
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Expecting Shell sort to be fast at large n
@@ -448,30 +467,33 @@ export default function ShellSortArticle() {
       {/* SECTION 7 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Legacy and embedded code
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shell sort appears in older BSD and System V sort utilities,
           some embedded firmwares, and textbook code. Its appeal is
           in-place, iterative, and code-size-compact. FreeBSD&apos;s
           <code> qsort</code> fallback used Shell sort historically; most
           modern implementations have switched to introsort or
           Pdqsort-style algorithms.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Shellsort as sorting-network prototype
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pratt&apos;s 3-smooth Shell sort realizes an oblivious sorting
           network of depth Θ(log² n). This structure maps to hardware
           (FPGA), GPUs (CUDA), and network switches where fixed
           compare-exchange patterns dominate. In practice, bitonic and
           odd-even merge sort dominate for GPU sorts; Pratt&apos;s
           network is a theoretical reference.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Teaching and algorithm analysis
@@ -509,14 +531,17 @@ export default function ShellSortArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Common Interview Questions
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q1. Why does Shell&apos;s original n/2 gap sequence have
               O(n²) worst case?
-            </p>
-            <p className="mt-2">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2">
               The gaps n/2, n/4, n/8, …, 1 are all powers of 2. This
               means the h-interleaved subsequences at gap h contain
               only elements whose indices share the same
@@ -527,7 +552,7 @@ export default function ShellSortArticle() {
               avoids this by using odd gaps, ensuring that coprime
               interleavings eliminate the correlation and bound worst
               case at O(n^{"3/2"}).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

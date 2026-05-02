@@ -79,7 +79,7 @@ export default function LocalComponentStateConciseArticle() {
         <h2>Core Concepts</h2>
 
         <h3>useState Semantics</h3>
-        <HighlightBlock as="p" tier="crucial">
+        <HighlightBlock as="p" tier="important">
           <code>useState</code> returns a tuple of the current value and a
           setter function. The setter can receive either a direct value or a{" "}
           <strong>functional updater</strong>{" "}
@@ -239,7 +239,6 @@ export default function LocalComponentStateConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/state-management/lifting-state-up.svg"
           alt="Lifting state up pattern showing before (duplicated state, out of sync) and after (single source of truth in parent)"
           caption="Lifting state up: eliminating duplicated state by moving ownership to the nearest common ancestor"
-          captionTier="important"
         />
       </section>
 
@@ -662,8 +661,13 @@ export default function LocalComponentStateConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          If you want to drive local state decisions in system design interviews, focus on how React schedules updates,
+          how identity affects re-renders, and when local state should be promoted (lifted) to enable cross-component
+          coordination.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               className="text-accent hover:underline"
               href="https://react.dev/learn/managing-state"
@@ -674,8 +678,8 @@ export default function LocalComponentStateConciseArticle() {
             </a>{" "}
             &mdash; Official guide covering when to use local vs. shared state,
             principles of state structure, and lifting state up.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               className="text-accent hover:underline"
               href="https://react.dev/reference/react/useReducer"
@@ -686,8 +690,8 @@ export default function LocalComponentStateConciseArticle() {
             </a>{" "}
             &mdash; Complete API documentation with examples of lazy
             initialization and TypeScript usage.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               className="text-accent hover:underline"
               href="https://kentcdodds.com/blog/state-colocation-will-make-your-react-app-faster"
@@ -699,7 +703,7 @@ export default function LocalComponentStateConciseArticle() {
             </a>{" "}
             &mdash; Detailed argument for colocation as a performance and
             maintainability strategy.
-          </li>
+          </HighlightBlock>
           <li>
             <a
               className="text-accent hover:underline"

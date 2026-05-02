@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function GroupChatUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Group chat UI enables multi-user conversations with features for member management, mentions, admin controls, and group-specific settings. Unlike 1:1 chat, group chat introduces complexity around member discovery, message fan-out, notification management, and scaling to large groups (100-100,000+ members). Group chat is fundamental to team collaboration (Slack, Teams), community building (Discord, Telegram), and social coordination (WhatsApp groups, Facebook Messenger rooms).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The technical challenges of group chat scale non-linearly with group size. A 5-person group requires simple message fan-out. A 500-person group requires batching and rate limiting. A 50,000-person group (Telegram channel) requires hierarchical delivery, lazy loading, and fundamentally different architecture. The UI must adapt to group size—small groups show all members online, large groups show aggregate stats. Admin tools become critical at scale for moderation and spam prevention.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, group chat implementation involves distributed systems challenges. Message delivery must fan-out to all members efficiently without overwhelming sender or infrastructure. Member lists must sync across devices with conflict resolution for concurrent changes. Mentions require parsing, notification routing, and deep linking. Admin actions (add, remove, promote) must propagate consistently. The architecture must handle group creation storms (e.g., event-based groups forming simultaneously) and scale from intimate 3-person chats to broadcast channels with 100,000+ subscribers.
         </p>
@@ -47,13 +51,16 @@ export default function GroupChatUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Group Types and Sizes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Small groups (3-50 members) support full-featured chat with all members participating equally. Message fan-out is trivial—send to all members. Member list displays all members with presence. Admin tools are lightweight—add/remove members, change name. Examples: WhatsApp family groups, Slack team channels.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Medium groups (50-500 members) require batching and rate limiting. Not all members are active simultaneously—show online count aggregate. Admin tools expand—moderators, message approval, spam filters. Examples: Discord servers, Telegram groups, Facebook group chats.
-        </p>
+        </HighlightBlock>
         <p>
           Large groups (500-10,000 members) transition to broadcast model. Most members are listeners, few are speakers. Message delivery uses lazy loading—deliver on demand rather than push. Admin tools critical—multiple admin tiers, automated moderation. Examples: Telegram channels, Discord large servers.
         </p>
@@ -108,9 +115,12 @@ export default function GroupChatUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Group chat architecture spans client UI, member management, message fan-out, and admin systems. Client renders group conversation with member list, handles mentions and notifications. Backend manages group membership, routes messages to all members, enforces admin actions. Scaling infrastructure handles fan-out for large groups efficiently.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/group-chat-ui/group-chat-architecture.svg"
@@ -121,9 +131,9 @@ export default function GroupChatUIArticle() {
         />
 
         <h3>Client Component Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Group conversation component extends 1:1 chat with group-specific features. Header shows group name, avatar, online count. Tap header opens group info—member list, settings, admin tools. Message list same as 1:1 chat with added mention highlighting. Input supports @mention autocomplete.
-        </p>
+        </HighlightBlock>
         <p>
           Member list component displays members with role badges and presence. Small groups: flat list sorted by online then alpha. Large groups: searchable, filterable (online, admins, role), paginated. Member tap opens profile preview with actions (message, mention, admin actions if permitted).
         </p>
@@ -183,14 +193,17 @@ export default function GroupChatUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Group chat design involves trade-offs between engagement, notification fatigue, scalability, and moderation. Understanding these trade-offs enables informed decisions aligned with community goals and user experience.
-        </p>
+        </HighlightBlock>
 
         <h3>Notification Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           All messages notify every message. Pros: Maximum engagement, users never miss content. Cons: Notification fatigue, users mute or leave groups. Best for: Small active groups (3-10 members), time-sensitive coordination.
-        </p>
+        </HighlightBlock>
         <p>
           Mentions only notify on @mention. Pros: Reduced noise, users stay in groups longer. Cons: Users miss context, lower engagement. Best for: Medium to large groups, announcement channels.
         </p>
@@ -242,13 +255,16 @@ export default function GroupChatUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement role-based permissions:</strong> Owner, admin, moderator, member, restricted roles. Configure permissions per role. Enable delegated administration without giving full ownership.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Support mention autocomplete:</strong> Trigger on @ character, filter members, display dropdown. Insert formatted mention pill. Parse mentions server-side for notification routing.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Provide granular notification settings:</strong> All messages, mentions only, muted. Custom keyword notifications. Per-group settings override global defaults.
           </li>
@@ -278,13 +294,16 @@ export default function GroupChatUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No notification controls:</strong> Users spammed, mute or leave groups. Solution: Granular notification settings, smart defaults, mention-only option for large groups.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Flat permissions:</strong> All or nothing admin access. Solution: Role-based permissions, tiered admin hierarchy, custom permission sets.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No rate limiting:</strong> Spam, mention abuse, message flooding. Solution: Per-user, per-group, per-action rate limits with clear error messaging.
           </li>
@@ -314,16 +333,19 @@ export default function GroupChatUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Slack Channels</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Slack organizes group chat into channels with member management. Channels can be public (discoverable) or private (invite-only). Roles: Owner, Admin, Member. Mention @channel (all members), @here (online members), @username. Threaded replies keep main channel clean. Admin tools include message deletion, user kick, channel archive.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Discord Servers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Discord servers contain multiple text channels with role-based permissions. Roles: Owner, Admin, Moderator, Member. Granular permissions per role (send messages, manage channels, ban members). Mention @everyone, @here, @role, @username. Moderation bots extend admin tools (auto-moderation, welcome messages, level systems).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">WhatsApp Groups</h3>
         <p>
@@ -343,12 +365,15 @@ export default function GroupChatUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you scale group chat to 10,000+ members?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you scale group chat to 10,000+ members?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Transition from push to pull model. Small groups: push message to all members via WebSocket. Large groups: store message centrally, members fetch on open or poll for new messages. Use message queue (Kafka) for fan-out. Implement lazy loading—deliver to active members first, inactive on demand. For massive groups (100,000+), use CDN distribution, subscribers fetch from edge locations.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

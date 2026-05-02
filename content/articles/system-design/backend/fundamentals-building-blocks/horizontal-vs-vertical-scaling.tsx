@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function HorizontalVerticalScalingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Scaling strategies</strong> determine how systems handle
           growth in traffic, data volume, and computational demands.{" "}
           <strong>Vertical scaling</strong> (scaling up) improves the capacity
@@ -47,8 +51,8 @@ export default function HorizontalVerticalScalingArticle() {
           between these strategies is one of the most consequential
           architectural decisions, with decade-long implications for cost,
           complexity, and operational resilience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Vertical scaling is conceptually simple: when a server becomes
           saturated, replace it with a larger server. This approach dominated
           early internet architecture because it requires minimal application
@@ -57,7 +61,7 @@ export default function HorizontalVerticalScalingArticle() {
           ceilings (the largest EC2 instance has finite CPU/memory), cost curves
           (larger instances cost disproportionately more), and single points of
           failure (if the big server fails, the entire service fails).
-        </p>
+        </HighlightBlock>
         <p>
           Horizontal scaling is conceptually complex but operationally superior
           at scale: when a server becomes saturated, add more servers and
@@ -74,14 +78,17 @@ export default function HorizontalVerticalScalingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Scaling strategies are built on several foundational concepts that
           govern how systems grow to handle increased load. Understanding these
           concepts is essential for capacity planning and architectural
           decision-making.
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Stateless vs Stateful Services:</strong> Stateless services
             do not retain per-user session state in memory — each request
             carries all necessary context, and durable state is stored in shared
@@ -94,8 +101,8 @@ export default function HorizontalVerticalScalingArticle() {
             migration. Horizontal scaling requires statelessness or externalized
             state; vertical scaling tolerates statefulness but concentrates
             risk.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Load Balancing:</strong> Load balancers distribute traffic
             across multiple backend instances, enabling horizontal scaling. L4
             load balancers route by IP/port with minimal inspection (fast, but
@@ -106,7 +113,7 @@ export default function HorizontalVerticalScalingArticle() {
             Without health checks, load balancers continue sending traffic to
             failed instances, causing outages that appear as application bugs.
             Horizontal scaling is impossible without load balancing.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Capacity Planning:</strong> Capacity planning is the process
             of predicting resource needs based on growth projections. It
@@ -167,11 +174,14 @@ export default function HorizontalVerticalScalingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding how scaling decisions flow through system architecture
           is essential for designing scalable systems. Scaling is not a single
           decision but a series of trade-offs at each layer of the architecture.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/fundamentals-building-blocks/autoscaling-architecture.svg"
@@ -227,7 +237,7 @@ export default function HorizontalVerticalScalingArticle() {
           </ol>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Scaling the Application Tier:</strong> Application servers are
           the easiest to scale horizontally because they are typically stateless
           or can be made stateless by externalizing session data to Redis or
@@ -237,7 +247,7 @@ export default function HorizontalVerticalScalingArticle() {
           this process based on metrics. The key requirement is that any
           instance can handle any request — no session affinity, no local state,
           no hardcoded endpoints.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Scaling the Data Tier:</strong> Databases are harder to scale
@@ -255,6 +265,9 @@ export default function HorizontalVerticalScalingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -364,21 +377,21 @@ export default function HorizontalVerticalScalingArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When to Use Each Strategy</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <strong>Use vertical scaling when:</strong> you are in early stages
             with unpredictable product-market fit, the workload is stateful and
             hard to distribute (single-node databases, monolithic applications),
             traffic is predictable and growth is linear, or operational
             simplicity is more important than scale (internal tools, low-traffic
             services).
-          </p>
-          <p className="mt-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-3">
             <strong>Use horizontal scaling when:</strong> you have 5+ product
             teams consuming the service, traffic is unpredictable or growing
             exponentially, high availability is required (99.9%+ SLA), or you
             need to scale to 10x-100x current traffic. Horizontal scaling is the
             default for customer-facing services at scale.
-          </p>
+          </HighlightBlock>
           <p className="mt-3">
             <strong>Best practice:</strong> Start with vertical scaling for
             simplicity, but design for horizontal scaling from day one
@@ -392,28 +405,31 @@ export default function HorizontalVerticalScalingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production scaling requires discipline and operational rigor. These
           best practices prevent common mistakes and accelerate incident
           response.
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Externalize Session State Before Scaling Out:</strong>{" "}
             Horizontal scaling requires that any instance can handle any
             request. Store session data in Redis or databases, not in
             application memory. Use sticky sessions only as a temporary
             workaround during migration, not as a permanent solution. Sticky
             sessions create uneven load distribution and complicate failover.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Define Autoscaling Signals and Cooldowns:</strong>{" "}
             Autoscaling based solely on CPU can cause oscillation (rapid scale
             out/in cycles). Use multi-signal triggers: CPU + memory + queue
             depth + tail latency. Set cooldown periods (5-10 minutes) to prevent
             thrashing. For predictable traffic spikes (daily peaks, marketing
             campaigns), use scheduled scaling instead of reactive triggers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Measure Cost Per Request:</strong> Track cost per request
             (CPR) as a key efficiency metric. CPR = total infrastructure cost /
@@ -453,12 +469,15 @@ export default function HorizontalVerticalScalingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Even experienced engineers fall into scaling traps. These pitfalls are
           common sources of production incidents and wasted resources.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Scaling Out Without Externalizing State:</strong> Adding
             instances when session state is in memory causes session loss and
             uneven load. Users get logged out when routed to different
@@ -466,15 +485,15 @@ export default function HorizontalVerticalScalingArticle() {
             Prevention: externalize session state to Redis before scaling
             horizontally. Use sticky sessions only as a temporary migration
             strategy.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Autoscaling Without Cooldowns:</strong> Autoscaling policies
             without cooldown periods cause oscillation — scale out at 70% CPU,
             CPU drops to 30%, scale in, CPU spikes to 70%, scale out again. This
             thrashing wastes resources and destabilizes the system. Prevention:
             set cooldown periods (5-10 minutes), use multi-signal triggers,
             implement hysteresis (scale out at 70%, scale in at 40%).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring Database Limits:</strong> Adding application
             instances when the database is saturated increases database load,
@@ -505,20 +524,23 @@ export default function HorizontalVerticalScalingArticle() {
 
       <section>
         <h2>Production Case Studies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-world scaling incidents demonstrate how theoretical patterns
           manifest in production and how systematic debugging accelerates
           resolution.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
             Case Study 1: Session Loss During Horizontal Scaling
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             <strong>Symptom:</strong> Users randomly get logged out during peak
             traffic. Support tickets increase 10x during scaling events.
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             <strong>Debugging Process:</strong> Application logs showed session
             not found errors. Load balancer logs revealed users were being
@@ -620,10 +642,13 @@ export default function HorizontalVerticalScalingArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding scaling performance characteristics helps set realistic
           SLOs and identify bottlenecks.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
@@ -672,15 +697,15 @@ export default function HorizontalVerticalScalingArticle() {
             Scaling Efficiency Metrics
           </h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Linear Scaling:</strong> 2x instances = 2x throughput.
               Ideal but rarely achieved due to coordination overhead.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Sublinear Scaling:</strong> 2x instances = 1.5x
               throughput. Common due to database bottlenecks, shared resources,
               or coordination overhead.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Scaling Efficiency:</strong> (Actual throughput gain /
               Expected throughput gain) × 100. Target &gt; 80% efficiency. Below
@@ -692,24 +717,27 @@ export default function HorizontalVerticalScalingArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Scaling decisions directly impact infrastructure costs. Understanding
           cost drivers helps optimize architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
             Vertical vs Horizontal Cost Comparison
           </h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Vertical Scaling (m5.large → m5.4xlarge):</strong> 8x CPU,
               8x memory, 10x cost. Cost per unit increases with instance size.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Horizontal Scaling (8× m5.large):</strong> 8x CPU, 8x
               memory, 8x cost. Cost per unit remains constant.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Inflection Point:</strong> Typically at 4-8x current
               capacity, horizontal scaling becomes more cost-effective than
@@ -747,12 +775,15 @@ export default function HorizontalVerticalScalingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: Why is horizontal scaling preferred for large systems?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Horizontal scaling provides near-unlimited scalability by
               adding more nodes, improves resilience by eliminating single
               points of failure, and is more cost-effective at large scale
@@ -760,7 +791,7 @@ export default function HorizontalVerticalScalingArticle() {
               enables zero-downtime deployments and rolling updates. The
               trade-off is increased operational complexity (load balancing,
               health checks, distributed coordination).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

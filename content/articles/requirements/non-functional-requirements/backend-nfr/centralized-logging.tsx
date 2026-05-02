@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,22 +25,25 @@ export default function CentralizedLoggingArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Centralized logging</strong> is the practice of aggregating logs from all system
           components — application servers, databases, load balancers, network devices, and third-party
           services — into a unified, searchable, and analyzable platform. Without centralized logging,
           troubleshooting a distributed system requires manually accessing logs on dozens or hundreds of
           servers, correlating timestamps across different time zones, and manually piecing together the
           sequence of events that led to an incident.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Centralized logging is one of the three pillars of observability (alongside metrics and
           distributed tracing). While metrics tell you <em>that</em> something is wrong (CPU is high,
           latency is increasing), logs tell you <em>why</em> it is wrong (NullPointerException at line
           42, database connection pool exhausted, third-party API returning 503). Logs provide the
           contextual detail that metrics and traces cannot — the actual error messages, request payloads,
           and stack traces that engineers need to diagnose and resolve issues.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, centralized logging architecture demonstrates
           operational maturity, understanding of data pipelines, and the ability to design systems that
@@ -71,20 +75,23 @@ export default function CentralizedLoggingArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding centralized logging requires grasping several foundational concepts about log
           formats, shipping protocols, indexing strategies, and retention management.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Structured Logging</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Structured logging formats log entries as machine-readable data (JSON, key-value pairs) rather
           than free-text strings. A structured log entry includes timestamp, log level (DEBUG, INFO,
           WARN, ERROR), service name, request ID, user ID, action, and contextual fields (endpoint,
           status code, response time). Structured logs enable powerful queries — &quot;find all ERROR
           logs from the payment service where response_time &gt; 5000ms&quot; — that are impossible with
           unstructured text logs.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Log Shipping and Aggregation</h3>
         <p>
@@ -111,11 +118,14 @@ export default function CentralizedLoggingArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Centralized logging architecture spans log generation, shipping, parsing, indexing, storage,
           and analysis. Each stage must handle high throughput, maintain data integrity, and scale
           independently.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/centralized-logging.svg"
@@ -124,14 +134,14 @@ export default function CentralizedLoggingArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Log Pipeline Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The log pipeline begins with applications writing structured logs to stdout or log files. A
           log shipper (Fluentd, Filebeat) tails the log output, parses each entry into structured fields,
           enriches it with metadata (hostname, namespace, deployment version), and forwards it to a
           message queue (Kafka, Redis) for buffering. The message queue decouples log production from
           log processing — if the indexing layer falls behind, the queue absorbs the backlog without
           dropping logs.
-        </p>
+        </HighlightBlock>
         <p>
           The indexing layer (Elasticsearch, OpenSearch) reads from the message queue, parses log
           entries, indexes structured fields, and stores the raw log text. A separate storage layer
@@ -155,25 +165,28 @@ export default function CentralizedLoggingArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Approach</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Approach</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>ELK Stack (Elasticsearch, Logstash, Kibana)</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>ELK Stack (Elasticsearch, Logstash, Kibana)</strong></td>
               <td className="p-3">
                 Mature ecosystem. Powerful full-text search. Rich visualization. Large community.
               </td>
               <td className="p-3">
                 Resource-intensive (JVM overhead). Complex to operate at scale. Licensing changes.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Loki (Grafana Labs)</strong></td>
               <td className="p-3">
                 Lightweight (no full-text indexing). Cost-efficient. Integrates with Grafana. Label-based queries.
@@ -181,8 +194,8 @@ export default function CentralizedLoggingArticle() {
               <td className="p-3">
                 Slower full-text search. Less powerful query language. Newer ecosystem, fewer integrations.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Cloud Managed (CloudWatch, Stackdriver)</strong></td>
               <td className="p-3">
                 Zero operational overhead. Native cloud integration. Automatic scaling. Managed retention.
@@ -190,7 +203,7 @@ export default function CentralizedLoggingArticle() {
               <td className="p-3">
                 Vendor lock-in. Limited customization. Cost at scale can exceed self-hosted.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Splunk</strong></td>
               <td className="p-3">
@@ -207,25 +220,28 @@ export default function CentralizedLoggingArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Adopt Structured Logging Everywhere</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every log entry should be structured JSON with consistent field names across all services.
           Define a logging schema that specifies required fields (timestamp, level, service, request_id,
           message) and optional fields (user_id, endpoint, status_code, response_time). Enforce the
           schema through code review and linting rules. Structured logging enables powerful aggregation
           and correlation — you can join logs from different services by request_id, filter by service
           and level, and compute statistics on response times.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Include Correlation IDs in Every Log</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every request should have a unique correlation ID (request_id, trace_id) that is included in
           every log entry generated during that request&apos;s lifecycle. This enables tracing a single
           request through all services it touches — when an error occurs in service C, you can find all
           logs from services A, B, and C that handled the same request by filtering on the correlation
           ID. This is the single most important practice for troubleshooting distributed systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Implement Tiered Retention</h3>
         <p>
@@ -250,9 +266,12 @@ export default function CentralizedLoggingArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Logging Sensitive Data</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most dangerous logging pitfall is accidentally logging sensitive data — passwords, API
           keys, credit card numbers, PII, health information. Once sensitive data is in the log
           aggregation system, it is accessible to everyone with log access (engineers, support staff,
@@ -260,17 +279,17 @@ export default function CentralizedLoggingArticle() {
           Implement log sanitization at the application level — filter known sensitive fields before
           writing logs, and use allowlists for logged fields rather than blocklists (blocklists always
           miss something).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Unbounded Log Growth</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Without retention policies, log storage grows unbounded until it exhausts disk space, causing
           the logging infrastructure to crash — which means no logs are available during the outage you
           are trying to debug. Implement automated retention policies that delete or archive logs older
           than the retention period. Monitor log storage utilization and alert when it approaches
           capacity. Set per-service log quotas to prevent a single noisy service from consuming all
           log storage.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Logging in the Hot Path</h3>
         <p>
@@ -295,9 +314,12 @@ export default function CentralizedLoggingArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Netflix — Logging at Streaming Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix processes petabytes of logs daily from thousands of microservices, CDN nodes, and
           device applications. Their logging pipeline uses Fluentd as the log shipper, Kafka as the
           message queue, and Elasticsearch as the indexing layer. Netflix implements per-service log
@@ -305,10 +327,10 @@ export default function CentralizedLoggingArticle() {
           log analysis — streaming queries that detect anomalies in log patterns as they occur. Their
           correlation ID system (called &quot;trace ID&quot;) enables tracing a single streaming session
           through the entire content delivery pipeline.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Uber — Structured Logging for Incident Response</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uber&apos;s logging infrastructure (ELK stack) processes billions of log entries daily across
           thousands of microservices. Uber enforces structured JSON logging with a standardized schema
           that includes service name, request ID, user ID, endpoint, latency, and error code. During
@@ -316,7 +338,7 @@ export default function CentralizedLoggingArticle() {
           filter by error code to identify the affected operation, and aggregate by service to identify
           the root cause service. Uber&apos;s log aggregation reduces mean time to resolution (MTTR) by
           providing a single source of truth for all service logs.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Spotify — Loki for Cost-Efficient Log Aggregation</h3>
         <p>
@@ -343,20 +365,23 @@ export default function CentralizedLoggingArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Logging infrastructure is a security-critical system — logs contain sensitive operational data,
           and log access can reveal system internals to attackers.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Log Data Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Sensitive Data in Logs:</strong> Passwords, API keys, tokens, PII, and financial data must never appear in logs. Mitigation: implement allowlist-based field logging (only explicitly approved fields are logged), use log sanitization libraries that detect and mask sensitive patterns (credit card numbers, SSNs), scan logs with DLP tools to detect accidental sensitive data exposure.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Log Injection Attacks:</strong> Attackers inject log entries through crafted input (user agents, URL parameters, request bodies) to mislead investigators or trigger alert fatigue. Mitigation: sanitize all user-supplied fields before logging, use structured logging with typed fields (not free-text concatenation), validate log entry integrity with cryptographic signatures.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Log Tampering:</strong> Attackers with server access may delete or modify logs to cover their tracks. Mitigation: ship logs to centralized storage immediately (do not buffer locally), use append-only log storage (WORM — write once, read many), implement cryptographic log integrity verification (hash chains, Merkle trees).
             </li>
@@ -379,20 +404,23 @@ export default function CentralizedLoggingArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Centralized logging must be validated through systematic testing — log completeness, search
           performance, retention compliance, and sanitization correctness must all be verified.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Log Pipeline Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>End-to-End Log Delivery:</strong> Generate a test log entry with a unique correlation ID, verify it appears in the centralized logging system within the expected time window (typically 10-60 seconds), and verify all structured fields are correctly parsed and indexed. Test with all log levels (DEBUG, INFO, WARN, ERROR).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Log Loss Detection:</strong> Inject log entries with sequence numbers, verify that no sequence numbers are missing in the centralized system. Test under high load (10× normal volume) to detect log loss during traffic spikes. Verify that shippers buffer and retry when the aggregation platform is unavailable.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Search Performance Testing:</strong> Run representative queries (filter by service and level, search by correlation ID, full-text search for error messages) and verify that search latency meets SLOs (typically &lt; 5 seconds for indexed fields, &lt; 30 seconds for full-text search). Test with production-scale log volumes.
             </li>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,15 +37,15 @@ export default function IntegrationTestingArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Integration testing</strong> verifies that multiple units work together correctly — it tests the interactions between components, modules, or services. Unlike unit testing (which tests individual units in isolation), integration testing tests how units communicate: does a component correctly receive data from an API and render it? Does a form correctly submit data to a backend and handle the response? Does a state management library correctly propagate state changes to subscribed components? Integration tests catch bugs that unit tests cannot — bugs in the interfaces between units, where individual units work correctly but their interaction fails.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, integration testing is the bridge between unit testing and end-to-end testing. Unit tests provide confidence in individual code, E2E tests provide confidence in the full system, and integration tests provide confidence in the connections between units. Integration tests are slower than unit tests (they involve more code, more dependencies, more setup) but faster than E2E tests (they do not require a full browser, real APIs, or full system setup). The optimal testing strategy uses many unit tests (fast, isolated), fewer integration tests (moderate speed, combined), and few E2E tests (slow, full system) — the testing pyramid.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Frontend integration testing involves several technical considerations. Component integration (testing how multiple components work together — parent-child communication, context providers, state propagation), API integration (testing how the frontend interacts with backend APIs — request formatting, response parsing, error handling, retry logic), test boundaries (deciding what to mock and what to test with real implementations — mock external APIs, test internal component interactions with real implementations), contract testing (verifying that the frontend and backend agree on API contracts — request format, response format, error codes), and test performance (integration tests are slower than unit tests — optimize by mocking only external dependencies, using real implementations for internal modules).
-        </p>
+        </HighlightBlock>
         <p>
           The business case for integration testing is catching interface bugs before they reach production. Interface bugs are among the most common and costly production issues — individual units work correctly, but their interaction fails (a component sends data in the wrong format, an API returns unexpected data, a state change does not propagate correctly). Integration tests catch these bugs early, before they are deployed. For organizations practicing continuous deployment, integration testing is essential for maintaining release velocity while managing the risk of interface bugs.
         </p>
@@ -57,15 +58,15 @@ export default function IntegrationTestingArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Component Integration:</strong> Testing how multiple components work together. Render a parent component with its child components (real implementations, not mocks), simulate user interactions, and verify the rendered output. Component integration tests verify that parent-child communication works correctly (props are passed, events are emitted, state is shared), context providers work correctly (values are provided, consumed, updated), and state propagation works correctly (state changes in one component trigger re-renders in subscribed components).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>API Integration:</strong> Testing how the frontend interacts with backend APIs. Mock API responses at the network level (using MSW or similar tools), render the component, and verify that the component correctly sends requests (correct URL, method, headers, body) and handles responses (renders data on success, displays error on failure, shows loading state during request). API integration tests verify request formatting, response parsing, error handling, retry logic, and loading states.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Test Boundaries:</strong> Deciding what to mock and what to test with real implementations. The principle is: mock external dependencies (APIs, browser APIs, third-party libraries) that are impractical to test, and use real implementations for internal dependencies (child components, utility functions, state management). This ensures that integration tests are realistic (they test actual component interactions) while remaining isolated (external dependencies are controlled). The boundary between mock and real is the key design decision in integration testing.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Contract Testing:</strong> Verifying that the frontend and backend agree on API contracts (request format, response format, error codes). Contract tests are shared between frontend and backend teams — the frontend defines what it expects from the API, the backend defines what it provides, and contract tests verify that the two agree. Contract tests catch interface mismatches early (before integration), prevent breaking changes (a backend change that breaks the frontend contract is detected), and enable independent team development (frontend and backend teams can develop independently, verified by contract tests).
           </li>
@@ -89,12 +90,12 @@ export default function IntegrationTestingArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Integration testing architecture consists of the test framework (Jest, Vitest — executes tests, provides assertions), the rendering engine (Testing Library — renders components with real child components), the mocking layer (MSW — intercepts API requests, returns mocked responses), and the assertion layer (verifying rendered output, API interactions, state changes). The flow begins with setting up the test environment (configuring MSW handlers, seeding test data), rendering the component tree (parent component with real child components), simulating user interactions (clicks, form submissions, navigation), and verifying the result (rendered output, API calls, state changes).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For API integration tests, the flow involves the component making a real fetch call, MSW intercepting the call, matching the request against defined handlers, returning a mocked response, and the component handling the response (rendering data, displaying errors, showing loading states). This flow is realistic — the component code is unaware of the mock, so the test verifies actual component behavior, not mock interactions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/testing-strategies/msw-api-flow.svg"
@@ -105,9 +106,9 @@ export default function IntegrationTestingArticle() {
         />
 
         <h3>Integration vs. Unit Testing Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Unit Testing Scope:</strong> Test individual functions, components, or modules in isolation. Mock all dependencies. Verify input-output behavior. Fast (milliseconds), numerous, isolated. Best for: utility functions, pure logic, individual components, hooks.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Integration Testing Scope:</strong> Test how multiple units work together. Mock only external dependencies (APIs, browser APIs). Use real implementations for internal dependencies. Moderate speed (seconds), fewer than unit tests, combined. Best for: component trees, API interactions, state management, form submissions.
         </p>
@@ -127,17 +128,17 @@ export default function IntegrationTestingArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Integration testing involves trade-offs between test realism and test isolation, test speed and test coverage, and mocking overhead and test reliability. Understanding these trade-offs is essential for designing effective integration testing strategies.
-        </p>
+        </HighlightBlock>
 
         <h3>Mock External APIs vs. Test with Real APIs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Mock External APIs:</strong> Use MSW or similar tools to intercept API requests and return mocked responses. Advantages: tests are isolated (not affected by API availability or data changes), tests are deterministic (mocked responses are predictable), tests are fast (no network latency). Limitations: mocks may not accurately reflect real API behavior (mocked response format may differ from real response, edge cases may not be covered), tests may pass while integration fails (mock is correct, real API is broken). Best for: CI/CD pipelines, frequent test runs, API not yet available.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Test with Real APIs:</strong> Make real API calls to a test backend. Advantages: tests are realistic (they test actual API interactions), tests catch API mismatches (request format errors, response parsing errors). Limitations: tests are slower (network latency), tests are less reliable (API may be unavailable, test data may change), tests require test backend infrastructure. Best for: staging environment validation, contract testing, pre-deployment verification.
-        </p>
+        </HighlightBlock>
 
         <h3>Testing Library vs. Snapshot Testing</h3>
         <p>
@@ -160,15 +161,15 @@ export default function IntegrationTestingArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Mock at the Network Layer:</strong> Use MSW to intercept API requests at the network level, not by mocking the fetch function or API client. Network-level mocking is more realistic — the frontend code makes real fetch calls, MSW intercepts them, so the test verifies actual component behavior (including request formatting, error handling, retry logic). Mocking the fetch function directly is less realistic (the frontend code knows it is being mocked, so the test may not catch real-world issues).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Test User Behavior, Not Implementation:</strong> Use Testing Library&apos;s queries (getByText, getByRole, getByLabelText) to find elements by their user-facing attributes, not by implementation details (CSS classes, data attributes). Simulate user interactions (click, type, submit) rather than calling component methods directly. Verify rendered output (text content, element presence) rather than component state. This makes tests resilient to refactoring — changing the component&apos;s internal logic does not break the test, as long as user behavior is unchanged.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Keep Integration Tests Focused:</strong> Each integration test should verify one interaction (one API call, one component communication, one state propagation). Do not test everything in one test — if a test fails, it is hard to identify the root cause. Write multiple focused tests (each testing one interaction) rather than one comprehensive test (testing everything). Focused tests are easier to debug, maintain, and understand.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Real Implementations for Internal Dependencies:</strong> Do not mock child components, utility functions, or state management libraries — use their real implementations. Mocking internal dependencies reduces integration tests to unit tests (testing the component in isolation), defeating the purpose of integration testing. Only mock external dependencies (APIs, browser APIs, third-party libraries) that are impractical to test.
           </li>
@@ -185,15 +186,15 @@ export default function IntegrationTestingArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Over-Mocking Internal Dependencies:</strong> Mocking child components, utility functions, or state management libraries. This reduces integration tests to unit tests, defeating the purpose of integration testing. Integration tests should test how units work together — if all dependencies are mocked, there is no integration to test. Only mock external dependencies (APIs, browser APIs, third-party libraries).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Testing Too Much in One Test:</strong> Writing comprehensive integration tests that verify everything (multiple API calls, multiple component interactions, multiple state changes). These tests are slow, difficult to debug (when the test fails, it is hard to identify which interaction failed), and brittle (any change breaks the test). Write focused tests — each test verifies one interaction.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Inaccurate API Mocks:</strong> Mocked API responses that do not match real API behavior (different response format, missing fields, incorrect error codes). This causes tests to pass while integration fails (the component works with the mock, but fails with the real API). Keep API mocks synchronized with real API responses — use contract testing, update mocks when the API changes, and periodically test with real APIs.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Shared Test State:</strong> Tests that share state (database, global variables, module-level state) affecting each other&apos;s results. This causes flaky tests (tests pass or fail depending on execution order) and makes tests difficult to debug. Ensure that each test is isolated — set up test data before each test, clean up after each test, and avoid global state.
           </li>
@@ -211,19 +212,19 @@ export default function IntegrationTestingArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>Form Submission Integration</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Form submission involves multiple components working together — the form component collects input, the validation component checks input validity, the API component sends data to the backend, and the feedback component displays success or error messages. Integration tests verify that the entire flow works: fill in the form, submit, verify that the API is called with correct data, verify that the success message is displayed. Integration tests also verify error paths: submit invalid data, verify that validation errors are displayed, verify that the API is not called.
-        </p>
+        </HighlightBlock>
 
         <h3>Data Fetching and Rendering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Components that fetch data from APIs and render it involve integration between the component, the API client, and the rendering logic. Integration tests verify that the component correctly sends the API request (correct URL, method, headers), handles the response (renders data on success, displays error on failure, shows loading state during request), and handles edge cases (empty data, pagination, caching). MSW is used to mock API responses at the network level, ensuring realistic testing.
-        </p>
+        </HighlightBlock>
 
         <h3>State Management Integration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           State management libraries (Redux, Zustand, Context API) propagate state changes across components. Integration tests verify that state changes in one component trigger re-renders in subscribed components, that state is correctly shared across components, and that state updates are atomic (concurrent updates do not cause race conditions). Integration tests render the full component tree (provider, consumers, updaters) and verify that state propagation works correctly.
-        </p>
+        </HighlightBlock>
 
         <h3>Contract Testing Between Frontend and Backend</h3>
         <p>
@@ -237,18 +238,18 @@ export default function IntegrationTestingArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: What is the difference between unit testing and integration testing?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Unit testing tests individual functions, components, or modules in isolation — all dependencies are mocked, and the test verifies input-output behavior. Integration testing tests how multiple units work together — only external dependencies are mocked, internal dependencies use real implementations. Unit tests are fast (milliseconds), numerous, and isolated. Integration tests are slower (seconds), fewer, and combined. Unit tests catch bugs in individual units, integration tests catch bugs in unit interactions. Both are essential — unit tests provide confidence in individual code, integration tests provide confidence in code interactions.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: What is MSW and why is it preferred over mocking fetch directly?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: MSW (Mock Service Worker) is a library that intercepts API requests at the network level using the Service Worker API (in the browser) or node request interception (in Node.js). MSW is preferred over mocking fetch directly because it is more realistic — the frontend code makes real fetch calls, MSW intercepts them and returns mocked responses, so the frontend code is unaware of the mock. This means the test verifies actual component behavior (including request formatting, error handling, retry logic), not just mock interactions. Mocking fetch directly is less realistic — the frontend code knows it is being mocked (the mock is injected), so the test may not catch real-world issues (request formatting errors, network errors).
             </p>

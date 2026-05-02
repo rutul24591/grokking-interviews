@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function SudokuSolverArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A <span className="font-semibold">Sudoku solver</span> fills a 9×9 grid such that
           each row, each column, and each of the nine 3×3 boxes contains the digits 1–9
           exactly once, given a partially filled puzzle. Sudoku is a constraint
           satisfaction problem and the canonical companion to N-Queens for teaching
           backtracking with rich constraint propagation.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Sudoku as we know it dates to 1979 (Howard Garns); the global craze followed
           Wayne Gould's import to the Times of London in 2004. Computational interest
           grew alongside: Knuth's Dancing Links exact-cover formulation, Peter Norvig's
           50-line Python "constraint propagation + search" essay, and the 2014 proof by
           McGuire et al. that 17 is the minimum number of clues for a uniquely solvable
           puzzle (using ~7 billion CPU-hours).
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Interview interest is high because Sudoku exercises every backtracking concept
           — state, propagation, MRV, undo, exact-cover modeling — within a tightly bounded
@@ -54,19 +58,22 @@ export default function SudokuSolverArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Three constraint sets.</span> Row, column, and
           3×3 box. A cell at (r, c) belongs to row r, column c, and box 3·(r/3) + c/3.
           The candidate digits at that cell are the digits not yet placed in any of the
           three sets it belongs to.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Bitmask state.</span> Three arrays of 9 bitmasks
           each: rowMask[r], colMask[c], boxMask[b]. Each mask is a 9-bit set of digits
           already placed. Candidates(r, c) = ~(rowMask[r] | colMask[c] | boxMask[b]) &amp;
           0x1FF. Computing candidates is constant time. Place: set the bit. Unplace: clear
           the bit. Iterate set bits via <code>x &amp; −x</code>.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">MRV branching.</span> Among empty cells, branch
           on the one with the fewest candidate digits. Failing fast — if a cell has 0
@@ -114,18 +121,21 @@ export default function SudokuSolverArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Naive recursive solver.</span> Scan for first
           empty cell; for each digit 1–9, if legal, place and recurse. On success return
           true; on failure unplace and try next digit. Easy to write; solves easy puzzles
           fast, but evil-grade puzzles can take minutes.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Bitmask + MRV.</span> Maintain three bitmask
           arrays. Pick empty cell with fewest candidates. Iterate set bits of candidates,
           place, recurse, undo. With MRV alone, hardest published Sudokus solve in
           milliseconds.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Norvig's solver.</span> 50 lines of Python.
           Represents each cell as a string of remaining candidates. On each placement,
@@ -157,16 +167,19 @@ export default function SudokuSolverArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Pure DFS vs propagation + DFS.</span> Pure DFS
           without propagation can take seconds on hard puzzles. Adding naked + hidden
           singles before each branch decision typically reduces the work 100×.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Bitmask vs candidate-list.</span> Bitmask is
           faster (constant-time intersection) but caps at boards where the alphabet fits
           in a machine word. For 9×9 standard Sudoku, 9-bit masks fit in any int.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">DLX vs hand-rolled.</span> DLX has constant
           cover/uncover; hand-rolled bitmask has constant per-cell candidate computation.
@@ -190,16 +203,19 @@ export default function SudokuSolverArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Always propagate before branching.</span> Run
           naked + hidden singles to a fixpoint, then pick MRV. The pre-search work
           collapses easy puzzles entirely.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Verify uniqueness in generators.</span> A
           generator that doesn't continue searching after first success can produce
           puzzles with multiple solutions — invalid by definition.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Use immutable copies for branch state, not
           undo.</span> Sudoku's state is small (81 cells); copying on each branch is
@@ -225,17 +241,20 @@ export default function SudokuSolverArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Forgetting one of the three constraint
           sets.</span> Solvers that check rows and columns but forget the box accept
           invalid placements. Test against any standard puzzle — wrong solutions surface
           immediately.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Propagation that doesn't terminate.</span>{" "}
           Cascading singles can re-trigger propagation; ensure a worklist or fixpoint loop
           rather than recursive propagation that stack-overflows.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Branching on the first empty cell instead of
           MRV.</span> First-empty-cell heuristic is dramatically slower on hard puzzles.
@@ -265,17 +284,20 @@ export default function SudokuSolverArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Newspaper / app puzzle pipelines.</span> NYT,
           Times of London, Sudoku.com generate millions of puzzles. Each is solved (for
           uniqueness verification) and rated (by which propagator was needed). Solver speed
           directly impacts daily generation throughput.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Hint engines.</span> When a user is stuck, an
           app suggests the simplest applicable deduction. Requires a human-style solver
           that identifies which named technique applies — pure DFS doesn't help.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">CSP teaching benchmark.</span> Like N-Queens but
           richer: real propagators (not just one-step), variant explosion (Killer, Samurai,
@@ -309,16 +331,19 @@ export default function SudokuSolverArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Solve Sudoku in place."</span> Backtracking
           with three bitmasks. Find empty cell, try each candidate, recurse, undo on
           failure. Return true on first solution.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Validate a partially filled Sudoku."</span>{" "}
           Check that no row, column, or box has duplicate non-zero digits — three sets,
           single pass over 81 cells.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">"Why use bitmasks?"</span> Constant-time set
           operations (intersection, union, contains). Iterating candidates via{" "}

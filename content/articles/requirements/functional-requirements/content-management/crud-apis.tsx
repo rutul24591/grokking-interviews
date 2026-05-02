@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,13 +34,16 @@ export default function CRUDAPIsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>CRUD APIs</strong> provide the backend interface for creating, reading, updating,
           and deleting content. They enforce validation, authorization, and business logic while
           providing consistent, performant access to content data. CRUD APIs are the foundation of
           any content management system — without well-designed APIs, content operations are
           unreliable, insecure, and difficult to scale.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/crud-api-design.svg"
@@ -47,7 +51,7 @@ export default function CRUDAPIsArticle() {
           caption="CRUD API Design — showing REST endpoints, validation layers, authorization flow, and response handling"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing CRUD APIs requires deep understanding of
           RESTful endpoint design with resource-oriented URLs, proper HTTP methods, status codes,
           and versioning strategies. Input validation includes schema validation, length limits,
@@ -60,7 +64,7 @@ export default function CRUDAPIsArticle() {
           and read replicas. Operational concerns encompass logging, monitoring, alerting, and error
           handling. The implementation must balance flexibility with consistency and performance
           while maintaining security and reliability.
-        </p>
+        </HighlightBlock>
 
         <p>
           Modern CRUD APIs have evolved from simple database wrappers to sophisticated service
@@ -74,13 +78,16 @@ export default function CRUDAPIsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CRUD APIs are built on fundamental concepts that determine how content operations are
           exposed, secured, and scaled. Understanding these concepts is essential for designing
           effective API architectures.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>RESTful Endpoint Design:</strong> Resource-oriented URLs like /content,
           {'/content/{id}'}, and {'/content/{id}/versions'} provide intuitive API structure. Proper HTTP
           methods map to operations with POST for create, GET for read, PUT/PATCH for update, and
@@ -90,7 +97,7 @@ export default function CRUDAPIsArticle() {
           /v1/, header Accept-Version, or query param ?version=1 enables backward-compatible
           evolution. Consistent response format with JSON envelope containing data, error, and meta
           simplifies client integration.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Input Validation:</strong> Schema validation ensures input matches expected
@@ -125,12 +132,15 @@ export default function CRUDAPIsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CRUD API architecture separates concerns into layers including routing, authentication,
           validation, authorization, business logic, and data access enabling modular
           implementation with clear boundaries. This architecture is critical for maintainability,
           security, and scalability.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/crud-api-design.svg"
@@ -138,7 +148,7 @@ export default function CRUDAPIsArticle() {
           caption="CRUD API Design — showing REST endpoints, validation layers, authorization flow, and response handling"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           API request flow begins with routing matching URL and HTTP method to handler.
           Authentication validates credentials through JWT token, API key, or session cookie
           extracting user identity. Input validation checks request body and parameters against
@@ -150,7 +160,7 @@ export default function CRUDAPIsArticle() {
           cascade handling. Data access layer executes database operations with connection pooling
           and query optimization. Response formatting returns consistent JSON with data envelope,
           error details if failed, and metadata including pagination and rate limit headers.
-        </p>
+        </HighlightBlock>
 
         <p>
           Validation architecture includes schema validation using JSON Schema or custom validators
@@ -180,13 +190,16 @@ export default function CRUDAPIsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing CRUD APIs involves trade-offs between flexibility, security, performance, and
           complexity. Understanding these trade-offs is essential for making informed architecture
           decisions.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           REST versus GraphQL for CRUD operations presents fundamental trade-offs. REST uses
           multiple endpoints like /content, {'/content/{id}'}, {'/content/{id}/versions'} with fixed
           response shapes per endpoint, enabling aggressive caching at CDN level and simple
@@ -197,7 +210,7 @@ export default function CRUDAPIsArticle() {
           resolver optimization. The recommendation is REST for simple CRUD with predictable data
           shapes and caching needs, GraphQL for complex data requirements with varied client needs
           and single-round-trip requirements.
-        </p>
+        </HighlightBlock>
 
         <p>
           Optimistic versus pessimistic locking for concurrent edits presents consistency versus
@@ -225,12 +238,15 @@ export default function CRUDAPIsArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing CRUD APIs requires following established best practices to ensure security,
           reliability, performance, and developer experience.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           RESTful design uses resource-oriented URLs like /content, {'/content/{id}'},
           {'/content/{id}/versions'} with proper HTTP methods for POST create, GET read, PUT/PATCH
           update, and DELETE delete. Return appropriate status codes including 200 OK, 201 Created
@@ -239,7 +255,7 @@ export default function CRUDAPIsArticle() {
           and 429 Too Many Requests. Version APIs with /v1/content enabling backward-compatible
           evolution. Use consistent response format with data envelope containing data, error, and
           meta simplifying client integration.
-        </p>
+        </HighlightBlock>
 
         <p>
           Input validation happens at API boundary before business logic. Validate schema with
@@ -277,17 +293,20 @@ export default function CRUDAPIsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing CRUD APIs to ensure security, reliability,
           and developer experience.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Missing input validation allows invalid or malicious data into system. Fix by validating
           all input at API boundary with schema validation, length limits, type checks, and
           sanitization. Return detailed field-level errors enabling clients to fix issues. Never
           trust client-side validation — always validate server-side.
-        </p>
+        </HighlightBlock>
 
         <p>
           Inconsistent error responses confuse API consumers. Fix by standardizing error format
@@ -349,13 +368,16 @@ export default function CRUDAPIsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CRUD APIs power content operations across different domains. Here are real-world
           implementations from production systems demonstrating different approaches to API design
           challenges.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe payment APIs address secure payment processing with comprehensive validation,
           idempotency, and detailed error handling. The solution uses RESTful endpoints
           /v1/charges and /v1/customers with proper HTTP methods, idempotency keys preventing
@@ -363,7 +385,7 @@ export default function CRUDAPIsArticle() {
           consistent error format with error object containing type, code, message, and param. The
           result is developer favorite API with comprehensive documentation, predictable behavior,
           and reliable error handling enabling seamless payment integration.
-        </p>
+        </HighlightBlock>
 
         <p>
           GitHub REST APIs address code and content management with versioning, pagination, and
@@ -402,14 +424,17 @@ export default function CRUDAPIsArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of CRUD API design, implementation, and operational
           concerns for staff and principal engineer interviews.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design RESTful CRUD endpoints?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design RESTful CRUD endpoints?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Use resource-oriented URLs (/content, {'/content/{id}'}, {'/content/{id}/versions'}). Map
               HTTP methods to operations (POST create, GET read, PUT/PATCH update, DELETE delete).

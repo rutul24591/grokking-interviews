@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -81,20 +82,23 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Conflict Types &amp; Resolution</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Conflict Types</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Write-write conflict</strong>: Two concurrent writes to same key, different
           values. Example: Node A writes <code className="inline-code">x = 5</code>, Node B
           writes <code className="inline-code">x = 10</code> (same time). Which value is
           correct? Resolution needed.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Read-write conflict</strong>: Read sees uncommitted write (dirty read), or
           write overwrites value that was read (non-repeatable read). Handled by isolation
           levels (read committed, repeatable read, serializable).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Lost update</strong>: Second write overwrites first write (first update
@@ -209,21 +213,24 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Multi-Leader &amp; Offline-First</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Multi-Leader Replication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Multi-leader replication: multiple nodes accept writes independently (leaders in
           different regions). Writes replicate asynchronously to other leaders. Conflicts
           occur when same key written on different leaders (concurrent writes).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Resolution: <strong>LWW</strong> (timestamp comparison - simple, data loss),
           <strong>Vector clocks</strong> (detect conflicts, replicate all versions, resolve
           on read), <strong>Application merge</strong> (define merge per data type).
           Example: Cassandra uses LWW (configurable per column), Riak uses vector clocks
           (detect conflicts, return all versions).
-        </p>
+        </HighlightBlock>
 
         <p>
           Implementation: Add metadata to each write (timestamp, vector clock), compare on
@@ -283,17 +290,20 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Resolution Strategies</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Different conflict resolution strategies have trade-offs. Understanding them helps
           you choose the right strategy for each use case.
-        </p>
+        </HighlightBlock>
 
         <h3>Last Write Wins (LWW)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Strengths</strong>: Simple (compare timestamps), fast (no coordination),
           deterministic (same result on all nodes), low storage (single timestamp per key).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Limitations</strong>: Data loss (concurrent writes lost), clock sync required
@@ -380,18 +390,21 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Conflict Resolution</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Choose strategy per data type.</strong> Not one-size-fits-all. LWW for
           non-critical, vector clocks for critical, CRDTs for counters/sets, application
           merge for domain-specific. Benefits: appropriate resolution per data type.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use synchronized clocks.</strong> For LWW, clocks must be comparable.
           Use NTP (network time protocol), logical timestamps (vector clocks, hybrid
           logical clocks). Benefits: correct conflict resolution (right winner).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Test conflict scenarios.</strong> Simulate concurrent writes, verify
@@ -428,18 +441,21 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>LWW for critical data.</strong> LWW loses concurrent writes. Using LWW
           for critical data (financial transactions, inventory) causes data loss. Solution:
           use vector clocks (detect conflicts) or application merge (merge both values).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>No conflict detection.</strong> Assuming no conflicts (single leader
           assumption). Multi-leader systems always have conflicts. Solution: implement
           conflict detection (vector clocks), handle conflicts (merge or resolve).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Ignoring clock skew.</strong> Clocks on different nodes drift (different
@@ -475,22 +491,25 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Multi-Leader Database (Cassandra)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cassandra uses LWW per column (configurable). Each write has timestamp, conflicts
           resolved by highest timestamp. Benefits: simple, fast, deterministic. Trade-offs:
           data loss (concurrent writes lost). Configuration: per-column resolution (some
           columns use LWW, others use custom merge).
-        </p>
+        </HighlightBlock>
 
         <h3>Offline-First Database (CouchDB)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CouchDB uses vector clocks (revision history). Detects conflicts, returns all
           conflicting versions. Application resolves (merge or choose). Benefits: no data
           loss (detect conflicts), flexible resolution. Trade-offs: application burden
           (must resolve), storage overhead (revision history).
-        </p>
+        </HighlightBlock>
 
         <h3>Collaborative Editing (Google Docs)</h3>
         <p>
@@ -513,14 +532,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: What are the common conflict resolution strategies? Compare LWW, vector
               clocks, and CRDTs.
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> LWW (Last Write Wins): Compare timestamps, highest
               wins. Simple, fast, but data loss (concurrent writes lost). Vector clocks:
               Vector of counters (one per node), track causality, detect conflicts. No
@@ -530,7 +552,7 @@ export default function ArticlePage() {
               limited types (counters, sets, registers). Choose: LWW for non-critical,
               vector clocks for critical (detect), CRDTs for automatic merge (counters,
               collaborative editing).
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> When would you use each? Answer: LWW: Session
               data, cache (loss OK). Vector clocks: Critical data (detect conflicts,

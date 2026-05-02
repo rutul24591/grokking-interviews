@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,15 +37,15 @@ export default function MutationObserverAPIArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Mutation Observer API</strong> provides a programmatic way to asynchronously observe and react to changes in the DOM tree. This API represents a fundamental shift from the deprecated mutation events (DOMSubtreeModified, DOMNodeInserted, DOMNodeRemoved, etc.) that fired synchronously for every DOM change, causing severe performance problems and re-entrancy issues. Mutation Observer batches mutations and delivers them asynchronously, allowing the browser to optimize delivery and avoid blocking the main thread.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Mutation Observer API was introduced to address critical performance and reliability issues with mutation events. Mutation events fired synchronously for every DOM change, which meant that a single script that modified multiple DOM nodes could trigger dozens or hundreds of event handlers, each of which could modify the DOM further, triggering more events, and so on. This re-entrancy problem made mutation events unpredictable and prone to causing infinite loops. Additionally, the synchronous firing of events blocked the main thread, causing jank and poor performance, especially when many DOM changes were made in a single script execution.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Mutation Observer solves these problems by running asynchronously in a separate microtask queue, batching all mutations that occur during a single script execution, and invoking the callback only once after the script completes and the DOM is stable. This means that even if a script makes hundreds of DOM changes, the callback is invoked only once, with an array of all mutations that occurred. This batching dramatically reduces the overhead of observing DOM changes and eliminates the re-entrancy problems of mutation events.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, Mutation Observer is essential for implementing reactive DOM-based logic: detecting when dynamically loaded content is added to the page (e.g., lazy-loaded images, infinite scroll content, AJAX-loaded content), monitoring third-party widget changes (e.g., embedded chat widgets, ads, social buttons that modify the DOM), implementing accessibility features (e.g., monitoring ARIA attribute changes and updating UI accordingly), and building developer tools that inspect and debug DOM changes. Understanding the API's capabilities, limitations, and performance characteristics is essential for building robust, maintainable web applications.
         </p>
@@ -57,15 +58,15 @@ export default function MutationObserverAPIArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Observer:</strong> The MutationObserver instance that watches for DOM changes. Created with a callback function that receives an array of MutationRecord objects describing the mutations that occurred. A single observer can efficiently watch multiple target elements, with the browser batching mutations and invoking the callback only once per microtask (after the current script completes and the DOM is stable). The callback receives an array of MutationRecord objects, each describing a single mutation (type of mutation, target node, added/removed nodes, attribute changes, etc.).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Target:</strong> The DOM node(s) being observed for mutations. Call observer.observe(target, options) to start watching a node. The options object specifies what types of mutations to observe (childList for children added or removed, attributes for attribute changes, characterData for text changes, subtree for descendants). Can observe multiple elements with a single observer (call observe on the same observer for multiple targets). Call observer.unobserve(target) to stop watching a specific node. Call observer.disconnect() to stop watching all nodes and clean up the observer.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>MutationRecord:</strong> The object passed to the callback describing a single mutation. Properties include: type (the type of mutation: "childList", "attributes", or "characterData"), target (the node that was mutated), addedNodes (a NodeList of added nodes, for childList mutations), removedNodes (a NodeList of removed nodes, for childList mutations), attributeName (the name of the changed attribute, for attributes mutations), oldValue (the previous value of the attribute or character data, if attributeOldValue or characterDataOldValue was set to true in the options). Use these properties to determine the appropriate action based on the mutation type and details.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Options:</strong> Configuration object specifying what types of mutations to observe. childList: true observes children added or removed from the target node. attributes: true observes attribute changes on the target node. characterData: true observes text content changes in the target node. subtree: true observes mutations in all descendants of the target node (not just direct children). attributeFilter: array of attribute names to observe (if attributes is true, this filters which attributes trigger the callback). attributeOldValue: true includes the old value of the attribute in the MutationRecord (for attributes mutations). characterDataOldValue: true includes the old value of the character data in the MutationRecord (for characterData mutations). Choose options based on your specific use case to minimize overhead (observe only what you need).
           </li>
@@ -89,12 +90,12 @@ export default function MutationObserverAPIArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Mutation Observer architecture consists of observer creation (with callback and options), target registration (observe nodes with options), and mutation handling (process MutationRecord array). The architecture must handle batching (multiple mutations delivered together in a single callback invocation), filtering (ignore irrelevant mutations by checking mutation type and target), and cleanup (disconnect when done to prevent memory leaks and stale callbacks).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The observer runs asynchronously in a microtask queue, which means it is invoked after the current script completes and the DOM is stable. This is fundamentally different from mutation events, which fired synchronously during DOM modifications. The asynchronous delivery allows the browser to batch all mutations that occur during a single script execution and invoke the callback only once, rather than invoking the callback for every single mutation. This batching dramatically reduces the overhead of observing DOM changes.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/browser-apis/dom-mutation-types.svg"
@@ -105,9 +106,9 @@ export default function MutationObserverAPIArticle() {
         />
 
         <h3>Common Use Cases</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Dynamic Content Detection:</strong> Watch for nodes added to a container (e.g., a content feed, a product list, a search results container). When new content appears (lazy-loaded images, infinite scroll content, AJAX-loaded content), initialize behaviors: lazy load images (copy data-src to src), attach event listeners to new elements, send analytics events (impression tracking), initialize third-party widgets (e.g., initialize carousel widgets for newly loaded product cards). This pattern is more reliable than polling (repeatedly checking for changes) and more efficient than mutation events (which have severe performance problems).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Third-Party Widget Monitoring:</strong> Embedded widgets (chat widgets, ads, social buttons, analytics scripts) modify the DOM after they load. Use Mutation Observer to detect when the widget has loaded (e.g., when a specific element is added to the DOM) and react accordingly: resize containers to fit the widget, apply custom styles to match your design system, track widget interactions (e.g., track when a chat widget is opened), initialize integrations (e.g., connect the widget to your analytics platform). This pattern enables seamless integration with third-party widgets without requiring cooperation from the widget provider.
         </p>
@@ -130,17 +131,17 @@ export default function MutationObserverAPIArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Mutation Observer involves trade-offs between reactivity, performance, complexity, and browser support. Understanding these trade-offs is essential for making informed decisions about when to use Mutation Observer and when to use alternative approaches.
-        </p>
+        </HighlightBlock>
 
         <h3>Mutation Observer vs. Polling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Polling:</strong> The traditional approach of periodically checking for changes using setInterval or setTimeout. Advantages: simple to implement, works in all browsers including very old browsers, no special API required. Limitations: inefficient (checks for changes even when nothing changed, wasting CPU cycles), latency (may miss changes that occur between polls, or detect changes long after they occurred), performance cost (frequent DOM queries force layout recalculations, especially if checking many elements). Best for: legacy browser support where Mutation Observer is not available, or for very simple use cases where polling overhead is acceptable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Mutation Observer:</strong> The modern approach of asynchronously observing mutations. Advantages: efficient (callback is invoked only when mutations actually occur, not on a fixed interval), no latency (callback is invoked immediately after mutations occur, in the next microtask), browser-optimized (the browser handles batching and delivery efficiently, no manual throttling or debouncing required). Limitations: newer API (Internet Explorer not supported, requires polyfill for older browsers), more complex setup (must create observer, configure options, call observe, handle cleanup). Best for: modern browsers, performance-critical applications where polling overhead is unacceptable, complex use cases requiring detailed mutation information.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Hybrid Approach:</strong> Use Mutation Observer where available, fall back to polling for older browsers. Detect API support using feature detection ('MutationObserver' in window). If supported, use Mutation Observer. If not supported, fall back to polling with a reasonable interval (e.g., 500ms or 1000ms, depending on the use case). This provides the best of both worlds: modern performance in modern browsers, compatibility in older browsers. Best for: maximum compatibility while maintaining performance in modern browsers.
         </p>
@@ -169,15 +170,15 @@ export default function MutationObserverAPIArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Observe Minimally:</strong> Only observe what you need. Do not observe the entire document or body unless absolutely necessary (observing the entire document causes the callback to be invoked for every DOM change on the page, which is extremely inefficient). Observe specific containers (e.g., the content feed container, the widget container) rather than the entire document. Specify only the mutation types you need (e.g., if you only care about added nodes, set childList: true and do not set attributes or characterData). This reduces overhead and ensures that the callback is invoked only for mutations you care about.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Filter Mutations:</strong> The callback may receive many mutations (especially if observing a subtree). Filter for relevant changes early in the callback (e.g., check mutation.type === "childList" to process only childList mutations, check if added nodes are of the expected type). Do not process irrelevant mutations (e.g., do not process attribute changes if you only care about added nodes). This reduces processing overhead and ensures that your logic is only applied to relevant mutations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Disconnect on Cleanup:</strong> Always call observer.disconnect() when observation is no longer needed (component unmount, feature disabled, test complete). This prevents memory leaks (the observer holds references to observed nodes, preventing garbage collection) and stale callbacks (the callback will be invoked for mutations even after the component is unmounted, which can cause errors if the callback tries to access unmounted components). In React, call disconnect in the useEffect cleanup function. In other frameworks, call disconnect in the appropriate lifecycle hook (e.g., componentWillUnmount in class components).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Avoid Infinite Loops:</strong> Do not mutate observed nodes in the callback without guarding against re-entrancy. If the callback modifies the DOM in a way that triggers more mutations, the callback will be invoked again, which may modify the DOM again, triggering more mutations, and so on (infinite loop). Use a flag to track if the mutation is from your code (e.g., let isInternal = false; if (not isInternal) isInternal = true, mutate, isInternal = false). Or observe different nodes (do not mutate what you observe). Or filter mutations to ignore mutations from your code (e.g., check if the mutation target has a specific class that you add to your own modifications). Best: minimize mutations in the callback, batch changes outside the observer (make all DOM modifications in a single script execution, after the callback completes).
           </li>
@@ -194,15 +195,15 @@ export default function MutationObserverAPIArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Observing Too Broadly:</strong> Observing the document or body catches every DOM change on the page (every script that modifies the DOM triggers the callback). This causes high overhead (callback is invoked hundreds or thousands of times per page load) and many irrelevant mutations (most DOM changes are not relevant to your use case). Observe specific containers instead (e.g., the content feed container, the widget container). This reduces overhead and ensures that the callback is invoked only for relevant mutations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Disconnecting:</strong> Forgetting to disconnect causes memory leaks (the observer holds references to observed nodes, preventing garbage collection) and stale callbacks (the callback will be invoked for mutations even after the component is unmounted, which can cause errors if the callback tries to access unmounted components). Always call disconnect when observation is no longer needed. In React, call disconnect in the useEffect cleanup function. In other frameworks, call disconnect in the appropriate lifecycle hook.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Infinite Loops:</strong> Mutating observed nodes in the callback without guarding causes infinite loops (callback modifies DOM, which triggers more mutations, which invokes the callback again, which modifies DOM again, and so on). Use a flag to track if the mutation is from your code, or observe different nodes (do not mutate what you observe), or filter mutations to ignore mutations from your code. Best: minimize mutations in the callback, batch changes outside the observer.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Processing All Mutations:</strong> Not filtering mutations in the callback wastes time processing irrelevant changes (e.g., processing attribute changes when you only care about added nodes). Filter early for relevant mutations only (e.g., check mutation.type === "childList" before processing, check if added nodes are of the expected type). This reduces processing overhead and ensures that your logic is only applied to relevant mutations.
           </li>
@@ -220,19 +221,19 @@ export default function MutationObserverAPIArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>Analytics: Track Dynamic Content</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Analytics platforms (Google Analytics, Adobe Analytics, Mixpanel) use Mutation Observer to track when content is dynamically loaded. When new product cards appear (infinite scroll, AJAX-loaded search results), Mutation Observer detects the added nodes and sends impression events (tracking which products were shown to the user). This provides more accurate engagement metrics than traditional page view analytics, because it tracks actual content consumption (what users actually saw) rather than just page loads. Mutation Observer is more efficient than polling (no repeated checks for new content) and more reliable than relying on the application to manually trigger analytics events (which may be forgotten or implemented inconsistently).
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility: Monitor ARIA Changes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Accessibility libraries (e.g., screen reader compatibility layers, accessibility auditing tools) monitor ARIA attribute changes using Mutation Observer. When aria-expanded changes on an accordion, update the visual state (expand/collapse) to match the accessibility state. When aria-live region content updates, ensure that screen readers announce the update (the browser handles this automatically, but you can use Mutation Observer to track when updates occur for analytics or custom behavior). When aria-selected changes on a tab, update the visual state (highlight the selected tab). This pattern ensures that accessibility stays synchronized with the visual UI, providing a consistent experience for all users (including users who rely on assistive technologies).
-        </p>
+        </HighlightBlock>
 
         <h3>Third-Party Integration: Embedded Widgets</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Embedded widgets (chat widgets like Intercom or Drift, ads like Google AdSense, social buttons like Facebook Like or Twitter Follow) modify the DOM after they load. Use Mutation Observer to detect when the widget has loaded (e.g., when a specific element is added to the DOM) and react accordingly: resize containers to fit the widget (e.g., adjust the height of a container to fit a chat widget), apply custom styles to match your design system (e.g., override widget styles to match your brand), track widget interactions (e.g., track when a chat widget is opened, track when a social button is clicked), initialize integrations (e.g., connect the widget to your analytics platform, connect the widget to your CRM). This pattern enables seamless integration with third-party widgets without requiring cooperation from the widget provider (you do not need the widget provider to expose a callback or event for when the widget loads).
-        </p>
+        </HighlightBlock>
 
         <h3>Developer Tools: DOM Debugging</h3>
         <p>
@@ -246,18 +247,18 @@ export default function MutationObserverAPIArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: How does Mutation Observer work and why is it better than mutation events?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Mutation Observer asynchronously watches for DOM changes and notifies via callback in a microtask (after the current script completes). It is better than mutation events for several reasons: mutation events fired synchronously for every DOM change, which meant that a single script that modified multiple DOM nodes could trigger dozens or hundreds of event handlers, each of which could modify the DOM further, triggering more events (re-entrancy problem). Mutation Observer batches all mutations that occur during a single script execution and invokes the callback only once, with an array of all mutations. This eliminates the re-entrancy problem and dramatically reduces overhead. Mutation events blocked the main thread (synchronous firing), causing jank and poor performance. Mutation Observer runs asynchronously in a microtask, avoiding main thread blocking. Mutation events were deprecated and removed from modern browsers due to these severe performance and reliability problems. Mutation Observer is the modern replacement.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do you detect dynamically added elements with Mutation Observer?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Observe the parent container with childList: true and subtree: true (to observe all descendants, not just direct children). In the callback, iterate over all mutations (for...of loop over the mutations array). For each mutation, check if mutation.type === "childList" (to process only childList mutations, ignoring attribute changes and characterData changes). For each mutation, iterate over mutation.addedNodes (a NodeList of added nodes). For each added node, check if it is an element node (node.nodeType === Node.ELEMENT_NODE) and if it matches the expected type (e.g., node.matches(".product-card") to process only product cards). Initialize the element (e.g., lazy load images, attach event listeners, send analytics events). This pattern efficiently detects and processes dynamically added elements without polling or mutation events.
             </p>

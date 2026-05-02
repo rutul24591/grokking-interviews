@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function EngagementAggregationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Engagement aggregation combines individual user interactions—likes, comments, shares, views, saves—into meaningful metrics for display and analysis. Raw engagement events are high-volume, low-value individually but become powerful signals when aggregated. A single like tells you one user approved content. A million likes tells you the content has broad appeal worthy of algorithmic amplification. Aggregation transforms noise into signal.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The challenge lies in balancing real-time accuracy with scalability. Users expect instant feedback—like counts should update immediately when they like. But aggregating millions of events in real-time is expensive. Production systems use hybrid approaches: real-time counters for display using Redis, batch aggregation for analytics using hourly or daily jobs, and approximate counting for viral content using HyperLogLog. Each approach trades accuracy for performance at different points in the system.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, engagement aggregation involves distributed systems challenges. Counters must be sharded across multiple Redis instances for viral content. Idempotent processing prevents double-counting when events are replayed. Late-arriving events from offline users or delayed processing must be handled without corrupting historical aggregates. Trending computation adds time-decay weighting to identify rising content. The architecture must scale from zero to millions of events per second without manual intervention.
         </p>
@@ -47,13 +51,16 @@ export default function EngagementAggregationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Aggregation Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Real-time aggregation updates counters on every event. When a user likes content, Redis INCR increments the counter immediately. This provides instant accuracy for display but creates write amplification—every like triggers a Redis write. At scale, this becomes expensive. Real-time aggregation works well for moderate traffic but requires sharding for viral content.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Batch aggregation collects events over time windows—typically hourly or daily—then processes them together. Events queue in Kafka or similar message queue. Batch jobs consume events, aggregate by content ID and metric type, and write results to analytics database. This approach handles massive volume efficiently but introduces latency. Batch aggregation suits analytics dashboards where hourly freshness is acceptable.
-        </p>
+        </HighlightBlock>
         <p>
           Hybrid aggregation combines both approaches. Real-time counters power user-facing displays where immediacy matters. Batch jobs compute authoritative aggregates for analytics, reconciliation, and historical trends. The batch layer corrects any drift in real-time counters and provides backup if real-time infrastructure fails. Most production systems use hybrid approaches for resilience and flexibility.
         </p>
@@ -105,9 +112,12 @@ export default function EngagementAggregationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Engagement aggregation architecture spans event collection, stream processing, batch processing, and storage layers. Events flow from client through API to message queue. Stream processors handle real-time aggregation. Batch processors handle historical aggregation. Results store in Redis for display and data warehouse for analytics.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/interaction-engagement/engagement-aggregation/aggregation-architecture.svg"
@@ -118,9 +128,9 @@ export default function EngagementAggregationArticle() {
         />
 
         <h3>Real-time Counter Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Redis provides atomic INCR and DECR operations for counter updates. Single-threaded execution ensures no race conditions between concurrent increments. Counter keys follow pattern content:ID:metric (content:123:likes). TTL on keys prevents unbounded growth for inactive content.
-        </p>
+        </HighlightBlock>
         <p>
           Sharded counters handle viral content. Split counter across N Redis keys (content:ID:likes:shard0 through shard9). Hash user ID to determine shard—same user always hits same shard. This prevents single-user from hammering single shard. Total count sums all shards. Read requires N Redis calls but viral content is read-heavy so cache the sum.
         </p>
@@ -172,14 +182,17 @@ export default function EngagementAggregationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Aggregation design involves trade-offs between accuracy, latency, and cost. Understanding these trade-offs enables informed decisions aligned with product requirements and infrastructure constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Real-time vs Batch Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Real-time aggregation provides immediate accuracy for user-facing displays. Users see their like increment the count instantly. This feedback loop encourages engagement. However, real-time requires significant infrastructure—sharded Redis clusters, async flush jobs, reconciliation processes. Cost scales linearly with engagement volume.
-        </p>
+        </HighlightBlock>
         <p>
           Batch aggregation provides cost-effective processing for analytics. Hourly batches handle massive volume with modest infrastructure. Analytics dashboards tolerate hour-old data. However, batch cannot power real-time features like live engagement notifications or instant score updates.
         </p>
@@ -220,13 +233,16 @@ export default function EngagementAggregationArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use hybrid aggregation:</strong> Real-time Redis counters for display, batch jobs for analytics. Real-time provides user experience, batch provides durability and analytics. Reconcile between layers to catch drift.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Shard viral counters:</strong> Detect content approaching viral threshold (10K engagements/hour). Automatically shard counters across multiple Redis keys. Sum shards for display. Prevents single-key bottleneck.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement idempotent processing:</strong> Track processed event IDs in Redis set with TTL. Check before processing. Use upsert operations at database layer. Prevents double-counting from event replays.
           </li>
@@ -250,13 +266,16 @@ export default function EngagementAggregationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Double counting from retries:</strong> Event processing retries without idempotency checks inflate counts. Track processed event IDs. Use idempotent operations. Test retry scenarios.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Redis bottleneck for viral content:</strong> Single counter key limits throughput. Implement automatic sharding when content approaches viral threshold. Monitor per-key ops/sec.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Lost updates on crash:</strong> Redis counters not persisted lost on crash. Async flush to database every 5 minutes. Reconciliation job corrects drift after recovery.
           </li>
@@ -274,16 +293,19 @@ export default function EngagementAggregationArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter Like Aggregation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter handles billions of likes daily. Sharded Redis counters distribute load across hundreds of instances. Vote fuzzing slightly alters displayed counts to prevent exact tracking. Async flush to Manhattan (Twitter's distributed database) provides durability. Real-time counters power tweet engagement display, batch jobs power analytics dashboards.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">YouTube View Count Aggregation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           YouTube uses hybrid aggregation for view counts. Real-time counter updates every few seconds for display. Batch verification freezes count at 301 views while verifying legitimacy—prevents view manipulation. After verification, count resumes updating. Daily batch jobs compute authoritative totals for creator analytics.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Facebook Engagement Rate</h3>
         <p>
@@ -298,12 +320,15 @@ export default function EngagementAggregationArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you aggregate engagement for viral content?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you aggregate engagement for viral content?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Shard counters by content ID hash across multiple Redis instances. For content exceeding 10K engagements/hour, automatically split into 10-100 shards. Each shard handles subset of writes. Sum all shards for total count—cache this sum since reads far exceed writes. For extreme scale (1M+ engagements), switch to HyperLogLog for approximate unique counting with 99% accuracy. Use local in-memory counters on app servers, batch flush to Redis every few seconds to reduce Redis write load.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

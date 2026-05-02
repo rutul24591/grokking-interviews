@@ -222,6 +222,10 @@ export default function Http2AndHttp3ConciseArticle() {
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
+        <HighlightBlock as="p" tier="important">
+          For interviews, connect protocol choice to user-perceived latency on mobile: handshake cost, packet loss,
+          and whether head-of-line blocking can stall critical resources.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -346,11 +350,11 @@ export default function Http2AndHttp3ConciseArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           Modern frontend optimization strategies must account for the protocol
           version your users negotiate. These practices assume HTTP/2+ as the
           baseline:
-        </HighlightBlock>
+        </p>
         <ol className="space-y-3">
           <HighlightBlock as="li" tier="crucial">
             <strong>Stop Domain Sharding:</strong> With HTTP/2+, spreading
@@ -891,8 +895,12 @@ export default function Http2AndHttp3ConciseArticle() {
 
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: HTTP/2 is about multiplexing on a single TCP connection; HTTP/3 (QUIC) is about
+          avoiding TCP head-of-line blocking and improving connection setup on lossy/mobile networks.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.rfc-editor.org/rfc/rfc9114"
               className="text-accent hover:underline"
@@ -901,8 +909,8 @@ export default function Http2AndHttp3ConciseArticle() {
             >
               RFC 9114 - HTTP/3 (IETF)
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://web.dev/performance-http2/"
               className="text-accent hover:underline"
@@ -911,8 +919,8 @@ export default function Http2AndHttp3ConciseArticle() {
             >
               Introduction to HTTP/2 - web.dev
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://blog.cloudflare.com/http3-the-past-present-and-future/"
               className="text-accent hover:underline"
@@ -921,7 +929,7 @@ export default function Http2AndHttp3ConciseArticle() {
             >
               HTTP/3: The Past, Present, and Future - Cloudflare Blog
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://developer.chrome.com/blog/removing-push/"
@@ -932,7 +940,7 @@ export default function Http2AndHttp3ConciseArticle() {
               Intent to Remove: HTTP/2 Push - Chrome Developers
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.smashingmagazine.com/2021/08/http3-core-concepts-part1/"
               className="text-accent hover:underline"
@@ -941,7 +949,7 @@ export default function Http2AndHttp3ConciseArticle() {
             >
               HTTP/3: Core Concepts - Smashing Magazine
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

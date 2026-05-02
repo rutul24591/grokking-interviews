@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function BuildOptimizationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Build Optimization</strong> encompasses the techniques, tools,
           and strategies used to reduce JavaScript bundle size, improve load
           performance, and accelerate build times for web applications. This
@@ -46,8 +50,8 @@ export default function BuildOptimizationArticle() {
           on-demand), minification (removing whitespace and shortening
           identifiers), compression (Brotli, Gzip), and caching strategies that
           ensure browsers and CDNs serve optimized assets efficiently.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Build decisions have long-term impact on both user experience and
           developer productivity. The right bundler configuration can reduce
           bundle size by 50% or more, improve load times by seconds on slow
@@ -57,7 +61,7 @@ export default function BuildOptimizationArticle() {
           slow feedback loops. For staff engineers, build optimization is a
           systems-level concern that touches infrastructure costs, developer
           experience, and end-user performance simultaneously.
-        </p>
+        </HighlightBlock>
         <p>
           The modern build tooling landscape has evolved rapidly. Webpack
           pioneered the module bundling concept with its loader ecosystem and
@@ -73,7 +77,10 @@ export default function BuildOptimizationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Bundlers serve as the foundation of the build pipeline. They take
           hundreds or thousands of source modules — JavaScript, TypeScript, CSS,
           images, and other assets — and produce a small number of optimized
@@ -84,8 +91,8 @@ export default function BuildOptimizationArticle() {
           bundle size, build speed, developer experience (HMR speed, error
           messages), and the ability to implement advanced strategies like
           module federation for micro-frontends.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tree-shaking is the process of eliminating unused code from the final
           bundle. It relies on static analysis of ES6 import and export
           statements to identify which exports are actually used by the
@@ -96,7 +103,7 @@ export default function BuildOptimizationArticle() {
           Packages must also declare <code>"sideEffects": false</code> in their
           package.json to signal that importing them has no side effects,
           enabling the bundler to safely remove unused exports.
-        </p>
+        </HighlightBlock>
         <p>
           Code splitting divides the application into multiple chunks that can
           be loaded independently, rather than delivering the entire application
@@ -117,7 +124,10 @@ export default function BuildOptimizationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The build pipeline transforms source code through a series of stages
           before producing production-ready output. The first stage is module
           resolution — the bundler traverses the import graph starting from the
@@ -127,8 +137,8 @@ export default function BuildOptimizationArticle() {
           or plugins transform non-JavaScript files: TypeScript is compiled to
           JavaScript, JSX is transformed, CSS is processed, and images are
           optimized.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The optimization stage applies tree-shaking to eliminate dead code,
           then minifies the remaining code by removing whitespace and comments,
           shortening variable names (mangling), and applying compiler
@@ -140,7 +150,7 @@ export default function BuildOptimizationArticle() {
           (app.abc123.js), creates source maps for production debugging, and
           optionally generates legacy bundles for older browsers using the
           module/nomodule pattern.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/code-splitting-strategy.svg"
@@ -168,7 +178,10 @@ export default function BuildOptimizationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Bundler selection involves trade-offs between maturity, performance,
           and developer experience. Webpack offers the most mature ecosystem with
           thousands of plugins and loaders, making it suitable for complex
@@ -180,8 +193,8 @@ export default function BuildOptimizationArticle() {
           deep customization options of webpack. esbuild achieves 10-100x faster
           builds by implementing the entire pipeline in Go, but its plugin
           ecosystem is smaller and it does not support all webpack features.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tree-shaking effectiveness depends on dependency quality. Many popular
           packages do not tree-shake well — they use CommonJS exports, have
           side effects, or re-export entire libraries through barrel files
@@ -193,7 +206,7 @@ export default function BuildOptimizationArticle() {
           lodash-es) can reduce bundle size by 50-200KB. Bundle analysis tools
           like webpack-bundle-analyzer and rollup-plugin-visualizer are essential
           for identifying these opportunities.
-        </p>
+        </HighlightBlock>
         <p>
           Code splitting introduces its own trade-offs. Over-splitting —
           creating too many small chunks — increases the number of HTTP requests
@@ -210,7 +223,10 @@ export default function BuildOptimizationArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enable ES6 module syntax throughout the dependency chain. Use
           <code>import</code> and <code>export</code> exclusively, avoid
           CommonJS <code>require()</code> calls, and mark packages as
@@ -219,8 +235,8 @@ export default function BuildOptimizationArticle() {
           of dead code. Regularly audit bundle contents with analysis tools and
           remove unused dependencies — every unused package in node_modules is a
           potential source of accidental inclusion through misconfigured imports.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement aggressive code splitting with React.lazy and Suspense for
           component-level lazy loading. Configure route-based splitting through
           your framework&apos;s built-in mechanisms (Next.js automatic route
@@ -230,7 +246,7 @@ export default function BuildOptimizationArticle() {
           immutable headers). Use the splitChunks optimization in webpack or the
           manualChunks configuration in Rollup/Vite to fine-tune chunk
           boundaries.
-        </p>
+        </HighlightBlock>
         <p>
           Optimize build performance with persistent caching. Webpack 5&apos;s
           filesystem cache stores transformation results between builds,
@@ -246,7 +262,10 @@ export default function BuildOptimizationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common tree-shaking pitfall is barrel exports — index.js
           files that re-export everything from submodules. When you write
           <code>{`import { foo } from './lib'`}</code> where lib/index.js
@@ -255,8 +274,8 @@ export default function BuildOptimizationArticle() {
           the bundle. The solution is to import directly from the source file
           (<code>{`import { foo } from './lib/foo'`}</code>) or use packages
           that provide proper ESM entry points with tree-shakeable exports.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Dynamic imports with variable paths — <code>import(`./icons/[name].js`)</code>
           — prevent static analysis and force the bundler to include all
           matching files in the output. If the icons directory contains 500
@@ -266,7 +285,7 @@ export default function BuildOptimizationArticle() {
           instead of specific functions (<code>{`import _ from 'lodash'`}</code>
           instead of <code>{`import debounce from 'lodash/debounce'`}</code>)
           includes the entire library regardless of what is actually used.
-        </p>
+        </HighlightBlock>
         <p>
           Source maps in production present a security-versus-debugging
           trade-off. Full source maps enable debugging production issues with
@@ -282,7 +301,10 @@ export default function BuildOptimizationArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Large-scale e-commerce platforms face extreme build optimization
           challenges. Product listing pages, detail pages, cart, checkout, and
           user account sections each have distinct code requirements. Route-based
@@ -293,8 +315,8 @@ export default function BuildOptimizationArticle() {
           cached chunks. A well-optimized e-commerce build reduces the initial
           bundle from 800KB to under 150KB gzipped, cutting Time to Interactive
           by 3-5 seconds on mobile networks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enterprise dashboard applications with dozens of features benefit
           from aggressive code splitting and lazy loading. Each dashboard widget
           — charts, data tables, kanban boards, calendar views — is a heavy
@@ -303,7 +325,7 @@ export default function BuildOptimizationArticle() {
           dynamic import mechanism loads widget code on demand. This approach
           prevents the &quot;dashboard of doom&quot; where users download code
           for every possible widget regardless of their role or permissions.
-        </p>
+        </HighlightBlock>
         <p>
           Design system and component library packages have unique build
           requirements. They must produce multiple output formats (CommonJS, ESM,
@@ -319,12 +341,15 @@ export default function BuildOptimizationArticle() {
 
       <section>
         <h2>Advanced Build Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Module federation for micro-frontends represents a paradigm shift in how large applications are built and deployed. Module Federation (introduced in Webpack 5) allows multiple independent builds to share code at runtime — each micro-frontend application is built separately and deployed independently, but they can import components from each other as if they were part of the same bundle. The architecture consists of a host application that loads remote components from remote applications at runtime. The host declares which remote applications it depends on (by URL), and the remote applications expose specific modules through their federation configuration. When the host requests a remote component, the remote&apos;s JavaScript is loaded dynamically and the component is rendered within the host&apos;s React tree. The critical challenge is dependency sharing — if the host and remote both bundle their own copies of React, the application will have two React instances, which causes runtime errors (React hooks require a single React instance). Module Federation solves this by declaring shared dependencies in the federation configuration, ensuring that only one copy of React is loaded (typically from the host). The trade-off is coupling — the host and remote must agree on React versions, component interfaces, and styling conventions. Module federation is most effective for large organizations where teams own distinct product areas (checkout, product catalog, user account) and need deployment independence, but it introduces operational complexity (version compatibility, cross-team coordination, runtime error isolation) that smaller teams should avoid.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Build caching strategies are the single most impactful optimization for CI/CD pipeline performance. Remote caching stores build artifacts (compiled modules, transformed files, bundle outputs) in a shared cache (AWS S3, Vercel Remote Caching, Nx Cloud) so that subsequent builds on any machine can reuse artifacts from previous builds, even on different machines. When a developer builds the application, the build tool computes a hash of each input file and its dependencies, checks the remote cache for a matching artifact, and if found, downloads the artifact instead of recomputing it. This is particularly powerful for monorepos where different developers work on different packages — if developer A builds package X, and developer B subsequently modifies only package Y, developer B&apos;s build can reuse the cached artifact for package X without rebuilding it. Distributed caching extends this concept across CI pipeline stages — the lint job, test job, and build job each produce artifacts that are cached and reused by subsequent jobs, eliminating redundant computation. The cache key computation must be comprehensive — including not just the source file contents but also the build tool version, configuration files, environment variables, and dependency versions — to ensure that cache hits produce correct results. An incorrect cache key (missing a configuration change in the hash) can serve stale artifacts, causing subtle bugs that are difficult to diagnose. Build cache invalidation is automatic — when any input changes, the hash changes, and a new artifact is produced and stored.
-        </p>
+        </HighlightBlock>
         <p>
           Monorepo build optimization with Turborepo and Nx addresses the performance challenges of building large codebases with many interdependent packages. Turborepo uses a task pipeline approach — it analyzes the dependency graph between packages and schedules build tasks in the optimal order, running independent tasks in parallel and waiting for dependencies before running dependent tasks. Turborepo&apos;s caching system stores task outputs locally and remotely, so that running the same task twice (on the same machine or a different machine) produces an instant cache hit. The key innovation is that Turborepo caches at the task level (lint, test, build) rather than the package level, so if only one package changes, only that package&apos;s tasks and its dependents are re-executed. Nx extends this with computed workspace graphs — Nx analyzes the import relationships between source files to determine exactly which packages are affected by a change, and runs tests and builds only for affected packages and their dependents. This is dramatically faster than rebuilding the entire monorepo — for a monorepo with 100 packages, a change to one package might trigger rebuilds of 5-10 dependent packages rather than all 100. The affected command (nx affected:build, nx affected:test) is essential for CI pipelines, reducing build times from 30+ minutes to 2-5 minutes for typical changes. Both Turborepo and Nx support distributed task execution — splitting the task graph across multiple CI workers, each handling a subset of packages in parallel, further reducing total build time.
         </p>
@@ -341,12 +366,15 @@ export default function BuildOptimizationArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you reduce JavaScript bundle size?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Start with tree-shaking — ensure ES6 module syntax, mark
               packages as side-effect-free, and import specific functions rather
               than entire libraries. Replace heavy dependencies (moment.js with
@@ -356,7 +384,7 @@ export default function BuildOptimizationArticle() {
               webpack-bundle-analyzer to identify the largest contributors.
               Enable minification and Brotli compression. Target under 200KB
               initial bundle gzipped.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

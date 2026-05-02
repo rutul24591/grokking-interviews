@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>API Gateway pattern</strong> is a structural design pattern that introduces a dedicated entry point between external clients and internal microservices. Instead of clients communicating directly with individual services, all inbound traffic flows through a single gateway that acts as a reverse proxy, routing requests, enforcing security policies, transforming payloads, and managing cross-cutting concerns consistently across the entire system. The gateway serves as the public-facing contract boundary where you define what APIs are stable, what can evolve, and how failures are surfaced to consumers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Organizations typically adopt an API gateway when the proliferation of microservices makes direct client-to-service communication unmanageable. When you have multiple client types (web, mobile, third-party partners, internal dashboards), each requiring different data shapes, authentication scopes, and rate limits, maintaining point-to-point integrations becomes a combinatorial nightmare. The gateway abstracts away internal topology, allowing backend services to evolve independently without breaking external consumers.
-        </p>
+        </HighlightBlock>
         <p>
           It is important to distinguish an API gateway from a traditional reverse proxy. A reverse proxy operates at layer 4 (transport) or layer 7 (application) of the OSI model, primarily forwarding traffic based on URL paths or host headers. An API gateway operates exclusively at layer 7 but adds rich application-level capabilities: authentication and authorization, rate limiting, request/response transformation, API versioning, protocol translation, response aggregation, and observability instrumentation. While a reverse proxy is infrastructure, an API gateway is a product-facing abstraction that shapes how consumers interact with your platform.
         </p>
@@ -56,6 +60,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/api-gateway-pattern-diagram-1.svg"
@@ -64,12 +71,12 @@ export default function ArticlePage() {
         />
 
         <h3>Routing Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Routing is the foundational responsibility of an API gateway. The gateway maps public API paths to internal service endpoints, and this mapping must be both flexible and performant. Path-based routing directs requests like <code>/api/users/*</code> to the user service and <code>/api/orders/*</code> to the order service. This is the simplest and most common strategy, requiring only prefix matching on the request URL. Host-based routing uses different domains or subdomains to route traffic, such as <code>api.example.com</code> for the public API and <code>admin.example.com</code> for internal tools. This is useful when you need separate gateways for different audiences.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Header-based routing examines request headers to determine routing decisions. This is particularly valuable for API versioning, where a header like <code>X-API-Version: 2</code> routes to a different backend than the default version. It is also used for A/B testing, where a specific header value routes traffic to an experimental service instance. Content-based routing inspects the request body to make routing decisions. For example, requests containing a specific resource type in the body might route to a specialized processing service. This is the most complex routing strategy and introduces latency due to body parsing, so it should be used sparingly.
-        </p>
+        </HighlightBlock>
         <p>
           Service discovery integration is critical for dynamic routing. In containerized environments where service instances scale up and down, the gateway must discover healthy backends in real time. This is typically achieved through integration with a service registry like Consul, Eureka, or Kubernetes&apos; native service discovery. The gateway subscribes to registry updates and adjusts its routing table accordingly, ensuring traffic never reaches decommissioned or unhealthy instances.
         </p>
@@ -124,9 +131,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production-grade API gateway architecture must address availability, scalability, and operational manageability. The gateway sits on the critical path for every request, so its design directly determines system reliability and performance characteristics.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/api-gateway-pattern-diagram-3.svg"
@@ -135,9 +145,9 @@ export default function ArticlePage() {
         />
 
         <h3>High-Availability Deployment</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Deploying the gateway as a single instance creates an unacceptable single point of failure. Production systems deploy multiple gateway instances behind a load balancer, typically distributed across availability zones. The load balancer performs health checks on each gateway instance and removes unhealthy instances from the rotation. Within each gateway instance, connection pooling to upstream services prevents connection exhaustion under load. Each upstream service gets its own connection pool with configurable maximum connections, idle timeouts, and health check intervals.
-        </p>
+        </HighlightBlock>
         <p>
           Configuration management is a critical operational concern. Gateway routing rules, rate limit policies, and transformation logic are configuration, not code. This configuration must be version-controlled, validated before deployment, and rolled out progressively. A bad routing rule can take down all traffic to a service, and a misconfigured rate limit can block legitimate users. The configuration pipeline should include syntax validation, staging environment testing, canary deployment to a small percentage of traffic, and automated rollback on error rate spikes.
         </p>
@@ -175,14 +185,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Every architectural decision around the API gateway involves trade-offs. Understanding these trade-offs is what separates staff-level engineers from those who apply patterns without context.
-        </p>
+        </HighlightBlock>
 
         <h3>Thin Gateway Versus Thick Gateway</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A thin gateway handles only routing, basic authentication, and rate limiting. It adds minimal latency, typically 5-15 milliseconds per request, and is easy to reason about because it does not contain business logic. The downside is that clients must make multiple requests to different services, increasing client-side complexity and network round trips. A thick gateway provides response aggregation, complex transformation, and orchestration capabilities. It simplifies client implementations by providing unified endpoints, but adds latency (50-200 milliseconds for aggregation), increases coupling between the gateway and services, and creates a deployment bottleneck where gateway changes block service changes.
-        </p>
+        </HighlightBlock>
         <p>
           The recommended approach is to start thin and add thickness only when there is a clear, measurable benefit. If multiple clients need the same aggregated response, consider whether the aggregation belongs in a dedicated service rather than the gateway. The gateway should orchestrate infrastructure concerns, not business workflows.
         </p>
@@ -220,12 +233,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Keep the gateway thin by default. Place cross-cutting infrastructure concerns in the gateway and keep business logic in services. This separation ensures that the gateway remains deployable independently of service changes and that service teams can iterate without gateway coordination. Define explicit time budgets for every operation the gateway performs. Set gateway-level timeouts that are shorter than upstream service timeouts to prevent zombie requests from consuming resources. For aggregation endpoints, set per-upstream timeouts and define graceful degradation behavior when an upstream exceeds its budget.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement per-route and per-upstream telemetry. The gateway should expose latency percentiles, error rates, and request counts for each route and each upstream service. This granularity is essential for debugging because a single slow upstream can make the entire gateway appear slow. Without per-route signals, you cannot distinguish between a gateway problem and an upstream problem. Correlate gateway telemetry with distributed trace IDs so that you can follow a request from the client through the gateway to the upstream service and back.
-        </p>
+        </HighlightBlock>
         <p>
           Treat gateway configuration with the same rigor as application code. Store configuration in version control, validate it with automated tests, deploy it through a CI/CD pipeline, and roll it out progressively with automated rollback. Configuration errors are the most common cause of gateway incidents because a single malformed routing rule can take down an entire service. Implement authentication at the gateway for identity verification and token validation, but delegate fine-grained authorization to the services that own the resources. This split keeps auth policies close to the data they protect while maintaining a consistent authentication surface at the edge.
         </p>
@@ -239,12 +255,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most pervasive pitfall is the accidental monolith, where business logic accumulates in the gateway over time. It starts innocently: a small aggregation here, a transformation there. Before long, the gateway contains routing rules that mirror internal service boundaries, response transformations that encode business rules, and conditional logic for different client types. Every product change requires a gateway change, and the gateway becomes a deployment bottleneck. The solution is discipline: define clear boundaries for what belongs in the gateway, and push anything that resembles business logic into services.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Latency amplification through retries and fan-out is the second most common failure mode. When the gateway retries every upstream failure and aggregates responses from five services, a single slow upstream can cause a cascade of delayed requests. Each retry consumes gateway resources, and fan-out aggregation is blocked by the slowest upstream. The solution is bounded retries with exponential backoff and jitter, per-upstream concurrency limits, and explicit timeout budgets for aggregation endpoints.
-        </p>
+        </HighlightBlock>
         <p>
           Configuration drift occurs when gateway configuration is modified directly in production without going through the deployment pipeline. This creates undocumented state that cannot be reproduced, tested, or rolled back. Over time, production configuration diverges from version-controlled configuration, and incidents become harder to diagnose. The solution is to disable direct production access, require all configuration changes through the pipeline, and implement automated configuration drift detection that alerts when running configuration differs from the committed version.
         </p>
@@ -261,16 +280,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Multi-Client Platform with Shared Backend Services</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A fintech company operated web, iOS, and Android applications backed by a microservices architecture handling accounts, transactions, payments, and notifications. Each client needed different data shapes and had different latency requirements. The mobile applications needed reduced payloads for cellular networks, while the web application could handle full responses. The company deployed an API gateway with response transformation to shape payloads per client type, rate limiting differentiated by client tier with free users limited to 100 requests per minute and premium users to 1000, API versioning to maintain backward compatibility during service migrations, and a mobile BFF to handle mobile-specific aggregation and caching. This architecture allowed the backend services to evolve independently while providing optimized experiences for each client type.
-        </p>
+        </HighlightBlock>
 
         <h3>Third-Party Developer Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce platform exposed its capabilities to third-party developers through a public API. The API gateway managed API key distribution and validation, per-developer rate limiting based on partnership tier, request schema validation against published OpenAPI specifications to reject malformed requests early, response caching for frequently accessed catalog data to reduce backend load, and comprehensive logging for billing and usage analytics. The gateway served as the developer-facing contract, allowing internal services to change without impacting third-party integrations. Deprecation of API versions was managed through the gateway with advance notice periods and automated migration assistance.
-        </p>
+        </HighlightBlock>
 
         <h3>Legacy System Modernization with Strangler Pattern</h3>
         <p>
@@ -288,14 +310,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between an API gateway and a reverse proxy, and when would you use each?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               A reverse proxy operates at layer 4 or layer 7 of the OSI model, primarily forwarding traffic based on URL paths or host headers. It handles TLS termination, load balancing across backends, health checks, and basic routing. It does not understand the semantics of the traffic it forwards. Examples include NGINX, HAProxy, and Envoy.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               An API gateway operates exclusively at layer 7 and adds application-level intelligence: authentication and authorization, rate limiting, request and response transformation, API versioning, response aggregation, and developer portal capabilities. It understands the semantics of the traffic and can make decisions based on content, identity, and policy.
             </p>

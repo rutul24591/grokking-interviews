@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Conflict-Free Replicated Data Types (CRDTs)</strong> are data structures designed for distributed systems where multiple replicas can be updated concurrently without coordination, yet still converge to identical state when replicas exchange and merge their updates. The convergence guarantee is mathematical: the merge operation is <strong>associative</strong>, <strong>commutative</strong>, and <strong>idempotent</strong> (ACI properties), meaning replicas can apply updates in any order, duplicate updates are harmless, and merges can happen in any grouping without affecting the final result.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CRDTs solve the fundamental tension between availability and consistency in distributed systems. Under the CAP theorem, when a network partition occurs, a system must choose between availability (accepting writes on all partitions) and consistency (rejecting writes to maintain a single truth). CRDTs choose availability and guarantee that once connectivity is restored, all replicas converge to the same state without conflict resolution protocols or manual intervention. This makes them essential for offline-first applications, multi-region write systems, and collaborative editing platforms.
-        </p>
+        </HighlightBlock>
         <p>
           There are two primary CRDT families. <strong>State-based CRDTs</strong> (Convergent Replicated Data Types, or CvRDTs) work by having each replica maintain its own state and periodically exchange full or delta state with other replicas, merging received state using a deterministic join function. <strong>Operation-based CRDTs</strong> (Commutative Replicated Data Types, or CmRDTs) work by broadcasting individual operations to all replicas, where each operation is designed to commute with all other operations regardless of delivery order. State-based CRDTs are simpler to implement but may transfer more data; operation-based CRDTs are more bandwidth-efficient but require causal delivery guarantees.
         </p>
@@ -48,6 +52,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/advanced-topics/crdt-state-merge.svg"
@@ -56,12 +63,12 @@ export default function ArticlePage() {
         />
 
         <h3>Convergent (CvRDT) vs. Commutative (CmRDT) CRDTs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The distinction between state-based and operation-based CRDTs is fundamental to implementation strategy. State-based CRDTs maintain a monotonically growing state lattice where each update moves the replica to a greater state in a partial order. The merge function is a least-upper-bound (join) operation on this lattice. For example, a G-Counter's state is a vector of per-replica counts, and the merge takes the element-wise maximum of two vectors. This guarantees convergence because the join operation is associative, commutative, and idempotent by construction.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Operation-based CRDTs, by contrast, transmit individual operations rather than full state. Each operation is designed to commute with every other operation, meaning op1 then op2 produces the same result as op2 then op1. This requires careful operation design: an increment operation commutes with another increment, but a set operation requires additional machinery (like unique identifiers or timestamps) to ensure commutativity. Operation-based CRDTs also require that operations are not lost (at-least-once delivery) but allows duplicates (idempotent application), making them suitable for gossip-based replication where delivery ordering is not guaranteed.
-        </p>
+        </HighlightBlock>
         <p>
           State-based CRDTs are generally preferred in practice because they make fewer assumptions about the delivery layer. Gossip protocols, HTTP sync, and eventual consistency storage all work naturally with state-based merge. Operation-based CRDTs are used when bandwidth is a critical constraint and the delivery infrastructure can provide causal ordering, such as in collaborative editing systems using WebSocket connections with operation sequencing.
         </p>
@@ -111,14 +118,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>CRDT-Based Collaborative Editing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Collaborative editing is the flagship use case for CRDTs. Google Docs, Figma, Notion, and Apple Notes all use CRDT-like mechanisms for real-time multi-user editing. The document is modeled as a sequence CRDT (such as RGA, Logoot, or LSEQ), where each character or element has a unique identifier and a position defined relative to its neighbors rather than by absolute index. This relative positioning ensures that concurrent insertions at the same position are resolved consistently across all replicas.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The architecture involves each client maintaining a local copy of the document as a CRDT. User edits are applied immediately to the local copy (providing zero-latency input) and broadcast to other replicas. Remote edits are merged into the local copy using the CRDT's merge function. Because the merge is ACI-compliant, edits can arrive in any order, be duplicated, or be batched without affecting convergence.
-        </p>
+        </HighlightBlock>
         <p>
           The operational challenge is metadata growth. Each inserted character in a sequence CRDT carries identifiers, position metadata, and potentially tombstones for deleted characters. A long-lived collaborative document can accumulate significant metadata overhead. Systems address this through periodic compaction (when all replicas are known to be synchronized), checkpointing, or hybrid approaches that combine CRDT convergence with Operational Transformation for bandwidth efficiency.
         </p>
@@ -151,12 +161,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CRDTs occupy a specific point in the consistency-availability trade-off space. They guarantee eventual consistency (all replicas converge) while maximizing availability (every replica accepts writes independently). The cost is that the converged state may not match the result of a serial execution of all operations. For counters and sets, convergence is straightforward: the sum or union is well-defined regardless of ordering. For registers and sequences, convergence requires explicit conflict resolution rules that may discard or reorder user data in surprising ways.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Operational Transformation (OT) is the primary alternative for collaborative editing. OT uses a central server to transform concurrent operations against each other before applying them, ensuring that all replicas apply operations in a consistent transformed order. OT achieves stronger consistency than CRDTs (closer to linearizability for the edited document) but requires a central coordination point and more complex transformation functions. CRDTs are simpler to implement for peer-to-peer or multi-master topologies, while OT excels in client-server architectures with reliable central servers.
-        </p>
+        </HighlightBlock>
         <p>
           Consensus protocols (Raft, Paxos) provide strong consistency by electing a leader and serializing all operations through it. This guarantees linearizability but sacrifices availability during network partitions and adds latency for cross-region writes. CRDTs and consensus solve different problems: consensus ensures a single agreed-upon order of operations, while CRDTs ensure convergence without requiring agreement on order. Use consensus when strong consistency is non-negotiable (financial transactions, inventory management). Use CRDTs when availability and low-latency writes are priorities (collaborative editing, user preferences, social metrics).
         </p>
@@ -170,12 +183,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Choose CRDT types based on business invariants, not just convergence properties. A CRDT guarantees that replicas converge, but it does not guarantee that the converged result is semantically correct for your application. For example, an LWW-Register converges correctly but may silently discard a concurrent update that represents meaningful user work. Validate your CRDT choice against the business semantics: is last-write-wins acceptable for user profile fields? Should concurrent shopping cart additions both be preserved? Document the conflict resolution behavior for each CRDT type in use.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Plan for metadata growth from the beginning. Every CRDT requires metadata to achieve convergence: version vectors for causal ordering, tombstones for deletions, unique tags for set elements. This metadata grows monotonically and must be garbage collected. Define a compaction strategy: when can tombstones be safely removed? How do you know all replicas have observed a deletion? For systems with bounded replica sets, this is tractable. For systems with unbounded or dynamic replica sets, you need periodic snapshotting and state reset to bound metadata size.
-        </p>
+        </HighlightBlock>
         <p>
           Define explicit convergence budgets and monitor divergence duration. Convergence is eventual, but "eventual" needs a measurable bound. Define an acceptable staleness budget (e.g., "all replicas converge within 30 seconds under normal network conditions") and monitor the actual convergence time. Track the number of unresolved conflicts and the frequency of merge operations. If divergence duration exceeds your budget consistently, the CRDT may be unsuitable for the use case, or the merge cadence needs tuning.
         </p>
@@ -189,12 +205,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most insidious pitfall is <strong>semantic mismatch</strong>: the CRDT converges correctly but the converged state does not match product expectations. For example, using LWW-Register for a collaborative text field means concurrent edits silently overwrite each other. Users perceive this as "lost updates" even though the CRDT is behaving as designed. The fix is to choose a CRDT type whose conflict resolution matches the business semantics—MV-Register for fields where concurrent updates should be preserved, or a sequence CRDT for ordered content. This pitfall is discovered through user complaints, not through testing, making it expensive to fix.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Unbounded metadata growth</strong> causes systems to degrade over time. Tombstones from deletions, version vectors from causal tracking, and unique tags from set additions all accumulate. Without a garbage collection strategy, memory and bandwidth costs grow without bound. The challenge is that garbage collection often requires coordination (knowing that all replicas have observed a deletion), which partially reintroduces the coordination that CRDTs were designed to avoid. Many teams deploy CRDTs without a compaction plan and discover the problem months later when metadata size exceeds operational budgets.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Delayed convergence</strong> creates poor user experience. If replicas merge infrequently or network partitions persist, users observe inconsistent state across devices for longer than acceptable. A user edits a document on their phone, switches to their laptop, and the edit has not appeared yet. While this is technically correct (convergence is eventual), it feels broken to users. The fix is to tune merge cadence, use delta-state CRDTs that transfer only changes rather than full state, and set explicit staleness budgets that the system monitors and alerts on.
         </p>
@@ -208,16 +227,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Collaborative Document Editing: Automerge</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Automerge is an open-source CRDT library for collaborative editing that uses a sequence CRDT for text and various other CRDT types for document metadata. Each client maintains a local document copy, applies edits immediately, and broadcasts changes via any transport (WebSocket, HTTP, peer-to-peer). Edits from other clients are merged into the local copy, converging to identical state across all replicas. The system handles offline editing naturally: disconnected clients accumulate local edits that merge seamlessly upon reconnection.
-        </p>
+        </HighlightBlock>
 
         <h3>Multi-Region Database: Riak</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Riak implements CRDTs as first-class data types: counters (PN-Counter), sets (OR-Set), maps, and registers. Each data type supports conflict-free concurrent updates across replicas in multiple datacenters. Anti-entropy processes run in the background, periodically exchanging and merging state between replicas to ensure convergence. This enables active-active multi-region deployments where writes are accepted in any datacenter, providing low-latency global access and partition tolerance.
-        </p>
+        </HighlightBlock>
 
         <h3>Offline-First Mobile: Apple Notes</h3>
         <p>
@@ -235,14 +257,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What problem do CRDTs solve in distributed systems?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               CRDTs solve the problem of concurrent updates in distributed systems without requiring coordination between replicas. Under the CAP theorem, when a network partition occurs, traditional systems must choose between availability and consistency. CRDTs choose availability and guarantee that once connectivity is restored, all replicas converge to the same state automatically, without conflict resolution protocols or manual intervention.
-            </p>
+            </HighlightBlock>
             <p>
               The convergence guarantee comes from the ACI properties: merge operations are associative (order of grouping doesn't matter), commutative (order of operands doesn't matter), and idempotent (applying the same merge twice has no additional effect). This makes CRDTs robust to message reordering, duplication, and arbitrary delivery patterns.
             </p>

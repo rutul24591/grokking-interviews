@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -41,21 +42,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Payment gateway integration</strong> is the system design work
           required to accept online payments by connecting your application to a
           payment service provider (PSP) such as Stripe, PayPal, Adyen, or
           Braintree. From a frontend perspective, this includes collecting
           payment details safely, handling user challenges (3DS/SCA), and
           coordinating the user experience with the backend payment lifecycle.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Payments are a third-party integration where the consequences of
           mistakes are unusually severe: compliance risk (PCI scope),
           fraud/chargebacks, user trust, and revenue loss. Unlike many widgets,
           payment flows are often business-critical, which means the integration
           must be secure, reliable, and operable under partial failures.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, payment integration requires balancing
           four competing concerns:
@@ -117,6 +121,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/third-party-integration/payment-flow.svg"
@@ -125,11 +132,11 @@ export default function ArticlePage() {
         />
 
         <h3>PCI DSS Compliance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           PCI DSS (Payment Card Industry Data Security Standard) is a set of
           security standards for handling card data. Compliance level depends on
           how you handle card data:
-        </p>
+        </HighlightBlock>
 
         <h4>SAQ-A (Lowest Scope — Recommended)</h4>
         <ul className="space-y-2">
@@ -170,11 +177,11 @@ export default function ArticlePage() {
             necessary. Use PSP-hosted fields instead.
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Key principle:</strong> Never let card data touch your server.
           Use PSP-hosted fields (Elements, iframe) to keep card data isolated.
           This reduces PCI scope to SAQ-A.
-        </p>
+        </HighlightBlock>
 
         <h3>3DS/SCA Authentication</h3>
         <p>
@@ -330,14 +337,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust payment architecture treats payments as a{" "}
           <strong>distributed system</strong> with multiple failure points and
           asynchronous confirmation.
-        </p>
+        </HighlightBlock>
 
         <h3>Payment Flow Architecture</h3>
-        <p>The complete payment flow involves multiple components:</p>
+        <HighlightBlock as="p" tier="important">The complete payment flow involves multiple components:</HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Payment Form:</strong> Collects payment details via
@@ -449,10 +459,13 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Payment integration involves trade-offs between security, conversion,
           and complexity.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -487,7 +500,7 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that{" "}
           <strong>
             hosted fields (Stripe Elements, Braintree Hosted Fields) are the
@@ -495,7 +508,7 @@ export default function ArticlePage() {
           </strong>
           . They provide the best balance: SAQ-A compliance, seamless UX, and
           low complexity.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -503,15 +516,18 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Hosted Fields:</strong> Stripe Elements, Braintree
             Hosted Fields, etc. Never handle raw card data.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Idempotency:</strong> Include idempotency key with
             all payment requests. Retry safely.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle 3DS Gracefully:</strong> Don't navigate away during
             3DS challenge. Show loading state.
@@ -552,15 +568,18 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Handling Raw Card Data:</strong> Never let card data touch
             your server. Use hosted fields for SAQ-A compliance.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No Idempotency:</strong> Without idempotency, network
             retries cause duplicate charges.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Trusting Frontend Confirmation:</strong> Frontend can be
             tampered with. Always wait for webhook confirmation.
@@ -593,17 +612,20 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce: Subscription Billing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Problem:</strong> E-commerce site needed recurring billing for
           subscriptions with dunning (retry failed payments).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong> Used Stripe Billing with hosted fields.
           Implemented webhook handlers for payment success/failure. Automated
           dunning with email notifications.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Results:</strong> 95% payment success rate. Automated dunning
           recovered 30% of failed payments. PCI compliance achieved (SAQ-A).
@@ -660,6 +682,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
@@ -667,14 +692,14 @@ export default function ArticlePage() {
               Question 1: What is PCI DSS and how do you achieve SAQ-A
               compliance?
             </h3>
-            <p className="text-muted mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3">
               <strong>Answer:</strong>
-            </p>
-            <p className="mb-3">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               PCI DSS (Payment Card Industry Data Security Standard) is a set of
               security standards for handling card data. Compliance level
               depends on how you handle card data:
-            </p>
+            </HighlightBlock>
             <ul className="space-y-2 mb-3">
               <li>
                 <strong>SAQ-A (Lowest Scope):</strong> Card data entered

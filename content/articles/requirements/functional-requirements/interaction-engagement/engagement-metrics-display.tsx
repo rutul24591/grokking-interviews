@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function EngagementMetricsDisplayArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Engagement Metrics Display</strong> shows users how their content is performing through views, likes, comments, shares, and other interaction counts. These metrics serve multiple purposes: they validate content creator effort, drive continued engagement through gamification, inform content strategy decisions, and provide social proof to other users. Well-designed metrics display balances accuracy, performance, and psychological impact.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Different platforms emphasize different metrics based on their business model. YouTube prioritizes watch time and subscriber growth. Instagram focuses on likes, comments, and saves. LinkedIn highlights profile views and post impressions. TikTok shows views, likes, comments, and shares prominently. Each metric choice influences creator behavior and content quality.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, engagement metrics display involves technical challenges like real-time count synchronization, handling high-velocity updates during viral events, abbreviation strategies for large numbers, privacy controls for sensitive metrics, and preventing metric manipulation. The architecture must support both public display (optimized for read performance) and private analytics (detailed breakdowns for content owners).
         </p>
@@ -47,10 +51,13 @@ export default function EngagementMetricsDisplayArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Metric Categories</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Engagement metrics fall into several categories, each serving different purposes:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Consumption Metrics:</strong> Views, impressions, reach, watch time. Measure how many people saw the content. Views typically count after a threshold (e.g., 3 seconds of visibility) to filter accidental views. Impressions count how many times content was displayed regardless of engagement.
@@ -70,9 +77,9 @@ export default function EngagementMetricsDisplayArticle() {
         </ul>
 
         <h3 className="mt-6">Display Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           How metrics are presented affects user perception:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Exact Counts:</strong> Show precise numbers (1,247 likes). Best for smaller counts where precision matters. Becomes unwieldy for large numbers.
@@ -148,9 +155,12 @@ export default function EngagementMetricsDisplayArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Metrics display architecture involves caching strategies, real-time updates, and privacy controls.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/interaction-engagement/engagement-metrics-display/metrics-display-architecture.svg"
@@ -161,9 +171,9 @@ export default function EngagementMetricsDisplayArticle() {
         />
 
         <h3>Public Metrics Pipeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Public metrics (view counts, like counts) follow an optimized read path:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Write Path:</strong> User interaction → API → Counter increment (Redis) → Async flush to database. Redis handles high-velocity writes, database provides durability.
@@ -247,9 +257,12 @@ export default function EngagementMetricsDisplayArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Metrics display design involves balancing accuracy, performance, and user experience.
-        </p>
+        </HighlightBlock>
 
         <h3>Real-time vs Delayed Updates</h3>
         <div className="overflow-x-auto">
@@ -300,9 +313,9 @@ export default function EngagementMetricsDisplayArticle() {
         />
 
         <h3 className="mt-6">Public vs Hidden Counts</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Public Counts:</strong> Visible to all users. Provides social proof, drives engagement. Risk: Creates pressure, enables comparison, can be manipulated.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Hidden Counts:</strong> Only visible to content owner. Reduces social pressure, focuses on content quality. Risk: Removes social proof signal, reduces gamification benefit.
         </p>
@@ -324,13 +337,16 @@ export default function EngagementMetricsDisplayArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use multi-level caching:</strong> CDN → Application cache → Redis → Database. Handle viral traffic without database overload.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Abbreviate large numbers:</strong> Switch to K/M/B at 1,000+. Show exact count on hover for precision when needed.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Update near real-time:</strong> 30-60 second delay acceptable for most metrics. Real-time only for critical viral content.
           </li>
@@ -354,13 +370,16 @@ export default function EngagementMetricsDisplayArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Real-time obsession:</strong> Building real-time updates for all metrics. Solution: Use near real-time for most metrics, real-time only for viral/live content.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No cache invalidation:</strong> Counts become stale and never update. Solution: Implement TTL-based invalidation and change-based invalidation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring localization:</strong> Using US abbreviations globally. Solution: Use i18n libraries for locale-specific number formatting.
           </li>
@@ -378,14 +397,17 @@ export default function EngagementMetricsDisplayArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>YouTube View Counting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           YouTube counts views after ~30 seconds of watch time to filter accidental views. Counts update in near real-time for first few hours, then batch processing for historical data. View count freezes at 301 for verification during viral events.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> View count verification at 301—pauses count to verify legitimacy before continuing, preventing fake view manipulation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Instagram Like Display</h3>
         <p>
@@ -414,12 +436,15 @@ export default function EngagementMetricsDisplayArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you count views?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you count views?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Define view threshold (e.g., 3 seconds of visibility). Deduplicate by user/session within time window (24 hours). Count in Redis for performance, async flush to database. Update display in near real-time (30-60 second delay acceptable). For viral content, implement rate limiting to prevent database overload.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

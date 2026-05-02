@@ -157,14 +157,14 @@ export default function LocalStorageConciseArticle() {
             prevents cross-site tracking via storage and is part of the broader
             Privacy Sandbox initiative.
           </li>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Private Browsing Behavior:</strong> In private/incognito
             mode, browsers handle localStorage differently. Chrome and Firefox
             provide a functional but ephemeral localStorage that is wiped when
             the private session ends. Older Safari versions threw a
             QuotaExceededError on any setItem call in private mode. Always
             wrap setItem in try/catch to handle quota errors gracefully.
-          </HighlightBlock>
+          </li>
         </ul>
       </section>
 
@@ -327,13 +327,13 @@ export default function LocalStorageConciseArticle() {
           in production applications:
         </HighlightBlock>
         <ol className="space-y-3">
-          <HighlightBlock as="li" tier="crucial">
+          <li>
             <strong>Always Wrap in Try/Catch:</strong> Every setItem call can
             throw a QuotaExceededError (storage full) or SecurityError (private
             browsing restrictions, disabled storage). Never assume writes
             succeed. Implement fallback behavior such as in-memory storage or
             graceful degradation when localStorage is unavailable.
-          </HighlightBlock>
+          </li>
           <li>
             <strong>Namespace Your Keys:</strong> Prefix keys with your
             application name or module (e.g., <code>myapp:theme</code>,{" "}
@@ -412,7 +412,7 @@ export default function LocalStorageConciseArticle() {
             <code>undefined</code>). Always wrap parse calls in try/catch and
             return a default value on failure.
           </li>
-          <HighlightBlock as="li" tier="crucial">
+          <HighlightBlock as="li" tier="important">
             <strong>Assuming localStorage Is Always Available:</strong> Server-
             side rendering frameworks (Next.js, Remix) execute code in Node.js
             where <code>window</code> and <code>localStorage</code> do not
@@ -435,14 +435,14 @@ export default function LocalStorageConciseArticle() {
             authentication. This is one of the most common security
             anti-patterns in single-page applications.
           </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Not Handling Cross-Tab Race Conditions:</strong> Two tabs
             reading, modifying, and writing the same key simultaneously can
             overwrite each other's changes. LocalStorage provides no atomic
             read-modify-write operation. Use the storage event to detect
             external changes, or implement optimistic locking with version
             counters.
-          </HighlightBlock>
+          </li>
           <li>
             <strong>Forgetting Quota Limits With Base64 Data:</strong> Base64-
             encoded data is ~33% larger than the original binary. Storing
@@ -462,7 +462,7 @@ export default function LocalStorageConciseArticle() {
           updated data that benefits from cross-session persistence:
         </HighlightBlock>
         <ul className="space-y-3">
-          <HighlightBlock as="li" tier="crucial">
+          <HighlightBlock as="li" tier="important">
             <strong>Theme Preferences:</strong> Storing the user's light/dark
             mode preference in localStorage enables instant theme application
             on page load without a flash of the wrong theme (FOUT). The
@@ -471,14 +471,14 @@ export default function LocalStorageConciseArticle() {
             <code>{'<'}head{'>'}</code> that reads localStorage before the
             body renders.
           </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Auth Tokens (Controversial):</strong> Many SPAs store JWTs
             in localStorage for convenience — the token is easily accessible
             for API calls via fetch headers. However, this is widely considered
             a security anti-pattern because any XSS vulnerability exposes the
             token. The industry consensus is shifting toward httpOnly cookies
             with CSRF protection as the safer default.
-          </HighlightBlock>
+          </li>
           <HighlightBlock as="li" tier="important">
             <strong>Form Draft Persistence:</strong> Auto-saving form input to
             localStorage prevents data loss when users accidentally navigate
@@ -515,10 +515,10 @@ export default function LocalStorageConciseArticle() {
             Avoid localStorage for these scenarios:
           </HighlightBlock>
           <ul className="mt-2 space-y-2">
-            <HighlightBlock as="li" tier="important">
+            <li>
               • Data larger than 2-3MB (use IndexedDB or server-side storage)
-            </HighlightBlock>
-            <HighlightBlock as="li" tier="crucial">
+            </li>
+            <HighlightBlock as="li" tier="important">
               • Sensitive information: passwords, tokens, PII, financial data
               (use httpOnly cookies or server sessions)
             </HighlightBlock>
@@ -611,27 +611,31 @@ export default function LocalStorageConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          localStorage comes up in interviews for three reasons: it blocks the main thread, it is unsafe for tokens
+          under XSS, and it has tricky cross-tab/SSR behaviors that cause real production bugs.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://html.spec.whatwg.org/multipage/webstorage.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               WHATWG HTML Living Standard — Web Storage
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN Web Docs — Window.localStorage
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://web.dev/articles/storage-for-the-web" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev — Storage for the Web
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html#local-storage" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               OWASP — HTML5 Security Cheat Sheet: Local Storage
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://developer.chrome.com/docs/devtools/storage/localstorage" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Chrome DevTools — View and Edit Local Storage

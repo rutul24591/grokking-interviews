@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,15 +25,18 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An <strong>AI plug-in</strong> is a self-contained extension that adds
           new capabilities to an AI system without modifying its core code.
           Unlike traditional software plug-ins that extend the application&apos;s
           code execution, AI plug-ins extend the model&apos;s capabilities by
           providing new tools, data sources, or behavioral patterns that the
           model can discover and use during execution.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           AI plug-in architecture addresses the extensibility challenge in AI
           systems: how do you add new capabilities to an AI application without
           retraining the model, rewriting the core application, or redeploying
@@ -42,7 +46,7 @@ export default function ArticlePage() {
           The AI system discovers available plug-ins at runtime, presents their
           capabilities to the model as available tools, and routes tool calls to
           the appropriate plug-in for execution.
-        </p>
+        </HighlightBlock>
         <p>
           The concept draws from both traditional plug-in architectures (like
           VS Code extensions or WordPress plugins) and the AI-specific
@@ -58,7 +62,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of AI plug-in architecture is the{" "}
           <strong>plug-in manifest</strong> — a structured declaration of the
           plug-in&apos;s capabilities, requirements, and interface. The manifest
@@ -69,8 +76,8 @@ export default function ArticlePage() {
           constraints (which versions of the host system the plug-in supports).
           The manifest is the contract between the plug-in and the host system —
           both sides agree to honor its terms.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Capability discovery</strong> is the process by which the host
           system learns what plug-ins are available and what they can do. At
           startup, the host scans for plug-ins (in a designated directory, from
@@ -81,7 +88,7 @@ export default function ArticlePage() {
           accordingly. This enables context-aware capability discovery — loading
           plug-ins relevant to the current task and unloading irrelevant ones to
           reduce the LLM&apos;s tool selection burden.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/plugin-architecture-overview.svg"
@@ -134,7 +141,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An AI plug-in system consists of several architectural layers. The{" "}
           <strong>plug-in registry</strong> maintains the catalog of available
           plug-ins, their manifests, their installation status, and their
@@ -146,7 +156,7 @@ export default function ArticlePage() {
           inputs and outputs, and handles execution errors. The{" "}
           <strong>permission manager</strong> tracks which permissions each
           plug-in has been granted and enforces them at execution time.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/plugin-sandbox-security.svg"
@@ -154,7 +164,7 @@ export default function ArticlePage() {
           caption="Sandbox security — plug-in executes in isolated environment with restricted permissions, resource limits, and monitored side effects"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>plug-in lifecycle</strong> follows a defined sequence.
           Discovery: the host finds available plug-ins from the registry or
           filesystem. Validation: the host checks compatibility (host version,
@@ -165,7 +175,7 @@ export default function ArticlePage() {
           is created, and its tools are registered with the LLM. Execution: the
           LLM calls the plug-in&apos;s tools through the router. Deactivation:
           the plug-in is unloaded and its sandbox is destroyed.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Error handling</strong> in the plug-in system must account for
           multiple failure modes: the plug-in may crash (sandbox detects
@@ -182,7 +192,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Plug-ins versus built-in tools</strong> is the extensibility
           trade-off. Built-in tools are part of the core application — they are
           tightly integrated, fully trusted, and optimized for performance.
@@ -192,8 +205,8 @@ export default function ArticlePage() {
           capabilities that every user needs. Plug-ins are appropriate for
           specialized capabilities that only some users need, or for third-party
           extensions that the core team does not maintain.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Local versus remote plug-ins</strong> involves a trust and
           latency trade-off. Local plug-ins execute within the host
           process or on the user&apos;s machine — they have low latency, full
@@ -203,7 +216,7 @@ export default function ArticlePage() {
           isolation), can leverage server-side resources (databases, APIs), but
           have higher latency, require network connectivity, and raise data
           privacy concerns (user data is sent to external servers).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/plugin-capability-negotiation.svg"
@@ -227,7 +240,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Design plug-in manifests for LLM comprehension</strong> — the
           tool names, descriptions, and parameter schemas are the LLM&apos;s
           only understanding of what the plug-in does. Use clear, specific
@@ -237,8 +253,8 @@ export default function ArticlePage() {
           having an LLM use them without any additional context — if the
           LLM cannot figure it out from the description alone, the description
           is insufficient.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement defense-in-depth sandboxing</strong> — do not rely
           on a single sandboxing mechanism. Combine OS-level isolation
           (containers, sandbox processes), language-level restrictions (read-only
@@ -246,7 +262,7 @@ export default function ArticlePage() {
           execution time), and permission checks (validate every operation
           against granted permissions). If one layer fails, the others provide
           protection.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Version plug-in manifests independently of implementation</strong>
           — the manifest (tool names, descriptions, schemas) should be versioned
@@ -271,7 +287,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most dangerous pitfall is <strong>insufficient sandboxing</strong>.
           If a plug-in can access the host&apos;s file system, network, or
           system calls without restriction, a buggy or malicious plug-in can
@@ -279,8 +298,8 @@ export default function ArticlePage() {
           isolated environment with explicit permission grants for every resource
           it accesses. Never trust a plug-in, even from a trusted publisher —
           bugs can create vulnerabilities even without malicious intent.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Tool description ambiguity</strong> leads to incorrect tool
           calls. When two plug-ins provide tools with overlapping descriptions
           (&quot;search for information&quot; from plug-in A versus
@@ -288,7 +307,7 @@ export default function ArticlePage() {
           reliably choose between them. Each tool must have a distinctive
           description that communicates its unique purpose and differentiates it
           from similar tools provided by other plug-ins.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Plugin proliferation</strong> — loading too many plug-ins
           overwhelms the LLM with tool options. Each plug-in adds tools to the
@@ -311,7 +330,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>IDE AI assistant extensions</strong> — an AI coding assistant
           with a plug-in system where third-party developers can add
           language-specific tools (Python type checking, JavaScript bundling,
@@ -320,15 +342,15 @@ export default function ArticlePage() {
           (custom linting rules, code review checklists). Each plug-in declares
           its tools and the AI assistant discovers and uses them when
           appropriate.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Enterprise AI assistant ecosystem</strong> — an enterprise
           AI platform with a plug-in marketplace where departments can install
           AI capabilities specific to their domain: HR plug-ins for policy
           queries, finance plug-ins for budget analysis, engineering plug-ins
           for incident response. Each plug-in is sandboxed, permission-gated,
           and audited for security compliance.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>AI agent tool marketplace</strong> — a marketplace where
           developers publish AI agent tools (web scraping, data analysis, code
@@ -342,20 +364,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: How do you sandbox an AI plug-in to prevent security breaches?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Sandboxing an AI plug-in requires multiple layers of defense. At the
             OS level, run the plug-in in a container (Docker) or sandbox process
             with restricted file system access (read-only mount for known
             resources, no write access to system directories), restricted network
             access (allowlist of permitted endpoints), and restricted system
             calls (seccomp profiles that block dangerous syscalls).
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             At the application level, enforce resource limits: CPU time (plug-in
             execution must complete within N seconds), memory (plug-in cannot
             allocate more than M MB), and execution depth (plug-in cannot spawn
@@ -363,7 +388,7 @@ export default function ArticlePage() {
             validate every operation the plug-in attempts against its granted
             permissions — if the plug-in tries to access a resource it was not
             granted permission for, block the operation and log it.
-          </p>
+          </HighlightBlock>
           <p>
             Additionally, validate all input from the LLM before passing it to
             the plug-in (the LLM may provide malformed or unexpected arguments),

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -40,7 +41,10 @@ export default function ArticlePage() {
       {/* ========== Definition & Context ========== */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Distributed tracing</strong> is an observability discipline that reconstructs the end-to-end journey of
           a single request as it traverses multiple services, processes, and data stores. It decomposes that journey into
           a tree of <strong>spans</strong>&mdash;each representing a discrete unit of work such as an HTTP round-trip, a
@@ -48,8 +52,8 @@ export default function ArticlePage() {
           <strong>trace</strong> by propagating a shared context identifier across every hop. The resulting trace is a
           directed acyclic graph of timed operations, each annotated with attributes describing what happened, where, and
           under what conditions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Distributed tracing emerged as a direct response to the limitations of traditional monitoring in microservice
           architectures. In a monolith, a single process log file and a set of process-level metrics (CPU, memory,
           request count) are often sufficient to diagnose performance regressions and failures. In a service mesh with
@@ -57,7 +61,7 @@ export default function ArticlePage() {
           full story, and aggregate metrics cannot distinguish between a request that took 800&nbsp;ms because one
           dependency was slow versus one that fanned out to twelve dependencies each contributing 60&nbsp;ms. Tracing
           fills this gap by providing request-level evidence rather than system-level aggregates.
-        </p>
+        </HighlightBlock>
         <p>
           The seminal work in this area is Google&apos;s <strong>Dapper</strong> paper, published in 2010, which
           established the vocabulary and architectural patterns that modern tracing systems still follow. Dapper
@@ -81,7 +85,10 @@ export default function ArticlePage() {
       {/* ========== Core Concepts ========== */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>trace</strong> is identified by a globally unique <code>trace_id</code>, typically a 128-bit
           identifier represented as a 32-character hexadecimal string. Every span within that trace shares the same
           <code>trace_id</code>, which serves as the primary key for querying and correlating spans in the trace backend.
@@ -89,8 +96,8 @@ export default function ArticlePage() {
           particular operation within the trace. The parent-child relationship between spans is expressed by storing the
           parent&apos;s <code>span_id</code> as the child&apos;s <code>parent_span_id</code>, forming a tree structure
           that can be rendered as a waterfall or flame graph.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Context propagation</strong> is the mechanism by which trace identifiers travel across process
           boundaries. When Service A calls Service B over HTTP, Service A injects the current trace context into the
           outgoing request headers. Service B extracts those headers, creates a new span with the received
@@ -100,7 +107,7 @@ export default function ArticlePage() {
           and <code>tracestate</code>, carrying vendor-specific extensions. Before W3C Trace Context, proprietary header
           formats (B3 from Zipkin, Jaeger&apos;s own format) created interoperability friction that organizations still
           deal with during migrations.
-        </p>
+        </HighlightBlock>
         <p>
           A <strong>span</strong> is a structured record with a start time, an end time (or duration), a name, a status,
           and a set of key-value attributes. Span names are intended to be low-cardinality, stable identifiers of the
@@ -147,13 +154,16 @@ export default function ArticlePage() {
       {/* ========== Architecture & Flow ========== */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production distributed tracing pipeline consists of four interconnected stages: instrumentation at the
           service layer, context propagation across network boundaries, collection and enrichment in a pipeline, and
           storage with query capabilities for analysis. Each stage introduces design decisions that affect the fidelity,
           cost, and operational usefulness of the resulting traces.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>instrumentation layer</strong> lives within each service. Modern instrumentation is largely
           handled by OpenTelemetry SDKs, which provide automatic instrumentation for common frameworks (HTTP servers and
           clients, database drivers, message queue libraries) and a manual API for application-specific spans. Automatic
@@ -164,7 +174,7 @@ export default function ArticlePage() {
           produces traces that are wide but shallow, covering every HTTP call but missing the internal logic that
           actually determines latency. Too much manual instrumentation creates a maintenance burden and risks
           inconsistency across teams.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>propagation layer</strong> is where traces succeed or fail silently. W3C Trace Context over HTTP
           is straightforward: the SDK injects <code>traceparent</code> and <code>tracestate</code> headers into outgoing
@@ -214,7 +224,10 @@ export default function ArticlePage() {
       {/* ========== Trade-offs & Comparison ========== */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most consequential trade-off in distributed tracing is between <strong>fidelity and cost</strong>. Every
           span exported carries a computational overhead: the SDK must record timestamps, serialize attributes, and
           transmit data over the network. Every span stored consumes storage and indexing resources. At high request
@@ -224,8 +237,8 @@ export default function ArticlePage() {
           uniform random sampling at 1% means that for a rare failure occurring once per 10,000 requests, an engineer
           would need to sift through approximately one million retained traces to find a single example, assuming the
           failure was sampled at all.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Head-based sampling</strong> makes the decision at the root of the trace, before any spans are
           generated. It is simple, deterministic, and has zero dependency on downstream systems. Its weakness is that it
           cannot adapt to what is actually happening: a head-sampled system treats a rare error with the same sampling
@@ -235,7 +248,7 @@ export default function ArticlePage() {
           spans for a configurable decision window, which increases memory pressure on the collector and adds latency
           to trace availability. Most production systems use a hybrid approach: head-based sampling at a low rate for
           baseline coverage, combined with tail-based sampling that overrides the decision for errors and slow requests.
-        </p>
+        </HighlightBlock>
         <p>
           Another trade-off involves <strong>automatic versus manual instrumentation</strong>. Automatic instrumentation
           via OpenTelemetry auto-instrumentation agents or SDK integrations captures the transport layer of every
@@ -272,13 +285,16 @@ export default function ArticlePage() {
       {/* ========== Best Practices ========== */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Establishing and maintaining a useful distributed tracing system requires deliberate engineering discipline
           across several dimensions. The practices below have emerged from production experience across organizations
           running tracing at scale, and they address the most common failure modes that render traces incomplete,
           misleading, or prohibitively expensive.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Standardize span naming and attribute schemas.</strong> Span names should be low-cardinality, stable
           identifiers that describe the operation, not the specific instance of it. Use <code>GET /api/orders</code>
           rather than <code>GET /api/orders/12345</code>. Attributes should follow the OpenTelemetry Semantic Conventions
@@ -288,7 +304,7 @@ export default function ArticlePage() {
           route, and response status&mdash;and enforce it through CI checks on instrumentation code. Treat changes to
           the tracing schema like changes to a public API: review them, version them, and communicate them to affected
           teams.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Bound attribute cardinality.</strong> High-cardinality attributes are the single biggest driver of
           trace storage cost and query latency. Attributes like <code>user_id</code>, <code>order_id</code>, or
@@ -338,7 +354,10 @@ export default function ArticlePage() {
       {/* ========== Common Pitfalls ========== */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Distributed tracing has a distinctive failure characteristic: it tends to fail silently. Unlike a monitoring
           system that stops reporting entirely (which at least produces a visible gap), a tracing system with broken
           propagation or aggressive sampling continues to produce traces that look plausible on the surface but are
@@ -346,7 +365,7 @@ export default function ArticlePage() {
           false confidence during incident response. An engineer examining fragmented traces may conclude that no single
           dependency is responsible for elevated latency, when in reality the missing spans&mdash;the ones that were
           never correlated due to broken propagation&mdash;would have told a different story.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/distributed-tracing-diagram-2.svg"
@@ -354,7 +373,7 @@ export default function ArticlePage() {
           caption="Tracing fails silently. Broken context propagation at gateways creates orphaned spans, uniform sampling misses rare failures, unbounded attributes cause query degradation, and async workflows lose trace context entirely."
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Broken context propagation at API gateways and proxies</strong> is the most common pitfall. Many
           API gateways, reverse proxies, and load balancers are configured to forward only a whitelist of known headers.
           If <code>traceparent</code> and <code>tracestate</code> are not on that list, they are silently dropped, and
@@ -363,7 +382,7 @@ export default function ArticlePage() {
           it requires awareness that the tracing system depends on this forwarding. Some organizations discover this
           problem months after deploying tracing, when an engineer notices that gateway spans never connect to backend
           spans.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Sampling bias that hides rare failures</strong> is another insidious problem. Uniform random sampling
           at a low rate (0.1% to 1%) is attractive for its simplicity and predictable cost, but it means that failures
@@ -418,7 +437,10 @@ export default function ArticlePage() {
       {/* ========== Real-world Use Cases ========== */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           One of the most impactful uses of distributed tracing is <strong>diagnosing tail latency in user-facing
           APIs</strong>. Consider an e-commerce platform where the checkout endpoint&apos;s p99 latency has increased
           from 400&nbsp;ms to 1.2&nbsp;seconds for a subset of users. Metrics confirm the regression but cannot
@@ -431,8 +453,8 @@ export default function ArticlePage() {
           load amplification. Without tracing, the engineer would have had to check each dependency&apos;s dashboard
           individually, a process that could have taken 15-30 minutes. With tracing, the dominant dependency was
           identified in under a minute.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another production scenario involves <strong>identifying regression after a deployment</strong>. A team
           deploys version 3.2.0 of the recommendation service, and within minutes, the overall page-load p95 latency
           increases. The deployment dashboard shows the rollout is complete and the service&apos;s own health checks
@@ -442,7 +464,7 @@ export default function ArticlePage() {
           a newly added filter condition. The fix is a targeted index addition, but without trace comparison between
           versions, the team might have spent hours investigating other potential causes&mdash;network latency, cache
           hit rates, or infrastructure saturation&mdash;before narrowing down to the new query.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Cross-team dependency analysis</strong> is a structural use case that becomes possible with mature
           tracing. In a large organization with dozens of services owned by different teams, the actual dependency graph
@@ -478,13 +500,16 @@ export default function ArticlePage() {
       {/* ========== Interview Questions & Answers ========== */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: Explain how context propagation works in distributed tracing. What happens when it breaks, and
             how do you detect and prevent it?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Context propagation is the mechanism by which trace identifiers travel across process boundaries so that
             spans from different services can be correlated into a single trace. When Service A calls Service B, Service
             A injects the current trace context&mdash;the <code>trace_id</code> and the current <code>span_id</code>
@@ -494,8 +519,8 @@ export default function ArticlePage() {
             extracts these headers, creates a new span with the received <code>trace_id</code>, sets its
             <code>parent_span_id</code> to the caller&apos;s <code>span_id</code>, and generates its own
             <code>span_id</code> for any further downstream calls.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             When propagation breaks, the trace becomes fragmented. The most common scenario is an API gateway, load
             balancer, or proxy that strips unknown headers, including <code>traceparent</code>. The downstream service,
             not receiving trace context, generates a new <code>trace_id</code> and starts a new, disconnected trace. The
@@ -503,7 +528,7 @@ export default function ArticlePage() {
             engineer examining these traces sees plausible spans but misses the connection between the gateway and the
             backend, making it impossible to determine end-to-end latency or identify which hop is responsible for a
             regression.
-          </p>
+          </HighlightBlock>
           <p>
             Detection requires monitoring propagation completeness as an explicit metric: the percentage of requests for
             which a complete trace can be assembled from edge to deepest dependency. This can be measured by injecting

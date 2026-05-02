@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function ActivitySelectionArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The <span className="font-semibold">activity selection problem</span> asks: given n
           activities, each with a start time sᵢ and a finish time fᵢ, select the maximum-size
           subset of mutually non-overlapping activities. Two activities i and j are compatible
           if fᵢ ≤ sⱼ or fⱼ ≤ sᵢ. The classical greedy rule — sort by finishing time, pick the
           earliest-finishing activity compatible with those already chosen — solves it in
           O(n log n) and is provably optimal.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Activity selection is the textbook example of how to recognize and prove a greedy
           correct via an exchange argument. The intuition is simple: the earliest-finishing
           activity leaves the most room for everything else. The proof turns that intuition
           into a formal swap that transforms any optimal solution into one containing the
           greedy choice without decreasing its size.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           The problem appears in scheduling classrooms, operating rooms, TV ad slots, CPU
           tasks on a single core, and any domain where mutually-exclusive time-bounded
@@ -50,17 +54,20 @@ export default function ActivitySelectionArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Input model.</span> n activities given by (sᵢ, fᵢ)
           with sᵢ &lt; fᵢ. Overlap is defined on the half-open interval [sᵢ, fᵢ). &ldquo;Back-
           to-back&rdquo; activities where fᵢ = sⱼ are compatible — a common source of off-by-
           one bugs if inequality is strict.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Greedy rule.</span> Sort activities by finish time.
           Pick the first. Then for each subsequent activity (in finish order), pick it if its
           start is ≥ the previously picked activity&rsquo;s finish. Skip otherwise.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Correctness — greedy-choice property.</span> Let a₁
           be the activity with the smallest finish time. There exists an optimal solution
@@ -87,18 +94,21 @@ export default function ActivitySelectionArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Iterative implementation.</span> Sort activities by
           finish time (stable sort preserves input order on ties, which is usually fine).
           Initialize last_end = −∞. Walk the sorted list; for each activity (s, f), if s ≥
           last_end emit the activity and set last_end = f. Output the emitted activities.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Recursive implementation.</span> select(i, last_end):
           scan from i, find first activity j with start ≥ last_end, emit j, recurse on (j +
           1, finish[j]). Easy to read, but the iterative version is strictly preferred in
           production.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Minimum rooms (interval partitioning).</span>
           Different problem: schedule <em>all</em> activities, using as few rooms as possible.
@@ -132,19 +142,22 @@ export default function ActivitySelectionArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Earliest-finish vs other sort keys.</span> Shortest
           duration fails (a short activity in the middle can block two long compatible ones).
           Earliest-start fails (an early-start-late-finish activity blocks everything). Fewest
           conflicts is intuitive but fails on adversarial inputs. Only earliest-finish has a
           valid exchange argument.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Greedy vs DP for weighted intervals.</span> Equal
           weights: greedy wins (simpler, same complexity). Unequal weights: greedy can be
           arbitrarily bad — a single high-weight long interval outweighs many short ones. Use
           the DP formulation.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Activity selection vs interval partitioning.</span>
           Don&rsquo;t confuse them. AS maximizes a subset on one resource; IP uses the minimum
@@ -167,15 +180,18 @@ export default function ActivitySelectionArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Sort by finish, not by start.</span> Document this
           decision in code. Someone will &ldquo;helpfully&rdquo; change it to start time.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Use half-open intervals.</span> [start, finish)
           makes back-to-back compatible without special cases and matches most calendar
           semantics.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Handle equal finish times deterministically.</span>
           Break ties by start time or by input index. Random tie-breaking makes tests flaky.
@@ -197,15 +213,18 @@ export default function ActivitySelectionArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Sorting by start time and calling it greedy.</span>
           The #1 bug. Passes some tests, fails on adversarial interleaving.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Strict vs non-strict comparison.</span> If s &gt;=
           last_end, compatible. Writing s &gt; last_end rejects back-to-back activities that
           should be compatible.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Conflating AS with interval partitioning.</span>
           &ldquo;Minimum rooms&rdquo; and &ldquo;maximum activities&rdquo; are different
@@ -229,16 +248,19 @@ export default function ActivitySelectionArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Classroom and room scheduling.</span> Universities
           and conference centers run AS as a first-pass filter to maximize hours booked per
           room. Subsequent passes handle preferences and weights.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">TV advertising and podcast sponsorship.</span>
           Maximum ad slots bookable in a program block — earliest-finish-first picks a
           packing that leaves the most remaining inventory.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Operating room and clinic scheduling.</span>
           Healthcare optimizers use weighted-interval DP for the priority-case scenario and
@@ -270,14 +292,17 @@ export default function ActivitySelectionArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">LeetCode 435 — Non-overlapping Intervals.</span>
           Minimum erasure. Answer = n − AS result.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">LeetCode 452 — Minimum Arrows.</span> Earliest-end
           greedy.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">LeetCode 253 — Meeting Rooms II.</span> Interval
           partitioning — min-heap of ends.

@@ -203,6 +203,11 @@ export default function WebSocketsConciseArticle() {
           </ol>
         </div>
 
+        <HighlightBlock as="p" tier="important">
+          Architecture interview angle: a WebSocket is a stateful connection. Your design must cover: auth at
+          handshake, token rotation, backpressure (slow consumers), and how you route messages when you scale out.
+        </HighlightBlock>
+
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/websocket-handshake.svg"
           alt="WebSocket Handshake and Communication Flow"
@@ -249,6 +254,10 @@ export default function WebSocketsConciseArticle() {
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
+        <HighlightBlock as="p" tier="important">
+          Interview framing: the trade-off is simplicity vs. capability. WebSockets enable true bidirectional
+          streaming, but you “own” connection state, load balancing, and delivery semantics.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -346,10 +355,10 @@ export default function WebSocketsConciseArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           Production-grade WebSocket implementations require attention to these
           eight practices:
-        </HighlightBlock>
+        </p>
         <ol className="space-y-3">
           <HighlightBlock as="li" tier="crucial">
             <strong>
@@ -378,14 +387,14 @@ export default function WebSocketsConciseArticle() {
             missed messages. This prevents data loss during brief network
             interruptions.
           </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Use Binary Frames for Large Payloads:</strong> For payloads
             exceeding a few kilobytes, use binary frames with efficient
             serialization (Protocol Buffers, MessagePack, CBOR) instead of JSON
             text frames. Binary encoding reduces payload size by 30-70% and
             eliminates JSON parse overhead. This is especially important for
             high-frequency updates like real-time charts or game state.
-          </HighlightBlock>
+          </li>
           <HighlightBlock as="li" tier="crucial">
             <strong>Authenticate on Handshake, Not Per-Message:</strong> Pass
             authentication tokens via query parameters (
@@ -932,8 +941,12 @@ export default function WebSocketsConciseArticle() {
 
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview-level answer: WebSockets trade request/response simplicity for long-lived connection state.
+          You should be able to discuss connection lifecycle, backpressure, auth/rotation, and horizontal scaling.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://datatracker.ietf.org/doc/html/rfc6455"
               className="text-accent hover:underline"
@@ -942,8 +955,8 @@ export default function WebSocketsConciseArticle() {
             >
               RFC 6455 - The WebSocket Protocol (IETF)
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://datatracker.ietf.org/doc/html/rfc8441"
               className="text-accent hover:underline"
@@ -952,8 +965,8 @@ export default function WebSocketsConciseArticle() {
             >
               RFC 8441 - Bootstrapping WebSockets with HTTP/2
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API"
               className="text-accent hover:underline"
@@ -962,7 +975,7 @@ export default function WebSocketsConciseArticle() {
             >
               MDN Web Docs - WebSocket API
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://socket.io/docs/v4/"
@@ -973,7 +986,7 @@ export default function WebSocketsConciseArticle() {
               Socket.IO v4 Documentation
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://web.dev/articles/websockets-basics"
               className="text-accent hover:underline"
@@ -982,7 +995,7 @@ export default function WebSocketsConciseArticle() {
             >
               web.dev - Introducing WebSockets
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

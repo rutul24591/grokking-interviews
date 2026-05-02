@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +30,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Leader election</strong> is the process by which a distributed system selects
           one node as the leader (coordinator) from among a group of candidate nodes. The leader
           is responsible for coordinating shared resources, making decisions that require a
@@ -37,8 +41,8 @@ export default function ArticlePage() {
           executed concurrently by multiple nodes. Leader election is fundamental to distributed
           systems because many coordination problems (distributed locking, transaction ordering,
           configuration management) require a single decision-maker to ensure correctness.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider a distributed database with three replica nodes. When a client sends a write
           request, one node must be designated as the leader to determine the order of writes
           and ensure that all replicas apply writes in the same order. Without a leader, two
@@ -47,7 +51,7 @@ export default function ArticlePage() {
           write, replicates the write to follower nodes in order, and waits for a majority of
           nodes to acknowledge before committing the write. This ensures that all replicas
           apply writes in the same order, maintaining consistency.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, leader election requires understanding the trade-offs
           between election algorithms (Bully, Raft, Zab), failure detection mechanisms, split-brain
@@ -77,6 +81,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/leader-election-algorithms.svg`}
@@ -85,20 +92,20 @@ export default function ArticlePage() {
         />
 
         <h3>Leader Election Requirements</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A correct leader election algorithm must satisfy three requirements. <strong>Safety</strong>:
           at most one leader is elected at any time (no split-brain). <strong>Liveness</strong>:
           eventually a leader is elected if one does not exist (the system does not remain leaderless
           indefinitely). <strong>Agreement</strong>: all nodes agree on who the leader is (no two
           nodes believe different nodes are the leader).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These requirements must hold even in the face of node failures (crash failures, where a
           node stops responding) and network partitions (where some nodes cannot communicate with
           others). The CAP theorem applies: during a network partition, the system must choose
           between safety (not electing a leader if a quorum cannot be formed) and liveness
           (electing a leader even if some nodes are unreachable, risking split-brain).
-        </p>
+        </HighlightBlock>
 
         <h3>Failure Detection</h3>
         <p>
@@ -149,22 +156,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Raft Leader Election</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Raft is the most widely used leader election algorithm in production systems. It operates
           in terms (monotonically increasing logical clock values). Each term begins with a leader
           election: a candidate node increments its term, requests votes from other nodes, and
           becomes the leader if it receives votes from a majority of nodes. Each node grants at
           most one vote per term, ensuring that at most one candidate can win the election.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The leader sends periodic heartbeats (AppendEntries RPCs with no log entries) to maintain
           its authority. If a follower does not receive a heartbeat within its election timeout, it
           transitions to candidate state, increments its term, and starts a new election. The
           election timeout is randomized (e.g., 150-300ms) to prevent multiple nodes from starting
           elections simultaneously, which would cause vote splitting and election timeouts.
-        </p>
+        </HighlightBlock>
 
         <h3>ZooKeeper-Based Leader Election</h3>
         <p>
@@ -196,7 +206,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Leader election algorithms involve trade-offs between safety, performance, and
           complexity. The Bully algorithm is simplest to implement but generates O(N²) messages
           per election, making it unsuitable for large clusters. Raft provides strong safety
@@ -204,15 +217,15 @@ export default function ArticlePage() {
           but requires a majority quorum to proceed. ZooKeeper-based election provides efficient
           failure detection (only one watcher per candidate) and automatic cleanup (ephemeral
           znodes), but depends on an external ZooKeeper cluster, adding operational complexity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that Raft is the preferred algorithm for most production
           systems because it provides strong safety guarantees, reasonable performance, and is
           well-understood (used by etcd, Consul, CockroachDB, TiDB). ZooKeeper-based election
           is preferred when the system already depends on ZooKeeper for other coordination
           tasks (configuration management, service discovery), avoiding the need to implement
           a separate election protocol.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -220,20 +233,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use an odd number of nodes (3, 5, or 7) for the election cluster. An odd number ensures
           that a majority can be formed even if one node fails (3 nodes tolerate 1 failure, 5 nodes
           tolerate 2 failures). Adding an even number of nodes does not increase fault tolerance
           (4 nodes tolerate 1 failure, same as 3 nodes) but increases the quorum size, making
           elections slower and more prone to failure during network partitions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Randomize election timeouts to prevent vote splitting. If all nodes start elections
           simultaneously, they split the vote (no candidate receives a majority), and all nodes
           time out again, causing repeated election timeouts. Randomized timeouts (e.g., 150-300ms)
           ensure that one node times out first and starts its election before the others, giving
           it a head start in collecting votes.
-        </p>
+        </HighlightBlock>
         <p>
           Implement leader lease: when a node becomes the leader, it receives a lease (time-bound
           authority) from the quorum. During the lease period, the leader can make decisions
@@ -257,20 +273,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is using an even number of nodes in the election cluster.
           Four nodes tolerate only 1 failure (same as 3 nodes) but require 3 votes for a
           quorum (instead of 2 for 3 nodes), making elections harder to complete during network
           partitions. The fix is to use 3, 5, or 7 nodes — odd numbers that maximize fault
           tolerance for the cluster size.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not randomizing election timeouts causes vote splitting and repeated election
           timeouts. If all nodes use the same election timeout, they all start elections
           simultaneously, split the vote, and time out again. The fix is to randomize the
           election timeout within a range (e.g., 150-300ms) so that one node consistently
           starts its election before the others.
-        </p>
+        </HighlightBlock>
         <p>
           Assuming the leader is always correct is a safety pitfall. The leader may have
           uncommitted state (writes that were accepted by the leader but not yet replicated
@@ -293,26 +312,29 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>etcd: Raft-Based Leader Election</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           etcd uses Raft for leader election in Kubernetes clusters. The etcd leader coordinates
           configuration updates, service discovery, and distributed locking for the Kubernetes
           control plane. When the leader fails, a new election completes within 1-3 seconds,
           and the new leader resumes coordination. etcd uses leader leases to reduce the
           communication overhead of read operations: the leader serves reads from its local
           state during the lease period without consulting the quorum.
-        </p>
+        </HighlightBlock>
 
         <h3>Apache Kafka: Controller Election</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Kafka uses ZooKeeper-based leader election to elect a controller node that manages
           partition leadership (which broker is the leader for each partition), replica
           reassignment, and topic creation/deletion. When the controller fails, ZooKeeper
           automatically detects the failure (through ephemeral znode deletion) and the next
           broker in the sequential order becomes the new controller. This election completes
           within 100-500ms, ensuring minimal disruption to Kafka&apos;s partition management.
-        </p>
+        </HighlightBlock>
 
         <h3>Consul: Server Leader Election</h3>
         <p>
@@ -329,18 +351,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is leader election and why is it needed?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Leader election selects one node from a group of candidates to serve as the
               coordinator for shared resources or decisions that require a single point of
               authority. It is needed because many distributed system problems (distributed
               locking, transaction ordering, configuration management) require a single
               decision-maker to ensure correctness.
-            </p>
+            </HighlightBlock>
             <p>
               Without a leader, multiple nodes might concurrently make conflicting decisions,
               leading to inconsistent state. The leader serializes decisions and ensures that

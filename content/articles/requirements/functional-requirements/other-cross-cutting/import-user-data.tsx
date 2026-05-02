@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ImportUserDataArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Import User Data enables users to import their data from external sources into the platform. Users can request import (request data import), upload data (upload data files), validate data (validate imported data), and track import (track import progress). Import user data is fundamental to data portability (users can bring their data), user onboarding (users can onboard with existing data), and competitive switching (users can switch from competitors). For platforms with user data, effective import user data is essential for data portability, user onboarding, and competitive switching.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, import user data architecture involves import requests (manage import requests), import validation (validate import data), import processing (process import data), import formats (support import formats), and import management (manage import process). The implementation must balance flexibility (support multiple formats) with security (validate import data) and performance (process imports efficiently). Poor import user data leads to data loss, security issues, and user frustration.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of import user data extends beyond simple data upload. Import requests (manage import requests). Import validation (validate import data). Import processing (process import data). Import formats (support import formats). Import security (secure import data). For staff engineers, import user data is a data portability infrastructure decision affecting data portability, user onboarding, and competitive switching.
         </p>
@@ -46,13 +50,16 @@ export default function ImportUserDataArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Import Requests</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Import request enables users to request import. Request submission (submit import request). Request validation (validate import request). Request tracking (track import request). Import request enables import requests. Benefits include user control (users control import), tracking (track import requests). Drawbacks includes request overhead (request overhead), complexity (complexity).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Request management manages import requests. Request queue (queue import requests). Request processing (process import requests). Request completion (complete import requests). Request management enables import request management. Benefits include management (manage requests), processing (process requests). Drawbacks includes management overhead (management overhead), complexity (complexity).
-        </p>
+        </HighlightBlock>
         <p>
           Request status shows import request status. Request pending (show pending status). Request processing (show processing status). Request complete (show complete status). Request status enables import request status. Benefits include transparency (transparent status), user awareness (user awareness). Drawbacks includes status overhead (status overhead), complexity (complexity).
         </p>
@@ -104,9 +111,12 @@ export default function ImportUserDataArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Import user data architecture spans import service, validation service, processing service, and management service. Import service manages imports. Validation service manages import validation. Processing service manages import processing. Management service manages import management. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/import-user-data/import-architecture.svg"
@@ -117,9 +127,9 @@ export default function ImportUserDataArticle() {
         />
 
         <h3>Import Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Import service manages user imports. Import storage (store imports). Import retrieval (retrieve imports). Import update (update imports). Import service is the core of import user data. Benefits include centralization (one place for imports), consistency (same imports everywhere). Drawbacks includes complexity (manage imports), coupling (services depend on import service).
-        </p>
+        </HighlightBlock>
         <p>
           Import policies define import rules. Default imports (default imports). Import validation (validate imports). Import sync (sync imports). Import policies automate import management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function ImportUserDataArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Import user data design involves trade-offs between flexible and limited format support, comprehensive and limited validation, and automatic and manual processing. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Format Support: Flexible vs. Limited</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Flexible format support (support many formats). Pros: User convenience (user convenience), competitor data (competitor data), user onboarding (user onboarding). Cons: Complexity (complexity), validation overhead (validation overhead), security risk (security risk). Best for: User convenience, competitor data.
-        </p>
+        </HighlightBlock>
         <p>
           Limited format support (support few formats). Pros: Simplicity (simplicity), lower overhead (lower overhead), security (security). Cons: User inconvenience (user inconvenience), no competitor data (no competitor data), limited onboarding (limited onboarding). Best for: Simplicity, security.
         </p>
@@ -207,13 +220,16 @@ export default function ImportUserDataArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide import requests:</strong> Import request. Request management. Request status. Let users request.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enable import formats:</strong> JSON format. CSV format. Proprietary format. Let users choose.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Validate imports:</strong> Data validation. Security validation. Permission validation.
           </li>
@@ -243,13 +259,16 @@ export default function ImportUserDataArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No import requests:</strong> Can&apos;t request import. <strong>Solution:</strong> Provide import requests.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No import formats:</strong> Can&apos;t choose format. <strong>Solution:</strong> Enable import formats.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No import validation:</strong> Can&apos;t validate import. <strong>Solution:</strong> Validate imports.
           </li>
@@ -279,16 +298,19 @@ export default function ImportUserDataArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Social Media Import</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms provide import. Contact import (import contacts). Photo import (import photos). Post import (import posts). Users control social media import.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">E-commerce Import</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms provide import. Order import (import order history). Product import (import product preferences). Review import (import review history). Users control e-commerce import.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Cloud Service Import</h3>
         <p>
@@ -308,12 +330,15 @@ export default function ImportUserDataArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design import user data that balances flexibility with security?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design import user data that balances flexibility with security?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement import with security because users want flexible import (various formats, various sources) but want security (no malware, no data corruption, no unauthorized access). Import data: import user data (from various sources, various formats, various sizes)—user convenience, data portability. Validate data: validate import data (format validation, schema validation, data type validation, size limits)—prevent corrupt data, ensure data integrity. Secure data: secure import data (malware scanning, data sanitization, access controls, encryption)—protect from malicious imports. Monitor security: monitor security (scan results, validation failures, access attempts, anomalies)—detect threats, respond quickly. The security insight: users want flexible import but want security—provide import (various sources, formats, sizes) with validation (format, schema, type, size), security (malware, sanitization, access, encryption), monitor (scans, failures, attempts, anomalies), and balance flexibility with security.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

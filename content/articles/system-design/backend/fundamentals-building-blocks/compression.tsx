@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function CompressionArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Compression</strong> reduces payload size by encoding data more efficiently, trading CPU cycles for bandwidth savings. Compression algorithms identify and eliminate redundancy in data: repeated patterns are replaced with shorter representations, and statistical encoding assigns shorter codes to frequent symbols. The compression ratio (original size / compressed size) determines bandwidth savings, while compression/decompression speed determines CPU cost and latency impact.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For backend engineers, compression is a daily operational decision with significant cost and performance implications. Uncompressed APIs waste bandwidth (increasing egress costs and latency for slow networks), but over-compression wastes CPU (increasing server costs and tail latency). The optimal strategy depends on payload characteristics (text compresses well, binary media does not), bottleneck location (bandwidth-bound vs CPU-bound), and client capabilities (mobile networks benefit more than datacenter networks).
-        </p>
+        </HighlightBlock>
         <p>
           The key insight is that compression is not a default choice — it is a trade-off that must be evaluated per workload. Text payloads (JSON, HTML, CSS) compress 70-90% with gzip, making compression almost always beneficial. Binary media (JPEG, PNG, MP4) are already compressed, so HTTP compression wastes CPU and can even increase size. For APIs, compress responses above a size threshold (1-10KB) where bandwidth savings exceed CPU cost. For internal services, consider uncompressed binary protocols (Protobuf) that avoid compression overhead entirely.
         </p>
@@ -36,16 +40,19 @@ export default function CompressionArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compression encompasses several interconnected concepts that govern how data is encoded, transmitted, and decoded across systems.
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Compression Algorithms:</strong> Different algorithms optimize for different goals. <strong>gzip</strong> (DEFLATE algorithm) is the universal standard — widely supported, moderate compression ratio (70-90% for text), moderate speed. <strong>Brotli</strong> (Google) offers better compression (15-25% better than gzip) but slower compression speed — ideal for static assets compressed offline. <strong>LZ4</strong> and <strong>Snappy</strong> prioritize speed over ratio — ideal for real-time compression where latency matters more than bandwidth. <strong>Zstandard</strong> (Facebook) offers a tunable trade-off between gzip and LZ4 — increasingly popular for log compression and internal services.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Compression Levels:</strong> Most algorithms offer levels (1-9 for gzip, 0-11 for Brotli) that trade CPU for compression ratio. Level 1 is fastest (lowest ratio), level 9/11 is slowest (best ratio). For dynamic compression (API responses), use moderate levels (gzip 4-6, Brotli 4-5) that balance CPU and ratio. For static compression (assets compressed offline), use maximum levels (gzip 9, Brotli 11) because compression happens once and serves millions of requests.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>HTTP Content Encoding:</strong> HTTP uses the <code>Content-Encoding</code> header to indicate compression (gzip, br, deflate). Clients advertise supported encodings via <code>Accept-Encoding</code> header (e.g., <code>Accept-Encoding: gzip, deflate, br</code>). Servers select the best mutually supported encoding. CDNs and reverse proxies can compress on behalf of origin servers, but origin must set <code>Vary: Accept-Encoding</code> to prevent cache poisoning (serving compressed response to client that doesn't support it).
           </li>
@@ -69,9 +76,12 @@ export default function CompressionArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding how compression flows through system architecture is essential for optimizing bandwidth and CPU usage. A typical response traverses multiple layers, each with potential compression opportunities.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/fundamentals-building-blocks/compression-algorithms-comparison.svg"
@@ -97,9 +107,9 @@ export default function CompressionArticle() {
           </ol>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Compression Decision Flow:</strong> Compression should be conditional based on payload characteristics and client capabilities. Decision flow: (1) Check <code>Accept-Encoding</code> header — if client doesn't support compression, skip. (2) Check content type — compress text/*, application/json, application/xml; skip image/*, video/*, application/zip. (3) Check payload size — skip compression for small payloads (&lt;1KB) where CPU cost exceeds bandwidth savings. (4) Check CPU load — skip compression during CPU saturation (use circuit breaker pattern). (5) Compress with appropriate algorithm and level based on payload type and server capacity.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Streaming Compression Flow:</strong> For large responses or event streams, use streaming compression. Flow: (1) Initialize compressor with chosen algorithm and level. (2) As application generates response chunks, feed each chunk to compressor. (3) Compressor emits compressed bytes immediately. (4) Send compressed bytes to client as they arrive. (5) Finalize compressor when response is complete. Streaming reduces TTFB because first compressed bytes are sent before entire response is generated.
@@ -108,6 +118,9 @@ export default function CompressionArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -289,12 +302,12 @@ export default function CompressionArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When to Use Each Algorithm</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <strong>Use gzip when:</strong> you need universal compatibility (all clients support gzip), compressing dynamic API responses, or balancing CPU and bandwidth costs. Gzip is the safe default for most workloads.
-          </p>
-          <p className="mt-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-3">
             <strong>Use Brotli when:</strong> compressing static assets offline (HTML, CSS, JS), serving via CDN, or optimizing for mobile clients (bandwidth-constrained networks). Pre-compress at maximum level (11) and cache at edge.
-          </p>
+          </HighlightBlock>
           <p className="mt-3">
             <strong>Use LZ4/Snappy when:</strong> latency matters more than bandwidth (internal RPC, real-time streaming), compressing logs (high throughput, low CPU budget), or bandwidth is cheap (datacenter networks). Prioritize speed over ratio.
           </p>
@@ -306,16 +319,19 @@ export default function CompressionArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production compression requires discipline and operational rigor. These best practices prevent common mistakes and accelerate incident response.
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Compress Text, Skip Binary:</strong> Compress text formats (JSON, HTML, CSS, XML, plain text) which compress 70-90%. Skip already-compressed binary media (JPEG, PNG, MP4, ZIP) which waste CPU and can increase size. Configure content type filters at web server or application layer: compress <code>text/*</code>, <code>application/json</code>, <code>application/xml</code>; skip <code>image/*</code>, <code>video/*</code>, <code>application/zip</code>.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Size Thresholds:</strong> Skip compression for small payloads (&lt;1KB) where CPU cost exceeds bandwidth savings. Compression has fixed overhead (header, dictionary initialization) that dominates for small payloads. Configure minimum size threshold (1-10KB depending on algorithm). For APIs, measure actual payload sizes and set threshold where compression becomes beneficial.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Set Vary: Accept-Encoding:</strong> Always set <code>Vary: Accept-Encoding</code> header when compression is conditional on client capabilities. This tells CDNs and caches to store separate variants for each encoding (gzip, br, uncompressed). Without <code>Vary</code>, caches may serve compressed response to clients that don't support compression (cache poisoning).
           </li>
@@ -333,16 +349,19 @@ export default function CompressionArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Even experienced engineers fall into compression traps. These pitfalls are common sources of wasted CPU, increased latency, and security vulnerabilities.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Compressing Already-Compressed Data:</strong> JPEG, PNG, MP4, and ZIP files are already compressed. Applying gzip to these formats wastes CPU and can increase size (gzip header overhead exceeds any savings). Prevention: configure content type filters to skip <code>image/*</code>, <code>video/*</code>, <code>application/zip</code>. Measure actual compression ratio — if ratio is &lt;5%, skip compression for that content type.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing Vary: Accept-Encoding:</strong> Serving compressed responses without <code>Vary: Accept-Encoding</code> causes cache poisoning. CDN caches compressed response and serves it to clients that don't support compression. Prevention: always set <code>Vary: Accept-Encoding</code> when compression is conditional. Test cache behavior with different <code>Accept-Encoding</code> values.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Using Maximum Compression Levels for Dynamic Content:</strong> Brotli level 11 or gzip level 9 are too slow for dynamic compression. Level 11 Brotli can take 100ms+ for 100KB payloads, dominating response latency. Prevention: use moderate levels (gzip 4-6, Brotli 4-5) for dynamic compression. Reserve maximum levels for offline pre-compression.
           </li>
@@ -363,15 +382,18 @@ export default function CompressionArticle() {
 
       <section>
         <h2>Production Case Studies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-world compression incidents demonstrate how theoretical patterns manifest in production and how systematic debugging accelerates resolution.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Case Study 1: Brotli Level 11 Latency Spike</h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             <strong>Symptom:</strong> API p99 latency spikes from 100ms to 500ms after enabling Brotli compression. Affects 5% of requests (large payloads).
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             <strong>Debugging Process:</strong> Tracing showed compression time dominating response time for payloads &gt;100KB. Brotli level was set to 11 (maximum). Compression time for 100KB payload was 150ms at level 11 vs 15ms at level 5.
           </p>
@@ -427,9 +449,12 @@ export default function CompressionArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding compression performance characteristics helps set realistic SLOs and identify bottlenecks.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Compression Algorithm Performance (100KB Text Payload)</h3>
@@ -500,12 +525,12 @@ export default function CompressionArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Compression Ratio by Content Type</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>JSON APIs:</strong> 70-85% compression ratio (gzip level 6). Large responses (&gt;10KB) benefit most.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>HTML/CSS/JS:</strong> 75-90% compression ratio (Brotli level 11 for static). Pre-compression essential.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Plain Text:</strong> 70-85% compression ratio. Highly compressible.
             </li>
@@ -524,19 +549,22 @@ export default function CompressionArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compression decisions directly impact infrastructure costs. Understanding cost drivers helps optimize architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Bandwidth vs CPU Trade-offs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Bandwidth Savings:</strong> Compression reduces egress costs. For 1TB/month egress at $0.09/GB, 75% compression saves ~$67/month. For high-traffic services (100TB+/month), savings are significant ($6,700+/month).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>CPU Cost:</strong> Compression consumes CPU cycles. At $0.05/hour per vCPU, compressing 1M requests/day at 10ms/request costs ~$0.36/day in CPU time. For high-traffic services, CPU cost can exceed bandwidth savings.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Break-even Point:</strong> Compression is beneficial when bandwidth savings exceed CPU cost. For small payloads (&lt;1KB), CPU cost dominates — skip compression. For large payloads (&gt;10KB), bandwidth savings dominate — compress aggressively.
             </li>
@@ -561,12 +589,15 @@ export default function CompressionArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: When should you avoid compression?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: When should you avoid compression?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Avoid compression when: payloads are small (&lt;1KB) where CPU cost exceeds bandwidth savings, content is already compressed (JPEG, PNG, MP4, encrypted data), server is CPU-bound (compression would worsen tail latency), or latency is critical (real-time systems where every millisecond counts). For APIs, measure actual payload sizes and compression ratios to determine break-even points.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

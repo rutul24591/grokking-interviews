@@ -403,10 +403,10 @@ export default function ApiRateLimitingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           These practices represent hard-won lessons from operating rate-limited
           frontend applications at scale:
-        </HighlightBlock>
+        </p>
         <ol className="space-y-3">
           <HighlightBlock as="li" tier="crucial">
             <strong>Always Parse Rate Limit Headers:</strong> Never rely solely
@@ -777,8 +777,12 @@ export default function ApiRateLimitingArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          For staff-level interviews, be ready to quote: which headers you rely on (if any), how you treat 429s,
+          and how you coordinate client throttles with server enforcement to avoid thundering herds.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting"
               className="text-accent hover:underline"
@@ -787,8 +791,8 @@ export default function ApiRateLimitingArticle() {
             >
               GitHub API Rate Limit Documentation
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://stripe.com/docs/rate-limits"
               className="text-accent hover:underline"
@@ -797,7 +801,7 @@ export default function ApiRateLimitingArticle() {
             >
               Stripe Rate Limiting
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://developer.twitter.com/en/docs/twitter-api/rate-limits"
@@ -808,7 +812,7 @@ export default function ApiRateLimitingArticle() {
               Twitter API Rate Limits
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/"
               className="text-accent hover:underline"
@@ -817,7 +821,7 @@ export default function ApiRateLimitingArticle() {
             >
               AWS Architecture Blog: Exponential Backoff and Jitter
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://sre.google/sre-book/handling-load/"
@@ -828,7 +832,7 @@ export default function ApiRateLimitingArticle() {
               Google SRE Book: Handling Load
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://datatracker.ietf.org/doc/html/rfc6585#section-4"
               className="text-accent hover:underline"
@@ -837,7 +841,7 @@ export default function ApiRateLimitingArticle() {
             >
               RFC 6585: Additional HTTP Status Codes (429 Too Many Requests)
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://developer.mixpanel.com/docs"

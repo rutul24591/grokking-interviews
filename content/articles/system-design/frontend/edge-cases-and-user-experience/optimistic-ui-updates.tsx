@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,12 +37,15 @@ export default function OptimisticUiUpdatesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Optimistic UI updates</strong> are a frontend pattern where the user interface immediately reflects the expected result of an operation before the server confirms it, making interactions feel instantaneous by hiding network latency. When a user clicks a &ldquo;Like&rdquo; button, the heart icon fills and the count increments immediately — not after a 200-millisecond round trip to the server. When a user sends a message, it appears in the chat thread instantly, not after the POST request completes. This pattern fundamentally changes the perceived responsiveness of web applications, making them feel as fast as native applications despite the inherent latency of client-server communication.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The technique works because most user operations succeed — network requests complete successfully in the vast majority of cases, typically 99% or higher for well-architected services. By assuming success and updating the UI immediately, the application provides instant feedback for the common case while handling the rare failure case through rollback or reconciliation. The key insight is that waiting for server confirmation penalizes every user for every interaction to protect against a failure rate that is typically under one percent. Optimistic updates invert this tradeoff — the common case is instant and the rare case requires additional handling.
-        </p>
+        </HighlightBlock>
         <p>
           At the staff and principal engineer level, optimistic updates introduce significant complexity in state management, error handling, and data consistency. The frontend must maintain both the optimistic state (what the user sees) and the authoritative state (what the server has confirmed), reconcile them when the server response arrives, and roll back the optimistic state if the operation fails. This dual-state management becomes especially complex when multiple optimistic updates are in flight simultaneously, when operations depend on each other, or when multiple users modify the same data concurrently. The architectural challenge is building a system that feels instant to users while maintaining the correctness guarantees that the application requires.
         </p>
@@ -52,13 +56,16 @@ export default function OptimisticUiUpdatesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Optimistic Response:</strong> A locally generated prediction of what the server&apos;s response will be, applied to the UI cache immediately upon initiating a mutation. For a &ldquo;like&rdquo; action, the optimistic response predicts that the like count will increment by one and the current user will be added to the list of likers. The optimistic response must match the shape and schema of the real server response to integrate seamlessly with the existing rendering logic.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Rollback:</strong> The process of reverting the UI to its pre-optimistic state when a server request fails. Rollback must be immediate, complete, and visually clear — the like count goes back down, the sent message shows a failure indicator, the deleted item reappears. Effective rollback requires snapshotting the pre-mutation state before applying the optimistic update so it can be restored. Libraries like React Query handle this through their onMutate callback, which returns a context object containing the previous state for rollback in onError.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Reconciliation:</strong> The process of merging the server&apos;s authoritative response with the current optimistic state when the server confirms the operation. In simple cases, the server response directly replaces the optimistic data. In complex cases — when additional optimistic updates have been applied on top of the first one, or when the server response includes data the client could not predict (generated IDs, timestamps, computed fields) — reconciliation must carefully merge the authoritative data without disrupting subsequent optimistic updates.
           </li>
@@ -82,18 +89,21 @@ export default function OptimisticUiUpdatesArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The first diagram illustrates the optimistic update lifecycle for a typical mutation. The user initiates an action, and the mutation handler simultaneously sends the request to the server and applies the optimistic response to the local cache. The UI immediately reflects the optimistic state. When the server responds successfully, the optimistic data is replaced with the authoritative server response through reconciliation. If the server returns an error, the rollback mechanism restores the pre-mutation state and displays an appropriate error message. Throughout this lifecycle, the pending state indicator reflects whether the operation is optimistic (unconfirmed), confirmed, or failed. The diagram highlights the temporal overlap — the user sees the result immediately while the server processes the request in parallel.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/edge-cases-and-user-experience/optimistic-ui-updates-diagram-1.svg"
           alt="Optimistic update lifecycle showing parallel UI update and server request with reconciliation and rollback paths"
           width={900}
           height={500}
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The second diagram shows the complexity that arises with concurrent optimistic mutations on the same entity. User A applies optimistic update M1 (like a post), then immediately applies M2 (comment on the same post) before M1 is confirmed. The local state now reflects both M1 and M2 optimistically. If M1 fails and rolls back, the system must determine whether M2 is still valid — in this case it is, because commenting does not depend on liking. But if M1 were &ldquo;create a list&rdquo; and M2 were &ldquo;add item to that list,&rdquo; M2&apos;s rollback would also be necessary. The diagram shows the mutation queue tracking the state and dependencies of each mutation, enabling correct sequential rollback when earlier mutations fail.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/edge-cases-and-user-experience/optimistic-ui-updates-diagram-2.svg"
           alt="Concurrent optimistic mutation handling showing mutation queue, dependency tracking, and cascading rollback scenarios"
@@ -113,6 +123,9 @@ export default function OptimisticUiUpdatesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -122,16 +135,16 @@ export default function OptimisticUiUpdatesArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="important">
               <td className="px-4 py-2 font-medium">Optimistic Updates</td>
               <td className="px-4 py-2">Instant perceived responsiveness, eliminates loading states for mutations, feels native-app fast, reduces user anxiety about whether actions registered, excellent for high-frequency interactions</td>
               <td className="px-4 py-2">Complex state management with rollback logic, can confuse users if rollback occurs, requires careful handling of concurrent mutations, may show incorrect state temporarily, difficult to debug</td>
-            </tr>
-            <tr className="border-b border-theme">
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="px-4 py-2 font-medium">Pessimistic Updates (Wait for Server)</td>
               <td className="px-4 py-2">Always shows confirmed state, no rollback complexity, simple state management, no risk of showing incorrect data, straightforward error handling</td>
               <td className="px-4 py-2">Every interaction has visible latency, requires loading indicators for all mutations, feels slow especially on high-latency connections, may cause double-click issues while waiting</td>
-            </tr>
+            </HighlightBlock>
             <tr className="border-b border-theme">
               <td className="px-4 py-2 font-medium">Optimistic with Undo</td>
               <td className="px-4 py-2">Instant UI response, provides a safety net for mistakes, reduces anxiety about destructive actions, aligns with user mental model of reversible actions</td>
@@ -148,13 +161,16 @@ export default function OptimisticUiUpdatesArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Apply optimistic updates only to predictable, low-consequence operations.</strong> Toggle actions (like/unlike, follow/unfollow, archive/unarchive), simple CRUD on user-owned data (creating a note, editing a comment, reordering a list), and status changes (marking as read, completing a task) are ideal candidates. Avoid optimistic updates for operations with unpredictable outcomes, significant financial consequences, or irreversible side effects. Establish clear eligibility criteria that the entire team follows rather than leaving the decision to individual developers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Always snapshot the pre-mutation state for rollback.</strong> Before applying an optimistic update, capture a deep copy of the affected data in its current state. This snapshot is the rollback target if the server request fails. Shallow copies are insufficient if the data contains nested objects that may be modified. Libraries like React Query provide this through the onMutate callback&apos;s context return value, but the principle applies regardless of the specific tool — you must be able to restore the exact previous state, not an approximation of it.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Show subtle pending state indicators for slow confirmations.</strong> While most optimistic updates are confirmed within milliseconds, some may take longer due to network latency or server processing. After a configurable threshold (typically one to two seconds), show a subtle indicator that the operation is still pending. This prevents the user from thinking a slow operation has been confirmed when it is still in flight. The indicator should be unobtrusive enough not to be noticed when confirmations are fast but visible enough to inform during slow operations.
           </li>
@@ -175,13 +191,16 @@ export default function OptimisticUiUpdatesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Applying optimistic updates to operations with unpredictable outcomes.</strong> Attempting to optimistically show the result of a search query, a recommendation fetch, or an AI content generation is fundamentally misguided because the client cannot predict what the server will return. Optimistic updates work by predicting the outcome — when the outcome is inherently unpredictable, the optimistic state will be wrong and the replacement with real data will feel like a jarring correction rather than a smooth confirmation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Silent rollback without user notification.</strong> When an optimistic update fails and the UI silently reverts, users notice something changed but do not understand why. The like count that incremented now shows the old number. The message that appeared in the chat is gone. This silent reversal is more confusing than if the operation had shown a loading state and then an error. Always pair rollback with an explicit, contextual notification explaining what happened and what the user can do.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not handling stale optimistic state on component remount.</strong> If a user triggers an optimistic mutation, navigates away, and returns before the server responds, the component may remount with stale optimistic data from the cache but without the pending mutation context needed for rollback or reconciliation. Ensure that mutation state is managed at a level that survives component unmounting — in the data layer or a global store, not in local component state.
           </li>
@@ -196,12 +215,15 @@ export default function OptimisticUiUpdatesArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Facebook/Meta</strong> pioneered many optimistic update patterns at scale. Likes, reactions, comments, and shares are all applied optimistically, with the UI showing the result immediately and reconciling with server state asynchronously. Facebook&apos;s implementation is particularly notable for handling high-contention operations — when thousands of users like a post simultaneously, the optimistic local count may diverge significantly from the server count. Facebook resolves this by treating the server response as authoritative for aggregate counts while preserving the user&apos;s individual action state (whether they liked it), creating a seamless experience despite the behind-the-scenes complexity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Slack</strong> uses optimistic updates for message sending, creating the perception that messages are sent instantly even when network latency is high. When a user sends a message, it appears immediately in the chat with a subtle pending indicator (a faint clock icon). If the send fails, the message is marked with a red error indicator and a retry button, preserving the message content so the user does not need to retype. Slack also handles the complex scenario of message ordering — if a user sends messages A and B optimistically but B&apos;s server confirmation arrives before A&apos;s, the messages are reordered to match server-determined timestamps, with a smooth animation to avoid jarring jumps.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Todoist</strong> demonstrates optimistic updates for task management where the operations are highly predictable and user-data-centric. Creating tasks, completing tasks, reordering tasks, and moving tasks between projects are all applied optimistically. Todoist&apos;s implementation is notable for its offline support — optimistic updates continue to work without network connectivity, queuing mutations in local storage and syncing when the connection is restored. Their sync engine handles conflict resolution using a last-write-wins strategy with server-side timestamps, resolving conflicts that arise when a user makes offline changes to data that was modified by another device.
         </p>
@@ -212,15 +234,18 @@ export default function OptimisticUiUpdatesArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">
-          <p className="font-medium">
+          <HighlightBlock as="p" tier="important" className="font-medium">
             Q: When should you use optimistic updates versus waiting for server
             confirmation?
-          </p>
-          <p className="mt-2">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-2">
             A: Use optimistic updates when the operation meets three criteria: the outcome is predictable (the client can accurately anticipate the server&apos;s response), the operation is reversible (rollback is possible without permanent consequences), and the failure rate is low (the operation succeeds in the vast majority of cases). Toggle actions like likes and follows, CRUD on user-owned data like notes and comments, and status changes like task completion are ideal candidates. Wait for server confirmation when the outcome is unpredictable (search, recommendations, computations), the operation is irreversible or high-stakes (financial transactions, permanent deletions, email sends), or the failure rate is significant (operations on shared resources with contention). Also wait for confirmation when showing incorrect state, even briefly, could cause real-world harm — displaying an incorrect account balance, confirming an unprocessed order, or showing a successfully sent message that actually failed silently.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">

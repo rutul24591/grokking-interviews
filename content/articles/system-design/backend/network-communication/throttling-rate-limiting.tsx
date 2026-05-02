@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -82,25 +83,28 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Rate Limiting Algorithms</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Token Bucket</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The token bucket algorithm maintains a bucket of tokens, where tokens are added at a
           fixed rate (e.g., 100 tokens per second). Each request consumes one token. If the bucket
           has tokens, the request is allowed and a token is removed. If the bucket is empty, the
           request is rejected. The bucket has a maximum capacity, which determines the burst size:
           a client that has been idle accumulates tokens up to the capacity, allowing a burst of
           requests up to the bucket size.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Token bucket is widely used because it allows controlled bursts while maintaining a
           steady-state rate limit. A bucket with a capacity of 100 tokens and a fill rate of 10
           tokens per second allows a burst of 100 requests followed by a sustained rate of 10
           requests per second. This is ideal for APIs where clients occasionally need to make
           burst requests (e.g., loading a page that requires 20 API calls) but should not sustain
           a high rate indefinitely.
-        </p>
+        </HighlightBlock>
 
         <h3>Leaky Bucket</h3>
         <p>
@@ -185,18 +189,21 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Centralized vs Distributed Rate Limiting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Rate limiting can be implemented centrally (a single rate limiter for the entire system)
           or distributed (each node maintains its own rate limiter). Centralized rate limiting
           provides accurate global rate counts: a client sending requests to multiple nodes is
           rate limited based on the total request count across all nodes. However, it introduces
           a single point of failure and a performance bottleneck: every request must consult the
           centralized rate limiter, adding latency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Distributed rate limiting assigns each node a portion of the total rate limit (e.g.,
           with 3 nodes and a limit of 1,000 requests per second, each node limits to 333 requests
           per second). This eliminates the centralized bottleneck but can be inaccurate: a client
@@ -205,7 +212,7 @@ export default function ArticlePage() {
           a shared data store (Redis), where each node atomically increments a counter and checks
           it against the global limit. This provides accurate global rate limiting with the
           scalability of distributed nodes.
-        </p>
+        </HighlightBlock>
 
         <h3>Multi-Tenant Rate Limiting</h3>
         <p>
@@ -260,18 +267,21 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing a rate limiting algorithm involves trade-offs between accuracy, memory cost,
           burst handling, and implementation complexity. Token bucket is the most versatile: it
           handles bursts gracefully, is simple to implement, and provides a good balance between
           accuracy and performance. Sliding window is the most accurate but requires more memory
           and computational overhead. Fixed window is the simplest but has the boundary problem.
           Leaky bucket is best for throttling (delaying requests) but does not allow bursts.
-        </p>
+        </HighlightBlock>
 
         <h3>Rate Limiting vs Throttling vs Circuit Breaking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Rate limiting, throttling, and circuit breaking are complementary mechanisms for
           protecting systems from overload, but they operate differently. Rate limiting rejects
           excess requests immediately with an error response. Throttling delays excess requests,
@@ -279,7 +289,7 @@ export default function ArticlePage() {
           failing service entirely, preventing cascading failures. Rate limiting is proactive
           (prevents overload before it occurs), throttling is reactive (manages overload after
           it begins), and circuit breaking is protective (stops requests to failing services).
-        </p>
+        </HighlightBlock>
 
         <p>
           In production systems, all three mechanisms are used together: rate limiting prevents
@@ -294,24 +304,27 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Rate Limiting Design</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use token bucket for general-purpose rate limiting.</strong> Token bucket
           provides the best balance of burst handling, accuracy, and simplicity. Configure the
           bucket capacity based on the expected burst size (typically 2-5x the steady-state rate)
           and the fill rate based on the desired sustained rate. For example, a client that should
           sustain 100 requests per second with bursts of up to 500 requests should have a bucket
           capacity of 500 and a fill rate of 100 tokens per second.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement rate limiting at the API gateway level.</strong> The API gateway is
           the natural place to enforce rate limits because it is the entry point for all client
           requests. Gateway-level rate limiting provides a centralized enforcement point that
           applies consistently across all downstream services. It also allows the gateway to
           return standardized 429 responses with rate limit headers, giving clients visibility
           into their rate limit status.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Use sliding window for accurate rate limiting.</strong> When precise rate
@@ -346,8 +359,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Rate limiting legitimate traffic spikes.</strong> When a legitimate event (product
           launch, breaking news, flash sale) causes a traffic spike, rate limiting may reject
           legitimate client requests, degrading the user experience during the most critical
@@ -355,9 +371,9 @@ export default function ArticlePage() {
           system conditions and reduces them during stress. Alternatively, implement priority-based
           rate limiting: authenticated premium clients have higher limits than anonymous or free-tier
           clients, ensuring that paying customers are not affected during traffic spikes.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Distributed rate limiting inconsistency.</strong> When rate limit state is
           distributed across multiple nodes (each node maintains its own counter), the global rate
           count can be inaccurate: a client sending requests to multiple nodes may exceed the
@@ -366,7 +382,7 @@ export default function ArticlePage() {
           global count. If the centralized store adds unacceptable latency, use a hybrid approach:
           each node maintains a local counter and periodically syncs with the centralized store,
           accepting a small window of inaccuracy for lower latency.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Rate limit bypass through key rotation.</strong> Malicious clients can bypass
@@ -403,9 +419,12 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Stripe: Tiered Rate Limiting by API Endpoint</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe implements tiered rate limiting based on the client&apos;s API key tier (free,
           standard, premium) and the endpoint cost. Each API endpoint has a cost weight: creating
           a charge is more expensive (cost: 5) than retrieving a customer (cost: 1). The rate
@@ -413,16 +432,16 @@ export default function ArticlePage() {
           that expensive operations consume more of the client&apos;s rate budget than cheap
           operations. This approach prevents clients from exhausting the system&apos;s capacity
           through a small number of expensive requests.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe&apos;s rate limiting is implemented at the API gateway level using a distributed
           token bucket algorithm backed by Redis. Each API key has a separate bucket with a
           capacity and fill rate determined by the key&apos;s tier. Rate limit headers are included
           in every response, and 429 responses include a <code className="inline-code">Retry-After</code>
           header with the number of seconds to wait. Stripe&apos;s documentation provides clear
           guidance on rate limits per tier and best practices for handling rate limit errors.
-        </p>
+        </HighlightBlock>
 
         <h3>Twitter: Adaptive Rate Limiting for Tweet Ingestion</h3>
         <p>
@@ -466,11 +485,14 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg bg-panel-soft p-6">
-            <p className="font-semibold">Q1: Compare the token bucket and sliding window rate limiting algorithms.</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: Compare the token bucket and sliding window rate limiting algorithms.</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> Token bucket maintains a bucket of tokens that are added at
               a fixed rate. Each request consumes a token. If tokens are available, the request is
               allowed; if not, it is rejected. Token bucket allows bursts (up to the bucket
@@ -481,7 +503,7 @@ export default function ArticlePage() {
               structure). Token bucket is best for general-purpose rate limiting with burst
               tolerance. Sliding window is best for precise rate limiting where accuracy is
               critical (billing, fairness).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg bg-panel-soft p-6">

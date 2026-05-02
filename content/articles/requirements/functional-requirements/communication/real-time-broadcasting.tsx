@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function RealTimeBroadcastingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-time broadcasting enables one-to-many communication where a single source delivers content to thousands or millions of concurrent viewers with minimal latency. Use cases include live sports streaming, product launches, gaming streams, webinars, live trading updates, breaking news, and real-time dashboards. Unlike unicast (one-to-one) or small group communication, broadcasting at scale requires fundamentally different architecture to handle fan-out explosion efficiently.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The challenge of real-time broadcasting is the fan-out problem: a single message must reach N subscribers simultaneously. Naive implementation sends N individual messages, creating O(N) complexity. At 100,000 viewers, this means 100,000 individual sends per update—impossible at sub-second latency. The solution requires hierarchical distribution, edge caching, and protocol optimization. Latency targets vary: trading updates need &lt;100ms, live chat tolerates 1-2 seconds, video streaming accepts 5-30 seconds depending on protocol.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, real-time broadcasting involves distributed systems challenges at extreme scale. Connection management must handle connection storms when popular events start. Message distribution must optimize for bandwidth efficiency. Backpressure handling prevents slow consumers from blocking fast producers. The architecture must gracefully degrade—when overloaded, shed load rather than collapse. Monitoring must detect latency spikes, connection drops, and delivery failures before users notice.
         </p>
@@ -47,13 +51,16 @@ export default function RealTimeBroadcastingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Broadcasting Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Unicast (one-to-one): Single sender, single receiver. Simple point-to-point communication. Complexity O(1). Used for: 1:1 chat, direct messages, private notifications. Doesn&apos;t scale for broadcasting—one message requires N separate sends for N recipients.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Multicast (one-to-many): Single sender, multiple receivers in a group. Network-level multicast uses IP multicast (224.0.0.0/4). Complexity O(1) at network level. Limited support: works within data centers, not across internet. Used for: stock ticker distribution, internal service discovery.
-        </p>
+        </HighlightBlock>
         <p>
           Publish-Subscribe (pub/sub): Publishers send to topics, subscribers receive from subscribed topics. Decouples producers from consumers. Complexity O(M) where M = number of subscribers to topic. Used for: most broadcasting systems, event-driven architectures.
         </p>
@@ -120,9 +127,12 @@ export default function RealTimeBroadcastingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-time broadcasting architecture spans ingestion, distribution, edge delivery, and client consumption. Ingestion layer accepts broadcast content from publishers. Distribution layer fans out to edge servers. Edge layer delivers to connected clients. Client layer renders updates and manages reconnection.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/real-time-broadcasting/broadcast-architecture.svg"
@@ -133,9 +143,9 @@ export default function RealTimeBroadcastingArticle() {
         />
 
         <h3>Ingestion Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Publisher connection: Publishers connect via WebSocket or HTTP POST. Authentication via API key or JWT. Rate limiting per publisher prevents abuse. Publishers send to topic/channel identifier.
-        </p>
+        </HighlightBlock>
         <p>
           Message validation: Validate message schema, size limits (typically 4KB-64KB), content type. Reject malformed messages immediately. Sanitize content to prevent XSS. Log rejected messages for debugging.
         </p>
@@ -195,14 +205,17 @@ export default function RealTimeBroadcastingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-time broadcasting design involves trade-offs between latency, scale, cost, and complexity. Understanding these trade-offs enables informed decisions aligned with audience size and latency requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Protocol: WebSocket vs SSE vs Long Polling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WebSocket: Full-duplex, persistent connections. Pros: Lowest latency, bidirectional, efficient. Cons: Connection overhead, complex reconnection, firewall issues. Best for: Interactive broadcasts, trading, gaming.
-        </p>
+        </HighlightBlock>
         <p>
           SSE: One-way server-to-client. Pros: Simpler than WebSocket, automatic reconnection, HTTP-compatible. Cons: No client-to-server, limited browser support (no IE). Best for: News feeds, notifications, live updates.
         </p>
@@ -254,13 +267,16 @@ export default function RealTimeBroadcastingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use hierarchical fan-out:</strong> Origin → regional edges → clients. Reduces origin load, improves latency. Each edge handles ~10K connections. Scale edges independently.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement backpressure:</strong> Monitor client buffer sizes. Pause slow clients, resume when caught up. Drop messages if buffer full (configurable). Prevents memory exhaustion.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Optimize for reconnection:</strong> Clients will disconnect. Support resume from last message (sequence numbers). Cache recent messages at edge for quick recovery. Exponential backoff for reconnection.
           </li>
@@ -290,13 +306,16 @@ export default function RealTimeBroadcastingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
       <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No backpressure handling:</strong> Slow clients overwhelm servers. Solution: Monitor buffer sizes, pause slow clients, drop messages if necessary.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Sending full state:</strong> Wasteful bandwidth usage. Solution: Use delta updates, send full state only periodically or on request.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No reconnection support:</strong> Clients lose messages on disconnect. Solution: Sequence numbers, message caching, resume from last received.
           </li>
@@ -326,16 +345,19 @@ export default function RealTimeBroadcastingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter Firehose</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter delivers real-time tweet stream to enterprise customers. Hierarchical architecture: origin → regional edges → clients. Topic partitioning by user ID, hashtag, keyword. Clients subscribe to filters. Delta updates for tweet changes (deletes, edits).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Stock Ticker Distribution</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Financial data providers (Bloomberg, Reuters) distribute stock prices. Ultra-low latency (&lt;10ms). Multicast within data centers, WebSocket to clients. Sequence numbers for ordering. Snapshot + delta for recovery.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Live Sports Scores</h3>
         <p>
@@ -355,12 +377,15 @@ export default function RealTimeBroadcastingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you scale broadcasting to 1 million viewers?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you scale broadcasting to 1 million viewers?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Hierarchical fan-out: origin server → regional edge servers (10-20) → clients. Each edge handles ~50K-100K connections. Use CDN for static assets. Implement message batching and delta updates. Connection sharding across edges. Pre-warm edges before popular events. Monitor and auto-scale based on load.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

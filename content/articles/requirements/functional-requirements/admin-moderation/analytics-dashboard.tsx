@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function AnalyticsDashboardArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Analytics dashboard provides data-driven insights into user behavior, content performance, business metrics, and operational health for informed decision-making. The dashboard is the primary tool for product managers, executives, and analysts to understand platform performance, identify trends, and make data-driven decisions. For staff and principal engineers, analytics dashboard implementation involves data aggregation (metrics from multiple sources), real-time updates (WebSocket for live metrics), data visualization (charts, graphs, tables), and role-based views (different metrics for different roles).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of analytics dashboards extends beyond simple chart display. Data aggregation must handle large datasets (millions of events per day), real-time updates (WebSocket for live metrics), and historical trends (time-series data). Data visualization must be clear (easy to understand), accurate (correct data), and actionable (insights for decisions). Role-based views ensure users see relevant metrics (executives see business KPIs, product managers see user metrics, engineers see operational metrics). The dashboard must support custom reporting (custom date ranges, custom metrics, custom filters) and export (CSV, PDF, scheduled reports).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, analytics dashboard architecture involves data pipeline (event collection, aggregation, storage), real-time infrastructure (WebSocket, streaming aggregation), visualization library (charting library selection), and caching strategy (cache common queries, pre-compute metrics). The system must support multiple data sources (user service, content service, payment service), multiple metric types (counts, rates, trends), and multiple time ranges (real-time, hourly, daily, weekly, monthly). Performance is critical—dashboards must load quickly (&lt; 2 seconds) even with large datasets.
         </p>
@@ -47,13 +51,16 @@ export default function AnalyticsDashboardArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>User Analytics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           User acquisition metrics track how users find the platform. Signups by source (organic, paid, referral, social). Conversion funnel (visit → signup → activation). Cost per acquisition (CPA by channel). Retention by acquisition source (which sources retain best). Cohort analysis (retention by signup cohort).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User engagement metrics track how users interact with the platform. DAU/MAU (daily active users / monthly active users, engagement ratio). Session duration (average time per session). Pages per session (average pages viewed). Actions per session (average actions taken). Retention rate (D1, D7, D30 retention). Churn rate (users lost / total users).
-        </p>
+        </HighlightBlock>
         <p>
           User demographics show user composition. Geography (users by country, region, city). Device (mobile, desktop, tablet). Browser (Chrome, Safari, Firefox). OS (iOS, Android, Windows, Mac). Language (primary language). Age/gender (if collected).
         </p>
@@ -105,9 +112,12 @@ export default function AnalyticsDashboardArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Analytics dashboard architecture spans data pipeline, aggregation, visualization, and real-time updates. Data pipeline collects events from multiple sources (user service, content service, payment service). Aggregation layer computes metrics (counts, rates, trends). Visualization layer displays metrics (charts, graphs, tables). Real-time layer pushes live updates (WebSocket).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/admin-moderation/analytics-dashboard/analytics-architecture.svg"
@@ -118,9 +128,9 @@ export default function AnalyticsDashboardArticle() {
         />
 
         <h3>Data Pipeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event collection gathers data from sources. User events (signups, logins, profile updates). Content events (posts, comments, likes, shares). Payment events (subscriptions, transactions, refunds). Operational events (errors, performance, moderation). Collection methods (event tracking, server-side logging, third-party integrations).
-        </p>
+        </HighlightBlock>
         <p>
           Event streaming processes events in real-time. Stream processing (Kafka, Kinesis, Pub/Sub). Real-time aggregation (count, sum, average). Windowing (tumbling windows, sliding windows). State management (maintain aggregation state).
         </p>
@@ -180,14 +190,17 @@ export default function AnalyticsDashboardArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Analytics dashboard design involves trade-offs between real-time freshness and performance, flexibility and simplicity, and detail and overview. Understanding these trade-offs enables informed decisions aligned with business needs and technical constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Real-time vs. Batch Processing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Real-time processing (stream processing). Pros: Fresh metrics (live updates), actionable (immediate insights). Cons: Complex (streaming infrastructure), expensive (real-time processing). Best for: Critical metrics (current users, current revenue), operational dashboards.
-        </p>
+        </HighlightBlock>
         <p>
           Batch processing (scheduled aggregation). Pros: Simple (scheduled jobs), cheap (batch processing). Cons: Stale metrics (hourly/daily updates), not actionable immediately. Best for: Historical metrics (trends, cohorts), business dashboards.
         </p>
@@ -239,13 +252,16 @@ export default function AnalyticsDashboardArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Define key metrics:</strong> Identify key metrics for each role (executives, product, engineering). Focus on actionable metrics. Avoid vanity metrics.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement real-time updates:</strong> WebSocket for critical metrics. Configurable update frequency. Fallback to polling if WebSocket unavailable.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Design role-based views:</strong> Executive view (business KPIs). Product view (user metrics, engagement). Engineering view (operational metrics, performance).
           </li>
@@ -275,13 +291,16 @@ export default function AnalyticsDashboardArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Too many metrics:</strong> Overwhelming dashboards. Solution: Focus on key metrics. Role-based views. Progressive disclosure.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Poor performance:</strong> Slow dashboards. Solution: Pre-compute metrics, cache queries, lazy load charts.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No real-time updates:</strong> Stale data. Solution: WebSocket for critical metrics, configurable frequency.
           </li>
@@ -311,16 +330,19 @@ export default function AnalyticsDashboardArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Facebook Analytics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook analytics for page owners. User metrics (page likes, reach, engagement). Post metrics (post reach, engagement, clicks). Audience metrics (demographics, location, device). Real-time updates (live viewers, live engagement). Export (CSV, PDF). Scheduled reports.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Google Analytics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Analytics for website owners. User metrics (users, sessions, bounce rate). Acquisition (source, medium, campaign). Behavior (pages, time on site, events). Conversion (goals, e-commerce). Real-time (current users, current pages). Custom dashboards. Custom reports.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Mixpanel</h3>
         <p>
@@ -340,12 +362,15 @@ export default function AnalyticsDashboardArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design analytics dashboards for different roles, and what metrics matter most for each?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design analytics dashboards for different roles, and what metrics matter most for each?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Design role-based views with progressive disclosure (summary → detail). Executives need business KPIs (revenue, growth, retention, LTV:CAC ratio)—focus on trends and anomalies, not raw data. Product managers need user metrics (DAU/MAU, engagement, conversion funnels, feature adoption). Engineering needs operational metrics (error rates, latency percentiles, throughput, system health). The key trade-off is between customization and standardization—provide template dashboards for common roles but allow power users to customize. At scale, pre-compute role-specific aggregations to reduce query load. Critical: ensure metric definitions are consistent across roles to avoid confusion.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

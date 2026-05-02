@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,7 +36,10 @@ export default function AutoSaveFunctionalityArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Auto-save functionality</strong> automatically persists user
           input without requiring explicit save actions. Instead of relying on
           users to click &quot;Save&quot; (which they may forget), auto-save
@@ -44,8 +48,8 @@ export default function AutoSaveFunctionalityArticle() {
           Auto-save has become an expected feature in modern applications —
           users who experience it in tools like Google Docs or Notion expect the
           same protection everywhere.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Auto-save architecture involves several concerns. <strong>Trigger
           strategy</strong> determines when saves occur (time-based debouncing,
           on blur, after N characters). <strong>Save indication</strong>
@@ -56,7 +60,7 @@ export default function AutoSaveFunctionalityArticle() {
           <strong>Offline support</strong> queues changes when offline and syncs
           when connectivity returns. <strong>Draft management</strong> handles
           versioning, restoration, and expiration of saved drafts.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, auto-save involves system-wide
           considerations: How do we prevent API overload from frequent saves?
@@ -69,8 +73,11 @@ export default function AutoSaveFunctionalityArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Debouncing:</strong> The primary technique for auto-save.
             Instead of saving on every keystroke, wait for the user to pause
             typing (typically 500-2000ms) before triggering a save. This
@@ -78,15 +85,15 @@ export default function AutoSaveFunctionalityArticle() {
             Debounce timing is a trade-off: shorter delays mean more frequent
             saves (better protection) but more API load; longer delays reduce
             API calls but increase potential data loss window.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Optimistic Updates:</strong> Update the UI immediately to
             reflect the save, assuming success. If the save fails, roll back
             the change and show an error. This provides a responsive UX — users
             see their changes reflected instantly. The complexity lies in
             handling failures: should the form block further edits until save
             succeeds? Should it queue the failed save and retry?
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Save Status Indication:</strong> Users need to know the
             save state. Common states: <strong>Saving</strong> (save in
@@ -133,11 +140,14 @@ export default function AutoSaveFunctionalityArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Auto-save architecture centers on a save manager that watches for
           changes, debounces save triggers, handles the save operation with
           retry logic, and updates the UI with save status.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/forms-validation/auto-save-functionality/auto-save-architecture.svg"
@@ -148,12 +158,12 @@ export default function AutoSaveFunctionalityArticle() {
         />
 
         <h3>Conflict Resolution</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When multiple users or tabs edit the same content simultaneously,
           conflicts occur. The server should reject saves with stale version
           numbers (409 Conflict), and the client should present a conflict
           resolution UI allowing users to merge changes or overwrite.
-        </p>
+        </HighlightBlock>
 
         <h3>Save Flow with Retry</h3>
         <p>
@@ -166,6 +176,9 @@ export default function AutoSaveFunctionalityArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/forms-validation/auto-save-functionality/conflict-resolution-strategies.svg"
           alt="Conflict Resolution Strategies showing last-write-wins, reject-notify, and auto-merge approaches"
@@ -175,20 +188,20 @@ export default function AutoSaveFunctionalityArticle() {
         />
 
         <h3>Auto-save vs Manual Save</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Auto-save</strong> protects against data loss without user
           action, expected in modern apps, but introduces complexity (conflict
           resolution, save indication, API load management). Best for: long
           forms, content editors, applications where users spend significant
           time inputting data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Manual save</strong> gives users explicit control, simpler
           implementation, but risks data loss if users forget to save. Best
           for: short forms, critical transactions where users should review
           before committing, applications with clear &quot;submit&quot;
           semantics.
-        </p>
+        </HighlightBlock>
         <h3>Hybrid Approach</h3>
         <p>
           Many applications use hybrid: auto-save drafts continuously, but
@@ -200,17 +213,20 @@ export default function AutoSaveFunctionalityArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounce Appropriately:</strong> 1000ms is a good default
             for auto-save. Use shorter delays (500ms) for critical data, longer
             (2000ms) for high-volume editing scenarios.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Save Locally First:</strong> Always persist to localStorage
             before or alongside server saves. If the server is unavailable,
             local data provides recovery.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Show Clear Status:</strong> Users should always know save
             state. Use unobtrusive indicators: &quot;Saving...&quot; spinner,
@@ -237,22 +253,25 @@ export default function AutoSaveFunctionalityArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Document Editor (Google Docs-style)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Collaborative document editors are the canonical auto-save use case.
           Every keystroke is captured, debounced (typically 1-2 seconds), and
           synced to the server. Multiple users can edit simultaneously, with
           changes merged in real-time using operational transformation or CRDTs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Key implementation considerations: show collaborator cursors and
           selections, indicate who is editing which section, provide version
           history with named snapshots, and allow restoring previous versions.
           Offline support is critical — queue changes locally and sync when
           reconnected. Conflict resolution must handle simultaneous edits to
           the same paragraph gracefully.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce Product Configuration</h3>
         <p>
@@ -305,16 +324,19 @@ export default function AutoSaveFunctionalityArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Saving Too Frequently:</strong> Saving on every keystroke
             overwhelms APIs and annoys users. Always debounce.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No Failure Handling:</strong> If auto-save fails silently,
             users think their data is safe when it&apos;s not. Always show
             errors and provide recovery options.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Blocking UI During Save:</strong> Auto-save should never
             block user input. Save in the background while users continue
@@ -335,15 +357,18 @@ export default function AutoSaveFunctionalityArticle() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you implement auto-save with debouncing?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use a debounced function that triggers save after the user
               stops typing for a specified duration.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               Implementation pattern: Create a custom hook that takes the form
               data and a save API function. Inside the hook, create a debounced

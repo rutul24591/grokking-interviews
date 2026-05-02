@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function GracefulDegradationArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2>Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           <strong>Graceful degradation</strong> is the design philosophy of
           building systems that continue to provide a useful, functional
           experience even when individual components, services, or capabilities
@@ -49,8 +50,8 @@ export default function GracefulDegradationArticle() {
           preserving the core user journey. The goal is never perfection under
           failure — it is maintaining trust by ensuring that users can still
           accomplish their primary tasks, even if the experience is reduced.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Graceful degradation is often discussed alongside{" "}
           <strong>progressive enhancement</strong>, and while the two are
           complementary, they approach the problem from opposite directions.
@@ -66,8 +67,8 @@ export default function GracefulDegradationArticle() {
           is insufficient because many failures — API outages, CDN
           unavailability, third-party service degradation — occur dynamically
           and unpredictably after the initial page load.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Modern single-page applications are particularly vulnerable to
           catastrophic failure. Because the entire UI is rendered through
           JavaScript, a single unhandled exception in a critical render path can
@@ -82,7 +83,7 @@ export default function GracefulDegradationArticle() {
           must think about degradation across every failure surface: network
           failures, API contract violations, third-party script crashes, browser
           API unavailability, state corruption, and resource loading failures.
-        </p>
+        </HighlightBlock>
         <p>
           The concept of graceful degradation borrows heavily from resilience
           engineering in distributed systems. The same principles that govern
@@ -112,7 +113,7 @@ export default function GracefulDegradationArticle() {
         <h2>Core Concepts</h2>
 
         <h3>Degradation Levels</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           A well-designed degradation strategy defines explicit levels that the
           application can operate at, with clear criteria for transitioning
           between them. The first level is{" "}
@@ -123,8 +124,8 @@ export default function GracefulDegradationArticle() {
           product details, personalized recommendations, real-time inventory
           status, user reviews with sentiment analysis, a live chat widget, and
           dynamic pricing.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The second level is <strong>reduced features</strong>, where
           non-critical services have failed but the core experience remains
           intact. On that same product page, the recommendation engine might be
@@ -135,8 +136,8 @@ export default function GracefulDegradationArticle() {
           is replaced with a &quot;Contact Us&quot; link to a static support
           page. The user can still browse the product, read reviews, and add to
           cart without interruption.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The third level is <strong>core-only operation</strong>. Multiple
           services have failed or the network is severely degraded. The product
           page renders from cached data, showing the product name, description,
@@ -146,7 +147,7 @@ export default function GracefulDegradationArticle() {
           button queues the action locally with an optimistic UI, to be
           reconciled when connectivity returns. The user experience is visibly
           reduced but still functional for its primary purpose.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           The fourth level is the <strong>informative error state</strong>. The
           application genuinely cannot serve its core purpose — perhaps the main
@@ -363,7 +364,7 @@ export default function GracefulDegradationArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2>Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           The following diagrams illustrate the key architectural patterns that
           underpin a robust graceful degradation strategy. The first diagram
           shows how an application sheds features across multiple failure modes,
@@ -371,7 +372,12 @@ export default function GracefulDegradationArticle() {
           decision tree for handling API failures, from initial retry through
           cache fallback to placeholder rendering. The third depicts the circuit
           breaker state machine as applied to frontend feature availability.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          When you present this in interviews, emphasize the ordering: cheap recovery first (retry),
+          then stale-but-usable (cache), then degraded-but-functional (placeholder/defaults), and only
+          then a hard error state with a user-controlled retry.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/graceful-degradation-diagram-2.svg"
@@ -379,7 +385,7 @@ export default function GracefulDegradationArticle() {
           caption="Figure 2: API failure handling decision tree"
         />
 
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Figure 2 traces the path of a failed API request through the
           degradation decision tree. The first attempt is an automatic retry with
           exponential backoff — many failures are transient and resolve within
@@ -390,7 +396,7 @@ export default function GracefulDegradationArticle() {
           kind is available does the system display an error state — and even
           then, it offers a manual retry action and communicates clearly about
           what is unavailable.
-        </p>
+        </HighlightBlock>
 
       </section>
 
@@ -399,15 +405,15 @@ export default function GracefulDegradationArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Several related but distinct strategies address application resilience.
           Understanding their differences and complementary nature is essential
           for making informed architectural decisions.
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-theme text-sm">
             <thead>
-              <tr className="bg-panel-soft">
+              <HighlightBlock as="tr" tier="important">
                 <th className="border border-theme px-4 py-2 text-left">
                   Dimension
                 </th>
@@ -423,7 +429,7 @@ export default function GracefulDegradationArticle() {
                 <th className="border border-theme px-4 py-2 text-left">
                   Circuit Breakers
                 </th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody>
               <tr>
@@ -531,7 +537,7 @@ export default function GracefulDegradationArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In practice, these strategies are not mutually exclusive. A mature
           frontend architecture employs progressive enhancement as the
           foundation, feature flags for controlled rollout, circuit breakers for
@@ -540,7 +546,7 @@ export default function GracefulDegradationArticle() {
           into a coherent resilience strategy. The key staff-level insight is
           that each strategy covers a different failure surface, and a
           comprehensive approach requires all four working in concert.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -549,7 +555,7 @@ export default function GracefulDegradationArticle() {
       <section className="mb-12">
         <h2>Best Practices</h2>
         <ul className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>
               Define core vs. enhanced features upfront.
             </strong>{" "}
@@ -561,8 +567,8 @@ export default function GracefulDegradationArticle() {
             which components get error boundaries. Review this classification
             quarterly as the product evolves, because yesterday&apos;s
             enhancement can become today&apos;s core feature.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Implement circuit breakers for all third-party dependencies.
             </strong>{" "}
@@ -574,8 +580,8 @@ export default function GracefulDegradationArticle() {
             your control. A five-second timeout waiting for a chat widget to load
             is five seconds the user spends watching a spinner instead of
             interacting with your product.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Cache critical data for offline and degraded scenarios.
             </strong>{" "}
@@ -586,7 +592,7 @@ export default function GracefulDegradationArticle() {
             per resource type and implement cache versioning to handle schema
             changes. The cache is not just a performance optimization — it is
             your primary defense against network failures.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Test degradation paths explicitly and continuously.
@@ -656,7 +662,7 @@ export default function GracefulDegradationArticle() {
       <section className="mb-12">
         <h2>Common Pitfalls</h2>
         <ul className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Treating degradation as an afterthought.</strong> The most
             common and most damaging pitfall is designing the happy path first
             and planning to &quot;add error handling later.&quot; Later rarely
@@ -665,8 +671,8 @@ export default function GracefulDegradationArticle() {
             expensive than building it in from the start. Graceful degradation
             must be a first-class design concern during feature planning, not a
             follow-up ticket that languishes in the backlog.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Degraded states that are worse than showing nothing.
             </strong>{" "}
@@ -677,8 +683,8 @@ export default function GracefulDegradationArticle() {
             couldn&apos;t load this product. Please try again.&quot; Every
             fallback must be evaluated through the lens of user trust: does this
             degraded state maintain trust or erode it?
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Cascading failures from coupled dependencies.
             </strong>{" "}
@@ -691,7 +697,7 @@ export default function GracefulDegradationArticle() {
             that would have gracefully degraded the failing features. Break these
             coupling chains by giving each service its own fallback path that
             does not depend on other services being healthy.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not testing offline and degraded paths.</strong> Teams
             routinely test the happy path and common error cases but rarely
@@ -737,7 +743,7 @@ export default function GracefulDegradationArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>Twitter/X: Layered Error Recovery</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Twitter&apos;s web application is a masterclass in layered
           degradation. When the timeline API fails, the application first
           attempts to serve cached tweets from the service worker. If no cache
@@ -751,10 +757,10 @@ export default function GracefulDegradationArticle() {
           implements connection-aware degradation: on slow connections, it
           reduces image quality, defers video preloading, and limits the number
           of tweets fetched per request.
-        </p>
+        </HighlightBlock>
 
         <h3>Google Maps: Offline Tile Caching and Progressive Data Loading</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Google Maps demonstrates sophisticated offline degradation. Users can
           download map regions for offline use, and the application stores vector
           tile data in <code>IndexedDB</code>. When the network is unavailable,
@@ -768,10 +774,10 @@ export default function GracefulDegradationArticle() {
           experience, syncing any actions performed offline. The key design
           insight is that Google Maps treats offline mode as a first-class
           product state with its own UX design, not an error condition.
-        </p>
+        </HighlightBlock>
 
         <h3>Amazon: Checkout Resilience Under Service Failures</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon&apos;s checkout flow is engineered to complete transactions even
           when numerous supporting services are degraded. If the recommendation
           engine fails, the &quot;Frequently bought together&quot; and
@@ -788,7 +794,7 @@ export default function GracefulDegradationArticle() {
           architecture isolates every non-critical service behind independent
           failure boundaries, ensuring that the purchase transaction — the core
           business function — completes whenever physically possible.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/graceful-degradation-diagram-3.svg"
@@ -802,13 +808,16 @@ export default function GracefulDegradationArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="mb-2 font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: What is the difference between graceful degradation and
               progressive enhancement, and when would you use each?
-            </p>
-            <p>
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               Progressive enhancement builds from a universally functional
               baseline upward, adding capabilities for more capable environments.
               Graceful degradation starts with the full experience and defines
@@ -822,14 +831,14 @@ export default function GracefulDegradationArticle() {
               build time. A staff engineer applies both: progressive enhancement
               for the build-time resilience layer and graceful degradation for
               the runtime resilience layer.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="mb-2 font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How would you handle a page that depends on five independent
               API calls where two of them fail?
-            </p>
+            </HighlightBlock>
             <p>
               Design each section of the page to fetch data independently and
               handle its own failure state. Use React error boundaries or

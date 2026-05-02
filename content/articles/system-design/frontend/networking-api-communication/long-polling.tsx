@@ -222,7 +222,7 @@ export default function LongPollingConciseArticle() {
           captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The sequence diagram above shows the complete lifecycle including both
           data delivery and timeout scenarios. The timeout path is important to
           understand: it is not an error condition but a normal part of the
@@ -233,7 +233,7 @@ export default function LongPollingConciseArticle() {
           they provide a natural point for the client to send updated parameters
           (such as a new sequence ID or changed subscription topics) on
           reconnection.
-        </p>
+        </HighlightBlock>
 
         <p>
           From an infrastructure perspective, long polling requires careful
@@ -357,10 +357,10 @@ export default function LongPollingConciseArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           Production long polling implementations require careful attention to
           edge cases that do not exist in simpler patterns:
-        </HighlightBlock>
+        </p>
         <ol className="space-y-3">
           <HighlightBlock as="li" tier="crucial">
             <strong>Always Use Sequence IDs:</strong> Every message from the
@@ -914,8 +914,12 @@ export default function LongPollingConciseArticle() {
 
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          In interviews, position long polling as a compatibility fallback: it approximates “push” over plain HTTP,
+          but the operational cost (connections, timeouts, retries) is why you graduate to SSE or WebSockets.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://tools.ietf.org/html/rfc6202"
               className="text-accent hover:underline"
@@ -925,8 +929,8 @@ export default function LongPollingConciseArticle() {
               RFC 6202 - Known Issues and Best Practices for the Use of Long
               Polling and Streaming in Bidirectional HTTP
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController"
               className="text-accent hover:underline"
@@ -935,7 +939,7 @@ export default function LongPollingConciseArticle() {
             >
               MDN - AbortController for Request Cancellation
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://socket.io/docs/v4/how-it-works/"
@@ -947,7 +951,7 @@ export default function LongPollingConciseArticle() {
               Polling)
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://en.wikipedia.org/wiki/Comet_(programming)"
               className="text-accent hover:underline"
@@ -956,8 +960,8 @@ export default function LongPollingConciseArticle() {
             >
               Wikipedia - Comet (Programming) - History and Techniques
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://web.dev/articles/performance-http2"
               className="text-accent hover:underline"
@@ -967,7 +971,7 @@ export default function LongPollingConciseArticle() {
               web.dev - Introduction to HTTP/2 (Multiplexing and Connection
               Limits)
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

@@ -108,7 +108,7 @@ export default function ConflictResolutionConciseArticle() {
             latest value is genuinely the most correct (e.g., a user&apos;s
             last-known GPS location, a preference toggle, a read/unread status).
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Version Vectors / Vector Clocks:</strong> A mechanism for
             detecting concurrent modifications without relying on physical
             timestamps. Each participant maintains a vector of logical counters,
@@ -122,7 +122,7 @@ export default function ConflictResolutionConciseArticle() {
             applied. The space overhead grows linearly with the number of
             participants, which can be managed through pruning and compaction
             strategies.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Operational Transformation (OT):</strong> A family of
             algorithms that resolve conflicts by transforming operations against
@@ -137,7 +137,7 @@ export default function ConflictResolutionConciseArticle() {
             types. OT works well for linear data structures like text but
             becomes exponentially complex for tree or graph structures.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>CRDTs (Conflict-free Replicated Data Types):</strong> Data
             structures mathematically designed to always converge to the same
             state across all replicas, regardless of the order in which
@@ -153,7 +153,7 @@ export default function ConflictResolutionConciseArticle() {
             JavaScript. The tradeoff is increased storage (tombstones for
             deleted elements, metadata per operation) and the constraint that
             not all business logic maps naturally to CRDT semantics.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Three-Way Merge:</strong> A conflict resolution technique
             that compares three versions of data: the common ancestor (the last
@@ -187,12 +187,12 @@ export default function ConflictResolutionConciseArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A robust conflict detection and resolution system operates across the
           write path, the sync path, and the resolution path. Understanding the
           end-to-end flow is essential for designing systems that handle offline
           changes gracefully.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Write Path (Local)</h3>
@@ -267,7 +267,7 @@ export default function ConflictResolutionConciseArticle() {
           </ol>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The key insight for CRDT convergence is that all replicas that have
           received the same set of operations will deterministically arrive at
           the same state, regardless of the order in which those operations were
@@ -278,7 +278,7 @@ export default function ConflictResolutionConciseArticle() {
           coordinator and makes CRDTs the strongest choice for true
           offline-first architectures where network partitions are expected and
           prolonged.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/offline-support/conflict-detection-flow.svg"
@@ -337,7 +337,7 @@ export default function ConflictResolutionConciseArticle() {
                 Document editing, CMS, content where intent matters
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>OT</strong>
               </td>
@@ -354,7 +354,7 @@ export default function ConflictResolutionConciseArticle() {
               <td className="p-3">
                 Real-time collaborative text editing (Google Docs model)
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>CRDTs (State-based)</strong>
@@ -371,7 +371,7 @@ export default function ConflictResolutionConciseArticle() {
                 Infrequent sync, large partition durations, simple data types
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>CRDTs (Operation-based)</strong>
               </td>
@@ -388,7 +388,7 @@ export default function ConflictResolutionConciseArticle() {
               <td className="p-3">
                 Real-time collaboration, text editing (Yjs, Automerge)
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Three-Way Merge</strong>
@@ -501,12 +501,12 @@ export default function ConflictResolutionConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These pitfalls have tripped up experienced engineering teams building
           offline-capable applications:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Using Wall-clock Timestamps for LWW:</strong> Physical
             clocks on different devices are never perfectly synchronized. Clock
             skew, NTP drift, timezone misconfigurations, and users manually
@@ -516,8 +516,8 @@ export default function ConflictResolutionConciseArticle() {
             counters, providing causal ordering guarantees while remaining
             human-readable. At minimum, use server-assigned timestamps rather
             than client timestamps.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Implementing CRDTs Without Understanding Space Growth:
             </strong>{" "}
@@ -530,8 +530,8 @@ export default function ConflictResolutionConciseArticle() {
             periodically checkpoint and reset. Yjs handles this internally with
             its &quot;GC&quot; configuration, but custom CRDT implementations
             must address it explicitly.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Ignoring the &quot;Delete vs. Edit&quot; Conflict:</strong>{" "}
             One of the most semantically ambiguous conflicts: User A deletes an
             item while User B edits the same item offline. Should the edit win
@@ -541,7 +541,7 @@ export default function ConflictResolutionConciseArticle() {
             moderator should stay deleted. A collaboratively edited document
             should probably preserve User B&apos;s edits. Define explicit
             policies per entity type and communicate them to users.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not Testing Concurrent Edit Scenarios:</strong> Developers
             typically test the happy path — sequential edits that merge cleanly.
@@ -589,10 +589,10 @@ export default function ConflictResolutionConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding how production systems implement conflict resolution
           provides actionable patterns:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Google Docs (Operational Transformation):</strong> Uses OT
@@ -606,7 +606,7 @@ export default function ConflictResolutionConciseArticle() {
             server dependency — Google Docs does not work offline for
             collaborative editing.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Figma (CRDTs):</strong> Uses a custom CRDT implementation
             for their design canvas. Each object on the canvas (frame, shape,
             text) is a CRDT that can be independently modified and merged. This
@@ -615,7 +615,7 @@ export default function ConflictResolutionConciseArticle() {
             2D spatial data, z-ordering, and object hierarchies. Their custom
             implementation is optimized for the specific operations designers
             perform (move, resize, recolor).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Apple Notes (Three-Way Merge):</strong> Uses CloudKit as the
             sync backend with a three-way merge approach. When a conflict is
@@ -626,7 +626,7 @@ export default function ConflictResolutionConciseArticle() {
             alternative version — preserving both versions for the user to
             reconcile manually.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Git (Three-Way Merge + Manual Resolution):</strong> The gold
             standard for three-way merge in practice. Git identifies the common
             ancestor (merge base), computes diffs from ancestor to each branch
@@ -635,8 +635,8 @@ export default function ConflictResolutionConciseArticle() {
             instructive for any offline-first app: automatic where safe, manual
             where ambiguous, and always preserving all versions until explicitly
             resolved.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>CouchDB/PouchDB (Revision Trees with LWW):</strong> CouchDB
             maintains a revision tree for each document, preserving all
             conflicting versions. It uses a deterministic algorithm (comparing
@@ -647,7 +647,7 @@ export default function ConflictResolutionConciseArticle() {
             applications with CouchDB-compatible sync. This &quot;LWW with
             conflict tracking&quot; approach is a pragmatic middle ground
             between simple LWW and full CRDT complexity.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Notion (Custom Sync with Server Authority):</strong> Uses a
             custom sync protocol where the server is authoritative. Clients send
@@ -730,7 +730,7 @@ export default function ConflictResolutionConciseArticle() {
               Q: How would you handle the case where User A deletes a document
               while User B edits it offline?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: This is the &quot;delete-edit&quot; conflict, and the correct
               approach depends on domain semantics. I would implement a
               configurable policy per entity type. For a collaborative document:
@@ -746,7 +746,7 @@ export default function ConflictResolutionConciseArticle() {
               &quot;deletion_policy&quot; field on each entity type, combined
               with a conflict resolver that checks the policy before applying
               resolution logic.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

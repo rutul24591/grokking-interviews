@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function BookingWorkflowsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Booking workflows enable customers to book services, appointments, and reservations: select service, check availability, choose time slot, provide details, confirm booking, and receive confirmation. Unlike product checkout (tangible goods), booking workflows involve intangible services with time-based inventory (appointments, hotel rooms, restaurant tables, rental cars). A well-designed booking workflow reduces abandonment (clear availability, fast booking), prevents double-booking (real-time inventory), and sets expectations (confirmation, reminders). For staff and principal engineers, booking workflows involve availability management (real-time inventory), time slot optimization (maximize utilization), and integration with external calendars (Google Calendar, Outlook, iCal).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of booking workflows extends beyond simple form submission. Availability checking must be real-time (prevent double-booking), handle time zones (customer in different timezone), and respect business rules (minimum notice, booking windows, blackout dates). Time slot selection must show available slots (grouped by day), handle duration (30 min, 1 hour, multi-day), and buffer time (cleaning between appointments). Resource allocation must assign staff (specific stylist, any available), rooms (conference room A, any room), or equipment (projector, specific vehicle). The workflow must handle edge cases (overlapping bookings, staff unavailability, holiday closures) gracefully with clear messaging.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, booking workflow architecture involves backend integration (availability API, booking API, calendar API), state management (pending booking, confirmed booking, cancelled booking), and notification delivery (confirmation email, SMS reminder, calendar invite). Analytics track booking conversion (view to booking), no-show rate (booked but didn&apos;t show), cancellation rate (booked then cancelled), and peak times (busiest days/times). The system must support multiple booking types (appointment, reservation, rental), multiple resources (staff, rooms, equipment), and multiple booking channels (web, mobile, phone, walk-in).
         </p>
@@ -47,13 +51,16 @@ export default function BookingWorkflowsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Service Selection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Service catalog shows available services. Categories: hair services (cut, color, styling), spa services (massage, facial, body), professional services (consulting, legal, medical), hospitality (hotel rooms, restaurant tables, rental cars). Display: service name, description, duration (30 min, 1 hour), price ($50, $100+), staff requirement (any staff, specific staff). Grouping: by category (hair, spa, nails), by duration (quick services, full services), by price (budget, premium).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Service details provide booking context. Description: what&apos;s included (haircut includes wash, style), prerequisites (patch test for color), what to bring (ID for rental, insurance for medical). Duration: service time (30 min), buffer time (10 min cleaning), total time (40 min). Price: base price ($50), add-ons (+$20 for deep conditioning), tips (suggested 15-20%). Display: service page (detailed info), modal (quick view), tooltip (quick info).
-        </p>
+        </HighlightBlock>
         <p>
           Staff selection assigns specific staff or any available. Specific staff: customer preference (my stylist, Dr. Smith), staff profile (photo, bio, reviews, availability). Any available: first available (maximize utilization), match by skill (color specialist, Spanish-speaking). Display: staff list (photo, name, specialty), availability calendar (when available), reviews (rating, comments).
         </p>
@@ -105,9 +112,12 @@ export default function BookingWorkflowsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Booking workflow architecture spans service selection, availability checking, booking creation, and confirmation. Service selection shows available services (catalog, staff). Availability checking checks real-time availability (slots, staff, rooms). Booking creation captures details (customer, payment, preferences). Confirmation delivers confirmation (email, SMS, calendar).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/booking-workflows/booking-workflow-architecture.svg"
@@ -118,9 +128,9 @@ export default function BookingWorkflowsArticle() {
         />
 
         <h3>Service Selection Component</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Service catalog displays available services. Data source: service API (fetch services, categories, staff). Filtering: by category (hair, spa, nails), by duration (quick, full), by price (budget, premium), by staff (specific staff, any). Sorting: by popularity (most booked), by price (low to high), by duration (short to long). Display: grid (service cards), list (service list), categories (accordion).
-        </p>
+        </HighlightBlock>
         <p>
           Staff selection shows available staff. Data source: staff API (fetch staff, profiles, availability). Filtering: by specialty (colorist, masseuse), by language (English, Spanish), by rating (4+ stars), by availability (today, this week). Sorting: by rating (highest first), by availability (most available), by popularity (most booked). Display: staff cards (photo, name, specialty), availability calendar (when available), reviews (rating, comments).
         </p>
@@ -180,14 +190,17 @@ export default function BookingWorkflowsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Booking workflow design involves trade-offs between flexibility, conversion, operational efficiency, and customer experience. Understanding these trade-offs enables informed decisions aligned with business model and customer expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Payment: Prepayment vs. Pay Later</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Prepayment (pay now). Pros: Guaranteed revenue (paid upfront), lower no-show rate (financial commitment), cash flow (money upfront). Cons: Lower conversion (friction at booking), refund handling (cancellations require refund), customer preference (some prefer pay later). Best for: High-value services (wedding, multi-day), high no-show businesses (medical, consulting), peak times (holidays, weekends).
-        </p>
+        </HighlightBlock>
         <p>
           Pay later (pay at service). Pros: Higher conversion (no payment friction), customer preference (pay after service), simpler (no refund handling). Cons: No-show risk (no financial commitment), revenue uncertainty (may not show), cash flow delay (paid later). Best for: Low-value services (haircut, quick service), low no-show businesses (regular customers), off-peak times (weekday mornings).
         </p>
@@ -239,13 +252,16 @@ export default function BookingWorkflowsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Show real-time availability:</strong> Prevent double-booking (real-time API), show available slots (green), unavailable (gray). Auto-refresh (every 30 seconds), manual refresh (button). Hold slots temporarily (10 minutes).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Handle time zones:</strong> Detect customer timezone (browser), show local times (convert from business timezone), daylight saving adjustment (automatic). Display: &quot;All times in your local time (PST)&quot;.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Enforce business rules:</strong> Minimum notice (2 hours ahead), booking window (30 days ahead), blackout dates (holidays, closed). Display: &quot;Next available: Tomorrow 10 AM&quot;, &quot;Closed on Thanksgiving&quot;.
           </li>
@@ -275,13 +291,16 @@ export default function BookingWorkflowsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No real-time availability:</strong> Double-booking occurs. Solution: Real-time API, slot holding (10 minutes), auto-refresh (every 30 seconds).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No timezone handling:</strong> Customer books wrong time. Solution: Detect timezone, show local times, display timezone (&quot;All times in PST&quot;).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No business rules:</strong> Last-minute bookings, overbooking. Solution: Minimum notice, booking window, blackout dates, maximum bookings per slot.
           </li>
@@ -311,16 +330,19 @@ export default function BookingWorkflowsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>OpenTable Restaurant Reservations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           OpenTable: restaurant booking platform. Features: select restaurant, date, party size, time slot. Real-time availability (table inventory), instant confirmation (email/SMS). Reminders: 24 hour reminder, day-of reminder. Modifications: reschedule (different time), cancel (free until 24 hours). No-show: restaurant marks no-show, penalty (can&apos;t book for period).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Zocdoc Medical Appointments</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Zocdoc: medical appointment booking. Features: select specialty (dermatology, primary care), insurance accepted, location, date/time. Real-time availability (doctor schedules), instant confirmation (email/SMS). Reminders: 24 hour reminder, 2 hour reminder (SMS). Modifications: reschedule (other doctors), cancel (free until 24 hours). No-show: marked in system, may affect future bookings.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Airbnb Vacation Rentals</h3>
         <p>
@@ -340,12 +362,15 @@ export default function BookingWorkflowsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you prevent double-booking?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you prevent double-booking?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Real-time availability API (check before showing slots), slot holding (reserve for 10 minutes while booking), database locking (transaction prevents concurrent bookings), optimistic locking (version check on booking creation). Display: available slots (green), held slots (yellow, &quot;X people viewing&quot;), booked slots (gray).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

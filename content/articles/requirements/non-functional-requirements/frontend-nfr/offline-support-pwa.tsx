@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function OfflineSupportPWAArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Offline Support</strong> refers to a web application&apos;s
           ability to function without network connectivity, while{" "}
           <strong>Progressive Web Apps (PWA)</strong> are web applications that
@@ -50,8 +54,8 @@ export default function OfflineSupportPWAArticle() {
           dramatically higher user retention. For global audiences where 2G/3G
           connectivity and intermittent networks are common, offline support is
           not a luxury — it is essential for accessible, inclusive applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Offline capability exists on a spectrum. Offline-capable applications
           provide core features without connectivity — reading cached content,
           viewing previously loaded pages — but do not support data creation or
@@ -64,7 +68,7 @@ export default function OfflineSupportPWAArticle() {
           increases with each level — offline-capable can be achieved with
           simple service worker caching, while offline-first requires a complete
           data architecture redesign.
-        </p>
+        </HighlightBlock>
         <p>
           For staff engineers, offline architecture decisions affect data models
           (local versus server as source of truth), sync strategies (push, pull,
@@ -82,7 +86,10 @@ export default function OfflineSupportPWAArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Service Workers are the foundation of offline support. They are
           JavaScript workers that run independently of the web page, acting as
           a programmable proxy between the browser and the network. The
@@ -95,8 +102,8 @@ export default function OfflineSupportPWAArticle() {
           only work on HTTPS (except localhost) and have their own lifecycle
           independent of the page — they can continue running after the page
           closes, enabling background sync and push notifications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Caching strategies determine how the service worker responds to
           network requests. Cache-first strategy tries the cache first and falls
           back to the network — ideal for static assets (CSS, JavaScript,
@@ -109,7 +116,7 @@ export default function OfflineSupportPWAArticle() {
           perfectly fresh. Cache-only serves exclusively from cache (for truly
           static content), and network-only always fetches from the network
           (for real-time data that should not be cached).
-        </p>
+        </HighlightBlock>
         <p>
           Offline-first architecture inverts the traditional data flow. Instead
           of the server being the source of truth and the browser being a
@@ -133,7 +140,10 @@ export default function OfflineSupportPWAArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The offline-first data architecture flows through several layers. The
           UI layer reads from and writes to a local database (IndexedDB), never
           directly to the network. The sync layer monitors connectivity and
@@ -147,7 +157,7 @@ export default function OfflineSupportPWAArticle() {
           available, ensuring that user actions performed offline are
           eventually synchronized even if the user closes the browser before
           coming back online.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/offline-first-architecture.svg"
@@ -155,7 +165,7 @@ export default function OfflineSupportPWAArticle() {
           caption="Offline-first data flow — UI reads/writes to local IndexedDB, sync queue manages mutations, background sync handles connectivity transitions, and conflict resolution merges divergent state"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           PWA features build on the offline foundation to provide app-like
           experiences. The Web App Manifest (a JSON file linked in the HTML
           head) provides metadata for installability — app name, short name,
@@ -168,7 +178,7 @@ export default function OfflineSupportPWAArticle() {
           displays notifications to the user. Background Sync defers actions
           until connectivity is available — one-time sync for form submissions,
           periodic sync for content updates.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/pwa-features.svg"
@@ -179,7 +189,10 @@ export default function OfflineSupportPWAArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Offline-capable versus offline-first represents a significant
           architectural investment decision. Offline-capable applications add
           service worker caching to an existing architecture — the app works
@@ -192,8 +205,8 @@ export default function OfflineSupportPWAArticle() {
           effort but provides a qualitatively different user experience — the
           app works fully offline, not just for reading but for creating and
           modifying data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Service worker caching strategies involve trade-offs between freshness
           and availability. Cache-first provides the best offline experience but
           risks serving stale content if cache invalidation is not configured
@@ -205,7 +218,7 @@ export default function OfflineSupportPWAArticle() {
           cache-first for versioned static assets, network-first for HTML pages
           and API responses, stale-while-revalidate for periodically updated
           content like news feeds or product catalogs.
-        </p>
+        </HighlightBlock>
         <p>
           PWA installability provides native-app-like experience but introduces
           platform-specific challenges. On Android, PWA installation is
@@ -221,7 +234,10 @@ export default function OfflineSupportPWAArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement a clear offline UX strategy that communicates connectivity
           status and available functionality. Show an offline banner when the
           user loses connectivity, indicating which features remain available
@@ -232,8 +248,8 @@ export default function OfflineSupportPWAArticle() {
           be queued — show the result immediately and sync in the background,
           with rollback capability if the sync fails. Never leave the user
           wondering whether their action was recorded.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Configure the service worker with a comprehensive caching strategy
           that covers the app shell (HTML, CSS, JavaScript) and critical
           resources (fonts, logo, offline fallback page). Use Workbox (a
@@ -243,7 +259,7 @@ export default function OfflineSupportPWAArticle() {
           Version your cache names so that each service worker update creates a
           new cache, and clean up old caches during the activation event to
           prevent storage bloat.
-        </p>
+        </HighlightBlock>
         <p>
           Design conflict resolution into the data architecture before offline
           support is needed. When offline changes sync with the server,
@@ -259,7 +275,10 @@ export default function OfflineSupportPWAArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not testing offline scenarios during development is the most common
           PWA pitfall. Developers build and test exclusively on fast, reliable
           networks, missing the UX issues that surface when connectivity is
@@ -270,8 +289,8 @@ export default function OfflineSupportPWAArticle() {
           connectivity returns. Test on actual mobile devices with throttled
           networks (3G, slow 3G) because DevTools throttling does not fully
           replicate mobile network behavior.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Stale content after service worker updates is a frequent production
           issue. When a new service worker is deployed, it installs in the
           background and activates only after all tabs using the old service
@@ -283,7 +302,7 @@ export default function OfflineSupportPWAArticle() {
           and <code>clients.claim()</code> to activate the new service worker
           immediately, but this risks breaking tabs that have the old version
           loaded.
-        </p>
+        </HighlightBlock>
         <p>
           Ignoring iOS Safari limitations leads to broken PWA experiences on
           iPhones. iOS Safari has limited PWA support — service workers work
@@ -300,7 +319,10 @@ export default function OfflineSupportPWAArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Productivity applications like Google Docs and Notion use offline-first
           architecture to enable uninterrupted work regardless of connectivity.
           Users can create, edit, and delete documents offline — all changes are
@@ -310,8 +332,8 @@ export default function OfflineSupportPWAArticle() {
           devices converge correctly. The UX communicates offline status
           clearly (&quot;You are offline — changes will sync when you are back
           online&quot;) and shows sync progress when connectivity is restored.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           News and media applications use offline caching to enable reading
           without connectivity. The Washington Post and The Guardian PWA
           implementations cache the latest articles during the user&apos;s last
@@ -321,7 +343,7 @@ export default function OfflineSupportPWAArticle() {
           offline. New articles are fetched in the background when connectivity
           returns. The offline reading experience is indistinguishable from the
           online experience for cached content.
-        </p>
+        </HighlightBlock>
         <p>
           E-commerce applications use offline support for cart persistence and
           browsing. Users can browse product catalogs (cached from previous
@@ -338,12 +360,15 @@ export default function OfflineSupportPWAArticle() {
 
       <section>
         <h2>Advanced Offline Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Service worker update lifecycle management is one of the most operationally challenging aspects of PWA deployment. When a new service worker script is deployed, the browser detects the change by comparing the script&apos;s byte content with the currently installed version (even if the URL is the same). The new service worker enters the installation phase, where it runs its install event handler and precaches new assets. After installation, it enters the waiting phase — it cannot activate until all tabs using the old service worker are closed. This means users may continue seeing the old version for hours or days, receiving stale content and missing critical bug fixes. The recommended approach is to detect the waiting state (via the service worker&apos;s waiting event) and display a notification to the user: &quot;A new version is available. Refresh to update.&quot; When the user confirms, the application calls skipWaiting() on the waiting service worker, which forces immediate activation, and clients.claim() to take control of all open pages. The trade-off is that skipWaiting() can break tabs that have the old version loaded — the old page may reference cached assets that have been replaced by the new service worker, causing 404 errors or rendering failures. The safer approach is to use skipWaiting() only for minor updates (bug fixes, content changes) and require a full page reload for major updates (structural changes, API version changes). The service worker should communicate its version to the page via postMessage, and the page should compare the service worker version with the application version to determine whether an update is critical. For applications with strict reliability requirements, the service worker implements a grace period — after activation, it continues serving the old cache for 5-10 minutes while the new cache warms up, ensuring a smooth transition without serving cold misses.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Background sync reliability patterns address the challenge of ensuring that deferred actions (form submissions, data updates, message sends) are eventually completed even when the user closes the browser before connectivity returns. The Background Sync API registers a sync event with a tag identifier (e.g., &quot;send-message&quot;, &quot;submit-form&quot;) and the browser triggers the sync event when connectivity is available, even if the page is closed. The service worker&apos;s sync event handler processes the queued action, sends the request to the server, and handles the response. If the request fails (server error, network issue), the sync event can re-register itself for a retry. The reliability challenge is that background sync is not guaranteed — the browser may never trigger the sync event (the user never returns to a connected state, the browser clears the sync queue to save storage, or the sync expires after a browser-defined timeout). Production implementations must handle sync failure gracefully — if the background sync fails, the next time the user opens the application, it should detect the unsynced data and retry the sync manually. The implementation stores pending sync operations in IndexedDB with metadata (action type, payload, retry count, last attempt timestamp), and the application checks this store on initialization to resume any incomplete syncs. For critical operations (payment submissions, account changes), the application should also inform the user that the action is pending and may require manual retry if the background sync fails.
-        </p>
+        </HighlightBlock>
         <p>
           Push notification architecture enables re-engagement with users even when the PWA is not open, competing with native app notification capabilities. The implementation uses the Push API — the application subscribes the user to push notifications by calling pushManager.subscribe() with the application&apos;s public VAPID (Voluntary Application Server Identification) key, which identifies the application to the push service. The subscription object (containing the endpoint URL, the VAPID public key, and a unique subscription identifier) is sent to the application server and stored in the database. When the server needs to send a notification, it encrypts the notification payload with the subscription&apos;s public key and sends it to the push service endpoint, which delivers it to the user&apos;s device. The service worker receives the push event, decrypts the payload, and displays a notification using the Notifications API. The notification can include a title, body, icon, badge, and action buttons (e.g., &quot;Reply&quot;, &quot;Dismiss&quot;). When the user clicks the notification, the service worker receives a notificationclick event and can open the appropriate page in the PWA. The architecture must handle subscription lifecycle — subscriptions expire (typically after 30 days on Chrome, varies by browser), and the application must detect expired subscriptions and re-subscribe. The push notification payload is limited in size (typically 4KB), so the notification should contain only essential information, and the full content should be fetched from the server when the user opens the notification. For privacy-sensitive applications, the notification payload should not contain sensitive data (it is encrypted in transit but may be visible in the notification preview on the lock screen).
         </p>
@@ -360,12 +385,15 @@ export default function OfflineSupportPWAArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do service workers enable offline support?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Service workers intercept network requests via their fetch
               handler. During installation, they cache the app shell (HTML, CSS,
               JS, critical assets). During fetch events, they can respond from
@@ -375,7 +403,7 @@ export default function OfflineSupportPWAArticle() {
               assets — can work offline. The service worker runs independently
               of the page and can continue running after the page closes,
               enabling background sync and push notifications.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

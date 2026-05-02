@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function ThirdPartyScriptSafetyArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Third-Party Script Safety</strong> encompasses strategies for
           integrating external scripts — analytics, advertisements, chat
           widgets, A/B testing tools, payment processors, social media embeds,
@@ -48,8 +52,8 @@ export default function ThirdPartyScriptSafetyArticle() {
           Airways (2018) and Ticketmaster (2018) demonstrated the severity of
           this risk — a single compromised third-party script stole payment
           card data from millions of users across thousands of websites.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff engineers, third-party script management is a risk balancing
           act. Marketing teams demand analytics and tracking for attribution and
           optimization. Support teams want chat widgets for customer service.
@@ -59,7 +63,7 @@ export default function ThirdPartyScriptSafetyArticle() {
           average page has 70+ third-party requests accounting for 30-50% of
           total JavaScript, making third-party scripts the leading cause of
           performance regressions and a significant security concern.
-        </p>
+        </HighlightBlock>
         <p>
           Third-party script safety spans three dimensions: security (protecting
           against supply chain attacks, data exfiltration, and DOM manipulation),
@@ -75,7 +79,10 @@ export default function ThirdPartyScriptSafetyArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Supply chain attacks occur when a third-party script&apos;s source is
           compromised — the attacker modifies the script on the vendor&apos;s
           server or CDN, and every website loading that script receives the
@@ -88,8 +95,8 @@ export default function ThirdPartyScriptSafetyArticle() {
           Content Security Policy (CSP) — restricting which domains can execute
           scripts — and regular auditing of third-party scripts to detect
           unauthorized changes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Performance impact from third-party scripts occurs through multiple
           mechanisms. Each script is an additional HTTP request, adding network
           overhead. JavaScript execution blocks the main thread, causing jank
@@ -102,7 +109,7 @@ export default function ThirdPartyScriptSafetyArticle() {
           scripts are the leading cause of unpredictable performance
           regressions because they can change without the application
           team&apos;s knowledge.
-        </p>
+        </HighlightBlock>
         <p>
           Privacy concerns arise because third-party scripts collect user data
           — browsing behavior, device information, IP addresses, and sometimes
@@ -124,7 +131,10 @@ export default function ThirdPartyScriptSafetyArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The security controls architecture provides technical protection
           against third-party script risks. Content Security Policy (CSP)
           restricts which script sources can execute on the page through the
@@ -139,8 +149,8 @@ export default function ThirdPartyScriptSafetyArticle() {
           widgets (ads, embeds) from the main page, preventing access to the
           parent page DOM and restricting capabilities (form submission,
           popups, scripts) through the sandbox attribute.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The script loading architecture minimizes performance impact. Async
           scripts download and execute as soon as available, without blocking
           HTML parsing — appropriate for scripts that do not depend on DOM
@@ -152,7 +162,7 @@ export default function ThirdPartyScriptSafetyArticle() {
           component mounts. Lazy scripts load only when the user interacts with
           a feature or when the component enters the viewport — appropriate for
           chat widgets, embedded videos, and social media embeds.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/third-party-performance-impact.svg"
@@ -181,7 +191,10 @@ export default function ThirdPartyScriptSafetyArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tag management versus direct script integration involves trade-offs
           between marketing team autonomy and engineering control. Google Tag
           Manager, Tealium, and Segment allow marketing teams to add and
@@ -195,8 +208,8 @@ export default function ThirdPartyScriptSafetyArticle() {
           pixels, A/B testing) that change frequently, but load critical
           scripts (payment processors, security scripts) directly with SRI and
           CSP controls.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Sandboxed iframes versus direct script integration provides stronger
           security isolation but limits functionality. Sandboxed iframes prevent
           the third-party content from accessing the parent page DOM, cookies,
@@ -207,7 +220,7 @@ export default function ThirdPartyScriptSafetyArticle() {
           are the recommended approach. For trusted vendors with deep
           integration needs (payment processors like Stripe Elements), direct
           script integration with CSP and SRI is appropriate.
-        </p>
+        </HighlightBlock>
         <p>
           Self-hosting third-party scripts versus loading from vendor CDNs
           involves trade-offs between control and freshness. Self-hosting
@@ -226,7 +239,10 @@ export default function ThirdPartyScriptSafetyArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Minimize third-party scripts aggressively. Question every script
           addition — does this script provide measurable business value that
           justifies its security risk and performance cost? Audit existing
@@ -236,8 +252,8 @@ export default function ThirdPartyScriptSafetyArticle() {
           performance budget for third-party impact — third-party scripts should
           not exceed 30% of total JavaScript or add more than 500ms to Time to
           Interactive.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement Content Security Policy as the primary defense against
           unauthorized script execution. Configure script-src to allow only
           known, approved domains — your own origin and specific third-party
@@ -247,7 +263,7 @@ export default function ThirdPartyScriptSafetyArticle() {
           Content-Security-Policy-Report-Only to test the policy without
           blocking, then enforce once confident the allowed domains are
           comprehensive.
-        </p>
+        </HighlightBlock>
         <p>
           Load third-party scripts asynchronously to prevent render blocking.
           Use defer for scripts that need DOM access, async for independent
@@ -263,7 +279,10 @@ export default function ThirdPartyScriptSafetyArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Loading third-party scripts synchronously in the head is the most
           damaging performance mistake. A synchronous script in the head blocks
           HTML parsing until it downloads and executes — if the third-party
@@ -272,8 +291,8 @@ export default function ThirdPartyScriptSafetyArticle() {
           the page has rendered. Never place third-party scripts in the head
           without async or defer — the risk of blocking the entire page load is
           too severe.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not monitoring third-party script changes means you may not know when
           a vendor updates their script with new functionality, performance
           regressions, or (in the worst case) malicious code. Third-party
@@ -284,7 +303,7 @@ export default function ThirdPartyScriptSafetyArticle() {
           third-party script changes in your performance monitoring — track
           Core Web Vitals trends and correlate degradation with third-party
           script additions or updates.
-        </p>
+        </HighlightBlock>
         <p>
           Failing to plan for third-party failure creates brittle applications.
           If a chat widget&apos;s CDN goes down, does your page break? If an
@@ -300,7 +319,10 @@ export default function ThirdPartyScriptSafetyArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms face the highest third-party script risk because
           they handle payment processing and personal data while running
           numerous marketing and analytics scripts. The recommended architecture
@@ -312,8 +334,8 @@ export default function ThirdPartyScriptSafetyArticle() {
           social proof widgets). Payment scripts (Stripe, PayPal) are loaded
           directly with SRI, not through a tag manager, because they are
           security-critical.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           News websites balance advertising revenue with performance and
           security. They load ad scripts through Google Tag Manager with consent
           blocking (ads do not load until the user consents), use sandboxed
@@ -323,7 +345,7 @@ export default function ThirdPartyScriptSafetyArticle() {
           continuously. When a particular ad network causes performance
           degradation, they can disable it through the tag manager without
           engineering involvement.
-        </p>
+        </HighlightBlock>
         <p>
           SaaS companies manage third-party scripts for analytics (Mixpanel,
           Amplitude), chat support (Intercom, Drift), A/B testing (Optimizely,
@@ -340,12 +362,15 @@ export default function ThirdPartyScriptSafetyArticle() {
 
       <section>
         <h2>Advanced Third-Party Security Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Supply chain attack prevention strategies must address the growing threat of compromised third-party scripts that can exfiltrate user data, inject malicious content, or redirect users to phishing sites. Subresource Integrity (SRI) provides cryptographic verification that a script has not been modified — the integrity attribute on the script tag contains a SHA-256, SHA-384, or SHA-512 hash of the expected script content, and the browser refuses to execute the script if the hash does not match. SRI is effective for static scripts with known versions (CDN-hosted libraries, payment SDKs, analytics snippets) but is impractical for dynamic scripts that change frequently (ad tags, A/B testing variants) because the hash must be updated with each script change. For dynamic scripts, Trusted Types provide a complementary defense — Trusted Types is a CSP feature that prevents DOM XSS by restricting which values can be passed to XSS-sensitive sinks (innerHTML, eval, script creation). When Trusted Types are enforced, third-party scripts cannot inject arbitrary HTML or execute dynamically generated code, significantly reducing the attack surface even if the script is compromised. The implementation requires creating a Trusted Type policy that validates and sanitizes all values before they reach DOM sinks, and configuring the CSP header with Content-Security-Policy: require-trusted-types-for &apos;script&apos;. Trusted Types has growing browser support (Chrome, Edge, Opera) and should be enabled for applications that load untrusted third-party scripts.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tag manager security architecture addresses the unique risk that tag managers introduce — a single compromised tag manager account can inject malicious scripts across thousands of websites. Google Tag Manager, Tealium, and Adobe Launch provide powerful script management capabilities but also create a concentrated attack surface. The security architecture for tag managers includes access control — restricting who can create, edit, and publish tags (using role-based access with approval workflows, requiring dual authorization for production changes), environment separation — using separate tag manager containers for development, staging, and production, with production changes requiring a deployment pipeline rather than direct UI edits, and audit logging — recording every tag change, who made it, and when, with automated alerts for unauthorized modifications. The tag manager&apos;s preview mode should be used to test tags before publishing, and the published container version should be tracked in version control with diff analysis to detect unexpected changes. For high-security applications, critical scripts (payment processors, authentication) should be loaded directly with SRI rather than through the tag manager, reserving the tag manager for marketing and analytics scripts where the business impact of temporary unavailability is lower.
-        </p>
+        </HighlightBlock>
         <p>
           Third-party performance monitoring is essential because third-party scripts are the leading cause of unpredictable performance regressions — they can change without notice, adding new functionality that impacts load time, main thread execution, and layout stability. The monitoring architecture uses automated performance regression detection that runs on every deployment and periodically in production. The Lighthouse CI pipeline measures Core Web Vitals (LCP, INP, CLS) and third-party impact metrics (third-party JavaScript bytes, third-party main thread time, third-party transfer size) and fails the build if metrics exceed defined thresholds. In production, Real User Monitoring (RUM) data is segmented by third-party script presence — comparing performance for users who have ad blockers (third-party scripts blocked) versus users who do not, quantifying the performance impact of each third-party script. When a particular third-party script is identified as a performance bottleneck, the engineering team has data to make informed decisions: negotiate with the vendor to optimize their script, replace the vendor with a lighter-weight alternative, implement a facade to defer loading, or remove the script if its business value does not justify its performance cost. The monitoring should also track third-party script availability — if a script&apos;s CDN is frequently unreachable, it causes JavaScript errors and broken functionality, which is both a performance and reliability issue.
         </p>
@@ -362,12 +387,15 @@ export default function ThirdPartyScriptSafetyArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What are the security risks of third-party scripts?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Supply chain attacks — a compromised vendor serves malicious
               code to all websites loading their script (British Airways
               Magecart attack stole payment data from millions). Data
@@ -377,7 +405,7 @@ export default function ThirdPartyScriptSafetyArticle() {
               forms, or redirect users. Privacy violations — cross-site
               tracking, fingerprinting, collecting data without consent. Each
               third-party script is a potential attack vector.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

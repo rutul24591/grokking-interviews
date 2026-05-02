@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,22 +24,25 @@ export default function GraphArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         A graph is a set of vertices joined by edges. Edges may be directed or undirected,
         weighted or unweighted, and the overall structure may contain cycles or be acyclic. The
         graph pattern in coding interviews encompasses dozens of named algorithms — BFS, DFS,
         Dijkstra, Bellman-Ford, Floyd-Warshall, Kruskal, Prim, Tarjan, Kosaraju, Kahn — but the
         engineering practice reduces to a small decision tree: identify the shape of the graph
         and the question being asked, and the right algorithm becomes immediate.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Recognition signals split into two layers. The first is whether the problem is
         explicitly graph-shaped: nodes-and-edges, networks, dependencies, social connections,
         word transformations. The second is whether a problem with a different surface shape
         hides a graph: a 2-D grid is a graph where each cell connects to four (or eight)
         neighbours; a word ladder is a graph where each word connects to all words one letter
         away; a tree is a graph with V − 1 edges and no cycles.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         The pattern matters at staff level because it covers a disproportionate share of the
         Leetcode hard tier and the system-design coding rounds. Routing in distributed systems
@@ -55,21 +59,24 @@ export default function GraphArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Representation choices.</strong> Adjacency list (a map from node to list of
         neighbours) is the default — O(V + E) memory, O(degree) iteration. Adjacency matrix (a
         boolean V-by-V matrix) is right for dense graphs and O(1) edge-existence queries but
         wastes memory on sparse graphs. Edge list (an array of triples) is right for algorithms
         that iterate edges directly, like Kruskal&apos;s MST and Bellman-Ford. Implicit graphs
         compute neighbours on the fly — grid traversal, word-ladder transitions, bit-flip moves.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Visited tracking.</strong> Every traversal needs to mark visited nodes to avoid
         infinite loops in cyclic graphs. Use a hash set (general nodes), a boolean array (nodes
         identified by integer), or in-place markers on the input (mutate the grid by writing
         sentinel values). Mark at push time for BFS, not pop time — otherwise the same node is
         pushed many times, and the queue can grow exponentially.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>BFS.</strong> Queue-based, level-by-level traversal. Optimal for shortest paths
         in unweighted graphs because every edge has cost 1, and the first time the queue reaches
@@ -116,22 +123,25 @@ export default function GraphArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/graph-diagram-1.svg" alt="Graph representation and algorithm choice" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The BFS template: initialise a queue with the source, a visited set with the source, and
         a distance counter. Pop the front; for each unvisited neighbour, mark visited and push.
         For shortest-path problems, increment a depth counter at each &quot;level&quot; (process
         the current queue size before reading new pushes). For multi-source BFS (rotting oranges,
         walls and gates), push all sources at depth 0 — the BFS naturally finds the minimum
         distance from any source to each cell.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The DFS template: a recursive function dfs(node) that marks node as visited, processes
         the node, then recurses on each unvisited neighbour. For cycle detection, use three
         colours — white (unseen), grey (in current call stack), black (fully explored) — and
         flag a cycle when an edge reaches a grey node. For topological sort via DFS, push the
         node onto an output stack on the way back up; the reverse of pop order is the topological
         order.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         The Dijkstra template: distance map initialised to infinity, source distance 0, push
         (0, source) into a min-heap. Loop: pop (d, u); if d is greater than the recorded
@@ -160,16 +170,19 @@ export default function GraphArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>BFS vs. DFS for reachability.</strong> Both are O(V + E) and find a path. BFS
         finds the shortest path (in unweighted graphs), DFS does not. For pure reachability,
         DFS is simpler to write recursively. For shortest path, BFS only.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>BFS vs. Dijkstra.</strong> BFS is O(V + E) for unweighted graphs. Dijkstra is
         O((V + E) log V) for non-negative weights. Use BFS when all edges have equal weight;
         Dijkstra otherwise. The cost difference is the heap.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Dijkstra vs. Bellman-Ford.</strong> Dijkstra is faster (O((V+E) log V) vs. O(V
         * E)) but cannot handle negative weights. Bellman-Ford is correct on negative weights and
@@ -202,16 +215,19 @@ export default function GraphArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/graph-diagram-2.svg" alt="BFS vs. DFS comparison" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Mark visited at push time, not pop time.</strong> The most common BFS bug. If
         you mark on pop, the same node can be pushed multiple times by different predecessors,
         and the queue grows exponentially.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Use iterative DFS for large graphs.</strong> Recursion depth in JavaScript is
         ~10K; in Python, default 1000 (raise with sys.setrecursionlimit). For graphs that can
         exceed these, use an explicit stack.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>For grids, define directions as a constant array.</strong> int[][] dirs = {`{`}
         {`{-1, 0}, {1, 0}, {0, -1}, {0, 1}`}{`}`} (or the eight-direction equivalent). Loop over
@@ -238,14 +254,17 @@ export default function GraphArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Marking visited on pop.</strong> Causes exponential queue growth and wrong
         complexity.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Using BFS on weighted graphs.</strong> BFS minimises edge count, not edge
         weight. Wrong on weighted graphs unless all weights are equal.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Using Dijkstra on negative weights.</strong> Once a node is popped, Dijkstra
         assumes its distance is final; negative edges can later reduce it. Correct algorithm:
@@ -275,14 +294,17 @@ export default function GraphArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>200. Number of Islands.</strong> Grid traversal. DFS or BFS or Union-Find. Each
         unvisited land cell starts a new component; flood-fill marks all connected cells.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>695. Max Area of Island.</strong> Variant of 200; DFS returns the area of each
         component, take the max.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>133. Clone Graph.</strong> BFS or DFS with a hashmap from original node to
         clone. Push the source clone, expand, copy edges to cloned neighbours.
@@ -327,13 +349,16 @@ export default function GraphArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/graph-diagram-3.svg" alt="Canonical graph Leetcode problems" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>BFS or DFS for shortest path?</strong> BFS for unweighted, Dijkstra for
+        <HighlightBlock as="li" tier="important"><strong>BFS or DFS for shortest path?</strong> BFS for unweighted, Dijkstra for
         non-negative weighted, Bellman-Ford for negative weighted, Floyd-Warshall for all-pairs
-        on small graphs.</li>
-        <li><strong>Why mark visited on push, not pop?</strong> Marking on pop allows the same node
+        on small graphs.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Why mark visited on push, not pop?</strong> Marking on pop allows the same node
         to be pushed many times by different predecessors before its first pop, blowing up the
-        queue.</li>
+        queue.</HighlightBlock>
         <li><strong>Why does Dijkstra fail on negative edges?</strong> Once popped, a node&apos;s
         distance is treated as final. Negative edges discovered later could reduce that
         distance, but the algorithm has moved on.</li>

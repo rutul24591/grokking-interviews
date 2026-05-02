@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Smart and Dumb Components</strong> (also called Container and Presentational components) represent a pattern for separating concerns in React applications. <strong>Smart components</strong> (containers) manage state, data fetching, and business logic. They know how data is loaded and manipulated. <strong>Dumb components</strong> (presentational) focus solely on rendering UI. They receive data via props and emit events via callbacks, but don't know where data comes from or how it changes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This pattern addresses a fundamental challenge: how do we organize components to maximize reusability, testability, and maintainability? Without separation, components become coupled to specific data sources, hard to test in isolation, and difficult to reuse in different contexts. The smart/dumb pattern creates a clear boundary between logic and presentation.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, the smart/dumb pattern is foundational for component architecture. It influences how teams organize code, how components are tested, and how logic is shared. While hooks have evolved the pattern, the underlying principle of separating concerns remains essential.
         </p>
@@ -45,6 +49,9 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/component-design/smart-vs-dumb.svg"
@@ -53,12 +60,12 @@ export default function ArticlePage() {
         />
 
         <h3>Presentational (Dumb) Components</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Presentational components focus solely on how things look. They receive data via props and emit events via callbacks. They don't have dependencies on the rest of the app like stores or APIs. They're often functional components without state, though they can have UI state like toggle states.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Characteristics include being concerned with appearance rather than data source, receiving data and callbacks exclusively via props, having few or no dependencies on other parts of the app, and being highly reusable across different contexts. They're often styled components or UI library wrappers.
-        </p>
+        </HighlightBlock>
         <p>
           Examples include Button, Card, Avatar, and List components. These components don't care where their data comes from. A List component can render users, products, or messages. It just renders what it's given.
         </p>
@@ -107,9 +114,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing the smart/dumb pattern requires clear boundaries and data flow decisions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/component-design/smart-dumb-data-flow.svg"
@@ -118,9 +128,9 @@ export default function ArticlePage() {
         />
 
         <h3>Data Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Data flows from smart to dumb components via props. Smart components fetch or receive data from stores. They transform it for presentation. They pass the transformed data to dumb components. Dumb components render the data without knowing its source.
-        </p>
+        </HighlightBlock>
         <p>
           Events flow from dumb to smart components via callbacks. Dumb components emit events like onClick, onChange, onSubmit. Smart components provide callback props that handle these events. The callbacks dispatch to stores or call APIs.
         </p>
@@ -164,9 +174,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The smart/dumb pattern involves trade-offs between separation, complexity, and boilerplate.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -201,19 +214,22 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that the pattern's value depends on application complexity. For design systems and large applications, the separation is essential. For simple applications, the boilerplate might not be worth it. Use hooks for modern implementations to reduce boilerplate.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Keep dumb components pure. They should render based solely on props. Don't fetch data in dumb components. Don't connect to stores in dumb components. This ensures reusability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Make smart components thin. They should fetch data, transform it, and pass to dumb components. Don't put presentation logic in smart components. Keep them focused on data flow.
-        </p>
+        </HighlightBlock>
         <p>
           Use TypeScript to enforce the boundary. Dumb components should have clear prop types. Smart components should have clear data requirements. This makes the contract explicit.
         </p>
@@ -227,12 +243,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Over-applying the pattern creates unnecessary boilerplate. Splitting every component into smart and dumb adds files without benefit. Apply the pattern where there's clear separation of concerns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Creating dumb components that are too specific defeats reusability. A UserList that only works with user data from one API isn't very reusable. Make dumb components generic.
-        </p>
+        </HighlightBlock>
         <p>
           Putting business logic in dumb components violates separation. Dumb components should render, not decide. Business logic belongs in smart components or custom hooks.
         </p>
@@ -246,14 +265,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Design System: Reusable UI Library</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A company needed a UI library used across multiple applications. The solution was dumb presentational components (Button, Card, Input) that were application-agnostic. Each application had its own smart containers that connected to specific data sources.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Results included a single UI library used by 10+ applications, consistent UI across all products, and easy updates to the library without changing application logic. The separation enabled sharing presentation across contexts.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce: Product Listing</h3>
         <p>
@@ -282,14 +304,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between smart and dumb components?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Smart components (containers) manage state, data fetching, and business logic. They connect to data sources like APIs or stores. Dumb components (presentational) focus solely on rendering UI. They receive data via props and emit events via callbacks, but don't know where data comes from.
-            </p>
+            </HighlightBlock>
             <p>
               The separation enables reusability, testability, and maintainability. Dumb components can be used with any data source. Smart components can change data sources without affecting presentation.
             </p>

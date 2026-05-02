@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -76,23 +77,26 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Operations & Data Model</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Basic Operations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Key-value stores expose a minimal API: <code className="inline-code">GET key</code> returns
           the value for a key (or null if not found). <code className="inline-code">SET key value</code>
           stores a value (overwriting if exists). <code className="inline-code">DELETE key</code>
           removes a key. Some stores add <code className="inline-code">EXISTS key</code> (check
           existence), <code className="inline-code">TTL key</code> (time to live), and atomic
           operations like <code className="inline-code">INCR key</code> (increment counter).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This simplicity enables optimization. Without complex query parsing, the database can
           focus on fast key lookup. Hash tables provide O(1) average-case lookup. In-memory stores
           avoid disk I/O entirely. Distributed stores partition keys across nodes for horizontal
           scaling.
-        </p>
+        </HighlightBlock>
 
         <h3>Data Structures</h3>
         <p>
@@ -152,23 +156,26 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Scaling &amp; Caching</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Horizontal Scaling (Sharding)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Key-value stores scale horizontally by partitioning keys across nodes (sharding). The
           shard key determines which node stores a key. Common strategies include:
           <strong>Range-based sharding</strong> partitions by key ranges (keys A-M on shard 1, N-Z
           on shard 2). This enables range queries but risks uneven distribution.
           <strong>Hash-based sharding</strong> computes shard equals hash of key modulo number of shards.
           This provides even distribution but loses range query efficiency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Consistent hashing</strong> maps keys and nodes to a hash ring. Keys are assigned
           clockwise to the next node. Adding or removing a node only affects keys between the old
           and new node positions—minimal data movement. This is how DynamoDB, Cassandra, and
           distributed caches scale elastically.
-        </p>
+        </HighlightBlock>
 
         <h3>Caching Patterns</h3>
         <p>
@@ -220,19 +227,22 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Key-Value vs Other Stores</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Key-value stores represent one end of the database spectrum: maximum simplicity and
           performance, minimum query flexibility. Understanding the trade-offs helps you choose
           the right tool for each workload.
-        </p>
+        </HighlightBlock>
 
         <h3>Key-Value Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Latency</strong> is the primary advantage. In-memory key-value stores (Redis)
           achieve sub-millisecond latency for simple operations. This is essential for real-time
           applications (gaming, bidding, ad auctions) where every millisecond matters.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Simplicity</strong> enables reliability. With only GET/SET/DELETE operations,
@@ -285,20 +295,23 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Key-Value Stores</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Design key schemas carefully.</strong> Your key structure determines access
           patterns. Use prefixes for namespacing (<code className="inline-code">user:123:profile</code>,
           <code className="inline-code">user:123:settings</code>). Use separators consistently
           (colons are common). Document key conventions and enforce them in code reviews.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Set appropriate TTLs.</strong> Every key should have a TTL unless it's
           permanent data. This prevents memory leaks from stale data. For sessions, use TTL based
           on inactivity (30 minutes). For caches, use TTL based on data freshness requirements
           (5 minutes for dynamic content, 1 hour for static).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Monitor memory usage.</strong> In-memory stores can run out of memory. Set
@@ -328,20 +341,23 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Using as primary database.</strong> Key-value stores are excellent caches and
           session stores, but poor primary databases for complex applications. Don't try to build
           a full application on Redis alone—you'll end up reimplementing database features poorly.
           Use key-value stores alongside relational/document databases, not instead of them.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Ignoring memory limits.</strong> In-memory stores will crash if they exceed
           memory. Set maxmemory limits and eviction policies. Monitor memory usage. Archive or
           delete old data. Consider disk-based stores (RocksDB) for data that doesn't fit in
           memory.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Poor key design.</strong> Keys like <code className="inline-code">data:1</code>,
@@ -374,21 +390,24 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Session Management (Express, Django)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Web frameworks use key-value stores for session storage. Each user session has a unique
           ID stored in a cookie. The server stores session data in Redis:
           <code className="inline-code">SET session:abc123</code> with session data including user_id, cart, and expires.
           Session lookup is a single GET operation. TTL ensures sessions expire after inactivity.
           Redis Cluster scales to millions of concurrent sessions.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter uses Redis for session management, handling hundreds of millions of sessions.
           The low latency ensures fast authentication on every request. TTL-based expiration
           automatically cleans up inactive sessions.
-        </p>
+        </HighlightBlock>
 
         <h3>Caching Layer (GitHub, Instagram)</h3>
         <p>
@@ -435,14 +454,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: When would you choose a key-value store over a document or relational database?
               Give a concrete example.
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Choose key-value stores when you need simple key-based
               access with microsecond latency, and don't need complex queries. Example: Session
               management. Each session has a unique ID (key) and session data (value). You only
@@ -450,7 +472,7 @@ export default function ArticlePage() {
               Redis provides sub-millisecond lookup, TTL-based expiration, and horizontal scaling.
               A relational database would be overkill (schema, joins) and slower. A document
               database would work but adds unnecessary complexity (query parsing, indexing).
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What if you need to query sessions by user ID? Answer:
               Maintain a secondary index (separate key mapping user_id to session_ids), or use a

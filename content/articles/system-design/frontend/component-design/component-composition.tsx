@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Component Composition</strong> is the practice of building complex components by combining simpler components together. Instead of creating monolithic components that do everything, composition encourages creating small, focused components that can be combined in different ways to achieve various outcomes. This approach is fundamental to React and modern frontend frameworks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Composition addresses a core challenge in component design: how do we create components that are flexible enough to handle various use cases without becoming overly complex or configurable? Without composition, components become bloated with props for every possible variation, leading to hard-to-maintain code and limited flexibility.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, composition patterns are essential tools for designing component APIs. The right composition pattern makes components intuitive to use, easy to extend, and maintainable over time. The wrong pattern leads to prop drilling, tightly coupled components, and frustrated developers.
         </p>
@@ -45,6 +49,9 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/component-design/composition-patterns.svg"
@@ -53,12 +60,12 @@ export default function ArticlePage() {
         />
 
         <h3>The Children Prop</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The children prop is the simplest composition pattern. Components receive nested content via the children prop and render it where appropriate. This enables layout components, wrappers, and containers that add structure or behavior without knowing what they're wrapping.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Common use cases include layout containers that apply consistent spacing or styling, wrappers that add behavior like error boundaries or suspense, and presentational components that structure content without dictating what the content is. The children prop is implicit in JSX and doesn't need to be explicitly passed.
-        </p>
+        </HighlightBlock>
 
         <h3>Named Slots</h3>
         <p>
@@ -95,9 +102,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing composition patterns requires thoughtful API design and state management decisions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/component-design/component-directory-structure.svg"
@@ -106,9 +116,9 @@ export default function ArticlePage() {
         />
 
         <h3>Choosing the Right Pattern</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Select composition patterns based on the use case. Use children prop for simple wrapping where the component doesn't need to know about the content. Use named slots when you need multiple distinct insertion points. Use render props when the component needs to pass data to the rendered content. Use HOCs for cross-cutting concerns that apply to many components. Use compound components for cohesive APIs with multiple related parts.
-        </p>
+        </HighlightBlock>
         <p>
           Consider the trade-offs. Children prop is simplest but least flexible. Render props are most flexible but can create nested callback structures. HOCs compose well but obscure prop sources. Compound components provide clean APIs but require more setup.
         </p>
@@ -132,9 +142,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Composition patterns involve trade-offs between flexibility, complexity, and developer experience.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -183,19 +196,22 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that simpler patterns are usually better. Start with children prop. Only reach for more complex patterns when necessary. Favor patterns that provide clean JSX syntax over patterns that require nested callbacks.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Favor composition over configuration. Instead of adding props for every variation, compose components to achieve different outcomes. This keeps components simple and flexible. Keep components focused on their specific responsibility. Let composition handle the complexity of combining multiple components.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use children prop by default. It's the simplest pattern and works for most cases. Only reach for more complex patterns when children prop is insufficient. Document composition patterns clearly. Show examples of how to compose components in different ways.
-        </p>
+        </HighlightBlock>
         <p>
           Avoid deep nesting of render props or HOCs. If you find yourself nesting more than two levels, consider a different pattern. Compound components often provide cleaner alternatives. Test composed components in various combinations. Ensure composition doesn't break when components are rearranged.
         </p>
@@ -203,12 +219,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Over-engineering composition patterns creates unnecessary complexity. Don't use render props when children prop would work. Don't use HOCs when a simple wrapper would suffice. Start simple and add complexity only when needed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Prop drilling through composed components defeats the purpose. If you're passing props through multiple layers of composition, consider Context or a different pattern. Breaking encapsulation by reaching into child components violates composition principles. Use the component's public API.
-        </p>
+        </HighlightBlock>
         <p>
           Forgetting to forward refs breaks ref access through composed components. Use React.forwardRef when wrapping components. Not handling null or undefined children causes runtime errors. Always check for children before rendering.
         </p>
@@ -216,14 +235,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Design System: Flexible Card Component</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A design system needed a card component that could handle various layouts. Some cards had images, some had headers, some had actions. The solution was a compound component pattern with Card, CardHeader, CardBody, and CardFooter children.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Results included a flexible API that handled all card variations, clean JSX syntax that was intuitive to use, and no need for configuration props. The card component became one of the most used components in the system.
-        </p>
+        </HighlightBlock>
 
         <h3>Dashboard: Layout Composition</h3>
         <p>
@@ -252,14 +274,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What are the different composition patterns in React and when do you use each?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Children prop is for simple wrapping where the component doesn't need to know about the content. Named slots are for multiple distinct insertion points like card header, body, footer. Render props are for passing data to rendered content via functions. HOCs are for cross-cutting concerns that apply to many components. Compound components are for cohesive APIs with multiple related parts.
-            </p>
+            </HighlightBlock>
             <p>
               Start with the simplest pattern that works. Children prop is usually sufficient. Only reach for more complex patterns when necessary.
             </p>

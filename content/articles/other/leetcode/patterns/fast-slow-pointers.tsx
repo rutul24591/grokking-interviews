@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,22 +24,25 @@ export default function FastSlowPointersArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Fast and slow pointers — also called Floyd&apos;s tortoise-and-hare algorithm — is a specialisation of the
         two-pointer pattern in which both pointers walk in the same direction but at different speeds. Slow advances
         one node per step; fast advances two. The configuration solves three flavours of problem in O(n) time and O(1)
         space: cycle detection in linked lists or iterated functions, locating the entry point of such a cycle, and
         finding structural midpoints (the middle node of a linked list, the &quot;n-th from the end&quot; pointer
         offset).
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Robert W. Floyd published the cycle-detection variant in the 1960s — hence the textbook name &quot;Floyd&apos;s
         cycle-finding algorithm.&quot; The algorithm is a workhorse of number theory (Pollard&apos;s rho integer
         factorisation), pseudorandom-number-generator analysis (period detection), and functional-iteration questions
         (happy numbers, fixed points). On Leetcode the pattern shows up most often as &quot;does this linked list have
         a cycle?&quot; or &quot;what node does the cycle enter at?&quot; but extends naturally to any setting where a
         sequence x, f(x), f(f(x)), ... eventually repeats.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Recognition signals: a linked-list problem that mentions cycles, midpoints, or &quot;remove the n-th from the
         end&quot;; an iterative numeric process that may or may not terminate (happy number); an array re-cast as a
@@ -54,18 +58,21 @@ export default function FastSlowPointersArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Why fast and slow meet inside a cycle.</strong> Once both pointers are inside the cycle, consider the
         gap from slow to fast (counting forward around the cycle). Each step, fast moves two nodes and slow moves
         one, so the gap closes by exactly one position per iteration. Starting from any gap g ∈ {`{0, 1, ..., λ-1}`}
         where λ is the cycle length, after at most λ - 1 steps the gap is zero — they collide. There is no way for
         fast to &quot;jump over&quot; slow because integer mod λ wraps continuously.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>No cycle, no meeting.</strong> If the list is acyclic, fast hits null (or its .next does) before slow
         reaches it. The termination check is &quot;while fast and fast.next: ...&quot; — both must be non-null for
         fast to advance two nodes safely.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Cycle entry via the reset trick.</strong> Let µ be the distance from head to cycle entry, and λ the
         cycle length. When slow has taken k steps and fast 2k steps and they meet, both are inside the cycle, and the
@@ -99,17 +106,20 @@ export default function FastSlowPointersArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The standard cycle-detection skeleton has two phases. <strong>Phase 1:</strong> slow and fast both start at
         head. Loop: advance slow by one, fast by two, after each step check if fast or fast.next is null (no cycle,
         return) or if slow == fast (cycle, break). <strong>Phase 2:</strong> reset slow to head; loop advancing both
         by one until slow == fast; return that node as the cycle entry.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Edge cases: empty list (head is null), single node with self-loop, two-node cycle, cycle that includes the
         head (µ = 0). The phase-1 termination check &quot;while fast and fast.next&quot; handles the null case
         cleanly; phase 2 handles µ = 0 by terminating immediately on the first iteration (slow == fast at head).
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         For midpoint problems, the loop is &quot;while fast and fast.next: slow = slow.next; fast =
         fast.next.next&quot;. Initialising fast at head returns the upper middle on even-length; initialising fast at
@@ -139,18 +149,21 @@ export default function FastSlowPointersArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Floyd&apos;s vs. <strong>hash set</strong>: hash set is O(n) time and O(n) space — walk the list, store every
         visited node, return on first repeat. Trivial to implement and easy to extend to &quot;return the cycle
         node&quot; (the first repeat is the entry). Floyd&apos;s is O(n) time and O(1) space — better when memory is
         tight or when the list is enormous (gigabytes). Pick Floyd&apos;s for embedded or stream-style settings; pick
         hash set when clarity matters and memory is cheap.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Floyd&apos;s vs. <strong>Brent&apos;s</strong>: Brent&apos;s typically uses fewer function evaluations
         (relevant when f is expensive, e.g., Pollard&apos;s rho on large integers), but the constant factors and
         cache behaviour are comparable on linked-list traversal. Same O(λ + µ) total work.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Two-pointer (convergent / parallel) vs. <strong>fast/slow</strong>: convergent walks toward each other from
         opposite ends — needs random access (arrays). Fast/slow walks in the same direction at different speeds —
@@ -164,16 +177,19 @@ export default function FastSlowPointersArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Always check &quot;fast and fast.next&quot; before advancing fast by two. The order matters: short-circuit
         evaluation lets you safely access fast.next.next only when fast.next is non-null. A bug here null-derefs on
         any non-cyclic list of length 1.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         For midpoint problems, decide upfront whether you want the lower or upper middle on even-length lists, and
         document your choice. Initialising fast = head returns the upper middle (lengths 4 → index 2); fast = head.next
         returns the lower middle (lengths 4 → index 1).
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Use a dummy head node for problems that may delete the head (Remove N-th From End with n = length). It
         eliminates the special case and shrinks the code.
@@ -191,14 +207,17 @@ export default function FastSlowPointersArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Null-deref on fast.next.next.</strong> Skipping the &quot;fast and fast.next&quot; check on a
         non-cyclic list of length ≥ 1 crashes. Always test both before advancing.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Returning slow as the cycle entry without the reset trick.</strong> The meeting point is not the
         entry. Reset slow to head and walk both at speed 1.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Off-by-one on midpoint for palindrome.</strong> Reversing from slow on an even-length list with the
         upper middle leaves halves of unequal length. Use the lower middle (fast = head.next initialisation) and
@@ -225,17 +244,20 @@ export default function FastSlowPointersArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Floyd&apos;s is the standard technique in <strong>Pollard&apos;s rho integer factorisation</strong>, where it
         detects a non-trivial gcd along an iterated quadratic-residue sequence. <strong>Pseudorandom number generator
         analysis</strong> uses it to measure period. <strong>Garbage collectors</strong> sometimes use cycle
         detection variants to reclaim cyclic reference structures. <strong>Linked-list libraries</strong> (Java&apos;s
         ConcurrentLinkedQueue, Linux kernel list traversal in debug mode) use Floyd&apos;s to assert non-cyclic
         invariants without allocating a hash set.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Below are the canonical Leetcode problems that map to this pattern. Each tests a slightly different facet.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>141. Linked List Cycle.</strong> Detection only — return bool. Phase 1 of Floyd&apos;s. Edge cases:
         empty list, single node, single node with self-loop.
@@ -279,14 +301,17 @@ export default function FastSlowPointersArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why are slow and fast guaranteed to meet inside a cycle?</strong> Once both are in the cycle, the
+        <HighlightBlock as="li" tier="important"><strong>Why are slow and fast guaranteed to meet inside a cycle?</strong> Once both are in the cycle, the
         forward gap from slow to fast modulo λ shrinks by exactly 1 each step. Starting from any gap in [0, λ), it
         reaches 0 in at most λ − 1 steps. The integers wrap continuously mod λ, so fast cannot &quot;skip over&quot;
-        slow.</li>
-        <li><strong>Walk through the reset trick.</strong> Slow has taken k steps at meeting; k ≡ 0 mod λ. So slow is at
+        slow.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Walk through the reset trick.</strong> Slow has taken k steps at meeting; k ≡ 0 mod λ. So slow is at
         offset (k − µ) ≡ −µ (mod λ) from the cycle entry. A walker from head needs µ steps to reach the entry. A
-        walker at the meeting needs µ steps mod λ — same node. Walk both at speed 1; they meet at the entry.</li>
+        walker at the meeting needs µ steps mod λ — same node. Walk both at speed 1; they meet at the entry.</HighlightBlock>
         <li><strong>What if slow advanced by 1 and fast by 3?</strong> The gap closes by 2 per step. If λ is odd, gcd(2,
         λ) = 1, so all residues are reachable and they meet. If λ is even, they only meet when the initial gap is
         even — sometimes never. The 1-vs-2 speed pair is preferred because gcd(1, λ) = 1 for any λ.</li>

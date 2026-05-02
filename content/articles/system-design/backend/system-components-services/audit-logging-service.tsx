@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -36,12 +37,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An <strong>audit logging service</strong> is a dedicated infrastructure component that records security-relevant, compliance-mandated, and governance-critical actions in a durable, queryable, and cryptographically verifiable manner. Unlike application logs — which capture debug-level operational signals for engineering teams — or analytics events — which track product usage patterns for business intelligence — audit logs serve as the evidentiary record of who did what, to which resource, from where, when, and whether the action was authorized by policy. They are the primary data source for incident response, forensic reconstruction, regulatory compliance reporting, legal e-discovery, and customer trust attestations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The distinguishing characteristic of an audit logging service is that it must remain trustworthy precisely when the surrounding system is under duress. During a security breach, a DDoS attack, or a cascading infrastructure failure, the audit log is the instrument that determines whether the organization can reconstruct the attack timeline, demonstrate regulatory compliance, or face findings of non-compliance with material legal and financial consequences. This means the audit logging service cannot be a best-effort side effect of application logic; it must be a first-class system with its own availability guarantees, integrity controls, and operational runbooks.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, designing an audit logging service requires deep understanding of distributed systems trade-offs: how to guarantee append-only semantics across a distributed database cluster, how to implement hash-chain-based tamper detection without introducing unacceptable write latency, how to balance the competing demands of regulatory retention requirements (which may mandate seven years of data preservation) against the cost of hot storage, and how to structure the ingestion pipeline so that it absorbs traffic spikes without dropping events. The decisions made here have decade-long consequences for the organization&apos;s compliance posture, security operations maturity, and ability to respond to incidents.
         </p>
@@ -56,12 +60,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of any audit logging service is its <strong>event model</strong>. Every audit entry must contain sufficient context to reconstruct the action without requiring access to application source code or external systems. The canonical schema includes six categories of information. The <em>actor</em> field captures the identity of the entity performing the action — whether a human user (with their user ID, authentication method, and organizational context) or a service identity (with its service account, role, and tenant scope). The <em>action</em> field records the specific operation performed — create, read, update, delete, approve, deny, export, or configure — using a controlled vocabulary defined by a schema registry. The <em>resource</em> field identifies the target of the action with stable identifiers that persist across system migrations, including the resource type, its hierarchical path, and any cross-service references. The <em>decision</em> field records whether the action was allowed or denied by policy, along with the specific policy rule or reason code that produced the decision — this is the field most commonly omitted in immature audit systems, and its absence renders logs useless for distinguishing authorized operations from policy violations. The <em>provenance</em> field captures the source IP address, user agent string, request ID, correlation ID, and service version, enabling investigators to trace the origin of an action across network boundaries and service versions. Finally, the <em>timestamp</em> field records the event time with a known clock source, synchronization method, and ordering guarantees — typically using synchronized NTP or PTP clocks with bounded clock skew estimates.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Immutability guarantees</strong> form the second pillar of audit logging integrity. An audit log that can be silently modified loses all evidentiary value. Immutability is enforced at multiple layers. At the database level, the service uses append-only write patterns — INSERT statements are permitted while UPDATE and DELETE statements are denied through granular role-based access controls. At the storage level, object storage systems like AWS S3 with Object Lock or Google Cloud Storage with Retention Policy provide WORM (Write Once, Read Many) semantics that physically prevent deletion until a configured retention period expires. At the cryptographic level, each event or batch of events is hashed using SHA-256 or SHA-3, and the hash of each block incorporates the hash of the preceding block, forming a hash chain analogous to a blockchain. Any modification to a past event changes its hash, which invalidates all subsequent hashes in the chain, making tampering detectable through periodic integrity scans.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Tamper-evidence</strong> extends beyond hash chains to include external anchoring strategies. The Merkle tree root of a batch of audit events can be periodically published to an external, independently verifiable ledger — such as a public blockchain transaction, a trusted timestamp authority (TSA) compliant with RFC 3161, or a dedicated transparency log like Certificate Transparency. This external anchoring ensures that even an attacker with full control of the audit storage infrastructure cannot rewrite history without also compromising the external anchor, which is orders of magnitude more difficult. The frequency of anchoring — every minute, every hour, or every thousand events — determines the window of vulnerability and the computational cost of integrity verification.
         </p>
@@ -86,12 +93,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The audit logging service is structured as a four-stage pipeline: event generation at sources, ingestion and validation, immutable storage with integrity verification, and query access with fine-grained authorization. Each stage has distinct failure modes, scaling characteristics, and operational concerns that must be addressed independently.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Event generation</strong> occurs at every service that performs security-relevant actions. The authentication service emits events for login attempts (successful and failed), MFA challenges, session creations, and session terminations. The data service emits events for create, read, update, and delete operations on sensitive resources, as well as bulk exports and mass deletions. The administration console emits events for role changes, permission grants, configuration modifications, and policy updates. The API gateway emits events for rate-limiting decisions, authentication failures, and anomalous request patterns. Infrastructure services emit events for deployment actions, scaling operations, and alert firings. Each source service integrates with the audit logging service through a client SDK or a sidecar proxy that handles event serialization, local buffering, retry logic, and correlation ID propagation. The client SDK is responsible for capturing the actor identity from the request context, stamping the event with a monotonic clock timestamp, and attaching the request&apos;s correlation ID for distributed tracing.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>The ingestion pipeline</strong> receives events from all sources through a durable message bus — typically Apache Kafka, AWS Kinesis, or Google Cloud Pub/Sub — chosen for its ability to provide ordered, durable delivery with configurable retention. The first stage of ingestion is schema validation: each event is validated against a registered JSON Schema or Protobuf schema that defines the required fields, their types, and their allowed values. Events that fail validation are routed to a dead-letter queue for investigation rather than silently dropped. The second stage is enrichment: events are augmented with additional context such as geographic location derived from source IP, tenant organization membership, risk scoring based on the action type and actor&apos;s historical behavior, and tags that facilitate downstream filtering. The third stage is deduplication and ordering: events are deduplicated using idempotency keys (typically the combination of request ID and event type), and within each partition, events are strictly ordered by their assigned sequence number. The ingestion pipeline is designed with backpressure: if downstream storage cannot keep pace, the message bus retains events up to its configured retention limit, and the pipeline scales consumers horizontally to absorb the backlog.
         </p>
@@ -113,17 +123,20 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Aspect</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Aspect</th>
               <th className="p-3 text-left">Approach</th>
               <th className="p-3 text-left">Trade-offs</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3">
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3">
                 <strong>Storage Engine</strong>
               </td>
               <td className="p-3">
@@ -132,8 +145,8 @@ export default function ArticlePage() {
               <td className="p-3">
                 Strong ACID guarantees and mature tooling. Excellent for structured queries with known schemas. Limited full-text search capability. Vertical scaling ceiling at approximately 100K writes/sec per node. Requires explicit partition management for time-based data lifecycle.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Storage Engine</strong>
               </td>
@@ -143,8 +156,8 @@ export default function ArticlePage() {
               <td className="p-3">
                 Excellent full-text search and faceted query performance. Horizontal scaling through sharding. Weaker consistency guarantees (eventual consistency by default). Index corruption requires rebuild from source of truth. Higher storage overhead due to inverted indices.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Storage Engine</strong>
               </td>
@@ -154,7 +167,7 @@ export default function ArticlePage() {
               <td className="p-3">
                 Best of both worlds: durability from append-only log, query performance from search index. Operational complexity of maintaining two systems. Index rebuild capability is essential. This is the dominant production pattern.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Hash Chain Granularity</strong>
@@ -227,12 +240,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Treat audit ingestion as a critical-path operation, not a best-effort side effect. Every service that generates audit events must use a client SDK that performs local disk buffering, ensuring that events are not lost if the ingestion pipeline is temporarily unavailable. The SDK should implement exponential backoff with jitter for retries, and it should maintain a local write-ahead log that is replayed when connectivity is restored. The ingestion pipeline&apos;s message bus should be configured with a retention period long enough to absorb extended outages — typically seven days — and producers should receive explicit acknowledgment only after the event is durably persisted to the message bus, not merely accepted into a network buffer.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enforce schema governance through a centralized schema registry that all event producers must register with. The schema registry should support backward-compatible evolution — new optional fields can be added, but required fields cannot be removed or renamed without a versioned migration path. Schema validation should occur at the ingestion gate, and events that fail validation should be routed to a dead-letter queue with the original event payload preserved for investigation. Schema changes should require approval from the audit logging service team and include a migration plan for historical data. This prevents the silent schema drift that renders compliance queries unreliable across time boundaries.
-        </p>
+        </HighlightBlock>
         <p>
           Implement the decision field as a mandatory, non-optional component of every audit event. The decision field must capture not only whether the action was allowed or denied, but also the specific policy rule, policy version, and reason code that produced the decision. This transforms the audit log from a simple action record into an authoritative source for policy analysis — investigators can determine whether a denied action was correctly denied (the policy worked as intended), incorrectly denied (a policy bug blocked a legitimate action), or whether an allowed action should have been denied (a policy gap that permitted unauthorized access). Without the decision field, this analysis requires cross-referencing the audit log with the authorization service&apos;s internal state at the time of the action, which is often unavailable during incident response.
         </p>
@@ -252,12 +268,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most pervasive pitfall in audit logging design is treating audit events as application log lines. Application logs are typically written to rotating files with no integrity guarantees, no schema enforcement, and no access control. When audit events share this infrastructure, they inherit these weaknesses: events can be lost during log rotation, modified by anyone with file system access, and deleted without trace. The audit logging service must have its own dedicated infrastructure with its own access controls, its own durability guarantees, and its own operational runbooks. Co-locating audit logs with application logs is a compliance finding in most regulatory frameworks and a security vulnerability in any threat model that includes insider risk.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another critical pitfall is omitting the decision field from audit events. Many systems log the action (&quot;user accessed resource X&quot;) but not the authorization outcome (&quot;access was denied by policy rule Y&quot; or &quot;access was granted by policy rule Z&quot;). This omission makes it impossible to distinguish between legitimate operations and policy violations without cross-referencing the authorization service&apos;s state at the time of the action — a cross-reference that is often impossible during incident response because the authorization service&apos;s state has since changed. The decision field must be captured at the time of the action and embedded in the audit event as a mandatory, non-optional field.
-        </p>
+        </HighlightBlock>
         <p>
           A third pitfall is implementing hash-chain integrity without periodic external anchoring. A hash chain that lives entirely within the audit storage system provides tamper detection only against attackers who cannot modify the stored hashes. An attacker with write access to the storage can modify an event, recompute its hash, and update all subsequent hashes in the chain, leaving no detectable trace. External anchoring — publishing the Merkle root to an independent authority — closes this gap by ensuring that any modification to the chain would also require modifying the external anchor, which is significantly more difficult. Without external anchoring, the hash chain provides a false sense of security.
         </p>
@@ -279,12 +298,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Financial services organizations operating under SOC 2 Type II audit requirements must demonstrate that audit logs are complete, accurate, and protected from tampering throughout their retention period. The audit logging service is a primary focus of the SOC 2 examination, with auditors requesting evidence of append-only enforcement, hash-chain integrity scan results, access control configurations, and retention policy implementation. A typical SOC 2 engagement requires the organization to produce audit logs demonstrating that all privileged actions (administrative access, configuration changes, data exports) were logged with actor identity, action, resource, decision, and provenance, and that the logs showed no evidence of tampering during the examination period. The audit logging service must support auditor queries directly, providing exported reports with cryptographic integrity certificates that the auditor can independently verify.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Healthcare organizations subject to HIPAA&apos;s Security Rule must implement audit controls to record and examine activity in information systems that contain electronic protected health information (ePHI). The audit logging service must capture access to patient records, including who accessed the record, what information was viewed or modified, from which terminal or application, and whether the access was authorized under the organization&apos;s access control policy. HIPAA requires six years of documentation retention, and the audit logging service must support per-patient, per-event-type retention policies that account for state-specific medical record retention laws that may exceed the federal minimum. During a breach notification investigation, the audit logging service must be able to reconstruct the complete access history for affected patient records, which requires sub-second query performance across billions of events.
-        </p>
+        </HighlightBlock>
         <p>
           Payment card industry environments subject to PCI-DSS Requirement 10 must implement automated audit trails to reconstruct events, support anomaly detection, and protect audit log files from unauthorized modification. The audit logging service must capture all individual user accesses to cardholder data, all actions taken by privileged users, and all access to audit logs themselves. PCI-DSS requires twelve months of log retention with at least three months immediately available for analysis, which maps directly to the hot/warm/cold tier model. The service must also support real-time alerting on anomalous patterns — such as a single user accessing an unusually number of cardholder records — which requires stream processing of the audit event stream with low-latency rule evaluation.
         </p>
@@ -295,15 +317,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-6">
-            <p className="text-base font-semibold">
+            <HighlightBlock as="p" tier="important" className="text-base font-semibold">
               Q1: How would you design an audit logging service that guarantees immutability while supporting high write throughput (100K+ events/second)?
-            </p>
-            <p className="mt-3 text-sm text-muted">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm text-muted">
               A: The design centers on a two-tier storage architecture that separates the durability-critical write path from the query-optimized read path. For the write path, events flow from source services through a client SDK that performs local disk buffering and retries with exponential backoff. Events enter a durable message bus (Kafka with replication factor 3 and acks=all) which provides ordered, partitioned durability. Consumers read from Kafka and write batches to an append-only database — TimescaleDB with INSERT-only permissions, no UPDATE or DELETE grants. Each batch is hashed with SHA-256, incorporating the previous batch&apos;s hash to form a chain. Batches of 1,000 events are aggregated every minute into a Merkle tree, and the Merkle root is anchored to an external timestamp authority every ten minutes. For the read path, a change-data-capture stream feeds events from the append-only database into Elasticsearch, which serves all queries. This architecture achieves 100K+ writes/second by parallelizing Kafka partitions (each partition handles approximately 10K writes/sec, so 10+ partitions), batching database writes (reducing per-event overhead), and decoupling the integrity computation (hash chain, Merkle tree) from the critical write path through asynchronous batch processing. The immutability guarantee comes from the append-only database permissions, the hash chain, and the external anchoring — not from the query layer, which is a derived view.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-6">

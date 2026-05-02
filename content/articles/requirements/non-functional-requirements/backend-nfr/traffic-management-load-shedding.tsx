@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function TrafficManagementLoadSheddingArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Traffic management</strong> is the practice of controlling the flow of requests
           through a system to prevent overload — it includes rate limiting (limiting requests per
           client), load shedding (dropping requests when the system is overloaded), circuit breakers
@@ -33,15 +37,15 @@ export default function TrafficManagementLoadSheddingArticle() {
           when the system cannot handle the load — it is better to reject some requests (return 503
           Service Unavailable) than to accept all requests and fail catastrophically (all requests
           timeout or error).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Load shedding is a last-resort protection mechanism — when the system is overloaded
           (CPU at 100%, queue depth growing, latency increasing), load shedding drops requests
           to prevent total system failure. Load shedding should be graceful — it should drop
           low-priority requests first (analytics, reporting) while preserving high-priority
           requests (user-facing operations, payments). The goal is to maintain partial functionality
           rather than complete failure.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, traffic management and load shedding
           architecture demonstrates understanding of system overload scenarios, the ability to
@@ -74,13 +78,16 @@ export default function TrafficManagementLoadSheddingArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding traffic management and load shedding requires grasping several foundational
           concepts about circuit breakers, bulkheads, priority queuing, and graceful degradation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Circuit Breakers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Circuit breakers stop requests to failing services — when a service&apos;s error rate
           exceeds a threshold, the circuit breaker &quot;opens&quot; and rejects requests immediately
           (without calling the failing service). After a cooldown period, the circuit breaker
@@ -90,7 +97,7 @@ export default function TrafficManagementLoadSheddingArticle() {
           breakers prevent cascading failures — if service A depends on service B and B fails,
           the circuit breaker stops A from calling B, preventing A from failing due to B&apos;s
           failure.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Bulkheads</h3>
         <p>
@@ -117,10 +124,13 @@ export default function TrafficManagementLoadSheddingArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Traffic management and load shedding architecture spans circuit breakers, bulkheads,
           priority queuing, graceful degradation, and load shedding enforcement.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/traffic-management-load-shedding.svg"
@@ -129,7 +139,7 @@ export default function TrafficManagementLoadSheddingArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Circuit Breaker Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The circuit breaker monitors the error rate of the downstream service — if the error
           rate exceeds the threshold (e.g., 50% of requests fail), the circuit breaker opens and
           rejects requests immediately (returning 503 Service Unavailable). After the cooldown
@@ -137,7 +147,7 @@ export default function TrafficManagementLoadSheddingArticle() {
           through. If the test requests succeed, the circuit breaker closes (resumes normal
           operation). If the test requests fail, the circuit breaker re-opens and the cooldown
           period restarts.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Load Shedding Flow</h3>
         <p>
@@ -165,25 +175,28 @@ export default function TrafficManagementLoadSheddingArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Mechanism</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Mechanism</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Circuit Breaker</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>Circuit Breaker</strong></td>
               <td className="p-3">
                 Prevents cascading failures. Fast failure (rejects immediately). Automatic recovery.
               </td>
               <td className="p-3">
                 May reject requests during transient failures. Requires tuning thresholds. Complex state management.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Bulkhead</strong></td>
               <td className="p-3">
                 Isolates failures. Prevents resource exhaustion. Protects other services.
@@ -191,8 +204,8 @@ export default function TrafficManagementLoadSheddingArticle() {
               <td className="p-3">
                 Resource underutilization (isolated resources may be idle). Complex configuration. Overhead.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Priority Queuing</strong></td>
               <td className="p-3">
                 Critical requests processed first. Graceful degradation. Maintains partial functionality.
@@ -200,7 +213,7 @@ export default function TrafficManagementLoadSheddingArticle() {
               <td className="p-3">
                 Complex priority classification. Low-priority requests may starve. Requires request prioritization.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Load Shedding</strong></td>
               <td className="p-3">
@@ -217,9 +230,12 @@ export default function TrafficManagementLoadSheddingArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Use Circuit Breakers for All External Dependencies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every external dependency (downstream service, database, external API) should have a
           circuit breaker — if the dependency fails, the circuit breaker stops requests immediately,
           preventing cascading failures. Configure circuit breaker thresholds based on the
@@ -227,16 +243,16 @@ export default function TrafficManagementLoadSheddingArticle() {
           the threshold at 10% (10× normal). Set the cooldown period based on the dependency&apos;s
           recovery time — if the dependency typically recovers in 30 seconds, set the cooldown
           to 30 seconds.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Implement Bulkheads for Resource Isolation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Bulkheads isolate resources (thread pools, connection pools, memory) per service or per
           client — if one service consumes all its allocated resources, other services are not
           affected. Use bulkheads for critical services — allocate dedicated thread pools and
           connection pools for critical services (user authentication, payment processing) so
           that they are not affected by non-critical service failures (analytics, reporting).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Shed Load Gracefully</h3>
         <p>
@@ -262,24 +278,27 @@ export default function TrafficManagementLoadSheddingArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Circuit Breaker Threshold Too Low</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           If the circuit breaker threshold is too low (e.g., 10% error rate when the normal error
           rate is 5%), the circuit breaker will open during normal traffic spikes, rejecting
           legitimate requests. Set the circuit breaker threshold based on the dependency&apos;s
           normal error rate — 5-10× the normal error rate is a good starting point. Monitor
           circuit breaker state changes and adjust thresholds based on actual behavior.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Bulkhead Resource Limits Too Strict</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           If bulkhead resource limits are too strict (e.g., 10 threads for a service that needs
           50 threads under normal load), the service will be resource-starved even during normal
           operation, causing degraded performance. Set bulkhead resource limits based on the
           service&apos;s normal resource usage — 2× the normal usage is a good starting point,
           providing headroom for traffic spikes while isolating the service from other services.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Load Shedding Without Priority</h3>
         <p>
@@ -303,26 +322,29 @@ export default function TrafficManagementLoadSheddingArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Netflix — Hystrix Circuit Breakers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix open-sourced Hystrix, the pioneering circuit breaker library — Hystrix wraps
           calls to external dependencies with circuit breakers that open when the error rate
           exceeds a threshold. Netflix uses Hystrix for all external dependencies, preventing
           cascading failures when downstream services fail. Netflix&apos;s Hystrix implementation
           includes fallback mechanisms — when the circuit breaker opens, a fallback response is
           returned (cached data, default value, or error message), maintaining partial functionality.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Amazon — Load Shedding for Prime Day</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon uses load shedding during Prime Day (10× normal traffic) to prevent system
           overload — non-critical features (recommendations, reviews) are disabled, preserving
           capacity for critical features (user authentication, payment processing, order placement).
           Amazon&apos;s load shedding is priority-based — low-priority requests are dropped first,
           and critical requests are preserved. Amazon&apos;s load shedding ensures that the system
           remains functional during peak traffic, even if some features are degraded.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Uber — Bulkheads for Service Isolation</h3>
         <p>
@@ -346,19 +368,22 @@ export default function TrafficManagementLoadSheddingArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Traffic management involves security risks — circuit breakers and load shedding may be exploited for denial-of-service, and bulkheads may create new attack surfaces.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Traffic Management Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Circuit Breaker Exploitation:</strong> An attacker may intentionally trigger circuit breakers by sending requests that cause errors, causing the circuit breaker to open and reject legitimate requests. Mitigation: use per-client circuit breakers (not global), rate limit error-causing requests, monitor circuit breaker state changes for anomalies.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Load Shedding DoS:</strong> An attacker may flood the system with requests, causing load shedding to drop legitimate requests. Mitigation: use rate limiting to prevent individual clients from flooding, prioritize requests based on authentication status (authenticated requests have higher priority), monitor load shedding rate for anomalies.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Bulkhead Resource Exhaustion:</strong> An attacker may consume all bulkhead resources for a service, causing the service to be resource-starved. Mitigation: use per-client bulkheads (not per-service), rate limit requests per client, monitor bulkhead resource usage for anomalies.
             </li>
@@ -369,19 +394,22 @@ export default function TrafficManagementLoadSheddingArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Traffic management must be validated through systematic testing — circuit breaker behavior, bulkhead isolation, priority queuing, and load shedding must all be tested through failure injection.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Traffic Management Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Circuit Breaker Test:</strong> Simulate a downstream service failure (return errors) and verify that the circuit breaker opens after the error rate threshold is exceeded. Verify that requests are rejected immediately (fast failure) and that the circuit breaker half-opens after the cooldown period.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Bulkhead Test:</strong> Simulate a service consuming all its allocated resources and verify that other services are not affected (they have their own dedicated resources). Verify that the resource-starved service degrades gracefully (returns errors) without affecting other services.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Load Shedding Test:</strong> Simulate system overload (high CPU, growing queue depth) and verify that low-priority requests are dropped first, medium-priority requests are dropped next, and high-priority requests are preserved. Verify that dropped requests return 503 with Retry-After header.
             </li>

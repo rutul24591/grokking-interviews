@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function LazyLoadingTranslationsArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Lazy Loading Translations</strong> is the practice of loading
           translation files on-demand rather than bundling all translations
           upfront. For applications supporting 20+ languages with thousands of
@@ -45,23 +46,23 @@ export default function LazyLoadingTranslationsArticle() {
           translations, with additional locales loaded on-demand when user
           switches language. This significantly reduces initial bundle size and
           improves time-to-interactive.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, lazy loading translations involves
           architectural decisions about chunking strategy (per-locale,
           per-namespace, per-route), caching (localStorage, service worker,
           CDN), and fallback behavior (what if lazy load fails). The key
           insight: users typically use one language — load that fully, lazy
           load others.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Lazy loading translations involves several technical challenges.{" "}
           <strong>Initial load</strong> — which locale to load first (detected
           or default). <strong>Cache management</strong> — when to invalidate
           cached translations. <strong>Loading states</strong> — what to display
           while translations load. <strong>Error handling</strong> — fallback if
           translation file fails to load.
-        </p>
+        </HighlightBlock>
         <p>
           The business case for lazy loading translations is performance:
           smaller initial bundle → faster page load → better conversion. For
@@ -76,23 +77,23 @@ export default function LazyLoadingTranslationsArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Namespace-Based Loading:</strong> Split translations into
             namespaces (common, errors, features). Load common namespace
             upfront, lazy load feature namespaces on navigation. Reduces initial
             load while keeping critical translations available immediately.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Locale-Based Loading:</strong> Each locale is a separate
             chunk. Load detected locale upfront, other locales on-demand when
             user switches. Most common approach — users typically stay in one
             locale.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Route-Based Loading:</strong> Load translations for current
             route only. Navigate to /settings → load settings translations.
             Maximizes lazy loading but requires careful chunk management.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Translation Caching:</strong> Cache loaded translations in
             localStorage or IndexedDB. On revisit, use cached translations
@@ -123,12 +124,12 @@ export default function LazyLoadingTranslationsArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Lazy loading architecture consists of a chunking strategy
           (how translations are split), a loading mechanism (dynamic imports),
           and a caching layer (localStorage, service worker). The architecture
           must handle loading states, errors, and cache invalidation.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/internationalization-i18n-localization-l10n/translation-chunking-strategy.svg"
@@ -139,17 +140,17 @@ export default function LazyLoadingTranslationsArticle() {
         />
 
         <h3>Loading Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Initial load: detect locale → load locale chunk + common namespace →
           render app. On locale switch: load new locale chunk → update i18n
           context → re-render. On navigation: load route-specific namespace if
           not loaded → render page. Cache each loaded chunk for future use.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementation with react-i18next: use <code>useTranslation</code>{" "}
           hook with namespace option. Configure i18next with backend plugin for
           lazy loading. Webpack automatically code-splits translation files.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/internationalization-i18n-localization-l10n/translation-caching-layer.svg"
@@ -163,24 +164,24 @@ export default function LazyLoadingTranslationsArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Lazy loading involves trade-offs between initial load size,
           complexity, and runtime loading.
-        </p>
+        </HighlightBlock>
 
         <h3>Chunking Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>All-in-One:</strong> Bundle all translations together.
           Advantages: simple, no runtime loading. Limitations: large bundle
           (500KB+ for 30 languages). Best for: single-language sites, small
           translation files.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Per-Locale:</strong> Each locale is separate chunk.
           Advantages: load only needed locale, simple implementation.
           Limitations: locale switch requires network request. Best for: most
           applications.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Per-Namespace:</strong> Each namespace is separate chunk.
           Advantages: fine-grained loading, load only needed features.
@@ -221,24 +222,24 @@ export default function LazyLoadingTranslationsArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Load Critical Translations Upfront:</strong> Common UI
             elements (navigation, buttons, errors) should be in initial load.
             Lazy load feature-specific translations. Users shouldn&apos;t see
             missing translations for core functionality.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cache Aggressively:</strong> Cache every loaded translation.
             Use cache-first strategy: load from cache immediately, refresh in
             background. Translations change infrequently — cache is almost
             always valid.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Handle Loading States:</strong> Show loading indicator or
             fallback text while translations load. Don&apos;t show raw
             translation keys. For locale switch, keep old translations until new
             ones load.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement Error Fallback:</strong> If translation fails to
             load, fall back to base language. Don&apos;t break the app — show
@@ -262,21 +263,21 @@ export default function LazyLoadingTranslationsArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Loading All Locales Upfront:</strong> Defeats purpose of
             lazy loading. Only load detected/current locale. Load others
             on-demand.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No Cache Invalidation:</strong> Translations update but
             users see stale cached versions. Use versioned URLs or cache
             expiration.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Showing Translation Keys:</strong> While loading, don&apos;t
             show <code>{`{{'welcome.message'}}`}</code>. Show fallback text or
             loading indicator.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring Failed Loads:</strong> Translation file fails to
             load → app breaks. Always implement error fallback to base language.
@@ -299,30 +300,30 @@ export default function LazyLoadingTranslationsArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>E-Commerce with 30+ Languages</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Global e-commerce loads current locale + common namespace (navigation,
           cart, checkout). Product descriptions loaded per-category. User
           switches from English to Japanese → lazy load Japanese translations.
           Cache all loaded locales. Result: initial bundle 50KB instead of
           800KB.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Dashboard</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SaaS application loads common UI translations upfront. Feature-specific
           translations (analytics, settings, billing) lazy loaded on navigation.
           User on analytics page → only analytics translations loaded. Settings
           translations loaded when navigating to settings. Reduces initial load
           by 60%.
-        </p>
+        </HighlightBlock>
 
         <h3>Progressive Web App</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           PWA caches translations in service worker. First visit: load from
           network, cache for offline. Subsequent visits: load from cache
           instantly, refresh in background. Works offline with cached
           translations. Critical for users in low-connectivity regions.
-        </p>
+        </HighlightBlock>
 
         <h3>Mobile App with Dynamic Features</h3>
         <p>
@@ -339,22 +340,22 @@ export default function LazyLoadingTranslationsArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: How do you implement lazy loading translations in Next.js?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Use next-intl with dynamic imports. Configure i18n with
               backend loader that uses dynamic import for locale files. Webpack
               automatically code-splits. Load current locale on server, client
               hydrates with cached translations. For locale switch: dynamic
               import new locale, update i18n context, re-render.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do you cache translations for offline support?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Service worker with cache-first strategy. On translation
               request: check cache → if found, return immediately → if not,

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function NotificationMutingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Notification Muting enables users to temporarily or permanently silence notifications. Users can mute notifications for specific duration (15 minutes, 1 hour, 8 hours, 24 hours), mute specific sources (mute specific users, groups, channels), mute specific types (mute specific notification types), and manage mutes (view and edit active mutes). Notification muting is fundamental to user control (users control notifications), notification fatigue prevention (reduce notification overload), and user satisfaction (users appreciate control). For platforms with user notifications, effective notification muting is essential for user control, fatigue prevention, and user satisfaction.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, notification muting architecture involves mute duration (how long to mute), mute scope (what to mute), mute enforcement (enforce mute), and mute management (manage active mutes). The implementation must balance user control (users can mute) with engagement (don&apos;t mute important notifications) and platform needs (communicate with users). Poor notification muting leads to notification fatigue, user churn, and missed important notifications.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of notification muting extends beyond simple mute toggle. Mute duration (temporary vs. permanent). Mute scope (what to mute). Mute enforcement (enforce mute). Mute override (override for important). Mute management (manage active mutes). For staff engineers, notification muting is a user notification control infrastructure decision affecting user experience, notification fatigue, and user satisfaction.
         </p>
@@ -46,13 +50,16 @@ export default function NotificationMutingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Mute Duration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Temporary mute mutes for specific duration. Short duration (15 minutes, 30 minutes). Medium duration (1 hour, 2 hours). Long duration (8 hours, 24 hours). Temporary mute enables temporary silence. Benefits include flexibility (mute temporarily), automatic resume (automatically resume). Drawbacks includes complexity (manage duration), may forget mute (users may forget).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Permanent mute mutes indefinitely. Indefinite duration (mute until unmute). Manual unmute (user must unmute). Permanent mute enables permanent silence. Benefits include permanence (mute until unmute), user control (user decides when to unmute). Drawbacks includes may miss important (may miss important notifications), user must remember to unmute.
-        </p>
+        </HighlightBlock>
         <p>
           Scheduled mute mutes on schedule. Quiet hours (mute during quiet hours). Recurring mute (mute on recurring schedule). Event-based mute (mute for specific events). Scheduled mute enables scheduled silence. Benefits include automation (automatically mute), consistency (consistently mute). Drawbacks includes complexity (manage schedule), may miss important (may miss important during mute).
         </p>
@@ -107,9 +114,12 @@ export default function NotificationMutingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Notification muting architecture spans mute service, duration service, scope service, and enforcement service. Mute service manages mutes. Duration service manages mute duration. Scope service manages mute scope. Enforcement service enforces mutes. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/notification-muting/muting-architecture.svg"
@@ -120,9 +130,9 @@ export default function NotificationMutingArticle() {
         />
 
         <h3>Mute Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mute service manages user mutes. Mute storage (store mutes). Mute retrieval (retrieve mutes). Mute update (update mutes). Mute service is the core of notification muting. Benefits include centralization (one place for mutes), consistency (same mutes everywhere). Drawbacks includes complexity (manage mutes), coupling (services depend on mute service).
-        </p>
+        </HighlightBlock>
         <p>
           Mute policies define mute rules. Default mutes (default mutes). Mute validation (validate mutes). Mute sync (sync mutes). Mute policies automate mute management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -162,14 +172,17 @@ export default function NotificationMutingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Notification muting design involves trade-offs between temporary and permanent mute, broad and narrow scope, and strict and lenient enforcement. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Duration: Temporary vs. Permanent</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Temporary mute (mute for specific duration). Pros: Automatic resume (automatically resume), flexibility (mute temporarily), user convenience (don&apos;t forget to unmute). Cons: May forget mute (users may forget), may expire too soon (may expire before wanted), complexity (manage duration). Best for: Short-term silence, meetings, sleep.
-        </p>
+        </HighlightBlock>
         <p>
           Permanent mute (mute indefinitely). Pros: Permanence (mute until unmute), user control (user decides when to unmute), simplicity (no duration management). Cons: May miss important (may miss important notifications), user must remember to unmute, may forget muted (users may forget muted). Best for: Long-term silence, unwanted sources.
         </p>
@@ -210,13 +223,16 @@ export default function NotificationMutingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide mute options:</strong> Temporary mute. Permanent mute. Scheduled mute. Multiple duration options.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enable mute scope:</strong> Global mute. Channel mute. Source mute. Type mute. Let users choose.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Enforce mutes:</strong> Check mute before sending. Filter muted notifications. Override for emergency only.
           </li>
@@ -246,13 +262,16 @@ export default function NotificationMutingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No mute options:</strong> Can&apos;t mute notifications. <strong>Solution:</strong> Provide mute options.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Limited scope:</strong> Only global mute. <strong>Solution:</strong> Enable channel, source, type mute.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Don&apos;t enforce mutes:</strong> Send despite mute. <strong>Solution:</strong> Enforce mutes.
           </li>
@@ -282,16 +301,19 @@ export default function NotificationMutingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Social Media Notification Muting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms provide notification muting. Mute duration (15 minutes, 1 hour, 24 hours). Mute scope (mute specific users, groups). Mute types (mute specific notification types). Users control social media notifications.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Messaging App Notification Muting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Messaging apps provide notification muting. Mute duration (1 hour, 8 hours, 24 hours, 1 week). Mute scope (mute specific chats, groups). Mute mentions (mute mentions only). Users control messaging notifications.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Email App Notification Muting</h3>
         <p>
@@ -311,12 +333,15 @@ export default function NotificationMutingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design notification muting that balances user control with engagement?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design notification muting that balances user control with engagement?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement flexible muting with emergency override because users want control (mute when needed) but don&apos;t want to miss important notifications. Enable temporary and permanent mute: temporary mute (15 minutes, 1 hour, 24 hours, custom duration)—temporary silence for meetings, sleep; permanent mute (mute until manually unmuted)—permanent silence for unwanted sources. Enable broad and narrow scope: broad scope (mute all notifications, mute entire app)—complete silence; narrow scope (mute specific users, specific types, specific channels)—targeted muting. Override only for emergency: emergency override (critical notifications bypass mute, safety alerts, security alerts)—ensure critical notifications get through. Monitor mute usage: monitor how users mute (mute frequency, mute duration, mute patterns)—identify problematic muting, suggest adjustments. The engagement insight: users want control but don&apos;t want to miss important—provide flexible muting (temporary, permanent, broad, narrow), override only for emergency (critical, safety, security), monitor usage (frequency, duration, patterns), and balance user control with engagement.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

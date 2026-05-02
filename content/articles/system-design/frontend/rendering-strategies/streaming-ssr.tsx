@@ -45,7 +45,7 @@ export default function StreamingSsrConciseArticle() {
           start displaying and parsing HTML immediately while the server
           continues generating remaining content in the background.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Traditional SSR (synchronous SSR) has a critical limitation: the
           server must finish rendering the entire HTML document before sending
           any bytes to the client. If your page fetches data from 5 APIs and one
@@ -53,8 +53,8 @@ export default function StreamingSsrConciseArticle() {
           or loading spinner. The TTFB (Time to First Byte) is blocked by the
           slowest operation. <strong>Streaming SSR solves this</strong> by
           flushing HTML to the client as soon as parts are ready.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The pattern gained mainstream adoption with <strong>React 18</strong>{" "}
           (March 2022), which introduced
           <code>renderToPipeableStream</code> (Node.js) and{" "}
@@ -66,7 +66,14 @@ export default function StreamingSsrConciseArticle() {
           default rendering mode. Streaming SSR represents the evolution of SSR:
           from all-or-nothing blocking renders to progressive, chunk-by-chunk
           delivery that improves perceived performance dramatically.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Interview framing: streaming SSR is about changing the SSR UX
+          contract. You optimize for <strong>early meaningful paint</strong>{" "}
+          and <strong>progressive interactivity</strong>, and you structure the
+          tree around Suspense boundaries that map to real latency sources (data
+          and code).
+        </HighlightBlock>
       </section>
 
       <section>
@@ -76,15 +83,15 @@ export default function StreamingSsrConciseArticle() {
           concepts:
         </p>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Progressive HTML Streaming:</strong> Instead of buffering
             the entire HTML document, the server sends HTML in chunks as they're
             rendered. The browser can start parsing and displaying early chunks
             (header, navigation, hero) while later chunks (comments,
             recommendations) are still being generated. Uses HTTP chunked
             transfer encoding under the hood.
-          </li>
-          <HighlightBlock as="li" tier="important">
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Suspense Boundaries:</strong> React Suspense wraps
             components that may be slow (data fetching, lazy imports). While
             these components are loading, React sends a fallback (loading UI)
@@ -92,22 +99,22 @@ export default function StreamingSsrConciseArticle() {
             is the key to granular streaming—it tells React what can be deferred
             vs. what must be rendered immediately.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Out-of-Order Streaming:</strong> Chunks don't have to arrive
             in document order. React can stream the page shell first, then
             inject slow components wherever they belong in the DOM tree via
             inline scripts. For example, a slow product recommendation widget at
             the top can be replaced after fast footer content has already been
             sent.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Selective Hydration:</strong> React 18 pairs streaming with
             selective hydration. Instead of waiting for all JavaScript to
             download before hydrating anything, React hydrates components as
             their code arrives. The page becomes interactive progressively:
             header first, then main content, then sidebar, etc. This drastically
             reduces Time to Interactive (TTI).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Shell vs. Content:</strong> The "shell" (layout, navigation,
             header, footer) typically renders fast and streams first, providing
@@ -138,7 +145,11 @@ export default function StreamingSsrConciseArticle() {
           The Streaming SSR architecture follows this request-response pattern:
         </p>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
+        <HighlightBlock
+          as="div"
+          tier="important"
+          className="my-6 rounded-lg bg-panel-soft p-6"
+        >
           <h3 className="mb-4 text-lg font-semibold">
             Streaming SSR Request Flow
           </h3>
@@ -192,7 +203,7 @@ export default function StreamingSsrConciseArticle() {
               page fully interactive (TTI)
             </li>
           </ol>
-        </div>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/rendering-strategies/streaming-ssr-sequence.svg"
@@ -206,6 +217,13 @@ export default function StreamingSsrConciseArticle() {
           everything appears at once. With Streaming SSR, they see the shell in
           100ms, main content in 800ms, and additional content trickles in. The
           page feels fast even when parts are slow.
+        </HighlightBlock>
+
+        <HighlightBlock as="p" tier="important">
+          Staff-level nuance: streaming is easiest to adopt when you can
+          separate the page into a fast, cacheable shell and slow, failure-prone
+          fragments. You’ll usually combine Suspense with error boundaries and
+          clear timeout policies so “slow” doesn’t turn into “never”.
         </HighlightBlock>
 
         <ArticleImage
@@ -226,20 +244,20 @@ export default function StreamingSsrConciseArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td>
                 <strong>TTFB</strong>
               </td>
               <td>Fast (100-200ms) - shell streams immediately</td>
               <td>Slow (1-5s) - waits for all data</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td>
                 <strong>FCP</strong>
               </td>
               <td>Excellent (150-300ms) - users see structure instantly</td>
               <td>Poor (1-5s) - nothing visible until complete</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td>
                 <strong>Perceived Performance</strong>
@@ -261,20 +279,20 @@ export default function StreamingSsrConciseArticle() {
               <td>Excellent - all content eventually in HTML</td>
               <td>Excellent - all content in HTML</td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td>
                 <strong>Caching</strong>
               </td>
               <td>Complex - hard to cache streaming responses</td>
               <td>Simple - cache full HTML document</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td>
                 <strong>Hydration</strong>
               </td>
               <td>Selective - hydrates progressively</td>
               <td>All-at-once - waits for full JS bundle</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td>
                 <strong>Server Resources</strong>
@@ -298,26 +316,26 @@ export default function StreamingSsrConciseArticle() {
           <strong>Advantages:</strong>
         </p>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Instant First Paint:</strong> Users see page structure in
             100-200ms, dramatically improving perceived performance and reducing
             bounce rates. No more long blank screens.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Better UX for Slow Operations:</strong> Even if one API
             takes 10 seconds, users still see the rest of the page immediately.
             Slow operations don{"'"}t block fast ones.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Selective Hydration:</strong> Pairs with progressive
             hydration. Critical above-the-fold content becomes interactive
             first; below-the-fold content hydrates later. Reduces TTI.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Improved Core Web Vitals:</strong> FCP and LCP are
             significantly better. TTFB is lower. INP (Interaction to Next Paint)
             benefits from selective hydration.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Parallel Data Fetching:</strong> Multiple Suspense
             boundaries can resolve in parallel. Traditional SSR often fetches
@@ -329,17 +347,17 @@ export default function StreamingSsrConciseArticle() {
           <strong>Disadvantages:</strong>
         </p>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Complex Error Handling:</strong> If an error occurs after
             the shell is sent, you can{"'"}t show a full error page. Must handle
             errors inline. Error boundaries become critical.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Caching Challenges:</strong> CDNs and reverse proxies
             struggle to cache streaming responses. Traditional SSR can cache
             full HTML; streaming responses are dynamic by nature. Requires edge
             computing or cache-everything-except-Suspense strategies.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>SEO Complexity:</strong> While all content eventually
             arrives, search engine crawlers may have timeouts. If a Suspense
@@ -372,13 +390,13 @@ export default function StreamingSsrConciseArticle() {
           practices:
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Strategic Suspense Boundaries:</strong> Don{"'"}t wrap
           everything in Suspense. Wrap only slow operations (database queries,
           external APIs, heavy computations). Fast components should render in
           the shell for instant FCP. Over-using Suspense fragments the page and
           hurts perceived performance.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Meaningful Fallback UI:</strong> Loading spinners are okay but
@@ -387,19 +405,19 @@ export default function StreamingSsrConciseArticle() {
           skeleton to the actual layout for smooth transitions.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Prioritize Critical Content:</strong> Ensure above-the-fold
           content (hero, main heading, navigation) is in the shell and renders
           fast. Below-the-fold content (comments, related articles, ads) can be
           deferred with Suspense.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Error Boundaries Inside Suspense:</strong> Wrap Suspense
           boundaries with error boundaries to handle failures gracefully. If a
           suspended component errors, show an inline error message instead of
           crashing the whole page.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Test on Real Networks:</strong> Streaming shines on slow
@@ -408,12 +426,12 @@ export default function StreamingSsrConciseArticle() {
           are reasonable (3-5s max for Suspense).
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Monitor TTFB and FCP:</strong> Use Real User Monitoring (RUM)
           to track TTFB and FCP in production. Streaming should reduce TTFB to{" "}
           {"&lt;"}200ms and FCP to {"&lt;"}500ms. If not, identify slow shell
           components and optimize them.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Consider Edge Rendering:</strong> Combine Streaming SSR with
@@ -428,25 +446,25 @@ export default function StreamingSsrConciseArticle() {
         <p>Streaming SSR excels in specific scenarios:</p>
 
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Product Pages with Reviews:</strong> Product details (title,
             price, description) load fast from cache. Reviews fetch from API
             (2-3s). Stream product first, reviews stream later. User can read
             description and add to cart while reviews load.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Dashboard with Multiple Widgets:</strong> Dashboard shell
             (nav, sidebar) renders immediately. Each widget (analytics chart,
             notifications, activity feed) fetches data independently and streams
             when ready. User sees structure instantly instead of staring at
             blank dashboard.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>News Article Pages:</strong> Article text renders fast
             (static or cached). Comments, related articles, and ads defer with
             Suspense. Core content (FCP) appears in 200ms; supplementary content
             trickles in.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Social Media Feeds:</strong> Feed skeleton displays
             immediately. Posts stream in as they{"'"}re fetched (paginated or
@@ -473,7 +491,7 @@ export default function StreamingSsrConciseArticle() {
       <section>
         <h2>References & Further Reading</h2>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://react.dev/reference/react-dom/server/renderToPipeableStream"
               target="_blank"
@@ -482,8 +500,8 @@ export default function StreamingSsrConciseArticle() {
               React renderToPipeableStream Documentation
             </a>{" "}
             - Official guide to streaming SSR in React
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming"
               target="_blank"
@@ -492,8 +510,8 @@ export default function StreamingSsrConciseArticle() {
               Next.js Streaming and Suspense
             </a>{" "}
             - Next.js implementation of streaming SSR
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://remix.run/docs/en/main/guides/streaming"
               target="_blank"
@@ -502,8 +520,8 @@ export default function StreamingSsrConciseArticle() {
               Remix Streaming Guide
             </a>{" "}
             - Remix{"'"}s approach to deferred data and streaming
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.patterns.dev/posts/ssr"
               target="_blank"
@@ -512,7 +530,7 @@ export default function StreamingSsrConciseArticle() {
               Patterns.dev: Server-Side Rendering
             </a>{" "}
             - Comprehensive guide including streaming patterns
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://web.dev/rendering-on-the-web/"

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,12 +37,15 @@ export default function ErrorStatesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Error states</strong> are the visual and interactive representations an application displays when operations fail, data is unavailable, or the system enters an unexpected condition. They are the most critical moment in user experience because they determine whether a user retains trust in the product or abandons it. A well-designed error state acknowledges the problem honestly, explains what happened in human terms, provides a clear recovery path, and minimizes the user&apos;s lost work. Poorly designed error states — cryptic messages, blank screens, or silent failures — erode confidence rapidly and generate support tickets that consume engineering resources far exceeding the cost of proper error UX design.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The psychology of errors is asymmetric: users remember negative experiences far more vividly than positive ones. Research in behavioral economics calls this loss aversion — the pain of losing progress to an error is roughly twice as impactful as the pleasure of successfully completing the same task. This asymmetry means that error states deserve disproportionate design and engineering investment relative to happy-path flows. A product that handles errors gracefully can actually build more trust than one that never shows errors but occasionally fails silently, because visible error handling demonstrates system awareness and reliability.
-        </p>
+        </HighlightBlock>
         <p>
           At the staff and principal engineer level, error states are an architectural concern that spans the entire application stack. The error handling strategy must define a consistent taxonomy of error types (network failures, validation errors, authorization failures, server errors, client-side exceptions), map each type to appropriate UI treatments, integrate with monitoring and alerting systems, and degrade gracefully when multiple errors compound. A design system should provide standardized error components — inline field errors, toast notifications, error banners, full-page error states, and error boundary fallbacks — with clear guidelines for when to use each pattern. The data layer should normalize error responses into a consistent shape regardless of whether they originate from REST APIs, GraphQL mutations, WebSocket disconnections, or client-side exceptions.
         </p>
@@ -52,13 +56,16 @@ export default function ErrorStatesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Error Taxonomy:</strong> A classification system that categorizes errors by their origin (client, server, network), severity (recoverable, degraded, fatal), and user impact (informational, blocking, data-loss). A well-defined taxonomy ensures that each error type maps to a consistent UI treatment and recovery path, preventing ad-hoc error handling that creates inconsistent user experiences across the application.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Error Boundaries:</strong> React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of crashing the entire application. Error boundaries create isolation zones where a failure in one section of the page does not take down unrelated sections, enabling partial degradation rather than full-page failures.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Recovery Path:</strong> The specific action a user can take to resolve or work around an error. Effective recovery paths include retry buttons for transient failures, alternative actions when primary paths are blocked, contact support links for unrecoverable errors, and automatic retry with exponential backoff for network issues. The recovery path must be visible, clearly labeled, and functional — a retry button that triggers the same failing request without any change is worse than no button at all.
           </li>
@@ -85,18 +92,21 @@ export default function ErrorStatesArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The first diagram illustrates the error classification and routing architecture. When an error occurs, it enters a classification pipeline that determines its type (network, server, client, validation), severity (recoverable, degraded, fatal), and appropriate UI treatment. Network errors are routed through a retry manager with exponential backoff. Server errors are checked against a circuit breaker to determine if the service is healthy enough to retry. Client errors are logged and displayed immediately. Validation errors are mapped to specific form fields. This classification ensures that every error receives the most appropriate handling without requiring individual components to implement their own error logic.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/edge-cases-and-user-experience/error-states-diagram-1.svg"
           alt="Error classification and routing architecture showing how errors flow through taxonomy classification, severity assessment, and UI treatment routing"
           width={900}
           height={500}
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The second diagram shows the Error Boundary hierarchy and component isolation strategy. The application is wrapped in a top-level Error Boundary that catches catastrophic failures and shows a full-page recovery screen. Below that, each major section (navigation, sidebar, main content, modals) has its own Error Boundary that isolates failures to that region. Within the main content area, individual widgets or data-dependent components have granular Error Boundaries. This nested structure means that a failing recommendation widget does not take down the product details, and a crashing modal does not affect the underlying page. Each boundary level has its own fallback UI appropriate to its scope — a widget-level boundary shows a small retry card while a section-level boundary shows a larger error panel with more context.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/edge-cases-and-user-experience/error-states-diagram-2.svg"
           alt="Error Boundary hierarchy showing nested isolation zones from application-level down to widget-level with appropriate fallback UIs at each tier"
@@ -116,6 +126,9 @@ export default function ErrorStatesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -125,16 +138,16 @@ export default function ErrorStatesArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="important">
               <td className="px-4 py-2 font-medium">Inline Error Messages</td>
               <td className="px-4 py-2">Contextual, immediately visible at the point of failure, do not interrupt flow, excellent for form validation, can show multiple errors simultaneously without stacking</td>
               <td className="px-4 py-2">Can cause layout shift, may be missed below the fold, limited space for detailed explanations, can clutter the interface when many fields have errors simultaneously</td>
-            </tr>
-            <tr className="border-b border-theme">
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="px-4 py-2 font-medium">Toast Notifications</td>
               <td className="px-4 py-2">Non-blocking, auto-dismiss for transient issues, consistent position reduces cognitive load, can queue multiple notifications, work well for background operation failures</td>
               <td className="px-4 py-2">Easy to miss especially with screen readers, auto-dismiss may not give sufficient time to read, can stack and overwhelm if many errors occur, poor for errors requiring user action</td>
-            </tr>
+            </HighlightBlock>
             <tr className="border-b border-theme">
               <td className="px-4 py-2 font-medium">Error Banners</td>
               <td className="px-4 py-2">Persistent and prominent, good for system-wide issues, can include detailed recovery instructions, accessible to screen readers, naturally draw attention</td>
@@ -161,13 +174,16 @@ export default function ErrorStatesArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Define a centralized error taxonomy early.</strong> Create a shared error classification system that maps error codes and types to specific UI treatments. This taxonomy should be documented in the design system and enforced through shared error handling utilities. When every team uses the same classification, error handling becomes consistent across the product and new engineers can look up the correct treatment for any error type without guessing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Always provide an actionable recovery path.</strong> Every error state should include at least one action the user can take — retry the operation, try an alternative approach, navigate to a working section, contact support, or at minimum refresh the page. An error state without a recovery path is a dead end that forces the user to figure out what to do on their own, which often means abandoning the product entirely.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Error Boundaries strategically at multiple levels.</strong> Place Error Boundaries around independently meaningful sections of the page so that a crash in one section does not take down unrelated content. The navigation should always remain functional even when the main content area crashes. Each Error Boundary should have a thoughtful fallback UI proportional to the scope it protects — a small retry card for a widget, a larger error panel for a page section.
           </li>
@@ -191,13 +207,16 @@ export default function ErrorStatesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Showing raw error messages from APIs.</strong> Exposing internal server error messages, stack traces, or database error strings directly to users is both a security vulnerability and a UX failure. Internal error details can leak implementation information that aids attackers, and they are meaningless to most users. Always map backend errors to user-facing messages through a translation layer.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Using a single error pattern for all error types.</strong> Showing a full-page error for a failed avatar upload or using an inline message for a complete server outage creates a mismatch between error severity and UI treatment. The error presentation should be proportional to the error&apos;s impact — minor issues get subtle treatments while major failures get prominent ones.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Auto-dismissing errors that require user action.</strong> Toast notifications that disappear after a few seconds are appropriate for informational messages but dangerous for errors that need resolution. If the user needs to take action (re-enter credentials, fix validation errors, approve a permission), the error message must persist until the user explicitly dismisses it or resolves the issue.
           </li>
@@ -215,12 +234,15 @@ export default function ErrorStatesArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>GitHub</strong> exemplifies granular error handling in complex interfaces. When a code review comment fails to post, GitHub shows an inline retry affordance on that specific comment while the rest of the pull request page remains fully functional. If the diff view fails to load, it shows a focused error message within the diff panel without affecting the conversation tab or file tree. Their 404 pages use the recognizable Octocat illustration to soften the error experience while providing clear navigation back to repositories and search. This component-level error isolation means that a failure in one part of the review workflow does not prevent engineers from completing other review tasks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Figma</strong> handles the particularly challenging scenario of errors in collaborative editing environments. When a save operation fails, Figma shows a persistent banner indicating unsaved changes and retries automatically with visual feedback. Crucially, it never discards unsaved work — changes remain in the local state until they are successfully persisted. When collaboration becomes unavailable, Figma degrades to offline editing mode, queuing changes for synchronization when connectivity is restored. This approach demonstrates the principle of preserving user work above all else, even when multiple error conditions compound.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Stripe Dashboard</strong> demonstrates error handling in high-stakes financial interfaces. Payment processing errors include specific error codes, human-readable explanations, and direct links to the relevant documentation for resolution. Failed webhook deliveries show retry counts, next retry timestamps, and the HTTP response from the endpoint. The dashboard distinguishes between errors the merchant can fix (misconfigured endpoints, authentication issues) and platform errors (Stripe service disruptions) with different UI treatments and escalation paths. This granular error categorization reduces support volume by enabling self-service resolution for the majority of error scenarios.
         </p>
@@ -231,15 +253,18 @@ export default function ErrorStatesArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">
-          <p className="font-medium">
+          <HighlightBlock as="p" tier="important" className="font-medium">
             Q: How would you design an error handling strategy for a large-scale
             single-page application?
-          </p>
-          <p className="mt-2">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-2">
             A: I would start by defining an error taxonomy that categorizes errors by origin (client, server, network), severity (recoverable, degraded, fatal), and required user action. Each category maps to a specific UI treatment — inline messages for validation errors, toasts for background operation failures, banners for system-wide issues, and full-page states for catastrophic failures. I would implement nested Error Boundaries to isolate rendering failures at the section and widget level, ensuring navigation always remains functional. The data fetching layer would normalize error responses into a consistent shape with error type, message, retry eligibility, and recovery suggestions. Automatic retry with exponential backoff would handle transient errors, while persistent errors would show contextual recovery paths. All error states would be instrumented with telemetry to track frequency, user impact, and recovery success rates, enabling data-driven prioritization of error handling improvements.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">

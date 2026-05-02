@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function SocialLoginOptionsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Social Login Options</strong> allow users to authenticate using existing
           accounts from providers like Google, Facebook, Apple, GitHub, and Microsoft. Social login
           reduces signup friction (no new password to remember), improves conversion rates
           (one-click signup), and eliminates password management overhead for users. For consumer
           applications, social login is often expected — users want the convenience of signing in
           with Google or Apple.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/social-login-flow.svg"
@@ -48,7 +52,7 @@ export default function SocialLoginOptionsArticle() {
           caption="Social Login Flow — showing OAuth flow, account linking, and profile import"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing social login requires deep understanding
           of OAuth flows (authorization code with PKCE), provider-specific requirements (Apple's
           privacy features, Google's brand guidelines), button placement and design (conversion
@@ -56,7 +60,7 @@ export default function SocialLoginOptionsArticle() {
           permission handling (minimum scopes, additional consent), and conversion optimization
           (A/B testing, provider performance tracking). The implementation must provide seamless UX
           while maintaining security and respecting user privacy.
-        </p>
+        </HighlightBlock>
         <p>
           Modern platforms typically support multiple social login providers to maximize conversion.
           Each provider has unique requirements: Apple requires "Sign in with Apple" if you offer
@@ -69,19 +73,22 @@ export default function SocialLoginOptionsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Social login is built on fundamental concepts that determine how authentication flows
           work and how identity is federated between systems. Understanding these concepts is
           essential for designing effective social login implementations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Provider Selection:</strong> Choose providers based on target audience. Google
           (90%+ users have account, universal), Apple (required for iOS apps with other social
           logins), Facebook (large user base, declining), GitHub (developer-focused), Microsoft
           (enterprise, Office 365). Regional providers for specific markets (WeChat in China, LINE
           in Japan, Kakao in Korea). Support 3-5 providers maximum — too many creates decision
           paralysis.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Button Placement:</strong> Critical for conversion. Above email form (maximum
           visibility, highest conversion), below email form (secondary option), side-by-side (equal
@@ -105,11 +112,14 @@ export default function SocialLoginOptionsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Social login architecture separates provider integration from application logic, enabling
           centralized OAuth management with distributed authentication. This architecture is
           critical for supporting multiple providers while maintaining code quality.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/social-account-linking.svg"
@@ -117,14 +127,14 @@ export default function SocialLoginOptionsArticle() {
           caption="Account Linking — showing email matching, verification, merge flow, and conflict resolution"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social login flow: User clicks "Sign in with Google". Client generates code verifier,
           creates code challenge, redirects to Google authorization endpoint. User authenticates at
           Google, consents to scopes. Google redirects back with authorization code. Client
           exchanges code for tokens, validates id_token signature, extracts user claims (email,
           name, photo). Check if email exists in database — if yes, link OAuth to existing account
           (with verification). If no, create new account. Create session, grant access.
-        </p>
+        </HighlightBlock>
         <p>
           Account linking architecture includes: email matching (check if OAuth email matches
           existing account), verification flow (require password/MFA before linking), merge flow
@@ -151,25 +161,28 @@ export default function SocialLoginOptionsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing social login involves trade-offs between convenience, privacy, and provider
           dependencies. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Google vs Apple vs Facebook</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Google:</strong> Most common (90%+ users have account), trusted, provides
               email/name/photo. Limitation: brand guidelines strict, verification required for
               sensitive scopes.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Apple:</strong> Privacy-focused (hide email option), required for iOS apps
               with other social logins. Limitation: relay emails (@privaterelay.appleid.com) can't
               contact users directly.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Facebook:</strong> Large user base, declining usage. Limitation: app review
               required for most permissions, strict data use policies, privacy concerns.
@@ -217,19 +230,22 @@ export default function SocialLoginOptionsArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing social login requires following established best practices to ensure
           security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use PKCE for all OAuth flows (even server-side) — prevents code interception attacks.
           Validate state parameter to prevent CSRF — generate random state, validate on callback.
           Verify token signatures from providers — use provider's JWKS, validate iss, aud, exp.
           Implement secure account linking — always verify existing account (password, MFA) before
           linking. Store tokens encrypted at rest — never store plaintext.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
         <p>
@@ -262,21 +278,24 @@ export default function SocialLoginOptionsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing social login to ensure secure, usable, and
           maintainable integrations.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Poor button placement:</strong> Social buttons hidden or hard to find, low
             conversion. <strong>Fix:</strong> Place above email form, use prominent design, A/B
             test placement.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Unofficial branding:</strong> Modified logos or colors, provider rejection,
             legal issues. <strong>Fix:</strong> Use official brand assets, follow guidelines
             strictly.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No account linking:</strong> Users can't merge accounts, frustration, support
             tickets. <strong>Fix:</strong> Implement secure account linking flow with password
@@ -322,17 +341,20 @@ export default function SocialLoginOptionsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Social login is critical for consumer applications. Here are real-world implementations
           from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Music Streaming (Spotify)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Music streaming app with millions of users. Need frictionless
           signup. Support multiple OAuth providers (Google, Facebook, Apple). Account linking for
           users with multiple signup methods.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> OAuth 2.0 with PKCE. Provider abstraction layer (Google,
           Facebook, Apple adapters). Account linking with email verification. Fallback to email
@@ -430,14 +452,17 @@ export default function SocialLoginOptionsArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of social login design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Which social providers should you support?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Which social providers should you support?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Minimum: Google (universal, 90%+ users have account), Apple (iOS requirement if
               offering other social logins). Add based on audience: Facebook (consumer), GitHub

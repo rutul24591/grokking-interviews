@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function PubSubMessagingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Publish-Subscribe (Pub/Sub) messaging enables decoupled communication where publishers send messages to topics without knowing subscribers, and subscribers receive messages from topics without knowing publishers. This many-to-many communication pattern is fundamental to event-driven architectures, enabling microservices to react to events without direct dependencies. Pub/Sub powers notification systems, event streaming, real-time analytics, and distributed system coordination.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of Pub/Sub systems stems from delivery guarantees, ordering requirements, and scaling challenges. Messages must be delivered reliably (at-least-once, exactly-once). Ordering must be preserved within topics or partitions. Subscriber fan-out must scale to thousands of subscribers per topic. Backpressure handling prevents slow subscribers from blocking fast publishers. The system must handle traffic spikes, partition failures, and subscriber churn gracefully.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, Pub/Sub architecture involves distributed systems trade-offs. Consistency vs availability (CAP theorem) affects delivery semantics. Partitioning strategy determines scalability and ordering guarantees. Consumer group management enables parallel processing with load balancing. Dead letter queues handle poison messages. Monitoring must track message lag, delivery latency, and throughput. The architecture must support replay (reprocessing old messages) for debugging and recovery.
         </p>
@@ -47,13 +51,16 @@ export default function PubSubMessagingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Pub/Sub Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Topic-based Pub/Sub: Publishers send to named topics, subscribers subscribe to topics. Simple, intuitive. Topics are logical channels. Subscribers receive all messages from subscribed topics. Used for: notifications, event distribution, chat rooms.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content-based Pub/Sub: Messages delivered based on content, not topic. Subscribers define filters (SQL-like expressions). Broker evaluates filters, routes accordingly. More flexible, higher broker complexity. Used for: trading systems, complex event processing.
-        </p>
+        </HighlightBlock>
         <p>
           Hierarchical topics: Topics organized in hierarchy (sports/football/premier-league). Subscribers can subscribe to wildcards (sports/football/*). Enables granular subscriptions. Used for: news categorization, IoT sensor data.
         </p>
@@ -125,9 +132,12 @@ export default function PubSubMessagingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Pub/Sub architecture spans publishers, message broker, topics/partitions, and subscribers. Publishers send messages to broker. Broker routes to topics, persists if required. Subscribers receive from topics via push, pull, or streaming. Consumer groups enable parallel processing.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/pub-sub-messaging/pubsub-architecture.svg"
@@ -138,9 +148,9 @@ export default function PubSubMessagingArticle() {
         />
 
         <h3>Publisher Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Message creation: Publisher creates message with payload, metadata (timestamp, correlation ID, key). Key determines partition (for partitioned systems). Serialization (JSON, Protobuf, Avro).
-        </p>
+        </HighlightBlock>
         <p>
           Publish API: Send to broker via client library or HTTP. Synchronous (wait for ack) or asynchronous (fire-and-forget). Batch publishing for throughput (multiple messages per request).
         </p>
@@ -203,14 +213,17 @@ export default function PubSubMessagingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Pub/Sub design involves trade-offs between latency, throughput, durability, ordering, and complexity. Understanding these trade-offs enables informed decisions aligned with reliability requirements and operational capabilities.
-        </p>
+        </HighlightBlock>
 
         <h3>Broker: Managed vs Self-Hosted</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Managed (Cloud Pub/Sub, Confluent Cloud, Amazon MSK): Pros: No ops overhead, automatic scaling, built-in monitoring, SLA. Cons: Vendor lock-in, higher cost at scale, less control. Best for: Most applications, teams without messaging expertise.
-        </p>
+        </HighlightBlock>
         <p>
           Self-hosted (Kafka, RabbitMQ, NATS): Pros: Full control, cost optimization, no vendor lock-in. Cons: Operational complexity, scaling manual, on-call burden. Best for: Large scale (cost-sensitive), regulatory requirements, existing expertise.
         </p>
@@ -265,13 +278,16 @@ export default function PubSubMessagingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Design for idempotency:</strong> Assume at-least-once delivery. Use idempotency keys (UUID per message). Deduplicate at consumer (store processed IDs). Idempotent business operations (upsert vs insert).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use consumer groups for scaling:</strong> Multiple consumers share load. Partitions assigned to consumers. Scale consumers with traffic. Monitor lag per consumer group.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Partition for parallelism:</strong> Partition topics by key (user ID, order ID). Enables parallel processing. Choose partition key carefully (avoid hot partitions). Rebalance on partition count change.
           </li>
@@ -301,13 +317,16 @@ export default function PubSubMessagingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No idempotency:</strong> Duplicates cause data corruption. Solution: Idempotency keys, deduplication at consumer, idempotent operations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring consumer lag:</strong> Lag grows unnoticed, messages delayed. Solution: Monitor lag, alert on thresholds, auto-scale consumers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Wrong partition key:</strong> Hot partitions cause imbalance. Solution: Choose high-cardinality keys, hash-based partitioning, monitor partition distribution.
           </li>
@@ -337,16 +356,19 @@ export default function PubSubMessagingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Uber Event Streaming</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uber uses Kafka for event streaming: trip events, location updates, payment events. Hundreds of topics, billions of messages/day. Consumer groups for parallel processing. Schema registry for compatibility. Replay for debugging, ML training.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Netflix Activity Tracking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix tracks viewing activity, recommendations, device events via Kafka. Real-time analytics pipeline. Event sourcing for user state. Partitioned by user ID. Retention: 7 days for replay, aggregated for long-term.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Stripe Webhook Delivery</h3>
         <p>
@@ -366,12 +388,15 @@ export default function PubSubMessagingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you ensure message ordering in Pub/Sub?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you ensure message ordering in Pub/Sub?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use partitioned topics with key-based routing. Messages with same key go to same partition, ordered within partition. Total ordering requires centralized sequencer (bottleneck). For most systems, partition ordering is sufficient. If cross-partition ordering needed, use timestamps and reorder at consumer, or use a single partition (sacrifices parallelism).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

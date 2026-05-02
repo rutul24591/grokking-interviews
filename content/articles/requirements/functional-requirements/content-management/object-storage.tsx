@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,13 +34,16 @@ export default function ObjectStorageArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Object Storage</strong> provides scalable, durable storage for unstructured data
           like images, videos, and documents. It is the foundation for media and file storage at
           scale offering 11 9s durability (99.999999999%) through data redundancy across multiple
           availability zones. Object storage stores data as objects with unique keys, metadata, and
           binary data enabling simple PUT/GET operations without complex database schemas.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/object-storage-architecture.svg"
@@ -47,7 +51,7 @@ export default function ObjectStorageArticle() {
           caption="Object Storage Architecture — showing storage providers (S3, GCS, Azure), key structure organization, cross-region replication, and lifecycle management"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing object storage requires deep
           understanding of storage providers including AWS S3 as industry standard with extensive
           features and integrations, Google Cloud Storage with global consistency and Google
@@ -65,7 +69,7 @@ export default function ObjectStorageArticle() {
           encompasses encryption at rest and in transit, access control through IAM policies and
           bucket policies, signed URLs for time-limited access, and audit logging for compliance.
           The implementation must balance durability with cost and performance.
-        </p>
+        </HighlightBlock>
 
         <p>
           Modern object storage has evolved from simple file storage to sophisticated data
@@ -80,13 +84,16 @@ export default function ObjectStorageArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Object storage is built on fundamental concepts that determine how data is stored,
           organized, accessed, and protected. Understanding these concepts is essential for
           designing effective storage architectures.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Storage Providers:</strong> AWS S3 serves as industry standard with 11 9s
           durability, extensive features (versioning, lifecycle, replication), broad ecosystem
           integrations, and global availability across regions. Google Cloud Storage provides
@@ -95,7 +102,7 @@ export default function ObjectStorageArticle() {
           discounts. Azure Blob Storage offers enterprise integration (Active Directory, Office
           365), compliance certifications (HIPAA, FedRAMP, GDPR), and hybrid cloud capabilities
           through Azure Stack.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Key Structure:</strong> Bucket organization uses separate buckets for different
@@ -133,12 +140,15 @@ export default function ObjectStorageArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Object storage architecture separates storage providers, key organization, lifecycle
           management, and access control enabling modular implementation with clear security
           boundaries. This architecture is critical for durability, performance, and cost
           optimization.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/object-storage-architecture.svg"
@@ -146,7 +156,7 @@ export default function ObjectStorageArticle() {
           caption="Object Storage Architecture — showing storage providers, key structure, cross-region replication, and lifecycle management"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Object storage flow begins with application determining storage requirements (durability,
           availability, access patterns). Backend selects appropriate storage tier based on access
           patterns (hot for frequent, archive for rare). Upload generates unique key following
@@ -156,7 +166,7 @@ export default function ObjectStorageArticle() {
           automatically transition objects to cheaper tiers based on age (30 days to IA, 90 days to
           archive). Access requests authenticate through IAM or signed URLs, authorize through
           bucket policies, and retrieve object with appropriate tier access cost.
-        </p>
+        </HighlightBlock>
 
         <p>
           Key organization architecture includes bucket strategy using separate buckets for
@@ -187,13 +197,16 @@ export default function ObjectStorageArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing object storage involves trade-offs between durability, availability,
           performance, and cost. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Single-region versus cross-region replication presents cost versus availability
           trade-offs. Single-region storage costs less with no replication costs and lower latency
           within region but provides no disaster recovery if region fails and higher latency for
@@ -202,7 +215,7 @@ export default function ObjectStorageArticle() {
           replication storage and transfer costs with replication lag causing consistency delays.
           The recommendation is single-region for non-critical data with backups, cross-region for
           critical data requiring high availability and disaster recovery.
-        </p>
+        </HighlightBlock>
 
         <p>
           Versioning enabled versus disabled presents recovery versus cost trade-offs. Versioning
@@ -227,19 +240,22 @@ export default function ObjectStorageArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing object storage requires following established best practices to ensure
           durability, security, performance, and cost efficiency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Key organization uses hierarchical key structure with prefixes (user-id/content-type/
           object-id) enabling logical grouping and efficient listing. Separate buckets for
           different environments (prod, staging, dev) or data types (images, videos, documents)
           enabling isolated access control and lifecycle policies. Use UUIDs or timestamps ensuring
           uniqueness preventing collisions. Use lowercase with hyphens ensuring URL compatibility
           avoiding encoding issues.
-        </p>
+        </HighlightBlock>
 
         <p>
           Lifecycle management configures automatic transitions based on age (30 days to IA, 90
@@ -276,17 +292,20 @@ export default function ObjectStorageArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing object storage to ensure durability,
           security, and cost efficiency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           No lifecycle management causes storage costs to grow indefinitely with old data remaining
           in expensive tiers. Fix by configuring automatic transitions based on age (30 days to IA,
           90 days to archive). Enable intelligent tiering for unpredictable access. Configure
           expiration for temporary data preventing accumulation.
-        </p>
+        </HighlightBlock>
 
         <p>
           Poor key organization causes inefficient listing and access control issues. Fix by using
@@ -347,20 +366,23 @@ export default function ObjectStorageArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Object storage is critical for media and file storage across different domains. Here are
           real-world implementations from production systems demonstrating different approaches to
           storage challenges.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix media storage addresses massive video library with global delivery. The solution
           uses S3 with intelligent tiering automatically moving content based on access patterns,
           cross-region replication for disaster recovery ensuring content availability, lifecycle
           policies transitioning old content to cheaper tiers reducing storage costs 60%, and CDN
           integration (CloudFront) for low-latency global delivery. The result is cost-effective
           storage for petabytes of video with high availability and global delivery.
-        </p>
+        </HighlightBlock>
 
         <p>
           Airbnb image storage addresses millions of listing images with optimization. The solution
@@ -400,14 +422,17 @@ export default function ObjectStorageArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of object storage design, implementation, and
           operational concerns for staff and principal engineer interviews.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you organize object storage keys?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you organize object storage keys?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Use hierarchical key structure with prefixes (user-id/content-type/object-id like
               users/12345/profiles/photo.jpg). Separate buckets for different environments (prod,

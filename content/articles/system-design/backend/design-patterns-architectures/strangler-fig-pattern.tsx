@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,12 +28,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Strangler Fig pattern</strong> is an incremental migration strategy that modernizes a legacy system by gradually replacing parts of it over time. Instead of executing a high-risk big-bang rewrite, you introduce a new system alongside the old one and progressively route more functionality to the new implementation. Over time, the legacy system is &quot;strangled&quot;: it serves less and less traffic until it can be safely decommissioned entirely. The pattern takes its name from the strangler fig tree, which grows around a host tree and eventually replaces it.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The pattern was first described by Martin Fowler in 2004, drawing inspiration from how real organizations change systems under production pressure. There is continuous delivery to maintain, ongoing product work that cannot pause for months, and limited organizational tolerance for long periods of parallel development with no visible progress. The strangler fig approach creates a migration path that preserves user value throughout the transition and dramatically reduces the risk associated with large-scale rewrites.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, the Strangler Fig pattern is not merely a technical technique: it is an organizational strategy. Migrations succeed when they deliver visible value at each step, maintain the ability to roll back quickly, and keep the business running without interruption. The pattern requires architectural discipline (defining clear slice boundaries), operational rigor (instrumenting every cutover with verification), and organizational alignment (ensuring product, engineering, and operations teams coordinate on migration milestones).
         </p>
@@ -55,14 +59,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Proxy and Interception Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           At the heart of every strangler fig migration is a proxy or interception layer that sits between clients and the backend systems. This layer is responsible for deciding, on a per-request basis, whether to route traffic to the legacy system or to the new system. The proxy can take many forms depending on your architecture. An API gateway like Kong, AWS API Gateway, or Envoy provides a natural interception point with built-in routing rules, rate limiting, and observability. A reverse proxy such as Nginx or HAProxy can handle URL-based or header-based routing with low latency. An application-level router implemented as a thin middleware layer in your codebase provides fine-grained control over routing logic, including feature-flag-driven decisions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The critical property of the interception layer is that it must be independently deployable and configurable without touching either the legacy or new system. This allows the migration team to adjust routing rules, enable or disable specific slices, and roll back traffic instantly without redeploying either application. The interception layer also serves as the natural place to instrument migration progress: request counts, latency distributions, error rates, and response comparison metrics all flow through this boundary.
-        </p>
+        </HighlightBlock>
         <p>
           Proxy routing strategies vary in sophistication. The simplest approach is URL-path-based routing, where specific URL patterns are routed to the new system while everything else falls through to the legacy system. This works well when the legacy system has clear URL boundaries that map to business capabilities. A more sophisticated approach is header-based routing, where a specific request header (such as <code>X-Use-New-System: true</code>) directs traffic to the new implementation. This enables A/B testing, canary deployments, and internal dogfooding before exposing the new system to all users. The most advanced approach is semantic routing, where the proxy inspects request content (such as tenant ID, user cohort, or feature flags) and makes routing decisions based on business logic rather than URL structure.
         </p>
@@ -124,14 +131,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>The Routing Boundary</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A strangler migration requires a well-defined boundary where requests can be directed to either the legacy system or the new system. This boundary is typically an API gateway, a reverse proxy, an ingress controller, or an internal routing layer implemented in application code. The router provides the mechanism for gradual cutover, and it serves as the natural place to instrument migration progress and detect regressions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The routing boundary must satisfy several requirements. It must support dynamic routing rules that can be changed without redeploying either system. It must provide observability: request counts, latency percentiles, error rates, and response comparison metrics for both systems. It must support automatic rollback: if error rates on the new system exceed a threshold, traffic should automatically flow back to the legacy system. And it must handle sticky sessions or consistent routing for stateful user journeys, ensuring that a single user session does not bounce between legacy and new implementations mid-flow.
-        </p>
+        </HighlightBlock>
 
         <h3>Anti-Corruption Layer</h3>
         <p>
@@ -181,14 +191,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>Strangler Fig Versus Big-Bang Rewrite</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fundamental trade-off of the strangler fig pattern is time versus risk. A big-bang rewrite concentrates all risk into a single cutover event. The development cycle is shorter in calendar time because the team focuses exclusively on the rewrite, but the probability of catastrophic failure is high. Requirements drift during the long development cycle, the team loses knowledge about the legacy system&apos;s edge cases, and the final integration test reveals problems that were invisible during isolated development. When a big-bang rewrite fails, the organization has wasted months or years of engineering effort with nothing to show for it.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The strangler fig pattern spreads risk across many small cutovers, each of which is independently reversible. The calendar time for full migration is longer because the team must continue maintaining the legacy system while building the new one, and each slice requires verification before the next slice begins. However, every slice delivers incremental value, and the failure of any single slice does not threaten the overall migration. The organization builds confidence with each successful slice, and the migration team gains deeper understanding of the legacy system&apos;s behavior with each iteration.
-        </p>
+        </HighlightBlock>
 
         <h3>Strangler Fig Versus Branch-by-Abstraction</h3>
         <p>
@@ -218,16 +231,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Establish the Routing Boundary First</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Before migrating any functionality, deploy the routing layer that will mediate between legacy and new systems. This can be an API gateway, a reverse proxy, or an application-level router. Ensure it supports dynamic routing rules, observability, and instant rollback. The routing boundary is the foundation of the entire migration, and getting it right early prevents painful rework later. Configure health checks for both systems, set up latency and error-rate alerting, and test rollback procedures before migrating the first slice.
-        </p>
+        </HighlightBlock>
 
         <h3>Start with Read-Only Leaf Capabilities</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Your first migration slice should be a read-only capability that has minimal dependencies on other systems and is not a dependency for many other features. Reporting endpoints, search functionality, and user profile views are typical candidates. Read paths are easy to validate through shadow comparison, they do not introduce distributed write complexity, and they build team confidence with low-risk cutovers. Resist the urge to start with high-visibility write paths like checkout or order creation: the temptation to prove value quickly often leads to choosing slices that are too complex for a first migration.
-        </p>
+        </HighlightBlock>
 
         <h3>Use CDC for Read Model Synchronization</h3>
         <p>
@@ -260,14 +276,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Slice Coupling and Hidden Dependencies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common strangler failure mode is choosing a slice that appears separable but is actually deeply coupled to the legacy system through hidden dependencies. The slice may share database tables with other capabilities, rely on session state managed by the legacy system, or depend on business logic that is not encapsulated in a single module. The symptom is a migration that stalls: the team discovers new dependencies every week, the slice boundary keeps expanding, and the migration timeline slips repeatedly.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The mitigation is to start smaller and to perform thorough dependency analysis before committing to a slice. Map all database queries, trace all API calls, and identify all shared state. If the slice touches more than three database tables that are also used by other capabilities, or if it depends on more than two internal services, it is probably too large for a first slice. Split it further until you find a truly isolated capability.
-        </p>
+        </HighlightBlock>
 
         <h3>Data Drift Between Systems</h3>
         <p>
@@ -307,16 +326,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Amazon: Monolith to Microservices Decomposition</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon&apos;s migration from a monolithic architecture to microservices is one of the most famous strangler fig migrations in industry. In the early 2000s, Amazon&apos;s e-commerce platform was a monolithic application that became increasingly difficult to scale and modify. The team adopted an incremental decomposition strategy, extracting individual capabilities (product catalog, shopping cart, order management, payment processing) into independent services. Each extraction followed the strangler pattern: the new service was introduced alongside the monolith, traffic was gradually routed to the service through proxy routing, and the monolith&apos;s corresponding code was eventually removed. The migration took several years and fundamentally changed Amazon&apos;s engineering culture, establishing the two-pizza team model and the platform-as-a-service philosophy that powers AWS today.
-        </p>
+        </HighlightBlock>
 
         <h3>Monzo: Core Banking System Migration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Monzo, the UK-based digital bank, executed a strangler fig migration of its core banking system in 2019-2020. The legacy system, built during Monzo&apos;s early days, could not support the scale and feature complexity the bank had achieved. Rather than pausing product development for a rewrite, Monzo built a new core banking system alongside the old one and used the parallel run pattern extensively. Every transaction ran through both systems simultaneously, and the results were compared for correctness. The migration was executed slice by slice: customer accounts, transaction processing, savings pots, and lending products were migrated in sequence. The parallel run pattern gave Monzo the confidence to migrate critical financial data without service interruption, and the migration was completed with zero downtime for end users.
-        </p>
+        </HighlightBlock>
 
         <h3>GitHub: Ruby on Rails Monolith Decomposition</h3>
         <p>
@@ -339,14 +361,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: Why is the Strangler Fig pattern safer than a big-bang rewrite, and what are its key mechanisms?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               The Strangler Fig pattern is safer because it replaces a system incrementally through many small, independently reversible cutovers rather than a single high-risk migration event. Each slice of functionality is migrated, verified, and validated before the next slice begins. If any slice migration reveals problems, traffic can be rolled back to the legacy system instantly, minimizing user impact. The key mechanisms are a routing boundary (API gateway or proxy) that directs traffic to either system, shadow reads that validate the new system&apos;s correctness without user-facing risk, progressive rollout that gradually increases traffic to the new system, and automatic rollback triggers that detect regressions and revert traffic.
-            </p>
+            </HighlightBlock>
             <p>
               Big-bang rewrites concentrate all risk into a single cutover event. Requirements drift during the long development cycle, the team loses knowledge about the legacy system&apos;s edge cases, and the final integration reveals problems that were invisible during isolated development. Strangler migrations address each of these failure modes by making every step reversible, every slice independently testable, and every milestone a deliverable product increment.
             </p>

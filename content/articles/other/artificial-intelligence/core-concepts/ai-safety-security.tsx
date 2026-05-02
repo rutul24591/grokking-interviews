@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>AI safety and security</strong> encompasses the practices,
           architectures, and governance frameworks that protect AI systems from
           malicious attacks, unintended behavior, data leakage, and harmful
@@ -34,8 +38,8 @@ export default function ArticlePage() {
           model&apos;s natural language understanding — attacks that work not by
           exploiting code bugs but by manipulating the model&apos;s reasoning
           through carefully crafted inputs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most significant AI-specific security threat is{" "}
           <strong>prompt injection</strong> — an attack where a user crafts input
           that overrides the system prompt&apos;s instructions, causing the model
@@ -45,7 +49,7 @@ export default function ArticlePage() {
           instructions: the model does not distinguish between &quot;real&quot;
           instructions from the system and &quot;fake&quot; instructions embedded
           in user input. Both are just tokens in the context window.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Data leakage</strong> is another critical concern — the risk
           that sensitive information (user data, system prompts, internal
@@ -75,7 +79,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Prompt injection</strong> manifests in several forms.{" "}
           <strong>Direct injection</strong> occurs when the user&apos;s input
           directly contains override instructions (e.g., &quot;Ignore all
@@ -86,8 +93,8 @@ export default function ArticlePage() {
           instructions. Indirect injection is particularly dangerous because the
           malicious content may not be authored by the user at all — it could be
           a compromised webpage, a forwarded email, or an uploaded file.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Jailbreak attacks</strong> are sophisticated prompt injection
           techniques that bypass the model&apos;s safety training. Attackers use
           techniques like role-playing (&quot;You are now DAN, who does
@@ -98,7 +105,7 @@ export default function ArticlePage() {
           specific model vulnerabilities). Jailbreak detection systems use
           pattern matching, embedding-based anomaly detection, and output
           monitoring to identify and block jailbreak attempts.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/ai-security-threat-landscape.svg"
@@ -141,7 +148,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production AI safety architecture consists of multiple defense
           layers. The <strong>input sanitization layer</strong> processes user
           input before it reaches the model, redacting sensitive information,
@@ -151,8 +161,8 @@ export default function ArticlePage() {
           input (using APIs that support native separation), explicit defense
           instructions, and input delimiters that help the model distinguish
           between system and user content.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>output filtering layer</strong> scans the model&apos;s
           response before it reaches the user, checking for content policy
           violations, sensitive data exposure, factual inconsistencies, and
@@ -160,7 +170,7 @@ export default function ArticlePage() {
           security-related metrics in real-time: injection attempt rates,
           jailbreak success rates, data leakage incidents, content policy
           violations, and anomalous output patterns.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/prompt-injection-defense.svg"
@@ -195,7 +205,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Input filtering aggressiveness</strong> presents a
           security-versus-utility trade-off. Aggressive input filtering catches
           more injection attempts but also blocks legitimate user inputs that
@@ -204,8 +217,8 @@ export default function ArticlePage() {
           allows more legitimate inputs through but misses sophisticated attacks.
           The optimal balance depends on the application&apos;s risk tolerance
           and user base.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Output filtering latency</strong> involves a
           quality-versus-speed trade-off. Comprehensive output validation
           (content filtering, factual verification, policy compliance) adds
@@ -214,7 +227,7 @@ export default function ArticlePage() {
           tiered validation: fast checks (content filtering, format validation)
           on every response, and slower checks (factual verification) on
           high-risk responses or periodic sampling.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Open versus closed model safety</strong> presents a control
           versus capability trade-off. Closed models (GPT-4, Claude) include
@@ -235,7 +248,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement defense in depth</strong> — never rely on a single
           security mechanism. Combine input sanitization, structural separation,
           output filtering, permission enforcement, monitoring, and incident
@@ -244,15 +260,15 @@ export default function ArticlePage() {
           contain it. If structural separation fails, output filtering may catch
           the harmful output. If output filtering misses it, monitoring will
           detect the anomalous pattern.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Never trust user input</strong> — treat all user input as
           potentially malicious, including uploaded files, linked URLs, and
           forwarded emails. Scan all external content for injection patterns
           before including it in prompts. Use structural separation to isolate
           user content from system instructions. Implement output validation to
           catch any injection that bypasses input defenses.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Maintain a comprehensive audit log</strong> of all AI
           interactions: every input, every output, every tool call, every
@@ -274,7 +290,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most dangerous pitfall is <strong>assuming the model&apos;s
           built-in safety is sufficient</strong>. While models like GPT-4 and
           Claude have strong safety training, it is not foolproof. New jailbreak
@@ -283,8 +302,8 @@ export default function ArticlePage() {
           harmful content generally may not understand your organization&apos;s
           specific data classification policies). Always implement application-level
           safety defenses regardless of the model&apos;s built-in safety.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Ignoring indirect injection</strong> is a common oversight.
           Teams protect against direct injection (user input containing attack
           instructions) but fail to protect against indirect injection (external
@@ -293,7 +312,7 @@ export default function ArticlePage() {
           — web pages, uploaded documents, email content, database records —
           that content must be scanned and sanitized with the same rigor as
           direct user input.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Reactive rather than proactive security</strong> — waiting for
           a security incident before implementing AI safety measures. By the
@@ -314,7 +333,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Enterprise AI assistant security</strong> — an AI assistant
           with access to internal documents, databases, and APIs must implement
           comprehensive input sanitization (scanning user queries and retrieved
@@ -323,15 +345,15 @@ export default function ArticlePage() {
           enforcement (ensuring the assistant only accesses data the user is
           authorized to see), and audit logging (tracking all interactions for
           compliance).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Customer-facing chatbot safety</strong> — a public-facing
           chatbot must be hardened against jailbreak attempts (users trying to
           make the bot produce harmful content), content policy enforcement
           (ensuring all responses are appropriate), and data protection
           (preventing the bot from exposing other users&apos; information or
           internal system details).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>AI-powered code review security</strong> — an AI code review
           tool that analyzes pull requests must be protected against code-based
@@ -344,20 +366,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: What is prompt injection and how do you defend against it in
             production systems?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Prompt injection is an attack where user input contains instructions
             that override or subvert the system prompt&apos;s intended behavior.
             The attack exploits the fact that LLMs process all tokens in the
             context window uniformly — they do not inherently distinguish between
             system instructions and user content.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             Defense requires multiple layers. First, use APIs that support
             structural separation between system and user content (Anthropic&apos;s
             Claude API, OpenAI&apos;s role-based messages). This makes injection
@@ -369,7 +394,7 @@ export default function ArticlePage() {
             result from successful injections. Fourth, enforce the principle of
             least privilege — even if an injection succeeds, the system should
             limit what damage the injected instructions can cause.
-          </p>
+          </HighlightBlock>
           <p>
             Importantly, no single defense is perfect. Defense in depth is
             essential — each layer catches attacks that bypass the others.

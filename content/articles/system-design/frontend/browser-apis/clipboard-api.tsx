@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,15 +34,15 @@ export default function ClipboardAPIArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>Clipboard API</strong> provides web applications with programmatic access to the system clipboard, enabling copy, cut, and paste operations through JavaScript. Exposed through the <code>navigator.clipboard</code> object, the API offers asynchronous methods for reading and writing text, HTML, images, and other data types to and from the clipboard. The API replaces the legacy <code>document.execCommand(&apos;copy&apos;)</code> approach with a modern, Promise-based interface that integrates with the browser&apos;s permission model and security architecture.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Clipboard API was introduced to address the limitations of the legacy clipboard access mechanisms. The <code>document.execCommand</code> approach required the content to be selected in the DOM before copying, was synchronous (blocking the main thread), provided no access to reading clipboard content, and offered no control over what types of data could be placed on the clipboard. The modern Clipboard API overcomes all of these limitations: it allows copying arbitrary content without DOM selection, operates asynchronously, supports reading clipboard content (with appropriate permissions), and enables writing multiple data types including text, HTML, and images through the ClipboardItem interface.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The API operates under a strict security model. Writing to the clipboard generally requires a user gesture — the copy operation must be triggered by a user action such as a click or key press. Reading from the clipboard is even more restricted: it requires explicit user permission granted through a browser permission prompt, and in some browsers, reading is only available in secure contexts (HTTPS). These restrictions prevent malicious sites from silently reading sensitive clipboard content (such as passwords or credit card numbers that the user may have copied elsewhere) or from spamming the clipboard with unwanted content.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, the Clipboard API represents a tool for improving user experience in content-heavy applications — code editors, document processors, data management tools, and sharing features — where programmatic clipboard access reduces user friction. The decision to implement the API involves evaluating the security implications, browser support variations, permission model differences between reading and writing, and the need for fallback mechanisms for browsers that do not support the API or for contexts where permissions are denied.
         </p>
@@ -50,15 +51,15 @@ export default function ClipboardAPIArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>writeText method</strong> is the simplest way to write to the clipboard. Calling <code>navigator.clipboard.writeText(text)</code> with a string copies that text to the clipboard. The method returns a Promise that resolves when the write is complete. This method requires a user gesture in most browsers — it must be called from within a user-initiated event handler such as a click handler. If called outside a user gesture context, the Promise rejects with a permission error.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>write method</strong> enables writing richer data types to the clipboard, including HTML, images, and custom formats. It accepts an array of ClipboardItem objects, each of which can contain multiple representations of the same data in different MIME types. For example, a single ClipboardItem can contain both HTML and plain text versions of the same content, allowing the receiving application to choose which format to use. Creating a ClipboardItem involves calling the constructor with a mapping of MIME types to Blob objects, where each MIME type key maps to a corresponding Blob object.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>readText method</strong> reads plain text from the clipboard. Calling <code>navigator.clipboard.readText()</code> returns a Promise that resolves with the clipboard&apos;s text content. This method requires explicit user permission — the browser displays a permission prompt when the method is first called. Unlike writeText, readText does not require a user gesture beyond the initial permission grant, meaning it can be called programmatically after permission is granted. However, some browsers may re-prompt for permission if the application has not accessed the clipboard recently.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>read method</strong> reads all data types from the clipboard, not just text. Calling <code>navigator.clipboard.read()</code> returns a Promise that resolves with an array of ClipboardItem objects, each containing the clipboard data in various MIME types. This method requires the same explicit user permission as readText. It is useful when the application needs to handle rich clipboard content — for example, a rich text editor that needs to paste HTML content with formatting, or an image editor that needs to paste image data from the clipboard.
         </p>
@@ -81,15 +82,15 @@ export default function ClipboardAPIArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A production Clipboard API implementation requires an architecture that manages copy operations, paste operations, permission handling, error recovery, and user feedback. While the API itself is simple, production usage patterns require careful design to ensure reliability across different browsers, graceful degradation when permissions are denied, and clear user feedback about clipboard operations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>copy operation layer</strong> manages writing content to the clipboard. It begins with a user action (clicking a &quot;Copy&quot; button, selecting a menu item, pressing a keyboard shortcut). The layer validates that the content to be copied is available and properly formatted, calls the appropriate write method (writeText for plain text, write for rich content), and provides user feedback about the result. Feedback is critical — users need to know whether their copy action succeeded or failed. A common pattern is displaying a brief toast notification (&quot;Copied to clipboard&quot;) on success or an error message on failure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>paste operation layer</strong> manages reading content from the clipboard. It begins by checking whether the Clipboard API is available and whether read permission has been granted. If permission has not been granted, the layer requests it, which triggers a browser permission prompt. If permission is denied, the layer falls back to alternative paste mechanisms — typically listening for the paste event on a focused input element, which provides clipboard access through the browser&apos;s native paste handling. If permission is granted, the layer reads the clipboard content, processes it (validating, sanitizing, transforming), and inserts it into the appropriate location in the application.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>permission management layer</strong> tracks and manages clipboard permissions. It queries the current permission state using the Permissions API, caches the result to avoid redundant permission checks, and updates the cache when the permission state changes (by listening to the PermissionStatus onchange event). This layer enables the application to adapt its UI based on permission state — for example, hiding paste buttons when read permission is denied, or displaying a permission request prompt before attempting to read the clipboard.
         </p>
@@ -121,15 +122,15 @@ export default function ClipboardAPIArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The Clipboard API involves trade-offs between user experience enhancement and security restriction, between modern API capability and browser support limitation, and between programmatic convenience and user control. Understanding these trade-offs is essential for choosing the right clipboard access strategy for each use case.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most significant trade-off is <strong>user experience versus security</strong>. Programmatic clipboard access significantly improves user experience — users can copy content with a single click, paste rich content with formatting preserved, and share content across applications seamlessly. However, unrestricted clipboard access would create severe security risks: malicious sites could silently read passwords, credit card numbers, or other sensitive content from the clipboard. The browser&apos;s permission model and user gesture requirements balance these concerns by granting access only when the user explicitly intends it. The trade-off is that clipboard operations sometimes require additional user interactions (clicking permission prompts, confirming paste actions) that add friction.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>modern API versus legacy fallback</strong> trade-off affects browser compatibility. The Clipboard API is supported in all modern browsers (Chrome, Edge, Firefox, Safari), but with varying levels of capability. Safari supports writeText but has limited read support. Firefox supports both but may require configuration flags for read access in some versions. Legacy browsers (Internet Explorer, older versions of modern browsers) do not support the Clipboard API at all. Applications must implement fallback mechanisms — document.execCommand for writing, and native paste event handling for reading — to support these browsers. The fallback mechanisms are less capable (execCommand requires DOM selection, native paste only provides plain text) but provide basic clipboard functionality.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>programmatic versus native paste</strong> trade-off affects paste operation design. The Clipboard API enables programmatic paste — reading the clipboard and inserting content without requiring a focused input element. This is powerful for rich text editors and content management systems that need to process and transform pasted content. However, the native paste mechanism (listening for the paste event on a focused element) is simpler, requires no permission prompt, and works in all browsers. The trade-off is capability versus simplicity: programmatic paste provides more control but requires permission handling, while native paste is simpler but provides less control over content processing.
         </p>
@@ -157,15 +158,15 @@ export default function ClipboardAPIArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The most important best practice is <strong>always providing user feedback for clipboard operations</strong>. When a user clicks &quot;Copy,&quot; they need immediate confirmation that the content was copied successfully. Display a brief toast notification, tooltip, or button state change (&quot;Copied!&quot;) that confirms the operation. If the operation fails, display an error message explaining what went wrong and offering an alternative (such as selecting and copying manually). Silent failures leave users uncertain about whether their action succeeded.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Checking for API support before use</strong> prevents runtime errors. Test for <code>&apos;clipboard&apos; in navigator</code> before calling Clipboard API methods. If the API is not available, fall back to document.execCommand for writing or native paste event handling for reading. Feature detection should be performed once on application initialization and cached, rather than checking on every clipboard operation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Sanitizing pasted content</strong> is essential for security. Clipboard content can contain malicious HTML, scripts, or specially crafted data. Always sanitize pasted content before inserting it into the DOM — strip script tags, event handlers, iframe elements, and other dangerous elements. Use a well-tested sanitization library such as DOMPurify rather than implementing custom sanitization logic.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Handling permission denials gracefully</strong> ensures that users who deny clipboard read permission still have a functional experience. When read permission is denied, fall back to native paste event handling (listening for the paste event on a focused input element). Display a message explaining that programmatic paste is not available and instructing the user to use the browser&apos;s paste command (Ctrl+V or Cmd+V) instead.
         </p>
@@ -180,15 +181,15 @@ export default function ClipboardAPIArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The most common pitfall is <strong>calling write methods outside a user gesture context</strong>, which silently fails in most browsers. The Clipboard API requires that write operations be triggered by a user action — clicking a button, pressing a keyboard shortcut, or selecting a menu item. Calling writeText or write from a timer, network callback, or other non-gesture context results in a permission error. The solution is to ensure that all clipboard write operations are directly triggered by user event handlers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Not handling the secure context requirement</strong> leads to broken clipboard functionality on HTTP sites. The Clipboard API is only available in secure contexts (HTTPS or localhost). On HTTP sites, navigator.clipboard is undefined. Applications deployed on HTTP will have silently broken clipboard features. The solution is to always use HTTPS in production and to check for API availability before attempting clipboard operations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Not sanitizing pasted HTML content</strong> creates cross-site scripting vulnerabilities. When pasting HTML content from the clipboard, the content may contain script tags, event handlers, or other executable elements that can execute malicious code in the context of the application. Always sanitize pasted HTML before inserting it into the DOM. Use a sanitization library that strips dangerous elements while preserving safe formatting.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assuming universal read support</strong> leads to broken paste functionality. Not all browsers support clipboard read access — Safari has limited read support, and some Firefox versions require configuration flags. Applications that rely on programmatic paste without a fallback will have broken paste functionality in these browsers. The solution is to implement native paste event handling as a fallback for browsers that do not support programmatic read.
         </p>
@@ -205,19 +206,19 @@ export default function ClipboardAPIArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>Code Sharing and Collaboration</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Code sharing platforms (GitHub Gist, CodePen, JSFiddle) use the Clipboard API to enable one-click copying of code snippets. When a user clicks a &quot;Copy Code&quot; button, the application copies the code content to the clipboard using writeText. The user receives immediate feedback through a toast notification (&quot;Copied to clipboard&quot;). This pattern eliminates the need for manual text selection and keyboard shortcut, improving the user experience for developers who frequently share and reuse code snippets.
-        </p>
+        </HighlightBlock>
 
         <h3>Rich Text Editing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Rich text editors (Google Docs, Notion, Quill-based editors) use the Clipboard API to handle paste operations with rich content preservation. When a user pastes content from another document (Word, another web page, an email), the editor reads the clipboard content using the read method, which provides the content in multiple MIME types (HTML, plain text, RTF). The editor sanitizes the HTML content, transforms it to the editor&apos;s internal format, and inserts it at the cursor position. This pattern preserves formatting, links, and structure from the source document while ensuring that pasted content is safe and compatible with the editor&apos;s data model.
-        </p>
+        </HighlightBlock>
 
         <h3>Referral and Invitation Systems</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Referral and invitation systems (Uber, Dropbox, SaaS platforms) use the Clipboard API to enable one-click copying of referral links and invitation codes. When a user clicks &quot;Copy Referral Link,&quot; the application copies the unique referral URL to the clipboard. The user can then paste the link into any communication channel (email, messaging app, social media). This pattern simplifies the referral process, increasing the likelihood that users will share their referral links and driving user acquisition through word-of-mouth.
-        </p>
+        </HighlightBlock>
 
         <h3>Two-Factor Authentication and OTP</h3>
         <p>
@@ -236,15 +237,15 @@ export default function ClipboardAPIArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: How does the Clipboard API work, and what are the differences between read and write operations?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: The Clipboard API is accessed through navigator.clipboard and provides four main methods. writeText copies plain text to the clipboard and requires a user gesture. write copies rich content (HTML, images, custom types) using ClipboardItem objects and also requires a user gesture. readText reads plain text from the clipboard and requires explicit user permission through a browser prompt. read reads all data types from the clipboard as ClipboardItem objects and also requires explicit permission.
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               The key difference is that write operations are gated by user gesture requirements (the browser trusts the user&apos;s intent to copy), while read operations are gated by explicit permission requirements (the browser requires user consent to expose potentially sensitive clipboard content). Both read and write require a secure context (HTTPS).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

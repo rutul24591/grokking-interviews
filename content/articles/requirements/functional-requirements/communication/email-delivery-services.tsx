@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function EmailDeliveryServicesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Email delivery services handle sending transactional and marketing emails reliably at scale. Transactional emails include password resets, order confirmations, notifications, and alerts. Marketing emails include newsletters, promotions, and campaigns. The service must handle high volume (millions per day), ensure deliverability (avoid spam folders), track engagement (opens, clicks, bounces), and comply with regulations (CAN-SPAM, GDPR).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of email delivery stems from inbox provider variations (Gmail, Outlook, Yahoo each have different filtering), reputation management (sender score affects deliverability), bounce handling (hard vs soft bounces), and compliance requirements (unsubscribe links, physical address). Email providers (SendGrid, SES, Postmark) handle infrastructure but require proper integration for optimal deliverability.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, email delivery implementation involves infrastructure and compliance challenges. Queue management handles traffic spikes (password reset storms). Template management supports dynamic content and localization. Delivery tracking captures opens (tracking pixel), clicks (link rewriting), bounces (webhook callbacks). Spam prevention includes authentication (SPF, DKIM, DMARC), list hygiene, and complaint monitoring. The architecture must balance cost (per-email pricing) with reliability.
         </p>
@@ -47,13 +51,16 @@ export default function EmailDeliveryServicesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Email Providers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SendGrid (Twilio): Full-featured email API. Pros: Good deliverability, analytics, templates, marketing features. Cons: Higher cost at scale. Pricing: $15/month for 40K emails, then tiered. Best for: Startups to enterprise.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Amazon SES (Simple Email Service): AWS native email service. Pros: Lowest cost, integrates with AWS. Cons: Basic features, manual reputation management. Pricing: $0.10 per 1000 emails. Best for: AWS users, high volume.
-        </p>
+        </HighlightBlock>
         <p>
           Postmark: Transactional email focused. Pros: Excellent deliverability, fast delivery, great support. Cons: Higher cost, no marketing emails. Pricing: $15/month for 10K emails. Best for: Transactional emails only.
         </p>
@@ -111,9 +118,12 @@ export default function EmailDeliveryServicesArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Email delivery architecture spans queue management, template rendering, provider integration, and tracking. Emails queued for async processing. Templates rendered with dynamic content. Provider API sends email. Webhooks handle delivery events (sent, delivered, opened, clicked, bounced, complained).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/email-delivery-services/email-architecture.svg"
@@ -124,9 +134,9 @@ export default function EmailDeliveryServicesArticle() {
         />
 
         <h3>Queue Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Email queue decouples request from sending. Queue emails (Redis, SQS, RabbitMQ). Workers process queue at controlled rate (avoid provider rate limits). Priority queues for urgent emails (password reset vs newsletter). Retry logic for transient failures.
-        </p>
+        </HighlightBlock>
         <p>
           Rate limiting: Respect provider limits (SendGrid: 100/sec, SES: varies). Implement backpressure (slow down if queue grows). Batch emails when possible (multiple recipients in single API call). Cost optimization (batching reduces API calls).
         </p>
@@ -186,14 +196,17 @@ export default function EmailDeliveryServicesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Email delivery design involves trade-offs between cost, deliverability, features, and complexity. Understanding these trade-offs enables informed decisions aligned with email volume and requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Provider Selection: Cost vs Features</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Low cost (SES): $0.10 per 1000 emails. Pros: Cheapest at scale. Cons: Basic features, manual reputation management, AWS-only. Best for: High volume, AWS users, budget-conscious.
-        </p>
+        </HighlightBlock>
         <p>
           Balanced (SendGrid, Mailgun): $0.30-0.70 per 1000 emails. Pros: Good features, analytics, support. Cons: Higher cost. Best for: Most applications, balanced needs.
         </p>
@@ -234,13 +247,16 @@ export default function EmailDeliveryServicesArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use dedicated domain:</strong> Send from dedicated subdomain (notifications.yourapp.com). Isolate reputation from main domain. Easier to monitor and protect.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement authentication:</strong> Set up SPF, DKIM, DMARC records. Verify with provider tools. Monitor DMARC reports. Essential for deliverability.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Warm up IPs:</strong> Gradually increase volume on new IPs (100/day → 1000/day → 10000/day over 2-4 weeks). Builds reputation gradually. Prevents spam classification.
           </li>
@@ -270,13 +286,16 @@ export default function EmailDeliveryServicesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No authentication:</strong> Missing SPF/DKIM/DMARC. Solution: Set up all three before sending. Verify with provider tools.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Sending from shared IP:</strong> Reputation affected by other senders. Solution: Use dedicated IP for high volume (&gt;100K/month).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring bounces:</strong> Continue sending to invalid emails. Solution: Process bounce webhooks, suppress hard bounces immediately.
           </li>
@@ -306,16 +325,19 @@ export default function EmailDeliveryServicesArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Password Reset Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           User requests reset → generate token → queue email → render template with token → send via provider → track delivery. Token expires in 1 hour. Email includes security notice (location, time). High priority queue. Delivery time target: &lt;1 minute.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Order Confirmation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Order placed → queue confirmation email → render template with order details, items, total → send → track opens/clicks (tracking link to order status). Include plain-text version. Attach PDF invoice. Transactional (high deliverability).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Newsletter Campaign</h3>
         <p>
@@ -335,12 +357,15 @@ export default function EmailDeliveryServicesArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you ensure email deliverability?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you ensure email deliverability?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement SPF, DKIM, DMARC authentication. Use dedicated domain/IP. Warm up new IPs gradually. Maintain low bounce rate (&lt;2%) and complaint rate (&lt;0.1%). Monitor sender score. Segment transactional vs marketing. Include unsubscribe link. Send plain-text version. Test with inbox placement tools.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

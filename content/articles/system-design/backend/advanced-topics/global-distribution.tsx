@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +30,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Global distribution</strong> refers to the architecture of a database system that
           spans multiple geographic regions, providing low-latency access to users worldwide while
           maintaining data consistency across regions. A globally distributed database replicates
@@ -38,8 +42,8 @@ export default function ArticlePage() {
           different from geo-sharding: geo-sharding partitions data by region (each region stores
           only its own data), while global distribution replicates all data to all regions (each
           region stores a complete copy).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider a globally distributed social media platform. A user in Tokyo posts a photo.
           Their friend in London should see the photo within milliseconds, not seconds. Without
           global distribution, the London user&apos;s read request must travel to the Tokyo region
@@ -47,7 +51,7 @@ export default function ArticlePage() {
           global distribution, the photo is replicated to the London region&apos;s database within
           seconds of being posted, so the London user&apos;s read request is served locally with
           5ms latency.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, global distribution requires balancing three competing
           concerns. <strong>Latency</strong> means every region must serve reads locally with
@@ -79,6 +83,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/global-distribution-topologies.svg`}
@@ -87,14 +94,14 @@ export default function ArticlePage() {
         />
 
         <h3>Replication Topologies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The replication topology determines how data flows between regions. In a
           <strong>star topology</strong> (hub-and-spoke), all writes go to a central hub region,
           which replicates to spoke regions. This is simple to implement and ensures a single
           source of truth, but the hub is a bottleneck and a single point of failure. Spoke
           regions serve reads locally but cannot accept writes directly.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In a <strong>mesh topology</strong> (all-to-all), every region replicates directly to
           every other region. This provides the fastest convergence (changes propagate in one hop)
           and eliminates single points of failure, but consumes O(N²) replication bandwidth for N
@@ -104,7 +111,7 @@ export default function ArticlePage() {
           regions are organized hierarchically: leaf regions replicate to their parent, which
           replicates to the root, which distributes back down. This balances bandwidth efficiency
           with convergence speed.
-        </p>
+        </HighlightBlock>
 
         <h3>Consistency Models for Global Distribution</h3>
         <p>
@@ -154,9 +161,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Write Path in a Globally Distributed Database</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In an eventually consistent globally distributed database, the write path is optimized
           for low latency. The client writes to its local region&apos;s database. The database
           acknowledges the write immediately (local latency, 1-5ms). Asynchronously, the write is
@@ -164,14 +174,14 @@ export default function ArticlePage() {
           applies the write to its local copy. The replication lag (time between the local
           acknowledgment and the remote application) is typically 1-5 seconds, depending on
           network conditions and write volume.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Conflict resolution is needed when two regions concurrently write to the same record.
           Common strategies include last-write-wins (highest timestamp wins), vector clocks
           (detect conflicts and prompt application-level resolution), and CRDTs (automatically
           merge concurrent writes). The choice depends on the application&apos;s tolerance for
           data loss and the complexity of conflict resolution logic.
-        </p>
+        </HighlightBlock>
 
         <h3>Read Path and Staleness Management</h3>
         <p>
@@ -203,7 +213,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Global distribution involves trade-offs between consistency, latency, and cost. Strong
           consistency across regions provides the simplest programming model (every read is correct)
           but incurs high write latency (180ms+ for global writes). Eventual consistency provides
@@ -211,15 +224,15 @@ export default function ArticlePage() {
           write conflicts. The right choice depends on the workload: read-heavy workloads benefit
           from eventual consistency with local reads, while write-heavy workloads with strict
           consistency requirements may need to accept higher write latency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The replication topology choice also involves trade-offs. Star topology is simplest to
           implement but has a single point of failure and a write bottleneck at the hub. Mesh
           topology provides the fastest convergence but consumes O(N²) bandwidth. Ring topology
           balances bandwidth with convergence speed but has high replication lag for distant
           regions. Tree topology provides a good balance for large numbers of regions but is
           complex to implement and maintain.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -227,21 +240,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use eventual consistency for writes and strong consistency for reads that require it.
           Acknowledge writes locally and replicate asynchronously to other regions. This provides
           low write latency (1-5ms) while ensuring that all regions eventually converge. For reads
           that require strong consistency (financial transactions, inventory counts), use
           synchronous cross-region reads or quorum reads (read from a majority of regions and
           return the most recent value).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement read-your-writes consistency for user-facing applications. After a user
           writes, route their subsequent reads to the same region until replication has caught up.
           This ensures that users always see their own writes immediately, even if other users in
           other regions see stale data. This is typically implemented using session affinity
           (pin the user to their home region for the duration of their session).
-        </p>
+        </HighlightBlock>
         <p>
           Monitor replication lag continuously and alert when it exceeds acceptable thresholds.
           Replication lag is the time between a write being acknowledged in the source region and
@@ -263,21 +279,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is assuming that synchronous replication across regions is
           feasible for write-heavy workloads. With 180ms RTT to APAC, every write takes at least
           180ms. For an application that processes 1,000 writes per second, this limits throughput
           to approximately 5 writes per second per connection — far below the required throughput.
           The fix is to use asynchronous replication for writes and accept eventual consistency
           with conflict resolution.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common pitfall is not accounting for replication lag in application logic. If an
           application reads data immediately after writing to it, and the read is routed to a
           different region, the read may return stale data. The fix is to implement read-your-writes
           consistency: route reads to the same region as the write until replication has caught up,
           or use session-based region pinning.
-        </p>
+        </HighlightBlock>
         <p>
           Not planning for replication topology failures is a critical pitfall. If a replication
           link between two regions fails (network partition), those regions will diverge until the
@@ -301,9 +320,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Google Spanner: Globally Distributed Strongly Consistent Database</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Spanner is a globally distributed database that provides external strong
           consistency (linearizability) across regions using TrueTime (atomic clocks + GPS
           receivers) to bound clock uncertainty. Spanner uses synchronous replication within
@@ -312,10 +334,10 @@ export default function ArticlePage() {
           and writes while accepting eventual consistency for cross-region reads. Spanner powers
           Google&apos;s ad serving, Google Play, and Google Photos — workloads that require global
           scale with strong consistency guarantees.
-        </p>
+        </HighlightBlock>
 
         <h3>CockroachDB: Geo-Partitioned Global Distribution</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CockroachDB provides global distribution with configurable consistency per transaction.
           Writes are acknowledged locally and replicated asynchronously to other regions. Reads
           can be configured for strong consistency (read from the leaseholder region), eventual
@@ -323,7 +345,7 @@ export default function ArticlePage() {
           replica). CockroachDB also supports geo-partitioning: specific rows can be pinned to
           specific regions for compliance (e.g., EU user data pinned to EU regions), combining
           global distribution with geo-sharding for compliance-sensitive data.
-        </p>
+        </HighlightBlock>
 
         <h3>DynamoDB Global Tables: Multi-Master Replication</h3>
         <p>
@@ -342,18 +364,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between geo-sharding and global distribution?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Geo-sharding partitions data by region: each region stores only its own data. Global
               distribution replicates all data to all regions: every region stores a complete copy.
               Geo-sharding uses less storage and satisfies data residency laws naturally, but
               requires complex cross-region queries. Global replication allows any region to answer
               any query but uses more storage and may violate data residency laws.
-            </p>
+            </HighlightBlock>
             <p>
               Use geo-sharding for compliance-sensitive data and global distribution for public
               data that needs low-latency access everywhere.

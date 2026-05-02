@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,22 +25,25 @@ export default function ThroughputCapacityArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Throughput capacity</strong> is the maximum number of requests a system can process
           per unit of time (requests per second, transactions per second) while maintaining acceptable
           latency and error rate. Throughput capacity is determined by the system&apos;s bottleneck —
           the component that limits the overall throughput (CPU, memory, disk I/O, network bandwidth,
           database connections). Understanding and optimizing throughput capacity is essential for
           ensuring that the system can handle peak traffic without degradation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Throughput capacity is related to but distinct from latency — latency measures the time
           to process a single request, while throughput measures the number of requests processed
           per second. A system can have low latency (fast individual requests) but low throughput
           (few requests per second) if it has limited parallelism (single-threaded, limited
           connections). Conversely, a system can have high throughput but high latency if it
           batches requests for efficiency.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, throughput capacity architecture demonstrates
           understanding of system performance limits, the ability to identify and resolve bottlenecks,
@@ -71,20 +75,23 @@ export default function ThroughputCapacityArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding throughput capacity requires grasping several foundational concepts about
           Little&apos;s Law, bottleneck identification, capacity planning, and scalability limits.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Little&apos;s Law</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Little&apos;s Law is a fundamental relationship in queueing theory: L = λW, where L is the
           average number of items in the system (concurrency), λ is the average arrival rate
           (throughput), and W is the average time an item spends in the system (latency). For
           throughput capacity: Throughput = Concurrency / Latency. This law holds for any stable
           system — if the arrival rate exceeds the service rate, the queue grows unbounded and
           the system becomes unstable.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Bottleneck Identification</h3>
         <p>
@@ -111,10 +118,13 @@ export default function ThroughputCapacityArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Throughput capacity architecture spans bottleneck identification, capacity planning,
           bottleneck optimization, and capacity monitoring.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/throughput-capacity-deep-dive.svg"
@@ -123,14 +133,14 @@ export default function ThroughputCapacityArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Bottleneck Identification Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Bottleneck identification begins with monitoring resource utilization — CPU, memory, disk
           I/O, network bandwidth, and database connections. The resource with the highest utilization
           (closest to 100%) is the bottleneck. Once the bottleneck is identified, it is profiled to
           understand the specific operations causing the bottleneck (e.g., if CPU is the bottleneck,
           which functions consume the most CPU). The bottleneck is then optimized — through caching
           (reduce computation), parallelism (distribute load), or resource scaling (add more capacity).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Capacity Planning Flow</h3>
         <p>
@@ -158,25 +168,28 @@ export default function ThroughputCapacityArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Optimization Strategy</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Optimization Strategy</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Caching</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>Caching</strong></td>
               <td className="p-3">
                 Reduces database load. Sub-millisecond response times. Scales read throughput significantly.
               </td>
               <td className="p-3">
                 Cache invalidation complexity. Stale data risk. Cache memory cost.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Horizontal Scaling</strong></td>
               <td className="p-3">
                 Near-linear throughput increase. Fault tolerance. Flexible capacity.
@@ -184,8 +197,8 @@ export default function ThroughputCapacityArticle() {
               <td className="p-3">
                 Requires stateless services. Load balancer overhead. Distributed complexity.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Vertical Scaling</strong></td>
               <td className="p-3">
                 Simple to implement. No architectural changes. Immediate throughput increase.
@@ -193,7 +206,7 @@ export default function ThroughputCapacityArticle() {
               <td className="p-3">
                 Hardware limits. Single point of failure. Downtime for upgrades. Expensive.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Asynchronous Processing</strong></td>
               <td className="p-3">
@@ -210,9 +223,12 @@ export default function ThroughputCapacityArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Monitor Resource Utilization Continuously</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Resource utilization (CPU, memory, disk I/O, network bandwidth, database connections)
           must be monitored continuously to identify bottlenecks before they cause throughput
           degradation. Alert when any resource exceeds 70% utilization — this provides headroom
@@ -220,17 +236,17 @@ export default function ThroughputCapacityArticle() {
           (Utilization, Saturation, Errors) for resource monitoring — utilization measures how
           busy the resource is, saturation measures how much work is queued, and errors measure
           error rates.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Optimize the Bottleneck</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Only optimizing the bottleneck improves throughput — optimizing non-bottleneck resources
           does not increase throughput. Identify the bottleneck through resource utilization
           monitoring, profile the bottleneck to understand the specific operations causing the
           bottleneck, and optimize through caching (reduce computation), parallelism (distribute
           load), or resource scaling (add more capacity). After optimization, re-monitor to
           identify the new bottleneck.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Plan Capacity Proactively</h3>
         <p>
@@ -255,24 +271,27 @@ export default function ThroughputCapacityArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Optimizing Non-Bottleneck Resources</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Optimizing non-bottleneck resources does not improve throughput — it only shifts the
           bottleneck to another resource. For example, optimizing database queries when CPU is
           the bottleneck does not improve throughput — the CPU will still be the bottleneck.
           Identify the bottleneck first (highest resource utilization), then optimize the
           bottleneck. After optimization, re-monitor to identify the new bottleneck.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Ignoring Saturation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Utilization measures how busy a resource is, but saturation measures how much work is
           queued — a resource with 80% utilization and no queue is healthy, but a resource with
           80% utilization and a long queue is approaching capacity. Monitor saturation (queue
           depth, wait time) in addition to utilization to detect capacity limits early. When
           saturation increases, the resource is approaching capacity and should be scaled.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Not Testing at Scale</h3>
         <p>
@@ -296,24 +315,27 @@ export default function ThroughputCapacityArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Amazon — Throughput Capacity for Prime Day</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon scales for Prime Day (10× normal traffic) through proactive capacity planning —
           projecting traffic based on historical trends, load testing at 2×, 5×, and 10× projected
           traffic, identifying bottlenecks, and optimizing or scaling before the event. Amazon&apos;s
           capacity planning ensures that the system handles peak traffic without degradation, and
           post-event analysis validates capacity plans and identifies areas for improvement.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Netflix — Little&apos;s Law for Capacity Planning</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix uses Little&apos;s Law for capacity planning — if each API server handles 100 concurrent
           requests with 50ms latency, the throughput is 100 / 0.05 = 2,000 RPS per server. To handle
           100,000 RPS, Netflix needs 50 servers. Netflix monitors actual throughput and latency,
           adjusts the capacity plan based on actual measurements, and scales proactively before
           traffic reaches capacity limits.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Twitter — Bottleneck Identification for Tweet Ingestion</h3>
         <p>
@@ -338,19 +360,22 @@ export default function ThroughputCapacityArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Throughput capacity involves security risks — capacity exhaustion can be caused by DDoS attacks, and scaling decisions may expose the system to new attack surfaces.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Capacity and Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>DDoS and Capacity Exhaustion:</strong> DDoS attacks can exhaust capacity, causing legitimate requests to fail. Mitigation: use DDoS protection (AWS Shield, Cloudflare), rate limiting, and auto-scaling with maximum limits to prevent runaway scaling costs.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Scaling Security:</strong> Auto-scaled instances must have the same security controls as the original instances (firewall rules, access controls, monitoring). Mitigation: use infrastructure-as-code (Terraform, CloudFormation) to ensure consistent security configuration, monitor new instances for security compliance, include security checks in auto-scaling policies.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
       </section>
@@ -358,19 +383,22 @@ export default function ThroughputCapacityArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Throughput capacity must be validated through systematic testing — load testing, stress testing, bottleneck identification, and capacity planning validation must all be tested.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Capacity Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Load Test:</strong> Send requests at the projected throughput rate and verify that the system handles the load within latency and error rate targets. Identify bottlenecks through resource utilization monitoring.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Stress Test:</strong> Send requests at 2×, 5×, and 10× the projected throughput rate and verify that the system degrades gracefully (latency increases but errors remain low). Identify the maximum throughput before the system fails.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Scaling Test:</strong> Scale the system (add servers) and verify that throughput increases linearly. Verify that load balancing distributes traffic evenly and that stateful components do not become bottlenecks.
             </li>

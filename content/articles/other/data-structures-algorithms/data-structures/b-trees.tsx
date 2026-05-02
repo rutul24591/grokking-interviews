@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function BTreesArticle() {
     <ArticleLayout metadata={metadata}>
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A B-tree is a self-balancing search tree designed for storage systems where reading a node is far more expensive than comparing keys within one. Unlike a binary search tree, each B-tree node holds many keys (often hundreds) and has correspondingly many children. The high fanout keeps the tree shallow — typically 3 to 5 levels for billions of records — so locating any key requires only a handful of page reads from disk or SSD.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Rudolf Bayer and Edward McCreight invented the B-tree in 1972 at Boeing Scientific Research Labs to manage indexes on rotating magnetic drums. The defining insight: align the node size with the underlying storage page size (then a few KB, today typically 4 KB or 16 KB) so each node read is exactly one I/O. The structure has remained the dominant database index format for fifty years; PostgreSQL, MySQL InnoDB, SQL Server, Oracle, SQLite, and MongoDB&apos;s WiredTiger all use B-trees (specifically the B+ tree variant) for primary indexes.
-        </p>
+        </HighlightBlock>
         <p>
           The B+ tree, developed shortly after, modifies the structure so that data records live only in leaf nodes; internal nodes contain only routing keys, and leaves are connected by a doubly-linked list. This raises fanout (no payloads in internals) and makes range scans trivially cheap — the dominant access pattern for SQL <code>BETWEEN</code> queries, ORDER BY + LIMIT, and pagination.
         </p>
@@ -36,12 +40,15 @@ export default function BTreesArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A B-tree of order m satisfies four invariants. Every node holds between ⌈m/2⌉ and m children (the root is allowed 2 to m). Keys within each node are sorted, with child[i]&apos;s keys all less than key[i] and child[i+1]&apos;s keys all greater. All leaves sit at the same depth — the tree is height-balanced. The half-full lower bound guarantees worst-case O(log_m n) operations even after arbitrary deletions.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The fanout-vs-depth math is the whole point. With m = 200 (typical for a 4 KB page holding 200-ish key/pointer pairs), one billion records fit in ⌈log₂₀₀ 10⁹⌉ = 4 levels. Add the buffer pool — modern databases pin the root and upper levels in memory — and a typical lookup hits disk only at the leaf: one I/O for billions of rows. This is why B-trees stayed dominant when memory grew faster than disk: caching the upper tree converts most lookups to a single seek.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Search starts at the root and walks down: within each node, binary search finds the right child pointer (or the matching key, in classical B-trees). This costs O(log m) comparisons per node times O(log_m n) levels — about O(log n) total comparisons, the same as a binary search tree, but with vastly fewer node reads. Because comparisons within a cached node are nearly free relative to a page read, the depth metric is what matters in practice.
         </p>
@@ -54,12 +61,15 @@ export default function BTreesArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Insertion preserves the invariants by splitting full nodes. Walk down to the appropriate leaf, insert the key in sorted position. If the leaf now holds more than m − 1 keys, split it at the median: the median key promotes to the parent (with a pointer to the new right leaf), and the leaf becomes two half-full leaves. If promotion overflows the parent, recurse upward. Tree height grows only when the root itself splits, producing a new root with one separator key.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Deletion mirrors this. Remove the key from its node; if a leaf falls below ⌈m/2⌉ − 1 keys, borrow a key from a sibling (rotate through the parent) or merge with a sibling (pulling a separator key down from the parent). Underflow may propagate upward, potentially shrinking the tree height. Many production systems lazily defer rebalancing — they tolerate underfull pages until a maintenance pass reclaims space.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/data-structures/b-trees-diagram-2.svg"
           alt="B-tree node split during insertion promoting the median key upward to the parent"
@@ -75,12 +85,15 @@ export default function BTreesArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           B-trees update <em>in place</em> — modifying a key dirties the page containing it, which is then written back to storage. This makes them read-optimized: a point lookup is one walk down the tree, hitting log_m n pages. The trade-off is write amplification: a small change touches a whole page, and split operations rewrite multiple pages. On flash storage where erase blocks are large, this matters; on spinning disks it&apos;s less material.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           LSM trees take the opposite approach: append all writes to an in-memory MemTable, periodically flush to immutable on-disk SSTables, merge them via background compaction. Writes are sequential and cheap; reads must check multiple levels and rely on Bloom filters to avoid spurious I/O. RocksDB, LevelDB, Cassandra, and ScyllaDB all use LSM trees. Choose B+ trees for read-heavy workloads with random-access patterns; choose LSM for write-heavy ingest workloads where reads are mostly sequential or filtered.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Compared with hash indexes, B+ trees support range queries (hashes don&apos;t), give predictable O(log n) lookup time, and integrate naturally with sorted iteration. Hash indexes win for pure point-lookup workloads with no ordering needs (Redis hash sets, hash join build tables). PostgreSQL supports both; hash indexes are rare in practice because B-tree lookups are nearly as fast and far more flexible.
         </p>
@@ -91,9 +104,12 @@ export default function BTreesArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li><strong>Choose primary keys that fit in pages well</strong>: short integers or sequential UUIDs (UUIDv7) keep fanout high. Random UUIDs (UUIDv4) cause leaf splits everywhere on insert; switch to time-ordered UUIDs to keep inserts at the &quot;right edge&quot; of the tree.</li>
-          <li><strong>Use covering indexes</strong> for hot read paths. A query that can be satisfied entirely from index leaves (no row-table fetch) avoids an extra I/O hop. PostgreSQL <code>INCLUDE</code> clause and InnoDB&apos;s clustered-key trick make this explicit.</li>
+          <HighlightBlock as="li" tier="important"><strong>Choose primary keys that fit in pages well</strong>: short integers or sequential UUIDs (UUIDv7) keep fanout high. Random UUIDs (UUIDv4) cause leaf splits everywhere on insert; switch to time-ordered UUIDs to keep inserts at the &quot;right edge&quot; of the tree.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Use covering indexes</strong> for hot read paths. A query that can be satisfied entirely from index leaves (no row-table fetch) avoids an extra I/O hop. PostgreSQL <code>INCLUDE</code> clause and InnoDB&apos;s clustered-key trick make this explicit.</HighlightBlock>
           <li><strong>Tune fillfactor</strong> when you know the workload. PostgreSQL&apos;s default 90% leaves room for HOT updates without page splits; bulk-load systems can use 100% for density. InnoDB&apos;s page merge threshold (50% by default) controls when to merge underfull leaves.</li>
           <li><strong>Measure index bloat periodically</strong>. Long-running transactions and update-heavy workloads cause B-tree bloat; PostgreSQL <code>pg_stat_user_indexes</code> and <code>pgstattuple</code> show fragmentation. <code>REINDEX CONCURRENTLY</code> rebuilds without downtime.</li>
           <li><strong>Prefer composite indexes over multiple single-column ones</strong> when queries filter on the same column combinations. (a, b) covers (a) but (b) alone needs its own index.</li>
@@ -104,9 +120,12 @@ export default function BTreesArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li><strong>Random-UUID primary keys</strong> cause inserts to land all over the tree, producing constant page splits and write amplification. Switch to UUIDv7 or sequential surrogate keys; if random IDs are required, accept the cost or front them with a clustered surrogate.</li>
-          <li><strong>Wide rows with many columns indexed</strong> bloat leaf pages and reduce fanout. Either drop unused indexes (writes maintain every index, even unused ones) or reorganize wide tables into narrower ones.</li>
+          <HighlightBlock as="li" tier="important"><strong>Random-UUID primary keys</strong> cause inserts to land all over the tree, producing constant page splits and write amplification. Switch to UUIDv7 or sequential surrogate keys; if random IDs are required, accept the cost or front them with a clustered surrogate.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Wide rows with many columns indexed</strong> bloat leaf pages and reduce fanout. Either drop unused indexes (writes maintain every index, even unused ones) or reorganize wide tables into narrower ones.</HighlightBlock>
           <li><strong>Updates that grow a row</strong> beyond its original page space trigger page splits even on indexed columns. PostgreSQL HOT updates avoid this if no indexed column changes; design schemas so hot-updated columns aren&apos;t indexed.</li>
           <li><strong>Index-only scans broken by visibility map</strong>: PostgreSQL&apos;s index-only scan needs the visibility map up to date. Bulk loads without VACUUM leave the visibility map stale, forcing heap fetches even on covering indexes.</li>
           <li><strong>Long-running transactions</strong> hold dead tuples in B-tree leaves visible to old snapshots, preventing reclamation. Unbounded growth follows. Set <code>idle_in_transaction_session_timeout</code>; monitor <code>pg_stat_activity</code> for long sessions.</li>
@@ -117,12 +136,15 @@ export default function BTreesArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Relational database indexes</strong> are the canonical use. PostgreSQL, MySQL InnoDB, SQL Server, Oracle, and SQLite all default to B+ trees for primary and secondary indexes. InnoDB clusters the table itself by primary key — the clustered index <em>is</em> the table — which makes PK lookups one I/O cheaper but secondary lookups require an extra hop unless they cover the query.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Filesystem metadata</strong>: ext4, XFS, NTFS, and APFS use B-trees (or B+ trees) for directory structures and inode lookups. ZFS uses a copy-on-write B-tree variant for both metadata and data, sacrificing in-place updates for snapshot capability and crash safety.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Document and key-value stores</strong>: MongoDB&apos;s WiredTiger storage engine uses B+ trees with row-store and column-store variants. Couchbase and FoundationDB use B-trees for sorted indexes alongside other structures. SQLite — the most-deployed database in the world, embedded in every smartphone — is a single-file B-tree.
         </p>
@@ -138,10 +160,13 @@ export default function BTreesArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why does almost every database use B+ trees instead of binary search trees or red-black trees?</p>
-            <p className="mt-2 text-sm">A: Because the cost model is different. In a BST or red-black tree, each comparison is a pointer chase that may miss cache. With billions of records and depth ~30, that&apos;s 30 cache misses or worse — 30 disk reads if data spills to disk. A B+ tree of order 200 has depth 4 for the same data; each node is a single page read containing 200 keys to binary-search through (in cache). The trade is &quot;compare more keys per node, walk fewer levels&quot; — a perfect match for storage hierarchies where reading the next page is many orders of magnitude slower than comparing keys already in cache.</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Why does almost every database use B+ trees instead of binary search trees or red-black trees?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">A: Because the cost model is different. In a BST or red-black tree, each comparison is a pointer chase that may miss cache. With billions of records and depth ~30, that&apos;s 30 cache misses or worse — 30 disk reads if data spills to disk. A B+ tree of order 200 has depth 4 for the same data; each node is a single page read containing 200 keys to binary-search through (in cache). The trade is &quot;compare more keys per node, walk fewer levels&quot; — a perfect match for storage hierarchies where reading the next page is many orders of magnitude slower than comparing keys already in cache.</HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: A team is migrating from auto-incrementing integer PKs to UUIDv4. Predict what happens.</p>

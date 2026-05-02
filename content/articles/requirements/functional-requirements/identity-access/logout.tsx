@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function LogoutArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Logout</strong> (also called Sign Out) is the process of terminating a user's
           authenticated session and invalidating access tokens. It is a critical security feature
           that allows users to end their session explicitly, protecting against unauthorized access
           on shared or compromised devices. Logout is often overlooked in security discussions, but
           improper implementation can leave users vulnerable to session hijacking and unauthorized
           access.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/logout-flow.svg"
@@ -48,7 +52,7 @@ export default function LogoutArticle() {
           caption="Logout Flow — showing token invalidation, session cleanup, CSRF protection, and redirect"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing logout requires deep understanding of
           session management (token storage, refresh rotation), token invalidation strategies
           (server-side revocation, blacklist), multi-device synchronization (logout all devices,
@@ -56,7 +60,7 @@ export default function LogoutArticle() {
           session fixation), and UX considerations (confirming logout, redirect behavior, clearing
           sensitive data). The implementation must be thorough to prevent security vulnerabilities
           while providing clear feedback to users.
-        </p>
+        </HighlightBlock>
         <p>
           Modern logout has evolved from simple cookie clearing to sophisticated token revocation
           systems with multi-device synchronization. Organizations like Google, Microsoft, and Okta
@@ -70,19 +74,22 @@ export default function LogoutArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Logout is built on fundamental concepts that determine how sessions are terminated and
           tokens are invalidated. Understanding these concepts is essential for designing effective
           logout systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Logout Types:</strong> Single Session Logout (terminate current session only —
           user remains logged in on other devices, most common default), Logout All Devices
           (terminate all active sessions across all devices — invalidates all refresh tokens,
           required after password change or security incident), Selective Logout (user chooses
           specific sessions to terminate from session management UI — useful for revoking access on
           lost devices).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Token Invalidation:</strong> Access tokens are short-lived (15 min) and stateless
           — can't revoke directly, must wait for natural expiry (mitigate with short expiry).
@@ -106,11 +113,14 @@ export default function LogoutArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Logout architecture separates client-side cleanup from server-side invalidation, enabling
           secure session termination across distributed systems. This architecture is critical for
           handling multi-device scenarios and ensuring complete logout.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/logout-patterns.svg"
@@ -118,14 +128,14 @@ export default function LogoutArticle() {
           caption="Logout Patterns — comparing local logout, global logout, federated logout, and selective device logout"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Logout flow: User clicks logout button. Frontend sends POST request to logout endpoint
           (with CSRF token). Backend invalidates refresh token (delete from database or add to
           blacklist), clears server-side session, notifies other services (for distributed
           systems), returns success. Frontend clears client-side storage (cookies, localStorage,
           sessionStorage), clears sensitive data from memory, redirects to login or home page,
           shows logout confirmation message.
-        </p>
+        </HighlightBlock>
         <p>
           Multi-device logout architecture includes: session registry (track all active sessions
           per user), invalidation propagation (notify all services of logout), device-specific
@@ -151,23 +161,26 @@ export default function LogoutArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing logout involves trade-offs between security, user experience, and operational
           complexity. Understanding these trade-offs is essential for making informed architecture
           decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Local vs Global Logout</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Local:</strong> Logout current device only. Better UX (user stays logged in
               on other devices). Limitation: doesn't protect if account compromised.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Global:</strong> Logout all devices. Maximum security (revokes all access).
               Limitation: user frustration (logged out everywhere).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Default to local logout. Offer global logout as
               option ("Logout all devices"). Require global logout after password change or
@@ -217,19 +230,22 @@ export default function LogoutArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing logout requires following established best practices to ensure security,
           usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use POST request for logout (not GET) — prevent CSRF attacks via image tags. Include CSRF
           token in logout form — validate on server. Invalidate refresh tokens on server — delete
           from database or add to blacklist. Clear all client-side storage — cookies, localStorage,
           sessionStorage. Use secure redirect — prevent open redirect vulnerabilities (validate
           redirect URL against allowlist).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
         <p>
@@ -259,20 +275,23 @@ export default function LogoutArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing logout to ensure secure, usable, and
           maintainable logout systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Using GET for logout:</strong> CSRF attacks via image tags, attacker can log
             out users. <strong>Fix:</strong> Use POST request with CSRF token.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not invalidating refresh tokens:</strong> Access tokens expire but refresh
             tokens remain valid, attacker can get new access tokens.{" "}
             <strong>Fix:</strong> Invalidate refresh tokens on server (delete or blacklist).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not clearing client storage:</strong> Tokens remain in localStorage, attacker
             with XSS can steal. <strong>Fix:</strong> Clear all client-side storage (cookies,
@@ -314,17 +333,20 @@ export default function LogoutArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Logout is critical for security. Here are real-world implementations from production
           systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer App (Google)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Users logged in on multiple devices (phone, tablet,
           computer). Need to revoke access on lost devices. Security incidents require global
           logout.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Session management page showing all active devices. Selective
           logout (revoke specific device). Global logout option. Logout notification email.
@@ -414,14 +436,17 @@ export default function LogoutArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of logout design, implementation, and operational
           concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why should logout use POST instead of GET?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Why should logout use POST instead of GET?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: GET requests can be triggered by image tags, links, or prefetching — attacker can
               create malicious page that logs out users when they visit (CSRF attack). POST

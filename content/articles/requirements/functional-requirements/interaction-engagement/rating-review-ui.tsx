@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,12 +36,15 @@ export default function RatingReviewUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rating and review UI enables users to evaluate products, services, or content through structured feedback combining quantitative scores (1-5 stars, 1-10 ratings) and qualitative written assessments. Reviews serve as critical trust signals that influence purchase decisions, content consumption, and service selection. For platforms, reviews provide valuable user-generated content that improves SEO, informs product development, and builds community engagement.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The impact of ratings on business metrics is substantial. Research indicates that products with reviews see 270% higher conversion rates than those without. A one-star increase in Yelp rating correlates with 5-9% revenue increase for restaurants. Amazon reports that verified purchase reviews carry 3x more weight in purchase decisions than manufacturer descriptions. The stakes are equally high for manipulation—fake reviews cost consumers an estimated $152 billion annually, making fraud prevention a critical engineering requirement.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, rating and review system implementation involves navigating technical and social challenges. The UI must capture structured feedback through intuitive star rating interfaces while preventing accidental submissions. Review forms must balance comprehensiveness with friction—too many fields reduce submission rates, too few produce low-quality reviews. The backend must integrate with content moderation systems to filter spam, fake reviews, and policy violations. The architecture must handle review bombing campaigns, implement verified purchase badges, and support photo/video attachments. Sorting and display algorithms must surface helpful reviews while preventing manipulation.
         </p>
@@ -48,13 +52,16 @@ export default function RatingReviewUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Rating Input Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Star rating interfaces use 5-star scales as the industry standard, though some platforms use 10-point scales (IMDb) or letter grades (Angie's List). The 5-star model dominates due to cognitive simplicity—users easily understand the progression from poor (1 star) to excellent (5 stars). Half-star support enables finer granularity (4.5 stars) for platforms where precision matters, such as book reviews or restaurant ratings.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Interactive star behavior requires careful implementation. Stars should highlight on hover to indicate the rating that will be selected. Clicking a star sets the rating and typically triggers immediate submission or enables a submit button. Some platforms require explicit submission to prevent accidental ratings, while others submit on click for frictionless feedback. The choice depends on context—product ratings benefit from explicit submission to encourage written reviews, while content ratings (movies, articles) can submit immediately.
-        </p>
+        </HighlightBlock>
         <p>
           Multi-dimensional ratings capture nuanced feedback across multiple attributes. Restaurants might rate food quality, service, ambiance, and value separately. Products might rate quality, accuracy, and shipping experience. Multi-dimensional ratings provide richer data but increase submission friction. The optimal approach uses a single overall rating with optional detailed dimensions for users who want to provide more feedback.
         </p>
@@ -106,9 +113,12 @@ export default function RatingReviewUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rating and review architecture spans client UI, API design, database schema, moderation workflows, and display optimization. The client component manages star rating interaction, review form state, file uploads, and submission feedback. The API layer validates reviews, enforces rate limits, triggers moderation, and persists review records. The database stores reviews with efficient indexes for sorting and filtering. Moderation workflows integrate automated and human review. Display optimization surfaces helpful reviews through intelligent sorting.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/interaction-engagement/rating-review-ui/review-architecture.svg"
@@ -119,9 +129,9 @@ export default function RatingReviewUIArticle() {
         />
 
         <h3>Client Component Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Star rating component manages hover state, selected rating, and submission state. On hover, stars highlight to indicate the rating that will be selected. On click, the rating is set and either submitted immediately or the submit button is enabled. Animation provides satisfying feedback—stars fill with a smooth transition, often accompanied by subtle scale animation. Accessibility requires keyboard support (arrow keys to select rating, Enter to submit) and screen reader announcements ("4 out of 5 stars selected").
-        </p>
+        </HighlightBlock>
         <p>
           Review form component manages form state, validation, and submission. Real-time validation shows character count, highlights required fields, and validates email format if collected. Draft auto-save prevents review loss from accidental navigation—content saves to local storage or server draft endpoint every 30-60 seconds. On submission, the form shows loading state, then success confirmation or error messages with retry option.
         </p>
@@ -192,14 +202,17 @@ export default function RatingReviewUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rating and review UI design involves numerous trade-offs affecting review quality, submission rates, fraud prevention, and reader trust. Understanding these trade-offs enables informed decisions aligned with platform goals and risk tolerance.
-        </p>
+        </HighlightBlock>
 
         <h3>Verified Purchase Requirement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Verified purchase only reviews maximize authenticity but significantly reduce review volume. Amazon allows unverified reviews but marks them distinctly, balancing inclusivity with transparency. Platforms with severe fake review problems may require verification, accepting lower volume for higher trust.
-        </p>
+        </HighlightBlock>
         <p>
           Open reviews (anyone can review) maximize volume and diversity of opinions but require robust fraud detection. Yelp, TripAdvisor, and Google Reviews allow anyone to review businesses, investing heavily in automated and human moderation to maintain quality.
         </p>
@@ -251,13 +264,16 @@ export default function RatingReviewUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use 5-star rating with half-star support:</strong> Industry standard that users understand. Half-stars enable finer granularity for platforms where precision matters. Implement clear hover and selection states.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Require minimum character count:</strong> 50-100 character minimum prevents low-effort reviews. Show character counter during composition. Acceptable maximum: 500-5000 characters depending on platform goals.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Enable photo attachments:</strong> Reviews with photos receive 2x more helpful votes. Support 3-10 photos per review with 5-10MB size limits. Implement upload progress and failed upload retry.
           </li>
@@ -287,13 +303,16 @@ export default function RatingReviewUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No verification badges:</strong> All reviews appear equal regardless of purchase status. Readers can't distinguish verified buyers from fake reviewers. Implement verified purchase checking and display.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No moderation:</strong> Fake, spam, and inappropriate reviews damage platform trust. Implement automated filtering and human review from launch. Clear policies and consistent enforcement.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Poor mobile experience:</strong> Review forms not optimized for mobile—tiny star touch targets, keyboard covering input, photo upload failures. Design mobile-first with 44px minimum touch targets.
           </li>
@@ -317,16 +336,19 @@ export default function RatingReviewUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Amazon Customer Reviews</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon pioneered verified purchase badges, marking reviews from customers who purchased through Amazon. Reviews support up to 5 photos and 5000 characters. Sorting options include most helpful, most recent, and rating extremes. Amazon uses machine learning to detect fake reviews, removing millions annually. The Vine program invites trusted reviewers to preview new products. Seller responses display beneath reviews.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Yelp Business Reviews</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Yelp allows anyone to review businesses with 1-5 star rating and detailed review. Elite reviewer program recognizes top contributors with badges and exclusive events. Review filtering algorithm hides reviews suspected of manipulation. Business owners can respond to reviews and update business information. Photo uploads encouraged with separate photo section.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">TripAdvisor Travel Reviews</h3>
         <p>
@@ -346,12 +368,15 @@ export default function RatingReviewUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you calculate average rating?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you calculate average rating?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use weighted average excluding flagged or rejected reviews. For products with few reviews, apply Bayesian averaging to prevent extreme averages: (sum of ratings + prior average × prior weight) / (review count + prior weight). Typical prior: 3.0 stars with weight of 10-100 reviews. This pulls products with 1-2 reviews toward the mean until sufficient data accumulates. For time-sensitive products, apply time-decay weighting where recent reviews have higher weight. Cache the average rating in Redis, update on each new approved review.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

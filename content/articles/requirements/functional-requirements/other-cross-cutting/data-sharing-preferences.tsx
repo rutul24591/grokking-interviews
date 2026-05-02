@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function DataSharingPreferencesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data Sharing Preferences enable users to control how their data is shared with third parties, partners, and external services. Users can opt-in or opt-out of data sharing for specific purposes (analytics, advertising, research), specific recipients (partners, affiliates, third-party services), and specific data types (profile data, activity data, location data). Data sharing preferences are fundamental to privacy compliance (GDPR, CCPA require consent for data sharing) and user trust (users expect control over their data). For platforms that share data with partners, advertisers, or analytics services, effective sharing preferences are essential for legal compliance and user trust.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, data sharing architecture involves sharing categories (analytics, advertising, research, service providers), consent management (opt-in/opt-out, granular consent), third-party integrations (API access, data feeds), data minimization (share only what&apos;s necessary), and enforcement (sharing preferences respected across all data flows). The implementation must balance business needs (data sharing enables features, partnerships, revenue) with user privacy (control over data distribution) and legal requirements (consent for sharing). Poor sharing controls lead to compliance violations, user trust erosion, and potential legal liability.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of data sharing extends beyond simple opt-in/opt-out. Granular sharing (share with some partners but not others). Purpose-based sharing (share for service delivery but not advertising). Data type sharing (share profile data but not activity data). Downstream sharing (partners sharing with their partners). Revocation (withdraw consent, delete shared data). For staff engineers, data sharing is a privacy infrastructure decision affecting compliance, partnerships, and user trust.
         </p>
@@ -46,13 +50,16 @@ export default function DataSharingPreferencesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Sharing Categories</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Service providers share data necessary for service delivery. Payment processors (share payment data for transactions). Email providers (share email for notifications). Hosting providers (data stored on third-party infrastructure). Service provider sharing is typically necessary for service operation (can&apos;t process payment without sharing with payment processor). Users may not have opt-out but should be informed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Analytics sharing enables usage analysis and improvement. Usage analytics (how users use platform). Performance analytics (platform performance metrics). Error analytics (crash reports, errors). Analytics sharing typically opt-in (users can opt-out without affecting core service). Aggregated/anonymized analytics may have different consent requirements than personal data.
-        </p>
+        </HighlightBlock>
         <p>
           Advertising sharing enables targeted advertising. Ad networks (share data for ad targeting). Marketing partners (share for marketing campaigns). Social platforms (share for social advertising). Advertising sharing typically requires explicit consent (GDPR, CCPA). Users should be able to opt-out without losing core service functionality.
         </p>
@@ -107,9 +114,12 @@ export default function DataSharingPreferencesArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data sharing architecture spans preference management, consent service, sharing enforcement, and partner management. Preference management stores user sharing preferences. Consent service manages consent collection and withdrawal. Sharing enforcement ensures sharing respects preferences. Partner management manages third-party relationships. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/data-sharing-preferences/sharing-architecture.svg"
@@ -120,9 +130,9 @@ export default function DataSharingPreferencesArticle() {
         />
 
         <h3>Preference Management Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Preference management stores and manages sharing preferences. Category preferences (analytics, advertising, research). Partner preferences (specific partners). Data type preferences (profile, activity, location). Preference persistence (store in database). Preference API (get/set preferences). Preference management is the source of truth for sharing preferences.
-        </p>
+        </HighlightBlock>
         <p>
           Preference inheritance manages default and override behavior. Default preferences (platform defaults for new users). User overrides (user can override defaults). Regulatory defaults (defaults based on user jurisdiction). Inheritance simplifies preferences (sensible defaults) while allowing user control (override when desired).
         </p>
@@ -162,14 +172,17 @@ export default function DataSharingPreferencesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data sharing design involves trade-offs between opt-in and opt-out consent, granular and simple controls, and data availability and privacy. Understanding these trade-offs enables informed decisions aligned with legal requirements and user expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Consent: Opt-in vs. Opt-out</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Opt-in consent (explicit agreement required). Pros: Compliance (meets GDPR, CCPA requirements), user trust (users control sharing), reduced risk (only share with consent). Cons: Friction (users may not consent), reduced data availability (less data shared), complexity (manage consent records). Best for: Advertising, research, sensitive data sharing.
-        </p>
+        </HighlightBlock>
         <p>
           Opt-out consent (sharing allowed unless objected). Pros: Less friction (sharing enabled by default), more data availability (more data shared), simpler implementation. Cons: Compliance risk (some jurisdictions require opt-in), user trust concerns (users may not realize sharing), potential backlash. Best for: Service providers, essential analytics (where permitted by law).
         </p>
@@ -210,13 +223,16 @@ export default function DataSharingPreferencesArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide clear sharing categories:</strong> Service providers, analytics, advertising, research. Clear descriptions of each. Separate consent for each category.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use opt-in for sensitive sharing:</strong> Advertising requires opt-in. Research requires opt-in. Service providers may be opt-out (where permitted).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Enable granular control:</strong> Per-category consent. Per-partner control. Data type preferences.
           </li>
@@ -246,13 +262,16 @@ export default function DataSharingPreferencesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Opt-out for advertising:</strong> GDPR requires opt-in for advertising. <strong>Solution:</strong> Use opt-in for advertising, analytics, research.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Vague consent language:</strong> Users don&apos;t understand what they&apos;re consenting to. <strong>Solution:</strong> Clear, plain language consent forms.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Hard to withdraw:</strong> Easier to consent than withdraw. <strong>Solution:</strong> Make withdrawal as easy as consent.
           </li>
@@ -282,16 +301,19 @@ export default function DataSharingPreferencesArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>GDPR Compliance for EU Users</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           EU platform implements GDPR-compliant sharing. Explicit opt-in for all non-essential sharing. Granular consent (separate for analytics, advertising, research). Easy withdrawal (one-click withdraw). Data minimization (share only necessary). Partner agreements (GDPR-compliant DPAs). Audit trail (prove compliance). EU users have full control over data sharing.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">CCPA Compliance for California Users</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           California platform implements CCPA-compliant sharing. &quot;Do Not Sell&quot; option (opt-out of sale). Clear notice of sharing categories. Right to know (see what&apos;s shared). Right to delete (request deletion). Partner contracts (CCPA-compliant terms). California users can opt-out of data sale.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Third-Party App Integrations</h3>
         <p>
@@ -311,12 +333,15 @@ export default function DataSharingPreferencesArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design data sharing preferences that comply with GDPR and CCPA?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design data sharing preferences that comply with GDPR and CCPA?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement jurisdiction-aware consent management that automatically adapts to user location and applicable regulations. GDPR requires explicit opt-in for non-essential sharing (advertising, research, third-party transfers)—users must actively check box or click &quot;I agree,&quot; pre-ticked boxes don&apos;t count as consent. CCPA requires clear &quot;Do Not Sell My Personal Information&quot; opt-out mechanism—must be easy to find (footer link), easy to execute (one click), and honor global privacy control signals. Granular consent: separate consent for each category (analytics, advertising, research, service providers)—don&apos;t bundle into single &quot;accept all.&quot; Easy withdrawal: withdrawing consent must be as easy as giving consent—one click, no hurdles, no guilt trips. Clear notice: users must understand what they&apos;re consenting to—plain language, specific purposes, named partners or categories. Audit trail: maintain detailed records of consent (timestamp, what was consented, how consent was obtained, user jurisdiction) to prove compliance if regulators ask. The compliance insight: different jurisdictions have different and sometimes conflicting requirements—design system that detects user jurisdiction and adapts consent flows accordingly, maintain compliance matrix tracking requirements across all jurisdictions where you operate.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

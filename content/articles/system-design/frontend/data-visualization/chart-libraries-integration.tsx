@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Chart Libraries Integration</strong> encompasses the architectural decisions and implementation patterns for incorporating charting libraries into applications. Chart libraries range from low-level toolkits (D3.js) to high-level component libraries (Recharts, Chart.js, Highcharts). The choice affects development velocity, customization capability, performance, bundle size, and long-term maintainability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff/principal engineers, chart library integration is a strategic decision. Libraries become deeply embedded in the codebase. Switching libraries later is expensive. The choice affects not just initial implementation but ongoing maintenance, feature development, and team productivity.
-        </p>
+        </HighlightBlock>
         <p>
           Low-level libraries like D3.js provide maximum flexibility and control. You build visualizations from primitives (scales, axes, shapes). This enables custom visualizations but requires significant expertise and development time. D3 is ideal for unique visualizations, research applications, and when standard charts don't meet requirements.
         </p>
@@ -45,6 +49,9 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/chart-library-spectrum.svg"
@@ -53,12 +60,12 @@ export default function ArticlePage() {
         />
 
         <h3>Library Categories</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Chart libraries fall into categories based on abstraction level. <strong>Low-level toolkits</strong> (D3.js, Vega) provide primitives for building visualizations. You compose scales, axes, and shapes to create custom visualizations. Maximum flexibility but steep learning curve.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Component libraries</strong> (Recharts, Victory, React-Chartjs-2) provide React components for common chart types. You configure via props. Balanced flexibility and productivity. Good for React applications with standard chart needs.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>High-level libraries</strong> (Chart.js, Highcharts, ApexCharts) provide configuration-based chart creation. You specify chart type and data, library handles rendering. Maximum productivity but limited customization. Good for standard business charts.
         </p>
@@ -134,9 +141,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Chart library integration requires architectural decisions about abstraction, state management, and update patterns.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/library-integration-architecture.svg"
@@ -145,9 +155,9 @@ export default function ArticlePage() {
         />
 
         <h3>Abstraction Layer Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Create an abstraction layer between application code and chart library. This enables switching libraries later without rewriting all chart code. The abstraction defines a common interface for chart operations (create, update, destroy).
-        </p>
+        </HighlightBlock>
         <p>
           Abstraction layer benefits include library independence, consistent API across different chart types, centralized optimization and customization, and easier testing via mock implementations.
         </p>
@@ -191,9 +201,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Chart library selection involves trade-offs between flexibility, productivity, performance, and cost.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -235,16 +248,19 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that library selection should be driven by requirements, not preferences. Evaluate libraries against specific requirements (chart types, data volumes, customization needs). Prototype with top candidates before committing.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Start with high-level libraries for standard charts. Only use low-level libraries when high-level libraries can't meet requirements. This maximizes development velocity.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/update-patterns.svg"
@@ -252,9 +268,9 @@ export default function ArticlePage() {
           caption="Update patterns — match pattern to data volume: direct (&lt;1K), batched (1-10K), sampled (10-100K), aggregated (100K+), GPU (1M+)"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement abstraction layers for applications with many charts. This enables library changes without rewriting all chart code. Abstract common operations (create, update, destroy, export).
-        </p>
+        </HighlightBlock>
         <p>
           Optimize bundle size by importing only needed modules. D3.js is modular — import only scales, axes, and shapes you need. Avoid importing entire library.
         </p>
@@ -274,12 +290,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Choosing D3.js for standard charts wastes development time. D3.js is powerful but has steep learning curve. Use high-level libraries for standard charts, D3.js for custom visualizations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not handling responsive resizing causes broken layouts. Charts don't automatically resize with containers. Implement resize handlers and update chart dimensions.
-        </p>
+        </HighlightBlock>
         <p>
           Importing entire library bloats bundle size. D3.js full bundle is 250KB+. Modular imports reduce to 50KB or less. Always check bundle impact.
         </p>
@@ -296,14 +315,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Enterprise Dashboard: Multi-Library Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An enterprise dashboard needed various chart types (standard business charts, custom network visualizations, geographic maps). No single library excelled at all types.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong> Implemented multi-library architecture. Recharts for standard charts (bar, line, pie). D3.js for network visualizations. Mapbox for geographic maps. Chart registry abstracted library selection.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Results:</strong> Each chart type used best library for the job. Consistent API despite multiple libraries. Development velocity high for standard charts, flexibility for custom visualizations.
         </p>
@@ -344,14 +366,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How do you select a chart library for a project?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Evaluate based on chart types needed, customization requirements, performance requirements (data volumes), bundle size constraints, framework compatibility, and license/cost. Prototype with top 2-3 candidates before committing.
-            </p>
+            </HighlightBlock>
             <p>
               Specific questions: What chart types are required? How much customization is needed? What's the maximum data volume? What's the bundle size budget? What framework is used? Is budget available for commercial libraries?
             </p>

@@ -680,9 +680,9 @@ export default function ResourceHintsArticle() {
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 2: What&apos;s the difference between preload and prefetch?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="crucial" className="mb-3">
+            <p className="mb-3">
               The key differences:
-            </HighlightBlock>
+            </p>
             <ul className="space-y-1">
               <li>• <strong>preload:</strong> For the <em>current page</em>. Fetches at HIGH priority. Mandatory — browser must fetch it.</li>
               <li>• <strong>prefetch:</strong> For <em>future navigation</em>. Fetches at LOW priority during idle time. Optional — browser may skip it.</li>
@@ -691,10 +691,10 @@ export default function ResourceHintsArticle() {
               Use preload for resources the current page needs but would discover late (fonts, LCP images). 
               Use prefetch for resources the next page will need (next step in checkout, linked pages).
             </p>
-            <HighlightBlock as="p" tier="important" className="mt-3">
+            <p className="mt-3">
               Confusing these is a common mistake — preloading next-page resources wastes bandwidth, while 
               prefetching current-page critical resources means they load too late.
-            </HighlightBlock>
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
@@ -793,8 +793,13 @@ export default function ResourceHintsArticle() {
           ============================================================ */}
       <section>
         <h2>References</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: resource hints shift discovery and priority. Use these to reason about when to preconnect
+          (reduce handshake latency), when to preload (current-page critical), and when to prefetch (speculative future)
+          without starving truly critical resources.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://web.dev/preconnect-and-dns-prefetch/" 
               className="text-accent hover:underline" 
@@ -806,8 +811,8 @@ export default function ResourceHintsArticle() {
             <p className="text-sm text-muted mt-1">
               Google&apos;s guide on preconnect and dns-prefetch best practices.
             </p>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://web.dev/preload-critical-assets/" 
               className="text-accent hover:underline" 
@@ -819,8 +824,8 @@ export default function ResourceHintsArticle() {
             <p className="text-sm text-muted mt-1">
               Comprehensive guide on using preload for fonts, images, and scripts.
             </p>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/prefetch" 
               className="text-accent hover:underline" 
@@ -832,7 +837,7 @@ export default function ResourceHintsArticle() {
             <p className="text-sm text-muted mt-1">
               Documentation on prefetch, preload, preconnect, and dns-prefetch.
             </p>
-          </li>
+          </HighlightBlock>
           <li>
             <a 
               href="https://developer.chrome.com/docs/web-platform/speculation-rules/" 

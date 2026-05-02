@@ -671,10 +671,10 @@ export default function TreeShakingArticle() {
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is tree shaking and how does it work?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="important" className="mb-3">
+            <p className="mb-3">
               Tree shaking is a dead code elimination technique that removes unused exports from JavaScript bundles. 
               It works by:
-            </HighlightBlock>
+            </p>
             <ol className="space-y-2">
               <li>
                 <strong>Static Analysis:</strong> The bundler parses import/export statements at build time to 
@@ -689,11 +689,11 @@ export default function TreeShakingArticle() {
                 removed from the bundle.
               </li>
             </ol>
-            <HighlightBlock as="p" tier="crucial" className="mt-3">
+            <p className="mt-3">
               Tree shaking only works with ES module syntax (<code>import/export</code>) because it requires 
               static analysis. CommonJS (<code>require/module.exports</code>) is dynamically resolved at runtime, 
               preventing tree shaking.
-            </HighlightBlock>
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
@@ -813,8 +813,12 @@ export default function TreeShakingArticle() {
           ============================================================ */}
       <section>
         <h2>References</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: tree shaking only works when your build pipeline has the right inputs (ESM, sideEffects
+          hints, purity). Validate it with bundle analysis; don’t assume &quot;modern tooling&quot; eliminates dead code.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://webpack.js.org/guides/tree-shaking/" 
               className="text-accent hover:underline" 
@@ -826,8 +830,8 @@ export default function TreeShakingArticle() {
             <p className="text-sm text-muted mt-1">
               Official Webpack guide covering tree shaking implementation and configuration.
             </p>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import" 
               className="text-accent hover:underline" 
@@ -839,8 +843,8 @@ export default function TreeShakingArticle() {
             <p className="text-sm text-muted mt-1">
               Documentation on ES module syntax and static import/export behavior.
             </p>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://vitejs.dev/guide/features.html#production" 
               className="text-accent hover:underline" 
@@ -852,7 +856,7 @@ export default function TreeShakingArticle() {
             <p className="text-sm text-muted mt-1">
               How Vite handles tree shaking in production builds using Rollup.
             </p>
-          </li>
+          </HighlightBlock>
           <li>
             <a 
               href="https://date-fns.org/docs/Getting-Started" 

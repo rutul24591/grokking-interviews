@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,13 +34,16 @@ export default function AccountLockoutArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Account Lockout</strong> is a security mechanism that temporarily or permanently
           locks an account after repeated failed authentication attempts. It is a critical defense
           against brute force attacks (trying many passwords against one account) and credential
           stuffing attacks (trying one password against many accounts). By limiting the number of
           password guesses, lockout makes these attacks computationally infeasible.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/account-lockout-flow.svg"
@@ -47,14 +51,14 @@ export default function AccountLockoutArticle() {
           caption="Account Lockout Flow — showing failed attempts, lockout trigger, and unlock process"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing account lockout requires deep
           understanding of threshold configuration (5-10 attempts), lockout duration (15 min - 24
           hours), unlock mechanisms (automatic, email, admin), and security patterns (DoS
           prevention, progressive delays, CAPTCHA integration). The implementation must balance
           security (preventing attacks) with usability (not locking out legitimate users) while
           preventing the lockout mechanism itself from being weaponized for denial-of-service.
-        </p>
+        </HighlightBlock>
         <p>
           Modern account lockout has evolved from simple counter-based locking to adaptive,
           risk-based systems. Organizations like Google, Microsoft, and Okta use machine learning
@@ -67,19 +71,22 @@ export default function AccountLockoutArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Account lockout is built on fundamental concepts that determine how lockouts are
           triggered, enforced, and resolved. Understanding these concepts is essential for
           designing effective lockout systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Lockout Threshold:</strong> The number of failed attempts before lockout triggers.
           NIST recommends 5-10 attempts — too low causes user frustration, too high enables
           attacks. Consider progressive approach: CAPTCHA at 3 failures (blocks bots, allows
           humans), soft lockout at 5 (require additional verification), hard lockout at 10
           (complete block). Threshold may vary by risk profile — lower for admin accounts, higher
           for consumer accounts.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Lockout Duration:</strong> How long the account remains locked. Options include:
           temporary (15 minutes to 24 hours), permanent until admin reset, or progressive (15 min
@@ -104,11 +111,14 @@ export default function AccountLockoutArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Account lockout architecture separates lockout logic from authentication, enabling
           centralized lockout management with distributed enforcement. This architecture is critical
           for scaling lockout across distributed systems.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/account-lockout-unlock.svg"
@@ -116,7 +126,7 @@ export default function AccountLockoutArticle() {
           caption="Account Unlock Mechanisms — showing automatic expiry, email unlock, MFA override, and admin reset workflows"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The lockout flow starts when a login attempt fails. The authentication service increments
           the failed attempt counter (stored in Redis with TTL), checks if threshold exceeded,
           triggers lockout if threshold exceeded (set locked_until timestamp, send notification
@@ -124,7 +134,7 @@ export default function AccountLockoutArticle() {
           prevent enumeration), and logs the event for security monitoring. On successful login,
           the counter is reset to zero. This flow must complete quickly to avoid impacting login
           latency.
-        </p>
+        </HighlightBlock>
         <p>
           Unlock architecture provides multiple recovery paths. Automatic unlock — locked_until
           timestamp expires, account automatically unlocked, counter reset. Email unlock — user
@@ -152,24 +162,27 @@ export default function AccountLockoutArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing account lockout systems involves trade-offs between security, usability, and
           operational complexity. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Hard vs Soft Lockout</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Hard Lockout:</strong> Completely block authentication until unlock. Maximum
               security, clear boundary. Limitation: user frustration, support burden, enables DoS.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Soft Lockout:</strong> Require additional verification (CAPTCHA, MFA, email
               code). Blocks automated attacks, allows legitimate users. Limitation: more complex
               implementation, slightly weaker security.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Hybrid:</strong> Soft lockout for consumer accounts, hard lockout for
               admin/high-risk accounts. Best balance — security where it matters, usability for
@@ -221,20 +234,23 @@ export default function AccountLockoutArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing account lockout requires following established best practices to ensure
           security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use progressive lockout for repeat offenders — 15 min → 1 hour → 24 hours → manual reset.
           Implement CAPTCHA before full lockout — after 3 failures, require CAPTCHA before
           continuing. Separate IP rate limiting from account lockout — IP limiting prevents DoS,
           account lockout prevents brute force. Log all lockout events for security monitoring —
           include account, IP, timestamp, failure count. Notify users of lockout via email —
           include unlock instructions, timestamp, IP (for detecting unauthorized lockouts).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
         <p>
@@ -267,22 +283,25 @@ export default function AccountLockoutArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing account lockout to ensure secure, usable,
           and maintainable lockout systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Lockout DoS:</strong> Attackers lock out legitimate users by triggering
             lockout. <strong>Fix:</strong> IP-based rate limiting separately from account lockout,
             CAPTCHA before full lockout, email unlock for legitimate users, monitor for lockout
             abuse patterns.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Account enumeration:</strong> Different errors for locked accounts vs invalid
             credentials reveals which accounts exist. <strong>Fix:</strong> Same error message for
             all failures ("Invalid credentials"), don't reveal lockout status in error messages.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No unlock mechanism:</strong> Users permanently locked out, support overwhelmed.{" "}
             <strong>Fix:</strong> Automatic expiry (15 min - 24 hours), email unlock (self-service),
@@ -329,17 +348,20 @@ export default function AccountLockoutArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Account lockout is critical for organizations with security and compliance requirements.
           Here are real-world implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer Email (Gmail)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Billions of users, constant brute force attacks. Need to
           block attacks without locking out legitimate users who mistype passwords. Mobile users
           with changing IPs.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Progressive delays (1s, 2s, 4s, 8s) instead of hard lockout.
           CAPTCHA after 5 failures. Account-based lockout (not IP-based). Email notification on
@@ -438,14 +460,17 @@ export default function AccountLockoutArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of account lockout design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What's the ideal lockout threshold?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What's the ideal lockout threshold?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: 5-10 attempts balances security vs usability per NIST guidelines. Too low (3
               attempts) causes user frustration and support burden. Too high (20+ attempts) enables

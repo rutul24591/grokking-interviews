@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -79,20 +80,23 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Hierarchy &amp; POSIX Semantics</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Hierarchical Namespace</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           File systems organize data hierarchically: root directory (/) contains subdirectories,
           which contain files and more subdirectories. Files are accessed via paths:
           /home/user/documents/file.txt. This hierarchy enables organization (files grouped by
           purpose), access control (permissions per directory), and navigation (cd, ls commands).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This model differs from object storage (flat namespace, no directories) and block
           storage (no namespace, just blocks). File systems provide familiar file operations
           that applications and users expect.
-        </p>
+        </HighlightBlock>
 
         <h3>POSIX Semantics</h3>
         <p>
@@ -142,22 +146,25 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Protocols &amp; Cloud Services</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>NFS (Network File System)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>NFS</strong> is the standard protocol for Unix/Linux file sharing. NFSv4
           (current version) provides: stateful connections (improved performance), strong
           security (Kerberos authentication), delegations (client-side caching), and compound
           operations (multiple operations in one request). NFS mounts appear as local file
           systems—applications use standard file operations without modification.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           NFS performance depends on network latency and server capacity. Typical latency:
           1-10ms (vs sub-ms for local storage). Throughput: 100 MB/s to 10 GB/s depending on
           network and server. NFS is suitable for shared files, but not for low-latency
           databases.
-        </p>
+        </HighlightBlock>
 
         <h3>SMB/CIFS (Server Message Block)</h3>
         <p>
@@ -199,19 +206,22 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: File vs Block vs Object</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Storage types occupy different niches. Understanding the trade-offs helps you choose
           the right storage for your workload.
-        </p>
+        </HighlightBlock>
 
         <h3>File Storage Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Shared access</strong> is the primary advantage. Multiple instances mount the
           same file system and access files concurrently. This is essential for content
           management (multiple web servers serving same files), home directories (users access
           from any machine), and collaboration (team shared folders).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>POSIX semantics</strong> enable legacy application compatibility. Applications
@@ -277,18 +287,21 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for File Systems</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Choose the right protocol.</strong> NFS for Linux/Unix, SMB for Windows.
           Don't mix protocols on the same share (permission conflicts). For mixed environments,
           use NFS with SMB gateway or vice versa.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Optimize mount options.</strong> Use appropriate mount options for workload:
           rsize/wsize (read/write buffer sizes), async/sync (write behavior), noatime (don't
           update access time, reduces writes). Test different options for your workload.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Monitor performance.</strong> Track latency, throughput, and IOPS. Alert on
@@ -318,17 +331,20 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Using file storage for databases.</strong> File storage latency (1-10ms) is
           too high for databases (need sub-ms). Solution: Use block storage for databases.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Not optimizing mount options.</strong> Default mount options may not be
           optimal. Solution: Test different rsize/wsize values, use noatime for read-heavy
           workloads, use async for better write performance (with data loss risk).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Ignoring network latency.</strong> File storage performance depends on
@@ -358,21 +374,24 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Content Management Systems (WordPress, Drupal)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CMS platforms store media files (images, videos, documents) that multiple web servers
           need to access. File storage (EFS, Azure Files) provides shared access: all web
           servers mount the same file system, serve files from shared storage. This enables
           horizontal scaling (add web servers without copying files) and centralized management
           (one copy of each file).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This pattern works because CMS workloads need POSIX file operations (fopen, fread)
           and shared access. Object storage would require application changes; block storage
           doesn't support sharing.
-        </p>
+        </HighlightBlock>
 
         <h3>Home Directories (Enterprise)</h3>
         <p>
@@ -414,14 +433,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: When would you choose file storage over block or object storage? Give a
               concrete example.
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Choose file storage for shared file access with POSIX
               semantics. Example: Content management system (WordPress). Multiple web servers
               need to access the same media files (images, themes, plugins). Block storage
@@ -430,7 +452,7 @@ export default function ArticlePage() {
               mount the same file system, access files via standard paths, with no application
               changes. Choose block for: databases, boot volumes. Choose object for: media,
               backups, archives. Choose file for: shared files, legacy apps, home directories.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What about performance? Answer: File storage has
               higher latency (1-10ms) than block storage (sub-ms). Not suitable for databases.

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,22 +34,25 @@ export default function FacetedSearchArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Faceted Search</strong> (also called faceted navigation or faceted
           browsing) enables users to filter search results by multiple dimensions called
           facets. Each facet represents a category of information—price range, brand,
           color, size, rating, date—that users can select to narrow down results. This
           powerful pattern is ubiquitous in e-commerce (Amazon, eBay), job boards
           (LinkedIn, Indeed), and content platforms.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Unlike simple keyword search, faceted search provides structured exploration.
           Users don't need to know exact search terms—they can discover relevant items
           by progressively refining criteria. The challenge lies in computing facet
           counts efficiently (how many items match each facet value), updating counts
           as filters are applied, and presenting facets in an intuitive UI without
           overwhelming users.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, faceted search involves complex backend challenges:
           computing facet counts across millions of items in milliseconds, handling
@@ -59,10 +63,13 @@ export default function FacetedSearchArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Facet Types</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Different data types require different facet UI patterns:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Categorical Facets:</strong> Discrete values like category, brand,
@@ -91,9 +98,9 @@ export default function FacetedSearchArticle() {
         </ul>
 
         <h3 className="mt-6">Facet Computation Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Computing facet counts efficiently is the core challenge:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Pre-computed Facets:</strong> Calculate counts during indexing. Fast
@@ -160,10 +167,13 @@ export default function FacetedSearchArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production faceted search system involves multiple components working together
           to compute and display facets efficiently.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery-search-feed-browsing/faceted-search/facet-computation-architecture.svg"
@@ -243,9 +253,9 @@ export default function FacetedSearchArticle() {
         />
 
         <h3 className="mt-6">Elasticsearch Faceted Search Example</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Elasticsearch aggregations are the industry standard for facet computation:
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -315,10 +325,13 @@ export default function FacetedSearchArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Faceted search design involves balancing accuracy, performance, and user
           experience.
-        </p>
+        </HighlightBlock>
 
         <h3>Facet Computation Approaches</h3>
         <div className="overflow-x-auto">
@@ -369,10 +382,10 @@ export default function FacetedSearchArticle() {
         />
 
         <h3 className="mt-6">Facet Display Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Show All Values:</strong> Complete information but overwhelming. Users
           may miss important facets in long lists. Risk: analysis paralysis.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Show Top N:</strong> Cleaner UI, highlights popular options. Risk:
           long-tail values hidden. Solution: "Show more" button for expanded view.
@@ -402,17 +415,20 @@ export default function FacetedSearchArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Search Engine Facets:</strong> Elasticsearch, Solr, or Algolia
             have optimized facet implementations. Don't build from scratch unless
             necessary.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cache Common Queries:</strong> Cache facet results for popular
             query + facet combinations. Use query hash as cache key. Set TTL based on
             data freshness needs.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Limit Facet Values:</strong> Show top 5-10 values per facet by
             default. Provide "Show more" for expanded view. Reduces cognitive load.
@@ -451,17 +467,20 @@ export default function FacetedSearchArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Slow Facet Computation:</strong> Computing too many facets or not
             using aggregations efficiently. Solution: Limit facet count, use filter
             context, cache results.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Inconsistent Counts:</strong> Facet counts don't match actual
             results. Solution: Ensure facet aggregations use same filters as main
             query.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Zero Results Dead End:</strong> User selects combination that
             yields 0 results. Solution: Show "no results" with suggestions, disable
@@ -491,19 +510,22 @@ export default function FacetedSearchArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Amazon Product Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon's faceted search is industry-leading. Facets include: Department,
           Brand, Price, Customer Review, Prime eligibility, Condition, Color, Size.
           Updates counts dynamically as filters applied. Shows "X results" for each
           facet value.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Personalized facet ordering—facets relevant
           to user's browsing history shown first. Price ranges adapt to product
           category (electronics vs clothing).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">LinkedIn Jobs</h3>
         <p>
@@ -544,17 +566,20 @@ export default function FacetedSearchArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you compute facet counts efficiently?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you compute facet counts efficiently?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use search engine aggregations (Elasticsearch terms
               aggregation, Solr facets). Run aggregations in filter context for caching.
               Limit facet count with size parameter. Use min_doc_count to hide empty
               values. For large result sets, use sampler aggregation to estimate counts.
               Cache facet results for common query + facet combinations with appropriate
               TTL.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

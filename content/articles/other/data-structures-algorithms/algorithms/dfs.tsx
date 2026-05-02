@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function DFSArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Depth-first search (DFS)</span> is a graph
           traversal that explores as deeply as possible before backtracking. From a
           source vertex it descends to a child, recurses into its descendants, and only
           when no unvisited neighbor remains does it return and try the next sibling.
           Implemented with recursion (implicit stack) or an explicit stack.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           DFS predates BFS in formal study (Trémaux's 1882 maze-solving rules) and was
           formalized for general graphs by Tarjan in the early 1970s. It runs in O(V +
           E) time and O(depth) space, and it's the algorithmic spine of cycle detection,
           topological sort, strongly connected components, articulation points / bridges,
           and Eulerian path algorithms.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Interview ubiquity is unmatched: DFS is the answer to almost every "structural"
           graph question. Staff/principal rounds focus on edge classification, three-
@@ -53,18 +57,21 @@ export default function DFSArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Recursive DFS.</span> Mark u visited, iterate
           u's neighbors, recurse into each unvisited one. Implicit call stack tracks the
           current path. Cleanest for problems requiring pre/post hooks (timestamps,
           backtracking).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Iterative DFS.</span> Explicit stack. Push
           source. Loop: pop u, for each unvisited neighbor v, mark and push. Use
           iterative when recursion depth would overflow (Python default 1000, JVM stack
           ~10k frames).
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Pre and post timestamps.</span> Maintain a
           global clock; record pre[u] when DFS enters u, post[u] when it returns. The
@@ -111,17 +118,20 @@ export default function DFSArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Adjacency list iteration.</span> Each vertex's
           neighbors visited once across all of DFS. Total edge work O(E); total vertex
           work O(V); combined O(V + E).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Recursion vs iteration trade-off.</span>{" "}
           Recursion is cleaner but limited by language stack. For 10⁶+ vertex graphs in
           Python, convert to iterative or raise the limit. JVM's stack is configurable
           (-Xss) but each frame costs memory.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Iterative DFS with post-action.</span>{" "}
           Re-pushing the vertex after children (with a "done" flag) preserves the post-
@@ -148,15 +158,18 @@ export default function DFSArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">DFS vs BFS.</span> DFS for structure (cycles,
           SCC, top-sort, articulation), BFS for distance (shortest path, levels). Both
           O(V + E). Memory: DFS = O(depth), BFS = O(V) frontier.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">DFS vs Dijkstra.</span> DFS is unweighted /
           structural; Dijkstra weighted shortest paths. Different problems.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Recursive vs iterative DFS.</span> Recursive
           easier to write, prone to stack overflow on deep graphs. Iterative robust but
@@ -175,14 +188,17 @@ export default function DFSArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Mark visited on entry.</span> Same as BFS —
           marking late causes redundant recursion.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Use iterative DFS for deep graphs.</span> If V
           ≥ 10⁵ and the graph could be a long chain, recursion will overflow.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Track pre/post times when needed.</span> Even
           if the immediate problem doesn't require them, knowing where you'd add them
@@ -206,14 +222,17 @@ export default function DFSArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Stack overflow on long chain.</span> 10⁶
           vertices in a path graph break recursion in Python and many JVM defaults.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Two-color visited for directed cycle.</span>{" "}
           False positives from forward edges. Use white/gray/black.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Treating undirected back-to-parent as a
           cycle.</span> Every undirected DFS revisits the parent on its outbound edge;
@@ -239,16 +258,19 @@ export default function DFSArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Build systems.</span> Bazel, Buck, Gradle, Make
           topologically sort their dependency DAGs via DFS post-order and detect circular
           dependencies via gray-color back edges.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Module loaders / linkers.</span> Node.js,
           webpack, ES module loaders run DFS over the import graph. Circular imports are
           flagged via cycle detection during load.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Compilers.</span> Control-flow graph dominator
           trees (Lengauer–Tarjan), Tarjan's SCC for natural-loop detection, and
@@ -278,14 +300,17 @@ export default function DFSArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Detect cycle in directed graph."</span> Three-
           color DFS; back edge ⇒ cycle.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Topological order of a DAG."</span> DFS, push
           on post, return reversed stack.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">"Number of connected components."</span> Outer
           loop, count DFS calls from unvisited vertices.

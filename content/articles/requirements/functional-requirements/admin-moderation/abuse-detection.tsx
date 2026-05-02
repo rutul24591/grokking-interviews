@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function AbuseDetectionArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Abuse detection identifies and responds to abusive behavior patterns including harassment, spam, brigading, coordinated manipulation, and bot networks. The abuse detection system is the primary tool for trust and safety teams, moderators, and operations teams to detect abuse, enforce policies, and maintain platform safety. For staff and principal engineers, abuse detection involves pattern detection (detect abuse patterns), automated enforcement (automate enforcement actions), appeal processes (enable appeals), and abuse prevention (prevent abuse before it happens).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of abuse detection extends beyond simple rule-based detection. Harassment detection must detect harassment (repeated unwanted contact, threats, harassment patterns). Spam detection must detect spam (bulk unsolicited messages, spam patterns). Brigading detection must detect brigading (coordinated mass reporting, coordinated attacks). Bot network detection must detect bot networks (coordinated inauthentic behavior, bot patterns). Automated enforcement must enforce policies (rate limit, shadow ban, suspend, ban). Appeal processes must enable appeals (appeal false positives, review appeals). Abuse prevention must prevent abuse (prevent abuse before it happens).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, abuse detection architecture involves pattern detection (detect abuse patterns), automated enforcement (automate enforcement actions), appeal management (manage appeals), and prevention (prevent abuse). The system must support multiple abuse types (harassment, spam, brigading, bot networks), multiple enforcement actions (rate limit, shadow ban, suspend, ban), and multiple appeal processes (appeal, review, decision). Performance is important—abuse detection must not impact platform performance.
         </p>
@@ -47,13 +51,16 @@ export default function AbuseDetectionArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Abuse Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Harassment detection detects harassment. Harassment patterns (repeated unwanted contact, threats, harassment). Harassment detection (detect harassment patterns). Harassment enforcement (enforce harassment policies). Harassment prevention (prevent harassment before it happens).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Spam detection detects spam. Spam patterns (bulk unsolicited messages, spam patterns). Spam detection (detect spam patterns). Spam enforcement (enforce spam policies). Spam prevention (prevent spam before it happens).
-        </p>
+        </HighlightBlock>
         <p>
           Brigading detection detects brigading. Brigading patterns (coordinated mass reporting, coordinated attacks). Brigading detection (detect brigading patterns). Brigading enforcement (enforce brigading policies). Brigading prevention (prevent brigading before it happens).
         </p>
@@ -100,9 +107,12 @@ export default function AbuseDetectionArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Abuse detection architecture spans pattern detection, automated enforcement, appeal management, and prevention. Pattern detection detects abuse patterns. Automated enforcement enforces policies. Appeal management manages appeals. Prevention prevents abuse.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/admin-moderation/abuse-detection/abuse-detection-architecture.svg"
@@ -113,9 +123,9 @@ export default function AbuseDetectionArticle() {
         />
 
         <h3>Pattern Detection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pattern detection detects abuse patterns. Harassment detection (detect harassment). Spam detection (detect spam). Brigading detection (detect brigading). Bot detection (detect bots).
-        </p>
+        </HighlightBlock>
         <p>
           Pattern analysis analyzes abuse patterns. Pattern analysis (analyze patterns). Pattern detection (detect patterns). Pattern enforcement (enforce patterns). Pattern reporting (report on patterns).
         </p>
@@ -175,14 +185,17 @@ export default function AbuseDetectionArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Abuse detection design involves trade-offs between comprehensiveness and complexity, automation and manual control, and enforcement and prevention. Understanding these trade-offs enables informed decisions aligned with safety needs and platform constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Pattern Detection: Comprehensive vs. Simple</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comprehensive pattern detection (comprehensive patterns). Pros: Comprehensive (detect all patterns), effective (effective detection). Cons: Complex (complex detection), expensive (expensive to implement). Best for: Safety-intensive (high-risk platforms).
-        </p>
+        </HighlightBlock>
         <p>
           Simple pattern detection (simple patterns). Pros: Simple (simple detection), cheap (cheap to implement). Cons: Not comprehensive (don&apos;t detect all patterns), ineffective (ineffective detection). Best for: Non-safety (low-risk platforms).
         </p>
@@ -234,13 +247,16 @@ export default function AbuseDetectionArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement comprehensive pattern detection:</strong> Harassment detection, spam detection, brigading detection, bot detection. Comprehensive pattern detection.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement automated enforcement:</strong> Rate limiting, shadow banning, suspension, banning. Automated enforcement.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement appeal processes:</strong> Appeal submission, appeal review, appeal decision, appeal enforcement. Comprehensive appeal processes.
           </li>
@@ -270,13 +286,16 @@ export default function AbuseDetectionArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Incomplete pattern detection:</strong> Don&apos;t detect all patterns. Solution: Comprehensive pattern detection (harassment, spam, brigading, bots).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Manual enforcement:</strong> Manual enforcement. Solution: Automated enforcement (rate limiting, shadow banning, suspension, banning).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No appeal processes:</strong> Don&apos;t enable appeals. Solution: Appeal processes (submission, review, decision, enforcement).
           </li>
@@ -306,16 +325,19 @@ export default function AbuseDetectionArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Harassment Detection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Harassment detection for harassment prevention. Harassment patterns (repeated unwanted contact, threats, harassment). Harassment detection (detect harassment). Harassment enforcement (enforce harassment policies). Harassment prevention (prevent harassment).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Spam Detection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Spam detection for spam prevention. Spam patterns (bulk unsolicited messages, spam patterns). Spam detection (detect spam). Spam enforcement (enforce spam policies). Spam prevention (prevent spam).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Brigading Detection</h3>
         <p>
@@ -335,12 +357,15 @@ export default function AbuseDetectionArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you detect coordinated abuse patterns (brigading, bot networks, harassment campaigns)?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you detect coordinated abuse patterns (brigading, bot networks, harassment campaigns)?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement multi-signal detection system. Graph analysis to identify coordinated behavior—accounts that always act together (same targets, same timing) are likely coordinated. Temporal clustering—sudden spikes in reports or negative interactions from accounts that don&apos;t normally interact indicate brigading. Account linkage analysis—shared IP addresses, device fingerprints, phone numbers, or creation patterns suggest bot networks or sock puppets. Behavior similarity—accounts with nearly identical action patterns (same wording, same targets, same timing) are likely automated or coordinated. The key challenge: distinguishing organic coordinated action (legitimate community response) from abusive coordination. Consider account age, history, and normal behavior patterns. Implement real-time detection for active campaigns with automated rate limiting, and batch analysis for pattern discovery. False positives are costly (suppressing legitimate speech), so implement human review for borderline cases.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

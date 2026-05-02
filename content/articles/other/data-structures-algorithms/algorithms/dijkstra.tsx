@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function DijkstraArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Dijkstra's algorithm computes single-source shortest paths in a
           weighted graph whose edge weights are non-negative. Given a source
           vertex <em>s</em>, it produces, for every reachable vertex <em>v</em>,
@@ -47,8 +51,8 @@ export default function DijkstraArticle() {
           O(V + E)) by replacing the FIFO queue with a min-priority queue keyed
           by tentative distance, so that the next vertex to be finalized is
           always the closest unfinished vertex to the source.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Edsger Dijkstra published the algorithm in 1959 in a three-page note
           and treated it as an obvious specialization of relaxation. The
           algorithm has since become the backbone of practical shortest-path
@@ -59,7 +63,7 @@ export default function DijkstraArticle() {
           ALT). At staff/principal level the questions stop being "implement
           Dijkstra" and become "why this priority queue, why this variant, what
           breaks at scale."
-        </p>
+        </HighlightBlock>
         <p>
           The defining constraint is non-negativity. Dijkstra's correctness rests
           on a monotone-frontier argument: when a vertex is popped from the
@@ -91,7 +95,10 @@ export default function DijkstraArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The central operation is <em>relaxation</em>. For each edge (u, v, w),
           relaxing the edge means asking: is the path through u shorter than the
           best path I currently know to v? If <code>dist[u] + w &lt; dist[v]</code>,
@@ -101,8 +108,8 @@ export default function DijkstraArticle() {
           the order: it relaxes the edges out of the unfinished vertex with the
           smallest tentative distance, which guarantees that each vertex is
           finalized exactly once.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The proof of correctness is a one-paragraph induction. Assume that
           every vertex finalized so far has its correct shortest-path distance.
           Suppose Dijkstra now pops vertex u with tentative distance d[u]. Any
@@ -114,7 +121,7 @@ export default function DijkstraArticle() {
           distance). Adding the rest of P (non-negative) only increases the
           length, so P has length ≥ d[u]. The greedy pop is therefore optimal.
           The argument fails the moment "non-negative" fails.
-        </p>
+        </HighlightBlock>
         <p>
           The <em>frontier</em> is the set of vertices that have been touched by
           some relaxation but not yet finalized. Every vertex enters the
@@ -153,7 +160,10 @@ export default function DijkstraArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The textbook architecture has three data structures: a distance array{" "}
           <code>dist[]</code>, a parent array <code>parent[]</code>, and a
           min-priority queue keyed by tentative distance. Initialize{" "}
@@ -161,19 +171,19 @@ export default function DijkstraArticle() {
           loop: pop, skip-if-stale, relax all outgoing edges. The total work is
           V pops, E relaxations, and at most E pushes (lazy) or V decrease-keys
           (eager).
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/dijkstra-diagram-2.svg"
           alt="Dijkstra variants and lazy vs eager decrease-key"
           caption="Practical variants — A*, bidirectional, contraction hierarchies, ALT — and the lazy vs. eager decrease-key tradeoff."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           For dense graphs (E = Θ(V²)), the array-based variant is faster: scan
           the unfinalized array each round to find the min, costing O(V) per
           pop and O(V²) total — the E term doesn't get a log factor. Dense
           graphs include adjacency matrices in physics simulations, fully
           connected agent topologies, and APSP intermediate matrices.
-        </p>
+        </HighlightBlock>
         <p>
           For sparse graphs (E = O(V)), the binary-heap variant is faster:
           O((V + E) log V). Sparse covers most real graphs — road networks
@@ -215,7 +225,10 @@ export default function DijkstraArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Dijkstra vs BFS:</strong> BFS solves shortest paths in
           unweighted graphs (or graphs with uniform edge weights) in O(V + E).
           Dijkstra solves the weighted case in O((V + E) log V). On uniform
@@ -223,15 +236,15 @@ export default function DijkstraArticle() {
           factor and uses simpler data structures. If all weights are 0 or 1,
           0-1 BFS with a deque (push front for 0-edges, push back for 1-edges)
           runs in O(V + E) and beats Dijkstra.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Dijkstra vs Bellman-Ford:</strong> Bellman-Ford runs in O(VE)
           and tolerates negative edges; it also detects negative cycles. On
           graphs with non-negative weights, Dijkstra is dramatically faster.
           Use Bellman-Ford when weights can be negative (currency arbitrage,
           economic equilibrium models, distance-vector routing protocols like
           RIP) or when you need negative-cycle detection.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Dijkstra vs Floyd-Warshall:</strong> Floyd-Warshall computes
           all-pairs shortest paths in O(V³) with O(V²) space — independent of E.
@@ -260,19 +273,22 @@ export default function DijkstraArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Validate non-negativity at the boundary.</strong> If your
           graph could have negative edges (financial graphs after log-transform,
           ML cost functions, user-supplied weights), assert non-negativity at
           input or detect at first relaxation. A silent wrong answer is worse
           than a fail-fast assertion.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use 64-bit accumulators.</strong> A graph with 10⁶ edges of
           weight 10⁶ overflows 32-bit at distance 10¹². Even modest graphs with
           large weights can overflow during intermediate sums. Default to
           int64/long long for distance arrays unless memory pressure forbids.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Initialize sentinels carefully.</strong> Use
           <code> Long.MAX_VALUE / 2</code> or similar so that{" "}
@@ -315,19 +331,22 @@ export default function DijkstraArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Negative edges, silent wrong answers.</strong> The most
           dangerous bug. Dijkstra returns an answer; it's just wrong. Always
           gate on non-negativity, especially in pipelines that derive weights
           from machine-learned scores or from user input.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Decrease-key in a heap that doesn't support it.</strong>
           Calling <code>heap.update(v, d)</code> on a binary heap without an
           index map silently does nothing useful. Either use lazy push-and-skip,
           or build an indexed heap. Don't fake it by removing and reinserting —
           O(V) per call kills runtime.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Relaxing finalized vertices.</strong> A common implementation
           bug: not marking u as finalized after pop, then relaxing edges that
@@ -363,12 +382,15 @@ export default function DijkstraArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/dijkstra-diagram-3.svg"
           alt="Dijkstra in production systems and pitfalls"
           caption="Production systems running Dijkstra and the pitfalls — negative edges, float precision, dynamic graphs, integer overflow."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>IP routing protocols.</strong> OSPF and IS-IS — the link-state
           routing protocols that run inside autonomous systems on the Internet —
           maintain a graph of routers and links and run Dijkstra on every change
@@ -376,8 +398,8 @@ export default function DijkstraArticle() {
           (administratively configured weights, reflecting bandwidth or cost),
           which is why Dijkstra and not Bellman-Ford. RIP, the older
           distance-vector protocol, uses Bellman-Ford-like exchanges instead.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Maps and navigation.</strong> Google Maps, OSRM, Valhalla,
           GraphHopper, and Mapbox all run Dijkstra-family algorithms over road
           graphs with hundreds of millions of edges. Production systems combine
@@ -385,7 +407,7 @@ export default function DijkstraArticle() {
           A* with landmark heuristics (ALT) to answer queries in milliseconds.
           Real-time traffic updates trigger partial recomputations of CH
           shortcuts.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Game AI pathfinding.</strong> A* is the dominant pathfinding
           algorithm in games — every RTS, MMO, and shooter that needs NPCs to
@@ -429,19 +451,22 @@ export default function DijkstraArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement Dijkstra (LeetCode "Network Delay Time").</strong>
           The canonical warm-up. Build adjacency list, lazy binary-heap
           Dijkstra, return max distance. Watch out for unreachable nodes
           (return -1) and integer overflow.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cheapest Flights Within K Stops.</strong> Modified Dijkstra
           where state is (vertex, stops_used). The state-space doubles in size
           but the algorithm structure is the same. Some solutions use BFS with
           relaxation instead — both work; Dijkstra is faster on graphs with
           highly variable edge weights.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Path with Maximum Probability.</strong> Multiplicative weights
           in (0, 1]. Dijkstra works on max-probability instead of min-distance

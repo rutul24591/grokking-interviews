@@ -184,7 +184,6 @@ export default function GlobalStateManagementConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/state-management/state-library-comparison.svg"
           alt="State Management Library Architecture Comparison"
           caption="Architectural comparison: Redux (centralized store), Zustand (external store with subscriptions), Recoil/Jotai (atom graph), MobX (observable tree)"
-          captionTier="important"
         />
 
         <h3>The Context Re-render Problem</h3>
@@ -202,7 +201,6 @@ export default function GlobalStateManagementConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/state-management/context-rerender-problem.svg"
           alt="Context API Re-render Problem vs Zustand Subscriptions"
           caption="Context API re-renders ALL consumers on any value change; Zustand only re-renders components whose selected state changed"
-          captionTier="important"
         />
       </section>
 
@@ -559,19 +557,23 @@ export default function GlobalStateManagementConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: global state is shared mutable truth. Use these to compare architectural models (single
+          store vs atoms), performance behavior (subscriptions/selectors), and maintainability/testing trade-offs.
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://redux.js.org/tutorials/fundamentals/part-1-overview" target="_blank" rel="noopener noreferrer">
               Redux Fundamentals — Official Tutorial
             </a>{" "}
             — Covers core concepts, data flow, and Redux Toolkit integration
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://docs.pmnd.rs/zustand/getting-started/introduction" target="_blank" rel="noopener noreferrer">
               Zustand Documentation — Poimandres
             </a>{" "}
             — Getting started, recipes, middleware, and TypeScript patterns
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://recoiljs.org/docs/introduction/core-concepts" target="_blank" rel="noopener noreferrer">
               Recoil Core Concepts — Meta Open Source
@@ -584,12 +586,12 @@ export default function GlobalStateManagementConciseArticle() {
             </a>{" "}
             — Atomic state model, derived atoms, and integration patterns
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://github.com/pmndrs/zustand/wiki/Comparison" target="_blank" rel="noopener noreferrer">
               Zustand Wiki — Comparison with Other Libraries
             </a>{" "}
             — Detailed architectural and API comparison across state management solutions
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

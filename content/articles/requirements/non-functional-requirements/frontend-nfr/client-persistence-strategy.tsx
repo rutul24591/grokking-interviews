@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,12 +39,15 @@ export default function ClientPersistenceStrategyArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Client Persistence Strategy</strong> encompasses the architectural decisions, storage mechanisms, and synchronization patterns that enable web applications to store data locally on the user&apos;s device, survive page refreshes and browser restarts, function without network connectivity, and maintain consistency with server-side state when connectivity is restored. This is not merely a technical concern about which API to call — it is a fundamental design decision that shapes the user experience, security posture, and system architecture of modern web applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The evolution of client persistence has been dramatic. Early web applications relied exclusively on cookies — limited to 4KB per cookie and transmitted with every HTTP request, making them expensive for both bandwidth and security. The introduction of Web Storage API brought localStorage and sessionStorage, offering 5–10MB of synchronous key-value storage per origin. IndexedDB followed with an asynchronous, transactional, object-store database capable of holding hundreds of megabytes or even gigabytes of structured data. The Cache API, designed for Service Workers, provides request-response caching for HTTP resources. Together, these mechanisms form a storage hierarchy that staff engineers must navigate based on data characteristics: size, structure, sensitivity, access frequency, and synchronization requirements.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, persistence decisions carry weight across multiple dimensions. On the user experience side, the right strategy enables instant page loads, seamless offline functionality, and resilient form interactions that survive accidental tab closures. On the security side, improper storage of tokens, personally identifiable information, or sensitive business data can expose the application to cross-site scripting attacks, unauthorized data access, and regulatory violations. On the architecture side, the choice between optimistic local-first storage with background synchronization versus server-authoritative storage with client-side caching determines the complexity of conflict resolution, the design of API contracts, and the operational burden of the backend infrastructure.
         </p>
@@ -55,14 +59,17 @@ export default function ClientPersistenceStrategyArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding client persistence begins with a thorough examination of each storage mechanism&apos;s capabilities, limitations, and appropriate use cases. These mechanisms are not interchangeable alternatives but complementary tools, each optimized for different access patterns and data characteristics.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">localStorage and sessionStorage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           localStorage provides a synchronous, string-based key-value store with a capacity of 5–10MB per origin, depending on the browser. Its API is deliberately simple: setItem, getItem, removeItem, clear, and key enumeration. Data persists indefinitely until explicitly cleared by the application or the user. The synchronous nature of localStorage is both its greatest strength and its most significant weakness. Reads and writes execute on the main thread, meaning that storing or retrieving large JSON payloads can block rendering, animation, and user interaction — a concern that becomes acute on low-end mobile devices where JavaScript execution and main-thread contention directly impact perceived performance. The string-only data type requirement means that all objects must be serialized through JSON.stringify and deserialized through JSON.parse, introducing both computational overhead and the risk of losing non-serializable data types such as Dates (which become strings), Maps, Sets, and typed arrays.
-        </p>
+        </HighlightBlock>
         <p>
           sessionStorage shares the same API and capacity as localStorage but differs fundamentally in scope and lifetime. Each browser tab or window maintains an isolated sessionStorage namespace, meaning data stored in one tab is invisible to others, even if they share the same origin. The storage is cleared when the tab or window closes, making it ideal for single-session workflows such as multi-step form state, temporary computation intermediates, or one-time authentication challenge responses. The per-tab isolation prevents cross-tab data leakage but also means that sessionStorage cannot be used for data that must survive across tabs or be shared between application instances.
         </p>
@@ -107,14 +114,17 @@ export default function ClientPersistenceStrategyArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust client persistence architecture involves three interconnected flows: hydration on application load, write-back during user interaction, and synchronization with server state. These flows must handle schema evolution, storage quota constraints, network unreliability, and concurrent access across tabs.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Hydration Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Hydration is the process of restoring application state from persisted storage when the application loads. The simplest approach is eager hydration, where all persisted data is read from storage during application initialization, validated against the current schema, merged with default values, and loaded into the application state store. This approach provides the best user experience for data that is always needed — user preferences, authentication state, and recently viewed items — because the data is available immediately without additional asynchronous operations. However, eager hydration increases the application&apos;s time-to-interactive if the persisted data is large or if storage reads are slow, particularly on devices with limited I/O performance.
-        </p>
+        </HighlightBlock>
         <p>
           Lazy hydration defers storage reads until the data is actually needed by the application. When a user opens the settings panel, the application reads theme preferences from storage at that moment rather than at startup. This approach minimizes initial load time and is appropriate for data that is accessed infrequently or conditionally. The trade-off is that the user may experience a brief delay when accessing lazily-hydrated data, and the application must handle the case where storage reads fail or return unexpected data during an active user interaction.
         </p>
@@ -168,14 +178,17 @@ export default function ClientPersistenceStrategyArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Every client persistence strategy involves fundamental trade-offs between consistency, availability, performance, and complexity. Understanding these trade-offs is essential for making informed architectural decisions and defending them in technical reviews and interviews.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">localStorage vs IndexedDB</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The choice between localStorage and IndexedDB is the most common persistence decision that frontend engineers face. localStorage excels for small, simple, infrequently accessed data — user preferences, feature flags, and lightweight configuration — because its synchronous API is trivial to use and has zero dependency requirements. However, its 5–10MB capacity limit, main-thread blocking behavior, and string-only data model make it unsuitable for any application that stores significant amounts of structured data, performs frequent writes, or requires query capabilities.
-        </p>
+        </HighlightBlock>
         <p>
           IndexedDB is the right choice when data volume exceeds a few megabytes, when the application needs to query data by fields other than the primary key, when write frequency is high, or when the data structure is complex (nested objects, arrays, binary blobs). The asynchronous API ensures that storage operations never block the main thread, which is critical for maintaining 60fps rendering on mobile devices. The trade-off is complexity: IndexedDB requires careful transaction management, schema versioning, and migration handling. For production applications, a wrapper library like Dexie.js is almost always justified, as it reduces the API surface area, handles transaction lifecycle automatically, and provides TypeScript support out of the box.
         </p>
@@ -205,14 +218,17 @@ export default function ClientPersistenceStrategyArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing a production-grade client persistence strategy requires adherence to established best practices that address security, reliability, performance, and maintainability. These practices have been validated through real-world deployment at scale and should serve as the baseline for any persistence architecture.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security-First Storage Decisions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most critical best practice is to never store sensitive data in localStorage or sessionStorage. These storage mechanisms are accessible to any JavaScript running on the same origin, making them vulnerable to cross-site scripting attacks. Authentication tokens, session identifiers, API keys, and personally identifiable information must never be stored in Web Storage. Authentication tokens should be stored in HttpOnly, Secure, SameSite=Strict cookies, which are inaccessible to JavaScript and automatically included in authenticated requests. If tokens must be accessible to client-side JavaScript (for example, for Bearer token authentication in single-page applications), they should be encrypted before storage, with the encryption key derived from a server-side secret that is never transmitted to the client.
-        </p>
+        </HighlightBlock>
         <p>
           Sensitive application data, such as financial records, health information, or private communications stored for offline access, should be encrypted using the Web Crypto API before being written to IndexedDB. The encryption key should be derived from the user&apos;s password using a key derivation function like PBKDF2 or HKDF, ensuring that the data is inaccessible without the user&apos;s credentials. This provides defense-in-depth: even if an attacker gains access to the IndexedDB database through a browser vulnerability, the stored data remains encrypted.
         </p>
@@ -251,14 +267,17 @@ export default function ClientPersistenceStrategyArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Client persistence is an area where seemingly reasonable design decisions lead to serious problems in production. Staff engineers must be aware of these pitfalls to avoid them in their own architectures and to identify them during code reviews and system design discussions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Storing Sensitive Data in localStorage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common and dangerous pitfall is storing authentication tokens, API keys, or personally identifiable information in localStorage. Because localStorage is accessible to any JavaScript running on the same origin, a single cross-site scripting vulnerability in any script loaded by the page — including third-party analytics scripts, advertising scripts, or compromised CDN resources — allows an attacker to read all localStorage contents. This includes authentication tokens, which the attacker can use to impersonate the user. The correct approach is to store session tokens in HttpOnly, Secure, SameSite=Strict cookies, which the browser sends automatically with requests but JavaScript cannot read.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Blocking the Main Thread with Synchronous Storage</h3>
         <p>
@@ -289,16 +308,19 @@ export default function ClientPersistenceStrategyArticle() {
       {/* Section 7: Real-world use cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Collaborative Document Editors</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Applications like Google Docs, Notion, and Coda use IndexedDB as the primary local storage for document content, enabling offline editing and instant responsiveness. Each document is stored in IndexedDB with its full content, metadata, and edit history. When the user types, changes are applied to the local copy immediately (optimistic update) and queued for synchronization with the server. The synchronization layer uses Operational Transformation or CRDTs to resolve conflicts between concurrent edits from multiple users. The Cache API stores static resources — document templates, font files, and application code — so the editor loads quickly even on slow connections. Authentication tokens are stored in HttpOnly cookies for security. When the user closes and reopens the application, progressive hydration loads the active document eagerly from IndexedDB while lazy-hydrating the document list and recent activity feed.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">E-Commerce Shopping Carts</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms like Shopify and Amazon use localStorage to persist shopping cart contents across sessions, ensuring that a user who adds items to their cart and closes the browser finds the same items when they return. The cart is stored as a JSON object in localStorage, containing product IDs, quantities, and selected variants. On page load, the application hydrates the cart from localStorage and reconciles it with the server&apos;s current inventory — removing items that are out of stock, updating prices that have changed, and flagging items with limited availability. When the user is logged in, the cart is synced to the server periodically, enabling cross-device cart access. When the user checks out, the localStorage cart is cleared and the order is created server-side. For guest users, the localStorage cart is the only persistence mechanism, and the application warns the user that clearing browser data will lose their cart contents.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Progressive Web Apps for Field Workers</h3>
         <p>
@@ -314,17 +336,20 @@ export default function ClientPersistenceStrategyArticle() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
             Question 1: Compare localStorage, IndexedDB, and Cache API. When would you choose each for a production application?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             localStorage is a synchronous, string-based key-value store with 5–10MB capacity per origin. It is appropriate for small, infrequently accessed data such as user preferences, feature flags, and lightweight configuration. Its synchronous API makes it trivial to use but dangerous for large payloads or frequent writes, as it blocks the main thread. It should never be used for sensitive data, as it is fully accessible to any JavaScript running on the origin.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             IndexedDB is an asynchronous, transactional, object-store database with significantly larger capacity (50MB to several gigabytes). It supports complex data structures, multiple object stores, indexes for querying, and versioned schema migrations. It is the correct choice for any application that stores significant amounts of structured data, performs frequent writes, requires query capabilities beyond simple key lookup, or needs to store binary data such as images or files. The complexity of its native API is mitigated by wrapper libraries like Dexie.js. Offline-first applications, collaborative editors, and progressive web apps rely on IndexedDB as their primary local data store.
-          </p>
+          </HighlightBlock>
           <p>
             Cache API stores HTTP request-response pairs and is designed for use with Service Workers to cache network resources for offline access and performance optimization. It is not a general-purpose database — it is purpose-built for caching HTTP resources such as API responses, static assets, and HTML pages. Choose Cache API when you need to intercept and cache network requests, implement cache-first or stale-while-revalidate strategies, or enable offline access to previously loaded content. Do not attempt to store arbitrary application data in Cache API, as it requires constructing synthetic Request and Response objects.
           </p>

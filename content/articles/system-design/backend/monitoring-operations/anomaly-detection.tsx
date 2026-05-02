@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function AnomalyDetectionArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Anomaly detection</strong> is the practice of identifying behavior that deviates from expected patterns
           in production systems. It flags unusual activity such as sudden spikes in error rates, unexpected changes in
           latency distributions, traffic drops that do not match normal seasonality, or resource consumption patterns
@@ -32,8 +36,8 @@ export default function AnomalyDetectionArticle() {
           deterministic alerting with probabilistic guessing. The goal is to surface changes that matter faster than
           humans scanning dashboards can, while maintaining a false positive rate low enough that responders trust the
           system.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Anomaly detection becomes most valuable when static thresholds are either too noisy or too blunt to be
           operationally useful. Consider a service where request volume varies dramatically by time of day: traffic peaks
           during business hours and drops to a fraction of peak during nighttime. A static threshold such as alert when
@@ -43,7 +47,7 @@ export default function AnomalyDetectionArticle() {
           set at one thousand would miss it entirely. A baseline-aware detector interprets each value relative to the
           expected pattern for that specific time, day of week, and operational context, producing alerts that reflect
           genuine deviations rather than predictable cycles.
-        </p>
+        </HighlightBlock>
         <p>
           The evolution of anomaly detection in production systems has been shaped by the increasing complexity of
           distributed architectures. In monolithic systems, operators could often recognize anomalies visually because
@@ -78,20 +82,23 @@ export default function AnomalyDetectionArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of anomaly detection is the baseline, a model of normal behavior against which current values
           are compared. In production operations, baselines are not static numbers but dynamic models that account for
           temporal patterns, seasonal variations, and gradual trends. A baseline that does not account for seasonality
           will page on every predictable peak and trough, while a baseline that adapts too slowly to genuine changes
           will miss real incidents because the degraded behavior has been absorbed into the normal model.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           There are three primary types of anomalies that production systems must detect, each with distinct
           characteristics and operational implications. Point anomalies are single spikes or dips that deviate from the
           expected range. These are often noise caused by transient conditions such as a brief network hiccup, a garbage
           collection pause, or a measurement artifact. Point anomalies become operationally significant only when they
           repeat or correlate with other signals indicating user impact.
-        </p>
+        </HighlightBlock>
         <p>
           Change points represent a new steady state in system behavior. These occur when a release, configuration
           change, or dependency shift alters the baseline permanently. Change points are among the most valuable anomaly
@@ -137,7 +144,10 @@ export default function AnomalyDetectionArticle() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An anomaly detection system operates as a pipeline that transforms raw time series data into actionable
           anomaly events. The first stage is signal ingestion, where the system consumes metrics from the monitoring
           infrastructure. These signals include request volume, error rates, latency percentiles, queue depth, resource
@@ -145,14 +155,14 @@ export default function AnomalyDetectionArticle() {
           The signals must have consistent semantics and stable identifiers; signals that change meaning frequently
           due to renamed routes, altered units, or refactored spans poison the baseline models and produce unreliable
           anomaly scores.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The second stage is baseline computation, where the system builds and maintains models of expected behavior
           for each ingested signal. Several baseline techniques are used in production systems, each with strengths
           and weaknesses. Rolling statistics compute moving window means, medians, and variability bands, providing
           a simple and interpretable baseline for stable signals. However, rolling statistics are sensitive to trend
           shifts and can be skewed by sustained incidents that become part of the rolling window.
-        </p>
+        </HighlightBlock>
         <p>
           Seasonal baselines compare the current value against the historical distribution for the same time context,
           such as this Tuesday at ten zero five compared to the distribution for previous Tuesdays at ten zero five.
@@ -201,7 +211,10 @@ export default function AnomalyDetectionArticle() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice between simple and complex baseline models represents a fundamental trade-off in anomaly detection
           design. Simple models such as rolling medians with seasonal bands are easy to understand, explain, and
           operate. When a responder asks why an anomaly fired, the answer is straightforward: the value exceeded the
@@ -209,15 +222,15 @@ export default function AnomalyDetectionArticle() {
           detectors with multiple feature inputs can capture more subtle patterns but are harder to explain and
           operate. If responders cannot understand why a detector fired, they will not trust it under incident pressure,
           and the detector will be ignored or disabled.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The trade-off between centralized and per-service detectors affects both operational effectiveness and
           organizational dynamics. A centralized anomaly detection platform provides consistent tooling, shared
           baselines, and unified governance across all services. This approach reduces the operational burden on
           individual teams and ensures that anomaly detection quality meets a minimum standard. However, centralized
           detectors may not capture service-specific nuances and may produce less accurate baselines for services with
           unique behavior patterns.
-        </p>
+        </HighlightBlock>
         <p>
           Per-service detectors allow teams to tune baselines and thresholds for their specific behavior patterns,
           producing more accurate anomaly scores. However, this approach creates significant operational surface area:
@@ -249,20 +262,23 @@ export default function AnomalyDetectionArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Choose stable signals with predictable patterns and clear semantics for anomaly detection. Signals that are
           routinely used in operations and have consistent meaning across releases are the best candidates. Request
           volume for key user journeys, tail latency for core endpoints, dependency timeout rates, and queueing
           indicators are strong choices. Signals that change meaning frequently due to renamed routes, altered units,
           or refactored instrumentation should be excluded from anomaly detection until their semantics stabilize.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Start with a small set of detectors tied to user impact and capacity risk rather than deploying detectors
           broadly across all available metrics. A well-tuned detector for checkout latency provides more operational
           value than fifty detectors for peripheral metrics that rarely correlate with incidents. The discipline of
           selecting and maintaining a focused set of detectors is what keeps anomaly detection useful rather than
           noisy.
-        </p>
+        </HighlightBlock>
         <p>
           Apply gating mechanisms to prevent anomalies from becoming alert noise. Require persistence across multiple
           evaluation windows so that transient spikes do not trigger pages. Require correlated movement in a second
@@ -296,22 +312,25 @@ export default function AnomalyDetectionArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Missing data looking like an outage is one of the most common failure modes in anomaly detection. When the
           signal ingestion pipeline fails or a service stops emitting metrics, the absence of data can be interpreted
           as a zero value or a deviation from baseline, triggering false anomaly alerts. The fix requires explicit
           no-data handling in the deviation analysis and collection-health signals that distinguish between missing
           data and genuinely low values. A traffic drop to zero is very different from a traffic signal that is not
           being collected, and the anomaly detector must distinguish between these cases.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Baseline poisoning occurs when incident periods become part of the training data, normalizing degraded
           behavior into the baseline model. After a prolonged incident where latency was elevated for several hours,
           the rolling baseline absorbs the elevated values and considers them normal. When the incident resolves and
           latency returns to its pre-incident level, the detector may flag the recovery as an anomaly because it
           deviates from the poisoned baseline. The fix requires excluding known incident periods from baseline
           training or using robust statistical methods that are less sensitive to outlier periods.
-        </p>
+        </HighlightBlock>
         <p>
           Adaptation mismatch occurs when baselines update at the wrong speed relative to genuine changes. If the
           baseline updates too slowly, anomalies persist long after the system has stabilized at a new level,
@@ -345,7 +364,10 @@ export default function AnomalyDetectionArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses anomaly detection to identify latency regressions on critical user journeys
           before they impact SLOs. The platform maintains baseline models for checkout latency, search latency, and
           cart update latency, each with seasonal profiles that account for daily and weekly traffic patterns. When a
@@ -356,8 +378,8 @@ export default function AnomalyDetectionArticle() {
           which correlates with the deployment marker. The responder rolls back the deployment and the anomaly
           resolves. Without anomaly detection, the responder would have known that SLO burn was elevated but would
           have needed additional investigation to identify the specific route and onset time.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A software-as-a-service platform serving enterprise customers uses anomaly detection for capacity planning.
           The platform monitors disk usage growth rates for its database clusters and maintains baseline models that
           account for normal data ingestion patterns. When a new customer onboarding increases data volume
@@ -366,7 +388,7 @@ export default function AnomalyDetectionArticle() {
           the deviation does not yet threaten user impact but indicates that scaling decisions need to be made sooner
           than originally planned. The operations team provisions additional storage capacity two weeks earlier than
           the original forecast, preventing a potential disk-full incident.
-        </p>
+        </HighlightBlock>
         <p>
           A financial services company uses anomaly detection to identify unusual transaction patterns that may
           indicate processing issues. The company monitors transaction success rates by type and maintains baseline
@@ -390,26 +412,29 @@ export default function AnomalyDetectionArticle() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: When would you use anomaly detection instead of static thresholds?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             I use anomaly detection when static thresholds are either too noisy or too blunt to be operationally
             useful. This occurs in three primary scenarios. First, when the signal exhibits strong seasonality such
             as daily or weekly cycles, static thresholds fire on every predictable peak and trough, creating noise.
             Anomaly detection with seasonal baselines compares the current value against the expected distribution
             for that specific time context, firing only when the value genuinely deviates from the seasonal norm.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Second, when the signal baseline shifts over time due to organic growth or gradual changes, static
             thresholds require constant manual adjustment. Anomaly detection with adaptive baselines automatically
             adjusts to gradual trends while still detecting sudden deviations that indicate incidents. Third, when
             the signal has complex behavior patterns that a single threshold cannot capture, such as different
             variance levels at different traffic volumes, anomaly detection with percentile-based baselines provides
             more nuanced detection.
-          </p>
+          </HighlightBlock>
           <p>
             I would not use anomaly detection for signals with stable, predictable behavior where a static threshold
             is clear, actionable, and low-noise. For example, disk usage exceeding ninety percent is a clear,

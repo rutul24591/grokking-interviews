@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function RecentlyViewedContentArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Recently Viewed Content enables users to track and access content they have recently viewed. Users can view history (see viewed content), manage history (manage view history), clear history (clear view history), and control tracking (control view tracking). Recently viewed content is fundamental to content discovery (help users discover content), user experience (users can find viewed content), and user satisfaction (users appreciate view history). For platforms with content consumption, effective recently viewed content is essential for content discovery, user experience, and satisfaction.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, recently viewed content architecture involves view tracking (track viewed content), view history (manage view history), view persistence (persist view history), view sync (sync across devices), and view management (manage view history). The implementation must balance tracking (track viewed content) with privacy (respect user privacy) and performance (fast view tracking). Poor recently viewed content leads to poor discovery, user frustration, and privacy concerns.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of recently viewed content extends beyond simple view tracking. View tracking (track viewed content). View history (manage view history). View persistence (persist view history). View sync (sync across devices). View privacy (respect user privacy). For staff engineers, recently viewed content is a user experience infrastructure decision affecting content discovery, user experience, and satisfaction.
         </p>
@@ -46,13 +50,16 @@ export default function RecentlyViewedContentArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>View Tracking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Automatic tracking tracks views automatically. View detection (detect views). View recording (record views). View update (update views). Automatic tracking enables automatic view tracking. Benefits include no user burden (no user burden), comprehensive tracking (comprehensive tracking). Drawbacks includes privacy concern (privacy concern), tracking overhead (tracking overhead).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Manual tracking tracks views manually. View marking (mark views). View recording (record views). View update (update views). Manual tracking enables manual view tracking. Benefits include user control (user control), privacy (privacy respected). Drawbacks includes user burden (user burden), incomplete tracking (incomplete tracking).
-        </p>
+        </HighlightBlock>
         <p>
           Selective tracking tracks views selectively. View selection (select what to track). View recording (record views). View update (update views). Selective tracking enables selective view tracking. Benefits include user control (user control), privacy (privacy respected). Drawbacks includes complexity (complex implementation), incomplete tracking (incomplete tracking).
         </p>
@@ -104,9 +111,12 @@ export default function RecentlyViewedContentArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Recently viewed content architecture spans view service, tracking service, persistence service, and sync service. View service manages views. Tracking service manages view tracking. Persistence service manages view persistence. Sync service manages view sync. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/recently-viewed-content/viewed-architecture.svg"
@@ -117,9 +127,9 @@ export default function RecentlyViewedContentArticle() {
         />
 
         <h3>View Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           View service manages user views. View storage (store views). View retrieval (retrieve views). View update (update views). View service is the core of recently viewed content. Benefits include centralization (one place for views), consistency (same views everywhere). Drawbacks includes complexity (manage views), coupling (services depend on view service).
-        </p>
+        </HighlightBlock>
         <p>
           View policies define view rules. Default views (default views). View validation (validate views). View sync (sync views). View policies automate view management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function RecentlyViewedContentArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Recently viewed content design involves trade-offs between automatic and manual tracking, local and cloud persistence, and comprehensive and limited view history. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Tracking: Automatic vs. Manual</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Automatic tracking (automatically track views). Pros: No user burden (no user burden), comprehensive tracking (comprehensive tracking), immediate (immediate tracking). Cons: Privacy concern (privacy concern), tracking overhead (tracking overhead), may be unwanted (may be unwanted). Best for: User convenience, comprehensive tracking.
-        </p>
+        </HighlightBlock>
         <p>
           Manual tracking (manually track views). Pros: User control (user control), privacy (privacy respected), no tracking overhead (no tracking overhead). Cons: User burden (user burden), incomplete tracking (incomplete tracking), may be forgotten (may be forgotten). Best for: User control, privacy.
         </p>
@@ -207,13 +220,16 @@ export default function RecentlyViewedContentArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide view tracking:</strong> Automatic tracking. Manual tracking. Selective tracking. Let users choose.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enable view history:</strong> View storage. View retrieval. View management. Let users choose.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Persist views:</strong> Local persistence. Cloud persistence. Hybrid persistence. Let users choose.
           </li>
@@ -243,13 +259,16 @@ export default function RecentlyViewedContentArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No view tracking:</strong> Can&apos;t track views. <strong>Solution:</strong> Provide view tracking.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No view history:</strong> Can&apos;t view history. <strong>Solution:</strong> Enable view history.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No view persistence:</strong> Views not saved. <strong>Solution:</strong> Persist views.
           </li>
@@ -279,16 +298,19 @@ export default function RecentlyViewedContentArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-commerce Recently Viewed</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms provide recently viewed. Product views (track product views). View history (show view history). View management (manage view history). Users control e-commerce recently viewed.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Streaming Service Recently Viewed</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Streaming services provide recently viewed. Content views (track content views). View history (show view history). View management (manage view history). Users control streaming service recently viewed.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Browser Recently Viewed</h3>
         <p>
@@ -308,12 +330,15 @@ export default function RecentlyViewedContentArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design recently viewed content that balances tracking with privacy?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design recently viewed content that balances tracking with privacy?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement view tracking with privacy because users want tracking (find content they viewed, continue where left off) but want privacy (sensitive views not tracked, control over history). Track views: track viewed content (automatic tracking, timestamp, content ID, session info)—enables history, recommendations, continue watching. Provide control: let users control (pause tracking, delete specific views, clear all history, private mode)—user agency, privacy control. Enable deletion: let users delete (delete individual views, delete by date range, delete all, auto-delete after period)—users can remove sensitive views. Respect privacy: respect user privacy (private browsing mode, incognito views not tracked, sensitive content excluded)—respect privacy choices, don&apos;t track when user requests privacy. The privacy insight: users want tracking but want privacy—provide tracking (automatic, timestamp, content) with control (pause, delete, clear, private), deletion (individual, range, all, auto), respect (private mode, incognito, sensitive excluded), and balance utility with privacy.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

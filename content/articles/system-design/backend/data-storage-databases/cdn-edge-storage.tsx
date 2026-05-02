@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -78,21 +79,24 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Edge Caching &amp; Invalidation</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>CDN Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>CDN architecture</strong> has three components: <strong>edge locations</strong>
           (Points of Presence, PoPs—servers worldwide), <strong>origin</strong> (where content
           lives—S3, web server), and <strong>DNS routing</strong> (direct users to nearest edge).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Request flow: (1) User requests <code className="inline-code">example.com/logo.png</code>.
           (2) DNS routes to nearest edge (based on user's IP). (3) Edge checks cache.
           <strong>Cache hit</strong>: serve from edge (fast, 5-50ms).
           <strong>Cache miss</strong>: fetch from origin, cache at edge, serve to user
           (slow for first request, fast thereafter).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Origin shield</strong> is an intermediate cache between edge and origin.
@@ -159,15 +163,18 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Edge Computing</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Edge Computing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Modern CDNs offer <strong>edge computing</strong>—run code at edge locations, not
           just cache content. Edge functions (Cloudflare Workers, Lambda@Edge, Vercel Edge
           Functions) execute JavaScript/WebAssembly at edge, enabling:
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>A/B testing</strong>: Route users to different variants at edge (no origin
           involvement). <strong>Personalization</strong>: Modify content based on user location,
           device, preferences (at edge, low latency). <strong>API aggregation</strong>: Call
@@ -175,7 +182,7 @@ export default function ArticlePage() {
           <strong>Bot protection</strong>: Run bot detection at edge (block before hitting
           origin). <strong>Image optimization</strong>: Resize, compress, convert formats
           (WebP, AVIF) at edge (no origin processing).
-        </p>
+        </HighlightBlock>
 
         <p>
           Edge computing reduces latency (code runs near users), offloads origin (processing
@@ -224,18 +231,21 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: CDN vs Origin</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           CDNs complement origin storage (S3, web servers). Understanding the trade-offs
           helps you architect optimal delivery.
-        </p>
+        </HighlightBlock>
 
         <h3>CDN Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Low latency</strong> is the primary advantage. Edge locations near users
           (5-50ms vs 50-200ms to origin). Essential for global audiences, performance-sensitive
           applications (e-commerce, media).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Origin offload</strong>—CDN serves 90-99% of requests from cache. Origin
@@ -309,22 +319,25 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for CDN and Edge Storage</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Set appropriate Cache-Control headers.</strong> Versioned assets
           (<code className="inline-code">app.abc123.js</code>):
           <code className="inline-code">public, max-age=31536000, immutable</code>
           (1 year, immutable). Dynamic content (HTML):
           <code className="inline-code">public, max-age=60</code> (1 minute, revalidate).
           User-specific: <code className="inline-code">private, no-cache</code> (don't cache).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use versioned URLs for static assets.</strong> Build process generates
           hashed filenames (<code className="inline-code">app.abc123.js</code>). Deploy
           new version → new URL → CDN caches as new content. Old version remains cached
           (no invalidation needed). Infinite TTL safe (URL changes on update).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Implement cache invalidation strategy.</strong> For non-versioned content
@@ -362,21 +375,24 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Caching sensitive data.</strong> CDN caching user-specific data (profiles,
           financial info) causes data leaks. Solution: Set
           <code className="inline-code">Cache-Control: private, no-cache</code> for
           sensitive content, use authentication at edge (verify before serving), never
           cache PII.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>No cache invalidation strategy.</strong> Content updates but CDN serves
           stale version. Solution: Use versioned URLs for static assets (no invalidation
           needed), define purge process for dynamic content, test invalidation (update
           content, verify CDN serves new version).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Ignoring cache headers.</strong> Origin sends no/wrong Cache-Control
@@ -409,20 +425,23 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce (Amazon, Shopify)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms use CDNs for product images, CSS, JavaScript. Benefits:
           fast page loads (critical for conversion—100ms delay = 1% sales drop), global
           low latency (users worldwide), origin offload (90%+ requests served from cache),
           DDoS protection (Black Friday traffic spikes, attack mitigation).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This pattern works because e-commerce has static assets (product images, stylesheets)
           that benefit from caching, global audience (low latency required), and traffic
           spikes (sales events—CDN absorbs load).
-        </p>
+        </HighlightBlock>
 
         <h3>Media Streaming (Netflix, YouTube)</h3>
         <p>
@@ -470,13 +489,16 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: When would you use a CDN? What are the signs that a CDN is needed?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Use CDN for global audiences, static assets, media
               delivery, high traffic. Signs: (1) Users complain about slow load times
               (especially international), (2) Origin server under heavy load (high CPU,
@@ -485,7 +507,7 @@ export default function ArticlePage() {
               (6) High origin costs (S3 requests, bandwidth). Don't use CDN for: internal
               APIs, low-traffic sites (CDN cost may exceed benefit), highly dynamic content
               (low hit ratio).
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What's a good cache hit ratio? Answer: 90-99%
               for static assets (JS, CSS, images), 50-80% for dynamic content (HTML, API

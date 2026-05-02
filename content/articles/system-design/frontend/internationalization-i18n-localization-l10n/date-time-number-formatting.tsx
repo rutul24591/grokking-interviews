@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function DateTimeNumberFormattingArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Date/Time/Number formatting</strong> is the practice of
           displaying temporal and numeric data according to locale-specific
           conventions. This goes beyond simple translation — different cultures
@@ -46,8 +47,8 @@ export default function DateTimeNumberFormattingArticle() {
           Eastern Arabic numerals). For global applications, correct formatting
           is not optional — users expect to see data in their familiar format,
           and incorrect formatting causes confusion, errors, and lost trust.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, date/time/number formatting involves
           architectural decisions about storage (always UTC for dates, always
           raw numbers), transformation (format at the display layer), and
@@ -55,8 +56,8 @@ export default function DateTimeNumberFormattingArticle() {
           insight: store in canonical format, format only for display. Never
           store formatted strings — always store raw values and apply locale
           formatting at render time.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Date/Time/Number formatting involves several technical challenges.{" "}
           <strong>Timezone handling</strong> — storing in UTC, displaying in
           user&apos;s local timezone, handling DST transitions.{" "}
@@ -67,7 +68,7 @@ export default function DateTimeNumberFormattingArticle() {
           calendar, Hebrew calendar). <strong>Number formatting</strong> —
           decimal separators, thousands separators, digit grouping, negative
           number representation vary by locale.
-        </p>
+        </HighlightBlock>
         <p>
           The business case for correct formatting is clear: users trust
           applications that &quot;speak their language&quot; numerically.
@@ -82,25 +83,25 @@ export default function DateTimeNumberFormattingArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Locale-Aware Formatting:</strong> Each locale has specific
             conventions for dates, times, and numbers. The Intl API (built into
             modern browsers) provides locale-aware formatting via{" "}
             <code>Intl.DateTimeFormat</code> and <code>Intl.NumberFormat</code>.
             Always pass the user&apos;s locale — never assume.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>UTC Storage, Local Display:</strong> Store all dates in UTC
             (ISO 8601 format: <code>2026-04-02T14:30:00Z</code>). Convert to
             user&apos;s local timezone only for display. This ensures
             consistency across timezones and avoids DST issues in storage.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Timezone Awareness:</strong> Users may be in different
             timezones. Display times in user&apos;s local timezone (from browser
             or profile preference). For scheduling applications, show both local
             and event timezone (&quot;3 PM your time / 8 PM London&quot;).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Relative Time Formatting:</strong> &quot;2 hours ago&quot;,
             &quot;in 3 days&quot;, &quot;yesterday&quot;. Use{" "}
@@ -135,13 +136,13 @@ export default function DateTimeNumberFormattingArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Date/Time/Number formatting architecture consists of a storage layer
           (canonical formats: UTC for dates, raw numbers), a transformation
           layer (Intl API or formatting libraries), and a display layer
           (formatted strings). The architecture must handle timezone conversion,
           locale detection, and caching of formatted values for performance.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/internationalization-i18n-localization-l10n/timezone-handling-architecture.svg"
@@ -152,19 +153,19 @@ export default function DateTimeNumberFormattingArticle() {
         />
 
         <h3>Storage Best Practices</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Dates:</strong> Always store in UTC ISO 8601 format. Database
           column type: TIMESTAMP WITH TIME ZONE (PostgreSQL) or DATETIME
           (MySQL). API response: ISO string with Z suffix. Never store formatted
           date strings like &quot;04/02/2026&quot; — you lose timezone
           information and can&apos;t reformat for other locales.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Numbers:</strong> Store as raw numbers (integer or decimal).
           Database: DECIMAL for money (never FLOAT for currency), INTEGER for
           counts. API response: numeric type, not string. Format only at display
           layer with locale-aware formatting.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Durations:</strong> Store as milliseconds or ISO 8601 duration
           (<code>P1DT2H30M</code>). For human-readable display, use relative
@@ -183,10 +184,10 @@ export default function DateTimeNumberFormattingArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Date/Time/Number formatting implementation involves trade-offs between
           bundle size, browser support, and feature completeness.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/internationalization-i18n-localization-l10n/formatting-libraries-comparison.svg"
@@ -197,19 +198,19 @@ export default function DateTimeNumberFormattingArticle() {
         />
 
         <h3>Library Selection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Intl API (Native):</strong> Built into all modern browsers.
           Advantages: zero bundle size, always up-to-date with locale data,
           standard API. Limitations: verbose syntax, limited manipulation
           capabilities, no polyfill for old browsers. Best for: formatting-only
           needs, bundle-conscious projects.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>date-fns:</strong> Functional, modular date library.
           Advantages: tree-shakeable, immutable, extensive locale support,
           active maintenance. Limitations: larger bundle than Day.js. Best for:
           projects needing date manipulation + formatting.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Day.js:</strong> Lightweight Moment.js alternative.
           Advantages: small bundle (2KB), Moment-compatible API, plugin system.
@@ -252,25 +253,25 @@ export default function DateTimeNumberFormattingArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Store UTC, Display Local:</strong> Always store dates in
             UTC. Convert to local timezone only at display layer. This ensures
             consistency and avoids DST issues in storage. Use libraries like
             Luxon or date-fns-tz for timezone conversion.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Intl API for Formatting:</strong>{" "}
             <code>Intl.DateTimeFormat</code> and{" "}
             <code>Intl.NumberFormat</code> are built-in, well-tested, and
             always up-to-date with locale data. Wrap in utility functions for
             consistent usage across your codebase.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Show Timezone for Future Events:</strong> For appointments,
             deadlines, or scheduled events, always show the timezone
             (&quot;3 PM EST&quot;). For past events, relative time
             (&quot;2 hours ago&quot;) is often more useful than absolute time.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle Edge Cases:</strong> DST transitions (clocks spring
             forward/fall back), leap years, leap seconds (rarely needed),
@@ -297,23 +298,23 @@ export default function DateTimeNumberFormattingArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Storing Formatted Dates:</strong> Storing{" "}
             <code>&quot;04/02/2026&quot;</code> instead of ISO string loses
             timezone information and can&apos;t be reformatted. Always store raw
             UTC timestamps.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Assuming Browser Timezone is Correct:</strong> User may be
             traveling or want a different timezone. Provide timezone override in
             user preferences for scheduling applications.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring DST Transitions:</strong> &quot;2 PM tomorrow&quot;
             may not exist (spring forward) or may be ambiguous (fall back). Use
             libraries that handle DST correctly. Avoid scheduling at DST
             transition times.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Using FLOAT for Currency:</strong> Floating point arithmetic
             causes rounding errors (0.1 + 0.2 ≠ 0.3). Use DECIMAL in database,
@@ -339,30 +340,30 @@ export default function DateTimeNumberFormattingArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>Global E-Commerce</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           E-commerce sites display prices in local currency with correct
           formatting (€1.000,50 in Germany, $1,000.50 in US). Order dates shown
           in customer&apos;s local timezone. Delivery estimates use relative
           time (&quot;arrives in 3-5 days&quot;). Sale deadlines show countdown
           timers with timezone awareness.
-        </p>
+        </HighlightBlock>
 
         <h3>Scheduling and Calendar Applications</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Calendar apps (Google Calendar, Outlook) handle complex timezone
           scenarios: events in different timezones, recurring events across DST
           transitions, all-day events (date-only, no timezone). Display shows
           both event timezone and user&apos;s local timezone for clarity.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Applications</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Trading platforms display stock prices with appropriate decimal
           places, percentage changes with locale-aware formatting, and
           timestamps in user&apos;s preferred timezone. Transaction history uses
           locale-specific date formats. Currency conversion shows both source
           and target currency with correct symbols.
-        </p>
+        </HighlightBlock>
 
         <h3>Analytics Dashboards</h3>
         <p>
@@ -380,24 +381,24 @@ export default function DateTimeNumberFormattingArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: Why should you store dates in UTC and convert at display time?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: UTC is timezone-agnostic and unambiguous. Storing in local
               timezone causes problems: (1) DST transitions create ambiguous or
               non-existent times, (2) users in different timezones see wrong
               times, (3) changing user&apos;s timezone preference requires
               data migration. UTC + convert at display ensures consistency,
               enables timezone switching, and avoids DST issues in storage.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do you handle date formatting for locales with different
               calendar systems?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Intl API supports calendar specification via{" "}
               <code>calendar</code> option. Example:{" "}

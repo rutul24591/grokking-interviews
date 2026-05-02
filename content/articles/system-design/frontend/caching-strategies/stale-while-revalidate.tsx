@@ -511,27 +511,31 @@ export default function StaleWhileRevalidateConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: SWR is a deliberate staleness trade. Use these to justify when stale reads are acceptable,
+          how revalidation works, and how to bound inconsistency (TTL, ETag validation, and client invalidation after writes).
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://datatracker.ietf.org/doc/html/rfc5861" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               RFC 5861 - HTTP Cache-Control Extensions for Stale Content
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://swr.vercel.app/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Vercel SWR - React Hooks for Data Fetching
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://tanstack.com/query/latest" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               TanStack Query (React Query) - Powerful Asynchronous State Management
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://web.dev/stale-while-revalidate/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev - Keeping Things Fresh with stale-while-revalidate
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN - Cache-Control Header Reference

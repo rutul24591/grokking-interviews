@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function MergeSortArticle() {
       {/* SECTION 1 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Merge sort</strong> is the archetypal
           divide-and-conquer sorting algorithm: split the array into two
           halves, recursively sort each half, then merge the two sorted
@@ -48,8 +52,8 @@ export default function MergeSortArticle() {
           its simple form), and <strong>predictable</strong> in the sense
           that its running time is deterministic given n and does not
           depend on input order.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The algorithm was invented by John von Neumann in 1945 for the
           EDVAC computer, and its theoretical significance has never
           dimmed. Merge sort matches the comparison-sort lower bound
@@ -63,7 +67,7 @@ export default function MergeSortArticle() {
           objects (Tim Sort since Java 7), and virtually every database
           system&apos;s sort-spill implementation (PostgreSQL, Oracle,
           MySQL, Spark).
-        </p>
+        </HighlightBlock>
         <p>
           The staff-level interest in merge sort centers on three
           questions. First: the stability guarantee — merge sort is the
@@ -91,11 +95,14 @@ export default function MergeSortArticle() {
       {/* SECTION 2 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Divide, sort, merge
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Top-down merge sort: if the array has ≤ 1 element, it is
           sorted; otherwise, split into two halves, recursively sort
           each, and merge. The recurrence is T(n) = 2T(n/2) + Θ(n),
@@ -103,12 +110,12 @@ export default function MergeSortArticle() {
           (case 2). The structure is so regular that merge sort is the
           standard teaching example for divide-and-conquer analysis and
           the Master Theorem itself.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           The merge step
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Given two sorted sequences A and B, produce a sorted sequence
           of all elements. The two-pointer merge: compare A[i] with
           B[j], write the smaller to the output, advance that pointer.
@@ -116,7 +123,7 @@ export default function MergeSortArticle() {
           Total work Θ(|A| + |B|). The merge step is the core of the
           algorithm; its correctness is obvious and its linear cost is
           what makes the recurrence solve to Θ(n log n).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Stability via ties-go-left
@@ -172,11 +179,14 @@ export default function MergeSortArticle() {
       {/* SECTION 3 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Standard out-of-place merge sort
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The standard formulation allocates an auxiliary buffer of size
           n and uses it during each merge. On input <code>[5, 2, 4, 6,
           1, 3]</code>: split → <code>[5, 2, 4]</code> and{" "}
@@ -184,19 +194,19 @@ export default function MergeSortArticle() {
           Recurse right → <code>[1, 3, 6]</code>. Merge the two sorted
           halves via two-pointer → <code>[1, 2, 3, 4, 5, 6]</code>.
           Total: 11 comparisons, 6 writes to the output buffer.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Bottom-up iterative merge sort
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Start with runs of length 1. Merge adjacent pairs → runs of
           length 2. Merge adjacent pairs → length 4. Continue until one
           run covers the array. At each pass, merge all pairs of the
           current size; handle the odd-length tail by copying or merging
           with the previous run. Total passes: ⌈log₂ n⌉. Total work per
           pass: Θ(n). Total: Θ(n log n).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Tim Sort — natural merge + insertion + galloping
@@ -279,6 +289,9 @@ export default function MergeSortArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Complexity summary
@@ -317,7 +330,7 @@ export default function MergeSortArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Merge sort vs quicksort
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Quicksort has better average-case constants and is in-place
           (O(log n) stack space for recursion). Merge sort has O(n log n)
           worst case (quicksort is O(n²) naive, O(n log n) with
@@ -327,19 +340,19 @@ export default function MergeSortArticle() {
           40%. For stability, external sort, or worst-case guarantees,
           merge sort wins. Tim Sort (merge-sort descendant) beats
           quicksort on real-world partially-sorted data.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Merge sort vs heapsort
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Heapsort is in-place (O(1) extra space) and O(n log n) worst
           case, but it is not stable and has worse cache behavior than
           merge sort (heap operations touch non-adjacent memory). Merge
           sort is stable and cache-friendly but requires O(n) auxiliary.
           For in-place sort with worst-case guarantees, heapsort wins;
           for stable sort or external sort, merge sort wins.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Tim Sort vs plain merge sort
@@ -372,17 +385,20 @@ export default function MergeSortArticle() {
       {/* SECTION 5 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Tim Sort (language default) for in-memory
             sort.</strong> It is merge-sort family, stable, adaptive,
             and beats hand-rolled merge sort on real-world data.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use external merge sort for
             larger-than-memory.</strong> This is the only scalable
             approach for multi-GB-to-TB sort; databases rely on it.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Preserve stability with ties-go-left.</strong> The
             merge step must emit from the left input when keys are
@@ -417,28 +433,31 @@ export default function MergeSortArticle() {
       {/* SECTION 6 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Unstable merge implementation
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Using <code>&lt;=</code> when comparing right-input keys with
           left-input keys, or using <code>&lt;</code> with ties favoring
           the right input, breaks stability. The canonical rule: emit
           from left when <code>left[i] &lt;= right[j]</code>. Any other
           rule silently scrambles equal-key order.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Over-allocating the auxiliary buffer
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Naive implementations allocate a new auxiliary buffer in every
           recursive call — O(n log n) total allocations. Proper
           implementations allocate one buffer of size n at the top
           level and pass it through recursion. This is a common
           performance bug in hand-rolled merge sort.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Forgetting to handle odd lengths in bottom-up
@@ -488,30 +507,33 @@ export default function MergeSortArticle() {
       {/* SECTION 7 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Python list.sort, Java Arrays.sort (objects)
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Both use Tim Sort, a merge-sort descendant. Python&apos;s
           default sort is Tim Sort; Java since version 7 uses Tim Sort
           for <code>Arrays.sort</code> on objects and{" "}
           <code>Collections.sort</code>. For primitive arrays Java uses
           Dual-Pivot Quicksort, but for anything requiring stability
           Tim Sort is the choice.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Database external sort (ORDER BY, GROUP BY with spill)
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           PostgreSQL, Oracle, MySQL, Spark, and Flink all use external
           merge sort when sort inputs exceed the configured work memory.
           The pattern: sort in-memory runs, spill to temporary files,
           merge runs in a final k-way merge via a heap. For a 1 TB
           ORDER BY with 1 GB work_mem, that is 1024 initial runs and a
           single k=1024 merge pass.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           MapReduce and Spark shuffle
@@ -562,20 +584,23 @@ export default function MergeSortArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Common Interview Questions
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q1. Prove merge sort is Θ(n log n).
-            </p>
-            <p className="mt-2">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2">
               Recurrence: T(n) = 2T(n/2) + Θ(n). By the Master Theorem,
               a = 2, b = 2, f(n) = Θ(n). n^log_b(a) = n^1 = n. Case 2
               applies: f(n) = Θ(n^log_b(a)), so T(n) = Θ(n log n). Or
               by tree analysis: the recursion tree has log₂ n levels;
               each level does Θ(n) merge work; total Θ(n log n). Works
               in all cases because the recurrence is input-independent.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

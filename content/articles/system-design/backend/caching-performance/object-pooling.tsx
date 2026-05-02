@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Object pooling is a creational design pattern that maintains a reusable collection of pre-instantiated objects, allowing callers to borrow and return objects rather than creating and destroying them on demand. The pattern is applicable when objects are expensive to create — either because their construction involves significant computational work, because they hold external resources that are costly to acquire and release, or because frequent allocation and deallocation creates pressure on the garbage collector that manifests as latency spikes and throughput degradation. By recycling objects through a pool, the construction cost is amortized across many uses, and the system avoids the unpredictable latency of allocation under load.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The distinction between object pooling and connection pooling is important. Connection pooling is a specific application of object pooling where the pooled objects are database connections. Object pooling is the broader pattern that applies to any expensive object: HTTP clients that maintain connection pools of their own, thread pools that manage worker threads, serialization buffers that allocate large byte arrays, cryptographic contexts that require expensive initialization, DNS resolvers that maintain their own caches, and any other resource where the cost of creation is significant relative to the cost of reuse. Understanding object pooling as a general pattern — rather than conflating it with the specific case of database connections — enables staff engineers to apply it consistently across the entire system architecture.
-        </p>
+        </HighlightBlock>
         <p>
           The value proposition of object pooling must be carefully evaluated for each object type. In managed languages with generational garbage collectors — Java, Go, C#, .NET — short-lived objects are actually very cheap to allocate and collect. The garbage collector is optimized for the common case of objects that are created, used briefly, and then become garbage. Pooling these objects can be counterproductive: it increases the live object set, interferes with the garbage collector&apos;s generational assumptions, and introduces lifecycle complexity that outweighs any allocation savings. Object pooling should be reserved for objects that are genuinely expensive — objects whose construction takes milliseconds rather than microseconds, objects that hold external resources, or objects whose allocation size is large enough to trigger the garbage collector&apos;s large-object handling path.
         </p>
@@ -42,12 +46,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of object pooling rests on the lifecycle of a pooled object: creation, initialization, leasing, use, reset, and return. When an application needs an object, it requests one from the pool. If an idle object is available, it is removed from the idle set, leased to the caller, and marked as in-use. If no idle object is available and the pool has not reached its maximum size, a new object is created, initialized, leased, and marked as in-use. If the pool is at maximum capacity, the caller blocks until an object is returned or the acquisition timeout elapses. After the caller finishes using the object, it calls the return method, which resets the object to a clean state, validates its integrity, and places it back in the idle set for the next caller.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The reset operation is the linchpin of correct object pooling. Every field, buffer, and internal state variable that was modified during use must be restored to its initial value before the object is returned to the idle set. For simple objects with a small number of scalar fields, this is straightforward. For complex objects with nested data structures, external resource handles, or computed caches, the reset operation must traverse the entire state graph and restore each element. If the object holds references to other objects — such as a serialization buffer that references a byte array and an encoding context — those referenced objects must also be reset or replaced. The cost of the reset operation must be significantly lower than the cost of creating a new object, otherwise the pool provides no performance benefit.
-        </p>
+        </HighlightBlock>
         <p>
           Pool sizing follows principles similar to connection pool sizing but with additional considerations specific to the object type. The optimal pool size depends on the expected concurrency of object usage — how many threads simultaneously need the object — and the average duration of each lease. If an object is typically held for one millisecond and the application needs ten thousand object-uses per second, the pool needs approximately ten objects to handle the steady-state workload. Burst traffic, variable lease durations, and the need for headroom during traffic spikes all argue for sizing the pool above the steady-state requirement.
         </p>
@@ -64,9 +71,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production-grade object pool architecture comprises several interacting components that govern how objects are created, distributed, monitored, recycled, and destroyed. The pool maintains an idle collection of available objects — typically implemented as a concurrent queue or stack — and an in-use tracking mechanism that records which objects are currently leased and to which callers. Some implementations also maintain a pending queue for callers waiting to acquire an object when the pool is exhausted. The lifecycle of an object flows through several states: it is created during pool initialization or scaling events, transitions to idle while waiting in the pool, moves to in-use when borrowed by a caller, returns to idle upon release after being reset, and eventually enters a terminated state when it is retired due to age, errors, or reaching a maximum reuse count.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/object-pool-lifecycle.svg`}
@@ -74,9 +84,9 @@ export default function ArticlePage() {
           caption="Object pool lifecycle — objects transition through created, idle, in-use, resetting, and terminated states, with validation and reset governing state transitions"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The request flow through an object pool follows a deterministic path. When a caller needs an object, it invokes the pool&apos;s acquire method. The pool first checks the idle collection for an available object. If one exists, it is removed from the idle collection, added to the in-use set, and returned to the caller. If the idle collection is empty but the total object count is below the maximum, a new object is created, initialized, added to the in-use set, and returned. If the pool is at maximum capacity, the caller is placed in the pending queue and blocks until an object is released or the acquisition timeout fires. After the caller completes its work with the object, it calls the release method, which resets the object to a clean state, validates its integrity, and returns it to the idle collection or terminates it if validation fails.
-        </p>
+        </HighlightBlock>
         <p>
           HTTP client pooling illustrates the architecture with concrete clarity. An HTTP client object encapsulates a connection pool, TLS context, DNS resolver, and configuration state. Creating an HTTP client involves allocating internal data structures, initializing TLS contexts, and warming up DNS caches — work that can take tens of milliseconds. In a high-throughput service that makes thousands of outbound HTTP requests per second, creating a new HTTP client per request is prohibitive. Instead, the service maintains a pool of pre-initialized HTTP clients, each with its own connection pool to the target services. When the service needs to make an HTTP request, it acquires a client from the pool, uses it to execute the request, and returns it to the pool. The pool ensures that each client is healthy — that its underlying connection pool has not been exhausted, that its TLS context has not expired, and that its DNS resolver has not encountered errors — before leasing it to the caller.
         </p>
@@ -103,17 +113,20 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Object pooling decisions involve trade-offs between allocation cost, memory consumption, correctness risk, and operational complexity that vary by object type. Understanding these trade-offs at a granular level is essential for selecting the right strategy for each resource class.
-        </p>
+        </HighlightBlock>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4">
           <h3 className="mb-4 text-lg font-semibold">
             To Pool or Not to Pool: Evaluating the Cost-Benefit
           </h3>
-          <p className="mt-2 text-sm">
+          <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
             The decision to pool an object type requires a quantitative analysis of the costs involved. The allocation cost is the time required to create a new object, including any initialization work, resource acquisition, and warmup. The reset cost is the time required to return the object to a clean state after use. The memory cost is the amount of memory consumed by keeping an object in the idle pool. The correctness risk is the probability and impact of a failed reset causing data leakage or incorrect behavior. The garbage collection impact is the effect of avoiding allocation on the garbage collector&apos;s behavior — in some cases, reducing allocation rate improves GC performance; in others, increasing the live object set degrades it.
-          </p>
+          </HighlightBlock>
           <p className="mt-2 text-sm">
             A practical evaluation framework is to measure the allocation cost in microseconds and compare it to the reset cost. If allocation takes less than ten microseconds and reset takes more than one microsecond, pooling is unlikely to provide a meaningful benefit. If allocation takes more than one millisecond and reset takes less than one hundred microseconds, pooling is likely beneficial. The memory cost should be evaluated against the available memory: if pooling one thousand objects of a given type consumes a significant fraction of the application&apos;s heap, the pool size should be reduced or the object type should not be pooled. The correctness risk should be assessed by examining the object&apos;s state space: if the object has complex, deeply nested state that is difficult to reset comprehensively, pooling introduces a correctness risk that may outweigh the performance benefit.
           </p>
@@ -191,13 +204,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Pool Only Genuinely Expensive Objects:</strong> Measure the allocation cost of the object type before deciding to pool. Objects that take less than one millisecond to create are typically cheaper to allocate on demand than to pool, especially in managed languages with optimized garbage collectors. Pool objects that take more than one millisecond to create, hold external resources, or allocate large memory blocks (over 64KB) that would trigger the garbage collector&apos;s large-object handling path.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Thorough and Efficient Reset:</strong> The reset operation must restore every field, buffer, and internal state variable to its initial value. Implement reset as a deterministic, auditable process — ideally with automated tests that verify the reset is complete. The reset cost must be significantly lower than the allocation cost; if reset approaches allocation cost, the pool provides no benefit.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Set Acquisition Timeouts:</strong> Every object acquisition should have a timeout that is appropriate for the object type and the caller&apos;s latency requirements. An infinite or overly generous timeout allows callers to block indefinitely when the pool is exhausted, masking the problem and propagating latency through the call chain. A tight timeout forces fast failure, enabling the application to shed load or degrade gracefully.
           </li>
@@ -218,12 +234,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p className="mt-2 text-sm">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           The most frequent mistake in object pooling is pooling objects that are not expensive enough to justify the added complexity. In managed languages with generational garbage collectors, allocating a simple object is extremely cheap — typically a pointer bump in the young generation allocation area. The garbage collector is optimized for the common case of short-lived objects, and pooling these objects can actually degrade performance by increasing the live object set and interfering with the collector&apos;s generational assumptions. Before pooling any object type, measure the allocation cost and compare it to the reset cost. If the allocation is sub-millisecond, pooling is unlikely to provide a meaningful benefit.
-        </p>
-        <p className="mt-2 text-sm">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           Incomplete object reset is the most dangerous pitfall because it introduces correctness bugs that are difficult to detect and reproduce. When an object is returned to the pool without being fully reset, the next caller receives an object with residual state from the previous use. This can manifest as data leakage between requests (if a buffer retains data from the previous caller), incorrect behavior (if a configuration object retains settings from the previous use), or security vulnerabilities (if a cryptographic context retains key material). The reset operation must be comprehensive — covering every field, buffer, and nested object — and must be verified through automated testing.
-        </p>
+        </HighlightBlock>
         <p className="mt-2 text-sm">
           Pool starvation during traffic spikes is a common operational failure. When traffic increases faster than the pool can expand — either because object creation is slow or because the pool has reached its maximum size — callers experience acquisition timeouts and failures. The pool should be sized to handle the expected peak traffic with a safety margin, and the burst capacity should allow temporary expansion during unexpected spikes. Additionally, the pool&apos;s warmup behavior matters: when new application instances start, they should create their pool objects gradually rather than all at once, to avoid a burst of allocation cost that can impact latency during deployment.
         </p>
@@ -246,12 +265,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p className="mt-2 text-sm">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           A high-frequency trading platform pools cryptographic contexts for message signing and verification. Each cryptographic context requires loading RSA keys, initializing cipher implementations, and seeding pseudo-random number generators — work that takes approximately five milliseconds per context. The platform processes tens of thousands of messages per second, and creating a new cryptographic context for each message would add fifty seconds of cumulative latency per second of operation. By maintaining a pool of two hundred pre-initialized cryptographic contexts, the platform reduces the per-message cryptographic overhead to the reset cost of approximately fifty microseconds — a hundredfold improvement. The reset operation zeroes all key material, re-seeds the PRNG, and reinitializes the cipher state, and automated tests verify the reset is complete by attempting to detect residual key material after each reset cycle.
-        </p>
-        <p className="mt-2 text-sm">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
           A large-scale web scraper maintains a pool of HTTP clients, each configured with its own connection pool, DNS resolver, and TLS context. Creating an HTTP client involves initializing the TLS stack, warming up the DNS resolver, and establishing initial connections to target servers — work that takes approximately thirty milliseconds. The scraper processes five thousand pages per second, and creating a new HTTP client per request would add 150 seconds of cumulative latency per second. By maintaining a pool of fifty HTTP clients, the scraper reduces the per-request overhead to the cost of acquiring and resetting a client — approximately two hundred microseconds. The pool implements a maximum reuse count of one thousand requests per client, after which the client is discarded and replaced to prevent the accumulation of connection-level degradation.
-        </p>
+        </HighlightBlock>
         <p className="mt-2 text-sm">
           A real-time analytics pipeline uses a thread pool to process incoming events from a message queue. The pipeline receives one hundred thousand events per second, and each event requires CPU-bound processing — parsing, enrichment, and aggregation. The thread pool is sized to match the number of CPU cores (thirty-two cores) because the workload is CPU-bound and additional threads would only increase context-switching overhead. Events that arrive faster than the thread pool can process them are placed in a bounded queue with a capacity of one million events. When the queue reaches capacity, the pipeline applies backpressure by pausing consumption from the message queue, preventing memory exhaustion from unbounded queue growth.
         </p>
@@ -267,13 +289,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q1: You have a service that creates large byte arrays (256KB each) for JSON serialization. At peak load, this generates 2GB of garbage per second, causing GC pauses of 50-200ms. How would you design a buffer pool to address this?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: You have a service that creates large byte arrays (256KB each) for JSON serialization. At peak load, this generates 2GB of garbage per second, causing GC pauses of 50-200ms. How would you design a buffer pool to address this?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               I would implement a tiered buffer pool with multiple size classes to match the distribution of payload sizes. I would analyze the payload size distribution and define size classes that cover the majority of payloads. For example, if sixty percent of payloads are under 64KB, thirty percent are between 64KB and 256KB, and ten percent are over 256KB, I would create three pools: a 64KB pool with fifty buffers, a 256KB pool with fifty buffers, and a 1MB pool with twenty buffers.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               Each pool would be bounded with a fixed size, and the acquisition timeout would be set to five milliseconds. When a buffer is returned, it would be cleared by zeroing the used portion. For payloads that exceed the largest pool size, I would allocate a buffer outside the pool and allow it to be garbage collected. The net effect is a ninety percent reduction in large-object garbage allocation, which should eliminate the GC-induced latency spikes.
             </p>

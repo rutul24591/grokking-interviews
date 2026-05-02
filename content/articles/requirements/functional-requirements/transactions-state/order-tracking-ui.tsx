@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function OrderTrackingUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Order tracking UI provides visibility into order status and delivery progress, reducing customer anxiety and support inquiries. After purchase, customers want to know: when will my order ship, where is my package, when will it arrive. A well-designed tracking UI answers these questions proactively, reducing &quot;where is my order&quot; (WISMO) support tickets by 30-50%. For staff and principal engineers, order tracking involves carrier API integration (real-time tracking data), state synchronization (order status across systems), and notification delivery (proactive updates via email, SMS, push).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of order tracking extends beyond displaying tracking numbers. Carrier integration requires normalizing tracking events from multiple carriers (UPS, FedEx, USPS, DHL each have different APIs, event formats, update frequencies). Real-time updates require polling carrier APIs or webhook integration (carrier pushes updates). Delivery exceptions (delayed, failed delivery, address issue) require clear communication and recovery options (reschedule, pickup location, refund). The UI must handle edge cases (tracking not available, carrier system down, package lost) gracefully with clear messaging and support escalation.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, order tracking architecture involves distributed systems patterns. Event-driven architecture enables proactive notifications (tracking update → notification sent). Caching reduces carrier API calls (cache tracking data, refresh on TTL). Fallback handling manages carrier outages (show last known status, retry later). The system must support multiple order types (single shipment, split shipment, international with customs), multiple carriers per order, and post-delivery actions (confirm delivery, report issue, initiate return).
         </p>
@@ -47,13 +51,16 @@ export default function OrderTrackingUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Order Status Timeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Order status timeline shows order progression from purchase to delivery. States: Order Placed (order confirmed, payment processed), Processing (order being prepared, inventory allocated), Shipped (package handed to carrier, tracking active), Out for Delivery (package on delivery vehicle, same-day delivery), Delivered (package delivered, signed/confirmed). Each state has timestamp (when state was entered) and description (what&apos;s happening). Timeline visualization: vertical (mobile-friendly) or horizontal (desktop), with icons per state, progress indicator (completed vs. pending states).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           State descriptions provide context for each status. Order Placed: &quot;Order confirmed, preparing for shipment&quot; (expected ship date). Processing: &quot;Order being prepared, quality checked&quot; (packing progress). Shipped: &quot;Package shipped, in transit&quot; (tracking number, carrier, estimated delivery). Out for Delivery: &quot;Package out for delivery today&quot; (delivery window, driver location if available). Delivered: &quot;Package delivered&quot; (delivery location, signature if required, photo proof if available).
-        </p>
+        </HighlightBlock>
         <p>
           Estimated delivery date manages customer expectations. Calculation: ship date + transit time (carrier standard, expedited, overnight). Transit time varies by distance (zone-based), carrier service level, holidays/weekends (no shipping). Display: date range (&quot;Dec 15-17&quot;) or specific date (&quot;Dec 16 by 8 PM&quot;). Update: recalculate on ship (actual ship date vs. estimated), update on tracking events (carrier delays). Notification: proactive alert if delayed (before customer asks).
         </p>
@@ -105,9 +112,12 @@ export default function OrderTrackingUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Order tracking architecture spans order management integration, carrier API integration, tracking cache, and notification delivery. Order management provides order status (processing, shipped, delivered). Carrier API integration fetches tracking events. Tracking cache stores normalized tracking data (reduce API calls). Notification delivery sends proactive updates (email, SMS, push).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/order-tracking-ui/order-tracking-architecture.svg"
@@ -118,9 +128,9 @@ export default function OrderTrackingUIArticle() {
         />
 
         <h3>Order Management Integration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Order status sync fetches order state from order management system. States: Processing (not yet shipped), Shipped (tracking available), Delivered (confirmed delivery). Sync frequency: real-time (webhook on state change), polling (every 5-10 minutes). Order data: order ID, customer ID, items, shipping address, tracking numbers (multiple for split shipment), carrier, estimated delivery date.
-        </p>
+        </HighlightBlock>
         <p>
           Split shipment handling tracks multiple packages per order. Multiple tracking numbers: one per package, one per carrier. Display: group by package (Package 1 of 3, Package 2 of 3), show items per package (which items in which package), separate tracking per package. Notification: per-package notifications (Package 1 shipped, Package 2 shipped), consolidated delivery notification (all packages delivered).
         </p>
@@ -180,14 +190,17 @@ export default function OrderTrackingUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Order tracking design involves trade-offs between update frequency, API costs, customer experience, and operational complexity. Understanding these trade-offs enables informed decisions aligned with business priorities and customer expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Polling vs. Webhooks for Tracking Updates</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Polling carrier APIs for updates. Pros: Simple implementation (request/response), works for all carriers (even without webhook support), control over frequency (poll when needed). Cons: API costs (each poll counts against rate limit), latency (updates only on poll), inefficient (poll even if no change). Best for: Small volume (&lt;1000 orders/day), carriers without webhook support (USPS), fallback when webhooks fail.
-        </p>
+        </HighlightBlock>
         <p>
           Webhooks for push updates. Pros: Real-time updates (carrier pushes on change), reduced API calls (only poll for initial fetch), better customer experience (instant notifications). Cons: Complex implementation (webhook endpoint, authentication, retry handling), carrier support varies (USPS limited), monitoring (webhook failures). Best for: Large volume (&gt;1000 orders/day), carriers with webhook support (UPS, FedEx), real-time notifications.
         </p>
@@ -239,13 +252,16 @@ export default function OrderTrackingUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide proactive notifications:</strong> Shipped, out for delivery, delivered, exception. Email (always), SMS (opt-in), push (app). Reduce WISMO tickets by 30-50%. Include tracking number, ETA, action links.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Normalize tracking events:</strong> Map carrier-specific events to standard states (Label Created, Picked Up, In Transit, Out for Delivery, Delivered, Exception). Enrich with location, description, next expected event. Consistent experience across carriers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cache tracking data:</strong> Redis cache (4-6 hour TTL, shorter near delivery). Reduce carrier API calls (cost savings, rate limit management). Invalidate on webhook event or customer view (if stale). Fallback to last known on API failure.
           </li>
@@ -275,13 +291,16 @@ export default function OrderTrackingUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No proactive notifications:</strong> Customers must check for updates. Solution: Proactive notifications (shipped, out for delivery, delivered, exception). Reduce WISMO tickets.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Raw carrier events:</strong> &quot;Origin Scan&quot; not meaningful. Solution: Normalize events, enrich with descriptions (&quot;Package picked up by UPS&quot;).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No caching:</strong> Excessive API calls, rate limit issues. Solution: Cache tracking data (4-6 hour TTL), invalidate on webhook/customer view.
           </li>
@@ -311,16 +330,19 @@ export default function OrderTrackingUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Amazon Order Tracking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon tracking: real-time map view (driver location on delivery day), delivery photos (package at door), delivery notifications (email, SMS, push). Prime: delivery window (2-hour window), driver tracking (see driver approaching). Exceptions: reschedule, pickup location (Amazon Locker), refund/replace. International: customs tracking, duties prepaid (no surprise fees).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">UPS My Choice</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           UPS My Choice: free tracking account. Features: delivery alerts (email, SMS), delivery map (driver location), delivery instructions (leave at door, neighbor), delivery reschedule (pick new date), pickup location (UPS Access Point). Premium: delivery window (2-hour), unlimited reschedules. Integration: merchant APIs (UPS Tracking API), webhooks (push updates).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">FedEx Delivery Manager</h3>
         <p>
@@ -340,12 +362,15 @@ export default function OrderTrackingUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you integrate with multiple carriers?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you integrate with multiple carriers?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Adapter pattern: UPSAdapter, FedExAdapter, USPSAdapter, DHLAdapter. Common interface: getTracking(trackingNumber) → normalized tracking events. Each adapter handles carrier-specific API (authentication, request/response format, error handling). Benefits: swap carriers easily, test carriers (mock adapter), rate limit per carrier. Normalization: map carrier events to standard states (Label Created, Picked Up, In Transit, Out for Delivery, Delivered, Exception).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function PrivacySettingsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Privacy settings enable users to control who can see their content, profile information, and activity on a platform. The privacy settings system is a critical user control mechanism that empowers users to protect their personal information, manage their digital footprint, and control their online presence. For staff and principal engineers, privacy settings implementation involves privacy controls (granular visibility settings), audience selection (who can see content), privacy presets (quick privacy configurations), data sharing preferences (what data is shared with third parties), and privacy management interfaces (intuitive privacy controls).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of privacy settings extends beyond simple public/private toggles. Modern privacy settings must handle granular controls (individual posts, profile sections, activity types), audience segmentation (friends, followers, custom lists, blocked users), inheritance and overrides (default privacy vs. post-specific privacy), and privacy changes over time (what happens when privacy is changed from public to private). The system must handle edge cases (tagged content, shared content, mentions) while maintaining user control and expectations. Privacy settings must also comply with regulations (GDPR, CCPA) while remaining user-friendly.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, privacy settings architecture involves user-facing components (privacy dialogs, settings pages, quick privacy selectors), backend enforcement (privacy checking at content retrieval), privacy inheritance (default privacy, post-specific overrides), and compliance systems (privacy audits, data access logs). The system must handle high scale (billions of privacy checks daily), provide instant enforcement (privacy changes take effect immediately), and maintain user trust (privacy settings work as expected, no leaks). Privacy is fundamental to user trust—privacy failures can destroy platform reputation.
         </p>
@@ -46,13 +50,16 @@ export default function PrivacySettingsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Privacy Controls and Visibility Settings</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Privacy levels define who can access user content. Public (anyone can see, including non-users). Friends/followers (only connected users can see). Friends of friends (extended network can see). Custom/specific lists (user-defined audiences can see). Only me (private, only user can see). Each level has different visibility implications and enforcement requirements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content-level privacy allows per-item privacy settings. Post privacy (each post can have different privacy). Profile section privacy (different profile sections have different privacy). Activity privacy (likes, comments, shares have separate privacy). Album privacy (photo albums have independent privacy). Content-level privacy provides granular control but increases complexity.
-        </p>
+        </HighlightBlock>
         <p>
           Default privacy settings apply when user doesn&apos;t specify. Account-level default (default privacy for all new content). Content-type defaults (different defaults for posts, photos, videos). Audience memory (remember last used privacy setting). Default privacy reduces user burden while allowing overrides for specific content.
         </p>
@@ -104,9 +111,12 @@ export default function PrivacySettingsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Privacy settings architecture spans privacy management, privacy enforcement, audience management, and compliance systems. Privacy management provides user-facing interfaces for privacy control. Privacy enforcement ensures privacy settings are respected at content retrieval. Audience management handles audience selection and persistence. Compliance systems ensure regulatory compliance and privacy auditing.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/privacy-settings/privacy-settings-architecture.svg"
@@ -117,9 +127,9 @@ export default function PrivacySettingsArticle() {
         />
 
         <h3>Privacy Management Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Privacy management layer provides user-facing interfaces. Privacy settings page (central privacy control hub). Quick privacy selectors (inline privacy controls). Privacy checkup wizard (guided privacy review). Privacy education (help users understand privacy implications). Management layer must be intuitive while supporting complex privacy needs.
-        </p>
+        </HighlightBlock>
         <p>
           Privacy storage persists privacy settings. Privacy database stores privacy settings per content item, profile section, activity type. Index optimization for fast privacy lookups (critical for content retrieval). Privacy inheritance chains (store inheritance relationships). Privacy history (track privacy changes over time). Storage must be reliable—lost privacy settings mean privacy violations.
         </p>
@@ -179,14 +189,17 @@ export default function PrivacySettingsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Privacy settings design involves trade-offs between granularity and simplicity, default privacy and user choice, and privacy and discoverability. Understanding these trade-offs enables informed decisions aligned with platform values and user expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Privacy Granularity: Simple vs. Granular</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Simple privacy (public/private toggle). Pros: Easy to understand (simple mental model), quick to set (one click), less decision fatigue. Cons: Limited control (can&apos;t fine-tune privacy), may be too restrictive or permissive, doesn&apos;t support nuanced needs. Best for: Simple platforms, privacy-minimal users.
-        </p>
+        </HighlightBlock>
         <p>
           Granular privacy (per-content, per-section, per-audience). Pros: Fine-grained control (precise privacy), supports nuanced needs (different privacy for different content), empowers users. Cons: Complex (many settings to manage), decision fatigue (many choices), privacy misconfiguration risk. Best for: Complex platforms, privacy-conscious users.
         </p>
@@ -238,13 +251,16 @@ export default function PrivacySettingsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide clear privacy controls:</strong> Intuitive privacy selectors. Clear privacy level descriptions. Privacy preview (see who can see content). Privacy education (help users understand implications).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Set appropriate defaults:</strong> Privacy-first defaults (private by default). Contextual defaults (appropriate for content type). Remember user preferences (learn from user choices).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Support granular privacy:</strong> Per-content privacy (each post can have different privacy). Profile section privacy (different sections have different privacy). Activity privacy (likes, comments have separate privacy).
           </li>
@@ -274,13 +290,16 @@ export default function PrivacySettingsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Overly complex privacy settings:</strong> Too many options, confusing UI. Solution: Simple defaults with granular options, clear privacy education, progressive disclosure.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Privacy not enforced everywhere:</strong> Privacy works in some places but not others. Solution: Enforce at API layer, comprehensive testing, privacy audits.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Privacy changes not immediate:</strong> Privacy changes take time to propagate. Solution: Real-time enforcement, cache invalidation, sync verification.
           </li>
@@ -310,16 +329,19 @@ export default function PrivacySettingsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Facebook Privacy Settings</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook privacy settings for comprehensive privacy control. Privacy checkup (guided privacy review). Audience selector (public, friends, friends of friends, custom). Profile section privacy (different sections have different privacy). Post privacy (per-post privacy settings). Tag review (approve tags before appearing). Privacy shortcuts (quick privacy settings access).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Instagram Privacy Settings</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Instagram privacy settings for content privacy. Private account toggle (switch between public/private). Close friends list (share stories with close friends only). Story privacy (control who sees stories). Activity status privacy (hide online status). Tag privacy (control who can tag you). Comment privacy (control who can comment).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Twitter Privacy Settings</h3>
         <p>
@@ -339,12 +361,15 @@ export default function PrivacySettingsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design privacy settings that balance simplicity with granular control?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design privacy settings that balance simplicity with granular control?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement progressive disclosure with sensible defaults that serve different user expertise levels. Simple defaults: provide public/private toggle prominently for most users who want quick, understandable controls. Advanced options: place granular controls (per-content-type settings, custom audiences, inheritance rules) in &quot;Advanced&quot; section—accessible but not overwhelming. Privacy presets: offer quick configurations for common scenarios (&quot;Maximum Privacy,&quot; &quot;Balanced,&quot; &quot;Public Figure&quot;) that set multiple settings at once. Privacy checkups: provide guided review wizard for users who want more control—walk through settings one by one with explanations. The key insight: most users want simple privacy they can understand in seconds, but power users need granular control for complex scenarios. Design for both with progressive disclosure—simple by default, granular when needed—and always default to the more protective option when users haven&apos;t explicitly chosen.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

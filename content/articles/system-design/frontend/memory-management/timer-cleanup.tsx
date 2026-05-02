@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Timer cleanup</strong> is the practice of ensuring that time-based work (timeouts, intervals, animation frames, idle callbacks, retry loops, and polling loops) is cancelled when it is no longer needed. In SPAs, forgotten timers are a common source of both memory retention and background CPU activity: the timer keeps callbacks reachable, callbacks keep closures reachable, and periodic execution keeps allocating and doing work long after the user navigated away.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Unlike obvious leaks, timer problems can be subtle: the app works, but background loops continue to run, causing elevated CPU, increased battery usage on mobile, and a slow increase in memory churn that manifests as GC-driven jank. In extreme cases, multiple overlapping polling loops and retries produce load spikes on both client and backend.
-        </p>
+        </HighlightBlock>
         <p>
           Staff/principal engineers should treat timers as a concurrency model and a resource: they require <strong>ownership</strong>, <strong>cancellation</strong>, and <strong>budgets</strong> just like network requests and subscriptions.
         </p>
@@ -62,6 +66,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/memory-management/timer-cleanup-lifecycle.svg"
@@ -70,12 +77,12 @@ export default function ArticlePage() {
         />
 
         <h3>Timers Are Reachability Roots in Practice</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a timeout or interval is scheduled, the runtime holds a reference to the callback until it fires (or until it is cancelled). If the timer is periodic, that reference can persist for the entire session. The callback often references application state, caches, and sometimes DOM references. This is why "just a polling loop" can retain large graphs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The retention chain:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Timer Queue:</strong> Browser/runtime internal queue holding scheduled timers.
@@ -179,9 +186,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A safe timer architecture makes time-based work explicit, owned, and cancellable.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/memory-management/timer-cleanup-polling.svg"
@@ -190,9 +200,9 @@ export default function ArticlePage() {
         />
 
         <h3>1) Define Ownership and Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Decide whether the timer is view-scoped (lives only while a page is active), feature-scoped (only while a feature is enabled), or session-scoped (rare). View-scoped timers should start on activation and stop on deactivation or unmount.
-        </p>
+        </HighlightBlock>
         <p>
           In React, this maps to:
         </p>
@@ -310,6 +320,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -320,18 +333,18 @@ export default function ArticlePage() {
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-semibold">Fixed Interval Polling</td>
               <td className="p-3">Simple to implement; predictable timing</td>
               <td className="p-3">Can overlap if work is slow; no backpressure</td>
               <td className="p-3">Simple dashboards, low-frequency updates</td>
-            </tr>
-            <tr className="border-b border-theme">
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-semibold">Recursive Scheduling</td>
               <td className="p-3">Natural backpressure; no overlap</td>
               <td className="p-3">Timing can drift; more complex</td>
               <td className="p-3">API polling, retry logic</td>
-            </tr>
+            </HighlightBlock>
             <tr className="border-b border-theme">
               <td className="p-3 font-semibold">Exponential Backoff</td>
               <td className="p-3">Reduces load during failures; resilient</td>
@@ -352,9 +365,9 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level bias is to prefer library-managed timers (React Query, SWR) over manual timers when possible. These libraries handle cleanup, deduplication, and retry logic automatically.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -362,13 +375,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Always Store Timer IDs:</strong> Keep timer IDs in refs so they can be cleared in cleanup.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Clear in useEffect Cleanup:</strong> Return cleanup function that clears all timers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Prefer Recursive Scheduling:</strong> Use setTimeout recursively instead of setInterval for polling.
           </li>
@@ -401,13 +417,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Creating Timers in Render:</strong> Timers created during render fire even if component never mounts. Always create timers in useEffect.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Clearing on Unmount:</strong> Forgetting to clear timers in useEffect cleanup causes leaks.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Overlapping Intervals:</strong> Creating new intervals without clearing old ones causes accumulation.
           </li>
@@ -434,14 +453,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Real-Time Dashboard</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Problem:</strong> Dashboard polls API every 5 seconds for live data. Memory grows over time, CPU usage increases.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Root Cause:</strong> Polling continues after navigation away from dashboard. Multiple dashboard visits create overlapping polling loops.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Start polling on dashboard mount, stop on unmount. Use recursive scheduling with AbortController for cancellable fetches. Add visibility pause.
         </p>
@@ -496,14 +518,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: Why do timers cause memory leaks in SPAs?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Timers keep callbacks reachable until they fire or are cancelled. The callback keeps its closure reachable, which can include large application state or DOM references. If a timer is not cleared when a component unmounts, it continues to hold references to view-specific state indefinitely.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               For periodic timers (setInterval), the problem compounds: the timer keeps firing, executing callbacks, and potentially allocating new memory — all after the user has navigated away.
             </p>

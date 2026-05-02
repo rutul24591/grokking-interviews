@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 const BASE_PATH = "/diagrams/system-design-concepts/backend/reliability-fault-tolerance";
@@ -28,12 +29,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Dead letter queues (DLQs)</strong> are specialized message queues that store messages which cannot be processed successfully after a configured number of retry attempts or when a message is determined to be permanently unprocessable. Rather than discarding failed messages or allowing them to block the main processing pipeline, DLQs isolate problematic messages for later investigation, debugging, and reprocessing. The term "dead letter" originates from postal systems where undeliverable mail is collected for manual review rather than destroyed outright.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In distributed systems built on message brokers like Apache Kafka, RabbitMQ, AWS SQS, or Azure Service Bus, message processing is inherently asynchronous and subject to a wide variety of failure modes. A message might fail because the consumer encountered a transient network timeout, because the payload violates an updated schema, because a downstream dependency is temporarily unavailable, or because the consumer logic contains a bug. Without a DLQ, any of these failures can cause messages to be requeued indefinitely, creating a "poison message" scenario that starves the queue of capacity and blocks all downstream processing.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, DLQs are not merely an operational safety net—they represent a deliberate design decision about how a system handles uncertainty. A DLQ forces the team to confront questions about retry semantics, error classification, idempotency, observability, and reprocessing guarantees. The existence and behavior of a DLQ reveals how mature an organization's approach to failure management truly is.
         </p>
@@ -50,6 +54,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/dlq-message-lifecycle.svg`}
@@ -58,12 +65,12 @@ export default function ArticlePage() {
         />
 
         <h3>Message Lifecycle and Failure Classification</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding the message lifecycle is fundamental to designing effective DLQ behavior. A message is produced by a sender and placed on a primary queue. A consumer retrieves the message and attempts processing. If processing fails, the system must decide whether the failure is transient or permanent. Transient failures—such as network timeouts, temporary dependency unavailability, or rate-limiting responses—warrant retry with bounded attempts and exponential backoff. Permanent failures—such as schema validation errors, missing required fields, authorization failures, or business logic violations—should be routed directly to the DLQ without wasting compute cycles on retries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The critical insight is that retry policies must be bounded and classified. An unbounded retry policy turns a single bad message into a resource drain that can cascade across the system. A classified retry policy distinguishes between errors that might resolve themselves and errors that will not, routing each category appropriately. This classification should be encoded in the consumer logic, not left to ad-hoc decision-making at runtime.
-        </p>
+        </HighlightBlock>
         <p>
           When a message reaches the DLQ, it should carry rich metadata: the original payload, the error reason and stack trace, the number of retry attempts, timestamps for first and last processing attempt, consumer version, correlation identifiers, tenant identity, and the downstream dependency that failed. Without this metadata, the DLQ becomes a collection of opaque payloads that are prohibitively expensive to triage. The metadata transforms the DLQ from a holding area into a debugging tool.
         </p>
@@ -113,12 +120,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production-grade DLQ architecture integrates seamlessly with the message processing pipeline and provides clear operational boundaries for failure handling. The flow begins with the producer sending a message to the primary queue. The consumer retrieves the message and attempts processing within a defined timeout window. If processing fails, the error is classified as transient or permanent. Transient errors trigger a retry cycle with exponential backoff and jitter, bounded by a maximum attempt count. If all retries are exhausted, or if the error is classified as permanent from the outset, the message is routed to the DLQ along with failure metadata.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The DLQ itself is not a terminal state. It is a staging area for a reprocessing workflow that operates independently from the main processing pipeline. This separation of concerns is critical: reprocessing DLQ messages should not compete with primary queue processing for consumer capacity. Dedicated reprocessing workers, or a separate reprocessing pipeline, should handle DLQ messages. This ensures that investigating and reprocessing failures does not degrade the throughput of healthy messages.
-        </p>
+        </HighlightBlock>
         <p>
           The metadata enrichment layer is a key architectural component. When a message enters the DLQ, a metadata enrichment step captures the consumer version, the correlation ID chain, the tenant identifier, the downstream dependency that failed, the error classification, and a redacted copy of the payload. This metadata enables efficient triage: operators can group DLQ messages by failure reason, by consumer version (to identify regression-caused failures), or by tenant (to identify noisy or misbehaving clients). Without this enrichment layer, DLQ triage becomes a manual, message-by-message exercise that does not scale.
         </p>
@@ -132,12 +142,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The core trade-off in DLQ design is between aggressive retries and conservative retries. Aggressive retries—with high attempt counts and short backoff intervals—reduce the volume of messages reaching the DLQ but consume significant compute resources and can amplify load on already-struggling downstream dependencies. In a scenario where a database is experiencing elevated latency, aggressive retries from multiple consumers can push the database from degraded to fully unavailable. Conservative retries—with low attempt counts and longer backoff intervals—push more messages to the DLQ quickly, reducing the risk of cascading failures but requiring more human involvement in triage and reprocessing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice between separate-per-queue DLQs and a shared DLQ involves another trade-off. Separate DLQs provide clear failure attribution and isolation but multiply operational overhead. A shared DLQ reduces overhead and enables cross-cutting failure pattern analysis but requires robust metadata to maintain message traceability and safe reprocessing routing. The decision should be driven by the number of queues, the diversity of producers and consumers, and the team's operational maturity in handling shared resource management.
-        </p>
+        </HighlightBlock>
         <p>
           Reprocessing strategy also involves a trade-off between speed and safety. Automated reprocessing is fast but risks reintroducing failures if the classification logic is imperfect. Manual reprocessing is slower but provides human judgment for edge cases. The optimal approach is a hybrid: automate reprocessing for well-understood, high-confidence failure categories (transient timeout resolution, temporary auth token refresh), and require manual approval for complex failures (schema migration mismatches, data integrity violations, business logic edge cases).
         </p>
@@ -151,12 +164,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Define a clear error taxonomy as the foundation of your DLQ strategy. Classify errors into transient (timeouts, rate limits, temporary dependency unavailability), permanent (schema violations, authorization failures, business rule violations), and gray (slow responses that are not full failures but cause timeout risk). Each category should have a distinct retry policy: transient errors receive bounded retries with exponential backoff and jitter, permanent errors route directly to the DLQ without retries, and gray errors receive limited retries with aggressive timeouts to prevent resource exhaustion.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Capture comprehensive metadata for every DLQ message. The minimum metadata set should include the original payload (or a pointer to it), the failure reason and error classification, the number of retry attempts and their outcomes, timestamps for first and last processing attempt, the consumer version and deployment identifier, correlation IDs linking the message to its originating request, tenant or customer identifier, and the downstream dependency that failed. This metadata enables efficient triage, reprocessing routing, and post-incident analysis.
-        </p>
+        </HighlightBlock>
         <p>
           Implement rate-limited, observable reprocessing workflows. Reprocessing should never blast through the entire DLQ at full speed. It should process messages in controlled batches, monitor success and second-failure rates, and provide an immediate kill switch for operators to halt reprocessing if errors return. The reprocessing pipeline should be separate from the primary message processing pipeline to avoid resource contention. Idempotency must be enforced at the consumer level to prevent duplicate side effects during reprocessing.
         </p>
@@ -170,12 +186,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most dangerous pitfall is ignoring the DLQ entirely. When no process reads or monitors the DLQ, failed work accumulates silently and the system appears healthy while data integrity erodes. DLQ growth becomes a leading indicator of systemic issues—bad deployments, schema drift, dependency degradation—that go undetected until they cascade into user-facing outages. A DLQ without an owner and a triage process is effectively a delayed data loss mechanism.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A second common pitfall is "reprocess everything" without classification. This approach blindly replays all DLQ messages through the consumer, often reintroducing the same failure at scale and overwhelming downstream systems that may already be fragile. If a bad deploy caused 10,000 messages to fail, reprocessing all 10,000 without verifying the fix will simply recreate the failure and potentially amplify it. Reprocessing must be classified, rate-limited, and monitored.
-        </p>
+        </HighlightBlock>
         <p>
           A third pitfall is storing sensitive data in the DLQ without proper access controls and redaction. DLQs contain the same payloads as the primary queue, which may include personally identifiable information, financial data, or authentication tokens. If DLQ access is not restricted to the same standards as the primary queue, it becomes a security vulnerability. Field-level redaction for sensitive data in DLQ metadata is essential, and DLQ access should be audited like any other sensitive data store.
         </p>
@@ -189,16 +208,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce: Order Processing Pipeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce platform processes orders through a message-based pipeline where each order triggers inventory reservation, payment processing, and fulfillment notification. During a schema update to the payment service, messages containing older payment format versions began failing validation. Without a DLQ, these messages would have blocked the queue and prevented subsequent orders from processing. With a DLQ in place, failed messages were isolated, the schema mismatch was identified through DLQ metadata analysis, and a consumer update was deployed. The DLQ messages were then reprocessed with idempotency guarantees, ensuring no duplicate payments were issued. The DLQ prevented a cascading outage during a rolling deployment.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS: Multi-Tenant Event Processing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A SaaS platform processes tenant-specific events through a shared message queue. One tenant's integration began sending malformed events due to a bug in their client library. Without classification, every failed event consumed retry capacity and degraded processing for all other tenants. With a DLQ configured with per-tenant metadata, the platform team identified the problematic tenant, routed their failures to a dedicated triage path, and notified the tenant to fix their integration. The DLQ's tenant-level metadata enabled precise attribution and prevented a single noisy tenant from affecting the broader platform.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Services: Compliance and Audit Trail</h3>
         <p>
@@ -216,14 +238,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: When should a message be sent to a DLQ?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               A message should be sent to a DLQ in two scenarios: after exhausting a bounded retry policy for transient failures, or immediately when the failure is classified as permanent. Permanent failures include schema validation errors, authorization failures, business rule violations, and missing required fields. These errors will not resolve themselves through retries and should bypass the retry cycle entirely.
-            </p>
+            </HighlightBlock>
             <p>
               The key insight is that DLQs are for messages that require investigation or manual intervention, not for transient blips. If every error retries ten times before reaching the DLQ, you are wasting compute resources on errors that could have been classified and routed immediately. A mature system classifies errors at the point of failure and routes accordingly.
             </p>

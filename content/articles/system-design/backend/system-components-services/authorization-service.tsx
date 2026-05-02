@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -25,7 +26,10 @@ export default function ArticlePage() {
       {/* ========== Definition & Context ========== */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An <strong>authorization service</strong> is the system that determines whether an authenticated identity is
           permitted to perform a specific action on a specific resource at a specific time. It takes as input an
           identity (established by authentication), an action (read, write, delete, administer), a resource (a document,
@@ -33,15 +37,15 @@ export default function ArticlePage() {
           and produces a binary decision: allow or deny, typically accompanied by a reason code that explains the
           basis of the decision. Authorization is the enforcement layer that turns security policy into actionable
           decisions across every service in a system.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental challenge of authorization is that it must be both correct and fast. A correct decision that
           arrives too late causes timeouts and degraded user experience. A fast decision that is incorrect creates
           security vulnerabilities that can silently grant unauthorized access. Unlike authentication, which is invoked
           relatively infrequently (once per session or per token refresh), authorization is invoked on every request
           that accesses a protected resource. This makes authorization a high-QPS decision system that must operate
           under strict latency budgets while maintaining accuracy across complex and evolving policy landscapes.
-        </p>
+        </HighlightBlock>
         <p>
           Authorization is distinct from authentication, though the two are closely related. Authentication establishes
           identity; authorization determines what that identity is permitted to do. In practice, the authorization
@@ -62,8 +66,11 @@ export default function ArticlePage() {
       {/* ========== Core Concepts ========== */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Role-Based Access Control (RBAC)</strong> is the most widely deployed authorization model. It maps
           identities to roles, and roles to permissions. A role is a named collection of permissions that corresponds
           to a job function or responsibility within an organization. For example, an &quot;org-admin&quot; role might
@@ -74,9 +81,9 @@ export default function ArticlePage() {
           roles like &quot;finance-team-editor-us-east&quot; and &quot;marketing-team-viewer-eu-west&quot; that differ
           by only one attribute, making role management unwieldy. RBAC also cannot express context-dependent permissions,
           such as &quot;allow editing only during business hours&quot; or &quot;allow access only from trusted devices.&quot;
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Attribute-Based Access Control (ABAC)</strong> evaluates policies based on attributes of the subject
           (the user), the resource (the object being accessed), the action, and the environment. Attributes can include
           anything from user department and clearance level to resource sensitivity classification, time of day,
@@ -88,7 +95,7 @@ export default function ArticlePage() {
           of paths grows exponentially with the number of attributes. ABAC also requires that all relevant attributes
           be available at evaluation time, which means the authorization service may need to fetch data from multiple
           attribute sources, increasing latency and failure surface.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Relationship-Based Access Control (ReBAC)</strong> expresses authorization in terms of relationships
@@ -155,8 +162,11 @@ export default function ArticlePage() {
       {/* ========== Architecture & Flow ========== */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The authorization architecture centers on the policy engine, which receives authorization requests, evaluates
           them against applicable policies and entitlement data, and returns allow/deny decisions with reason codes.
           The request flow begins when a client makes an API call that includes an authentication token. The API gateway
@@ -165,9 +175,9 @@ export default function ArticlePage() {
           generally authorized to access this API? If the coarse check passes, the request is forwarded to the
           appropriate backend service, which performs fine-grained authorization: is this user allowed to perform this
           specific action on this specific resource?
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fine-grained authorization check is where the policy engine is invoked. The backend service constructs an
           authorization request containing the subject identity, the action being attempted, the resource identifier,
           and any relevant contextual attributes (tenant, environment, time). The policy engine first checks the decision
@@ -176,7 +186,7 @@ export default function ArticlePage() {
           may require fetching entitlement data from the entitlement sources (role assignments, attribute values,
           relationship graph lookups). The evaluation result is cached according to the action&apos;s risk classification,
           logged to the audit system, and returned to the requesting service.
-        </p>
+        </HighlightBlock>
 
         <p>
           The policy store maintains policy definitions in a versioned format. Policies are not static: they evolve as
@@ -216,8 +226,11 @@ export default function ArticlePage() {
       {/* ========== Trade-offs & Comparison ========== */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The choice between centralized and embedded policy enforcement is one of the most consequential architectural
           decisions in authorization system design. Centralized enforcement provides a single source of truth for policy
           evaluation: all services use the same policy engine, the same entitlement data, and the same evaluation logic.
@@ -226,9 +239,9 @@ export default function ArticlePage() {
           becomes a critical infrastructure dependency that every service relies on. At high request volumes, the policy
           engine must scale to handle potentially millions of decisions per second, and any outage in the policy engine
           affects all services simultaneously.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Embedded enforcement distributes the policy evaluation logic to each service. Each service carries its own
           copy of the policy engine (as a library or WASM module) and evaluates policies locally. This eliminates the
           network dependency, reduces latency (no RPC call to a centralized service), and improves availability (a
@@ -236,7 +249,7 @@ export default function ArticlePage() {
           The disadvantages are policy version management (ensuring all services are running the correct policy version),
           increased complexity in policy deployment (changes must be distributed to all services), and the risk of
           inconsistent evaluation if services are running different policy versions during a rollout.
-        </p>
+        </HighlightBlock>
 
         <p>
           The hybrid approach is the most common in large-scale systems. High-risk actions (administrative operations,
@@ -306,17 +319,20 @@ export default function ArticlePage() {
       {/* ========== Best Practices ========== */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Always implement deny-by-default as the baseline authorization posture. When a request arrives and no policy
           rule explicitly allows it, the decision must be deny. This follows the principle of least privilege: users
           start with no access and are granted only what they explicitly need. Deny-by-default is particularly important
           when new resources are created: they should not be accessible to anyone until access is explicitly granted.
           Many authorization failures in production trace back to missing deny-by-default enforcement, where new
           resources inherit overly permissive default policies.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Classify every action by risk and apply different authorization enforcement strategies based on the
           classification. Low-risk actions (reading public content, listing non-sensitive resources) can use embedded
           policy evaluation with generous caching windows (minutes). Medium-risk actions (writing content, modifying
@@ -325,7 +341,7 @@ export default function ArticlePage() {
           caching entirely and use centralized policy evaluation with fresh entitlement data. This classification should
           be explicit, documented, and reviewable, not implicit in the way different services happen to implement
           authorization.
-        </p>
+        </HighlightBlock>
 
         <p>
           Provide structured reason codes with every authorization decision, not just a boolean allow/deny. A reason
@@ -367,8 +383,11 @@ export default function ArticlePage() {
       {/* ========== Common Pitfalls ========== */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stale entitlements are the most common cause of authorization incidents. A user is removed from an
           organization or has their role changed, but the authorization system continues to grant access because the
           entitlement change has not propagated to the evaluation point. This is particularly dangerous because it
@@ -378,9 +397,9 @@ export default function ArticlePage() {
           high-risk actions, use event-driven entitlement propagation with monitoring for propagation delays, and
           implement periodic reconciliation that compares the current entitlement state against the authoritative
           source.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Policy rollout regressions occur when a policy change unintentionally alters access behavior. This can happen
           in two ways: over-permission (the change grants access that should be denied) or over-restriction (the change
           denies access that should be allowed). Over-permission is the more dangerous failure mode because it silently
@@ -390,7 +409,7 @@ export default function ArticlePage() {
           recent authorization requests and compare the results. If any discrepancies are found, investigate before
           deploying. When deploying, use a canary rollout: apply the new policy to a small percentage of traffic,
           monitor for unexpected denies or allows, and gradually increase the traffic percentage.
-        </p>
+        </HighlightBlock>
 
         <p>
           Inconsistent policy versions across services create a subtle but dangerous failure mode. During a policy
@@ -435,8 +454,11 @@ export default function ArticlePage() {
       {/* ========== Real-world Use Cases ========== */}
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Multi-tenant SaaS platforms present one of the most complex authorization challenges. Each tenant
           (organization) has its own set of users with roles and permissions, and users may belong to multiple tenants
           with different roles in each. Resources are scoped to tenants, and cross-tenant access must be strictly
@@ -446,9 +468,9 @@ export default function ArticlePage() {
           the user&apos;s context and the resource&apos;s scope. Google&apos;s Zanzibar system, which powers
           authorization across Google Drive, Calendar, Photos, and Cloud, is the canonical example of a relationship-based
           authorization system that handles multi-tenancy at global scale.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Healthcare and financial services operate under strict regulatory frameworks (HIPAA, PCI DSS, SOX) that
           mandate specific authorization controls. These include the principle of least privilege (users have only the
           minimum access needed for their role), separation of duties (no single user can perform end-to-end sensitive
@@ -457,7 +479,7 @@ export default function ArticlePage() {
           compliance-ready evidence: policy definitions that are versioned and reviewable, decision logs that are
           immutable and tamper-evident, and regular access certification workflows that confirm each user&apos;s
           entitlements are still appropriate.
-        </p>
+        </HighlightBlock>
 
         <p>
           Social and collaboration platforms like GitHub, Notion, and Figma use ReBAC extensively for their sharing
@@ -485,21 +507,24 @@ export default function ArticlePage() {
       {/* ========== Interview Questions & Answers ========== */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-6">
-            <p className="font-semibold text-heading">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-heading">
               Q1: You are designing authorization for a multi-tenant SaaS product. How do you ensure tenant isolation
               while supporting flexible cross-tenant sharing for specific resources?
-            </p>
+            </HighlightBlock>
             <div className="mt-3 text-sm text-muted">
-              <p className="mt-2">
+              <HighlightBlock as="p" tier="important" className="mt-2">
                 Tenant isolation is the foundational invariant: by default, no user can access resources outside their
                 tenant. This is enforced by including the tenant identifier in every authorization request and requiring
                 it to match between the user context and the resource scope. The policy engine should have a hard-coded
                 tenant isolation check that runs before any other policy evaluation, ensuring that no policy rule can
                 accidentally grant cross-tenant access.
-              </p>
+              </HighlightBlock>
               <p className="mt-2">
                 Cross-tenant sharing is implemented through explicit relationship edges in the authorization graph.
                 When a resource owner wants to share a resource with a user in another tenant, the system creates a

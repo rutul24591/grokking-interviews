@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,19 +24,22 @@ export default function HeapArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         A heap is a complete binary tree stored in an array that satisfies the heap property: every
         parent is no greater than (min-heap) or no less than (max-heap) its children. There is no
         order between siblings, and no order between subtrees beyond the root invariant — the only
         guarantee is that the top of the heap is the minimum (or maximum) of the entire collection.
         That single guarantee is enough to power an enormous family of interview problems.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Operations are O(log n) for push and pop, O(1) for peek, and O(n) for building a heap from
         an unsorted array via Floyd&apos;s sift-down algorithm. The array layout is implicit: the
         children of index i are at 2i+1 and 2i+2, the parent of index i is at (i-1)/2 — no pointers,
         cache-friendly traversal, no rebalancing trees.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Recognition signals: &quot;k largest&quot;, &quot;k smallest&quot;, &quot;k closest&quot;,
         &quot;merge k sorted&quot;, &quot;running median&quot;, &quot;next event by time&quot;,
@@ -52,18 +56,21 @@ export default function HeapArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Sift-up and sift-down.</strong> After push, the new element sits at the last leaf
         and walks up while it violates the heap property with its parent. After pop, the last leaf
         moves to the root and walks down, swapping with the smaller (min-heap) child until the
         invariant holds. Each path is at most log n long, hence the O(log n) bound.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Heapify.</strong> Building a heap from an array of size n by pushing each element
         is O(n log n). Floyd&apos;s heapify — sift-down from index n/2-1 down to 0 — is O(n) by a
         tighter sum, because most nodes are near the leaves and travel a short distance. When a
         problem hands you the full array up front, always heapify; never push n times.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Bounded heap (top-k).</strong> The classic optimisation. To find the k largest in a
         stream, maintain a <em>min-heap</em> of size k. For each incoming x, if heap size is less
@@ -102,22 +109,25 @@ export default function HeapArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/heap-diagram-1.svg" alt="Heap definition, operations, and use cases" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The canonical top-k template is the most reused heap pattern in interviews. Initialise an
         empty heap. For each element in the stream, push it; if the heap exceeds size k, pop the
         worst. At the end, the heap contains the k best elements in arbitrary order — drain it if
         you need them sorted. Time O(n log k), space O(k). The only subtle choice is the polarity:
         for &quot;k largest&quot; the heap is a min-heap (the floor we keep raising); for &quot;k
         smallest&quot; it is a max-heap (the ceiling we keep lowering).
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The two-heaps median template splits the stream by value. Push to the low max-heap if the
         new value is at most the low max; otherwise push to the high min-heap. After each push,
         rebalance by transferring the top from whichever heap is now too large. The invariant —
         |low| equals |high| or |high| plus one — uniquely determines where to read the median.
         Generalisation: replace the size invariant with any size split, and you can answer
         k-th-percentile streaming queries.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         The k-way merge template generalises to any &quot;merge sorted streams&quot; shape:
         Leetcode 23 (linked lists), 378 (sorted matrix rows or columns as streams), 632 (smallest
@@ -142,19 +152,22 @@ export default function HeapArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Heap vs. sorting.</strong> Sorting is O(n log n) and gives random access to all
         order statistics; heap is O(n log k) for top-k and supports streaming. Use sorting when k
         is comparable to n or when you need the entire ordering. Use a heap when k is small or the
         stream is unbounded.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Heap vs. quickselect.</strong> Quickselect finds the k-th order statistic in O(n)
         average (O(n²) worst case) and partitions the array around it. Use quickselect when the
         whole array is in memory and you need only the value, not a streaming guarantee. Use a
         heap when data arrives over time, when you need <em>all</em> top-k items rather than just
         the k-th, or when worst-case complexity matters (heap is O(n log k) deterministic).
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Heap vs. balanced BST.</strong> A BST gives O(log n) insert, delete, find-min,
         find-max, and k-th order statistic. A heap gives O(log n) insert and find-extremum but
@@ -183,17 +196,20 @@ export default function HeapArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/heap-diagram-2.svg" alt="Top-k and two-heaps templates" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Choose polarity by what you discard.</strong> The heap top is the element you pop
         first — it should be the worst of the &quot;keepers&quot;. For k largest, discard small,
         so a min-heap whose top is the smallest of the current k. For k smallest, max-heap. State
         the invariant aloud before coding.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Use language built-ins.</strong> Python&apos;s heapq is a min-heap with negation
         for max; Java&apos;s PriorityQueue takes a Comparator; C++&apos;s priority_queue is a
         max-heap by default. Know the defaults of your language so you do not invert by accident.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Carry tie-breakers explicitly.</strong> When priorities can tie, define a stable
         comparator. Leetcode 692 (top-k frequent words) requires lexicographic order on ties — a
@@ -222,17 +238,20 @@ export default function HeapArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Wrong heap polarity.</strong> &quot;K largest&quot; with a max-heap sounds right
         but is exactly wrong: the max-heap top is the largest, which you would never want to
         discard. Polarity errors are the single most common heap bug. Anchor on &quot;the top is
         the next thing I am willing to throw away&quot;.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Not bounding the heap.</strong> Pushing every element of an n-stream into an
         unbounded heap is O(n log n) in space and time — at that point you might as well sort. The
         win of top-k is bounding to k.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Comparator on mutable state.</strong> If the priority of a heap element depends on
         a mutable field, mutating after push silently breaks the invariant. Either snapshot the
@@ -263,16 +282,19 @@ export default function HeapArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>215. Kth Largest Element in an Array.</strong> Either quickselect (O(n) average) or
         a min-heap of size k (O(n log k)). Classic warm-up; the interviewer often follows up with
         &quot;in a stream&quot;, where heap is the only viable answer.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>347. Top K Frequent Elements.</strong> Counter, then min-heap of size k by
         frequency, or bucket sort if you want O(n). The bucket-sort follow-up is a frequent
         interview escalation.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>692. Top K Frequent Words.</strong> Same as 347 but with a tie-breaker on lex
         order; tests whether you write the comparator correctly under inverted polarity.
@@ -320,13 +342,16 @@ export default function HeapArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/heap-diagram-3.svg" alt="Canonical heap Leetcode problems" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why is heapify O(n) and not O(n log n)?</strong> Most nodes are near the leaves and
+        <HighlightBlock as="li" tier="important"><strong>Why is heapify O(n) and not O(n log n)?</strong> Most nodes are near the leaves and
         sift down a short distance. Summing the work across all levels gives a geometric series
-        bounded by 2n — strictly linear despite the per-node logarithmic worst case.</li>
-        <li><strong>Why min-heap for k largest?</strong> The heap top is the eviction candidate. To
+        bounded by 2n — strictly linear despite the per-node logarithmic worst case.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Why min-heap for k largest?</strong> The heap top is the eviction candidate. To
         keep the largest k, you want to evict the smallest of the kept ones — that is the min-heap
-        top.</li>
+        top.</HighlightBlock>
         <li><strong>Why does Dijkstra fail with negative edges?</strong> Once a node is popped, the
         algorithm assumes its distance is final. Negative edges can later improve it, but the
         algorithm has already moved on. Bellman-Ford handles negatives by allowing repeated

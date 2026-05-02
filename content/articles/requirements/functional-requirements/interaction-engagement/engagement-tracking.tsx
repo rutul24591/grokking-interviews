@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function EngagementTrackingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Engagement Tracking</strong> collects and analyzes user interaction data to measure content performance, detect fraud, optimize recommendations, and inform creator strategy. It is the foundation for understanding how users interact with content—what they like, share, comment on, and save. This data drives critical business decisions: content ranking, creator monetization, ad targeting, and product development.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Engagement tracking involves capturing events across the user journey: impressions (content displayed), clicks (content opened), interactions (likes, comments, shares), and conversions (sign-ups, purchases attributed to content). Each event provides a signal about user interest and content quality. Aggregated across millions of users, these signals form the basis for recommendation algorithms and content moderation systems.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, engagement tracking involves designing event collection pipelines that handle high velocity (millions of events per second), ensuring data accuracy (deduplication, validation), computing real-time metrics (trending content detection), and detecting fraud (bot activity, engagement manipulation). The architecture must balance completeness (capture all events) with performance (minimal latency impact on user experience).
         </p>
@@ -47,10 +51,13 @@ export default function EngagementTrackingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Event Types</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Engagement events fall into several categories:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Impression Events:</strong> Content displayed to user. Includes view duration, scroll depth, visibility percentage. Foundation for reach metrics. Fired when content enters viewport, tracked via Intersection Observer API.
@@ -70,9 +77,9 @@ export default function EngagementTrackingArticle() {
         </ul>
 
         <h3 className="mt-6">Event Schema</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Standardized event structure for consistency:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Event ID:</strong> Unique identifier (UUID) for deduplication. Generated client-side before transmission.
@@ -154,9 +161,12 @@ export default function EngagementTrackingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Engagement tracking architecture involves event collection, stream processing, and analytics storage.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/interaction-engagement/engagement-tracking/event-collection-pipeline.svg"
@@ -167,9 +177,9 @@ export default function EngagementTrackingArticle() {
         />
 
         <h3>Event Collection Pipeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End-to-end event flow:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Client SDK:</strong> JavaScript/mobile SDK captures events. Batches events (up to 10 or 5 seconds) before transmission. Implements retry logic with exponential backoff. Handles offline queuing.
@@ -253,9 +263,12 @@ export default function EngagementTrackingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Engagement tracking design involves balancing accuracy, latency, and cost.
-        </p>
+        </HighlightBlock>
 
         <h3>Event Collection Strategies</h3>
         <div className="overflow-x-auto">
@@ -300,9 +313,9 @@ export default function EngagementTrackingArticle() {
         />
 
         <h3 className="mt-6">Sampling Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>No Sampling:</strong> Capture all events. Best for accuracy. Highest cost. Required for: Billing, fraud detection, low-volume events.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Uniform Sampling:</strong> Random subset (e.g., 10% of events). Reduces cost proportionally. Risk: May miss rare events. Good for: High-volume impression tracking.
         </p>
@@ -330,13 +343,16 @@ export default function EngagementTrackingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Batch client events:</strong> Send up to 10 events or every 5 seconds. Reduces network overhead. Implement flush on page unload (navigator.sendBeacon).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Generate unique event IDs:</strong> Client-side UUID for deduplication. Critical for handling network retries.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Validate at ingestion:</strong> Schema validation, required field checks. Reject malformed events early.
           </li>
@@ -360,13 +376,16 @@ export default function EngagementTrackingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Sync event sending:</strong> Blocking user interaction for event transmission. Solution: Use async batching with sendBeacon fallback.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No deduplication:</strong> Counting same event multiple times on retry. Solution: Unique event IDs with idempotent processing.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring clock skew:</strong> Using only client timestamps. Solution: Record both client and server timestamps, use server time for ordering.
           </li>
@@ -384,14 +403,17 @@ export default function EngagementTrackingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Facebook EdgeRank</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook's News Feed ranking uses engagement tracking to determine content visibility. Each interaction (like, comment, share) has different weight. Time decay ensures fresh content. Affinity score weights engagement from close connections more heavily.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Affinity weighting—engagement from users you interact with frequently counts more than strangers, personalizing feed ranking.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">YouTube Watch Time</h3>
         <p>
@@ -420,12 +442,15 @@ export default function EngagementTrackingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you track engagement at scale?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you track engagement at scale?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use async event collection with client-side batching (10 events or 5 seconds). Send to ingestion API, queue in Kafka for buffering. Stream processing (Flink/Spark) updates real-time counters. Batch processing for hourly/daily aggregates. Sample high-volume events (impressions) at 10-50%, never sample interactions.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,15 +39,15 @@ export default function E2ETestingArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>E2E (End-to-End) testing</strong> verifies that the entire application works correctly from the user&apos;s perspective — it tests the full system, including the frontend, backend, database, and external services. E2E tests simulate real user behavior (navigating to pages, clicking buttons, filling forms, submitting data) in a real browser, verifying that the application behaves correctly end-to-end. Unlike unit tests (testing individual units in isolation) and integration tests (testing how units work together), E2E tests test the complete user journey, catching bugs that only appear when all components interact in a real environment.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, E2E testing is the final safety net before production. E2E tests catch bugs that unit and integration tests cannot — bugs in the full system configuration (environment variables, CDN setup, CORS configuration), bugs in cross-component workflows (multi-step forms, checkout flows, onboarding flows), and bugs in real browser behavior (browser-specific rendering, JavaScript engine differences, network conditions). E2E tests provide confidence that the application works for real users in real browsers, not just in isolated test environments.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E2E testing involves several technical considerations. Browser automation (Playwright, Cypress — controlling the browser to simulate user interactions), test reliability (ensuring tests produce consistent results — preventing flaky tests caused by timing issues, network variability, test data conflicts), test performance (E2E tests are slow — optimizing through parallel execution, test sharding, selective test runs), test data management (setting up and cleaning test data for each test run, ensuring test isolation), and CI/CD integration (running E2E tests in CI/CD pipelines, reporting results, blocking deployments on failures).
-        </p>
+        </HighlightBlock>
         <p>
           The business case for E2E testing is user experience assurance and production confidence. E2E tests verify that critical user workflows (registration, login, checkout, payment) work correctly before every deployment. Without E2E tests, teams deploy with confidence in individual components but uncertainty about the full system — bugs that only appear in the full system reach production, causing user frustration, support costs, and revenue loss. E2E tests catch these bugs before deployment, ensuring that critical workflows work correctly for users.
         </p>
@@ -59,15 +60,15 @@ export default function E2ETestingArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Browser Automation:</strong> Controlling a real browser to simulate user interactions. The testing tool launches a browser instance, navigates to pages, clicks elements, fills forms, submits data, and verifies the result. Browser automation is more realistic than unit or integration testing (which run in JSDOM or mocked environments) — it tests actual browser behavior (rendering, JavaScript execution, network requests, storage). Playwright and Cypress are the dominant browser automation tools for frontend E2E testing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Auto-Waiting:</strong> Automatically waiting for elements to be ready before interacting with them. Instead of adding manual waits (sleep, wait for element), the testing tool automatically waits for elements to be visible, enabled, and stable before clicking, typing, or asserting. Auto-waiting eliminates flaky tests caused by timing issues (element not yet rendered, animation in progress, network request pending). Playwright&apos;s auto-waiting is built into every action (click, fill, select), making tests reliable without manual wait management.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Test Isolation:</strong> Each E2E test runs in an isolated browser context (separate cookies, storage, sessions). Test isolation ensures that tests do not affect each other&apos;s state — one test&apos;s login does not leak into another test, one test&apos;s form submission does not affect another test&apos;s data. Test isolation is achieved by creating a fresh browser context for each test (Playwright) or clearing state between tests (Cypress).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Flaky Test Prevention:</strong> Flaky tests (non-deterministic pass/fail) are the biggest challenge in E2E testing. Causes include timing issues (element not ready, animation in progress), network variability (slow responses, intermittent failures), test data conflicts (tests sharing data, affecting each other&apos;s results), and browser variability (different rendering, JavaScript engine differences). Prevention strategies include auto-waiting (eliminating timing issues), request mocking (eliminating network variability), isolated test data (eliminating data conflicts), and cross-browser testing (catching browser-specific issues).
           </li>
@@ -91,12 +92,12 @@ export default function E2ETestingArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           E2E testing architecture consists of the test runner (Playwright, Cypress — orchestrates test execution), the browser instance (controlled by the test runner, simulates user interactions), the application under test (the frontend application being tested, running in the browser), the backend services (APIs, databases, external services that the application communicates with), and the assertion layer (verifying the application state after each interaction). The flow begins with the test runner launching a browser instance, navigating to the application, simulating user interactions (clicks, form submissions, navigation), and verifying the result (rendered output, API responses, storage state).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For E2E tests, the application runs in a real browser (not JSDOM), communicates with real or mocked backend services, and the test runner observes the application state through the browser DOM. This is the most realistic testing environment — the application behaves exactly as it would for a real user, in a real browser, with real network conditions. The trade-off is that E2E tests are slower than unit or integration tests (browser startup, page rendering, network requests take time), so E2E test suites are smaller and more focused than unit or integration test suites.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/testing-strategies/playwright-vs-cypress.svg"
@@ -107,9 +108,9 @@ export default function E2ETestingArticle() {
         />
 
         <h3>E2E vs. Unit and Integration Testing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Unit Tests:</strong> Test individual functions, components, or modules in isolation. Fast (milliseconds), numerous (hundreds or thousands), isolated (no external dependencies). Catch bugs in individual code units. Best for: utility functions, pure logic, individual components, hooks.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Integration Tests:</strong> Test how multiple units work together. Moderate speed (seconds), fewer than unit tests (dozens or hundreds), combined (internal dependencies use real implementations). Catch bugs in unit interactions. Best for: component trees, API interactions, state management, form submissions.
         </p>
@@ -129,17 +130,17 @@ export default function E2ETestingArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           E2E testing involves trade-offs between test realism and test speed, test coverage and test maintenance, and comprehensive testing and focused testing. Understanding these trade-offs is essential for designing effective E2E testing strategies.
-        </p>
+        </HighlightBlock>
 
         <h3>Real Backend vs. Mocked Backend</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Real Backend:</strong> E2E tests communicate with a real backend (test environment or staging environment). Advantages: tests are realistic (they test actual API interactions, database queries, external service calls), tests catch backend-frontend integration bugs (API format mismatches, database schema issues, external service failures). Limitations: tests are slower (network latency, backend processing time), tests are less reliable (backend may be unavailable, test data may change, external services may fail), tests require test backend infrastructure (test database, test external service accounts). Best for: staging environment validation, pre-deployment verification, contract testing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Mocked Backend:</strong> E2E tests mock API responses at the network level (using Playwright&apos;s route interception or Cypress&apos; cy.intercept). Advantages: tests are faster (no network latency, no backend processing time), tests are more reliable (mocked responses are predictable, no backend unavailability), tests do not require test backend infrastructure. Limitations: tests are less realistic (mocked responses may not match real API behavior), tests do not catch backend-frontend integration bugs (API format mismatches, database issues). Best for: CI/CD pipelines (fast, reliable), frequent test runs, backend not yet available.
-        </p>
+        </HighlightBlock>
 
         <h3>Comprehensive vs. Focused E2E Tests</h3>
         <p>
@@ -162,15 +163,15 @@ export default function E2ETestingArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Test Critical User Workflows:</strong> Focus E2E tests on critical user workflows (registration, login, checkout, payment, onboarding) that directly impact user experience and revenue. These workflows are the most costly if they break (users cannot complete their goals, revenue is lost). Test these workflows end-to-end, simulating real user behavior (navigating, clicking, filling forms, submitting). Do not test every edge case in E2E tests — test edge cases in unit and integration tests (faster, more reliable).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Auto-Waiting:</strong> Rely on the testing tool&apos;s auto-waiting mechanism instead of manual waits (sleep, wait for element). Auto-waiting waits for elements to be visible, enabled, and stable before interacting, eliminating flaky tests caused by timing issues. Playwright&apos;s auto-waiting is built into every action (click, fill, select). Cypress&apos; retry-ability automatically retries commands until they succeed. Manual waits are brittle (hardcoded wait times may be too short or too long) and should be avoided.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Isolate Test Data:</strong> Each E2E test should use its own test data (separate from other tests and from production data). Create test data before each test (seed the database with known data), use the test data during the test, and clean up after the test (delete test data). Isolated test data ensures that tests do not affect each other&apos;s results (no data conflicts) and do not affect production data (no production impact). Use test data factories (reusable data creation functions) for consistent test data.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Run E2E Tests in Parallel:</strong> Distribute E2E tests across multiple browser instances or machines to reduce total test duration. Parallel execution is essential for large E2E test suites (dozens of tests) — running sequentially would take hours, running in parallel takes minutes. Playwright supports parallel execution out of the box (configurable worker count). Cypress supports parallel execution through Cypress Cloud or third-party services. Monitor test parallelism — too many workers may overwhelm the test environment (database, API), causing flaky tests.
           </li>
@@ -187,15 +188,15 @@ export default function E2ETestingArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Too Many E2E Tests:</strong> Writing hundreds of E2E tests that test every user flow, edge case, and error path. E2E tests are slow (seconds to minutes per test), so large E2E test suites take hours to run. Large E2E test suites are expensive to maintain (every UI change breaks tests), flaky (more tests = more flakiness), and discourage frequent test runs (developers skip tests if they take too long). Follow the testing pyramid — many unit tests, fewer integration tests, few E2E tests.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Flaky Tests:</strong> E2E tests that pass or fail non-deterministically (same code, different results). Flaky tests are caused by timing issues (element not ready, animation in progress), network variability (slow responses, intermittent failures), test data conflicts (tests sharing data, affecting each other&apos;s results), and browser variability (different rendering, JavaScript engine differences). Flaky tests erode trust in the test suite (developers ignore failures, assuming they are flaky), waste developer time (re-running tests to check if they pass), and block deployments (flaky failures prevent merging). Fix flaky tests by eliminating non-determinism (auto-waiting, request mocking, isolated test data, cross-browser testing).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Testing Implementation Details:</strong> Writing E2E tests that verify implementation details (CSS classes, data attributes, DOM structure) instead of user behavior. These tests are fragile — they break when implementation changes, even if user behavior is unchanged. Test user behavior instead (text content, button clicks, form submissions, navigation). Use user-facing selectors (getByText, getByRole, getByLabelText) instead of implementation selectors (CSS classes, data attributes).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Shared Test State:</strong> E2E tests that share state (database, cookies, sessions) affecting each other&apos;s results. This causes flaky tests (tests pass or fail depending on execution order) and makes tests difficult to debug. Ensure that each test is isolated — create a fresh browser context for each test, set up test data before each test, clean up after each test. Avoid global state (shared variables, module-level state) in E2E tests.
           </li>
@@ -213,19 +214,19 @@ export default function E2ETestingArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>Checkout Flow Testing</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           E-commerce platforms use E2E tests to verify the checkout flow — adding items to cart, navigating to checkout, filling shipping and payment information, submitting the order, and verifying order confirmation. The E2E test simulates a real user completing the checkout flow in a real browser, verifying that every step works correctly (form validation, API calls, payment processing, order creation). Checkout flow E2E tests are critical — if the checkout flow breaks, revenue is lost immediately. E2E tests catch checkout bugs before they reach production.
-        </p>
+        </HighlightBlock>
 
         <h3>User Registration and Login</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SaaS products use E2E tests to verify user registration and login — filling registration forms, submitting, verifying email, logging in, and accessing the dashboard. The E2E test simulates a real user registering and logging in, verifying that every step works correctly (form validation, email sending, authentication, session management, dashboard access). Registration and login E2E tests are critical — if users cannot register or log in, they cannot use the product. E2E tests catch authentication bugs before they reach production.
-        </p>
+        </HighlightBlock>
 
         <h3>Cross-Browser Compatibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Applications with diverse user bases (public websites, enterprise applications) use E2E tests to verify cross-browser compatibility — running the same tests in Chrome, Firefox, Safari, and Edge. Cross-browser E2E tests catch browser-specific bugs (rendering differences, JavaScript engine differences, API support differences) before they affect users. Playwright supports cross-browser testing natively (Chromium, Firefox, WebKit), enabling comprehensive cross-browser coverage with a single test suite.
-        </p>
+        </HighlightBlock>
 
         <h3>CI/CD Quality Gate</h3>
         <p>
@@ -239,18 +240,18 @@ export default function E2ETestingArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: What is the difference between Playwright and Cypress?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Playwright is a cross-browser automation framework (Chromium, Firefox, WebKit) with built-in auto-waiting, network interception, and parallel execution. It is faster than Cypress (concurrent browser instances, no UI overhead in headless mode) and supports more browsers (WebKit for Safari testing). Cypress is known for its developer experience (real-time reloading, time-travel debugging, interactive test runner) but is limited to Chromium-based browsers (Firefox and WebKit support is experimental). Playwright is preferred for cross-browser testing and large test suites (parallel execution), while Cypress is preferred for developer experience and small to medium test suites.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do you prevent flaky E2E tests?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Strategies: use auto-waiting (eliminate timing issues — wait for elements to be visible, enabled, stable before interacting), mock API responses (eliminate network variability — use request interception instead of real API calls), isolate test data (eliminate data conflicts — each test uses its own data, cleans up after itself), run tests in isolated browser contexts (eliminate state leakage — fresh cookies, storage, sessions for each test), and use cross-browser testing (catch browser-specific issues — test in Chrome, Firefox, Safari). Monitor flaky test rate (percentage of flaky failures) and track progress toward reducing it. The goal is to reduce flaky test rate to near zero, restoring trust in the test suite.
             </p>

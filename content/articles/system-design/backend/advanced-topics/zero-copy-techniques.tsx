@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +30,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Zero-copy techniques</strong> are I/O optimization strategies that eliminate
           unnecessary data copies between the kernel and user space during data transfer
           operations. In traditional I/O, reading a file from disk and sending it over a
@@ -38,15 +42,15 @@ export default function ArticlePage() {
           socket buffer, and (4) DMA copy from kernel socket buffer to the network interface.
           Each copy consumes CPU cycles and memory bandwidth, limiting the throughput of
           data-intensive applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Zero-copy techniques eliminate the intermediate copies by transferring data directly
           from the kernel file buffer to the kernel socket buffer (using sendfile) or by
           mapping the file into the process&apos;s address space (using mmap) and letting
           the kernel transfer data directly from the mapped memory to the socket. This reduces
           the number of copies from four to two (both DMA copies, which do not consume CPU
           cycles), improving throughput by 2-4x and reducing CPU usage by 50-75%.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, zero-copy techniques require understanding the
           trade-offs between different zero-copy approaches (sendfile, mmap, splice, io_uring),
@@ -73,6 +77,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/zero-copy-traditional-vs-zero-copy.svg`}
@@ -81,7 +88,7 @@ export default function ArticlePage() {
         />
 
         <h3>Traditional I/O Data Path</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Traditional I/O involves four data copies and four context switches. When a
           application reads a file and sends it over the network: (1) The read() system
           call triggers a DMA copy from disk to the kernel buffer (copy 1). (2) The kernel
@@ -89,14 +96,14 @@ export default function ArticlePage() {
           (3) The send() system call triggers a CPU copy from the user buffer to the kernel
           socket buffer (copy 3, CPU copy). (4) The kernel initiates a DMA copy from the
           kernel socket buffer to the network interface card (copy 4, DMA copy).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The CPU copies (copies 2 and 3) consume CPU cycles and memory bandwidth, limiting
           the throughput of data-intensive applications. For a 1 GB file transfer, the CPU
           performs 2 GB of copies (read + write), consuming approximately 200ms of CPU time
           on a typical server (10 GB/s memory bandwidth). This is 200ms of CPU time that
           could be spent on application logic.
-        </p>
+        </HighlightBlock>
 
         <h3>sendfile() Zero-Copy</h3>
         <p>
@@ -147,22 +154,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Zero-Copy in Web Servers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           nginx uses sendfile() to serve static files with zero-copy. When a client requests
           a static file, nginx opens the file and calls sendfile() to transfer the file
           directly to the client&apos;s socket. The data flows from disk to the kernel buffer
           (DMA) and from the kernel buffer to the network interface (DMA), without entering
           user space. This enables nginx to serve large files at near-disk-bandwidth speeds
           with minimal CPU usage.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For dynamic content (generated by the application), nginx uses mmap() to map the
           response body into memory and then sends it over the socket. This eliminates the
           user buffer copy for the response body, reducing CPU usage for dynamic content
           serving as well.
-        </p>
+        </HighlightBlock>
 
         <h3>Zero-Copy in Message Brokers</h3>
         <p>
@@ -193,7 +203,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Zero-copy techniques involve trade-offs between CPU usage, flexibility, and
           applicability. sendfile() provides the lowest CPU usage (2 DMA copies only) but
           only works for file-to-socket transfers. mmap() allows in-place data processing
@@ -201,15 +214,15 @@ export default function ArticlePage() {
           copy (from mapped memory to kernel socket buffer). splice() provides maximum
           flexibility (any file descriptor pair) but requires a pipe buffer intermediary,
           which adds complexity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice of zero-copy technique depends on the use case. For serving static
           files (web servers, CDN), sendfile() is the best choice (lowest CPU usage,
           simplest implementation). For streaming data between sockets (network proxies,
           database replication), splice() is the best choice (works for socket-to-socket).
           For applications that need to process data before sending (compression, encryption),
           mmap() is the best choice (allows in-place processing).
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -217,20 +230,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use sendfile() for file-to-socket transfers (static file serving, message broker
           delivery). sendfile() provides the lowest CPU usage (2 DMA copies only) and the
           simplest implementation (one system call). Enable sendfile() in your web server
           (nginx: sendfile on; Apache: EnableSendfile On) and message broker (Kafka:
           zero-copy enabled by default).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use splice() for socket-to-socket transfers (network proxies, database replication).
           splice() works for any file descriptor pair, making it suitable for forwarding
           data between sockets without copying data into user space. Implement splice()
           with a pipe buffer as the intermediary, and ensure that the pipe buffer is sized
           appropriately for the data transfer size (typically 64 KB-1 MB).
-        </p>
+        </HighlightBlock>
         <p>
           Use mmap() for applications that need to process data before sending (compression,
           encryption, transformation). mmap() maps the file into the process&apos;s address
@@ -252,7 +268,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is using sendfile() for small files. For small files
           (less than 4 KB), the overhead of the sendfile() system call (context switch,
           kernel processing) exceeds the savings from eliminating the CPU copies. For
@@ -260,14 +279,14 @@ export default function ArticlePage() {
           in the CPU cache and the copies are fast. The fix is to use sendfile() only
           for files larger than a threshold (typically 4 KB-16 KB) and traditional I/O
           for smaller files.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not handling partial transfers is a common pitfall with sendfile() and splice().
           These system calls may transfer less data than requested (e.g., if the socket
           buffer is full or the file is truncated during the transfer). The fix is to
           check the return value of sendfile() and splice() and retry if the transfer
           was partial, continuing until all data is transferred.
-        </p>
+        </HighlightBlock>
         <p>
           Assuming zero-copy eliminates all CPU overhead is a misunderstanding. Zero-copy
           eliminates CPU copies, but the CPU is still involved in initiating DMA transfers,
@@ -292,19 +311,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>nginx: Static File Serving</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           nginx uses sendfile() to serve static files with zero-copy. When a client requests
           a static file, nginx opens the file and calls sendfile() to transfer the file
           directly to the client&apos;s socket. This enables nginx to serve large files at
           near-disk-bandwidth speeds with minimal CPU usage. nginx&apos;s sendfile
           implementation is configurable (sendfile on/off) and is enabled by default for
           production configurations.
-        </p>
+        </HighlightBlock>
 
         <h3>Kafka: Message Delivery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Kafka uses transferTo() (Java&apos;s equivalent of sendfile()) to transfer message
           segments from the page cache to the network socket. When a consumer requests
           messages, Kafka reads the messages from the page cache and uses transferTo() to
@@ -312,7 +334,7 @@ export default function ArticlePage() {
           copies that would be required to copy messages from the page cache to the
           application buffer and from the application buffer to the socket buffer, enabling
           Kafka to achieve throughput of millions of messages per second per broker.
-        </p>
+        </HighlightBlock>
 
         <h3>PostgreSQL: WAL Streaming Replication</h3>
         <p>
@@ -329,18 +351,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is zero-copy I/O and why is it important?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Zero-copy I/O eliminates unnecessary data copies between the kernel and user
               space during data transfer operations. Traditional I/O involves four data
               copies (2 DMA, 2 CPU) and four context switches. Zero-copy techniques
               (sendfile, mmap, splice) reduce this to 2 DMA copies and 2 context switches,
               eliminating CPU copies and reducing CPU usage by 50-75%.
-            </p>
+            </HighlightBlock>
             <p>
               Zero-copy is important for high-throughput data-intensive applications (web
               servers, message brokers, databases) because it reduces CPU usage and improves

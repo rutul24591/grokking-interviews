@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,7 +35,10 @@ export default function VirtualizationWindowingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Virtualization</strong> (also called windowing) is a
           performance optimization technique that renders only the visible
           portion of a large list or grid, recycling DOM nodes as users scroll.
@@ -45,8 +49,8 @@ export default function VirtualizationWindowingArticle() {
           might take 5-10 seconds to render initially and cause continuous jank
           during scrolling, but with virtualization, initial render takes
           20-30ms and scrolling maintains 60fps.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Virtualization is essential for data tables (admin dashboards,
           analytics views), chat messages (Slack, Discord, WhatsApp web), search
           results (infinite scroll result lists), file explorers (folder
@@ -56,7 +60,7 @@ export default function VirtualizationWindowingArticle() {
           unusable application when dealing with large datasets. The technique
           applies to both vertical lists and 2D grids, and modern libraries make
           implementation straightforward.
-        </p>
+        </HighlightBlock>
         <p>
           The fundamental principle is that DOM operations are the bottleneck,
           not JavaScript computation. Each DOM node consumes memory, increased
@@ -71,7 +75,10 @@ export default function VirtualizationWindowingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The virtualization algorithm calculates which items are visible in the
           viewport and renders only those items, positioned absolutely to appear
           in their correct locations. The viewport is the visible area of the
@@ -83,8 +90,8 @@ export default function VirtualizationWindowingArticle() {
           spacer is an invisible element that maintains the total scrollable
           height so the scrollbar reflects the full list size, not just the
           rendered items.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Fixed-size virtualization is the simplest approach — all items have
           the same height, making the visible range calculation trivial (scroll
           offset divided by item size). This provides the best performance
@@ -97,7 +104,7 @@ export default function VirtualizationWindowingArticle() {
           handles any content type. Grid virtualization extends the concept to
           two dimensions, calculating visible rows and columns — useful for
           data tables, spreadsheets, and image galleries.
-        </p>
+        </HighlightBlock>
         <p>
           Popular virtualization libraries provide ready-made solutions.
           react-window (approximately 13KB, maintained by Brian Vaughn of the
@@ -122,7 +129,10 @@ export default function VirtualizationWindowingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The virtualization architecture consists of three layers. The
           measurement layer determines item sizes — for fixed-size lists, this
           is a constant value; for dynamic-size lists, items are measured as
@@ -135,8 +145,8 @@ export default function VirtualizationWindowingArticle() {
           range, positioned absolutely using transform: translateY to place each
           item at its correct offset, with a spacer element maintaining the
           total scrollable height for correct scrollbar behavior.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The scroll event flow is critical for performance. Scroll events fire
           at 60Hz (every 16ms) during scrolling, and processing every event can
           cause jank. The solution is to throttle scroll handling with
@@ -147,7 +157,7 @@ export default function VirtualizationWindowingArticle() {
           and only items in this range are rendered. Items outside the range are
           unmounted (for React) or hidden (for non-React implementations),
           freeing their DOM nodes for garbage collection or reuse.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/virtualization-types.svg"
@@ -171,7 +181,10 @@ export default function VirtualizationWindowingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Fixed-size versus dynamic-size virtualization involves a trade-off
           between performance and flexibility. Fixed-size virtualization is
           faster because the visible range calculation is a simple division
@@ -184,8 +197,8 @@ export default function VirtualizationWindowingArticle() {
           moderate lists (under 1,000 items). Use fixed-size whenever possible
           — design the list items with consistent heights — and use dynamic-size
           only when content genuinely varies in height.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Overscan amount involves a trade-off between scroll smoothness and
           memory usage. More overscan items means less chance of seeing white
           space during fast scrolling (the buffer items are already rendered),
@@ -196,7 +209,7 @@ export default function VirtualizationWindowingArticle() {
           scrolling), increase overscan to 5-10 items. For memory-constrained
           environments (mobile devices with limited RAM), reduce overscan to
           1-2 items.
-        </p>
+        </HighlightBlock>
         <p>
           Virtualization versus pagination is an architectural choice for
           handling large datasets. Virtualization renders all items but only
@@ -220,7 +233,10 @@ export default function VirtualizationWindowingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use fixed-size items whenever possible — it is the single most
           impactful optimization for virtualization performance. Design list
           items with consistent heights using CSS min-height and max-height,
@@ -230,8 +246,8 @@ export default function VirtualizationWindowingArticle() {
           item sizes to the virtualization library so it can calculate the
           initial scrollable height accurately, then update measurements as
           items render.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Memoize item components to prevent unnecessary re-renders. Each item
           component should be wrapped in React.memo (or use memoization in the
           virtualization library) so that it only re-renders when its specific
@@ -239,7 +255,7 @@ export default function VirtualizationWindowingArticle() {
           because scroll events trigger re-renders of the visible items on every
           animation frame — if the item components are not memoized, the
           virtualization benefit is partially negated by unnecessary re-renders.
-        </p>
+        </HighlightBlock>
         <p>
           Set explicit container height for the virtualized list — the
           virtualization library needs to know the viewport dimensions to
@@ -255,7 +271,10 @@ export default function VirtualizationWindowingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not setting the container height is the most common virtualization
           mistake. Without a defined height, the virtualization library cannot
           calculate the viewport size and therefore cannot determine which items
@@ -264,8 +283,8 @@ export default function VirtualizationWindowingArticle() {
           is to set an explicit height or maxHeight on the virtualized list
           container using CSS, or pass the height as a prop to the
           virtualization component.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Dynamic-size virtualization without proper measurement causes items
           to be positioned incorrectly, resulting in overlapping content or gaps
           between items. The fix is to use the virtualization library&apos;s
@@ -274,7 +293,7 @@ export default function VirtualizationWindowingArticle() {
           estimated item size function so the library can calculate an initial
           scrollable height before items are measured — this prevents the
           scrollbar from jumping as items are measured.
-        </p>
+        </HighlightBlock>
         <p>
           Ignoring accessibility in virtualized lists breaks screen reader
           experience. Screen readers announce list metadata (total items,
@@ -291,7 +310,10 @@ export default function VirtualizationWindowingArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Chat applications are the canonical virtualization use case. Slack,
           Discord, and WhatsApp Web render message lists with virtualization
           because conversation histories can contain tens of thousands of
@@ -304,8 +326,8 @@ export default function VirtualizationWindowingArticle() {
           reading from their current position without being jumped to the bottom
           (unless they are already at the bottom, in which case auto-scroll
           applies).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data tables and spreadsheets use grid virtualization for both row and
           column virtualization. Google Sheets and Excel Online render only the
           visible cells, recycling cell DOM nodes as the user scrolls
@@ -316,7 +338,7 @@ export default function VirtualizationWindowingArticle() {
           frozen columns require special handling in the virtualization
           calculation — these elements are rendered outside the virtualized area
           and positioned fixed relative to the scroll container.
-        </p>
+        </HighlightBlock>
         <p>
           E-commerce product listing pages with infinite scroll use
           virtualization to maintain performance as users browse through
@@ -333,12 +355,15 @@ export default function VirtualizationWindowingArticle() {
 
       <section>
         <h2>Advanced Virtualization Techniques</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Dynamic-size measurement strategies form one of the most complex aspects of production virtualization implementations. When items have genuinely variable heights — text messages of different lengths, cards with optional sections, or content that expands on user interaction — the virtualization engine cannot use simple division to calculate which items are visible. Instead, it must maintain a measurement cache that maps each item index to its rendered height, and calculate cumulative offsets by summing all preceding item heights. The measurement process uses ResizeObserver to detect when items are rendered and measure their actual dimensions, then updates the cache entry for that index. The critical challenge is that measurements are only available after items are rendered, which means the initial scrollable height calculation must rely on estimates. A poor estimate causes the scrollbar to jump as items are measured — if the estimate is too small, the scrollbar starts too large and shrinks as real measurements come in; if the estimate is too large, the scrollbar starts too small and grows. The recommended approach is to provide an estimated item size function that returns the expected average height, which the library uses for the initial calculation and gradually refines as real measurements populate the cache. For applications with highly variable content, a more sophisticated approach categorizes items into size buckets (small, medium, large) and estimates based on the item type rather than using a single global average.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Scroll position preservation during data changes is a subtle but critical requirement for production virtualization. When new data arrives — new chat messages, refreshed search results, or paginated items appended — the virtualization engine must decide whether to maintain the current scroll position, adjust it to account for inserted items, or reset it entirely. For chat applications, if the user is at the bottom of the conversation, new messages should auto-scroll into view; but if the user is reading older messages (scrolled up), the scroll position should be preserved so the user&apos;s reading context is not lost. The implementation tracks whether the user was at the bottom before the data change (within a threshold of 50 pixels from the scroll maximum), and only auto-scrolls if that condition was true. For prepend operations (inserting items at the beginning, such as loading older chat messages), the scroll offset must be adjusted by the total height of the newly inserted items to maintain the user&apos;s visual position — if the user was viewing message 100 and 20 older messages are prepended, the scroll position shifts down by the combined height of those 20 messages so the user continues viewing the same content. This adjustment requires the measurement cache to be updated before the scroll position is recalculated, otherwise the adjustment is based on stale measurements and the visual jump is noticeable.
-        </p>
+        </HighlightBlock>
         <p>
           Accessibility implementation for virtualized lists goes beyond aria-setsize and aria-posinset to encompass a complete keyboard navigation strategy. Screen readers rely on these ARIA attributes to announce the correct list metadata — aria-setsize tells the screen reader the total number of items in the full list (not just the rendered subset), and aria-posinset tells it the position of each item within the full list. Without these attributes, a screen reader would announce &quot;List, 20 items&quot; when the actual list contains 10,000 items, fundamentally misrepresenting the content to the user. Keyboard navigation requires handling Arrow Up and Arrow Down to move focus between items, Home and End to jump to the first and last items, and Page Up and Page Down to scroll by viewport height. The implementation must programmatically scroll to bring the focused item into view, updating the virtualization engine&apos;s visible range accordingly. For virtualized grids, arrow keys navigate in two dimensions, and the implementation must calculate which cell should receive focus based on the current position and key direction. The complexity increases when combining keyboard navigation with dynamic-size items, because the scroll position calculation depends on accurate measurements that may not yet be available for items that have never been rendered. The solution is to use estimated sizes for keyboard navigation when real measurements are unavailable, accepting a small positioning error in exchange for responsive navigation.
         </p>
@@ -355,12 +380,15 @@ export default function VirtualizationWindowingArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How does virtualization work and why is it needed?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Virtualization renders only the items visible in the viewport
               plus a small buffer (overscan), recycling DOM nodes as users
               scroll. Without virtualization, rendering 10,000 list items
@@ -370,7 +398,7 @@ export default function VirtualizationWindowingArticle() {
               scrolling. The DOM is the bottleneck — each node consumes memory
               and slows layout/paint operations. Virtualization decouples render
               time from data size.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

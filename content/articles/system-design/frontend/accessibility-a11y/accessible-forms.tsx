@@ -373,20 +373,20 @@ export default function AccessibleFormsArticle() {
       <section>
         <h2>Common Interview Questions</h2>
 
-        <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
-          <h3 className="mb-2 font-semibold">Q: What are the different ways to associate a label with a form input?</h3>
-          <p>
-            Four methods: (1) <strong>Explicit association</strong> — <code>&lt;label for=&quot;inputId&quot;&gt;</code>
-            paired with <code>&lt;input id=&quot;inputId&quot;&gt;</code>. Most reliable. (2)
-            <strong>Implicit association</strong> — wrapping the input inside the label element.
+	        <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
+	          <h3 className="mb-2 font-semibold">Q: What are the different ways to associate a label with a form input?</h3>
+	          <HighlightBlock as="p" tier="important">
+	            Four methods: (1) <strong>Explicit association</strong> — <code>&lt;label for=&quot;inputId&quot;&gt;</code>
+	            paired with <code>&lt;input id=&quot;inputId&quot;&gt;</code>. Most reliable. (2)
+	            <strong>Implicit association</strong> — wrapping the input inside the label element.
             (3) <code>aria-label</code> — a string attribute directly on the input, no visible
             label. Use only when a visible label isn&apos;t possible (icon-only search). (4)
             <code>aria-labelledby</code> — references the ID of an external element containing the
             label text. Useful when the label is complex or composed of multiple elements.
-            Explicit association is preferred because it has the broadest browser and assistive
-            technology support and allows clicking the label to focus the input.
-          </p>
-        </div>
+	            Explicit association is preferred because it has the broadest browser and assistive
+	            technology support and allows clicking the label to focus the input.
+	          </HighlightBlock>
+	        </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: How should form errors be announced to screen reader users?</h3>
@@ -402,20 +402,20 @@ export default function AccessibleFormsArticle() {
           </HighlightBlock>
         </div>
 
-        <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
-          <h3 className="mb-2 font-semibold">Q: Why shouldn&apos;t placeholder text be used as a label?</h3>
-          <p>
-            Five reasons: (1) Placeholders disappear when the user starts typing, removing context —
-            users with cognitive disabilities may forget what the field is for. (2) Placeholder text
-            typically has low contrast (gray on white), failing WCAG contrast requirements. (3)
+	        <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
+	          <h3 className="mb-2 font-semibold">Q: Why shouldn&apos;t placeholder text be used as a label?</h3>
+	          <HighlightBlock as="p" tier="important">
+	            Five reasons: (1) Placeholders disappear when the user starts typing, removing context —
+	            users with cognitive disabilities may forget what the field is for. (2) Placeholder text
+	            typically has low contrast (gray on white), failing WCAG contrast requirements. (3)
             Screen readers inconsistently announce placeholder text — some read it, some don&apos;t.
             (4) Placeholders aren&apos;t exposed as the accessible name in all browser/screen reader
             combinations. (5) Users may mistake placeholder text for pre-filled data and skip the
             field. Always use a persistent visible <code>&lt;label&gt;</code>. Placeholders can
-            supplement labels with examples (e.g., &quot;e.g., john@example.com&quot;) but never
-            replace them.
-          </p>
-        </div>
+	            supplement labels with examples (e.g., &quot;e.g., john@example.com&quot;) but never
+	            replace them.
+	          </HighlightBlock>
+	        </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: When should you use fieldset/legend vs. individual labels?</h3>
@@ -487,15 +487,15 @@ export default function AccessibleFormsArticle() {
             </a>{" "}
             — Requirements for form labeling.
           </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              MDN: HTML autocomplete attribute
-            </a>{" "}
-            — Complete list of autocomplete values and usage.
-          </li>
-          <li>
-            <a href="https://adrianroselli.com/2019/02/avoid-default-field-validation.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              Adrian Roselli: Avoid Default Field Validation
+	          <HighlightBlock as="li" tier="important">
+	            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+	              MDN: HTML autocomplete attribute
+	            </a>{" "}
+	            — Complete list of autocomplete values and usage.
+	          </HighlightBlock>
+	          <li>
+	            <a href="https://adrianroselli.com/2019/02/avoid-default-field-validation.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+	              Adrian Roselli: Avoid Default Field Validation
             </a>{" "}
             — Why custom validation often provides a better accessible experience.
           </li>

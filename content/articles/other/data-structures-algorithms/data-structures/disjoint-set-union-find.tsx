@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function DisjointSetArticle() {
     <ArticleLayout metadata={metadata}>
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition & Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A disjoint-set (also called union-find) maintains a partition of n elements into disjoint subsets and supports two operations: <strong>find(x)</strong> returns a canonical representative of the set containing x, and <strong>union(x, y)</strong> merges the sets containing x and y. Two elements are in the same set if and only if they have the same representative.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Bernard Galler and Michael Fischer introduced the structure in 1964, but it took Robert Tarjan&apos;s 1975 analysis to prove the now-canonical complexity bound: with the two optimizations <em>union by rank</em> and <em>path compression</em>, the amortized cost of any sequence of m operations on n elements is O(m · α(n)), where α is the inverse Ackermann function. For all practically representable n (up to roughly 2^65536), α(n) ≤ 4 — so the structure is effectively constant time per operation, but provably not actually constant time.
-        </p>
+        </HighlightBlock>
         <p>
           The structure shows up wherever a system must track dynamic equivalence: Kruskal&apos;s MST algorithm (does adding this edge create a cycle?), connected components in a streaming graph, image segmentation (which pixels form the same region?), Tarjan&apos;s offline LCA, type unification in compilers, percolation simulation in physics, and incremental clustering. Most engineers go years without writing one explicitly, then suddenly need it for a graph problem and discover the entire algorithm is fifteen lines of code.
         </p>
@@ -36,12 +40,15 @@ export default function DisjointSetArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The standard representation is a <strong>forest of upward-pointing trees</strong>. Each set is one tree; each element holds a single pointer to its parent; the root of each tree points to itself and identifies the set. Internally, this is just an integer array <code>parent[i]</code> where <code>parent[i] == i</code> marks roots. There is no traversal of children, no balanced-tree machinery, and no per-node payload beyond the parent pointer (and a small rank field).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>find(x)</strong> walks parent pointers from x until it reaches a self-loop (the root). The cost is the depth of x in its tree. <strong>union(x, y)</strong> calls find on both, and if the two roots differ, makes one root the parent of the other. Naive implementations can produce a chain of n elements with depth n, making find O(n) — which is why the two optimizations are not optional in production code.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Union by rank</strong> (or by size — equivalent within a constant factor) attaches the shorter tree under the taller root. Each root maintains a rank that upper-bounds its tree height; when unioning two trees of equal rank, the result has rank one greater. This alone bounds find to O(log n).
         </p>
@@ -57,12 +64,15 @@ export default function DisjointSetArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture & Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The data structure consists of two integer arrays of size n: <code>parent[]</code> stores each element&apos;s parent (with <code>parent[i] = i</code> for roots), and <code>rank[]</code> stores an upper bound on each root&apos;s tree height. Initialization makes every element its own singleton set: <code>parent[i] = i</code>, <code>rank[i] = 0</code> for all i.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>find(x):</strong> follow parent pointers from x to the root, then write the root back into <code>parent[]</code> for every node on the path. The recursive form is two lines; the iterative form is a small loop with a second pass for compression. A common simplification is <em>path halving</em>: during the walk, set <code>parent[x] = parent[parent[x]]</code>, halving the path length without a second pass. Path halving is slightly less aggressive than full compression but achieves the same asymptotic bound and uses fewer instructions.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>union(x, y):</strong> compute <code>rx = find(x)</code> and <code>ry = find(y)</code>. If they&apos;re equal, the two were already in the same set — return false (this is exactly the &quot;would adding this edge create a cycle?&quot; check that Kruskal&apos;s needs). Otherwise, attach the lower-rank root under the higher-rank root. If ranks are equal, pick either, and increment the new root&apos;s rank by 1.
         </p>
@@ -81,12 +91,15 @@ export default function DisjointSetArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Trade-offs & Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Union-find vs adjacency list + BFS.</strong> A static connected-components query on a graph runs in O(V + E) with BFS or DFS. Union-find shines in <em>incremental</em> settings: edges arrive one at a time, and you must answer connectivity queries between arrivals. Each edge becomes a union; each query becomes a find. The total cost is O((V + E) · α(V)) — essentially linear, but supporting arbitrary interleaving of updates and queries.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Union-find vs hash-set-of-sets.</strong> A naive &quot;merge two sets&quot; operation by copying elements is O(min(|A|, |B|)) per merge. A union-find handles the same workload in O(α(n)) per operation. For incremental clustering on millions of items, this is the difference between hours and milliseconds.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Path compression vs path halving vs path splitting.</strong> All three achieve O(α(n)) amortized. Path compression (two-pass) does the most work per find but produces the flattest tree. Path halving (single pass, set parent to grandparent) is faster per call. Path splitting is similar to halving but slightly different. In practice, path halving with union by rank is the standard production choice — it&apos;s simple, branch-free, and competitive with full compression.
         </p>
@@ -100,9 +113,12 @@ export default function DisjointSetArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li><strong>Always use both optimizations.</strong> Path compression alone gives O(log n); union by rank alone gives O(log n); both together give O(α(n)). Skipping either is a measurable performance regression.</li>
-          <li><strong>Use integer ids, not arbitrary keys.</strong> Map your domain entities (URLs, UUIDs, pixel coordinates) to dense integers 0..n−1 on construction. The whole structure is two integer arrays — pointer-chasing through hash maps wrecks cache behavior.</li>
+          <HighlightBlock as="li" tier="important"><strong>Always use both optimizations.</strong> Path compression alone gives O(log n); union by rank alone gives O(log n); both together give O(α(n)). Skipping either is a measurable performance regression.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Use integer ids, not arbitrary keys.</strong> Map your domain entities (URLs, UUIDs, pixel coordinates) to dense integers 0..n−1 on construction. The whole structure is two integer arrays — pointer-chasing through hash maps wrecks cache behavior.</HighlightBlock>
           <li><strong>Pre-allocate arrays.</strong> If you know n in advance, allocate <code>parent</code> and <code>rank</code> once. Dynamic growth (push to a TypedArray) is cheap but allocates GC pressure on tight loops.</li>
           <li><strong>Use Int32Array in JavaScript.</strong> A regular array of numbers in V8 boxes each value; an Int32Array stores raw 32-bit integers contiguously, dramatically reducing memory and improving cache hits.</li>
           <li><strong>Iterative find.</strong> Recursive find on a deep chain risks stack overflow on million-element graphs. Iterative form with a second pass for compression (or path halving in a single pass) is bulletproof.</li>
@@ -113,9 +129,12 @@ export default function DisjointSetArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li><strong>Forgetting path compression.</strong> Without it, adversarial input produces O(n)-deep chains and find becomes linear. The asymptotic claim &quot;O(α(n))&quot; is wrong without both optimizations.</li>
-          <li><strong>Union without finding first.</strong> Setting <code>parent[x] = y</code> directly when x or y is not a root corrupts the structure. Always union <em>roots</em>: <code>parent[find(x)] = find(y)</code>.</li>
+          <HighlightBlock as="li" tier="important"><strong>Forgetting path compression.</strong> Without it, adversarial input produces O(n)-deep chains and find becomes linear. The asymptotic claim &quot;O(α(n))&quot; is wrong without both optimizations.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Union without finding first.</strong> Setting <code>parent[x] = y</code> directly when x or y is not a root corrupts the structure. Always union <em>roots</em>: <code>parent[find(x)] = find(y)</code>.</HighlightBlock>
           <li><strong>Off-by-one in rank updates.</strong> Increment the rank only when the two roots have <em>equal</em> rank — and only on the new root. Common bug: incrementing on every union, which makes union by rank no longer a valid height bound.</li>
           <li><strong>Recursive find on deep chains.</strong> A million-element chain blows the JavaScript call stack at ~10k frames. Use iterative find.</li>
           <li><strong>Mixing 0-indexed and 1-indexed elements.</strong> Initialize all n+1 slots if elements are 1-indexed, or keep careful translation. Off-by-one here corrupts the entire structure silently.</li>
@@ -126,12 +145,15 @@ export default function DisjointSetArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Kruskal&apos;s minimum spanning tree.</strong> The textbook application. Sort all edges by weight; iterate in order; for each edge (u, v), call find(u) and find(v) — if they differ, the edge connects two components, so include it in the MST and union the sets. The total work is O(E log E) for the sort plus O(E · α(V)) for the union-find — essentially the sort dominates. Used in network design, hierarchical clustering, image segmentation.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Connected components in dynamic graphs.</strong> Streaming systems that ingest edges and answer connectivity queries between arrivals — fraud detection (are these accounts in the same ring?), social network analysis (is the friend graph one component?), incremental graph databases. Each new edge is a union; each query is two finds. Constant-amortized per operation.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Image segmentation and percolation.</strong> Pixel-level union-find merges adjacent same-color pixels into regions. Used in OpenCV&apos;s connected-components labeling, in geological percolation models (when does fluid reach the bottom?), and in physical simulations of ferromagnetism. The 2D grid maps directly to integer ids; union-find makes a million-pixel image practical.
         </p>
@@ -150,10 +172,13 @@ export default function DisjointSetArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why is the amortized complexity O(α(n)) instead of O(log n) or O(1)?</p>
-            <p className="mt-2 text-sm">A: With both union by rank and path compression, Tarjan&apos;s 1975 analysis proves the tight bound O(m · α(n)) for any sequence of m operations. The function α(n) is the inverse Ackermann — it grows so slowly that α(n) ≤ 4 for any n you can write down. It&apos;s not literally O(1) because there&apos;s a provable lower bound (Fredman-Saks 1989) showing no pointer-machine implementation can do better, but in practice it&apos;s indistinguishable from constant.</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Why is the amortized complexity O(α(n)) instead of O(log n) or O(1)?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">A: With both union by rank and path compression, Tarjan&apos;s 1975 analysis proves the tight bound O(m · α(n)) for any sequence of m operations. The function α(n) is the inverse Ackermann — it grows so slowly that α(n) ≤ 4 for any n you can write down. It&apos;s not literally O(1) because there&apos;s a provable lower bound (Fredman-Saks 1989) showing no pointer-machine implementation can do better, but in practice it&apos;s indistinguishable from constant.</HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: What&apos;s the difference between union by rank and union by size?</p>

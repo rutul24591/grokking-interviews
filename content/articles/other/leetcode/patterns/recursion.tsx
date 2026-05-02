@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,7 +24,10 @@ export default function RecursionArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Recursion is the technique of solving a problem by reducing it to a smaller instance of
         the same problem and assembling the answer from the solution to that smaller instance.
         Mathematically, it is induction made executable. Operationally, it is a function that
@@ -31,14 +35,14 @@ export default function RecursionArticle() {
         to a recursive call. Every recursive function carries three obligations: a base case
         that terminates, a reduction step that strictly approaches the base case, and a
         combination step that turns subproblem answers into the answer for the current call.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Recognition signals: tree or graph traversal, divide-and-conquer (sort, search,
         balanced operations), backtracking with pruned exploration, inductive computation
         (factorial, Fibonacci, Hanoi), parsing of recursive grammars, and dynamic programming
         in its top-down memoised form. Whenever the problem reduces structurally to a smaller
         version of itself, recursion is the natural shape.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         The pattern is foundational rather than algorithmic — most other patterns in this
         guide (backtracking, divide-and-conquer, DP, tree traversal) are specialisations of
@@ -55,17 +59,20 @@ export default function RecursionArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Base case.</strong> The condition that returns without recursing. Without it,
         recursion is infinite. Common base cases: empty list, leaf node, n = 0, single element.
         Write base cases first; they are easier to reason about than the recursive step.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Reduction.</strong> Each recursive call must strictly move toward the base
         case. For a list, drop one element; for a number, halve or decrement; for a tree,
         descend to a child. If the reduction can stay the same or grow, recursion does not
         terminate.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Combination.</strong> Once the recursive call returns, the function combines
         that answer with the current frame&apos;s information. For tree depth: 1 + max(left,
@@ -110,17 +117,20 @@ export default function RecursionArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/recursion-diagram-1.svg" alt="Recursion anatomy" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The general recursive template: function f(state): if base_case(state) return
         base_value; else compute the reduced state(s); recurse on each; combine the results;
         return. Code reads like the problem statement when written in this shape.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         For a tree problem (Leetcode 104 max depth): if root is null, return 0; otherwise
         return 1 + max(f(root.left), f(root.right)). The base case is the empty tree; the
         reduction descends to children; the combination takes the max plus one. Three lines,
         directly mirroring the inductive definition of tree depth.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         For divide-and-conquer (Leetcode 50 Pow(x, n)): if n is 0 return 1; let half = pow(x,
         n / 2); if n is even return half * half; else return half * half * x. Each call halves
@@ -153,18 +163,21 @@ export default function RecursionArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Recursion vs. iteration.</strong> Recursion is clearer for inductive problems
         but uses O(depth) stack memory. Iteration is constant-stack but requires manual state
         management. For tree and divide-and-conquer problems, recursion wins clarity. For
         linear traversals and tight loops, iteration wins performance.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Recursion vs. iterative DFS with explicit stack.</strong> The two are
         equivalent in expressive power. The explicit stack lets you control memory more
         carefully, avoid stack overflow on deep graphs, and pause / resume traversal. The
         recursive version is shorter and matches the inductive definition.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Pure recursion vs. memoised recursion (top-down DP).</strong> Pure recursion
         recomputes overlapping subproblems exponentially. Memoisation stores results to avoid
@@ -190,14 +203,17 @@ export default function RecursionArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/recursion-diagram-2.svg" alt="Recursion vs. iteration" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Write the base case first.</strong> It is the simplest, easiest to reason
         about, and forces you to articulate when recursion stops.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Verify reduction strictly decreases.</strong> Each recursive call must move
         the argument closer to the base. Off-by-one errors here cause infinite recursion.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Trust the recursion.</strong> Assume the recursive call returns the correct
         answer for the smaller subproblem. Do not unfold mentally — that defeats the
@@ -223,14 +239,17 @@ export default function RecursionArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Missing or wrong base case.</strong> Infinite recursion blowing the stack.
         Identify all base cases before writing the recursive step.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Reduction does not strictly decrease.</strong> Recursing with the same or
         larger argument loops forever.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Stack overflow on deep recursion.</strong> n = 100,000 in Python with default
         recursion limit crashes. Either iterate or raise the limit consciously.
@@ -256,13 +275,16 @@ export default function RecursionArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>509. Fibonacci Number.</strong> The textbook recursion. Pure version is O(2^n);
         memoised is O(n); iterative is O(n) with O(1) space.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>70. Climbing Stairs.</strong> Same recurrence as Fibonacci. Memoise.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>50. Pow(x, n).</strong> Divide-and-conquer recursion. O(log n).
       </p>
@@ -305,11 +327,14 @@ export default function RecursionArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/recursion-diagram-3.svg" alt="Canonical recursion Leetcode problems" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>What are the three obligations of a recursive function?</strong> Base case,
-        reduction, combination. Without all three, recursion is incorrect.</li>
-        <li><strong>Why does pure Fibonacci take O(2^n)?</strong> Each call splits into two; the
-        recursion tree has 2^n leaves; subproblems overlap but are not cached.</li>
+        <HighlightBlock as="li" tier="important"><strong>What are the three obligations of a recursive function?</strong> Base case,
+        reduction, combination. Without all three, recursion is incorrect.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Why does pure Fibonacci take O(2^n)?</strong> Each call splits into two; the
+        recursion tree has 2^n leaves; subproblems overlap but are not cached.</HighlightBlock>
         <li><strong>How does memoisation drop it to O(n)?</strong> Each subproblem is computed
         once and cached; subsequent requests return immediately. n distinct subproblems, each
         O(1) work given the cached children.</li>

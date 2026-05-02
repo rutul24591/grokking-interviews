@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function AbuseReportingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Abuse reporting enables users to report abusive behavior from other users, including harassment, threats, hate speech, doxxing, and coordinated abuse campaigns. The abuse reporting system is a critical safety mechanism that empowers users to protect themselves and their community while providing moderation teams with actionable reports. For staff and principal engineers, abuse reporting implementation involves report submission workflows (easy-to-use reporting interface), report categorization (structured abuse types), reporter protection (anonymity, anti-retaliation), report triage (prioritization, routing), false report handling (abuse of reporting system), and integration with moderation systems (automated and human review).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of abuse reporting extends beyond simple &quot;report user&quot; buttons. Report submission must be accessible (available on all user content, profiles, messages), contextual (pre-filled with relevant context), and specific (categorize abuse type, provide details). Reporter protection is critical—reporters must be protected from retaliation (anonymous reporting, block reported users, prevent reporter identification). Report triage must prioritize effectively (severity-based, reporter trust, user history). False report handling must prevent reporting system abuse (rate limits, reporter scoring, penalties for false reports). The system must integrate with broader moderation workflows (abuse reports feed into moderation queue, trigger automated actions for severe cases).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, abuse reporting architecture involves user-facing components (report dialogs, report tracking), backend services (report storage, categorization, routing), moderation integration (queue management, escalation), and safety systems (reporter protection, false report detection). The system must handle high volume (popular platforms receive millions of reports), provide transparency (report status tracking, outcome notification), and maintain trust (fair handling, consistent enforcement). Legal compliance is critical—some abuse types (child exploitation, credible threats) require mandatory reporting to authorities.
         </p>
@@ -46,13 +50,16 @@ export default function AbuseReportingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Report Submission Workflows</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Report entry points provide multiple ways to report abuse. User profile reports (report user behavior, harassment, impersonation). Content reports (report specific posts, comments, messages). Message reports (report abusive DMs, group messages). Conversation reports (report entire conversation threads). Each entry point pre-fills relevant context (user ID, content ID, conversation ID) to reduce reporter burden and improve report quality.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Report categorization structures abuse reports for effective triage. Abuse types include harassment (repeated unwanted contact), hate speech (targeting protected groups), threats (violence, harm), doxxing (sharing private information), impersonation (fake accounts), spam (commercial abuse), and other violations. Subcategories provide specificity (harassment → sexual harassment, stalking, bullying). Specific categorization enables routing to appropriate reviewers and automated actions for severe categories.
-        </p>
+        </HighlightBlock>
         <p>
           Report details capture context for review. Description field allows reporters to explain situation in their own words. Evidence attachment enables uploading screenshots, recordings, links to supporting content. Timeline information (when abuse started, frequency, escalation) helps reviewers understand severity. Related reports linkage connects multiple reports about same user or incident for pattern detection.
         </p>
@@ -104,9 +111,12 @@ export default function AbuseReportingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Abuse reporting architecture spans report submission, report processing, triage and routing, and moderation integration. Report submission provides user-facing interfaces for reporting. Report processing validates, categorizes, and stores reports. Triage and routing prioritizes reports and routes to appropriate reviewers. Moderation integration feeds reports into moderation workflows with tracking and feedback loops.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/abuse-reporting/abuse-reporting-architecture.svg"
@@ -117,9 +127,9 @@ export default function AbuseReportingArticle() {
         />
 
         <h3>Report Submission Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Report submission layer provides user-facing interfaces. Report dialogs embedded in user profiles, content items, messages, and conversations. Context pre-filling automatically includes relevant information (reported user ID, content ID, timestamp, conversation context). Categorization UI guides reporters through abuse type selection with clear descriptions and examples. Evidence upload enables attaching screenshots, recordings, or links.
-        </p>
+        </HighlightBlock>
         <p>
           Report validation ensures report quality before submission. Required fields validation (abuse type, description). Evidence validation for severe categories (threats, doxxing require evidence). Duplicate detection prevents multiple reports about same incident from same reporter. Rate limiting prevents report spam (max reports per hour/day). Validation happens client-side for immediate feedback and server-side for security.
         </p>
@@ -179,14 +189,17 @@ export default function AbuseReportingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Abuse reporting design involves trade-offs between accessibility and quality, anonymity and accountability, and automation and human review. Understanding these trade-offs enables informed decisions aligned with platform values and safety requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Report Submission: Easy vs. Detailed</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Easy submission (minimal fields, quick reporting). Pros: Low friction (users more likely to report), fast (seconds to report), accessible (works for all users). Cons: Low quality reports (vague, no context), high volume (including frivolous reports), harder to triage. Best for: High-volume platforms, low-severity abuse.
-        </p>
+        </HighlightBlock>
         <p>
           Detailed submission (multiple fields, evidence required). Pros: High quality reports (specific, evidenced), easier to triage, lower false positive rate. Cons: High friction (users less likely to report), slow (minutes to complete), may discourage legitimate reports. Best for: Severe abuse, platforms prioritizing report quality.
         </p>
@@ -238,13 +251,16 @@ export default function AbuseReportingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide multiple report entry points:</strong> Report buttons on profiles, content, messages, conversations. Contextual reporting (report from where abuse occurs). Quick access (report within 1-2 clicks).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Offer anonymous reporting option:</strong> Anonymous toggle for sensitive cases. Protect reporter identity from reported users. Anonymous reporters still receive outcome notifications.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement automatic reporter protection:</strong> Auto-block reported users from contacting reporters. Enhanced monitoring for retaliation. Safety check-ins with reporters after severe reports.
           </li>
@@ -274,13 +290,16 @@ export default function AbuseReportingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Too much friction in reporting:</strong> Long forms, multiple steps, required evidence for all reports. Solution: Minimize friction for low-severity reports, require detail only for severe cases.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No reporter protection:</strong> Reporters face retaliation from reported users. Solution: Auto-block, enhanced monitoring, anonymous reporting option.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No status transparency:</strong> Reporters don&apos;t know what happened to their report. Solution: Status tracking, outcome notifications, report history.
           </li>
@@ -310,16 +329,19 @@ export default function AbuseReportingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter Abuse Reporting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter abuse reporting for harassment and hate speech. Report entry points on tweets, profiles, direct messages. Categorization includes harassment, hate speech, threats, self-harm. Anonymous reporting option available. Auto-block reported users from contacting reporter. Severity-based prioritization with critical queue for threats. Integration with moderation queue for human review. Reporter receives outcome notification when decision made.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Facebook Abuse Reporting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook abuse reporting for comprehensive safety. Report options for posts, comments, profiles, messages, groups. Detailed categorization (bullying, harassment, hate speech, violence, nudity). Evidence upload for severe cases. Pattern detection for coordinated abuse campaigns. Reporter protection with automatic blocking. Status tracking with regular updates. Integration with AI moderation for initial review.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Discord Abuse Reporting</h3>
         <p>
@@ -339,12 +361,15 @@ export default function AbuseReportingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design abuse reporting that encourages legitimate reports while preventing system abuse?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design abuse reporting that encourages legitimate reports while preventing system abuse?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Balance accessibility with accountability to encourage legitimate reports while deterring bad actors. Low-friction reporting: 1-2 clicks to initiate report from any content (tweet, profile, message), minimal required fields (abuse type, optional context), pre-filled metadata (URL, timestamp, content type)—reduces reporter burden, encourages honest reporting from victims who may already be stressed. Anonymous reporting option: reporter identity hidden from reported user—critical for vulnerable reporters (domestic violence victims, harassment targets, whistleblowers) who fear retaliation. Post-hoc accountability through reporter scoring: track report quality over time (upheld reports = +1, not upheld = 0, false reports = -1), rolling 90-day score—low scores trigger additional scrutiny on future reports, not automatic rejection. Pattern detection: identify coordinated report abuse (multiple accounts reporting same user, rapid-fire reports, copy-paste reports)—flag for review, potentially suspend abusing accounts. The key insight: make it easy to report honestly (low friction, anonymity), hard to abuse without consequences (scoring, pattern detection, penalties). Provide transparency (reporters see status and outcomes) to build trust in system fairness—users who trust the system report more accurately.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

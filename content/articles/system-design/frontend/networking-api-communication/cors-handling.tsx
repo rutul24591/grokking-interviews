@@ -794,8 +794,12 @@ export default function CorsHandlingArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          CORS is a browser-enforced policy, not a server security boundary. In interviews, emphasize: preflight
+          cost, credentialed requests, and designing API surfaces to avoid wildcard + credentials mistakes.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS"
               className="text-accent hover:underline"
@@ -804,7 +808,7 @@ export default function CorsHandlingArticle() {
             >
               MDN Web Docs: Cross-Origin Resource Sharing (CORS)
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://www.w3.org/TR/cors/"
@@ -815,7 +819,7 @@ export default function CorsHandlingArticle() {
               W3C CORS Specification
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://fetch.spec.whatwg.org/#http-cors-protocol"
               className="text-accent hover:underline"
@@ -824,8 +828,8 @@ export default function CorsHandlingArticle() {
             >
               Fetch Standard: CORS Protocol
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://cheatsheetseries.owasp.org/cheatsheets/Cross-Origin_Resource_Sharing_Cheat_Sheet.html"
               className="text-accent hover:underline"
@@ -834,7 +838,7 @@ export default function CorsHandlingArticle() {
             >
               OWASP Cross-Origin Resource Sharing Cheat Sheet
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://developers.google.com/web/updates/2020/03/cors"
@@ -845,7 +849,7 @@ export default function CorsHandlingArticle() {
               Google Developers: Understanding CORS
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.akamai.com/blog/web-performance/cors-and-how-to-fix-them"
               className="text-accent hover:underline"
@@ -854,7 +858,7 @@ export default function CorsHandlingArticle() {
             >
               CORS Errors and How to Fix Them (Akamai)
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

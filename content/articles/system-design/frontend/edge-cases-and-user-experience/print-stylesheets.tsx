@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,12 +37,15 @@ export default function PrintStylesheetsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Print stylesheets</strong> are CSS rules applied specifically when a web page is printed or exported to PDF, transforming screen-optimized layouts into paper-friendly formats. The <code>@media print</code> media query enables targeting print output exclusively, allowing developers to hide navigation elements, adjust typography for physical media, control page breaks, linearize multi-column layouts, and optimize color usage for printing. While print may seem like a legacy concern in an increasingly digital world, many professional domains — legal documents, financial reports, medical records, educational materials, invoices, receipts, and government forms — still require high-quality printed output, and the ability to produce well-formatted prints from web content remains a critical feature for these applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental challenge of print stylesheets is the mismatch between screen and paper as output media. Screens have variable viewport sizes, support interactivity, display in RGB color with backlighting, and scroll continuously. Paper has fixed page dimensions, is static, uses CMYK color with reflected light, and breaks content across discrete pages. What works beautifully on screen — sticky headers, hover effects, infinite scrolling, dark backgrounds, interactive charts, collapsible sections — is meaningless or problematic on paper. A print stylesheet must strip away screen-specific affordances and reformulate the content for a fixed-size, non-interactive, paginated medium.
-        </p>
+        </HighlightBlock>
         <p>
           At the staff and principal engineer level, print output is often overlooked until a critical stakeholder requests it, at which point retrofitting print styles onto an application designed without them is painful and time-consuming. A proactive approach includes print considerations in the initial design system — defining which components need print variants, establishing print-specific typography scales, and creating print layout templates for common document types (reports, invoices, data tables). The CSS Paged Media specification provides properties for controlling page margins, headers, footers, page numbering, and orphan/widow line control, enabling sophisticated print output that rivals dedicated document formatting tools.
         </p>
@@ -52,13 +56,16 @@ export default function PrintStylesheetsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>@media print:</strong> The CSS media query that targets print output, including physical printing, PDF export, and print preview. Styles within <code>@media print</code> blocks override screen styles when the document is printed. Print styles can be inline (within <code>@media print { }</code> in the main stylesheet) or in a separate stylesheet linked with <code>&lt;link rel=&quot;stylesheet&quot; href=&quot;print.css&quot; media=&quot;print&quot;&gt;</code>. The separate stylesheet approach prevents print styles from being downloaded until printing, though modern browsers typically fetch all stylesheets regardless of media type.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Page Break Control:</strong> CSS properties that control where content breaks across pages. <code>break-before: page</code> forces a page break before an element, <code>break-after: page</code> forces one after, and <code>break-inside: avoid</code> prevents an element from being split across pages. These properties replace the older <code>page-break-before</code>, <code>page-break-after</code>, and <code>page-break-inside</code> properties. Controlling page breaks prevents tables from being split mid-row, headings from appearing at the bottom of a page without their following content, and images from being cropped across page boundaries.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Widows and Orphans:</strong> Typography properties that prevent awkward text distribution across pages. An orphan is a single line of a paragraph at the bottom of a page, and a widow is a single line at the top of the next page. The <code>widows</code> and <code>orphans</code> CSS properties set the minimum number of lines that must appear together — <code>orphans: 3; widows: 3;</code> ensures at least three lines appear at the bottom and top of page breaks, improving visual quality.
           </li>
@@ -82,18 +89,21 @@ export default function PrintStylesheetsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The first diagram illustrates the print stylesheet architecture within a web application. The main stylesheet contains screen-optimized styles that define the interactive layout. The print stylesheet layer overrides these styles when <code>@media print</code> is active. The override cascade handles four categories: elements to hide (navigation, sidebars, footers, interactive controls, advertisements), layout transformations (multi-column to single-column, grid to linear flow), typography adjustments (font family, size in points, line height), and color simplification (white backgrounds, black text, transparent decorative backgrounds). The diagram shows how each category applies its overrides, with the specificity and cascade order ensuring print rules take precedence over screen rules.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/edge-cases-and-user-experience/print-stylesheets-diagram-1.svg"
           alt="Print stylesheet architecture showing override cascade for hidden elements, layout transformation, typography, and color simplification"
           width={900}
           height={500}
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The second diagram shows the page break management strategy for a complex document. The document contains headings, paragraphs, tables, images, and code blocks. Page break rules prevent headings from appearing at the bottom of a page without following content (<code>break-after: avoid</code> on headings), prevent tables and images from being split across pages (<code>break-inside: avoid</code>), force new pages before major sections (<code>break-before: page</code> on chapter headings), and enforce widow/orphan minimums for paragraph text. The diagram illustrates how these rules interact — when avoiding a page break inside a large table would push it to the next page, leaving a large gap, the browser&apos;s print engine must balance multiple competing rules, sometimes relaxing constraints to produce the best overall layout.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/edge-cases-and-user-experience/print-stylesheets-diagram-2.svg"
           alt="Page break management showing break rules for headings, tables, images, and text with competing constraint resolution"
@@ -113,6 +123,9 @@ export default function PrintStylesheetsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -122,16 +135,16 @@ export default function PrintStylesheetsArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="important">
               <td className="px-4 py-2 font-medium">CSS @media print</td>
               <td className="px-4 py-2">Client-side with no server dependency, uses native browser print engine, consistent with screen content, progressive enhancement, works with any content, immediate availability</td>
               <td className="px-4 py-2">Limited page layout control, browser rendering inconsistencies, poor support for page headers/footers/numbering, cannot generate files programmatically, user must initiate print</td>
-            </tr>
-            <tr className="border-b border-theme">
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="px-4 py-2 font-medium">Headless Browser PDF (Puppeteer)</td>
               <td className="px-4 py-2">Full CSS rendering fidelity, custom headers/footers/page numbers, server-side batch generation, controllable viewport and scale, API-driven generation</td>
               <td className="px-4 py-2">Requires server infrastructure with Chromium, high memory usage per render, slower than template-based generation, Chromium dependency adds deployment complexity</td>
-            </tr>
+            </HighlightBlock>
             <tr className="border-b border-theme">
               <td className="px-4 py-2 font-medium">Template-Based PDF (PDFKit, jsPDF)</td>
               <td className="px-4 py-2">Lightweight, no browser dependency, precise programmatic control over layout, efficient for structured documents like invoices, works client-side or server-side</td>
@@ -148,13 +161,16 @@ export default function PrintStylesheetsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Hide all non-content elements in print.</strong> Navigation bars, sidebars, footers, search boxes, social media widgets, cookie banners, chat widgets, advertisements, and interactive controls serve no purpose on paper and waste space. Use <code>display: none</code> in the print stylesheet for these elements. Be thorough — it is better to explicitly hide too many elements and add back the few that are needed than to leave clutter that degrades print quality.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Linearize multi-column layouts to single-column.</strong> Print output is most readable in a single-column format that spans the full width of the page. Override grid and flexbox layouts with <code>display: block</code> and <code>width: 100%</code> in the print stylesheet. Sidebar content that is relevant for print (like table of contents or metadata) can be placed before or after the main content in the linear flow rather than beside it.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use page break properties to prevent awkward content splitting.</strong> Apply <code>break-inside: avoid</code> to tables, figures, code blocks, and cards to prevent them from being split across pages. Apply <code>break-after: avoid</code> to headings so they are not stranded at the bottom of a page without their following content. Use <code>break-before: page</code> for major section boundaries where a new page is appropriate. Set <code>orphans: 3; widows: 3;</code> on body text to prevent single-line fragments at page boundaries.
           </li>
@@ -175,13 +191,16 @@ export default function PrintStylesheetsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Not having any print stylesheet at all.</strong> Without print-specific styles, browsers print the screen layout exactly as it appears — including navigation bars, sidebars, footers, advertisements, dark backgrounds consuming entire ink cartridges, and multi-column layouts that create tiny, unreadable text. A minimal print stylesheet that hides non-content elements and linearizes the layout takes under 30 minutes to create and dramatically improves print quality.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Background colors and images printing as blank areas.</strong> By default, most browsers do not print background colors and images (users must enable this in print settings). If your design relies on background colors to convey meaning (colored table cells, status badges, highlighted sections), these will appear as blank white areas in most print output. Use borders, patterns, text labels, or icons as alternatives that print reliably regardless of browser settings.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Tables that break mid-row across pages.</strong> Large tables that span multiple pages often break in the middle of a row, making the data on the second page difficult to read without the column headers. Apply <code>break-inside: avoid</code> to <code>&lt;tr&gt;</code> elements to prevent row splitting, and ensure that <code>&lt;thead&gt;</code> is used so that browsers can repeat table headers on each page (though browser support for <code>thead</code> repetition in print varies).
           </li>
@@ -199,12 +218,15 @@ export default function PrintStylesheetsArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Stripe</strong> provides print-optimized invoice pages that transform the interactive dashboard view into a clean, professional invoice suitable for accounting and tax purposes. The print stylesheet hides the dashboard navigation, sidebar, and action buttons, expands the invoice to full width, forces a white background with black text, and includes the company logo and legal information that are hidden on screen. Stripe&apos;s invoices use page break controls to prevent line items from splitting across pages and include the full URL of the invoice as a reference at the bottom of the printed page.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Wikipedia</strong> has one of the most thorough print stylesheets on the web, optimized for their primary use case of printing reference articles. The print stylesheet hides navigation, the sidebar, edit links, reference popups, and external link icons. It linearizes the multi-column layout, adjusts font sizes for print readability, and expands citation URLs so that references are usable on paper. Wikipedia&apos;s print output also handles their complex table formatting, ensuring that large data tables break sensibly across pages with repeated headers. The &ldquo;Printable version&rdquo; link provides an even more optimized view with additional content restructuring.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Google Maps</strong> demonstrates print optimization for a highly interactive, visual application. When users print directions, Google Maps transforms the interactive map and turn-by-turn navigation into a printer-friendly format with a simplified map image, sequential direction steps in a linear list, distance and time information, and the destination address prominently displayed. The print output strips away the interactive map controls, search bar, and layers panel, producing a focused document that serves the specific use case of following printed directions.
         </p>
@@ -215,15 +237,18 @@ export default function PrintStylesheetsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">
-          <p className="font-medium">
+          <HighlightBlock as="p" tier="important" className="font-medium">
             Q: How would you implement print support for a complex web
             application dashboard?
-          </p>
-          <p className="mt-2">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-2">
             A: I would start with a <code>@media print</code> stylesheet that addresses four layers. First, visibility — hide navigation, sidebars, toolbars, filters, action buttons, and any interactive elements that serve no purpose on paper using <code>display: none</code>. Second, layout — linearize the dashboard grid to a single-column flow using <code>display: block</code> and <code>width: 100%</code>, with each dashboard widget stacking vertically. Third, formatting — force white backgrounds and dark text, adjust font sizes to point-based units (12pt body, 16pt headings), and set appropriate page margins using <code>{`@page { margin: 2cm; }`}</code>. Fourth, pagination — add <code>break-inside: avoid</code> to individual dashboard cards so they are not split across pages, and <code>break-before: page</code> for major sections if the dashboard has distinct categories. For charts and visualizations, I would provide static image alternatives for print since interactive canvas or SVG charts may not render correctly. Finally, I would add a print-only header with the dashboard title, date generated, and any applied filters so the printed report has context.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">

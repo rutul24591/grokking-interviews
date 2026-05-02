@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function ViewsMaterializedViewsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Views</strong> are virtual tables defined by SQL queries. When you query a view, the database executes the underlying query and returns results. Views do not store data—they are stored queries that run at read time. <strong>Materialized views</strong> store the query results physically, like a table. When you query a materialized view, the database reads the stored results (fast) rather than executing the query. Materialized views must be refreshed periodically to stay current with base table changes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The distinction matters for system design: views excel at encapsulating complex queries (joins, aggregations), enforcing row-level security (filter by tenant), and simplifying application code (single view vs multiple joins). Materialized views excel at accelerating expensive read queries (dashboards, reports) where slight staleness is acceptable. Views trade compute for freshness (query runs every time), materialized views trade freshness for speed (pre-computed results).
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, understanding view trade-offs is essential for query optimization architecture. Key decisions include: when to use views vs materialized views, refresh strategy for materialized views (on commit, scheduled, manual), handling staleness (acceptable window, staleness indicators), and view dependencies (avoid stacking views). Views are supported in all major databases (PostgreSQL, Oracle, SQL Server, MySQL). Materialized views vary—Oracle and PostgreSQL have native support, MySQL requires manual implementation with summary tables.
         </p>
@@ -42,13 +46,16 @@ export default function ViewsMaterializedViewsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Standard Views:</strong> Views are named queries stored in database schema. Example: CREATE VIEW active_users AS SELECT * FROM users WHERE status = 'active'. Querying the view executes the underlying query. Views provide: query encapsulation (complex logic in one place), security (grant access to view, not base tables), simplification (application sees simple interface). Views add no storage overhead but execute query on every access. Views are always current—reflect base table changes immediately. Views can be updated through (INSERT/UPDATE/DELETE) if they meet certain criteria (single table, no aggregations).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Materialized Views:</strong> Materialized views store query results physically. Example: CREATE MATERIALIZED VIEW daily_sales AS SELECT date, SUM(amount) FROM orders GROUP BY date. Querying reads stored results (fast). Materialized views must be refreshed: ON COMMIT (refresh on every base table change—strong consistency), scheduled (refresh hourly/daily—bounded staleness), manual (refresh on demand—full control). Choose based on freshness requirements. Materialized views can be indexed (unlike standard views) for additional performance.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Refresh Strategies:</strong> Full refresh rebuilds entire materialized view—simple but expensive for large datasets. Incremental refresh (fast refresh) applies only changes since last refresh—complex but efficient. Requires materialized view logs to track changes. Scheduled refresh runs at intervals (hourly, daily)—predictable load, bounded staleness. On-commit refresh ensures consistency but impacts write performance. Choose based on data volume and freshness needs. CONCURRENTLY option (PostgreSQL) allows reads during refresh.
           </li>
@@ -72,17 +79,20 @@ export default function ViewsMaterializedViewsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Aspect</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Aspect</th>
               <th className="p-3 text-left">Standard Views</th>
               <th className="p-3 text-left">Materialized Views</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3">
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3">
                 <strong>Data Storage</strong>
               </td>
               <td className="p-3">
@@ -99,8 +109,8 @@ export default function ViewsMaterializedViewsArticle() {
                 <br />
                 • Stale until refresh
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Performance</strong>
               </td>
@@ -118,8 +128,8 @@ export default function ViewsMaterializedViewsArticle() {
                 <br />
                 • 10-100x faster for aggregations
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Freshness</strong>
               </td>
@@ -137,7 +147,7 @@ export default function ViewsMaterializedViewsArticle() {
                 <br />
                 • Must track staleness
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Use Cases</strong>
@@ -169,13 +179,16 @@ export default function ViewsMaterializedViewsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Views for Security and Encapsulation:</strong> Create views to encapsulate complex joins (application sees simple interface), enforce row-level security (filter by tenant/user), hide sensitive columns (exclude password, ssn). Grant access to views, not base tables. Document view purpose and dependencies. Views simplify application code and provide consistent data access patterns across services. Use views as API layer between applications and base tables.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Choose Refresh Strategy Based on Freshness Needs:</strong> For dashboards (hourly updates acceptable): scheduled refresh (cron job hourly). For reports (daily updates acceptable): scheduled refresh (nightly batch). For near-real-time (seconds acceptable): on-commit refresh or frequent scheduled refresh. For exact consistency: on-commit refresh (impacts write performance). Document acceptable staleness per materialized view. Monitor refresh duration and alert on delays.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Monitor Staleness:</strong> Track last refresh time for each materialized view. Alert when refresh is delayed beyond SLA. Expose staleness metadata in API responses (last_updated field). For critical dashboards, show staleness indicator to users (data as of HH:MM). Automate refresh monitoring—failed refreshes should page on-call. Implement refresh retry logic with exponential backoff.
           </li>
@@ -193,13 +206,16 @@ export default function ViewsMaterializedViewsArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ul className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Sales Dashboard with Materialized Views:</strong> E-commerce platform uses materialized views for sales dashboard—daily revenue, orders by category, top products. Materialized view pre-aggregates millions of orders into hundreds of summary rows. Refresh runs hourly during business hours, nightly off-hours. Dashboard queries materialized view (sub-second) instead of scanning orders table (30+ seconds). Staleness acceptable (hourly updates sufficient for business decisions). Indexes on date and category columns enable fast filtering.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Multi-Tenant Security with Views:</strong> SaaS platform uses views for tenant isolation—CREATE VIEW tenant_orders AS SELECT * FROM orders WHERE tenant_id = current_tenant_id(). Application connects with tenant-specific credentials, automatically filtered to tenant data. Prevents cross-tenant data leaks (application bug cannot access other tenant data). Views provide defense-in-depth alongside application-level access control. Single view definition enforces security across all applications.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Financial Reporting with Materialized Views:</strong> Financial system uses materialized views for regulatory reports—balance sheets, income statements, cash flow. Reports require complex aggregations across multiple tables. Materialized views pre-compute aggregations, refreshed nightly after market close. Reports run in seconds instead of hours. Exact consistency not required (end-of-day snapshots sufficient for regulatory reporting). Audit trail tracks report generation (who, when, which version).
           </li>
@@ -217,15 +233,18 @@ export default function ViewsMaterializedViewsArticle() {
 
       <section>
         <h2>Security Considerations</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Access Control</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Grant Access to Views:</strong> Grant SELECT on views, not base tables. Users access data through views only. Views filter by tenant/user, hide sensitive columns. Base table access restricted to administrators. Prevents unauthorized data access even if application has bugs. Use database roles for permission management (analyst_role, admin_role).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Row-Level Security:</strong> Use views with WHERE clauses for row-level security (tenant_id = current_tenant). Combine with database roles (each tenant has separate role). Application connects with tenant-specific role, automatically filtered. Defense-in-depth alongside application access control. Views provide consistent security policy across all applications.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Column-Level Security:</strong> Views exclude sensitive columns (password, ssn, credit_card). Application cannot accidentally expose data not in view. Sensitive data accessed only through secure APIs with audit logging. Views provide column-level security without application changes. Different views for different user roles (admin view vs user view).
             </li>
@@ -262,15 +281,18 @@ export default function ViewsMaterializedViewsArticle() {
 
       <section>
         <h2>Performance Optimization</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">View Optimization</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Simplify View Definitions:</strong> Keep views simple—avoid complex subqueries, excessive joins. Complex views confuse query optimizer (poor execution plans). Break complex views into simpler intermediate views (but avoid deep stacks). Test query plans for views, optimize underlying queries. Use EXPLAIN ANALYZE to identify bottlenecks.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Use Indexes on Base Tables:</strong> Views inherit indexes from base tables. Ensure base tables have appropriate indexes for view queries. Example: view filtering by status needs index on status column. Query optimizer uses indexes when executing view queries. Monitor index usage and add missing indexes.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Materialized View Indexes:</strong> Add indexes to materialized views based on query patterns. Example: daily_sales materialized view needs index on date for time-range queries. Indexes accelerate reads but add refresh overhead. Monitor query patterns, add indexes for common filters. Use covering indexes for frequently accessed columns.
             </li>
@@ -313,15 +335,18 @@ export default function ViewsMaterializedViewsArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Storage Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Materialized View Storage:</strong> Materialized views store data physically—estimate storage based on aggregation level. Daily aggregations: 365 rows per year per metric. Hourly aggregations: 8760 rows per year per metric. Indexes add 20-50 percent overhead. Monitor storage growth, archive old data. Partition large materialized views by date.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>View Log Storage:</strong> Incremental refresh requires materialized view logs to track changes. Logs grow with base table change rate. Estimate: 10-50 bytes per changed row. Purge logs after successful refresh. Monitor log size, alert on unexpected growth. Logs consume storage until purged.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Index Storage:</strong> Indexes on materialized views add storage overhead. Estimate: 20-50 percent of materialized view size. Indexes accelerate reads but consume storage. Monitor index usage, drop unused indexes. Use compression for large indexes.
             </li>
@@ -361,12 +386,15 @@ export default function ViewsMaterializedViewsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: When do you use a materialized view?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: When do you use a materialized view?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use materialized views for expensive read queries that are executed frequently and can tolerate slight staleness. Examples: dashboard aggregations (daily revenue, active users), report queries (monthly sales by region), complex joins (customer lifetime value across multiple tables). Materialized views pre-compute results, reducing query time from seconds/minutes to milliseconds. Trade-off: data is stale between refreshes. Choose materialized views when: query is expensive (complex aggregations, multiple joins), query is frequent (dashboard loaded every minute), staleness is acceptable (hourly updates sufficient). Avoid materialized views for: real-time data (stock prices), frequently changing data (inventory counts), infrequent queries (not worth refresh overhead).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

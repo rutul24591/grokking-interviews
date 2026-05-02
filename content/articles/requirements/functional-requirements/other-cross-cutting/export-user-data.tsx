@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ExportUserDataArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Export User Data enables users to export their data from the platform. Users can request export (request data export), select data (select what data to export), choose format (choose export format), and download export (download exported data). Export user data is fundamental to data portability (users can take their data), user rights (users have right to their data), and compliance (meet regulatory requirements). For platforms with user data, effective export user data is essential for data portability, user rights, and compliance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, export user data architecture involves export requests (manage export requests), export generation (generate export data), export formats (support export formats), export delivery (deliver export data), and export management (manage export process). The implementation must balance completeness (export all data) with performance (generate exports efficiently) and security (secure export data). Poor export user data leads to compliance violations, user frustration, and data portability issues.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of export user data extends beyond simple data dump. Export requests (manage export requests). Export generation (generate export data). Export formats (support export formats). Export delivery (deliver export data). Export security (secure export data). For staff engineers, export user data is a data portability infrastructure decision affecting data portability, user rights, and compliance.
         </p>
@@ -46,13 +50,16 @@ export default function ExportUserDataArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Export Requests</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Export request enables users to request export. Request submission (submit export request). Request validation (validate export request). Request tracking (track export request). Export request enables export requests. Benefits include user control (users control export), tracking (track export requests). Drawbacks includes request overhead (request overhead), complexity (complexity).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Request management manages export requests. Request queue (queue export requests). Request processing (process export requests). Request completion (complete export requests). Request management enables export request management. Benefits include management (manage requests), processing (process requests). Drawbacks includes management overhead (management overhead), complexity (complexity).
-        </p>
+        </HighlightBlock>
         <p>
           Request status shows export request status. Request pending (show pending status). Request processing (show processing status). Request complete (show complete status). Request status enables export request status. Benefits include transparency (transparent status), user awareness (user awareness). Drawbacks includes status overhead (status overhead), complexity (complexity).
         </p>
@@ -104,9 +111,12 @@ export default function ExportUserDataArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Export user data architecture spans export service, generation service, delivery service, and security service. Export service manages exports. Generation service manages export generation. Delivery service manages export delivery. Security service manages export security. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/export-user-data/export-architecture.svg"
@@ -117,9 +127,9 @@ export default function ExportUserDataArticle() {
         />
 
         <h3>Export Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Export service manages user exports. Export storage (store exports). Export retrieval (retrieve exports). Export update (update exports). Export service is the core of export user data. Benefits include centralization (one place for exports), consistency (same exports everywhere). Drawbacks includes complexity (manage exports), coupling (services depend on export service).
-        </p>
+        </HighlightBlock>
         <p>
           Export policies define export rules. Default exports (default exports). Export validation (validate exports). Export sync (sync exports). Export policies automate export management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function ExportUserDataArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Export user data design involves trade-offs between comprehensive and limited export, automatic and manual export, and secure and convenient delivery. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Export: Comprehensive vs. Limited</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comprehensive export (export all data). Pros: Complete data (complete data), user satisfaction (user satisfaction), compliance (compliance). Cons: Generation overhead (generation overhead), size (size), performance (performance). Best for: Compliance, user satisfaction.
-        </p>
+        </HighlightBlock>
         <p>
           Limited export (export limited data). Pros: Lower overhead (lower overhead), smaller size (smaller size), better performance (better performance). Cons: Incomplete data (incomplete data), user dissatisfaction (user dissatisfaction), compliance issues (compliance issues). Best for: Lower overhead, better performance.
         </p>
@@ -207,13 +220,16 @@ export default function ExportUserDataArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide export requests:</strong> Export request. Request management. Request status. Let users request.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enable export formats:</strong> JSON format. CSV format. PDF format. Let users choose.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Generate exports:</strong> Data collection. Data formatting. Data packaging.
           </li>
@@ -243,13 +259,16 @@ export default function ExportUserDataArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No export requests:</strong> Can&apos;t request export. <strong>Solution:</strong> Provide export requests.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No export formats:</strong> Can&apos;t choose format. <strong>Solution:</strong> Enable export formats.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No export generation:</strong> Can&apos;t generate export. <strong>Solution:</strong> Generate exports.
           </li>
@@ -279,16 +298,19 @@ export default function ExportUserDataArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Social Media Export</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms provide export. Data export (export user data). Format selection (select export format). Download delivery (download exported data). Users control social media export.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">E-commerce Export</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms provide export. Order export (export order data). Product export (export product data). Download delivery (download exported data). Users control e-commerce export.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Cloud Service Export</h3>
         <p>
@@ -308,12 +330,15 @@ export default function ExportUserDataArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design export user data that balances completeness with performance?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design export user data that balances completeness with performance?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement export with performance because users want complete export (all their data) but want reasonable performance (not wait hours). Export data: export user data (all data types, all time periods, complete history)—compliance requirement, user right to their data. Optimize generation: optimize generation (parallel processing, streaming export, incremental export, background generation)—reduce generation time, don&apos;t block user. Provide selection: let users select (export all, export by category, export by date range, export specific data)—users can export subset for faster generation. Monitor performance: monitor performance (generation time, export size, success rate, failures)—identify bottlenecks, optimize slow exports. The performance insight: users want complete export but want performance—provide export (all data, complete) with optimization (parallel, streaming, incremental, background), selection (all, category, date, specific), monitor (time, size, success, failures), and balance completeness with reasonable generation time.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

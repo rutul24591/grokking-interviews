@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function WordSearchArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The <span className="font-semibold">Word Search</span> problem asks whether a
           target word can be constructed from sequentially adjacent (horizontally or
           vertically) cells in a 2D grid of letters, where each cell can be used at most
           once per path. Word Search II generalizes to a list of target words, returning
           all that exist.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The problem is the canonical grid-DFS-with-backtracking exercise. It exposes
           three crucial patterns: visited bookkeeping with mark-on-enter / unmark-on-leave,
           early termination when the prefix doesn't match, and trie-driven multi-target
           search. Variants underlie Boggle solvers, OCR + lexicon validation, and
           pathfinding in constrained domains.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Interview ubiquity reflects its pedagogical density: pure DFS, recursion with
           state restoration, pruning on character mismatch, and the leap from one-target
@@ -53,18 +57,21 @@ export default function WordSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Grid DFS.</span> From each starting cell that
           matches the first character, depth-first explore neighbors. At depth k, the next
           cell must contain word[k]. Backtrack on mismatch, out-of-bounds, or revisit.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Visited bookkeeping.</span> A path can't reuse a
           cell, but different DFS branches must be allowed to. Mark on enter, unmark on
           leave — a per-path "used" state, not a global visited. Two cheap encodings: a
           parallel boolean grid, or temporarily overwriting <code>grid[r][c]</code> to a
           sentinel like <code>'#'</code> (no extra space).
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Pruning by character match.</span> Reject the
           branch immediately when <code>grid[r][c] != word[k]</code>. This is critical:
@@ -109,16 +116,19 @@ export default function WordSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Outer loop, inner DFS.</span> The driver
           iterates all m · n cells; at each, invoke DFS with k = 0. On first success,
           return true (Word Search I) or accumulate matches (Word Search II).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Direction array.</span> Hard-coded 4 (or 8)
           directions as a (dr, dc) pair list. Loop over this list inside the DFS for
           neighbor exploration. Keeps the hot loop tight.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">In-place visited via sentinel.</span> Replace
           grid[r][c] with a non-letter character before recursing; restore on return. Saves
@@ -144,17 +154,20 @@ export default function WordSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">DFS vs BFS.</span> BFS finds the shortest path;
           word search needs an exact-length path matching a string, so DFS with depth
           equal to word length is appropriate. BFS would carry the entire path in each
           frontier element and use exponentially more memory.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Visited grid vs in-place sentinel.</span>{" "}
           Sentinel saves space but mutates input. For interviews, mention both; production
           code usually prefers explicit visited for clarity.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Per-word vs trie-based.</span> For a single
           word, trie has overhead and offers no benefit. For 2 or more words, trie
@@ -175,16 +188,19 @@ export default function WordSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Prune on first-character mismatch.</span> Skip
           DFS entirely from cells whose letter doesn't match word[0]. Easy 4× to 26×
           speedup on natural-language grids.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Use a trie for ≥ 2 target words.</span> Even
           two words share most of their path-walking work; the threshold for trie
           benefit is low.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Mark and unmark in the same recursive
           call.</span> One mark on entry, one unmark on exit — never spread across helper
@@ -209,16 +225,19 @@ export default function WordSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Forgetting to unmark.</span> The classic bug.
           Path leaks across siblings; subsequent DFS branches see fictional walls and miss
           valid solutions.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Sharing visited across starting cells.</span>{" "}
           The visited state is per-DFS, not global. Reset (or use sentinel) at each
           start.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Diagonal vs orthogonal confusion.</span> Word
           Search uses 4 directions; Boggle uses 8. Mixing them up gives wrong answers.
@@ -247,18 +266,21 @@ export default function WordSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Boggle / Wordament solvers.</span> Mobile games
           asking the user to find words in a 4×4 letter grid against a timer. The solver
           (and the AI opponent) runs Word Search II with a 200k-word dictionary trie. Must
           be fast enough to enumerate all valid words in &lt; 100ms.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">OCR with lexicon validation.</span> When OCR
           produces uncertain character predictions in a 2D layout (e.g., scanned table
           cells), trie-driven traversal of confidence-weighted neighbors finds the most
           plausible word matching a lexicon. Used in document AI pipelines.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Crossword construction.</span> Filling crossword
           slots with valid words under intersection constraints uses a similar
@@ -290,16 +312,19 @@ export default function WordSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Word Search I — does this word exist in the
           grid?"</span> DFS from each cell matching word[0], 4-directional, mark/unmark,
           short-circuit on first success.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Word Search II — return all words from a
           dictionary that exist."</span> Build trie, single grid DFS carrying trie
           pointer, prune on missing child, dedupe via terminal-mark clearing.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">"What's the time complexity?"</span> O(m · n ·
           4 · 3^(L−1)) for Word Search I. For II, dominated by trie pruning; worst case

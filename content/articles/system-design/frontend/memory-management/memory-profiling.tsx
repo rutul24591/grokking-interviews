@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Memory profiling</strong> is the discipline of measuring and explaining memory behavior over time: what is allocated, what is retained, and why the heap (and/or DOM memory) grows. In a production-scale frontend, memory profiling is not a one-off debugging activity; it is a <strong>reliability practice</strong> that prevents performance incidents, mobile crashes, and "slow degradation" issues that only appear after prolonged usage.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Unlike CPU profiling, memory issues can remain latent: the app feels fine for minutes, then progressively slows as garbage collection (GC) work increases and the browser starts applying pressure (throttling, tab discards, or outright crashes). The technical root cause is almost always one of two shapes:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Churn:</strong> Too many allocations in hot paths, causing frequent GC and tail-latency regressions.
@@ -76,6 +80,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/memory-management/memory-profiling-workflow.svg"
@@ -84,12 +91,12 @@ export default function ArticlePage() {
         />
 
         <h3>What You Actually Measure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When engineers say "memory", they may mean several different things: JavaScript heap usage, DOM node counts, GPU resources (images, canvases), decoded image caches, and overall process RSS. Frontend profiling focuses primarily on <strong>JS heap</strong> and <strong>DOM retention</strong>, because these are the most common sources of steady growth and GC-induced jank.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           As a practical rule: if the app gets progressively slower, you investigate retention. If the app stutters under interaction but memory is stable, you investigate allocation churn. If the app crashes after long sessions, you investigate unbounded growth.
-        </p>
+        </HighlightBlock>
         <p>
           Key metrics to track:
         </p>
@@ -208,14 +215,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A reliable memory profiling process is a pipeline that turns ambiguous symptoms into a root cause you can fix and prevent from regressing.
-        </p>
+        </HighlightBlock>
 
         <h3>Step 1: Define the Scenario and Steady State</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Start by specifying a user journey that should return to steady state: open view, load data, interact, navigate away, and return to a known baseline. Without a defined "done" boundary, you cannot confidently call something a leak.
-        </p>
+        </HighlightBlock>
         <p>
           Example scenario: "Navigate to Dashboard, wait for data to load, interact with filters for 30 seconds, navigate away, wait 10 seconds." The steady state is memory usage after the 10-second wait.
         </p>
@@ -342,9 +352,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Different profiling techniques optimize for different goals: detail, overhead, and fidelity.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -387,9 +400,9 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In production, you often cannot take heap snapshots at scale, but you can still build memory observability: track session duration, route transitions, resource-heavy feature usage, and user-perceived lag signals. The goal is early detection and fast reproduction, not perfect attribution from telemetry alone.
-        </p>
+        </HighlightBlock>
         <p>
           A pragmatic production strategy is to add "soak cohorts": run navigation-heavy flows in an automated environment on every release candidate. Even without perfect heap attribution, you can detect that "baseline after three navigations increased by X" and block the release for investigation. This shifts memory reliability left and reduces the operational cost of memory incidents.
         </p>
@@ -400,13 +413,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Profile in Production Mode:</strong> Development builds have different memory characteristics. Always profile production-like builds.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Realistic Scenarios:</strong> Profile actual user journeys, not synthetic micro-benchmarks.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Force GC Before Snapshots:</strong> Always force GC before taking comparison snapshots to ensure you&apos;re measuring retention, not temporary allocations.
           </li>
@@ -439,13 +455,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Profiling Development Build:</strong> Dev builds have extra instrumentation and different memory patterns. Always profile production builds.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Forcing GC:</strong> Taking snapshots without forcing GC first shows temporary allocations, not retention.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Single Run Testing:</strong> Leaks show up over repeated runs. One iteration may not reveal the issue.
           </li>
@@ -472,14 +491,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Dashboard Memory Growth</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Symptom:</strong> Dashboard becomes sluggish after 30 minutes of use.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Profiling:</strong> Take heap snapshots before and after 10 navigation cycles. Comparison shows 500 new DashboardPanel instances retained.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Retainer Analysis:</strong> Tracing retainers reveals: Window → EventEmitter → listener callback → DashboardPanel instance. The listener was never removed on unmount.
         </p>
@@ -532,14 +554,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between heap snapshot and allocation timeline?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Heap snapshot and allocation timeline serve different purposes:
-            </p>
+            </HighlightBlock>
             <ul className="space-y-2 mb-3">
               <li>
                 <strong>Heap Snapshot:</strong> Point-in-time capture of all objects, their sizes, and references. Best for finding what is retained and tracing retainer chains. High overhead, pauses execution.

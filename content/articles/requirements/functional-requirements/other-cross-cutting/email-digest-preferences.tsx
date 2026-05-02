@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function EmailDigestPreferencesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Email Digest Preferences enable users to control how they receive email digests. Users can select digest frequency (daily, weekly, monthly), choose digest content (what to include in digest), customize digest delivery (when to deliver digest), and manage digests (pause, resume, edit). Email digest preferences are fundamental to email optimization (reduce email volume), user experience (consolidated emails), and user satisfaction (don&apos;t overwhelm inbox). For platforms with email notifications, effective email digest preferences are essential for email optimization, user experience, and user satisfaction.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, email digest preferences architecture involves frequency management (manage digest frequency), content management (manage digest content), delivery management (manage digest delivery), and digest management (manage active digests). The implementation must balance email reduction (consolidate emails) with timeliness (deliver important quickly) and user preferences (respect user choices). Poor email digest preferences lead to email fatigue, missed important emails, and user dissatisfaction.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of email digest preferences extends beyond simple daily/weekly toggle. Digest frequency (daily, weekly, monthly, custom). Digest content (what to include, what to exclude). Digest delivery (what time, what day). Digest customization (format, length, style). For staff engineers, email digest preferences are an email communication infrastructure decision affecting email volume, user experience, and user satisfaction.
         </p>
@@ -46,13 +50,16 @@ export default function EmailDigestPreferencesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Digest Frequency</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Daily digest sends digest every day. Daily delivery (deliver every day). Daily content (include daily activity). Daily timing (deliver at specific time). Daily digest enables daily consolidation. Benefits include regular consolidation (consolidate daily), timely delivery (deliver daily). Drawbacks includes email volume (daily emails), may be too frequent (too many emails).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Weekly digest sends digest every week. Weekly delivery (deliver every week). Weekly content (include weekly activity). Weekly timing (deliver on specific day). Weekly digest enables weekly consolidation. Benefits include reduced volume (fewer emails), comprehensive summary (summarize week). Drawbacks includes delayed delivery (not daily), may miss urgent (urgent emails delayed).
-        </p>
+        </HighlightBlock>
         <p>
           Monthly digest sends digest every month. Monthly delivery (deliver every month). Monthly content (include monthly activity). Monthly timing (deliver on specific date). Monthly digest enables monthly consolidation. Benefits include minimum volume (minimum emails), comprehensive summary (summarize month). Drawbacks includes very delayed delivery (not frequent), may miss important (important emails delayed).
         </p>
@@ -107,9 +114,12 @@ export default function EmailDigestPreferencesArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Email digest preferences architecture spans digest service, frequency service, content service, and delivery service. Digest service manages digests. Frequency service manages digest frequency. Content service manages digest content. Delivery service manages digest delivery. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/email-digest-preferences/digest-architecture.svg"
@@ -120,9 +130,9 @@ export default function EmailDigestPreferencesArticle() {
         />
 
         <h3>Digest Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Digest service manages user digests. Digest storage (store digests). Digest retrieval (retrieve digests). Digest update (update digests). Digest service is the core of email digest preferences. Benefits include centralization (one place for digests), consistency (same digests everywhere). Drawbacks includes complexity (manage digests), coupling (services depend on digest service).
-        </p>
+        </HighlightBlock>
         <p>
           Digest policies define digest rules. Default digests (default digests). Digest validation (validate digests). Digest sync (sync digests). Digest policies automate digest management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -162,14 +172,17 @@ export default function EmailDigestPreferencesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Email digest preferences design involves trade-offs between frequency and timeliness, comprehensive and concise content, and fixed and custom delivery. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Frequency: Frequent vs. Infrequent</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Frequent digest (daily or more). Pros: Timely delivery (deliver frequently), timely awareness (aware of activity), high engagement (high engagement). Cons: Email volume (many emails), email fatigue (too many emails), may be redundant (redundant emails). Best for: Active users, time-sensitive activity.
-        </p>
+        </HighlightBlock>
         <p>
           Infrequent digest (weekly or less). Pros: Reduced volume (fewer emails), reduced fatigue (less fatigue), comprehensive summary (summarize period). Cons: Delayed delivery (not frequent), delayed awareness (not immediately aware), may miss urgent (urgent emails delayed). Best for: Less active users, non-urgent activity.
         </p>
@@ -210,13 +223,16 @@ export default function EmailDigestPreferencesArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide frequency options:</strong> Daily digest. Weekly digest. Monthly digest. Custom frequency.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enable content selection:</strong> Activity content. Notification content. Summary content. Let users choose.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Provide delivery options:</strong> Delivery time. Delivery day. Delivery format. Let users choose.
           </li>
@@ -246,13 +262,16 @@ export default function EmailDigestPreferencesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No frequency options:</strong> Only one frequency. <strong>Solution:</strong> Provide frequency options.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Limited content:</strong> Can&apos;t select content. <strong>Solution:</strong> Enable content selection.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No delivery options:</strong> Fixed delivery only. <strong>Solution:</strong> Provide delivery options.
           </li>
@@ -282,16 +301,19 @@ export default function EmailDigestPreferencesArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Social Media Email Digest</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms provide email digest. Digest frequency (daily, weekly). Digest content (activity, notifications). Digest delivery (morning, evening). Users control social media email digest.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">E-commerce Email Digest</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms provide email digest. Digest frequency (weekly, monthly). Digest content (orders, promotions). Digest delivery (specific day). Users control e-commerce email digest.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">News Email Digest</h3>
         <p>
@@ -311,12 +333,15 @@ export default function EmailDigestPreferencesArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design email digest preferences that balance email reduction with timeliness?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design email digest preferences that balance email reduction with timeliness?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement flexible frequency options with intelligent urgent notification override that reduces email volume while ensuring time-sensitive information reaches users promptly. Enable daily digest: all notifications from past 24 hours, delivered at user&apos;s preferred time (e.g., 7 AM)—ideal for active users who want daily summary. Enable weekly digest: all notifications from past week, delivered on user&apos;s preferred day (e.g., Monday morning)—ideal for low-engagement users or non-urgent platforms. Enable monthly digest: comprehensive monthly summary, delivered first of month—ideal for compliance reports, billing summaries, or very low-engagement users. Override for urgent: define urgent criteria (security alerts, account issues, time-sensitive deadlines)—these bypass digest and send immediately via email. Monitor usage: track digest open rates, click-through rates, unsubscribe rates—if users never open weekly digest, suggest monthly or disable. Provide preview: show users what their digest will contain (&quot;Your weekly digest will include 15 notifications&quot;) so they can adjust frequency if too many/few. The timeliness insight: users want fewer emails but don&apos;t want to miss genuinely urgent information—provide flexible frequency options (daily, weekly, monthly), intelligent urgent override for time-sensitive notifications, continuous usage monitoring to optimize frequency, and transparent preview of digest content so users can make informed choices.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

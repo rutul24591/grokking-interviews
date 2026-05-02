@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function DeveloperExperienceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Developer Experience (DX)</strong> encompasses the tools,
           workflows, documentation, and environment that enable developers to be
           productive, satisfied, and effective in their work. Good DX reduces
@@ -51,8 +55,8 @@ export default function DeveloperExperienceArticle() {
           month. Over the course of a year, that is nearly 1,000 hours of
           recovered engineering capacity — equivalent to hiring half a new
           developer for free.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The business impact of DX extends beyond productivity metrics.
           Development environments directly influence hiring — developers prefer
           joining teams with modern tooling, fast feedback loops, and clear
@@ -67,7 +71,7 @@ export default function DeveloperExperienceArticle() {
           duration, CI pipeline length, deployment frequency) and qualitative
           feedback (developer satisfaction surveys, friction logs, onboarding
           experience reports).
-        </p>
+        </HighlightBlock>
         <p>
           DX investment decisions require prioritization. Not all improvements
           deliver equal impact. A slow build system that affects every developer
@@ -98,7 +102,10 @@ export default function DeveloperExperienceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The development environment is the foundation of developer experience.
           A well-configured environment enables developers to start contributing
           within minutes, not days. This begins with a one-command setup —{" "}
@@ -113,8 +120,8 @@ export default function DeveloperExperienceArticle() {
           sub-second update times — slow HMR is one of the most frequently cited
           sources of developer frustration because it interrupts the flow state
           that developers need for productive work.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Code quality tooling automates consistency and catches errors before
           they reach code review. ESLint enforces coding standards and catches
           common bugs, with auto-fix on save eliminating manual formatting
@@ -131,7 +138,7 @@ export default function DeveloperExperienceArticle() {
           anything that can be checked by a tool should be, freeing human
           reviewers to focus on architecture, logic, and design decisions rather
           than style nitpicks.
-        </p>
+        </HighlightBlock>
         <p>
           Feedback loops determine how quickly developers learn whether their
           changes work correctly. The fastest loop is HMR (sub-second), followed
@@ -176,7 +183,10 @@ export default function DeveloperExperienceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The developer workflow architecture maps the journey from code change
           to production deployment, identifying friction points and optimization
           opportunities at each stage. The local development flow begins with
@@ -192,8 +202,8 @@ export default function DeveloperExperienceArticle() {
           staging verification, the changes are promoted to production with
           post-deploy monitoring that alerts on error rate spikes or performance
           degradation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Documentation architecture supports this workflow by providing the
           right information at the right time. Onboarding documentation guides
           new developers through environment setup, architecture overview, and
@@ -212,7 +222,7 @@ export default function DeveloperExperienceArticle() {
           without reading source code. The guiding principle is that documentation
           should be close to code, auto-generated where possible, and versioned
           with the codebase.
-        </p>
+        </HighlightBlock>
         <p>
           The debugging architecture determines how quickly developers can
           identify and resolve issues when things go wrong. Source maps connect
@@ -238,7 +248,10 @@ export default function DeveloperExperienceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Linting strictness presents a classic DX trade-off. Strict lint
           configurations catch more issues and enforce consistent code style but
           generate more violations that developers must fix before committing.
@@ -252,8 +265,8 @@ export default function DeveloperExperienceArticle() {
           them. A rule that generates false positives or catches edge cases that
           never occur in the codebase should be disabled, even if it is
           recommended by the community.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CI/CD pipeline speed versus comprehensiveness is another key trade-off.
           A comprehensive pipeline that runs every check sequentially may take
           30+ minutes, creating a bottleneck for merges and frustrating
@@ -269,7 +282,7 @@ export default function DeveloperExperienceArticle() {
           &quot;green CI for merge, blocking for deploy&quot; model — developers
           can merge when lint, type-check, and unit tests pass, and E2E tests
           must pass before deployment to production.
-        </p>
+        </HighlightBlock>
         <p>
           Documentation investment must balance completeness with maintenance
           cost. Comprehensive documentation that is outdated is worse than no
@@ -308,7 +321,10 @@ export default function DeveloperExperienceArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Optimize the development environment for the common case. The dev
           server should start in under 5 seconds — if it takes longer, developers
           lose context while waiting and are more likely to multitask, reducing
@@ -326,8 +342,8 @@ export default function DeveloperExperienceArticle() {
           work offline and are not blocked by service outages. Use environment
           variable validation on startup to catch missing configuration
           immediately rather than failing at runtime with cryptic errors.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Invest in CI/CD performance with the same rigor as application
           performance. Cache dependencies between runs (node_modules, build
           cache) — this alone can reduce CI time by 50-70%. Parallelize
@@ -342,7 +358,7 @@ export default function DeveloperExperienceArticle() {
           generic &quot;build failed&quot; message. Monitor CI metrics over time
           — track pipeline duration per job, failure rates, and flaky test
           frequency — and alert on regressions.
-        </p>
+        </HighlightBlock>
         <p>
           Measure developer experience systematically using the SPACE framework.
           Track Satisfaction through quarterly surveys (rate your development
@@ -377,7 +393,10 @@ export default function DeveloperExperienceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common DX pitfall is allowing the development environment to
           degrade over time without dedicated maintenance. Build times creep up
           as dependencies are added — each new package increases install time,
@@ -392,8 +411,8 @@ export default function DeveloperExperienceArticle() {
           DX as a product with an owner, track DX metrics alongside product
           metrics, and allocate engineering capacity (10-20% of sprint capacity)
           for DX improvements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Over-engineering the tooling stack is a frequent mistake. Adopting
           every new tool — linters, formatters, commit message validators,
           changelog generators, release automation, semantic versioning,
@@ -407,7 +426,7 @@ export default function DeveloperExperienceArticle() {
           problem, not check a box on a &quot;best practices&quot; list. Simpler
           toolchains are easier to maintain, debug, and onboard new developers
           onto.
-        </p>
+        </HighlightBlock>
         <p>
           Ignoring qualitative developer feedback is a subtle but impactful
           error. Quantitative metrics (build times, test duration, CI pass rate)
@@ -443,7 +462,10 @@ export default function DeveloperExperienceArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Large-scale organizations with multiple frontend teams invest heavily
           in DX platforms — internal tooling teams that provide standardized
           development environments, shared component libraries, CI/CD
@@ -459,8 +481,8 @@ export default function DeveloperExperienceArticle() {
           environment in hours rather than weeks), consistent tooling across
           teams, and shared DX improvements that benefit all teams
           simultaneously.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Startup-stage companies face different DX priorities. With small teams
           (3-10 developers) and rapid iteration requirements, the focus is on
           minimizing setup time and maximizing developer autonomy. The tooling
@@ -477,7 +499,7 @@ export default function DeveloperExperienceArticle() {
           key is to invest in DX just ahead of the pain point — not so early
           that the investment is wasted on problems that do not exist, and not so
           late that the team is crippled by friction.
-        </p>
+        </HighlightBlock>
         <p>
           Enterprise migrations to modern frontend tooling represent significant
           DX transformation projects. Moving from a legacy build system (Grunt,
@@ -500,12 +522,15 @@ export default function DeveloperExperienceArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What makes good developer experience?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Fast feedback loops at every stage — HMR under 1 second, unit
               tests under 100ms each, CI pipeline under 10 minutes. Clear,
               actionable error messages that tell developers what broke and how
@@ -516,7 +541,7 @@ export default function DeveloperExperienceArticle() {
               quantitative metrics (build times, test duration) and qualitative
               feedback (developer surveys, friction logs). Treat DX as a product
               with an owner and a roadmap, not an afterthought.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

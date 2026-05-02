@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function UrlStructureArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>URL structure</strong> is the design of a website&apos;s URL
           patterns — how paths are organized, how resources are named, and how
           the URL hierarchy maps to the site&apos;s information architecture. A
@@ -45,8 +46,8 @@ export default function UrlStructureArticle() {
           users (who read URLs to understand context and navigation), search
           engines (which use URL signals for crawling, indexing, and ranking),
           and developers (who maintain routing logic and URL generation).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Google has consistently stated that URLs are a minor ranking factor,
           but their impact on SEO extends far beyond direct ranking signals.
           Clean, descriptive URLs improve click-through rates in search results
@@ -55,8 +56,8 @@ export default function UrlStructureArticle() {
           URLs is more meaningful), reduce duplicate content issues (clean URL
           patterns minimize parameter-based duplicates), and improve crawl
           efficiency (predictable URL structures allow more efficient crawling).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the staff/principal engineer level, URL structure is an
           architectural decision made during system design that becomes
           extremely expensive to change after launch. URL migrations — changing
@@ -65,14 +66,14 @@ export default function UrlStructureArticle() {
           monitoring as search engines process the changes. A URL structure
           designed with scalability, internationalization, and content growth in
           mind prevents costly migrations later.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>URL Components:</strong> A URL consists of protocol
             (https://), subdomain (www), domain (example.com), path
             (/category/product), query parameters (?color=red), and fragment
@@ -80,22 +81,22 @@ export default function UrlStructureArticle() {
             should be descriptive, hierarchical, and stable. Query parameters
             should be reserved for non-content-affecting state (sorting,
             filtering, tracking).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Slug Design:</strong> A slug is the URL-safe representation
             of a page title or identifier. Effective slugs are lowercase,
             hyphen-separated, concise, and include relevant keywords without
             being keyword-stuffed. &quot;running-shoes-men&quot; is better than
             &quot;mens-high-performance-running-shoes-2026-new-arrival&quot; or
             &quot;product-12345.&quot;
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Hierarchical Paths:</strong> URLs organized in a tree
             structure (/electronics/phones/iphone-16) that reflects the
             site&apos;s content taxonomy. Each path segment represents a level
             in the hierarchy. This structure helps search engines understand
             content relationships and enables breadcrumb generation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Flat URL Structures:</strong> All pages exist at the root
             level (/iphone-16-review, /galaxy-s25-review) without hierarchical
@@ -153,35 +154,35 @@ export default function UrlStructureArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           URL architecture decisions cascade through the entire application
           stack, from routing configuration to content management to SEO
           infrastructure.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/url-structure-diagram-1.svg"
           alt="URL anatomy breakdown showing protocol, subdomain, domain, path segments, query parameters, and fragment with their SEO relevance"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each URL component carries different SEO weight. The domain and path
           are the primary identifiers that search engines use for indexing.
           Query parameters are secondary signals that may or may not indicate
           distinct content. Fragments (hash) are completely ignored by search
           engines — content accessible only via fragment changes (hash routing)
           is effectively invisible to crawlers.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/url-structure-diagram-2.svg"
           alt="URL hierarchy and site architecture mapping showing how URL paths reflect content taxonomy and information architecture"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The URL hierarchy should mirror the site&apos;s information
           architecture. A well-structured URL path (/electronics/phones/iphone)
           communicates the content&apos;s position in the taxonomy, enables
           automated breadcrumb generation, and helps search engines understand
           topic clustering. URLs should be designed alongside the content
           taxonomy, not as an afterthought.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/url-structure-diagram-3.svg"
           alt="URL migration and redirect chain architecture showing how old URLs are mapped to new URLs via 301 redirects during site restructuring"
@@ -200,16 +201,19 @@ export default function UrlStructureArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="important">
               <th className="p-3 text-left">Approach</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
+            </HighlightBlock>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">Hierarchical URLs</td>
               <td className="p-3">
                 Clear content relationships; enables breadcrumbs; reflects
@@ -219,8 +223,8 @@ export default function UrlStructureArticle() {
                 Deeper paths reduce crawl priority; category changes require URL
                 changes; rigid structure limits content reorganization
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">Flat URLs</td>
               <td className="p-3">
                 Minimal crawl depth; simple routing; content can be reorganized
@@ -231,7 +235,7 @@ export default function UrlStructureArticle() {
                 potential slug conflicts; doesn&apos;t communicate content
                 relationships
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3 font-medium">Subdirectory i18n (/en/)</td>
               <td className="p-3">
@@ -264,26 +268,26 @@ export default function UrlStructureArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use Descriptive, Keyword-Relevant Slugs:</strong> URLs
             should be readable and describe the page content.
             /blog/seo-url-best-practices is better than /blog/post-12345 or
             /blog/p?id=12345. Include primary keywords naturally without
             stuffing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Keep URLs as Short as Practical:</strong> Remove unnecessary
             words (articles, prepositions) from slugs. /shoes/nike-air-max is
             better than /shop/all-shoes/brand-nike/nike-air-max-running-shoes.
             Shorter URLs are easier to share, less likely to be truncated, and
             have higher click-through rates.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Hyphens as Word Separators:</strong> Always use hyphens
             (-) not underscores (_) or spaces (%20). Google explicitly treats
             hyphens as word separators, making &quot;url-structure-guide&quot;
             parseable as three distinct words.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Enforce Lowercase URLs:</strong> Implement server-side or
             CDN-level redirects that convert any uppercase URL to its lowercase
@@ -324,27 +328,27 @@ export default function UrlStructureArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>ID-Only URLs:</strong> Using database IDs as the sole URL
             identifier (/product/123456) provides no keyword signal, no user
             context, and no content description. Always include a descriptive
             slug, optionally alongside an ID for uniqueness
             (/product/123456/nike-air-max).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Session IDs in URLs:</strong> Appending session IDs to URLs
             (/page?sessionid=abc123) creates infinite duplicate URLs. Each user
             session generates a new &quot;page&quot; from the crawler&apos;s
             perspective. Use cookies for session management, not URL parameters.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Hash-Based Routing for Content:</strong> Using fragment
             identifiers for navigation (/app#/products/shoes) makes content
             invisible to search engines. Fragments are stripped before server
             requests — the server always receives /app regardless of the hash
             content. Use path-based routing for any content that should be
             indexed.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Excessively Deep URL Hierarchies:</strong> URLs with 5+
             levels of nesting (/a/b/c/d/e/product) signal low importance to
@@ -370,26 +374,26 @@ export default function UrlStructureArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Stack Overflow:</strong> Uses a hybrid ID + slug pattern
             (/questions/12345/how-to-parse-json). The numeric ID ensures
             uniqueness while the slug provides readability and keyword signals.
             If the slug changes (question title edit), the old slug redirects to
             the new one while the ID remains stable.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Shopify:</strong> Enforces a consistent URL structure across
             millions of stores: /collections/collection-name for categories,
             /products/product-slug for products. This predictable pattern
             enables platform-wide SEO tooling and consistent crawler behavior.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Wikipedia:</strong> Uses a flat URL structure with
             descriptive slugs (/wiki/URL_structure). Despite millions of
             articles, the flat /wiki/ prefix keeps all content at minimal crawl
             depth. Underscores are used instead of hyphens — a legacy decision
             that predates Google&apos;s hyphen recommendation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Airbnb:</strong> Implements subdirectory
             internationalization with hierarchical paths: /en/rooms/12345 for
@@ -403,12 +407,15 @@ export default function UrlStructureArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: Should you use a hierarchical or flat URL structure?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: It depends on the content model. Hierarchical URLs
               (/category/subcategory/item) are best for e-commerce,
               documentation, and sites with clear taxonomies — they communicate
@@ -418,12 +425,12 @@ export default function UrlStructureArticle() {
               URL structure should reflect actual content organization. Avoid
               deep hierarchies (more than 3-4 levels) as they increase crawl
               depth and reduce URL readability.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How would you handle a large-scale URL migration?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: First, create a comprehensive mapping between old and new URLs
               — every old URL must have a 301 redirect to its new counterpart.
@@ -492,7 +499,7 @@ export default function UrlStructureArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://developers.google.com/search/docs/crawling-indexing/url-structure"
               target="_blank"
@@ -501,8 +508,8 @@ export default function UrlStructureArticle() {
             >
               Google Search Central — URL Structure
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites"
               target="_blank"
@@ -511,8 +518,8 @@ export default function UrlStructureArticle() {
             >
               Google — Managing Multi-Regional Sites
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://datatracker.ietf.org/doc/html/rfc3986"
               target="_blank"
@@ -521,7 +528,7 @@ export default function UrlStructureArticle() {
             >
               RFC 3986 — Uniform Resource Identifier (URI) Syntax
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://ahrefs.com/blog/seo-friendly-urls/"

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An <strong>AI agent</strong> is an autonomous system that uses a Large
           Language Model as its reasoning engine to perceive its environment,
           plan actions, execute those actions through tools or APIs, observe the
@@ -32,8 +36,8 @@ export default function ArticlePage() {
           responds to a single prompt and stops, an agent operates in a loop —
           it can make multiple decisions, take multiple actions, and adapt its
           strategy based on feedback from the environment.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The key distinction between a passive LLM and an agent is{" "}
           <strong>agency</strong> — the ability to act, not just respond. A
           chatbot answers &quot;What&apos;s the weather?&quot; with a text
@@ -44,7 +48,7 @@ export default function ArticlePage() {
           again if needed, and then compose a comprehensive response. The agent
           determines its own sequence of actions rather than following a
           pre-programmed workflow.
-        </p>
+        </HighlightBlock>
         <p>
           Agents represent a fundamental shift in how software interacts with
           the world. Traditional software follows deterministic logic: if X,
@@ -85,7 +89,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of any agent is the <strong>agent loop</strong> — the
           iterative cycle of perception, reasoning, action, and observation that
           drives the agent&apos;s behavior. In each iteration, the agent receives
@@ -96,8 +103,8 @@ export default function ArticlePage() {
           continues until the agent determines the goal has been achieved, a
           maximum number of iterations has been reached, or an unrecoverable
           error has occurred.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>ReAct paradigm</strong> (Reasoning + Acting) is the
           dominant framework for agent loops, introduced by Yao et al. (2023).
           ReAct interleaves two types of generation: the model generates
@@ -108,7 +115,7 @@ export default function ArticlePage() {
           reasoning and acting are synergistic — reasoning helps the agent plan
           meaningful actions, and observations from actions ground the
           agent&apos;s reasoning in reality, preventing hallucination.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>ReAct reasoning loop</strong> operates as a strict
           Thought-Action-Observation cycle that repeats until convergence. In the{" "}
@@ -249,7 +256,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production-grade agent architecture consists of several layered
           components. The <strong>orchestration layer</strong> manages the agent
           loop, maintains the execution state, enforces iteration limits, and
@@ -258,8 +268,8 @@ export default function ArticlePage() {
           a human. This layer must be robust — agents can enter infinite loops,
           consume excessive tokens, or make cascading errors if the orchestration
           layer doesn&apos;t enforce boundaries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>tool registry</strong> is the agent&apos;s catalog of
           available actions. Each tool has a name, a natural language description
           (which the LLM uses to understand when to call it), a parameter schema
@@ -270,7 +280,7 @@ export default function ArticlePage() {
           a database issue might load database-specific tools only when needed,
           reducing the cognitive load on the LLM (fewer tools to choose from)
           and reducing the prompt size.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>memory manager</strong> handles the storage, retrieval,
           and summarization of the agent&apos;s memory. As the conversation
@@ -363,7 +373,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The decision to use an agent versus a deterministic pipeline is
           fundamental. Agents excel when the task is ill-defined, the path to
           the goal is not known in advance, the environment is dynamic, or error
@@ -374,8 +387,8 @@ export default function ArticlePage() {
           previous step&apos;s outcome. However, agents are non-deterministic,
           expensive (multiple LLM calls per task), slower than direct pipelines,
           and harder to test and debug.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For tasks with a known, fixed sequence of steps, a{" "}
           <strong>deterministic pipeline</strong> (step 1 → step 2 → step 3) is
           always preferable: it is deterministic, fast, cheap, testable, and
@@ -384,7 +397,7 @@ export default function ArticlePage() {
           by adapting their plan, but the cost is unpredictability. The pragmatic
           approach is to use pipelines for well-understood tasks and agents for
           novel or variable tasks, with clear boundaries between the two.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Single-agent vs. multi-agent</strong> architectures present
           another trade-off. A single agent with many tools can handle most
@@ -455,7 +468,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Always implement <strong>iteration limits</strong> and{" "}
           <strong>token budgets</strong> for agent loops. An agent without
           boundaries can loop indefinitely, consuming thousands of dollars in
@@ -463,8 +479,8 @@ export default function ArticlePage() {
           most tasks), a maximum token budget per task, and a wall-clock time
           limit. When limits are reached, the agent should summarize its progress
           so far and either request human guidance or return its best result.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design tools with <strong>descriptive names and clear descriptions</strong>.
           The LLM selects tools based on their name and description, so these
           must unambiguously communicate the tool&apos;s purpose, when to use it,
@@ -475,7 +491,7 @@ export default function ArticlePage() {
           matching the query. Returns ranked list of documents with title,
           summary, and relevance score&quot; gives the LLM the information it
           needs to make the right choice.
-        </p>
+        </HighlightBlock>
         <p>
           Implement <strong>structured observation reporting</strong>. When a
           tool executes, the result should be formatted as a clear, concise
@@ -571,7 +587,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most dangerous pitfall is <strong>unchecked tool execution</strong>.
           An agent with access to a database tool and no argument validation
           could delete production data if the LLM hallucinates the wrong
@@ -579,8 +598,8 @@ export default function ArticlePage() {
           by default, explicit approval for write operations, argument validation
           against schemas, and rate limiting on all tool calls. Never give an
           agent unrestricted access to production systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Agent loops that don&apos;t converge</strong> are common,
           especially for complex tasks. The agent may cycle through the same
           actions repeatedly, make incremental progress without reaching the
@@ -590,7 +609,7 @@ export default function ArticlePage() {
           steps?), detecting repetitive actions (has this tool been called with
           the same arguments before?), and implementing a &quot;give up and ask
           for help&quot; fallback.
-        </p>
+        </HighlightBlock>
         <p>
           Detecting <strong>non-convergent agent loops</strong> requires
           proactive monitoring within the orchestration layer. The most common
@@ -662,7 +681,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Autonomous research agents</strong> — given a research topic,
           the agent decomposes it into sub-questions, searches the web and
           internal knowledge bases for each, synthesizes findings across sources,
@@ -670,15 +692,15 @@ export default function ArticlePage() {
           comprehensive report. Systems like AutoGPT and Devin (AI software
           engineer) follow this pattern, though production systems add
           significantly more guardrails and structure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Code development agents</strong> — given a feature request or
           bug report, the agent reads the codebase, identifies relevant files,
           writes code to implement the change, runs tests, analyzes failures,
           iterates on the implementation, and submits a pull request with a
           description of changes. This is the pattern behind Devin, Cursor&apos;s
           agent mode, and GitHub Copilot Workspace.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Customer operations agents</strong> — given a customer issue,
           the agent retrieves the customer&apos;s account history, diagnoses the
@@ -726,13 +748,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: What is the ReAct paradigm and why does it work better than
             reasoning-only or acting-only approaches?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             ReAct (Reasoning + Acting) is a framework that interleaves two types
             of generation within the agent loop: &quot;thought&quot; tokens
             where the model reasons about the current situation, and
@@ -741,8 +766,8 @@ export default function ArticlePage() {
             context, and the cycle repeats. The key innovation is that reasoning
             and acting are not separate capabilities but mutually reinforcing
             processes.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             Reasoning-only approaches (chain-of-thought without action) can
             produce sophisticated-sounding analysis but are disconnected from
             reality — the model generates reasoning based solely on its training
@@ -751,7 +776,7 @@ export default function ArticlePage() {
             reasoning) lack the ability to plan, adapt, or explain decisions —
             the model picks a tool based on the immediate input but cannot
             articulate why or adjust its strategy based on intermediate results.
-          </p>
+          </HighlightBlock>
           <p>
             ReAct works better because the reasoning trace serves three purposes:
             (1) it helps the model plan meaningful actions by analyzing the

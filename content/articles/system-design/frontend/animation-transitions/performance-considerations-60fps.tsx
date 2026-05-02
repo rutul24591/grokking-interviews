@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,10 @@ export default function PerformanceConsiderations60fpsArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>60 frames per second</strong> is the performance target for
           smooth animation on the web. At 60 fps, each frame has a budget of
           16.67 milliseconds to complete all work — JavaScript execution, style
@@ -49,8 +53,8 @@ export default function PerformanceConsiderations60fpsArticle() {
           drops below 30 fps feel distinctly choppy. Modern high-refresh-rate
           displays (120 Hz on iPad Pro, ProMotion iPhones, and gaming monitors)
           shrink the budget to 8.33ms, raising the performance bar even further.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Animation performance is fundamentally a rendering pipeline problem.
           The browser processes visual changes through five sequential stages:
           Style (matching CSS selectors and computing values), Layout
@@ -62,7 +66,7 @@ export default function PerformanceConsiderations60fpsArticle() {
           skips both Layout and Paint, hitting only Composite. The fewer
           pipeline stages a change triggers, the cheaper it is per frame, and
           the more likely it is to meet the 16.67ms budget.
-        </p>
+        </HighlightBlock>
         <p>
           At the staff-engineer level, achieving 60 fps is a systems
           optimization problem that spans CSS architecture, JavaScript
@@ -92,8 +96,11 @@ export default function PerformanceConsiderations60fpsArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Rendering Pipeline Stages:</strong> Style → Layout → Paint
             → Composite → Display. Each property change triggers a specific
             subset of these stages. <code>transform</code> and{" "}
@@ -104,8 +111,8 @@ export default function PerformanceConsiderations60fpsArticle() {
             <code>left</code> trigger Layout + Paint + Composite (most
             expensive). Understanding which properties trigger which stages is
             the foundation of animation performance.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Compositor Thread:</strong> A dedicated browser thread that
             handles the final compositing step — positioning, scaling, and
             blending GPU texture layers into the final frame. Animations on{" "}
@@ -113,7 +120,7 @@ export default function PerformanceConsiderations60fpsArticle() {
             this thread, independent of the main thread. This is why
             compositor-only animations maintain 60 fps even during heavy
             JavaScript execution.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>GPU Compositing Layers:</strong> Elements promoted to their
             own compositing layer are rasterized into GPU textures that can be
@@ -189,12 +196,15 @@ export default function PerformanceConsiderations60fpsArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/performance-considerations-60fps-diagram-1.svg"
           alt="Rendering pipeline showing which CSS properties trigger which stages and their cost hierarchy"
           caption="Figure 1: CSS property cost hierarchy — different properties trigger different pipeline stages with varying performance impact"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The rendering pipeline cost hierarchy is the single most important
           mental model for animation performance. At the cheapest level,{" "}
           <code>transform</code> and <code>opacity</code> changes skip Layout
@@ -208,14 +218,14 @@ export default function PerformanceConsiderations60fpsArticle() {
           the main thread. When multiple elements are affected by a layout
           change (e.g., resizing a flex container), the cost multiplies by the
           number of affected elements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/performance-considerations-60fps-diagram-2.svg"
           alt="Frame timeline showing 16.67ms budget allocation between JavaScript, style, layout, paint, and composite"
           caption="Figure 2: Frame budget allocation — 16.67ms must accommodate JS execution, style recalc, layout, paint, and composite"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           A single frame at 60 fps has exactly 16.67ms to complete all work.
           The browser allocates this time across the rendering pipeline stages.
           Your JavaScript (rAF callbacks, event handlers) runs first, typically
@@ -228,7 +238,7 @@ export default function PerformanceConsiderations60fpsArticle() {
           the total exceeds 16.67ms, the frame is dropped. This is why
           compositor-only animations work so well — they eliminate the most
           expensive stages from the pipeline.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/performance-considerations-60fps-diagram-3.svg"
@@ -254,6 +264,9 @@ export default function PerformanceConsiderations60fpsArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr>
@@ -272,7 +285,7 @@ export default function PerformanceConsiderations60fpsArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2 font-medium">
                 Compositor-only properties
               </td>
@@ -285,8 +298,8 @@ export default function PerformanceConsiderations60fpsArticle() {
               <td className="border border-theme p-2">
                 Always — this is the default animation strategy
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2 font-medium">
                 Layer promotion (will-change)
               </td>
@@ -299,7 +312,7 @@ export default function PerformanceConsiderations60fpsArticle() {
               <td className="border border-theme p-2">
                 On elements about to animate, removed after animation
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="border border-theme p-2 font-medium">
                 FLIP technique
@@ -363,23 +376,26 @@ export default function PerformanceConsiderations60fpsArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Audit all animated properties with CSS Triggers:</strong>{" "}
             Before animating any property, check whether it triggers layout,
             paint, or composite only. Replace layout-triggering animations
             with transform equivalents: <code>transform: scale()</code>{" "}
             instead of width/height, <code>transform: translate()</code>{" "}
             instead of top/left/margin.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Profile with Chrome DevTools Performance panel:</strong>{" "}
             Record a performance trace during the animation. Look for long
             frames (red bars), forced synchronous layout (purple blocks with
             warning triangles), excessive paint regions (enable Paint Flashing),
             and unnecessary layer promotions (Layers panel). Diagnose before
             optimizing — guessing at performance problems is unreliable.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Batch DOM reads and writes with the read-write pattern:</strong>{" "}
             In any rAF callback or event handler that touches multiple elements,
@@ -423,23 +439,26 @@ export default function PerformanceConsiderations60fpsArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Animating left/top instead of transform:</strong> The most
             common animation performance mistake. Moving an absolutely
             positioned element with <code>left</code> triggers layout
             recalculation every frame. Using{" "}
             <code>transform: translateX()</code> is orders of magnitude cheaper
             because it only triggers compositing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-promoting with will-change:</strong> Applying{" "}
             <code>will-change: transform</code> to hundreds of elements
             creates hundreds of GPU layers, each consuming significant memory.
             On mobile devices with limited GPU memory, this causes the browser
             to fall back to software rendering, which is slower than no
             promotion at all.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Layout thrashing in animation loops:</strong> Reading{" "}
             <code>element.offsetHeight</code> between style writes inside a
@@ -475,22 +494,25 @@ export default function PerformanceConsiderations60fpsArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Google Maps:</strong> Achieves 60 fps pan and zoom on a
             complex WebGL canvas by offloading tile rendering to Web Workers,
             using OffscreenCanvas for tile rasterization, and limiting
             main-thread work to input handling and UI overlay updates. The map
             canvas runs on a separate rendering pipeline from the DOM UI.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Twitter/X Timeline:</strong> Maintains smooth scrolling
             through a virtualized list of tweets by rendering only the visible
             portion of the timeline. Scroll-linked animations (sticky headers,
             new tweet indicators) use transform-only properties to avoid
             triggering layout during scroll. Passive scroll listeners ensure
             the browser&apos;s scroll thread is not blocked.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Figma:</strong> Runs an entire vector editing canvas at
             60 fps via WebGL, using a custom rendering engine that batches draw
@@ -512,14 +534,17 @@ export default function PerformanceConsiderations60fpsArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-medium">
+            <HighlightBlock as="p" tier="important" className="font-medium">
               Why do animations on transform and opacity perform better than
               animations on width, height, or top?
-            </p>
-            <p className="mt-2">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2">
               Transform and opacity changes are handled entirely by the
               compositor thread and the GPU. The browser already has the
               element rasterized as a GPU texture layer — animating transform
@@ -533,7 +558,7 @@ export default function PerformanceConsiderations60fpsArticle() {
               the 16.67ms frame budget, competing with JavaScript execution.
               A complex page with deep nesting can easily spend 10-15ms on
               layout alone, leaving no budget for anything else.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,22 +37,25 @@ export default function SearchSuggestionsArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Search suggestions</strong> (also called autocomplete or
           typeahead) display predicted queries as users type, helping them find
           what they&apos;re looking for faster. Instead of typing the full query
           and submitting, users see suggestions after a few characters and can
           select from the list. This reduces typing effort, prevents spelling
           errors, and guides users toward popular or relevant queries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Autocomplete has become a standard expectation — Google pioneered it,
           and now users expect it on every search interface. E-commerce sites
           use it to suggest products, documentation sites suggest pages, and
           command palettes (VS Code, Spotlight) use it for navigation. The key
           challenge is balancing speed (showing suggestions quickly) with
           relevance (showing useful suggestions).
-        </p>
+        </HighlightBlock>
         <p>
           Search suggestions involve several technical components.{" "}
           <strong>Suggestion sources</strong> can be popular queries (what other
@@ -77,8 +81,11 @@ export default function SearchSuggestionsArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Suggestion Sources:</strong> Where suggestions come from.
             <strong>Popular queries</strong> — aggregated from all users,
             weighted by frequency and recency. <strong>Personal history</strong>{" "}
@@ -88,14 +95,14 @@ export default function SearchSuggestionsArticle() {
             <strong>Query completions</strong> — common continuations derived
             from query logs (users who typed &quot;react&quot; also searched
             &quot;react hooks&quot;).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Trigger Threshold:</strong> Minimum characters before
             showing suggestions. Typically 2-3 characters — fewer produces too
             many irrelevant suggestions, more delays helpful feedback. Some
             interfaces show &quot;trending&quot; suggestions even at 0
             characters (empty state).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Debouncing:</strong> Delay before fetching suggestions as
             user types. Typical: 150-250ms. Shorter feels more responsive but
@@ -137,13 +144,16 @@ export default function SearchSuggestionsArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Autocomplete architecture consists of an input handler that captures
           user input with debouncing, a suggestion fetcher that retrieves
           suggestions from sources, a ranker that orders and deduplicates
           suggestions, and a UI component that displays suggestions with
           navigation support.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/search-filtering/search-suggestions/suggestion-flow.svg"
@@ -154,7 +164,7 @@ export default function SearchSuggestionsArticle() {
         />
 
         <h3>Suggestion Sources Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Different sources serve different purposes. <strong>Popular
           queries</strong> help users discover what others search — good for
           exploration. <strong>Personal history</strong> helps users return to
@@ -162,7 +172,7 @@ export default function SearchSuggestionsArticle() {
           items</strong> help users find specific items — good for known-item
           search. <strong>Query completions</strong> help users formulate
           queries — good for complex domains.
-        </p>
+        </HighlightBlock>
         <p>
           Sources can be fetched in parallel (fastest, most network requests) or
           sequentially with priority (popular first, then personal, then
@@ -174,10 +184,13 @@ export default function SearchSuggestionsArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Autocomplete implementation involves trade-offs between speed,
           relevance, and complexity.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/search-filtering/search-suggestions/suggestion-sources.svg"
@@ -187,13 +200,13 @@ export default function SearchSuggestionsArticle() {
           height={500}
         />
 
-        <p className="mt-4">
+        <HighlightBlock as="p" tier="important" className="mt-4">
           The suggestion sources diagram shows where autocomplete suggestions
           come from. Popular queries help with discovery, personal history helps
           returning users, catalog items help find specific content, and query
           completions help formulate searches. Each source has different
           freshness requirements and personalization levels.
-        </p>
+        </HighlightBlock>
 
         <h3>Client-Side vs Server-Side Suggestions</h3>
         <p>
@@ -233,19 +246,22 @@ export default function SearchSuggestionsArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounce at 150-250ms:</strong> This balances responsiveness
             with efficiency. Shorter causes excessive API calls, longer feels
             sluggish. Adjust based on API latency — if API is slow (200ms+), use
             shorter debounce to compensate.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cancel Pending Requests:</strong> When user types faster
             than API responds, cancel superseded requests. Use AbortController
             for fetch requests. Prevents race conditions where old suggestions
             overwrite newer ones.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cache Aggressively:</strong> Cache suggestions by query
             prefix. If user types &quot;react&quot; then backspaces to
@@ -278,18 +294,21 @@ export default function SearchSuggestionsArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No Debouncing:</strong> Fetching on every keystroke causes
             excessive API calls and can overwhelm the server. A 10-character
             query triggers 10 API calls. Always debounce.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Handling Race Conditions:</strong> If API responses
             arrive out of order, old suggestions can overwrite new ones. Always
             track the query that triggered each response and ignore stale
             responses.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Poor Keyboard Support:</strong> Users expect arrow keys to
             navigate suggestions. Not supporting this frustrates keyboard users
@@ -318,23 +337,26 @@ export default function SearchSuggestionsArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Google Search Autocomplete</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google&apos;s autocomplete shows popular queries, personal history,
           and trending searches. Suggestions update as user types, with
           bold highlighting for matching portions. Keyboard navigation fully
           supported. Backend uses massive query log analysis to predict
           completions.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce Product Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon, eBay show product suggestions with thumbnails and prices as
           users type. Combines catalog items (products matching query) with
           popular searches. Clicking a suggestion goes directly to product page,
           skipping search results page.
-        </p>
+        </HighlightBlock>
 
         <h3>Documentation Search</h3>
         <p>
@@ -356,21 +378,24 @@ export default function SearchSuggestionsArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you implement autocomplete with debouncing and request
               cancellation?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use a debounced function that waits 150-250ms after typing
               stops before fetching. Store an AbortController for each request.
               When a new request is triggered, abort the previous controller. In
               the fetch, pass the signal option. Catch AbortError and ignore it
               (it means the request was cancelled). Track the query that
               triggered each response and ignore responses for stale queries.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

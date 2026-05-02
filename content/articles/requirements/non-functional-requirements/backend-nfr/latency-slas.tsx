@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -25,21 +26,24 @@ export default function LatencySlasArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Latency</strong> is the time it takes for a system to respond to a request. <strong>Service
           Level Objectives (SLOs)</strong> define the target latency that a system aims to meet. <strong>Service
           Level Agreements (SLAs)</strong> are the contractual commitments to customers regarding latency — with
           financial penalties if violated. <strong>Service Level Indicators (SLIs)</strong> are the actual
           measurements of latency that determine whether SLOs and SLAs are being met.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Latency is not a single number — it is a distribution. The median (P50) tells you about the typical
           experience, but the tail latencies (P99, P99.9) tell you about the worst experiences. A system with
           a P50 of 50ms and a P99 of 500ms is serving 1% of users with responses ten times slower than the
           median. In a system that fans out to 10 downstream services, the P99 compounds: if any one of the 10
           services is at its P99, the overall response is at the P99. This is why tail latency matters
           disproportionately more than average latency.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, latency SLO design is a core competency. Interviewers
           expect you to define latency targets based on user experience research, measure and analyze latency
@@ -70,18 +74,21 @@ export default function LatencySlasArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding latency SLOs requires grasping several foundational concepts about how latency
           distributions behave and how they impact user experience.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Percentiles and Tail Latency</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Percentiles describe the latency distribution. P50 (median) means 50% of requests are faster than
           this value. P99 means 99% of requests are faster — the slowest 1% are slower. P99.9 means 99.9%
           are faster — the slowest 0.1% (1 in 1000 requests) are slower. The tail (P99 and above) is where
           user complaints originate — users do not notice fast requests, but they remember slow ones.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Tail Latency Amplification</h3>
         <p>
@@ -106,10 +113,13 @@ export default function LatencySlasArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Latency SLO architecture spans measurement, target-setting, optimization, and budget management.
           Each layer feeds into the next, creating a continuous improvement loop.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/latency-sla-architecture.svg"
@@ -118,14 +128,14 @@ export default function LatencySlasArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Measurement Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Latency is measured at every layer: client-side (time from user action to UI response), API
           gateway (time from request receipt to response sent), service-level (time from request processing
           to response generation), and database-level (query execution time). Each layer contributes to the
           overall latency, and bottlenecks can exist at any layer. Client-side measurement is most important
           for user experience but hardest to collect. Service-level measurement is easiest to collect but
           may not reflect the user&apos;s actual experience (network latency, client processing time).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">SLO Design Process</h3>
         <p>
@@ -152,25 +162,28 @@ export default function LatencySlasArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Optimization Technique</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Optimization Technique</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Hedged Requests</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>Hedged Requests</strong></td>
               <td className="p-3">
                 Reduces P99 by 2-10×. Simple to implement. Works for any stateless service.
               </td>
               <td className="p-3">
                 Increases total load (2× for simple hedging). Wasted compute on cancelled requests.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Timeout Optimization</strong></td>
               <td className="p-3">
                 Prevents indefinite hangs. Fast failure enables faster retries. Simple and universal.
@@ -178,8 +191,8 @@ export default function LatencySlasArticle() {
               <td className="p-3">
                 Too short: false failures. Too long: delayed failure detection. Must tune per operation.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Caching</strong></td>
               <td className="p-3">
                 Eliminates variable I/O latency. Sub-millisecond response for cache hits. Reduces downstream load.
@@ -187,7 +200,7 @@ export default function LatencySlasArticle() {
               <td className="p-3">
                 Cache misses still hit tail latency. Cache invalidation complexity. Stale data trade-off.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Request Prioritization</strong></td>
               <td className="p-3">
@@ -213,26 +226,29 @@ export default function LatencySlasArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Set SLOs Based on User Experience, Not Engineering Comfort</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Latency SLOs should be grounded in user experience research, not engineering preferences. A 100ms
           response feels instant to users. A 300ms response is noticeable. A 1-second response interrupts the
           user&apos;s flow of thought. A 10-second response causes task abandonment. Set your P99 SLO at the
           threshold where users begin to notice degradation — typically 200-500ms for API responses, 1-2
           seconds for page loads. Setting SLOs tighter than user perception wastes engineering effort. Setting
           them looser causes user dissatisfaction.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Monitor All Percentiles, Not Just Averages</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Average latency is a vanity metric — it hides tail latency problems. A system with P50 of 50ms and
           P99 of 5 seconds has an average of 100ms, which sounds excellent, but 1% of users are experiencing
           5-second delays. Monitor P50, P95, P99, and P99.9 for every critical endpoint. Alert when P99
           exceeds the SLO threshold, not when the average does. Use heatmaps or latency histograms to
           visualize the full distribution over time, identifying when tail latency is degrading before it
           breaches the SLO.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Use Hedged Requests for Critical Paths</h3>
         <p>
@@ -256,23 +272,26 @@ export default function LatencySlasArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Optimizing Average Instead of Tail</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Engineers often optimize for average (P50) latency because it is the most commonly reported metric
           and the easiest to improve. However, user complaints come from the tail — the 1% of requests that
           are 10× slower than average. Optimizing the average while ignoring the tail is like raising the
           water level while the boat is leaking. Always measure and optimize for P99 and P99.9, not just P50.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Setting SLOs Without Baseline Data</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Setting an SLO of &quot;P99 under 100ms&quot; without measuring the current P99 is a recipe for
           constant violations. If the current P99 is 500ms, a 100ms SLO is unachievable without significant
           architectural changes. Always measure the current latency distribution over at least 30 days before
           setting SLOs. Set the initial SLO at the current P99 plus 20%, then gradually tighten it as
           optimizations are implemented.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Ignoring the Fan-Out Effect</h3>
         <p>
@@ -296,9 +315,12 @@ export default function LatencySlasArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Google Search — Sub-Second Latency at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Search serves billions of queries per day with a P99 latency under 500ms. To achieve this,
           Google uses hedged requests (sending the same query to multiple replica servers and using the
           fastest response), aggressive caching (frequently searched queries are cached at edge locations),
@@ -306,10 +328,10 @@ export default function LatencySlasArticle() {
           sharded across thousands of servers, and each shard has a strict timeout — if a shard does not
           respond within 100ms, partial results are returned rather than waiting. This ensures that no single
           slow shard can delay the entire response.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Amazon — Checkout Latency SLOs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon&apos;s checkout flow has strict latency SLOs because every 100ms of additional latency costs
           1% in revenue (as documented in their engineering blog). The checkout SLO is P99 under 2 seconds,
           measured from the user clicking &quot;Place Order&quot; to the confirmation page loading. To meet
@@ -318,7 +340,7 @@ export default function LatencySlasArticle() {
           enforcement at every service boundary. When a downstream service exceeds its timeout, the checkout
           flow degrades gracefully — the order is placed, but non-critical features (gift wrapping
           confirmation, loyalty points update) are processed asynchronously.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Netflix — Streaming Start Latency</h3>
         <p>
@@ -346,19 +368,22 @@ export default function LatencySlasArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Latency mechanisms and SLO monitoring introduce security considerations that must be addressed to prevent exploitation.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Timing Attacks</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Response Time Side Channels:</strong> Attackers can infer information from response timing differences. For example, authentication that returns faster for invalid usernames than invalid passwords reveals which usernames exist. Mitigation: add random jitter to response times, use constant-time comparison for secrets, ensure all error paths take the same time.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Tail Latency Probing:</strong> Attackers may intentionally trigger slow paths to identify system internals (which services are called, in what order). Mitigation: rate limit per-client latency measurements, obfuscate service topology in error responses, implement request-level tracing that is not exposed to clients.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -393,19 +418,22 @@ export default function LatencySlasArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Latency SLOs must be validated through systematic testing — latency behavior under load cannot be predicted from architecture diagrams.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Latency Testing Pyramid</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Component Latency Tests:</strong> Measure individual service latency under increasing load. Identify the load level at which P99 exceeds SLO. Tools: k6, Artillery, Locust. Run weekly, target 2× expected peak.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Integration Latency Tests:</strong> Measure end-to-end latency across service chains. Identify which service contributes most to tail latency. Test with realistic data sizes and traffic patterns.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Load Tests with Failure Injection:</strong> Run load tests while injecting failures (slow responses, errors, network latency). Verify that SLOs are maintained despite failures. Verify that hedged requests, timeouts, and circuit breakers function correctly.
             </li>

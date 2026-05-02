@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function MultiLanguageSupportArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Multi-language support</strong> (often called
           internationalization or i18n) enables applications to present content
           in multiple languages based on user preference or locale. This goes
@@ -45,8 +46,8 @@ export default function MultiLanguageSupportArticle() {
           the infrastructure to manage translations at scale. The term
           &quot;i18n&quot; is a numeronym where 18 represents the letters
           between &quot;i&quot; and &quot;n&quot; in internationalization.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, multi-language support is an architectural
           concern, not just a UI concern. The decision to support multiple
           languages affects data models (storing translations), API design
@@ -55,8 +56,8 @@ export default function MultiLanguageSupportArticle() {
           launch is expensive — hardcoded strings, concatenated messages, and
           assumptions about grammar create technical debt that requires
           significant refactoring.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Multi-language support involves several technical challenges.{" "}
           <strong>String externalization</strong> — moving all user-visible
           text to translation files — seems straightforward but requires
@@ -66,7 +67,7 @@ export default function MultiLanguageSupportArticle() {
           languages require different forms based on gender.{" "}
           <strong>Context</strong> — the same English word may translate
           differently based on usage (e.g., &quot;File&quot; as noun vs. verb).
-        </p>
+        </HighlightBlock>
         <p>
           The business case for multi-language support is clear: users prefer
           applications in their native language. Studies show 75% of users
@@ -82,25 +83,25 @@ export default function MultiLanguageSupportArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Locale:</strong> A combination of language and region
             (e.g., en-US, en-GB, fr-CA, zh-CN). Locale determines not just
             language but also formatting conventions (dates, numbers, currency).
             BCP 47 is the standard for locale tags.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Translation Keys:</strong> Identifiers for translatable
             strings (e.g., <code>common.save</code>,{" "}
             <code>errors.network_failed</code>). Keys should be hierarchical,
             descriptive, and stable across releases. Avoid using English strings
             as keys — they change meaning if the English text changes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>String Externalization:</strong> Moving all user-visible
             text to translation files (JSON, YAML, or PO files). This includes
             UI labels, error messages, notifications, emails, and even alt text
             for images. Code should reference keys, not literal strings.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Pluralization:</strong> Different languages have different
             plural rules. English has two forms (singular/plural). Arabic has
@@ -135,13 +136,13 @@ export default function MultiLanguageSupportArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Multi-language architecture consists of a translation file structure
           organized by locale, an i18n library that handles key lookup and
           interpolation, a locale detection mechanism, and a rendering pipeline
           that displays localized content. The architecture must support lazy
           loading translations, fallback chains, and runtime locale switching.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/internationalization-i18n-localization-l10n/translation-flow.svg"
@@ -152,21 +153,21 @@ export default function MultiLanguageSupportArticle() {
         />
 
         <h3>Translation File Structure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Translation files are typically organized by locale with nested
           namespaces for better organization. Common structure: one file per
           locale with nested objects for domains (common, errors, features).
           Alternative: one file per namespace per locale (better for lazy
           loading). File format is typically JSON for JavaScript projects, but
           YAML or PO files are also common.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Example structure: <code>locales/en/common.json</code> contains
           general UI strings, <code>locales/en/errors.json</code> contains error
           messages, <code>locales/es/common.json</code> contains Spanish
           translations. This structure enables lazy loading — load common.json
           first, then load feature-specific files on demand.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/internationalization-i18n-localization-l10n/translation-file-structure.svg"
@@ -180,10 +181,10 @@ export default function MultiLanguageSupportArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Multi-language implementation involves trade-offs between completeness,
           performance, and maintainability.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/internationalization-i18n-localization-l10n/i18n-libraries-comparison.svg"
@@ -194,19 +195,19 @@ export default function MultiLanguageSupportArticle() {
         />
 
         <h3>i18n Library Selection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>react-i18next:</strong> Most popular React i18n library, built
           on i18next core. Features: powerful interpolation, pluralization,
           context, gender, RTL support, lazy loading. Ecosystem: i18next plugins
           for backend integration, translation management systems. Learning
           curve: moderate. Bundle size: ~15KB minified.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Lingui:</strong> Minimalist i18n with compile-time extraction.
           Features: macro syntax, message extraction from source code, small
           runtime. Best for: teams who want translations close to code. Learning
           curve: low for simple use cases. Bundle size: ~8KB minified.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>next-intl:</strong> Built for Next.js App Router. Features:
           server components support, middleware for locale detection, type-safe
@@ -244,25 +245,25 @@ export default function MultiLanguageSupportArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use Descriptive Keys:</strong> Keys should describe the
             meaning, not the English text. Use <code>errors.network_failed</code>{" "}
             not <code>errors.could_not_connect</code>. This makes it clear what
             the string is for even if the English text changes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide Context for Translators:</strong> Add comments
             explaining where and how strings are used. Translation management
             systems support context notes. For example, explain that
             &quot;Submit&quot; is a button label, not a verb describing an
             action.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Support Pluralization Properly:</strong> Use ICU
             MessageFormat or library-specific pluralization. Don&apos;t
             concatenate strings like <code>{`"{{count}} items"`}</code> — this
             breaks for languages with complex plural rules.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Plan for Text Expansion:</strong> Translated text can be
             30-50% longer than English. Design UI with flexible layouts. Test
@@ -288,23 +289,23 @@ export default function MultiLanguageSupportArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Hardcoded Strings:</strong> The most common i18n mistake.
             Any user-visible text in code is a bug. Use linting rules to catch
             hardcoded strings during development. Audit existing code before
             launching i18n.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>String Concatenation:</strong> Building sentences by
             concatenating translated fragments breaks word order in other
             languages. Instead, use interpolation with a complete sentence
             template.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Pluralization:</strong> Using simple singular/plural
             logic breaks for languages with more complex rules. Always use
             proper pluralization support from your i18n library.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not Testing with Real Translations:</strong> Testing only
             with English (or similar-length languages) misses layout issues.
@@ -330,32 +331,32 @@ export default function MultiLanguageSupportArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>E-Commerce Multi-language</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           E-commerce sites require comprehensive multi-language support: product
           descriptions, category names, checkout flow, error messages, emails.
           Product translations often come from vendors or are managed in a PIM
           (Product Information Management) system. UI translations use standard
           i18n libraries. Critical: prices and currency must be locale-aware,
           not just translated.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Application Localization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           B2B SaaS applications often need multi-language support for enterprise
           customers. Challenges: frequent releases (translations must keep up),
           complex terminology (industry-specific jargon), role-based content
           (different users see different features). Solution: continuous
           localization pipeline integrated with CI/CD.
-        </p>
+        </HighlightBlock>
 
         <h3>Mobile App Localization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mobile apps have additional i18n considerations: app store listings
           (title, description, screenshots), in-app purchases, push
           notifications. iOS and Android have platform-specific i18n features
           (string resources, locale detection). React Native apps can use
           react-i18next with platform-specific considerations.
-        </p>
+        </HighlightBlock>
 
         <h3>Open-Source Project Localization</h3>
         <p>
@@ -373,11 +374,11 @@ export default function MultiLanguageSupportArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: How do you structure translation files for a large application
               with 50+ locales?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Use namespace-based organization: separate files for common UI,
               errors, features, and marketing content. Structure:{" "}
               <code>locales/{'{'}locale{'}'}/{'{'}namespace{'}'}.json</code>.
@@ -387,14 +388,14 @@ export default function MultiLanguageSupportArticle() {
               locale-specific → base language → default language. For 50+
               locales, consider grouping by completion — only ship fully
               translated locales, keep WIP locales in a separate branch.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do you handle pluralization for languages with complex
               plural rules?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Use ICU MessageFormat or library-specific pluralization. ICU
               syntax: <code>{`"{count, plural, =0 {no items} one {# item} other {# items}}"`}</code>.

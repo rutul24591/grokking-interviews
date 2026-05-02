@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,12 +37,15 @@ export default function KeyboardShortcutsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Keyboard shortcuts</strong> are key combinations or sequences that trigger application actions without requiring mouse interaction, enabling power users to perform frequent operations faster while also providing essential accessibility for users who cannot use a pointing device. In web applications, keyboard shortcuts range from single-key actions (pressing <code>?</code> to show help) to modifier combinations (<code>Ctrl+S</code> to save) to sequential chord patterns (<code>g</code> then <code>i</code> to go to inbox). Well-designed keyboard shortcuts transform a web application from a click-dependent interface into a productivity-focused tool that rewards expert usage and accommodates diverse input methods.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The importance of keyboard shortcuts extends beyond power-user productivity. For users with motor disabilities that prevent precise mouse use, keyboard shortcuts may be the primary or only way to interact with an application. Screen reader users navigate entirely by keyboard and rely on both browser-native keyboard behaviors and application-defined shortcuts. Users with repetitive strain injuries benefit from shortcuts that reduce mouse travel. Even occasional users benefit from common shortcuts like <code>Ctrl+Z</code> for undo, <code>Ctrl+C</code> for copy, and <code>Escape</code> to dismiss modals, which are so deeply embedded in user muscle memory that their absence feels like a bug rather than a missing feature.
-        </p>
+        </HighlightBlock>
         <p>
           At the staff and principal engineer level, keyboard shortcuts require thoughtful architectural design across several dimensions. The event handling system must correctly manage event propagation, preventing shortcuts from firing when the user is typing in an input field while allowing them in other contexts. Cross-platform key mapping must handle the differences between macOS (<code>Cmd</code>) and Windows/Linux (<code>Ctrl</code>) for equivalent operations. Shortcut scope must be managed so that shortcuts are active in appropriate contexts — a spreadsheet keyboard shortcut should not fire when a modal dialog is open over the spreadsheet. The shortcut registration system must prevent conflicts between application shortcuts, browser shortcuts, operating system shortcuts, and assistive technology shortcuts. And the discoverability system must help users learn available shortcuts without requiring them to read documentation.
         </p>
@@ -52,13 +56,16 @@ export default function KeyboardShortcutsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Modifier Keys:</strong> Keys that are held while pressing another key to form a combination — <code>Ctrl</code>, <code>Alt</code>, <code>Shift</code>, and <code>Meta</code> (Cmd on macOS, Windows key on Windows). The <code>event.ctrlKey</code>, <code>event.altKey</code>, <code>event.shiftKey</code>, and <code>event.metaKey</code> properties indicate which modifiers are active. Shortcuts should use consistent modifier conventions — <code>Ctrl/Cmd</code> for primary actions, <code>Ctrl/Cmd+Shift</code> for alternate versions, and <code>Alt</code> sparingly due to conflicts with browser menu access on Windows.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Key Code vs Key Value:</strong> The <code>event.key</code> property returns the logical value of the key pressed (e.g., &ldquo;a&rdquo;, &ldquo;Enter&rdquo;, &ldquo;ArrowUp&rdquo;), while <code>event.code</code> returns the physical key position on the keyboard (e.g., &ldquo;KeyA&rdquo;, &ldquo;Enter&rdquo;, &ldquo;ArrowUp&rdquo;). For most shortcuts, <code>event.key</code> is appropriate because it respects the user&apos;s keyboard layout. For gaming or layout-sensitive applications, <code>event.code</code> ensures consistent physical key positions regardless of language layout.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Shortcut Scope:</strong> The context in which a shortcut is active. Global shortcuts (registered on the document or window) are available everywhere in the application. Scoped shortcuts are active only within a specific component or region — a list view&apos;s <code>j/k</code> navigation shortcuts should not fire when the focus is in a text editor. Scope management prevents conflicts between shortcuts that use the same keys in different contexts and ensures shortcuts do not have unintended effects in wrong contexts.
           </li>
@@ -82,18 +89,21 @@ export default function KeyboardShortcutsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The first diagram illustrates the keyboard event processing pipeline. A keydown event originates from the browser and flows through the application&apos;s event handling layers. The first layer checks input context — if the focus is in an input element and no modifier key is pressed, the event is passed through to the input without shortcut processing. The second layer checks the current shortcut scope, determining which shortcuts are active based on the focused component and any modal overlays. The third layer matches the key combination against the shortcut registry, considering modifier state and any pending chord prefixes. If a match is found, the corresponding action is dispatched and the event is prevented from reaching the browser&apos;s default handling. If no match is found, the event propagates normally to the browser.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/edge-cases-and-user-experience/keyboard-shortcuts-diagram-1.svg"
           alt="Keyboard event processing pipeline showing input context check, scope resolution, registry matching, and action dispatch"
           width={900}
           height={500}
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The second diagram shows the shortcut registry architecture with scope management. The global scope contains shortcuts available everywhere (help dialog, search focus, save). Feature scopes contain shortcuts specific to application sections — the list view scope has <code>j/k</code> navigation, the editor scope has formatting shortcuts, the modal scope has only <code>Escape</code> to close. Scopes are organized in a hierarchy where child scopes can override or extend parent scopes. When a modal opens, it pushes its scope onto the stack, shadowing the underlying scopes so that only modal-relevant shortcuts are active. The registry maintains a priority order so that the most specific matching scope takes precedence, and conflicts within the same scope are detected at registration time.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/edge-cases-and-user-experience/keyboard-shortcuts-diagram-2.svg"
           alt="Shortcut registry with hierarchical scope management showing global, feature, and modal scopes with conflict detection"
@@ -113,6 +123,9 @@ export default function KeyboardShortcutsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -122,16 +135,16 @@ export default function KeyboardShortcutsArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="important">
               <td className="px-4 py-2 font-medium">Single-Key Shortcuts</td>
               <td className="px-4 py-2">Fastest to press, lowest friction, easy to remember, work well for frequent actions in non-text contexts like list navigation or media playback</td>
               <td className="px-4 py-2">Limited key space, conflict with text input, must be disabled in input contexts, easy to trigger accidentally, not discoverable without documentation</td>
-            </tr>
-            <tr className="border-b border-theme">
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="px-4 py-2 font-medium">Modifier Combinations</td>
               <td className="px-4 py-2">Large key space, work in input contexts, follow established OS conventions, unlikely to be triggered accidentally, users have strong muscle memory for common ones</td>
               <td className="px-4 py-2">More effort to press, three or four modifier combinations are ergonomically difficult, conflicts with browser and OS shortcuts, differ across platforms</td>
-            </tr>
+            </HighlightBlock>
             <tr className="border-b border-theme">
               <td className="px-4 py-2 font-medium">Chord Sequences</td>
               <td className="px-4 py-2">Very large key space, no complex modifier gymnastics, mnemonic potential (g+i for go to issues), work well for infrequent navigation actions</td>
@@ -153,13 +166,16 @@ export default function KeyboardShortcutsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Follow platform conventions for common operations.</strong> <code>Ctrl+S</code> (save), <code>Ctrl+Z</code> (undo), <code>Ctrl+C/V/X</code> (copy/paste/cut), <code>Ctrl+F</code> (find), <code>Escape</code> (dismiss/cancel), <code>Enter</code> (submit/confirm), and <code>Tab</code> (next field) have deeply ingrained muscle memory across all platforms. Overriding these conventions with different behavior is almost never justified and will frustrate users who rely on them unconsciously. Extend conventions rather than replacing them.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Suppress single-key shortcuts in text input contexts.</strong> When the user&apos;s focus is in an <code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code>, or <code>contenteditable</code> element, single-key shortcuts must be disabled to prevent them from interfering with typing. Check <code>event.target.tagName</code> and <code>event.target.isContentEditable</code> in the event handler. Modifier combinations (<code>Ctrl+S</code>, <code>Cmd+K</code>) can remain active in input contexts since the modifier key distinguishes them from typing.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use <code>Cmd</code> on macOS and <code>Ctrl</code> on Windows/Linux for equivalent shortcuts.</strong> Detect the platform early (using <code>navigator.platform</code> or the User-Agent Client Hints API) and map a logical &ldquo;primary modifier&rdquo; to the platform-appropriate key. Use this mapping consistently in event handlers, tooltip labels, and help dialogs. Consider the <code>event.metaKey</code> property for macOS (Cmd) and <code>event.ctrlKey</code> for Windows/Linux, and handle both in a platform-adaptive way.
           </li>
@@ -180,13 +196,16 @@ export default function KeyboardShortcutsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Not preventing default browser behavior for overridden shortcuts.</strong> When an application handles <code>Ctrl+S</code> for save, it must call <code>event.preventDefault()</code> to prevent the browser from showing its native save dialog. Forgetting this results in both the application save action and the browser save dialog firing simultaneously, creating a confusing experience. Every overridden browser shortcut must explicitly prevent default.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Shortcuts that fire in unexpected contexts.</strong> A global keyboard shortcut that fires while the user is typing in a search box, filling out a form, or editing a text document causes data loss or unexpected actions. Always check the active element and its type before processing single-key shortcuts. Even modifier shortcuts can be problematic if they share combinations with input-specific actions — <code>Ctrl+B</code> for bold in a rich text editor should not also trigger a global &ldquo;bookmark&rdquo; action.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Hard-coded modifier keys that do not adapt to the platform.</strong> Using <code>Ctrl+S</code> on macOS instead of <code>Cmd+S</code> feels wrong because macOS users expect Cmd as the primary modifier. Similarly, displaying &ldquo;Ctrl+C&rdquo; in a tooltip to a macOS user is misleading. Always detect the platform and adapt both the event handling and the displayed key labels. The mapping should be centralized so that a single change affects all shortcuts.
           </li>
@@ -204,12 +223,15 @@ export default function KeyboardShortcutsArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>GitHub</strong> demonstrates a comprehensive keyboard shortcut system with multiple interaction layers. Single-key navigation (<code>j/k</code> for up/down in issue lists), chord sequences (<code>g</code> then <code>i</code> for go to issues, <code>g</code> then <code>p</code> for go to pull requests), modifier combinations (<code>Ctrl+K</code> for command palette), and a <code>?</code> key for the shortcut help overlay. GitHub&apos;s system correctly suppresses single-key shortcuts in text inputs and code editors while keeping modifier shortcuts active. Their command palette serves as both a keyboard-driven navigation tool and a discoverability mechanism, showing available shortcuts alongside search results.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Gmail</strong> pioneered web application keyboard shortcuts, offering an extensive system that power users rely on for email processing efficiency. Gmail uses single-key shortcuts (<code>e</code> for archive, <code>r</code> for reply, <code>#</code> for delete), chord sequences (<code>g</code> then <code>s</code> for go to starred), and a toggle setting that allows users to enable or disable keyboard shortcuts entirely. Gmail&apos;s approach is notable for making shortcuts opt-in — users must explicitly enable them in settings — which avoids accidental activation for users who do not know about the feature. The <code>?</code> key reveals a comprehensive shortcut reference organized by context.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Figma</strong> implements keyboard shortcuts for a complex design tool where both productivity and precision are critical. Their shortcuts span navigation (zoom, pan, frame selection), editing (shape creation, alignment, property changes), and workflow (export, share, present). Figma&apos;s challenge is managing shortcuts across multiple contexts — the canvas, the layers panel, the properties panel, and text editing mode all have different shortcut behaviors for the same keys. Their solution uses focus-based scoping where the active panel determines which shortcut set is active. When editing text on the canvas, typing shortcuts are suppressed and replaced with text formatting shortcuts.
         </p>
@@ -220,15 +242,18 @@ export default function KeyboardShortcutsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">
-          <p className="font-medium">
+          <HighlightBlock as="p" tier="important" className="font-medium">
             Q: How would you design a keyboard shortcut system for a complex web
             application?
-          </p>
-          <p className="mt-2">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-2">
             A: I would build a centralized shortcut registry that manages registration, conflict detection, scope resolution, and discoverability. Each shortcut is defined as a descriptor — key combination, scope (global, feature, component), action callback, human-readable description, and platform variants. The event handling pipeline listens on keydown at the document level, checks input context (suppressing single-key shortcuts in text inputs), resolves the active scope based on the focused element and any active overlays, and matches the key event against registered shortcuts in priority order. For cross-platform support, I would define shortcuts using a logical modifier (&ldquo;mod&rdquo;) that maps to Cmd on macOS and Ctrl on other platforms. The registry feeds a help dialog (triggered by <code>?</code>) and tooltip annotations, ensuring discoverability stays in sync with actual shortcuts. I would start with 10-15 high-value shortcuts for the most frequent actions and expand based on user demand, using a command palette for the long tail of less frequent actions.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">

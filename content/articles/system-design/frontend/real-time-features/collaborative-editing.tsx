@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,7 +35,7 @@ export default function CollaborativeEditingArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           <strong>Collaborative editing</strong> enables multiple users to
           simultaneously modify the same document, design, spreadsheet, or
           data structure while seeing each other&apos;s changes in real-time.
@@ -46,8 +47,8 @@ export default function CollaborativeEditingArticle() {
           manual merge steps). Two foundational algorithms address this
           challenge: <strong>Operational Transformation (OT)</strong> and{" "}
           <strong>Conflict-free Replicated Data Types (CRDTs)</strong>.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Operational Transformation</strong>, pioneered at Xerox PARC
           in 1989 and famously implemented in Google Docs, works by
           transforming operations against each other. When user A inserts
@@ -59,8 +60,8 @@ export default function CollaborativeEditingArticle() {
           central server to determine the canonical operation order and
           perform transformations, which simplifies correctness reasoning but
           introduces a single point of coordination.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>CRDTs</strong> take a fundamentally different approach:
           instead of transforming operations, they design the data structure
           itself so that concurrent operations are inherently commutative —
@@ -75,7 +76,7 @@ export default function CollaborativeEditingArticle() {
           offline editing. However, CRDT identifiers add metadata overhead (
           typically 2-5x the raw document size in memory) and the algorithms
           are more complex to implement correctly.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, collaborative editing is one of
           the most demanding distributed systems problems in frontend
@@ -108,7 +109,7 @@ export default function CollaborativeEditingArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Operational Transformation (OT)
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           OT represents document changes as operations: insert(position,
           character), delete(position), and retain(count) for text documents.
           The key algorithm is the <strong>transform function</strong>{" "}
@@ -125,12 +126,12 @@ export default function CollaborativeEditingArticle() {
           optimistic state (applied locally but not yet sent). This three-state
           model enables instant local editing while maintaining eventual
           consistency.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Conflict-free Replicated Data Types (CRDTs)
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           CRDTs achieve consistency without transformation by embedding
           conflict resolution into the data structure itself. For text, each
           character receives a unique identifier that encodes its position
@@ -147,12 +148,12 @@ export default function CollaborativeEditingArticle() {
           preserve the ordering structure. The trade-off is metadata overhead:
           each character carries its ID, references, and tombstone flag,
           increasing memory usage compared to a plain string.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Cursor and Selection Synchronization
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           In collaborative editing, each user&apos;s cursor position and text
           selection must be visible to all other collaborators. Cursor
           positions are typically represented as document offsets (character
@@ -169,7 +170,7 @@ export default function CollaborativeEditingArticle() {
           label. Selection ranges are represented as two cursor positions
           (anchor and focus) and highlighted with the collaborator&apos;s
           assigned color.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Undo/Redo in Collaborative Contexts
@@ -219,13 +220,18 @@ export default function CollaborativeEditingArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           The architecture of a collaborative editor depends heavily on
           whether it uses OT (requiring a central server for transformation)
           or CRDTs (enabling peer-to-peer or server-optional architectures).
           Both approaches share the pattern of local-first editing with
           asynchronous synchronization.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          In staff/principal interviews, frame this as a consistency design: how
+          you assign IDs, order operations, handle offline edits, and converge
+          replicas under partitions matters more than the UI mechanics.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/real-time-features/collaborative-editing-diagram-2.svg"
@@ -233,7 +239,7 @@ export default function CollaborativeEditingArticle() {
           caption="Figure 2: OT (centralized) vs CRDT (decentralized) collaboration architectures"
         />
 
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           In the OT architecture (Google Docs model), the server maintains the
           authoritative document state and a version counter. Clients send
           operations to the server, which assigns version numbers, transforms
@@ -249,7 +255,7 @@ export default function CollaborativeEditingArticle() {
           CRDT&apos;s built-in conflict resolution. No central authority is
           needed, enabling offline editing, partition tolerance, and
           peer-to-peer collaboration.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -259,15 +265,15 @@ export default function CollaborativeEditingArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           OT and CRDTs represent fundamentally different design philosophies
           for collaborative editing. The following comparison highlights their
           trade-offs across key engineering dimensions.
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-theme text-sm">
             <thead>
-              <tr className="bg-panel">
+              <HighlightBlock as="tr" tier="important">
                 <th className="border border-theme px-4 py-2 text-left">
                   Dimension
                 </th>
@@ -277,10 +283,10 @@ export default function CollaborativeEditingArticle() {
                 <th className="border border-theme px-4 py-2 text-left">
                   CRDTs
                 </th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody>
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="border border-theme px-4 py-2 font-medium">
                   Server Dependency
                 </td>
@@ -290,7 +296,7 @@ export default function CollaborativeEditingArticle() {
                 <td className="border border-theme px-4 py-2">
                   Server optional — works peer-to-peer or offline
                 </td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="border border-theme px-4 py-2 font-medium">
                   Memory Overhead
@@ -359,25 +365,25 @@ export default function CollaborativeEditingArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Use an established CRDT library (Yjs, Automerge) rather than
             implementing your own — the correctness proofs for collaborative
             editing algorithms are non-trivial, and subtle bugs manifest only
             under specific concurrent edit patterns that are difficult to
             reproduce in testing
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Apply operations locally first, then sync — the user must see
             their keystroke immediately (under 16ms to maintain 60fps input
             responsiveness). Never wait for a server round-trip before updating
             the local view
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Implement awareness (cursor synchronization, viewport tracking)
             as a separate channel from document operations — awareness data
             is ephemeral and high-frequency, while document operations require
             guaranteed delivery and ordering
-          </li>
+          </HighlightBlock>
           <li>
             Use WebSocket for the synchronization transport with automatic
             reconnection and operation buffering — when the connection drops,
@@ -416,27 +422,27 @@ export default function CollaborativeEditingArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Building your own OT/CRDT from scratch</strong> —
             collaborative editing algorithms have decades of research behind
             them. Even Google has publicly discussed bugs in their OT
             implementation that took years to discover. Use battle-tested
             libraries
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Conflating document state with view state</strong> —
             cursor positions, selection ranges, and scroll positions are
             ephemeral view state that should not be stored in the CRDT
             document. Mixing them creates unnecessary metadata bloat and
             conflict resolution complexity
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Unbounded operation history</strong> — without periodic
             garbage collection (compaction/snapshotting), the operation log
             grows indefinitely. For CRDTs, tombstoned deletions accumulate
             and degrade performance. Implement periodic compaction that
             replaces the operation log with a snapshot
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Single-user undo semantics</strong> — implementing undo
             as &quot;reverse the last operation&quot; in a collaborative
@@ -469,7 +475,7 @@ export default function CollaborativeEditingArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Google Docs: The OT Pioneer
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Google Docs is the most widely known OT-based collaborative editor,
           handling billions of concurrent editing sessions. Their
           implementation uses a server-authoritative model where the Google
@@ -484,12 +490,12 @@ export default function CollaborativeEditingArticle() {
           complete operation log between snapshots, enabling the
           &quot;Version History&quot; feature that lets users browse and
           restore any point in the document&apos;s editing history.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Figma: CRDT for Visual Design
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Figma uses a custom CRDT implementation for their collaborative
           design tool, handling a fundamentally different data model than text
           editors: a tree of visual objects (frames, shapes, text, images)
@@ -506,12 +512,12 @@ export default function CollaborativeEditingArticle() {
           Their server acts as a relay and persistence layer, not a
           transformation authority — the CRDT handles convergence without
           server involvement.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Notion: Block-Structured CRDT
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Notion&apos;s collaborative editing operates on a block-structured
           document model where each paragraph, heading, list item, toggle,
           database row, and embedded block is a discrete CRDT element. Their
@@ -526,7 +532,7 @@ export default function CollaborativeEditingArticle() {
           property: users can edit offline, and changes merge automatically
           when connectivity returns, even if other users have made extensive
           changes in the interim.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/real-time-features/collaborative-editing-diagram-3.svg"
@@ -540,14 +546,17 @@ export default function CollaborativeEditingArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: Explain the fundamental difference between OT and CRDTs for
               collaborative editing.
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               OT resolves conflicts by transforming operations: when two users
               make concurrent edits, a transform function adjusts each operation
               to account for the other, requiring a central server to determine
@@ -558,14 +567,14 @@ export default function CollaborativeEditingArticle() {
               server). CRDTs are mathematically elegant but have higher memory
               overhead (unique IDs per character) and work without a central
               coordinator, enabling offline and P2P collaboration.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How does a CRDT handle two users inserting text at the same
               position simultaneously?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               Each character gets a globally unique ID (client ID + logical
               clock). When two users insert at the same position, both

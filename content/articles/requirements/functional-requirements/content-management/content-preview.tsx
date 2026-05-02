@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ContentPreviewArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content Preview enables users to see how their content will appear when published, allowing them to catch formatting issues, optimize presentation, and validate the user experience before going live. Preview functionality is essential for content creation workflows—authors need to verify formatting (headings, images, links render correctly), responsive behavior (content looks good on mobile, tablet, desktop), social sharing (preview cards display properly on Twitter, Facebook, LinkedIn), and overall presentation (layout, typography, spacing match expectations). For platforms with rich content creation (blogs, e-commerce product listings, marketing pages, documentation), effective preview is critical for content quality and author confidence.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, content preview architecture involves preview modes (live preview, full preview, responsive preview), rendering strategies (client-side rendering, server-side rendering, hybrid), social preview (Open Graph, Twitter Cards, LinkedIn preview), draft watermarks (indicate unpublished status), preview security (prevent unauthorized access to drafts), and performance optimization (fast preview generation without impacting editor performance). The implementation must balance preview accuracy (match published output exactly) with performance (instant preview without lag) and security (drafts not accessible to unauthorized users). Poor preview implementation leads to publishing errors, frustrated authors, and degraded content quality.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of content preview extends beyond simple rendering. Live preview must update in real-time without lag (debounced rendering, efficient diffing). Responsive preview must accurately simulate different devices (viewport sizes, touch interactions, performance characteristics). Social preview must fetch and render external preview cards (Open Graph metadata, Twitter Cards). Draft watermarks must be visible but not obstructive. Preview security must prevent unauthorized access (authentication, authorization, expiring preview URLs). For staff engineers, preview is a content quality tool affecting author experience, content accuracy, and publishing confidence.
         </p>
@@ -46,13 +50,16 @@ export default function ContentPreviewArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Preview Modes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Live preview updates in real-time as user types. Side-by-side layout (editor on left, preview on right). Debounced rendering (update after user stops typing for 300-500ms to avoid excessive re-renders). Efficient diffing (only re-render changed portions). Live preview enables quick formatting checks without leaving editor. Benefits include immediate feedback (see formatting as you write), reduced context switching (don&apos;t need to navigate to separate preview). Drawbacks include performance impact (rendering while typing can lag editor), limited context (side-by-side view may not show full page layout).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Full preview renders content on dedicated preview page. Separate URL (preview.example.com/post/123/preview). Full page context (shows complete layout including header, footer, navigation). Shareable URL (send preview link to reviewers). Full preview enables final review before publishing. Benefits include accurate representation (exact published output), full context (see how content fits in page), shareable (collaborators can review). Drawbacks includes context switching (navigate away from editor), slower (requires page load).
-        </p>
+        </HighlightBlock>
         <p>
           Responsive preview shows content at different device sizes. Device toggles (mobile, tablet, desktop buttons). Viewport simulation (resize preview to device dimensions). Touch simulation (simulate touch interactions for mobile). Responsive preview enables checking mobile experience before publishing. Benefits include mobile validation (ensure content works on mobile), responsive issues caught early (fix before publishing). Drawbacks includes complexity (multiple viewport rendering), may not perfectly simulate device characteristics (performance, touch accuracy).
         </p>
@@ -101,9 +108,12 @@ export default function ContentPreviewArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content preview architecture spans preview service, rendering engine, social preview generator, and security layer. Preview service manages preview requests and URLs. Rendering engine generates preview output. Social preview generator creates social media preview cards. Security layer ensures only authorized access. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/preview-modes.svg"
@@ -114,9 +124,9 @@ export default function ContentPreviewArticle() {
         />
 
         <h3>Preview Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Preview service manages preview generation and URLs. Preview URL generation (create unique preview URL per draft). URL expiration (URLs expire after configurable period). Access control (check authentication/authorization). Preview service is the entry point for all preview requests.
-        </p>
+        </HighlightBlock>
         <p>
           Preview caching improves performance. Render cache (cache rendered preview for speed). Invalidation (invalidate cache when content changes). Cache headers (appropriate caching for preview content). Caching reduces server load and improves preview speed.
         </p>
@@ -156,14 +166,17 @@ export default function ContentPreviewArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content preview design involves trade-offs between accuracy and performance, client-side and server-side rendering, and open and restricted preview access. Understanding these trade-offs enables informed decisions aligned with platform requirements and user needs.
-        </p>
+        </HighlightBlock>
 
         <h3>Rendering: Client-side vs. Server-side</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Client-side rendering (render in browser). Pros: Fast (no server round-trip), works offline (preview without server), low server load (client does work). Cons: May not match server exactly (browser differences), JavaScript required (no JS = no preview), initial load may be slow (download rendering code). Best for: Live preview, frequent updates, simple content.
-        </p>
+        </HighlightBlock>
         <p>
           Server-side rendering (render on server). Pros: Accurate (matches published output), works without JavaScript, consistent (same rendering for all users). Cons: Slower (server round-trip required), server load (preview requests consume resources), requires server capacity. Best for: Full preview, final review, complex content.
         </p>
@@ -201,13 +214,16 @@ export default function ContentPreviewArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide multiple preview modes:</strong> Live preview for quick checks. Full preview for final review. Responsive preview for mobile validation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use hybrid rendering:</strong> Client-side for live preview (fast). Server-side for full preview (accurate).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement social preview:</strong> Open Graph for Facebook/LinkedIn. Twitter Cards for Twitter. Preview social cards before publishing.
           </li>
@@ -237,13 +253,16 @@ export default function ContentPreviewArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Preview doesn&apos;t match published:</strong> Client-side differs from server. <strong>Solution:</strong> Use server-side for full preview, validate rendering matches.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Slow live preview:</strong> Laggy editor experience. <strong>Solution:</strong> Debounce rendering, optimize diffing, use client-side for live.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No responsive preview:</strong> Mobile issues caught after publishing. <strong>Solution:</strong> Provide responsive preview with device toggles.
           </li>
@@ -273,16 +292,19 @@ export default function ContentPreviewArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Blog Platform Preview</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Blog platform provides comprehensive preview. Live preview (side-by-side, debounced rendering). Full preview (dedicated URL, shareable with editors). Responsive preview (mobile, tablet, desktop toggles). Social preview (Open Graph, Twitter Cards preview). Draft watermark (&quot;DRAFT&quot; banner). Preview URL expires after 7 days. Authentication required for preview access.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">E-commerce Product Listing Preview</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platform provides product preview. Live preview (see product page as editing). Full preview (complete product page with related products). Mobile preview (critical for shopping experience). Social preview (product sharing on social media). Draft indicator (unpublished products marked). Preview accessible to merchandising team. Preview expires when product published.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Documentation Site Preview</h3>
         <p>
@@ -302,12 +324,15 @@ export default function ContentPreviewArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you ensure preview matches published output exactly?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you ensure preview matches published output exactly?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use server-side rendering for full preview. Same rendering pipeline as publishing (same templates, same assets). Validation testing (compare preview vs. published output). Client-side for live preview (fast), server-side for full preview (accurate). The key insight: preview accuracy is critical for user trust—if preview doesn&apos;t match published, users won&apos;t trust preview. Invest in accurate rendering.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

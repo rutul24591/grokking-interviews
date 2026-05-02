@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function ShareUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Share UI enables users to distribute content externally across multiple destinations including social media platforms, messaging applications, email, and direct link copying. Sharing represents the highest-value engagement action—when a user shares content, they become a distribution channel, exposing your platform to their network and driving organic user acquisition. Well-designed share UI directly impacts viral coefficient and growth velocity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Share implementations vary significantly by platform and context. Twitter offers simple share with pre-populated text and link. Instagram allows sharing posts to Stories with interactive stickers. YouTube provides share options with timestamp parameters for specific video moments. LinkedIn enables sharing with professional context and colleague tagging. Each implementation reflects different sharing goals and audience expectations.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, share UI implementation involves navigating technical and product challenges. The system must integrate with multiple external APIs, each with different authentication flows and content formatting requirements. It must generate shareable links with tracking parameters for analytics attribution. The architecture must handle share preview generation with Open Graph tags for social platforms. Additionally, engineers must consider privacy implications of shared content, deep linking for app-to-app sharing, and fallback strategies for unsupported sharing destinations.
         </p>
@@ -47,13 +51,16 @@ export default function ShareUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Share Destinations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Share destinations fall into several categories with different integration approaches. Social media platforms like Twitter, Facebook, LinkedIn, and Instagram accept share URLs with pre-populated text through web intent URLs. Each platform has specific URL parameters for customizing the share experience—Twitter supports pre-filled tweet text, Facebook allows quote comments, LinkedIn enables professional context addition.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Messaging applications including WhatsApp, Telegram, Messenger, and SMS enable direct sharing to contacts. Mobile platforms provide native share sheets that integrate with installed messaging apps. Web implementations use click-to-chat URLs that open the messaging app with pre-populated text. WhatsApp uses wa.me URLs, Telegram uses t.me/share URLs, each with platform-specific parameter formats.
-        </p>
+        </HighlightBlock>
         <p>
           Email sharing opens the user's default email client with pre-populated subject and body. Web mail services like Gmail and Outlook provide web-based share intents. Copy link functionality copies the shareable URL to clipboard, providing a universal fallback that works everywhere. Users can then paste the link anywhere—messaging apps, documents, or social platforms not directly supported.
         </p>
@@ -105,9 +112,12 @@ export default function ShareUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Share UI architecture spans client interaction, link generation, external integrations, and analytics tracking. The client component manages share button interaction, destination selection, and feedback. Link generation creates shareable URLs with tracking parameters. External integrations handle platform-specific share flows. Analytics tracking captures share events and click-throughs for measurement.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/interaction-engagement/share-ui/share-architecture.svg"
@@ -118,9 +128,9 @@ export default function ShareUIArticle() {
         />
 
         <h3>Client Component Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The share button component triggers the share flow on user interaction. It may display a share count if the platform tracks and displays share metrics. On click, the component either invokes the Web Share API or opens a custom share modal. The component should be reusable across contexts—article pages, video players, product pages—with consistent behavior and appearance.
-        </p>
+        </HighlightBlock>
         <p>
           Share modals display available share destinations as selectable options. Destinations are typically ordered by usage frequency with most-used options first. The modal should support both icon-only and icon-with-label display modes depending on available space. Dismissal should occur on destination selection, background click, or escape key press.
         </p>
@@ -172,14 +182,17 @@ export default function ShareUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Share UI design involves numerous trade-offs affecting user experience, tracking capability, and implementation complexity. Understanding these trade-offs enables informed decisions aligned with growth goals and technical constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Native vs Custom Share Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Native Web Share API provides the best user experience with familiar OS-native dialogs and access to all installed sharing destinations. Users see apps they actually use rather than a curated list. However, native share provides limited tracking—you know the user opened the share sheet but not which destination they selected. Desktop browser support is incomplete, requiring fallback implementation.
-        </p>
+        </HighlightBlock>
         <p>
           Custom share modals provide full tracking of destination selection and complete control over the share experience. You can A/B test destination ordering, highlight promoted destinations, and customize the UI to match your brand. However, custom modals cannot access apps not explicitly supported, requiring users to copy link for unsupported destinations. Implementation requires maintaining integrations with each share destination.
         </p>
@@ -217,13 +230,16 @@ export default function ShareUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Web Share API with fallback:</strong> Detect navigator.share and use native share when available. Fall back to custom modal for unsupported browsers. This provides optimal experience for most users while maintaining universal compatibility.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Include UTM parameters:</strong> Add utm_source, utm_medium, and utm_campaign to all shared URLs. This enables analytics attribution showing which destinations drive the most traffic and conversions.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Optimize Open Graph tags:</strong> Set og:title, og:description, and og:image for all shareable content. Use 1200x630 pixel images for optimal social preview display. Test previews with Facebook Sharing Debugger and Twitter Card Validator.
           </li>
@@ -247,13 +263,16 @@ export default function ShareUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No Web Share API fallback:</strong> Relying solely on Web Share API excludes users on unsupported browsers. Always implement custom modal fallback for universal compatibility.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing Open Graph tags:</strong> Sharing content without OG tags results in broken or missing previews. This significantly reduces click-through rates. Implement OG tags for all shareable content.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No share tracking:</strong> Without tracking, you cannot measure which content gets shared or which destinations are most effective. Implement share event tracking from launch.
           </li>
@@ -271,16 +290,19 @@ export default function ShareUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter Share Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter uses Web Share API on supported platforms with custom modal fallback. Share URLs include pre-populated tweet text with content title and link. Twitter Cards display rich previews with images when tweets are shared. The platform tracks share events and provides share counts for tweets. Twitter's intent URLs support additional parameters like hashtags and mention suggestions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">YouTube Share Features</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           YouTube provides share modal with destination icons and timestamp option. Users can check "Start at" to share a specific video moment, which appends ?t=seconds to the shared URL. YouTube generates short youtu.be URLs for cleaner sharing. Share tracking includes destination selection and click-through attribution. YouTube Studio shows creators share metrics for their videos.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Instagram Story Sharing</h3>
         <p>
@@ -295,12 +317,15 @@ export default function ShareUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you track shares?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you track shares?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Add UTM parameters to share links identifying the source (utm_source=twitter), medium (utm_medium=social), and campaign (utm_campaign=spring_promo). Log share events when users click share destinations, capturing content ID, destination, user ID, and timestamp. Track click-throughs when shared links are clicked, attributing the visit to the original share. Calculate viral coefficient by dividing new users from shares by total shares over a time period.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function DpFundamentalsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Dynamic Programming (DP) is a technique for solving problems by combining solutions to
           overlapping subproblems, storing each subproblem&rsquo;s result so it is computed only
           once. Richard Bellman coined the term in 1953 while working on multi-stage decision
@@ -32,15 +36,15 @@ export default function DpFundamentalsArticle() {
           programming, and &ldquo;dynamic&rdquo; was chosen partly to make the funding harder for
           critics to cut. Despite the obscure name, DP is one of the most unifying techniques in
           algorithms, converting many exponential recursions into polynomial-time algorithms.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           DP applies when two conditions hold: <span className="font-semibold">optimal
           substructure</span> (the optimal solution to a problem contains optimal solutions to its
           subproblems) and <span className="font-semibold">overlapping subproblems</span> (the
           same subproblems are solved many times by naive recursion). Without optimal
           substructure, subproblem solutions cannot be combined. Without overlap, memoization
           offers no speedup — pure divide-and-conquer suffices.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           At staff level, the real skill is not memorizing classical DPs (knapsack, LCS, edit
           distance) but recognizing the pattern in novel problems and designing state concisely.
@@ -52,21 +56,24 @@ export default function DpFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Optimal substructure</span> means: if you know the
           optimal solution to subproblems of size &lt; n, you can combine them to solve size n.
           Shortest paths have it (Bellman&rsquo;s principle: a shortest path s→t through v
           decomposes into shortest s→v + shortest v→t). Longest simple path in a graph does
           <em> not</em> — two shortest simple subpaths can share vertices and combine into a
           walk, not a path.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Overlapping subproblems</span> means: the recursion
           tree contains the same subproblem in many branches. Fibonacci is the canonical
           illustration: fib(5) calls fib(4) and fib(3); fib(4) also calls fib(3); each fib(k) is
           recomputed exponentially many times. Memoization caches each fib(k) once, cutting the
           work from O(φⁿ) to O(n).
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">State</span> is the vector of parameters that uniquely
           identifies a subproblem. For fib it&rsquo;s (n). For knapsack it&rsquo;s (i, remaining
@@ -91,20 +98,23 @@ export default function DpFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Two implementation styles solve the same DP. <span className="font-semibold">Top-
           down</span> (memoized recursion) writes the natural recurrence and caches results in a
           hash map or array indexed by state. Pros: follows the problem statement, computes only
           needed states, handles sparse state spaces naturally. Cons: function-call overhead,
           stack depth limits, harder to analyze cache behavior.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Bottom-up</span> (tabulation) iterates states in
           topological order and fills an array. Pros: faster constant factors, no stack overhead,
           easy to analyze and optimize memory (roll-over 2D → 1D when only previous row matters).
           Cons: must identify the right iteration order; computes all reachable states even if
           the target doesn&rsquo;t need them; harder to code for irregular state spaces.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Space optimization</span>: when a DP transition only
           depends on the previous row (or a constant number of previous rows), you can reduce 2D
@@ -128,18 +138,21 @@ export default function DpFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">DP vs Greedy:</span> greedy makes the locally-best
           choice at each step; DP considers all choices and remembers the best. Greedy works only
           when local choices lead to global optima (matroid structure). When greedy fails, DP is
           typically the first fallback.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">DP vs Divide &amp; Conquer:</span> both decompose
           problems, but D&amp;C splits into disjoint subproblems (merge sort, FFT), while DP
           solves overlapping ones. If subproblems don&rsquo;t overlap, memoization wastes memory
           without saving time.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">DP vs Brute Force:</span> brute force explores all
           solutions in O(2ⁿ) or worse. DP prunes by reusing overlapping subproblem solutions. The
@@ -156,18 +169,21 @@ export default function DpFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Start by writing the recursive solution with clear parameters. Add memoization as a
           thin wrapper — this isolates correctness (recursive logic) from performance (caching).
           Only convert to tabulation after verifying the recurrence, and only if profiling shows
           memoization overhead matters.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Pick state parameters that are <span className="font-semibold">minimal and
           comparable</span>. Minimal avoids exponential blowup; comparable means you can index
           into a fixed array. If state includes a set, use a bitmask (up to ~20 elements). If
           state is a continuous value, discretize to a grid or use memoization with a dict.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Analyze complexity as <span className="font-semibold">number of states × work per
           transition</span>. Knapsack: O(n × W) states × O(1) per state = O(nW). LCS: O(mn)
@@ -184,18 +200,21 @@ export default function DpFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Missing state parameter:</span> if the answer depends
           on something you didn&rsquo;t include in state (e.g., forgetting &ldquo;number of
           transactions remaining&rdquo; in stock problems), the recurrence is wrong. Symptom:
           correct on small examples, wrong at scale.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Wrong iteration order:</span> bottom-up requires
           topological order over the state DAG. 0/1 knapsack iterates capacity from high to low
           when rolling to 1D; unbounded knapsack iterates low to high. Reversing the order turns
           0/1 into unbounded silently.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Hash-map memoization on tight loops:</span> Python
           @lru_cache or dict-based memoization is 10–100× slower than array indexing. For
@@ -215,16 +234,19 @@ export default function DpFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Bioinformatics alignment:</span> BLAST, Smith-Waterman,
           Needleman-Wunsch — sequence alignment algorithms are edit-distance DPs. Every modern
           genome aligner has DP at its core, often hardware-accelerated (CUDA, FPGA).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Operations research:</span> inventory management,
           resource allocation, project scheduling. Bellman&rsquo;s original application was
           multi-stage decision processes — still how manufacturers plan production over time.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Speech &amp; NLP:</span> Viterbi algorithm (HMM
           decoding), CKY parsing (probabilistic context-free grammars), beam search with DP
@@ -250,17 +272,20 @@ export default function DpFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">What makes a problem DP?</span> Optimal substructure +
           overlapping subproblems. Expect to articulate both and give examples where one holds
           without the other.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Memoization vs Tabulation — when to choose which?</span>
           Memoization for prototyping, sparse state spaces, or when the recurrence is easier to
           express recursively. Tabulation for performance-critical code, dense state spaces, and
           space-rolling optimizations.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">How do you decide state?</span> Walk through the
           recursion: what arguments does the recursive call take? Those are candidate states.

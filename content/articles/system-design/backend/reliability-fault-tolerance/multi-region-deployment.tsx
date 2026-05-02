@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Multi-region deployment</strong> is the practice of running services in more than one geographic region to reduce latency for global users, increase availability beyond a single region's failure boundary, and support disaster recovery for catastrophic regional outages. It expands the failure boundary from a single region to the entire planet, but it also introduces the most complex challenges in distributed systems: data consistency across physical distance, traffic routing during partial failures, and operational coordination across geographic boundaries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Running multi-region is not just duplicating servers across locations. It requires careful data strategy—how do you keep data consistent when the speed of light limits cross-region round-trip time to 50-200 milliseconds? It requires traffic routing intelligence—how do you steer users to the best region when regions have different health, capacity, and data freshness? It requires operational coordination—how do you deploy, monitor, and incident-response across regions that may have different dependencies, different load patterns, and different failure characteristics?
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, multi-region deployment requires balancing four competing concerns. <strong>Data consistency</strong> means managing the fundamental trade-off between synchronous replication (strong consistency, high latency) and asynchronous replication (low latency, stale reads). <strong>Traffic routing</strong> means directing users to the right region based on health, latency, capacity, and data residency requirements. <strong>Operational complexity</strong> means managing configuration parity, deployment coordination, and incident response across regions. <strong>Cost</strong> means that multi-region infrastructure costs 2-3x more than single-region, and the investment must be justified by business requirements.
         </p>
@@ -48,6 +52,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/reliability-fault-tolerance/multi-region-patterns.svg"
@@ -56,12 +63,12 @@ export default function ArticlePage() {
         />
 
         <h3>Active-Active Multi-Region</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In active-active multi-region, all regions serve traffic concurrently. A global load balancer or DNS-based routing directs users to the nearest or best region. Data is replicated across regions, either synchronously for strong consistency or asynchronously for lower latency. Active-active provides the best user experience—users are served from nearby regions—and the best availability—if one region fails, traffic shifts to the others.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The challenge is write handling. If multiple regions can accept writes concurrently, conflict resolution is required. Options include partitioning writes by user or tenant so each region owns a subset of data, using conflict-free data types (CRDTs) that mathematically guarantee convergence, or accepting last-write-wins with reconciliation processes. For read-heavy workloads, active-active is straightforward: each region serves reads from local replicas, and writes go to a designated primary region.
-        </p>
+        </HighlightBlock>
         <p>
           Active-active is ideal for content delivery, social media, search, and other read-heavy workloads where eventual consistency is acceptable. It is less suitable for financial transactions, inventory management, or other workloads that require strong consistency unless the write path is centralized to a single region.
         </p>
@@ -128,14 +135,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A multi-region architecture follows a practical progression: single region with multi-AZ first, then active-passive across regions for disaster recovery, then selective active-active for read-heavy or conflict-tolerant workloads. Each step adds complexity and cost, and should be justified by a concrete reduction in downtime risk or improvement in user experience.
-        </p>
+        </HighlightBlock>
 
         <h3>Latency Budgets and Request Locality</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cross-region calls are expensive and unpredictable. A well-designed multi-region architecture keeps the request path local to a region whenever possible. The user request arrives at the nearest region, is served by local compute, reads from local data replicas, and returns without leaving the region. Replication to other regions happens asynchronously in the background.
-        </p>
+        </HighlightBlock>
         <p>
           Where strong consistency is required, some systems accept higher latency only for the small subset of operations that must be strongly consistent. For example, a financial transaction may require synchronous cross-region acknowledgment, but product browsing and search can be served from local replicas. The latency budget should be explicit: what is the maximum acceptable latency for each operation, and does cross-region communication fit within that budget?
         </p>
@@ -162,12 +172,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Multi-region improves availability and reduces user latency but increases cost, complexity, and operational overhead. Infrastructure costs typically double or triple. Operational complexity increases significantly—different time zones for on-call, different failure patterns, different dependencies, and different compliance requirements. For some workloads, regional isolation is too complex, and multi-region is limited to disaster recovery rather than active traffic serving.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The data consistency trade-off is fundamental. Synchronous replication across regions provides strong consistency but adds 50-200 milliseconds to every write, depending on distance. Asynchronous replication provides low write latency but risks data loss during regional failure. The choice depends on the application: financial systems may accept the latency cost for consistency, while social media prioritizes write latency and accepts eventual consistency.
-        </p>
+        </HighlightBlock>
         <p>
           If the organization cannot support the operational load of multi-region, a simpler single-region design with strong disaster recovery may be more reliable in practice. Multi-region is not inherently better—it is only better if the organization has the maturity to manage it. A poorly managed multi-region system is less reliable than a well-managed single-region system.
         </p>
@@ -178,12 +191,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Start with a clear multi-region strategy: active-active, active-passive, or regional isolation. Each strategy has different implications for data, routing, and operations. Justify the choice with concrete business requirements—availability targets, latency requirements, compliance needs—not with architectural preference. Design the data strategy first, because it constrains everything else: replication model, conflict resolution, and routing logic.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use infrastructure-as-code and automated configuration management to maintain parity across regions. Deploy to regions in a staggered manner—validate each region before proceeding to the next. Monitor replication lag, failover readiness, and configuration drift continuously. Run regular cross-region failover drills and measure detection time, failover time, and data consistency after failover.
-        </p>
+        </HighlightBlock>
         <p>
           Establish region health criteria and routing policies. Automate failover carefully with guardrails for data integrity—require multi-signal confirmation, include cooldowns, and keep manual overrides available. Define both failover and failback workflows, and rehearse both. Failback is often riskier than failover because it involves changing a working system.
         </p>
@@ -197,12 +213,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Network partitions and inconsistent routing can cause split-brain scenarios where two regions believe they are the primary and accept writes independently. This creates data divergence that is difficult to reconcile. The fix is to have a clear primary region designation for writes and to use fencing mechanisms that prevent a failed primary from accepting writes during failover.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Configuration drift between regions is a common cause of failover failures. If one region lags on software versions, configuration updates, or schema migrations, failover to that region introduces new errors. Use infrastructure-as-code, automated configuration management, and regular parity checks to ensure all regions are identical except for region-specific settings.
-        </p>
+        </HighlightBlock>
         <p>
           "Healthy but overloaded" failover is a dangerous pitfall. A region can pass health checks but have no capacity headroom. Routing too much traffic into a marginal region causes a global brownout where all regions become slow and unstable. Regional failover should consider saturation signals and support partial routing shifts rather than an all-or-nothing cutover.
         </p>
@@ -216,16 +235,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Global SaaS Platform: Active-Active Frontend with Primary-Write Region</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A SaaS platform serving 10 million users globally deployed active-active frontends across US, EU, and Asia-Pacific regions with a primary-write database in the US and asynchronous read replicas in the other regions. Read traffic was served locally, reducing latency by 60 percent for international users. During a US regional outage, traffic was shifted to EU and APAC regions. Some recent writes were temporarily missing due to asynchronous replication lag, but core functionality remained available. The platform communicated staleness expectations to users and reconciled data after recovery.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Services: Active-Passive with Zero RPO</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A banking platform required zero data loss during regional failover. It deployed active-passive with synchronous data replication between the primary region (New York) and the passive region (Chicago). The synchronous replication added 15 milliseconds to write latency, which was acceptable for banking operations. During a simulated regional outage, failover completed in 90 seconds with zero data loss. The passive region was kept warm, running at 20 percent capacity with shadow traffic to exercise the failover path continuously.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce: Regional Isolation for Data Sovereignty</h3>
         <p>
@@ -243,14 +265,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: Active-active versus active-passive for multi-region: what are the trade-offs?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Active-active improves latency because users are served from the nearest region and uses capacity efficiently because all regions are productive. However, it increases complexity around writes, conflict resolution, and failover safety. Multi-region writes require conflict handling—partitioning, CRDTs, or reconciliation—and failover must prevent overloading surviving regions.
-            </p>
+            </HighlightBlock>
             <p>
               Active-passive is simpler for correctness and operations because only one region handles writes. However, it wastes capacity—the passive region is mostly idle—and may increase failover time if the passive region is not warmed and exercised. The choice depends on write volume, consistency requirements, and operational maturity.
             </p>

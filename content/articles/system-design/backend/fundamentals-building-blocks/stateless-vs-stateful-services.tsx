@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function StatelessStatefulServicesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Stateless services</strong> do not retain per-user session state between requests — each request carries all necessary context (authentication tokens, user IDs, workflow state), and durable state is stored in shared systems (databases, caches). <strong>Stateful services</strong> keep session or workflow state in server memory, requiring subsequent requests from the same user to reach the same server instance. This fundamental architectural choice has profound implications for scaling, resilience, deployment strategies, and operational complexity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The distinction matters because statelessness is a prerequisite for horizontal scaling. When any server can handle any request, you can add or remove instances freely, distribute traffic evenly, and replace failed instances without user impact. Stateful services require sticky sessions (routing users to the same server), which creates uneven load distribution, complicates failover (what happens when the server holding session data fails?), and constrains deployment (cannot terminate instances without draining sessions first).
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, the stateless vs stateful decision is not binary but a spectrum. Pure statelessness (all state externalized) maximizes scalability but adds latency for every state lookup. Pure statefulness (all state in memory) minimizes latency but sacrifices scalability and resilience. Most production systems use hybrid approaches: hot session data cached in memory for performance, with persistence to shared stores for recoverability. Understanding this spectrum and choosing the right point for each workload is a critical architectural skill.
         </p>
@@ -36,16 +40,19 @@ export default function StatelessStatefulServicesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           State management in distributed systems is built on several foundational concepts that govern how session data is stored, accessed, and replicated across service instances.
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Session State:</strong> Session state is per-user data that must persist across multiple requests: authentication status, shopping cart contents, workflow progress, user preferences. Session state can be stored in three places: in server memory (stateful, fast but fragile), in external stores like Redis or databases (stateless, slower but resilient), or in client-side tokens like JWT (stateless, no server storage but limited size and revocation challenges). The choice determines scaling characteristics and failure modes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Sticky Sessions:</strong> Sticky sessions (session affinity) route requests from the same user to the same server instance, typically using cookies or load balancer configuration. Sticky sessions enable stateful services by ensuring session data is available locally. However, they create uneven load distribution (some servers hot, others cold), complicate failover (when a server fails, all its sessions are lost), and constrain deployments (must drain sessions before terminating instances). Sticky sessions are often a transitional solution during migration to stateless architectures.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>External Session Stores:</strong> External session stores (Redis, Memcached, DynamoDB) decouple session storage from application instances, enabling stateless services. Any instance can handle any request by looking up session data from the shared store. This enables horizontal scaling, even load distribution, and graceful failover (any instance can take over). The trade-off is added latency for every session lookup and operational complexity (managing the session store cluster, handling failures, ensuring consistency).
           </li>
@@ -81,9 +88,12 @@ export default function StatelessStatefulServicesArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding how state flows through system architecture is essential for designing scalable, resilient services. The architecture determines whether services are stateless, stateful, or hybrid, and each choice has distinct operational characteristics.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Stateless Service Architecture</h3>
@@ -127,9 +137,9 @@ export default function StatelessStatefulServicesArticle() {
           </ol>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Hybrid Architecture:</strong> Many production systems use hybrid approaches that balance performance and scalability. Hot session data (frequently accessed fields) is cached in memory for low-latency access, while full session state is persisted to external stores for recoverability. On cache miss, the instance loads session data from the external store into local cache. On session update, the instance updates both cache and external store (write-through) or updates cache and asynchronously persists (write-behind). This hybrid approach provides near-stateful performance with stateless resilience.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Migration Path:</strong> Migrating from stateful to stateless is a staged process. Phase 1: Externalize session storage to Redis while keeping sticky sessions (reduces data loss risk, but still requires affinity). Phase 2: Remove sticky sessions and validate that any instance can handle any request (true statelessness). Phase 3: Optimize session store performance (clustering, caching, consistency tuning). This gradual approach reduces risk by validating each step before proceeding. Rushing the migration (removing sticky sessions before externalizing state) causes widespread session loss and user impact.
@@ -138,6 +148,9 @@ export default function StatelessStatefulServicesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -247,12 +260,12 @@ export default function StatelessStatefulServicesArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When to Use Each Approach</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <strong>Use stateless services when:</strong> you need horizontal scaling (10x-100x traffic growth), high availability is required (99.9%+ SLA), rolling deployments with zero downtime are needed, or you are building public APIs or web applications with many concurrent users.
-          </p>
-          <p className="mt-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-3">
             <strong>Use stateful services when:</strong> latency is critical (sub-millisecond session access), scale is bounded (single-digit instances), sessions are long-lived and large (MBs of session data), or you are building internal tools or low-traffic services where operational simplicity matters more than scale.
-          </p>
+          </HighlightBlock>
           <p className="mt-3">
             <strong>Best practice:</strong> Default to stateless for customer-facing services. Use stateful only when latency requirements cannot be met with external session stores (rare — Redis provides 1-5ms latency, which is acceptable for most workloads). For hybrid approaches, cache hot session data in memory while persisting to external stores for recoverability.
           </p>
@@ -261,16 +274,19 @@ export default function StatelessStatefulServicesArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production state management requires discipline and operational rigor. These best practices prevent common mistakes and accelerate incident response.
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Externalize Session State Before Horizontal Scaling:</strong> Before adding multiple instances, move session data to Redis or databases. This enables any instance to handle any request. Use sticky sessions only as a temporary workaround during migration, not as a permanent solution. Sticky sessions create uneven load distribution and complicate failover.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Short-Lived Tokens with Refresh:</strong> For JWT-based sessions, use short-lived access tokens (15-60 minutes) combined with refresh tokens stored securely. This limits exposure if tokens are compromised while preserving scalability. Refresh tokens can be revoked; access tokens cannot. This hybrid approach balances security and statelessness.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement Idempotency for Writes:</strong> Stateless APIs must handle retries gracefully. Use idempotency keys (unique identifiers per operation) to detect and deduplicate retries. This is critical for payment systems, booking systems, and order workflows where duplicate operations have real-world consequences. Store idempotency keys with operation results for deduplication.
           </li>
@@ -288,16 +304,19 @@ export default function StatelessStatefulServicesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Even experienced engineers fall into state management traps. These pitfalls are common sources of production incidents and user impact.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Storing Sessions in Application Memory:</strong> The most common mistake is storing session data in application memory (in-process variables, local caches). This works for single-instance deployments but breaks catastrophically when scaling horizontally. Users get randomly logged out, shopping carts disappear, workflows reset. Prevention: externalize session storage before adding instances. Use Redis or databases for session storage.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Sticky Sessions as Permanent Solution:</strong> Sticky sessions are often implemented as a quick fix for session loss, then forgotten. Over time, they create technical debt: uneven load distribution, complex failover, constrained deployments. Prevention: treat sticky sessions as transitional. Plan migration to stateless architecture with external session stores.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>JWT Without Revocation Strategy:</strong> JWT tokens are valid until expiration unless you maintain a revocation list. If a token is compromised (stolen, leaked), you cannot invalidate it without breaking all other tokens. Prevention: use short-lived access tokens with refresh tokens. Maintain a revocation list for refresh tokens. Consider token versioning (increment version on password change, invalidate old tokens).
           </li>
@@ -312,15 +331,18 @@ export default function StatelessStatefulServicesArticle() {
 
       <section>
         <h2>Production Case Studies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-world state management incidents demonstrate how theoretical patterns manifest in production and how systematic debugging accelerates resolution.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Case Study 1: Session Loss During Deployment</h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             <strong>Symptom:</strong> Users randomly get logged out during weekly deployments. Support tickets spike 5x during deployment windows.
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             <strong>Debugging Process:</strong> Application logs showed session not found errors. Deployment logs revealed instances were terminated without draining sessions. Load balancer health checks passed, but users were routed to new instances without their session data.
           </p>
@@ -376,9 +398,12 @@ export default function StatelessStatefulServicesArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding session management performance characteristics helps set realistic SLOs and identify bottlenecks.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Session Lookup Latency by Storage Type</h3>
@@ -423,12 +448,12 @@ export default function StatelessStatefulServicesArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Session Store Throughput</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Redis Single Node:</strong> ~100,000 operations/second. Suitable for moderate traffic services.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Redis Cluster:</strong> Scales linearly with nodes. 10 nodes = ~1M operations/second.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>DynamoDB:</strong> Scales automatically. Provisioned capacity determines throughput.
             </li>
@@ -441,19 +466,22 @@ export default function StatelessStatefulServicesArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Session management decisions directly impact infrastructure costs. Understanding cost drivers helps optimize architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Session Storage Cost Comparison</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>In-Memory (Local):</strong> No additional cost, but limits scaling. Cost-effective for single-instance deployments.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Redis (ElastiCache):</strong> ~$50-200/month per node (cache.r5.large to cache.r5.2xlarge). Cluster configurations multiply costs.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>DynamoDB:</strong> ~$1.25/million read requests, ~$1.25/million write requests. Cost scales with traffic.
             </li>
@@ -484,12 +512,15 @@ export default function StatelessStatefulServicesArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why prefer stateless services at scale?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Why prefer stateless services at scale?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Stateless services enable horizontal scaling by allowing any instance to handle any request. This provides even load distribution, simplifies autoscaling, enables zero-downtime deployments, and improves resilience (instance failure has no user impact). The trade-off is added latency for session lookups and operational complexity of managing external session stores.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

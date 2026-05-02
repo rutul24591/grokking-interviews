@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -26,7 +27,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Distributed caching</strong> is an architectural pattern in which
           a shared cache cluster — spanning multiple independent nodes, often across
           multiple availability zones or regions — serves as a common memory pool
@@ -36,8 +40,8 @@ export default function ArticlePage() {
           compute, enabling cache capacity to scale independently of application
           capacity and allowing cache state to persist across application
           deployments, rolling restarts, and node failures.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental motivation for introducing a distributed cache is the
           widening gap between application request rates and the capacity of
           backing data stores. A single PostgreSQL instance can handle roughly ten
@@ -52,7 +56,7 @@ export default function ArticlePage() {
           single logical cache surface, at the cost of introducing network hops,
           serialization overhead, and the full complexity of distributed-system
           failure modes.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, the distributed cache is not merely a
           performance optimization — it is a first-class distributed system with
@@ -70,14 +74,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding distributed caching requires grounding in several
           interconnected concepts that together define the system's behavior under
           normal operation and during failure. These concepts form the vocabulary
           for every design decision and trade-off discussed throughout this
           article.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cache topology</strong> defines the physical and logical
           organization of cache nodes. The two fundamental organizational
           strategies are partitioning (also called sharding), where each key
@@ -94,7 +101,7 @@ export default function ArticlePage() {
           Redis Cluster, for instance, uses 16,384 hash slots distributed across
           master nodes, with each master having one or more replica nodes that
           receive asynchronous replication streams.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Consistent hashing</strong> is the algorithmic foundation that
           makes partitioned topologies practical at scale. Naive key-to-node
@@ -172,7 +179,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A distributed caching system is defined by how its components are
           organized — the topology — and how data flows through them during reads
           and writes. These architectural decisions are interdependent: the choice
@@ -180,7 +190,7 @@ export default function ArticlePage() {
           failure-handling approach, which constrains the read and write paths.
           Understanding this dependency chain is essential for designing a system
           that behaves predictably under both normal and degraded conditions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/distributed-cache-topology.svg`}
@@ -188,7 +198,7 @@ export default function ArticlePage() {
           caption="Three distributed cache topologies — sharded (maximum capacity, single point of failure per shard), replicated (maximum availability, capacity of single node), and hybrid (sharded groups with internal replication, balancing both)"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The sharded topology represents the simplest approach to distributed
           caching. Each application node computes a hash of the requested key and
           routes the request to the corresponding cache node. The total cache
@@ -203,7 +213,7 @@ export default function ArticlePage() {
           be regenerated from the backing store without unacceptable latency — and
           when the application layer implements connection pooling and rate
           limiting to protect the backing store during cache outages.
-        </p>
+        </HighlightBlock>
         <p>
           The replicated topology inverts this trade-off. Every cache node holds a
           complete copy of the cached dataset, so any node can serve any request.
@@ -333,24 +343,27 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Every architectural decision in distributed caching involves a trade-off
           between competing system qualities: latency versus consistency, capacity
           versus availability, operational simplicity versus resilience.
           Understanding these trade-offs at a granular level is what separates a
           design that performs adequately from one that survives production
           incidents without manual intervention.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Decision</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Decision</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Sharded vs. Replicated Topology</strong>
               </td>
@@ -365,8 +378,8 @@ export default function ArticlePage() {
                 without application-layer intervention. Scaling events require
                 key migration, even with consistent hashing.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Replicated Topology</strong>
               </td>
@@ -381,7 +394,7 @@ export default function ArticlePage() {
                 Replication lag creates a window where different nodes may return
                 different values for the same key.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Client-side vs. Server-side Hashing</strong>
@@ -471,15 +484,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The accumulated operational experience of organizations running
           distributed caches at scale — from Facebook's Memcache to Twitter's
           Twemcache to thousands of enterprises using Redis Cluster — has produced
           a set of practices that separate resilient cache architectures from
           fragile ones. These practices are not theoretical; each one addresses a
           specific failure mode that has caused production incidents.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Always use consistent hashing with virtual nodes for any sharded cache
           topology. The default alternative — modulo-based key distribution —
           causes near-total cache collapse during scaling events, and the
@@ -492,7 +508,7 @@ export default function ArticlePage() {
           memory capacities. The computational cost of maintaining virtual nodes
           is negligible compared to the operational risk of hot-spot formation
           during node changes.
-        </p>
+        </HighlightBlock>
         <p>
           Implement a multi-level cache architecture where a small local cache
           sits in front of the distributed cache for the hottest keys. This
@@ -568,14 +584,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most consequential distributed cache failures are rarely caused by
           exotic edge cases. They stem from well-understood anti-patterns that
           persist because their consequences are invisible during normal operation
           and only manifest during scaling events, deployments, or partial network
           failures — precisely when the system is under the most stress.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The thundering herd problem is the single most destructive cache
           failure mode. It occurs when a popular key expires and hundreds of
           application threads simultaneously detect the cache miss, query the
@@ -591,7 +610,7 @@ export default function ArticlePage() {
           engineers implement them inconsistently or not at all, assuming their
           traffic patterns will never produce a hot key. The assumption is almost
           always wrong at scale.
-        </p>
+        </HighlightBlock>
         <p>
           Hot key concentration is a related pitfall that manifests even without
           expiration. When a single key receives a disproportionate share of
@@ -661,7 +680,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Facebook's Memcache infrastructure is one of the most well-documented
           distributed caching systems in production. Facebook operates Memcache at
           a scale of hundreds of millions of requests per second, serving the
@@ -678,8 +700,8 @@ export default function ArticlePage() {
           the serving node notifies all application servers to cache that key
           locally, transforming a distributed hot-key problem into a set of local
           cache hits.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Twitter's approach to distributed caching evolved through multiple
           generations to handle the extreme read skew of their platform, where a
           tiny fraction of accounts and tweets receive the vast majority of
@@ -692,7 +714,7 @@ export default function ArticlePage() {
           and mitigating hot keys, enforcing per-client rate limits, and
           coordinating with application-layer local caches to minimize redundant
           network hops.
-        </p>
+        </HighlightBlock>
         <p>
           Amazon's ElastiCache service, which offers both Redis and Memcached as
           managed distributed cache solutions, demonstrates the operational
@@ -730,18 +752,21 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Question 1: You are designing a distributed cache for a social media
               platform that serves a billion requests per day. The cache must
               support horizontal scaling to at least fifty nodes and must maintain
               a hit ratio above eighty percent even during node additions and
               removals. What topology and hashing strategy would you choose, and
               why?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               The appropriate choice is a hybrid topology — partitioned sharding
               with replication — combined with consistent hashing using virtual
               nodes. Pure sharding would provide the necessary capacity but would
@@ -766,7 +791,7 @@ export default function ArticlePage() {
               reduce network hops to the distributed cache. This multi-level
               approach is essential for maintaining sub-millisecond P99 latency at
               this scale.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function JobSequencingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The <span className="font-semibold">job sequencing problem</span> (with deadlines)
           gives n jobs, each with a unit processing time, a deadline dᵢ (a positive integer
           time unit by which it must finish), and a profit pᵢ earned only if completed on
           time. A single machine processes one job per unit time. Goal: choose and schedule a
           subset of jobs to maximize total profit.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The classical greedy rule sorts jobs by profit descending and, for each job, assigns
           it to the latest free slot ≤ its deadline. If no such slot exists, the job is
           dropped. The algorithm runs in O(n log n) with a min-heap or union-find
           implementation and is provably optimal via an exchange argument similar to
           activity selection.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           This is a unit-time, weighted variant of single-machine scheduling. It appears in
           ad-slot allocation, batch-compute reservation systems, cron prioritization, and any
@@ -49,16 +53,19 @@ export default function JobSequencingArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Input model.</span> Jobs (dᵢ, pᵢ) with dᵢ ∈ ℤ⁺, pᵢ
           ≥ 0, unit processing time. Time slots are 1, 2, 3, …. A scheduling is valid if each
           selected job is assigned a distinct slot t ≤ dᵢ.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Greedy rule.</span> Sort jobs by profit descending.
           Maintain an array of slots, all free initially. For each job, find the latest free
           slot ≤ dᵢ; if found, schedule there. Otherwise skip.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Alternative formulation (heap).</span> Sort jobs by
           deadline ascending. Maintain a min-heap of currently-scheduled profits. Process each
@@ -87,17 +94,20 @@ export default function JobSequencingArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Naive implementation.</span> Sort jobs by profit
           desc. slots = array of d_max booleans, all false. For each job, for t from dᵢ down
           to 1, if slots[t] is free, set it, record job at slot t, break. O(n · d_max).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">DSU speedup.</span> Maintain parent[t] = latest
           free slot ≤ t (itself if free). find(t) returns the latest free slot ≤ t. When slot
           t is filled, link parent[t] = t − 1. Each find is amortized α(n). Works well when
           d_max is large.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Heap (swap-weakest) implementation.</span> Sort by
           deadline ascending. Walk jobs; push each profit onto a min-heap; if the heap grows
@@ -131,16 +141,19 @@ export default function JobSequencingArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Job sequencing vs activity selection.</span>
           Activity selection maximizes count; sequencing maximizes profit. Both are unit-slot
           scheduling variants with polynomial greedy solutions but with different sort keys.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Job sequencing vs weighted interval
           scheduling.</span> WIS allows variable-length jobs — requires DP. Job sequencing
           requires unit length; that single restriction is what enables the greedy.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Profit-sort greedy vs deadline-sort heap.</span>
           Both are optimal. Profit-sort + DSU is perhaps more intuitive. Deadline-sort +
@@ -166,14 +179,17 @@ export default function JobSequencingArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Sort by profit, not by deadline (unless using the
           heap variant).</span> The profit-descending sort is what makes the greedy optimal.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Use DSU when d_max dominates n.</span> The naive
           scan costs O(n · d_max). DSU collapses that to near-linear.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Prefer the heap variant for clarity.</span> It
           reads in 10 lines and has no slot array. For interview whiteboarding it&rsquo;s the
@@ -198,15 +214,18 @@ export default function JobSequencingArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Sorting by deadline for the profit-greedy.</span>
           Produces the wrong answer. Deadline-sort is only correct with the heap variant.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Assigning to the earliest free slot instead of the
           latest.</span> Preempts rooms later jobs with tight deadlines would need. Latest-
           first is essential.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Off-by-one on slot indexing.</span> Slot 1 is the
           first unit of time. Using 0-indexed slots confuses d = 1 vs d = 0 semantics.
@@ -229,18 +248,21 @@ export default function JobSequencingArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Ad-slot allocation.</span> Ad exchanges pick the
           set of ads to display in a fixed set of slots — each ad has an expected revenue
           (profit) and a hard display-time deadline. The unit-slot structure matches job
           sequencing exactly.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Batch-compute queue admission.</span> Spot
           instances, GPU pool rentals, and nightly ETL windows: fixed-duration jobs compete
           for slots with SLA deadlines. Profit = compute-credit price; greedy selects the
           highest-value set.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Broadcast and podcast scheduling.</span> Radio /
           podcast timeslots of equal duration, each advertisement or segment with its own
@@ -276,16 +298,19 @@ export default function JobSequencingArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Classic: implement job sequencing.</span> Given
           (deadline, profit) pairs, return max profit and a valid schedule. Expected: sort
           by profit desc, DSU or naive slot scan.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">LeetCode 630 — Course Schedule III.</span> Exactly
           the swap-weakest heap variant. Sort by deadline; push duration; if total duration
           &gt; deadline, pop max.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">LeetCode 1235 — Maximum Profit in Job
           Scheduling.</span> Variable-length variant → DP + binary search, not greedy.

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -84,24 +85,27 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: WebSocket Protocol Mechanics</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Full-Duplex Communication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Full-duplex means that both the client and server can send messages simultaneously over
           the same connection. This contrasts with HTTP&apos;s half-duplex model, where the client
           sends a request and waits for the server&apos;s response before sending another request.
           In a WebSocket connection, the server can push messages to the client at any time
           without the client requesting them, and the client can send messages to the server
           without waiting for a response to a previous message.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Full-duplex communication is essential for real-time applications where both parties
           need to send messages independently: collaborative editing (multiple users editing
           simultaneously), live chat (bidirectional messaging), real-time gaming (player actions
           and game state updates in both directions), and financial trading (price updates from
           server, trade orders from client).
-        </p>
+        </HighlightBlock>
 
         <h3>Message Framing</h3>
         <p>
@@ -168,9 +172,12 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Scaling WebSockets</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Single-Server WebSocket Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In a single-server architecture, all WebSocket connections terminate on a single server
           process. The server maintains an in-memory map of connected clients and can push
           messages to any connected client directly. This is simple to implement and works well
@@ -178,17 +185,17 @@ export default function ArticlePage() {
           does not scale beyond a single server: if the server crashes, all connections are lost,
           and a single server has a finite connection limit based on available file descriptors
           and memory.
-        </p>
+        </HighlightBlock>
 
         <h3>Multi-Server Architecture with Sticky Sessions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In a multi-server architecture, WebSocket connections are distributed across multiple
           server instances behind a load balancer. The load balancer uses sticky sessions (also
           known as session affinity) to ensure that all messages from a client are routed to the
           same server instance that holds the client&apos;s WebSocket connection. Without sticky
           sessions, a client&apos;s HTTP upgrade request might go to server A, but a subsequent
           message might be routed to server B, which does not have the client&apos;s connection.
-        </p>
+        </HighlightBlock>
 
         <p>
           Sticky sessions introduce a challenge: if a client needs to send a message to another
@@ -241,16 +248,19 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           WebSockets are one of three primary technologies for real-time server-to-client
           communication, alongside Server-Sent Events (SSE) and HTTP long-polling. The choice
           depends on the communication pattern (unidirectional vs bidirectional), scalability
           requirements, and infrastructure constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>WebSockets vs Server-Sent Events</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WebSockets provide full-duplex (bidirectional) communication, while SSE provides
           unidirectional (server-to-client) streaming. If the application only needs the server
           to push data to the client (live news feeds, stock price updates, notification
@@ -258,7 +268,7 @@ export default function ArticlePage() {
           and firewalls without special configuration, and has built-in reconnection and event
           ID support in the browser. If the application needs bidirectional communication (chat,
           collaborative editing, gaming), WebSockets are required.
-        </p>
+        </HighlightBlock>
 
         <h3>WebSockets vs HTTP Long-Polling</h3>
         <p>
@@ -276,24 +286,27 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for WebSocket Implementation</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement heartbeat and reconnection from day one.</strong> WebSocket
           connections are vulnerable to silent disconnection, and without a heartbeat mechanism,
           the server may hold resources for dead connections indefinitely. Implement ping/pong
           heartbeats with a configurable interval (30 seconds) and timeout (10 seconds). On the
           client side, implement automatic reconnection with exponential backoff and jitter to
           prevent thundering herd scenarios.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use message IDs for at-least-once delivery.</strong> WebSocket does not provide
           built-in message acknowledgment or delivery guarantees. If messages must not be lost
           during disconnections, implement application-level message IDs: the server assigns a
           unique ID to each message, and the client acknowledges received messages. After
           reconnection, the client requests any messages it missed since its last acknowledged
           message ID. This provides at-least-once delivery semantics on top of WebSocket.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Design the pub-sub backbone for cross-server message delivery.</strong> In a
@@ -326,8 +339,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Load balancer dropping WebSocket connections.</strong> Many load balancers are
           configured with idle connection timeouts (typically 60 seconds) that close connections
           that appear idle. WebSocket connections are long-lived and may appear idle during
@@ -336,9 +352,9 @@ export default function ArticlePage() {
           heartbeat interval (e.g., 120 seconds if the heartbeat is every 30 seconds).
           Alternatively, configure the load balancer to recognize WebSocket connections
           (via the Upgrade header) and disable the idle timeout for WebSocket connections.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Memory leaks from unbounded message queues.</strong> When a WebSocket client
           is slow to process messages (e.g., a mobile client on a slow network), the server
           queues messages for delivery. If the client is too slow or permanently disconnected
@@ -348,7 +364,7 @@ export default function ArticlePage() {
           newest, depending on the application&apos;s requirements) and notify the client that
           messages were dropped. Additionally, implement heartbeat-based disconnection detection
           to clean up queues for dead connections.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Not handling server restarts gracefully.</strong> When a WebSocket server
@@ -388,17 +404,20 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Slack: Real-Time Messaging with WebSockets</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Slack uses WebSockets as the primary transport for real-time messaging across its
           platform. Each Slack client (web, desktop, mobile) maintains a persistent WebSocket
           connection to Slack&apos;s real-time messaging infrastructure. When a user sends a
           message, it is published to a message queue, and the message is delivered to all
           connected clients for the relevant channel through their WebSocket connections.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Slack&apos;s WebSocket infrastructure handles millions of concurrent connections
           across multiple data centers. Connections are distributed across WebSocket gateway
           servers using a connection registry stored in a distributed key-value store. Cross-server
@@ -406,7 +425,7 @@ export default function ArticlePage() {
           room-to-connection mappings for efficient channel-based message routing. Slack
           implements message acknowledgment with message IDs (ts timestamps) to ensure that
           clients receive all messages even after reconnection.
-        </p>
+        </HighlightBlock>
 
         <h3>Discord: Scaling WebSockets to Millions of Concurrent Users</h3>
         <p>
@@ -448,11 +467,14 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg bg-panel-soft p-6">
-            <p className="font-semibold">Q1: How does the WebSocket handshake work, and why does it use HTTP?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: How does the WebSocket handshake work, and why does it use HTTP?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> The WebSocket handshake starts as an HTTP request. The
               client sends an HTTP GET request with an <code className="inline-code">Upgrade:
               websocket</code> header, a <code className="inline-code">Connection: Upgrade</code>
@@ -464,7 +486,7 @@ export default function ArticlePage() {
               <code className="inline-code">Upgrade: websocket</code> header, and a
               <code className="inline-code">Sec-WebSocket-Accept</code> header with the computed
               key.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               The handshake uses HTTP for compatibility with existing HTTP infrastructure:
               proxies, firewalls, and load balancers already understand HTTP and can forward

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 const BASE_PATH = "/diagrams/system-design-concepts/backend/reliability-fault-tolerance";
@@ -28,12 +29,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Failover mechanisms</strong> are the systems and procedures that automatically or manually transition traffic and responsibilities from a failed or degraded component to a healthy alternative. Failover is the primary tactic for maintaining service availability when individual nodes, racks, or entire data centers experience failures. Unlike disaster recovery—which addresses catastrophic, region-wide events—failover handles component-level and service-level failures that are routine occurrences in distributed systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Good failover is not simply about flipping a switch. It requires maintaining data correctness during the transition, preventing split-brain scenarios where multiple components believe they are the primary, ensuring the new target has sufficient capacity to absorb redirected traffic, and restoring steady state without triggering secondary failures. A poorly designed failover can cause more damage than the original failure by introducing data corruption, creating routing loops, or overloading the failover target.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, failover design involves architectural decisions about topology (active-passive versus active-active), health signal quality (what constitutes "unhealthy" and how many signals are required), coordination mechanisms (how components agree on who is primary), and the balance between automation and human judgment. These decisions affect not only the technical behavior of the system during failure but also the operational experience of the engineers who manage it and the user experience during degradation.
         </p>
@@ -50,6 +54,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/failover-strategy-comparison.svg`}
@@ -58,12 +65,12 @@ export default function ArticlePage() {
         />
 
         <h3>Active-Passive vs. Active-Active Topologies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In an <strong>active-passive</strong> topology, one component (the active primary) handles all production traffic while the passive standby remains ready but does not serve user requests. The standby may be hot (fully running and receiving replicated data, ready to take over immediately), warm (partially running with some components scaled down), or cold (provisioned but not running, requiring startup time). During failover, traffic is redirected from the primary to the standby, which becomes the new active component. Active-passive is simpler to implement, has clearer data ownership (only one primary writes at a time), and is less expensive because the standby does not need full production capacity during normal operation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In an <strong>active-active</strong> topology, multiple components serve traffic simultaneously, typically distributed across regions or availability zones. Data replication is bidirectional, and each component can handle reads and writes independently. During failover, traffic from the failed component is redistributed among the remaining healthy components. Active-active provides near-zero failover time because traffic redistribution can happen gradually, but it introduces significant complexity: bidirectional data replication must handle write conflicts, consistency guarantees are weaker, and operational overhead is substantially higher because every component must be production-capable at all times.
-        </p>
+        </HighlightBlock>
         <p>
           The choice between active-passive and active-active depends on the availability target, data consistency requirements, and operational budget. Active-passive is appropriate when brief downtime (seconds to minutes) is acceptable and data consistency is paramount. Active-active is appropriate when near-zero downtime is required and the system can tolerate eventual consistency or has conflict resolution mechanisms for concurrent writes.
         </p>
@@ -116,12 +123,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust failover architecture coordinates routing, state, and dependencies in a specific sequence. The flow begins with continuous health monitoring: each component is evaluated against multiple health signals (liveness, readiness, depth) at regular intervals. When health signals cross the failure threshold, the failover decision is triggered. For automated failover, this decision is immediate if the failure is unambiguous (complete unavailability). For ambiguous failures (elevated latency, partial packet loss), the decision may require manual approval or additional signal correlation to avoid false-positive failovers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Once failover is decided, the system executes a coordinated transition. For stateless components (application servers, API gateways), the transition involves updating routing rules in the load balancer or DNS, draining existing connections to allow in-flight requests to complete, and redirecting new traffic to the healthy target. For stateful components (databases, caches, message queues), the transition is more complex: the system must verify that the standby has caught up sufficiently to meet the RPO requirement, fence the old primary to prevent it from accepting further writes, promote the standby to primary status, update the leadership registration in the coordination service, and notify all clients of the new primary's identity.
-        </p>
+        </HighlightBlock>
         <p>
           The sequencing of failover across service tiers is critical. The data tier must be stabilized before the application tier is redirected. If the application tier begins sending traffic to a new region before the database tier is promoted and ready, the application will generate errors that trigger retries, which further load the unstable database. The correct sequence is: stabilize the data tier first (promote replica, verify catch-up, fence old primary), then stabilize the application tier (update routing, warm caches, verify health), then stabilize the edge tier (update DNS, adjust traffic weighting). This topological ordering ensures that each layer has a stable foundation before it begins serving traffic.
         </p>
@@ -135,12 +145,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental trade-off in failover design is between failover speed and data correctness. Faster failover reduces downtime but risks promoting a standby that has not fully caught up with the primary's data, potentially losing recent writes. Slower failover ensures the standby is fully synchronized but extends the outage duration. The correct balance depends on the system's RPO requirement: if RPO is zero (no data loss acceptable), failover must wait for full synchronization, which may be impossible if the primary is unreachable. If RPO allows a small data loss window (e.g., 1 minute), failover can proceed once the standby is within that window.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Active-active versus active-passive presents a cost versus availability trade-off. Active-active requires full production capacity in every region or component, effectively doubling infrastructure costs. It also introduces bidirectional replication complexity: write conflicts must be resolved, consistency guarantees are weakened, and operational overhead is significantly higher. Active-passive is cheaper (the standby can run at reduced capacity) and simpler (only one primary writes at a time, eliminating write conflicts), but it introduces a failover window during which the system is unavailable. The decision should be driven by availability targets and budget constraints.
-        </p>
+        </HighlightBlock>
         <p>
           Automated versus manual failover involves a trade-off between speed and judgment. Automated failover is fast—it eliminates human decision latency and can execute within seconds of failure detection. However, it is prone to false positives when health signals are ambiguous. During a network partition, the primary may be partially reachable, and automated failover may promote a standby that creates split-brain. Manual failover provides human judgment for ambiguous situations but increases RTO and requires that trained operators be available and empowered to make recovery decisions under pressure. The optimal approach is automated failover with guardrails: automatic for clear-cut failures (complete unavailability), manual approval required for ambiguous scenarios.
         </p>
@@ -154,12 +167,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use multi-signal health checking to reduce false-positive failovers. Require agreement from at least two independent health signals (e.g., liveness check failing AND depth check failing, or liveness check failing AND external monitoring confirming unavailability) before declaring a component unhealthy. Configure health check frequency and failure thresholds to balance detection speed with false-positive resistance: checks every 5-10 seconds with 2-3 consecutive failures before declaring unhealthy is a practical starting point. Adjust thresholds based on observed failure patterns in your specific environment.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement safe leader election for stateful components using consensus protocols (Raft, Paxos) or lease-based coordination with fencing tokens. The leader must hold a lease that is periodically renewed, and if the lease expires, the leader must stop accepting writes immediately. When a new leader is elected, it receives a higher fencing token, and any write attempt with an old token is rejected. This prevents split-brain scenarios where a former leader that has not yet realized it was demoted continues to accept writes and corrupts data.
-        </p>
+        </HighlightBlock>
         <p>
           Sequence failover across service tiers: stabilize the data tier first, then the application tier, then the edge tier. This ensures that each layer has a stable foundation before it begins serving traffic. For stateful failover, verify that the standby has caught up sufficiently to meet the RPO requirement before promotion, fence the old primary, and update the leadership registration. For stateless failover, use connection draining to allow in-flight requests to complete before redirecting new traffic.
         </p>
@@ -173,12 +189,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Split-brain is the most dangerous failover pitfall. It occurs when two components simultaneously believe they are the primary and accept writes independently. The resulting data divergence is extremely difficult to reconcile and often results in permanent data loss. Split-brain is caused by network partitions where both sides of the partition believe the other side is dead, combined with inadequate fencing of the former leader. Prevention requires quorum-based consensus (a majority of nodes must agree on the leader), fencing tokens (writes with stale tokens are rejected), and explicit fencing of the old primary (network-level isolation or process termination) before the new leader begins accepting writes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A second common pitfall is failback instability. When a failed component recovers, it is tempting to immediately restore it to primary duty. However, the recovered component may have stale data, incompatible configuration, or an underlying issue that has not been fully resolved. Promoting it prematurely can trigger a second failover, creating a failover-failback loop that destabilizes the system. The correct approach is to reintegrate the recovered component as a standby first, allow it to catch up with the current primary's data, verify its health over a stabilization period, and then optionally promote it during a controlled maintenance window.
-        </p>
+        </HighlightBlock>
         <p>
           A third pitfall is failover target cold starts. When traffic is redirected to a failover target that has not been warmed—cold caches, uninitialized connection pools, or unprimed file systems—the target experiences a secondary latency incident that can be worse than the original failure. The failover plan should include a warm-up period during which the target receives synthetic traffic or shadow reads to populate caches and initialize connection pools before it receives full production traffic. A staged ramp with gradually increasing traffic (e.g., 10%, 25%, 50%, 100%) reduces the risk of secondary degradation.
         </p>
@@ -192,16 +211,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Financial Services: Active-Passive Database Failover</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A financial services platform uses active-passive database failover with synchronous replication within the same availability zone and asynchronous replication to a standby in a different zone. Health checks monitor the primary database every 5 seconds, and after 3 consecutive failures, automated failover is triggered. The standby is verified to be within the RPO window (sub-second for synchronous, up to 30 seconds for asynchronous), the old primary is fenced at the network level, and the standby is promoted. The application tier is then notified of the new primary through a coordination service update. The entire process completes in under 15 seconds for same-zone failover and under 60 seconds for cross-zone failover. Post-failover validation confirms that replication is progressing and write confirmation is coming from the intended primary.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce: DNS-Based Cross-Region Failover</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce platform operates in two AWS regions with active-passive topology. The primary region handles all traffic during normal operation, and the secondary region runs a warm standby with scaled-down application servers and continuously replicating databases. DNS failover is configured through Route 53 with health checks monitoring the primary region's load balancer and application endpoints. The DNS TTL is set to 60 seconds. When the primary region becomes unavailable, Route 53 detects the failure, updates the DNS record to point to the secondary region's load balancer, and clients begin resolving to the secondary region after the TTL expires. The warm standby is scaled up to full capacity during the DNS propagation window. The total failover time is 2-3 minutes, with RPO determined by the database replication lag (typically under 30 seconds).
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS: Active-Active Multi-Region API</h3>
         <p>
@@ -219,14 +241,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How do you prevent split brain during failover?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Prevent split brain through three mechanisms working together. First, use quorum-based coordination: a majority of nodes must agree on the leader, so a network partition cannot create two majorities simultaneously. Second, use fencing tokens: each leader receives a monotonically increasing token, and any write attempt with a stale token is rejected. This ensures that a former leader that has not yet realized it was demoted cannot corrupt data. Third, explicitly fence the old primary: isolate it at the network level or terminate its process before the new leader begins accepting writes.
-            </p>
+            </HighlightBlock>
             <p>
               The critical insight is that no single mechanism is sufficient. Quorum prevents two leaders from being elected simultaneously, but a former leader that was partitioned from the quorum may still believe it is leader. Fencing tokens prevent stale writes, but only if the data layer enforces them. Explicit fencing of the old primary is the final safety net. All three must be in place for reliable split-brain prevention.
             </p>

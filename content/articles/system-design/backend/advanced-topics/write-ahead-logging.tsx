@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +30,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Write-Ahead Logging</strong> (WAL) is a durability mechanism used by
           databases and storage engines to ensure that committed transactions survive system
           crashes. The fundamental principle of WAL is that every change to the database is
@@ -37,15 +41,15 @@ export default function ArticlePage() {
           data files. This ensures that, in the event of a crash, the database can recover
           by replaying the WAL to reconstruct the state of all committed transactions that
           were not yet flushed to the data files.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider a database that updates a row in a table. Without WAL, if the system
           crashes after the row is updated in memory but before the change is flushed to
           disk, the committed transaction is lost. With WAL, the change is first written
           to the WAL (a sequential append, which is fast), and then applied to the in-memory
           buffer. When the system crashes, the WAL contains a record of the change, and the
           database can replay the WAL during recovery to reconstruct the committed state.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, WAL requires understanding the trade-offs between
           durability and performance (fsync on every commit vs. group commit), the ARIES
@@ -72,6 +76,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/wal-write-path.svg`}
@@ -80,19 +87,19 @@ export default function ArticlePage() {
         />
 
         <h3>The Write-Ahead Rule</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The write-ahead rule states that before a modified data page is flushed from the
           buffer pool to the data files, the WAL record for that modification must be flushed
           to the WAL file on disk. This ensures that the WAL always contains a record of every
           modification that has been applied to the buffer pool, enabling recovery in the event
           of a crash.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The WAL record contains the transaction ID, the operation type (insert, update,
           delete), the affected page and offset, the old value (for undo), and the new value
           (for redo). The WAL record is written as a sequential append to the WAL file, which
           is significantly faster than the random disk I/O required to update the data file.
-        </p>
+        </HighlightBlock>
 
         <h3>Group Commit</h3>
         <p>
@@ -145,24 +152,27 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>WAL in PostgreSQL</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           PostgreSQL uses a Write-Ahead Log (WAL) with 16 MB segments. Each WAL record
           contains the transaction ID, operation type, affected block, and old/new values.
           The WAL is written sequentially, with fsync occurring at commit time (or during
           group commit). PostgreSQL&apos;s WAL is used for crash recovery, replication
           (WAL records are streamed to replicas), and point-in-time recovery (WAL archives
           are stored for long-term recovery).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           PostgreSQL&apos;s checkpoint mechanism periodically flushes dirty pages from the
           buffer pool to the data files and records a checkpoint record in the WAL. The
           checkpoint records the state of the database at that point in time, enabling
           recovery to start from the last checkpoint rather than from the beginning of the
           WAL. This reduces recovery time from O(all WAL records) to O(WAL records since
           last checkpoint).
-        </p>
+        </HighlightBlock>
 
         <h3>WAL in LSM Trees</h3>
         <p>
@@ -186,21 +196,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           WAL involves trade-offs between durability and performance. Fsync on every commit
           provides strict durability (every committed transaction is on disk) but limits
           write throughput to the disk&apos;s fsync rate (100-500 fsyncs/second for typical
           disks). Group commit improves write throughput by 10-100x but introduces a small
           risk of data loss (transactions committed within the group commit window are not
           yet on disk).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The checkpoint interval involves trade-offs between recovery time and write
           amplification. Frequent checkpoints (every 5 minutes) reduce recovery time (less
           WAL to replay) but increase write amplification (dirty pages are flushed more
           frequently). Infrequent checkpoints (every 30 minutes) reduce write amplification
           but increase recovery time (more WAL to replay).
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -208,19 +221,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use group commit for most workloads to improve write throughput. Set the group
           commit window to 1-10ms, which provides 10-100x improvement in write throughput
           with a negligible risk of data loss (1-10ms window). For financial systems that
           require strict durability, use fsync on every commit (no group commit).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Set the checkpoint interval based on the acceptable recovery time. If the
           acceptable recovery time is 5 minutes, set the checkpoint interval to 5 minutes.
           Monitor recovery time during testing and adjust the checkpoint interval accordingly.
           Avoid setting the checkpoint interval too frequently (every minute), as this
           increases write amplification and reduces write throughput.
-        </p>
+        </HighlightBlock>
         <p>
           Monitor WAL generation rate and alert when it exceeds a threshold. High WAL
           generation rate indicates a write-heavy workload, which may require faster disk
@@ -242,21 +258,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is disabling WAL fsync to improve write performance.
           Without fsync, the WAL is not durable, and committed transactions are lost in
           the event of a crash. This is sometimes done for benchmarking (to measure raw
           write throughput without fsync overhead), but must never be done in production.
           The fix is to use group commit instead of disabling fsync, which improves write
           throughput while maintaining durability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not monitoring WAL segment usage means you won&apos;t know when checkpoints are
           falling behind. If checkpoints fall behind, WAL segments accumulate, consuming
           disk space. If the disk fills up, the database stops accepting writes. The fix
           is to monitor WAL segment usage and alert when it exceeds 80%, and to ensure
           that the checkpoint interval is set appropriately for the write workload.
-        </p>
+        </HighlightBlock>
         <p>
           Not archiving WAL segments means you cannot perform point-in-time recovery.
           Without WAL archives, you can only recover to the last backup (which may be
@@ -278,25 +297,28 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>PostgreSQL: WAL for Crash Recovery and Replication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           PostgreSQL uses a Write-Ahead Log (WAL) with 16 MB segments for crash recovery,
           replication, and point-in-time recovery. The WAL is written sequentially, with
           fsync occurring at commit time (or during group commit). PostgreSQL&apos;s WAL
           is streamed to replicas for replication (streaming replication), and archived
           for point-in-time recovery (WAL archiving).
-        </p>
+        </HighlightBlock>
 
         <h3>MySQL InnoDB: Redo Log</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           MySQL InnoDB uses a redo log (WAL) with configurable size (default 48 MB,
           recommended 4 GB for production). The redo log is written sequentially, with
           fsync occurring at commit time (controlled by innodb_flush_log_at_trx_commit).
           Setting innodb_flush_log_at_trx_commit = 1 provides strict durability (fsync on
           every commit), while = 2 provides group commit-like behavior (flush to OS cache,
           fsync once per second).
-        </p>
+        </HighlightBlock>
 
         <h3>RocksDB: WAL for Memtable Durability</h3>
         <p>
@@ -314,19 +336,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is write-ahead logging and why is it needed?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Write-ahead logging (WAL) is a durability mechanism that ensures committed
               transactions survive system crashes. Every change to the database is first
               written to a sequential log file (the WAL) before it is applied to the actual
               data files. This ensures that, in the event of a crash, the database can
               recover by replaying the WAL to reconstruct the state of all committed
               transactions.
-            </p>
+            </HighlightBlock>
             <p>
               Without WAL, if the system crashes after a change is applied to the buffer
               pool but before it is flushed to the data files, the committed transaction

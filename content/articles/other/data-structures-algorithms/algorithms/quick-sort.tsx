@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function QuickSortArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Quick Sort is a divide-and-conquer comparison sort that partitions an array around a chosen
           pivot so that every element less than the pivot lands on its left and every element greater
           lands on its right, then recurses into the two subarrays. C. A. R. Hoare invented it in 1959
@@ -44,8 +48,8 @@ export default function QuickSortArticle() {
           in 1961. Unlike merge sort, the partitioning happens <em>in place</em>, and unlike selection
           or insertion sort, each comparison contributes to placing many elements in the correct
           region simultaneously.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The expected running time on random input is Θ(n log n) with small hidden constants — roughly
           2–3× faster than merge sort in practice because of cache friendliness, no auxiliary array,
           and tight inner loops. The worst case, however, is Θ(n²) when a poor pivot choice (e.g.,
@@ -53,7 +57,7 @@ export default function QuickSortArticle() {
           at every level. This worst case is not merely theoretical: naive &quot;pick the first element&quot;
           pivoting on already-sorted input degrades to quadratic, which is why production sorts go to
           considerable lengths to avoid it.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Quick Sort sits at the core of modern hybrid sorts. Introsort (C++ <code>std::sort</code>)
           runs quicksort until recursion depth exceeds 2⌊log₂ n⌋, then falls back to heapsort to
@@ -79,22 +83,25 @@ export default function QuickSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">Partitioning schemes</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Two classical schemes dominate. <strong>Lomuto partition</strong> maintains a single index i
           tracking the boundary of the &quot;less than pivot&quot; region; it scans from left to right with
           pointer j, swapping arr[i] and arr[j] whenever arr[j] &lt; pivot, then swapping the pivot
           into position i at the end. It is simple to code but performs more swaps than necessary and
           degrades to O(n²) on arrays with many duplicates.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Hoare partition</strong> uses two pointers converging from opposite ends. The left
           pointer advances while arr[left] &lt; pivot, the right pointer retreats while arr[right] &gt;
           pivot, and when both stop, the elements are swapped. It performs about 3× fewer swaps than
           Lomuto on average and handles duplicates more gracefully, but its correctness proof is
           subtler — the pivot is not placed at its final position by partition; only the invariant
           &quot;everything ≤ pivot is left of the split, everything ≥ pivot is right&quot; holds.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Three-way (Dutch National Flag) partition</strong> splits the array into three
           regions: less than pivot, equal to pivot, and greater than pivot. Elements equal to the
@@ -137,21 +144,24 @@ export default function QuickSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A production-grade quicksort is a state machine. Entry picks a pivot via median-of-three or
           ninther, runs a three-way partition, and dispatches. Each recursive call first checks
           whether the range size is below the insertion-sort threshold; if so, it defers to a single
           insertion sort pass covering the whole array at the end. Recursion depth is tracked: if it
           exceeds 2⌊log₂ n⌋, the call switches to heapsort — this is the introsort pattern.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Pdqsort adds pattern detection. Before partitioning, it compares elements to check if the
           range is already sorted or reverse-sorted; if so, it returns immediately or reverses once.
           After partition, if the partition is badly unbalanced (smaller side &lt; 1/8 of the range), it
           applies a block-based shuffle of the pivot candidate region to defeat adversarial inputs.
           This gives best-case O(n) on sorted input and worst-case O(n log n) without introsort&apos;s
           heapsort fallback being triggered in most cases.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Dual-pivot quicksort (Yaroslavskiy 2009, Java&apos;s default) picks two pivots p1 ≤ p2 and
           partitions into three regions: less than p1, between p1 and p2, greater than p2. The middle
@@ -171,20 +181,23 @@ export default function QuickSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Merge Sort</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Quicksort is typically 2–3× faster than merge sort on random in-memory arrays due to cache
           friendliness and in-place operation, but it is unstable and has O(n²) worst case. Merge
           sort is stable, predictable, and natural for external sorting (linked lists, disk-resident
           data). For sorting objects by key with stability required (most business data), Tim Sort /
           merge wins. For sorting primitives where order of equal keys is irrelevant, quicksort wins.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Heap Sort</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Heap sort has guaranteed O(n log n) worst case and O(1) extra space but is ~2–3× slower than
           quicksort on average because heap access patterns are cache-unfriendly (parent-child jumps
           of 2×). Introsort uses heapsort only as a safety net when recursion depth blows up.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">Space</h3>
         <p className="mb-4">
           In-place partition uses O(1) extra space per level, but recursion stack is O(log n) average,
@@ -202,9 +215,12 @@ export default function QuickSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc pl-6 mb-4 space-y-2">
-          <li><strong>Never use first/last/middle element as pivot</strong> — always median-of-three minimum, ninther for large ranges.</li>
-          <li><strong>Always three-way partition</strong> if duplicates are possible — entropy-optimal on low-cardinality inputs.</li>
+          <HighlightBlock as="li" tier="important"><strong>Never use first/last/middle element as pivot</strong> — always median-of-three minimum, ninther for large ranges.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Always three-way partition</strong> if duplicates are possible — entropy-optimal on low-cardinality inputs.</HighlightBlock>
           <li><strong>Cap recursion depth at 2⌊log₂ n⌋ and fall back to heapsort</strong> (introsort pattern) to guarantee worst-case O(n log n).</li>
           <li><strong>Recurse into smaller partition, iterate on larger</strong> to bound stack to O(log n).</li>
           <li><strong>Switch to insertion sort below 16–32 elements</strong> — either per-range or as a final pass over the &quot;roughly sorted&quot; array.</li>
@@ -217,9 +233,12 @@ export default function QuickSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc pl-6 mb-4 space-y-2">
-          <li><strong>Stack overflow on sorted input with naive pivot</strong>: first-element pivot + already-sorted input = n levels of recursion. Defense: median-of-three + smaller-side recursion.</li>
-          <li><strong>O(n²) on duplicates</strong>: two-way partition with many equal keys puts all duplicates on one side. Defense: three-way partition.</li>
+          <HighlightBlock as="li" tier="important"><strong>Stack overflow on sorted input with naive pivot</strong>: first-element pivot + already-sorted input = n levels of recursion. Defense: median-of-three + smaller-side recursion.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>O(n²) on duplicates</strong>: two-way partition with many equal keys puts all duplicates on one side. Defense: three-way partition.</HighlightBlock>
           <li><strong>Off-by-one in Hoare partition</strong>: classic bug — recursing into [lo, p] vs [lo, p−1] depends on whether pivot is placed. Lomuto returns pivot position; Hoare does not.</li>
           <li><strong>Assuming stability</strong>: code depending on relative order of equal keys breaks silently when someone calls Arrays.sort on a primitive array.</li>
           <li><strong>Adversarial inputs in security-sensitive code</strong>: attacker-controlled data + predictable pivot = DoS. Randomize pivot selection for any public-facing sort.</li>
@@ -230,17 +249,20 @@ export default function QuickSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>C++ std::sort</strong> is introsort — quicksort with median-of-three pivot, 16-element
           insertion-sort cutoff, and heapsort fallback when depth &gt; 2⌊log₂ n⌋. libstdc++ and libc++
           both implement it; MSVC uses a variant.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Rust slice::sort_unstable and Go sort (since 1.19)</strong> use Pdqsort — introsort
           plus pattern-defeating pivot selection. Sorting [1..n] takes O(n) because the sorted-pattern
           detection returns immediately. Go dropped its previous heapsort/insertion-sort hybrid in
           1.19 for Pdqsort and saw 10–60% speedups on common workloads.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Java Arrays.sort() for primitives</strong> uses Yaroslavskiy dual-pivot quicksort
           with insertion-sort cutoff at 47 elements and a special case for runs. For object arrays,
@@ -271,9 +293,12 @@ export default function QuickSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <ol className="list-decimal pl-6 mb-4 space-y-2">
-          <li><strong>Implement Lomuto and Hoare partition; which is faster and why?</strong> Hoare: ~3× fewer swaps, handles duplicates better, but pivot is not placed at final index.</li>
-          <li><strong>Why can quicksort hit O(n²), and how does production code prevent it?</strong> Poor pivot on already-sorted input. Defenses: median-of-three, randomization, introsort depth limit.</li>
+          <HighlightBlock as="li" tier="important"><strong>Implement Lomuto and Hoare partition; which is faster and why?</strong> Hoare: ~3× fewer swaps, handles duplicates better, but pivot is not placed at final index.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Why can quicksort hit O(n²), and how does production code prevent it?</strong> Poor pivot on already-sorted input. Defenses: median-of-three, randomization, introsort depth limit.</HighlightBlock>
           <li><strong>What is the Dutch National Flag problem?</strong> Three-way partition — Dijkstra&apos;s formulation, optimal for sorting with k distinct keys.</li>
           <li><strong>Quicksort vs. merge sort: when to use which?</strong> Quicksort for in-memory primitives where stability is irrelevant; merge sort for stability, predictable worst case, or external data.</li>
           <li><strong>Is quicksort stable? Why not?</strong> No — partition swaps move elements across equal-key boundaries. Making it stable requires O(n) auxiliary space.</li>

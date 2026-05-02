@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function AppLikeExperiencePWAArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Progressive Web Apps (PWA)</strong> are web applications that
           provide app-like experiences on mobile devices. PWAs use modern web
           capabilities (service workers, web app manifests, push notifications)
@@ -45,8 +49,8 @@ export default function AppLikeExperiencePWAArticle() {
           staff-level engineers, PWAs represent a convergence of web and native
           — write once, deploy everywhere, with capabilities approaching native
           apps.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           PWA architecture involves several technical components.{" "}
           <strong>Service Workers</strong> — background scripts enabling offline
           support, background sync, push notifications. <strong>Web App
@@ -54,7 +58,7 @@ export default function AppLikeExperiencePWAArticle() {
           display mode). <strong>HTTPS</strong> — required for service workers
           (security). <strong>App Shell</strong> — cached UI shell for instant
           load.
-        </p>
+        </HighlightBlock>
         <p>
           The business case for PWAs is compelling: Twitter Lite (PWA) reduced
           data usage by 70%, increased engagement by 65%. Pinterest (PWA)
@@ -67,19 +71,22 @@ export default function AppLikeExperiencePWAArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Service Worker:</strong> Background script that acts as
             proxy between browser and network. Enables offline support,
             background sync, push notifications. Lifecycle: install → activate →
             fetch handling.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Web App Manifest:</strong> JSON file defining app metadata.
             Properties: <code>name</code>, <code>short_name</code>,{" "}
             <code>icons</code>, <code>start_url</code>, <code>display</code>{" "}
             (standalone, fullscreen). Enables &quot;Add to Home Screen&quot;.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>App Shell Architecture:</strong> Cache UI shell (header,
             navigation, footer) separately from content. Shell loads instantly
@@ -117,12 +124,15 @@ export default function AppLikeExperiencePWAArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           PWA architecture consists of a service worker (network proxy), web app
           manifest (app metadata), and caching strategies (offline support). The
           architecture must handle online/offline transitions, background sync,
           and push notifications.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/mobile-considerations/service-worker-lifecycle.svg"
@@ -133,10 +143,10 @@ export default function AppLikeExperiencePWAArticle() {
         />
 
         <h3>Caching Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Cache-First:</strong> Try cache first, fall back to network.
           Best for: static assets (CSS, JS, images). Fast, works offline.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Network-First:</strong> Try network first, fall back to cache.
           Best for: dynamic content (API responses). Fresh when online, works
@@ -160,18 +170,21 @@ export default function AppLikeExperiencePWAArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           PWA involves trade-offs between capabilities, compatibility, and
           complexity.
-        </p>
+        </HighlightBlock>
 
         <h3>PWA vs. Native App</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>PWA Advantages:</strong> No app store required, instant
           updates, cross-platform, smaller size, discoverable via search.
           <strong>Native Advantages:</strong> Full device API access, better
           performance, app store distribution, monetization.
-        </p>
+        </HighlightBlock>
         <p>
           Best for: PWA for content apps, e-commerce, tools. Native for
           graphics-intensive apps, heavy device integration.
@@ -190,17 +203,20 @@ export default function AppLikeExperiencePWAArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement App Shell:</strong> Cache UI shell for instant
             load. Shell includes header, navigation, footer. Content loads
             dynamically. Provides app-like instant load experience.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Offline Page:</strong> Provide custom offline page when
             content not cached. Better than browser&apos;s default offline
             dinosaur. Explain what&apos;s available offline.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Prompt for Install:</strong> Don&apos;t rely on browser
             prompt alone. Show custom &quot;Add to Home Screen&quot; prompt
@@ -222,17 +238,20 @@ export default function AppLikeExperiencePWAArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Caching Everything:</strong> Don&apos;t cache everything —
             storage is limited. Cache app shell, critical content. Use cache
             expiration, size limits.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Handling Updates:</strong> Service worker updates
             silently. Users may never get new version. Implement update
             notification, prompt to refresh.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring iOS Limitations:</strong> iOS Safari doesn&apos;t
             support push notifications, limited background sync. Design
@@ -249,21 +268,24 @@ export default function AppLikeExperiencePWAArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter Lite</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter Lite (PWA) serves 98% of users globally. Features: offline
           timeline, push notifications, home screen icon. Results: 70% less
           data, 65% more engagement, 75% more tweets. PWA enabled Twitter to
           reach users in emerging markets with slow networks.
-        </p>
+        </HighlightBlock>
 
         <h3>Starbucks PWA</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Starbucks PWA enables offline menu browsing, order building. Results:
           2x daily active users, orders comparable to native app. PWA works on
           any device, no download required.
-        </p>
+        </HighlightBlock>
 
         <h3>Pinterest PWA</h3>
         <p>
@@ -276,21 +298,24 @@ export default function AppLikeExperiencePWAArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is a service worker and how does it enable offline
               support?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Service worker is a background script that acts as proxy
               between browser and network. It intercepts all network requests,
               can serve cached responses when offline. Lifecycle: install
               (cache app shell), activate (clean old caches), fetch (intercept
               requests). Offline support: cache-first strategy for static
               assets, network-first with cache fallback for dynamic content.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

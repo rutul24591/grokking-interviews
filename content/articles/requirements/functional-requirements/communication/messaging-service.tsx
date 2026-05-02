@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function MessagingServiceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Messaging service handles message routing, delivery, and persistence for real-time communication, ensuring reliable message delivery even in challenging network conditions. The service sits between client applications and storage infrastructure, managing the complex orchestration of getting messages from sender to recipient(s) with appropriate delivery guarantees, ordering, and durability. At scale, messaging services must handle millions of messages per second while maintaining low latency and high availability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The core challenge of messaging services is balancing competing requirements: low latency for real-time feel, durability to prevent message loss, ordering to maintain conversation coherence, and scalability to handle traffic spikes. Different messaging scenarios have different requirements—chat messages need low latency, financial transactions need strong consistency, notifications need delivery guarantees. The architecture must accommodate these varying needs while maintaining operational simplicity.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, messaging service implementation involves distributed systems challenges. Messages must route correctly across potentially millions of concurrent connections. Delivery must handle offline recipients with queueing and retry logic. Ordering must account for clock skew, network delays, and concurrent sends from multiple devices. The service must scale horizontally, handling connection storms when users reconnect after outages. Monitoring must detect delivery failures, latency spikes, and queue backlogs before users notice.
         </p>
@@ -47,13 +51,16 @@ export default function MessagingServiceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Delivery Guarantees</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           At-most-once delivery sends message once with no retry. Message may be lost if network fails. Pros: Lowest latency, no duplicates. Cons: Message loss acceptable only for low-value data (typing indicators, presence updates). Implementation: Fire and forget, no acknowledgment required.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At-least-once delivery retries until acknowledgment received. Message guaranteed to arrive but may duplicate. Pros: No message loss. Cons: Duplicates require deduplication logic. Implementation: Retry with exponential backoff, idempotency keys for deduplication. Most common for chat messages.
-        </p>
+        </HighlightBlock>
         <p>
           Exactly-once delivery guarantees single delivery with no loss or duplicates. Pros: Ideal semantics. Cons: High complexity, performance cost, often impractical at scale. Implementation: Distributed transactions, consensus protocols. Rarely used except for financial transactions.
         </p>
@@ -105,9 +112,12 @@ export default function MessagingServiceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Messaging service architecture spans connection management, message routing, persistence, and delivery. Clients connect via WebSocket to gateway servers. Gateway authenticates, routes messages to appropriate handlers, manages connection lifecycle. Message handlers process business logic (validation, rate limiting, enrichment). Persistence layer stores messages durably. Delivery layer pushes to recipients via their active connections or queues for offline delivery.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/messaging-service/messaging-architecture.svg"
@@ -118,9 +128,9 @@ export default function MessagingServiceArticle() {
         />
 
         <h3>Gateway Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Gateway servers accept WebSocket connections from clients. Each gateway handles thousands of concurrent connections (typical limit: 10,000-50,000 per server). Gateway authenticates connection using JWT token or session cookie. Authentication includes user ID, device info, and capabilities (push enabled, encryption support).
-        </p>
+        </HighlightBlock>
         <p>
           Connection registry tracks which user is connected to which gateway. Implementation uses Redis with user ID as key, gateway address as value. Supports multiple devices per user—store set of gateway connections. Registry enables message routing—lookup recipient's gateway, forward message.
         </p>
@@ -180,14 +190,17 @@ export default function MessagingServiceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Messaging service design involves fundamental trade-offs between latency, durability, ordering, and scalability. Understanding these trade-offs enables informed decisions aligned with product requirements and user expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Latency vs Durability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Write-ahead logging ensures durability before acknowledgment. Message persisted to WAL, then acknowledged, then asynchronously flushed to main storage. Pros: No message loss on crash. Cons: Added latency from WAL write (typically 5-20ms). Best for: Production messaging where message loss unacceptable.
-        </p>
+        </HighlightBlock>
         <p>
           Async persistence acknowledges before persisting. Message queued in memory, acknowledged immediately, persisted asynchronously. Pros: Lowest latency (&lt;5ms). Cons: Message loss on crash (last few seconds). Best for: Low-value messages (typing indicators, presence), prototypes.
         </p>
@@ -239,13 +252,16 @@ export default function MessagingServiceArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use at-least-once delivery with idempotency:</strong> Retry until acknowledged, use message IDs for deduplication. Accept duplicates are better than lost messages. Implement idempotency at database level with unique constraints.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Assign server sequence numbers:</strong> Never trust client timestamps for ordering. Use atomic increment per conversation. Store sequence with message for ordering and gap detection.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement connection heartbeats:</strong> Ping every 30 seconds, timeout after 90 seconds. Detect stale connections before they cause issues. Handle NAT timeout gracefully with reconnect logic.
           </li>
@@ -275,13 +291,16 @@ export default function MessagingServiceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Using client timestamps for ordering:</strong> Clock skew causes messages to appear out of order. Solution: Server-assigned sequence numbers, use client timestamp for display only.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No message deduplication:</strong> Network retries create duplicate messages. Solution: Unique message IDs, idempotent processing, database unique constraints.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring connection lifecycle:</strong> Not detecting stale connections, not cleaning up on disconnect. Solution: Heartbeat with timeout, cleanup on disconnect, presence update.
           </li>
@@ -311,16 +330,19 @@ export default function MessagingServiceArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>WhatsApp Messaging Infrastructure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WhatsApp uses Erlang-based messaging servers handling millions of connections per server. Messages use at-least-once delivery with end-to-end encryption. Offline messages stored for 30 days. Sequence numbers ensure ordering across devices. WhatsApp optimized for low bandwidth, works on 2G networks.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Slack Message Delivery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Slack uses a combination of WebSocket for real-time and HTTP fallback. Messages routed through channels with fan-out to members. Large channels (10,000+ members) use lazy delivery—messages delivered on demand rather than pushed. Slack implements message threading with separate sequence spaces per thread.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Telegram Cloud Messaging</h3>
         <p>
@@ -340,12 +362,15 @@ export default function MessagingServiceArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you ensure message ordering?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you ensure message ordering?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use server-assigned sequence numbers per conversation. Atomic increment (Redis INCR or database sequence) ensures unique, ordered numbers. Store sequence with message. Client uses sequence to order messages and detect gaps. For concurrent sends from multiple devices, server receive time determines order, not client timestamp. Handle reordering at client layer for best UX.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

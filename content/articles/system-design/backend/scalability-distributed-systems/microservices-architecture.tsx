@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -40,7 +41,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Microservices Architecture</strong> is a structural pattern in
           which a system is composed of small, independently deployable services,
           each owning a specific business capability, its own data store, and its
@@ -56,8 +60,8 @@ export default function ArticlePage() {
           communication protocols, and the &quot;smart endpoints, dumb pipes&quot;
           philosophy where intelligence lives at the service boundary and the
           network is treated as an unreliable transport mechanism.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The pattern emerged as a response to the scaling challenges of
           monolithic applications. A monolith — a single deployable unit with a
           shared database and tightly coupled modules — works well for small
@@ -74,7 +78,7 @@ export default function ArticlePage() {
           entire application. And organizational friction increases as multiple
           teams coordinate around a shared codebase, shared database schema, and
           synchronized release cycles.
-        </p>
+        </HighlightBlock>
         <p>
           Microservices address these problems by decomposing the system along
           business-domain boundaries. Each service is a self-contained unit that
@@ -109,8 +113,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Service boundaries</strong> define the fundamental unit of
           decomposition in a microservices architecture. The most widely adopted
           approach to identifying service boundaries is Domain-Driven Design
@@ -134,9 +141,9 @@ export default function ArticlePage() {
           payment service). DDD-based bounded contexts remain the most robust
           approach because they align with business semantics rather than
           technical or operational concerns.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Inter-service communication</strong> is the mechanism by which
           services coordinate to fulfill business requests. Communication
           patterns fall into two broad categories: synchronous and asynchronous.
@@ -155,7 +162,7 @@ export default function ArticlePage() {
           appropriate when the caller needs an immediate answer — for example,
           the order service needs to verify inventory availability before
           confirming an order.
-        </p>
+        </HighlightBlock>
 
         <p>
           Asynchronous communication involves a producer publishing a message or
@@ -218,6 +225,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/microservices-architecture-diagram-1.svg"
@@ -225,7 +235,7 @@ export default function ArticlePage() {
           caption="Microservices topology — each service owns its data, communicates through the gateway or message queue, and uses sidecar proxies for service mesh functionality"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The request flow in a microservices architecture begins with a client
           (web application, mobile app, or external system) sending an HTTPS
           request to the API gateway, which serves as the single entry point for
@@ -244,7 +254,7 @@ export default function ArticlePage() {
           aggregates it (if multiple services were called) and returns the final
           response to the client. The entire flow is traced through distributed
           tracing, with each service adding its span to the trace context.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/microservices-architecture-diagram-2.svg"
@@ -252,7 +262,7 @@ export default function ArticlePage() {
           caption="Inter-service communication — synchronous (caller blocks for response) versus asynchronous (producer publishes, consumers process independently with fan-out support)"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The service mesh is an infrastructure layer that handles
           service-to-service communication as a cross-cutting concern, typically
           implemented using sidecar proxies (Envoy, Linkerd) deployed alongside
@@ -269,7 +279,7 @@ export default function ArticlePage() {
           hop (the sidecar proxy) to every request, increasing latency by 1–5
           milliseconds, and introduces operational complexity in managing the
           mesh control plane (Istio, Consul Connect, or AWS App Mesh).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/microservices-architecture-diagram-3.svg"
@@ -310,8 +320,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Microservices must be compared against the modular monolith — a single
           deployable application with well-defined internal module boundaries,
           clean interfaces between modules, and a shared database with
@@ -325,7 +338,7 @@ export default function ArticlePage() {
           deployment pipeline, simpler observability). The modular monolith should
           be the default choice for teams under 30–50 engineers building products
           that do not yet require independent scaling of subsystems.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -436,7 +449,7 @@ export default function ArticlePage() {
           </tbody>
         </table>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The operational cost of microservices is frequently underestimated.
           Each service requires its own CI/CD pipeline, monitoring dashboard,
           alerting rules, runbook, and on-call rotation. For an organization
@@ -449,14 +462,17 @@ export default function ArticlePage() {
           support in hours rather than weeks. But building this platform is
           itself a significant engineering investment (typically 3–6 months for a
           team of 5–8 senior engineers).
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Start with a modular monolith and decompose into microservices only
           when organizational or operational scaling demands it. The &quot;monolith
           first&quot; approach, used by companies like Shopify (a Ruby on Rails
@@ -468,9 +484,9 @@ export default function ArticlePage() {
           system requiring vastly different scaling characteristics, or the need
           for heterogeneous technology stacks that cannot coexist in a single
           codebase.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Design service boundaries around business capabilities using Domain-Driven
           Design bounded contexts, not around technical layers or data entities.
           A service should encapsulate a complete business capability — not just
@@ -481,7 +497,7 @@ export default function ArticlePage() {
           service level: a service should have one reason to change, and that
           reason should be a change in a specific business capability&apos;s
           requirements.
-        </p>
+        </HighlightBlock>
 
         <p>
           Enforce data ownership strictly — no service may directly access
@@ -540,8 +556,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Premature decomposition is the most common cause of microservices
           failure. Teams adopt microservices for a greenfield project because
           it is the &quot;modern&quot; approach, without considering whether
@@ -555,9 +574,9 @@ export default function ArticlePage() {
           monolith with clean internal boundaries, build operational maturity
           (CI/CD, monitoring, alerting, incident response), and decompose into
           microservices only when specific pain points emerge.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shared databases across services is the anti-pattern that
           fundamentally undermines microservices architecture. When multiple
           services read from and write to the same database tables, they are
@@ -570,7 +589,7 @@ export default function ArticlePage() {
           owns its database (or schema within a shared database instance, at
           minimum), and other services access the data only through the owning
           service&apos;s API or through event-driven data replication.
-        </p>
+        </HighlightBlock>
 
         <p>
           Excessive service granularity — decomposing services too finely —
@@ -617,8 +636,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix pioneered the modern microservices architecture at scale, with
           over 1,000 microservices handling streaming, recommendation, billing,
           and content management. Netflix&apos;s key insight was that microservices
@@ -631,9 +653,9 @@ export default function ArticlePage() {
           handling in production, a practice that is essential for microservices
           architectures where failure modes are too numerous to test
           comprehensively in staging environments.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uber transitioned from a monolithic Python application to a
           microservices architecture as it expanded from a single city to
           hundreds of cities worldwide. Their decomposition was driven by
@@ -646,7 +668,7 @@ export default function ArticlePage() {
           ETA calculation) and asynchronous Kafka event streams for non-real-time
           processing (receipt generation, analytics, machine learning model
           training).
-        </p>
+        </HighlightBlock>
 
         <p>
           Amazon&apos;s microservices journey is the origin story for the
@@ -692,17 +714,20 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
             Question 1: How do you decide where to draw service boundaries in a microservices architecture? What happens if you get it wrong?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Service boundaries should be drawn around business capabilities using Domain-Driven Design bounded contexts. A bounded context is a semantic boundary within which a domain model has a specific meaning — for example, &quot;Customer&quot; in the Sales context (leads, opportunities) is different from &quot;Customer&quot; in the Billing context (invoices, payment methods). Each bounded context becomes a service with its own data model, API, and deployment lifecycle. The key heuristic is that a service should have high internal cohesion (everything within the service is semantically related) and low external coupling (the service has minimal dependencies on other services).
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             If boundaries are drawn too finely (excessive decomposition), you create a distributed monolith where every business operation requires calls across many services, amplifying latency, increasing failure probability, and making the system impossible to reason about. If boundaries are drawn too coarsely, you end up with a distributed version of your monolith — services that are so large they must be deployed together and have the same coordination problems as the original monolith. The correct approach is to start with larger services based on clear business domains and split them only when specific pain points emerge (a particular capability needs independent scaling, a team is blocked by another team&apos;s deployment cycle, or a capability requires a different technology stack).
-          </p>
+          </HighlightBlock>
           <p>
             In an interview, demonstrate depth by discussing the Inverse Conway Maneuver — restructuring the organization to match the desired architecture, not just the architecture to match the organization. Also mention that service boundaries are not permanent — they should evolve based on operational feedback, and services can be merged or split as the system matures.
           </p>

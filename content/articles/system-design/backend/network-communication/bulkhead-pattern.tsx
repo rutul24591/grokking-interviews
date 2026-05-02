@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -83,9 +84,12 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Isolation Strategies</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Thread Pool Bulkheads</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Thread pool bulkheads are the most common form of resource isolation in server-side
           applications. Each protected operation, tenant, or feature is assigned a dedicated
           thread pool with a fixed maximum size. When a request arrives, it is submitted to the
@@ -95,16 +99,16 @@ export default function ArticlePage() {
           Requests or 503 Service Unavailable response). This immediate rejection is preferable
           to indefinite queuing, which would cause the request to eventually time out after
           consuming resources for the entire duration of the wait.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Thread pool bulkheads provide strong isolation because each pool has its own execution
           context, its own queue, and its own scheduling. A slow operation in one pool cannot
           steal threads from another pool. However, thread pools carry a memory overhead: each
           thread reserves a stack (typically 1 MB on 64-bit JVMs), so 100 thread pools of 50
           threads each would reserve 5 GB of stack space, even if many threads are idle. This
           memory cost becomes significant in environments with hundreds of isolation partitions.
-        </p>
+        </HighlightBlock>
 
         <h3>Connection Pool Bulkheads</h3>
         <p>
@@ -178,18 +182,21 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Sizing Bulkheads Correctly</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Sizing bulkheads is one of the most challenging aspects of the pattern. Set a bulkhead
           too small, and legitimate traffic gets rejected during normal load, causing unnecessary
           service degradation. Set it too large, and the bulkhead fails to protect against resource
           exhaustion, defeating the purpose of isolation. The correct sizing depends on the
           expected request rate, the average and tail latency of the downstream call, and the
           acceptable rejection rate under peak load.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For thread pool bulkheads, Little&apos;s Law provides a useful starting point: the
           number of threads needed equals the request arrival rate multiplied by the average
           service time. If a service receives 100 requests per second with an average latency
@@ -198,7 +205,7 @@ export default function ArticlePage() {
           of 200 milliseconds), you need twenty threads to prevent queuing. Adding a safety
           margin of two to three times the P99 calculation provides headroom for traffic spikes
           and latency degradation.
-        </p>
+        </HighlightBlock>
 
         <p>
           Proportional sizing is another common approach: if the service handles three features
@@ -282,24 +289,27 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The bulkhead pattern introduces a fundamental trade-off between isolation and resource
           efficiency. Without bulkheads, all resources are shared, achieving maximum utilization
           but offering no protection against cascading failures. With bulkheads, resources are
           partitioned, providing strong isolation guarantees but potentially leaving capacity
           idle in underutilized partitions while other partitions are saturated. The right balance
           depends on the cost of failure versus the cost of idle capacity.
-        </p>
+        </HighlightBlock>
 
         <h3>Thread Pool vs Semaphore vs Process-Level Isolation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Thread pool bulkheads provide strong isolation with moderate overhead. Each pool has
           its own queue and scheduling, so a slow operation in one pool cannot affect another
           pool. The memory cost is the primary concern: each thread reserves stack space, and
           hundreds of pools can consume gigabytes of memory. Thread pools are the default choice
           for synchronous, blocking I/O architectures.
-        </p>
+        </HighlightBlock>
 
         <p>
           Semaphore bulkheads provide lightweight isolation with minimal overhead. They do not
@@ -336,8 +346,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Bulkhead Design</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Size bulkheads based on P99 latency, not average latency.</strong> Average
           latency is a misleading metric because it masks tail behavior. A service with an average
           latency of 50 milliseconds and a P99 of 500 milliseconds needs ten times more threads
@@ -345,9 +358,9 @@ export default function ArticlePage() {
           bulkhead can handle tail latency without excessive queuing or rejection during normal
           operation. Monitor P99.9 and P99.99 as well, and size with an additional safety margin
           of two to three times the P99 requirement.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement per-tenant bulkheads for multi-tenant services.</strong> In a shared
           service architecture, a single noisy tenant can consume all available resources and
           degrade service for all other tenants. Per-tenant bulkheads ensure that each tenant
@@ -355,7 +368,7 @@ export default function ArticlePage() {
           affecting others. Size tenant bulkheads based on their tier: enterprise tenants receive
           larger allocations, free-tier tenants receive smaller allocations, and a shared reserve
           pool handles burst traffic across all tenants.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Combine bulkheads with circuit breakers at every dependency boundary.</strong>
@@ -401,8 +414,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Oversized bulkheads that fail to protect.</strong> Setting bulkhead limits too
           high means the bulkhead will never trigger during normal operation, but it also means
           that when a failure does occur, the bulkhead allows enough concurrent calls to exhaust
@@ -411,9 +427,9 @@ export default function ArticlePage() {
           protection. The fix is to size bulkheads based on the downstream system&apos;s actual
           capacity, not the upstream system&apos;s maximum concurrency. The bulkhead limit should
           never exceed the downstream system&apos;s safe concurrency limit.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Undersized bulkheads that reject legitimate traffic.</strong> Setting bulkhead
           limits too low causes unnecessary request rejection during normal load, degrading user
           experience without providing meaningful protection. This commonly happens when bulkheads
@@ -422,7 +438,7 @@ export default function ArticlePage() {
           alerts when utilization exceeds 70% of capacity. If a bulkhead consistently operates
           above 70% utilization, increase its allocation. Use P99 latency with a safety margin
           of two to three times as the sizing baseline.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Shared dependencies that bypass isolation.</strong> Bulkheads isolate resources
@@ -471,9 +487,12 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Netflix: Hystrix Thread Pool Isolation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix pioneered the use of thread pool bulkheads with Hystrix, assigning each
           downstream service call to a dedicated thread pool. When the Netflix streaming service
           calls the recommendation service, the metadata service, the subtitles service, and the
@@ -484,10 +503,10 @@ export default function ArticlePage() {
           rather than catastrophically (the entire playback fails). Netflix later transitioned
           from Hystrix to Resilience4j and Envoy proxy for bulkhead implementation, but the
           fundamental isolation principle remains the same.
-        </p>
+        </HighlightBlock>
 
         <h3>Stripe: Per-API-Endpoint Bulkheads</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe implements bulkhead isolation at the API endpoint level, with separate thread
           pools for different API operations (charge creation, refund processing, customer
           management, webhook delivery). This ensures that a spike in webhook delivery (which
@@ -496,7 +515,7 @@ export default function ArticlePage() {
           bulkheads for its largest enterprise customers, ensuring that a single customer&apos;s
           traffic spike cannot degrade service for other customers. Their bulkhead sizing is
           dynamic, adjusting based on real-time traffic patterns and historical usage data.
-        </p>
+        </HighlightBlock>
 
         <h3>Amazon: Multi-Tenant Service Bulkheads</h3>
         <p>
@@ -515,11 +534,14 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg bg-panel-soft p-6">
-            <p className="font-semibold">Q1: What is the bulkhead pattern, and why is it important in distributed systems?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: What is the bulkhead pattern, and why is it important in distributed systems?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> The bulkhead pattern isolates resources (thread pools,
               connection pools, memory, CPU) into independent partitions, each serving a specific
               tenant, feature, or dependency. When one partition becomes saturated or its backing
@@ -529,7 +551,7 @@ export default function ArticlePage() {
               available resources, causing cascading failures that take down the entire service.
               The bulkhead pattern contains the blast radius of failures, preserving overall
               system availability even when individual components are degraded.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg bg-panel-soft p-6">

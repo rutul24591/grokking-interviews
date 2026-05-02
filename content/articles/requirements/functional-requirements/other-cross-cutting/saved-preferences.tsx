@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function SavedPreferencesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Saved Preferences enable users to save and persist their preferences across sessions and devices. Users can save preferences (save their settings), sync preferences (sync across devices), backup preferences (backup preferences), restore preferences (restore from backup), and manage preferences (view and edit saved preferences). Saved preferences are fundamental to user experience (consistent experience across sessions), user convenience (don&apos;t have to reconfigure), and user satisfaction (preferences are remembered). For platforms with user preferences, effective saved preferences are essential for user experience, convenience, and satisfaction.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, saved preferences architecture involves preference storage (store preferences), preference sync (sync across devices), preference backup (backup preferences), preference restoration (restore preferences), and preference management (manage saved preferences). The implementation must balance persistence (preferences are saved) with privacy (preferences are private) and performance (fast preference access). Poor saved preferences lead to lost preferences, user frustration, and reconfiguration burden.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of saved preferences extends beyond simple save/load. Preference storage (where to store preferences). Preference sync (how to sync across devices). Preference backup (how to backup preferences). Preference restoration (how to restore preferences). Preference management (how to manage saved preferences). For staff engineers, saved preferences are a user preference infrastructure decision affecting user experience, convenience, and satisfaction.
         </p>
@@ -46,13 +50,16 @@ export default function SavedPreferencesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Preference Storage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Local storage stores preferences locally. Device storage (store on device). Browser storage (store in browser). App storage (store in app). Local storage enables local preference persistence. Benefits include fast access (fast preference access), offline access (access without network). Drawbacks includes device limitation (preferences only on device), data loss risk (device failure loses preferences).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cloud storage stores preferences in cloud. Cloud storage (store in cloud). Account storage (store with account). Server storage (store on server). Cloud storage enables cloud preference persistence. Benefits include device independence (access from any device), data protection (protect from device failure). Drawbacks includes network dependency (need network for access), privacy concern (preferences in cloud).
-        </p>
+        </HighlightBlock>
         <p>
           Hybrid storage stores preferences locally and in cloud. Local storage (store locally). Cloud sync (sync to cloud). Hybrid storage enables local and cloud persistence. Benefits include fast access (fast local access), device independence (sync to cloud). Drawbacks includes complexity (manage local and cloud), sync issues (sync conflicts).
         </p>
@@ -104,9 +111,12 @@ export default function SavedPreferencesArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Saved preferences architecture spans preference service, storage service, sync service, and backup service. Preference service manages preferences. Storage service manages preference storage. Sync service manages preference sync. Backup service manages preference backup. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/saved-preferences/preferences-architecture.svg"
@@ -117,9 +127,9 @@ export default function SavedPreferencesArticle() {
         />
 
         <h3>Preference Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Preference service manages user preferences. Preference storage (store preferences). Preference retrieval (retrieve preferences). Preference update (update preferences). Preference service is the core of saved preferences. Benefits include centralization (one place for preferences), consistency (same preferences everywhere). Drawbacks includes complexity (manage preferences), coupling (services depend on preference service).
-        </p>
+        </HighlightBlock>
         <p>
           Preference policies define preference rules. Default preferences (default preferences). Preference validation (validate preferences). Preference sync (sync preferences). Preference policies automate preference management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function SavedPreferencesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Saved preferences design involves trade-offs between local and cloud storage, real-time and batched sync, and automatic and manual backup. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Storage: Local vs. Cloud</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Local storage (store locally). Pros: Fast access (fast preference access), offline access (access without network), privacy (preferences local). Cons: Device limitation (preferences only on device), data loss risk (device failure loses preferences), no sync (no sync across devices). Best for: Fast access, offline access, privacy-focused.
-        </p>
+        </HighlightBlock>
         <p>
           Cloud storage (store in cloud). Pros: Device independence (access from any device), data protection (protect from device failure), sync (sync across devices). Cons: Network dependency (need network for access), privacy concern (preferences in cloud), slower access (slower than local). Best for: Device independence, data protection, sync.
         </p>
@@ -207,13 +220,16 @@ export default function SavedPreferencesArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide preference storage:</strong> Local storage. Cloud storage. Hybrid storage. Let users choose.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enable preference sync:</strong> Real-time sync. Batched sync. Manual sync. Let users choose.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Provide preference backup:</strong> Automatic backup. Manual backup. Incremental backup. Let users choose.
           </li>
@@ -243,13 +259,16 @@ export default function SavedPreferencesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No preference storage:</strong> Preferences not saved. <strong>Solution:</strong> Provide preference storage.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No preference sync:</strong> Preferences not synced. <strong>Solution:</strong> Enable preference sync.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No preference backup:</strong> No preference backup. <strong>Solution:</strong> Provide preference backup.
           </li>
@@ -279,16 +298,19 @@ export default function SavedPreferencesArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Browser Saved Preferences</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Browsers provide saved preferences. Preference storage (store locally and in cloud). Preference sync (sync across devices). Preference backup (backup preferences). Users control browser preferences.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">OS Saved Preferences</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Operating systems provide saved preferences. Preference storage (store locally). Preference sync (sync across devices). Preference backup (backup preferences). Users control OS preferences.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">App Saved Preferences</h3>
         <p>
@@ -308,12 +330,15 @@ export default function SavedPreferencesArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design saved preferences that balance persistence with privacy?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design saved preferences that balance persistence with privacy?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement secure preference storage because users want persistence (preferences available across sessions/devices) but don&apos;t want to compromise privacy (preferences shouldn&apos;t be exposed). Local storage for privacy: store locally (localStorage, IndexedDB, local config files)—preferences never leave device, maximum privacy, works offline. Cloud sync for persistence: sync to cloud (encrypted sync, user-controlled sync, selective sync)—preferences available across devices, survives device loss, requires network. Encryption for security: encrypt preferences (encrypt at rest, encrypt in transit, end-to-end encryption for sensitive preferences)—protects from unauthorized access, data breaches, insider threats. User control for privacy: users control preferences (choose what to sync, what to store locally, what to encrypt)—granular control, privacy-conscious users can keep sensitive preferences local only. The privacy insight: users want persistence but don&apos;t want to compromise privacy—provide local storage (maximum privacy), cloud sync (persistence across devices), encryption (security), user control (granular privacy choices), and let users choose their privacy/persistence balance.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

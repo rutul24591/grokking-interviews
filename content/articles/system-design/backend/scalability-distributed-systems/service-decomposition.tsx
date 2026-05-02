@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -40,7 +41,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Service decomposition</strong> is the process of breaking down
           a monolithic application into a set of independently deployable
           services, each responsible for a specific business capability or
@@ -51,8 +55,8 @@ export default function ArticlePage() {
           failure in one service does not cascade to other services), and team
           autonomy (each service can be developed and operated by a small,
           focused team).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Service decomposition is one of the most challenging architectural
           transformations because it requires making irreversible decisions about
           service boundaries — once a service is extracted from the monolith and
@@ -65,7 +69,7 @@ export default function ArticlePage() {
           distributed system (network latency, partial failures, distributed
           tracing) with none of the benefits (independent deployability,
           independent scaling, fault isolation).
-        </p>
+        </HighlightBlock>
         <p>
           The two primary frameworks for service decomposition are{" "}
           <strong>Domain-Driven Design (DDD)</strong> and the{" "}
@@ -95,8 +99,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Bounded contexts</strong> are the primary tool for identifying
           service boundaries in Domain-Driven Design. A bounded context is a
           logical boundary within which a particular domain model is defined and
@@ -110,9 +117,9 @@ export default function ArticlePage() {
           profile information, and preferences). These are different concepts
           that happen to share a name — they belong to different bounded contexts
           and should be modeled as separate entities with separate databases.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>database-per-service</strong> pattern is the fundamental
           data ownership principle in service decomposition. Each service owns
           its database — no other service can directly access another
@@ -125,7 +132,7 @@ export default function ArticlePage() {
           graph database for a social network service, a time-series database
           for a metrics service), and scale its database independently of other
           services&apos; databases.
-        </p>
+        </HighlightBlock>
 
         <p>
           The <strong>Strangler Fig Pattern</strong> (named after the strangler
@@ -176,6 +183,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/service-decomposition-diagram-1.svg"
@@ -183,7 +193,7 @@ export default function ArticlePage() {
           caption="Strangler Fig Pattern — incrementally replace monolith features with microservices via a facade, with each step independently deployable and reversible"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The strangler fig migration begins with deploying a facade (API
           gateway or reverse proxy) in front of the monolith. The facade
           intercepts all incoming requests and routes them to the monolith
@@ -200,9 +210,9 @@ export default function ArticlePage() {
           management requests to the User service, and the monolith&apos;s user
           management code is deactivated (but not deleted — it is kept as a
           fallback in case the User service needs to be rolled back).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The data migration for each extracted feature follows a parallel-run
           pattern. During the parallel-run phase, both the monolith and the new
           service process the same requests (the facade sends each request to
@@ -213,7 +223,7 @@ export default function ArticlePage() {
           validation confirms that the new service produces correct results, the
           facade routes all traffic to the new service, and the monolith&apos;s
           corresponding feature is deactivated.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/service-decomposition-diagram-2.svg"
@@ -247,8 +257,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Service decomposition must be compared against keeping the monolith.
           The monolith is simpler to develop, test, deploy, and operate — it has
           a single codebase, a single database, a single deployment pipeline,
@@ -258,18 +271,18 @@ export default function ArticlePage() {
           developed by large teams (the codebase becomes too large and complex
           for a single team to manage), and it has a single point of failure (a
           bug in one feature can bring down the entire application).
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Property</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Property</th>
               <th className="p-3 text-left">Monolith</th>
               <th className="p-3 text-left">Decomposed Services</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Development Speed</strong>
               </td>
@@ -279,8 +292,8 @@ export default function ArticlePage() {
               <td className="p-3">
                 Fast for large teams (parallel development)
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Deployment</strong>
               </td>
@@ -290,7 +303,7 @@ export default function ArticlePage() {
               <td className="p-3">
                 Multiple deploys, complex orchestration
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Scaling</strong>
@@ -335,8 +348,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Start with the simplest, least coupled feature when extracting services
           from the monolith. The first extraction sets the pattern for all
           subsequent extractions — if it goes well, the team gains confidence
@@ -351,9 +367,9 @@ export default function ArticlePage() {
           table, address table), minimal dependencies (other features call it,
           but it does not call many other features), and low risk (a failure
           affects user management but not order processing or payments).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use the strangler fig pattern with a facade (API gateway) for
           zero-downtime migration. The facade intercepts all incoming requests
           and routes them to either the monolith or the new service. Initially,
@@ -364,7 +380,7 @@ export default function ArticlePage() {
           facade also provides a migration safety net — during the parallel-run
           phase, the facade sends each request to both the monolith and the new
           service, and the responses are compared to ensure correctness.
-        </p>
+        </HighlightBlock>
 
         <p>
           Enforce the database-per-service pattern strictly. No service can
@@ -409,8 +425,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Extracting services based on technical layers (e.g., a &quot;database
           service&quot;, a &quot;logging service&quot;, a &quot;authentication
           service&quot;) instead of business capabilities is a common mistake.
@@ -423,9 +442,9 @@ export default function ArticlePage() {
           Management&quot;, &quot;Payment Processing&quot;) — each service
           should encapsulate a complete business capability, including its data,
           business logic, and API.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Allowing services to share databases is the most common source of
           coupling in decomposed systems. If two services share a database, they
           are tightly coupled through the schema — a schema change in one service
@@ -436,7 +455,7 @@ export default function ArticlePage() {
           database. If a service needs data that is owned by another service, it
           must request it through the owning service&apos;s API or through an
           event.
-        </p>
+        </HighlightBlock>
 
         <p>
           Extracting too many services too quickly leads to a distributed
@@ -479,8 +498,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-world Use Cases */}
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon used the strangler fig pattern to decompose its monolithic
           e-commerce platform into microservices in the early 2000s. The
           migration began with the &quot;buy&quot; feature (the checkout
@@ -493,9 +515,9 @@ export default function ArticlePage() {
           migration is one of the most famous examples of the strangler fig
           pattern in action, and it enabled Amazon to scale its e-commerce
           platform to handle millions of transactions per day.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           SoundCloud used domain-driven design to decompose its monolithic
           Ruby on Rails application into microservices. The migration began
           with a DDD analysis of the monolith&apos;s domain model, identifying
@@ -506,7 +528,7 @@ export default function ArticlePage() {
           mesh). SoundCloud&apos;s migration enabled its engineering team to
           scale from a single team to dozens of teams, each responsible for
           one or more services.
-        </p>
+        </HighlightBlock>
 
         <p>
           Groupon used the strangler fig pattern to decompose its monolithic
@@ -541,13 +563,16 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: How do you identify the right service boundaries when
           decomposing a monolith? What framework would you use?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The right service boundaries are identified using a combination of{" "}
             <strong>Domain-Driven Design (DDD)</strong> and{" "}
             <strong>business capability analysis</strong>. The DDD approach
@@ -559,8 +584,8 @@ export default function ArticlePage() {
             functions that the organization performs (e.g., user management,
             order processing, payment processing), and each function maps to a
             service.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The practical process is: <strong>Step 1:</strong> Analyze the
             monolith&apos;s domain model — identify the entities, their
             relationships, and the operations that act on them.{" "}
@@ -575,7 +600,7 @@ export default function ArticlePage() {
             team structure — each bounded context should be developable and
             operable by a small, focused team (the &quot;two-pizza team&quot;
             rule — a team that can be fed by two pizzas, typically 5–9 people).
-          </p>
+          </HighlightBlock>
           <p>
             The key heuristic for validating service boundaries is:{" "}
             <em>can this service be deployed, scaled, and operated

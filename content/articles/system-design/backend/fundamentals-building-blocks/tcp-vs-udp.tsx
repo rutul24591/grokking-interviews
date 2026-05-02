@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,12 +25,15 @@ export default function TcpVsUdpArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>TCP (Transmission Control Protocol)</strong> and <strong>UDP (User Datagram Protocol)</strong> are the two primary transport layer protocols that enable communication across IP networks. They sit at Layer 4 of the OSI model, providing the critical bridge between network-layer packet delivery (IP) and application-layer protocols (HTTP, DNS, SMTP, etc.). The choice between TCP and UDP is one of the most fundamental design decisions in system architecture, with profound implications for reliability, latency, throughput, and application complexity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>TCP</strong> provides connection-oriented, reliable, ordered byte-stream delivery with built-in congestion control and flow control. It guarantees that data sent will be received, in order, without errors or duplicates. This reliability comes at a cost: connection establishment overhead (three-way handshake), acknowledgment traffic, retransmission delays on packet loss, and head-of-line blocking when packets arrive out of order.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>UDP</strong> provides connectionless, best-effort datagram delivery with minimal overhead. It sends independent packets without establishing a connection, without acknowledgments, and without retransmissions. UDP makes no guarantees about delivery, ordering, or duplicate prevention. This &quot;fire and forget&quot; approach enables lower latency and higher throughput for applications that can tolerate loss, but shifts the burden of reliability to the application layer.
         </p>
@@ -64,16 +68,19 @@ export default function TcpVsUdpArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">TCP: Connection-Oriented Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           TCP establishes a logical connection between sender and receiver before data transfer begins. This connection maintains state at both endpoints, enabling reliable delivery through several mechanisms:
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">Three-Way Handshake</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Before any data transfer, TCP performs a three-step handshake to synchronize sequence numbers and establish connection parameters:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-2">
           <li><strong>SYN:</strong> Client sends synchronize packet with initial sequence number.</li>
           <li><strong>SYN-ACK:</strong> Server acknowledges and sends its own sequence number.</li>
@@ -178,6 +185,9 @@ export default function TcpVsUdpArticle() {
 
       <section>
         <h2>Detailed Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -253,8 +263,8 @@ export default function TcpVsUdpArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">When to Use TCP</h3>
         <ul className="space-y-2">
-          <li><strong>Data correctness is critical:</strong> File transfers, database replication, financial transactions—every byte must arrive correctly.</li>
-          <li><strong>Request-response patterns:</strong> HTTP APIs, RPC calls—client needs a response for each request.</li>
+          <HighlightBlock as="li" tier="important"><strong>Data correctness is critical:</strong> File transfers, database replication, financial transactions—every byte must arrive correctly.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Request-response patterns:</strong> HTTP APIs, RPC calls—client needs a response for each request.</HighlightBlock>
           <li><strong>Interactive sessions:</strong> SSH, Telnet—user input must be transmitted accurately.</li>
           <li><strong>Large data transfers:</strong> Email attachments, video uploads—throughput matters more than latency.</li>
           <li><strong>Unknown network conditions:</strong> TCP adapts to congestion automatically; UDP requires tuning.</li>
@@ -271,14 +281,17 @@ export default function TcpVsUdpArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Protocol Choice Is About Failure Modes</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             TCP fails by getting slower (retransmissions, congestion backoff). UDP fails by losing data (no retransmission). Choose based on which failure mode your application can tolerate. A file transfer can be slow but not incomplete; a video call can have artifacts but not freeze for 5 seconds.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">TCP Connection Lifecycle</h3>
         <ol className="space-y-3">
@@ -319,7 +332,7 @@ export default function TcpVsUdpArticle() {
         </ol>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Packet Loss Behavior</h3>
-        <p><strong>TCP Response to Loss:</strong></p>
+        <HighlightBlock as="p" tier="important"><strong>TCP Response to Loss:</strong></HighlightBlock>
         <ol className="space-y-2">
           <li>Packet lost in network (no ACK received).</li>
           <li>Sender timeout expires (RTO = RTT + variance, typically 200ms-1s).</li>
@@ -327,7 +340,7 @@ export default function TcpVsUdpArticle() {
           <li>Congestion window halved (congestion avoidance).</li>
           <li>Throughput drops until cwnd recovers.</li>
         </ol>
-        <p><strong>Impact:</strong> A single lost packet can reduce TCP throughput by 50%+ temporarily. On lossy networks (1% loss), TCP may achieve only 10-20% of available bandwidth.</p>
+        <HighlightBlock as="p" tier="important"><strong>Impact:</strong> A single lost packet can reduce TCP throughput by 50%+ temporarily. On lossy networks (1% loss), TCP may achieve only 10-20% of available bandwidth.</HighlightBlock>
 
         <p><strong>UDP Response to Loss:</strong></p>
         <ol className="space-y-2">
@@ -348,14 +361,17 @@ export default function TcpVsUdpArticle() {
 
       <section>
         <h2>Advanced Topics</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Head-of-Line Blocking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           TCP delivers bytes in order. If packet N is lost but packets N+1, N+2, N+3 arrive, the receiver buffers N+1 through N+3 and waits for N&apos;s retransmission. The application cannot see N+1 through N+3 until N arrives—this is <strong>head-of-line (HOL) blocking</strong>.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>HTTP/2 Impact:</strong> HTTP/2 multiplexes multiple requests over a single TCP connection. If one request&apos;s packet is lost, all other requests are blocked waiting for retransmission—even though they have no dependency on the lost packet. This undermines HTTP/2&apos;s multiplexing benefit on lossy networks.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> HTTP/3 over QUIC uses independent streams—loss on one stream doesn&apos;t block others. This is a key advantage of QUIC over TCP.
         </p>
@@ -418,14 +434,17 @@ export default function TcpVsUdpArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">1. Default to TCP for Backend Services</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For most backend services (APIs, databases, message queues), TCP is the correct choice. The reliability guarantees simplify application logic, and the latency overhead is acceptable for non-real-time workloads.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Exceptions:</strong> Use UDP for specific use cases: real-time media (WebRTC), high-frequency trading, custom protocols implementing reliability (like QUIC), or broadcast/multicast scenarios.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">2. Tune TCP Parameters for Your Workload</h3>
         <p>
@@ -508,14 +527,17 @@ export default function TcpVsUdpArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">1. Web Browsing (HTTP/1.1, HTTP/2 over TCP)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Requirements:</strong> Reliable delivery (web pages must load completely), moderate latency tolerance, high throughput for assets.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Protocol Choice:</strong> TCP. HTTP/1.1 and HTTP/2 both run over TCP. Every byte of HTML, CSS, JavaScript, and images must arrive correctly.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Trade-offs:</strong> TCP&apos;s HOL blocking affects HTTP/2 multiplexing. HTTP/3 over QUIC addresses this but requires client/server support.
         </p>
@@ -596,14 +618,17 @@ export default function TcpVsUdpArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Using UDP without understanding the implications:</strong> Teams choose UDP for &quot;performance&quot; without implementing reliability, then discover data loss in production. <strong>Solution:</strong> Only use UDP if you can tolerate loss or are prepared to implement reliability at the application layer.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring TCP timeout defaults:</strong> TCP&apos;s default timeout can be 2+ minutes. Services hang waiting for unresponsive peers. <strong>Solution:</strong> Always set application-level timeouts (5-30 seconds depending on operation).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not tuning TCP for high throughput:</strong> Default TCP settings are conservative. High-throughput services leave bandwidth on the table. <strong>Solution:</strong> Tune initcwnd, buffer sizes, and congestion control algorithm (BBR vs CUBIC) for your workload.
           </li>
@@ -633,13 +658,16 @@ export default function TcpVsUdpArticle() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q1: Explain the TCP three-way handshake. Why is it necessary, and what is the latency cost?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: Explain the TCP three-way handshake. Why is it necessary, and what is the latency cost?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The three-way handshake (SYN → SYN-ACK → ACK) establishes a TCP connection. It synchronizes sequence numbers (so both sides know where the byte stream starts), negotiates options (MSS, window scaling), and ensures both sides are ready to communicate. The latency cost is one round-trip time (RTT)—the client cannot send data until the handshake completes. For a cross-country connection (50ms RTT), this adds 50ms before any data transfer. HTTP/3 over QUIC reduces this with 0-RTT handshakes for returning clients.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

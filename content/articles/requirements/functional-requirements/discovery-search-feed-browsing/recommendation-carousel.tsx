@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,21 +35,24 @@ export default function RecommendationCarouselArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Recommendation Carousel</strong> is a horizontal scrolling UI component
           that displays personalized content recommendations, enabling users to discover
           related or suggested content without leaving the current page. Carousels are
           ubiquitous in modern platforms—Netflix's "Because You Watched" rows, YouTube's
           video recommendations, Amazon's "Customers Also Bought", Spotify's "Made For
           You" playlists. They drive 20-35% of total engagement on content platforms.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The carousel format is uniquely suited for recommendations: it shows multiple
           options at once (unlike single suggestions), doesn't interrupt the main content
           (unlike popups), and encourages exploration through horizontal scrolling. The
           challenge is balancing discoverability with performance—carousels must load
           quickly, scroll smoothly, and show relevant content or users ignore them.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, recommendation carousels involve component architecture
           (horizontal scroll, virtualization), data fetching (prefetching, lazy loading),
@@ -60,10 +64,13 @@ export default function RecommendationCarouselArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Carousel Types</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Different carousel patterns for different use cases:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Related Content:</strong> Items related to current content. "More like
@@ -88,9 +95,9 @@ export default function RecommendationCarouselArticle() {
         </ul>
 
         <h3 className="mt-6">Navigation Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           How users navigate carousels:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Horizontal Scroll:</strong> Swipe on mobile, trackpad scroll on
@@ -184,9 +191,12 @@ export default function RecommendationCarouselArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production recommendation carousel involves efficient rendering and data fetching.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery-search-feed-browsing/recommendation-carousel/carousel-architecture.svg"
@@ -198,14 +208,14 @@ export default function RecommendationCarouselArticle() {
 
         <h3>Component Structure</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Carousel Container:</strong> Main wrapper. Manages carousel state
             (loading, error, items). Handles horizontal scroll.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Carousel Header:</strong> Title, reason label, "See All" link.
             Optional navigation arrows.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scroll Container:</strong> Horizontal scrollable area. CSS overflow-x:
             auto. Hide scrollbar for clean look.
@@ -315,9 +325,12 @@ export default function RecommendationCarouselArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Carousel design involves balancing usability, performance, and content density.
-        </p>
+        </HighlightBlock>
 
         <h3>Loading Strategy Comparison</h3>
         <div className="overflow-x-auto">
@@ -362,10 +375,10 @@ export default function RecommendationCarouselArticle() {
         />
 
         <h3 className="mt-6">Arrow Buttons vs Scroll Only</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Arrows Only:</strong> Clear affordance (users know it scrolls). Precise
           control. Risk: Takes space, not mobile-friendly.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Scroll Only:</strong> Clean, mobile-native. Risk: Less discoverable on
           desktop (some users don't know to scroll).
@@ -392,15 +405,18 @@ export default function RecommendationCarouselArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Show Partial Next Item:</strong> Always show part of next item to
             indicate scrollability. Critical for discoverability.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Smooth Scrolling:</strong> Use CSS scroll-behavior: smooth. Or JS
             animation for custom control.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Hide Arrows at Ends:</strong> Hide left arrow at start, right arrow
             at end. Indicates boundaries.
@@ -430,15 +446,18 @@ export default function RecommendationCarouselArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No Scroll Indication:</strong> Users don't know carousel scrolls.
             Solution: Show partial next item, add arrows.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Janky Scroll:</strong> Choppy scrolling experience. Solution: Use
             CSS transforms, GPU acceleration.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Layout Shift:</strong> Carousel jumps when images load. Solution:
             Reserve space, use aspect-ratio CSS.
@@ -460,17 +479,20 @@ export default function RecommendationCarouselArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Netflix Recommendation Rows</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix uses multiple carousels ("Because You Watched", "Trending Now", "New
           Releases"). Each row is a separate carousel with 10-15 titles. Hover preview
           plays trailer. Reason labels for personalized rows.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Artwork personalization—different thumbnails
           for same title based on predicted appeal.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">YouTube Video Recommendations</h3>
         <p>
@@ -505,16 +527,19 @@ export default function RecommendationCarouselArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you optimize carousel performance?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you optimize carousel performance?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use CSS transforms (translateX) for smooth scrolling.
               Lazy load images with Intersection Observer. Virtual scroll for long
               carousels (render only visible + buffer). Prefetch next carousel while
               viewing current. Debounce scroll/arrow events. Use skeleton loaders to
               prevent layout shift. Target 60fps scroll performance.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

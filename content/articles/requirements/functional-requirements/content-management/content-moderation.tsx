@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ContentModerationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content Moderation ensures user-generated content complies with platform policies through automated detection and human review. Moderation protects users from harmful content (hate speech, harassment, misinformation, illegal content) while balancing free expression, scale, and operational costs. For platforms with user-generated content (social media, marketplaces, forums, dating apps), effective moderation is essential for user safety, brand reputation, and legal compliance. Without moderation, platforms become toxic environments driving away legitimate users, attracting regulatory scrutiny, and enabling illegal activity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, content moderation architecture involves moderation approaches (pre-moderation, post-moderation, reactive), automated detection (ML classification, rule-based filtering, image/video analysis), human review workflows (moderator queues, escalation, quality assurance), policy enforcement (content removal, user suspension, appeals), and safety patterns (moderator wellbeing, bias mitigation, transparency). The implementation must balance competing priorities: safety versus free expression, automation versus human judgment, speed versus accuracy, scale versus cost. Poor moderation leads to harmful content proliferating, moderator burnout, biased enforcement, and user trust erosion.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of content moderation extends beyond simple content removal. Automated detection must handle nuanced content (sarcasm, context-dependent violations, evolving slang). Human review requires trained moderators with subject matter expertise, mental health support (viewing harmful content is traumatic), and quality assurance. Policy enforcement must be consistent (same rules for all users) yet contextual (intent, severity, user history matter). Appeals processes enable users to contest moderation decisions. Transparency reporting builds trust (publishing moderation statistics). For staff engineers, moderation is a socio-technical challenge requiring technical systems, human processes, and policy governance working together.
         </p>
@@ -46,13 +50,16 @@ export default function ContentModerationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Moderation Approaches</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pre-moderation reviews content before publication. Content enters moderation queue upon submission. Human reviewers or automated systems approve before content goes live. Benefits include no harmful content published (safe environment), regulatory compliance (required for some industries). Drawbacks include publication delays (content not instant), scalability challenges (requires reviewers for all content), user frustration (waiting for approval). Pre-moderation works for high-risk content (children&apos;s platforms, regulated industries, sensitive topics) where safety outweighs immediacy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Post-moderation publishes content immediately, reviews after publication. Content goes live upon submission. Automated systems flag potential violations for review. Human reviewers assess flagged content. Benefits include instant publication (good user experience), scalable (only review flagged content). Drawbacks include harmful content visible briefly (until reviewed), user exposure risk. Post-moderation works for most user-generated content platforms balancing safety with user experience.
-        </p>
+        </HighlightBlock>
         <p>
           Reactive moderation reviews content when reported by users. Report button enables users to flag problematic content. Reported content enters review queue. Benefits include community participation (users help moderate), scalable (community identifies issues). Drawbacks include harmful content visible until reported (may be never for low-visibility content), report abuse (users weaponize reporting). Reactive moderation works best combined with automated detection and proactive review for high-visibility content.
         </p>
@@ -113,9 +120,12 @@ export default function ContentModerationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content moderation architecture spans automated detection, human review system, policy enforcement, and appeal management. Automated detection screens content at scale. Human review handles nuanced cases. Policy enforcement applies consequences. Appeal management provides due process. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/moderation-flow.svg"
@@ -126,9 +136,9 @@ export default function ContentModerationArticle() {
         />
 
         <h3>Automated Detection System</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Automated detection screens content at submission. Content analysis (text, image, video, audio). ML inference (classify content against policies). Rule evaluation (check against explicit rules). Hash matching (check against known prohibited content). Confidence scoring (rate prediction confidence). Auto-action (high-confidence violations removed immediately). Queue for review (low-confidence flagged for human review). Automated detection handles high volume, reserving human review for nuanced cases.
-        </p>
+        </HighlightBlock>
         <p>
           Detection models require ongoing maintenance. Training data (historical moderation decisions). Model evaluation (precision, recall, false positive rate). Regular retraining (incorporate new data, adapt to evolving violations). A/B testing (test model changes before deployment). Model maintenance ensures detection accuracy over time.
         </p>
@@ -168,14 +178,17 @@ export default function ContentModerationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content moderation design involves trade-offs between safety and free expression, automation and human judgment, and proactive and reactive approaches. Understanding these trade-offs enables informed decisions aligned with platform values and user expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Moderation Timing: Pre vs. Post</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pre-moderation (review before publishing). Pros: No harmful content published (safe environment), regulatory compliance (meets legal requirements), user trust (platform known for safety). Cons: Publication delays (content not instant), scalability challenges (requires reviewers for all content), user frustration (waiting for approval). Best for: Children&apos;s platforms, regulated industries, high-risk content.
-        </p>
+        </HighlightBlock>
         <p>
           Post-moderation (review after publishing). Pros: Instant publication (good user experience), scalable (only review flagged content), lower operational costs. Cons: Harmful content visible briefly (until reviewed), user exposure risk, potential viral spread before removal. Best for: Most user-generated content platforms, balancing safety with immediacy.
         </p>
@@ -216,13 +229,16 @@ export default function ContentModerationArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use hybrid moderation approach:</strong> Automated detection for scale. Human review for nuance. Pre-moderation for high-risk. Post-moderation for standard.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Invest in detection accuracy:</strong> Train models on quality data. Regular evaluation (precision, recall). Ongoing retraining. A/B testing for improvements.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Build effective review tools:</strong> Full content context. User history. Policy reference. Efficient decision interface. Notes for rationale.
           </li>
@@ -252,13 +268,16 @@ export default function ContentModerationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-reliance on automation:</strong> ML makes mistakes, lacks nuance. <strong>Solution:</strong> Human review for borderline cases, regular model evaluation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No moderator support:</strong> Burnout, PTSD from viewing harmful content. <strong>Solution:</strong> Mental health support, limited exposure, counseling, regular breaks.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Inconsistent enforcement:</strong> Different moderators decide differently. <strong>Solution:</strong> QA sampling, calibration sessions, clear policies, ongoing training.
           </li>
@@ -288,16 +307,19 @@ export default function ContentModerationArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Social Media Platform Moderation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social platform uses hybrid moderation. Automated detection (ML for hate speech, harassment, spam; hash matching for CSAM). Post-moderation for most content. Pre-moderation for new accounts (first 5 posts). User reporting (report button on all content). Human review queue (flagged content reviewed by moderators). Escalation (threats → safety team, legal issues → legal team). Strike system (3 strikes = 30-day suspension, 5 strikes = permanent ban). Appeals (user can appeal within 30 days). Transparency reports (quarterly moderation statistics).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Marketplace Content Moderation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Marketplace moderates listings and user communications. Automated detection (prohibited items, counterfeit detection, spam). Pre-moderation for new sellers (first 10 listings). Post-moderation for established sellers. User reporting (report listing, report user). Human review (flagged listings reviewed). Policy enforcement (remove listing, warn seller, suspend repeat violators). Appeals (seller can appeal listing removal). Specialized reviewers (category experts for nuanced cases like collectibles).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Dating App Moderation</h3>
         <p>
@@ -317,12 +339,15 @@ export default function ContentModerationArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you balance automated detection with human review?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you balance automated detection with human review?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement hybrid approach with confidence-based routing. High-confidence violations (CSAM, spam, known violations) auto-removed. Low-confidence flagged for human review. Borderline cases always human-reviewed. ML handles scale (90%+ of content), humans handle nuance (borderline 10%). Regular model evaluation ensures accuracy. The key insight: automation and humans complement each other—automation scales, humans provide judgment. Design system leveraging both strengths.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

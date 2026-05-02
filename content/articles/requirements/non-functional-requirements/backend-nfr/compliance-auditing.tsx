@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function ComplianceAuditingArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Compliance</strong> refers to adherence to regulatory requirements, industry standards,
           and organizational policies that govern how data is collected, stored, processed, and shared.
           <strong>Auditing</strong> is the systematic examination of systems, processes, and records to
           verify compliance and detect deviations. Together, compliance and auditing ensure that the
           system operates within legal and ethical boundaries, protects user data, and provides
           accountability for all actions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compliance requirements vary by industry, geography, and data type. GDPR governs personal data
           of EU residents, HIPAA governs protected health information in the US, PCI-DSS governs payment
           card data globally, and SOC 2 governs security and availability of cloud services. Each framework
           imposes specific technical requirements — data encryption, access controls, audit logging, data
           retention, breach notification, and user rights (access, rectification, erasure).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, compliance architecture demonstrates understanding
           of regulatory requirements, the ability to design systems that satisfy multiple frameworks
@@ -70,13 +74,16 @@ export default function ComplianceAuditingArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding compliance and auditing requires grasping several foundational concepts about
           regulatory frameworks, audit logging, data governance, and automated compliance checking.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Regulatory Frameworks</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           GDPR (General Data Protection Regulation) governs personal data of EU residents, requiring
           consent management, data minimization, right to erasure, data portability, breach notification
           within 72 hours, and data protection impact assessments. HIPAA (Health Insurance Portability
@@ -86,7 +93,7 @@ export default function ComplianceAuditingArticle() {
           network security, encryption, access control, monitoring, and regular testing. SOC 2 (Service
           Organization Control 2) governs security and availability of cloud services, requiring controls
           over security, availability, processing integrity, confidentiality, and privacy.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Audit Logging</h3>
         <p>
@@ -113,11 +120,14 @@ export default function ComplianceAuditingArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compliance architecture spans data classification, access control, audit logging, automated
           compliance checking, and audit reporting. Each component must be designed to satisfy multiple
           regulatory frameworks simultaneously.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/compliance-framework.svg"
@@ -126,14 +136,14 @@ export default function ComplianceAuditingArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Audit Log Pipeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The audit log pipeline captures events from all system components — application services,
           databases, infrastructure, and third-party integrations. Events are structured (JSON with
           consistent schema), enriched with contextual metadata (user identity, session ID, request ID),
           and written to an append-only audit log store. The audit log store is separate from the
           operational logging system — audit logs have stricter access controls, longer retention, and
           tamper-evident integrity verification.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Automated Compliance Checking</h3>
         <p>
@@ -156,30 +166,33 @@ export default function ComplianceAuditingArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Framework</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Framework</th>
               <th className="p-3 text-left">Scope</th>
               <th className="p-3 text-left">Key Requirements</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>GDPR</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>GDPR</strong></td>
               <td className="p-3">EU personal data</td>
               <td className="p-3">Consent, erasure, portability, breach notification (72h), DPO appointment</td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>HIPAA</strong></td>
               <td className="p-3">US health data</td>
               <td className="p-3">Access controls, audit controls, encryption, breach notification (60 days)</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>PCI-DSS</strong></td>
               <td className="p-3">Payment card data</td>
               <td className="p-3">Network security, encryption, access control, quarterly scanning, annual audit</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>SOC 2</strong></td>
               <td className="p-3">Cloud services</td>
@@ -192,26 +205,29 @@ export default function ComplianceAuditingArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Design for Multiple Frameworks Simultaneously</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Rather than implementing separate compliance mechanisms for each framework, design a unified
           compliance architecture that satisfies the strictest requirements of all applicable frameworks.
           Encryption at rest satisfies GDPR, HIPAA, and PCI-DSS simultaneously. Access logging satisfies
           HIPAA, SOC 2, and PCI-DSS simultaneously. Data retention policies satisfy GDPR (erasure),
           HIPAA (6-year retention), and SOC 2 (availability) simultaneously when designed with tiered
           retention (hot, warm, cold, deletion).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Implement Tamper-Evident Audit Logs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Audit logs must be tamper-evident — any modification, deletion, or insertion is detectable.
           Implement hash chains where each log entry includes a hash of the previous entry — modifying
           any entry breaks the chain. Alternatively, use append-only storage (WORM — write once, read
           many) that physically prevents modification after writing. Store audit logs in a separate
           system with stricter access controls than the operational system — even administrators should
           not be able to modify audit logs without detection.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Automate Data Subject Rights</h3>
         <p>
@@ -237,26 +253,29 @@ export default function ComplianceAuditingArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Retroactive Compliance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Building compliance into the architecture after the system is deployed is exponentially more
           expensive than designing for compliance from the start. Retrofitting encryption requires
           re-architecting data storage, retrofitting audit logging requires modifying every service to
           emit audit events, retrofitting data erasure requires tracing personal data through every
           downstream system. Design for compliance from day one — the incremental cost of compliance
           features during initial development is a fraction of the retrofit cost.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Incomplete Audit Coverage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Audit logs that cover only application-level events (user logins, data modifications) miss
           critical infrastructure events (database access, configuration changes, certificate rotations)
           and third-party events (API calls to external services, data sharing with partners). Auditors
           require end-to-end audit coverage — every action that affects regulated data must be logged,
           regardless of where it occurs. Implement audit logging at every layer: application, database,
           infrastructure, and network.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Ignoring Backup Compliance</h3>
         <p>
@@ -284,9 +303,12 @@ export default function ComplianceAuditingArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Stripe — PCI-DSS Compliance at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe processes billions of payment transactions annually and maintains PCI-DSS Level 1
           compliance (the highest level). Stripe&apos;s compliance architecture isolates payment card data
           in a dedicated, audited environment with strict access controls, encryption at rest and in
@@ -295,10 +317,10 @@ export default function ComplianceAuditingArticle() {
           Stripe&apos;s compliance automation continuously monitors for policy violations and automatically
           remediates common issues (expired certificates, misconfigured security groups, overly permissive
           IAM policies).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Epic Systems — HIPAA Compliance for Healthcare</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Epic Systems provides electronic health records (EHR) software used by hospitals across the US
           and must comply with HIPAA. Epic&apos;s compliance architecture implements role-based access control
           (only authorized healthcare providers can access patient records), comprehensive audit logging
@@ -306,7 +328,7 @@ export default function ComplianceAuditingArticle() {
           (emergency access with post-hoc review), and automatic session timeout. Epic&apos;s audit logs
           are reviewed continuously for unauthorized access patterns, and any suspicious access triggers
           an automated investigation workflow.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Salesforce — SOC 2 Compliance for Cloud Services</h3>
         <p>
@@ -336,19 +358,22 @@ export default function ComplianceAuditingArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compliance and auditing systems are themselves security-critical — they contain sensitive operational data and must be protected from tampering.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Audit Log Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Log Tampering:</strong> Attackers with administrative access may attempt to delete or modify audit logs to cover their tracks. Mitigation: use append-only storage (WORM), implement hash chains for tamper detection, stream logs to a separate security account with restricted access, use cryptographic log signing.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Log Flooding:</strong> Attackers generate massive volumes of audit events to overwhelm log storage and obscure their actual activity. Mitigation: implement per-user event rate limits, filter duplicate events, use anomaly detection to identify log flooding patterns, store summary statistics separately from detailed logs.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Log Exfiltration:</strong> Audit logs contain sensitive operational data (user identities, access patterns, system internals) that attackers may attempt to steal. Mitigation: encrypt audit logs at rest and in transit, restrict log access to security and compliance teams, audit log access patterns for unauthorized queries.
             </li>
@@ -371,19 +396,22 @@ export default function ComplianceAuditingArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compliance controls must be validated through systematic testing — audit log completeness, tamper evidence, data erasure completeness, and policy compliance must all be verified.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Compliance Control Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Audit Log Completeness:</strong> Perform representative actions (login, read data, modify data, delete data, export data) and verify that each action generates an audit log entry with all required fields (actor, action, resource, timestamp, outcome, source IP). Test with different user roles and service accounts.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Tamper Evidence:</strong> Attempt to modify, delete, or insert audit log entries and verify that the tampering is detected (hash chain breaks, append-only storage rejects modification, log signing verification fails). Test with both application-level and database-level tampering attempts.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Data Erasure Completeness:</strong> Create a synthetic user with personal data across all systems (databases, caches, backups, logs, third-party integrations), execute an erasure request, and verify that all personal data is deleted or anonymized. Test with different data types (structured, unstructured, backup, log).
             </li>

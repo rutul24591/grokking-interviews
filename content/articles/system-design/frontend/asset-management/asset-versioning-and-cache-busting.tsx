@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -42,23 +43,23 @@ export default function AssetVersioningAndCacheBustingArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Asset versioning</strong> is the practice of assigning a unique
           identifier to each version of a static asset (JavaScript bundles, CSS
           files, images, fonts) so that browsers and CDNs can distinguish between
           different versions of the same logical file. <strong>Cache busting</strong>{" "}
           is the complementary technique of forcing clients to fetch a fresh copy
           of an asset when its content changes, bypassing cached versions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Together, these techniques solve a fundamental tension in web
           performance: we want browsers to cache assets aggressively for speed,
           but we also need users to receive updated code immediately after
           deployments. Without proper versioning, users may run stale JavaScript
           against new API contracts, leading to runtime errors, broken
           functionality, or security vulnerabilities.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Why this matters at the staff/principal level:</strong> Asset
           versioning decisions cascade through your entire deployment
           architecture. They affect CDN configuration, CI/CD pipelines, service
@@ -69,7 +70,7 @@ export default function AssetVersioningAndCacheBustingArticle() {
           technical leader, you must design systems where every deploy
           deterministically invalidates exactly the assets that changed and
           nothing more.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">
@@ -92,27 +93,27 @@ export default function AssetVersioningAndCacheBustingArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Content Hash (Fingerprint):</strong> A cryptographic digest
             (MD5, SHA-256) computed from the file&apos;s content. If even one byte
             changes, the hash changes entirely. This is the gold standard for
             cache busting because it is deterministic, content-aware, and
             collision-resistant.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Query String Versioning:</strong> Appending a version
             parameter to the URL (e.g., <code>app.js?v=1.2.3</code>). While
             simple to implement, many CDNs and proxies strip or ignore query
             strings, making this approach unreliable in production.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>ETag (Entity Tag):</strong> An HTTP response header
             containing a hash or version identifier. The browser sends{" "}
             <code>If-None-Match</code> on subsequent requests, and the server
             responds with <code>304 Not Modified</code> if unchanged. This still
             requires a round-trip for validation, unlike content-hashed filenames
             which bypass the network entirely on cache hits.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cache-Control Directives:</strong> HTTP headers that dictate
             caching behavior. The key directives for asset versioning are{" "}
@@ -146,39 +147,39 @@ export default function AssetVersioningAndCacheBustingArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The content-hash versioning pipeline transforms source files into
           uniquely named output files that can be cached indefinitely. The build
           tool computes a hash from each file&apos;s content and embeds it in the
           filename, generating a manifest that maps original names to hashed
           names.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/asset-versioning-and-cache-busting-diagram-1.svg"
           alt="Content-hash based versioning pipeline showing source files flowing through a build tool to produce hashed output files and a manifest for deployment"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Not all cache busting strategies are equal. The choice between query
           string versioning, filename hashing, and ETag-based revalidation has
           significant implications for cache hit rates, CDN compatibility, and
           deployment complexity.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/asset-versioning-and-cache-busting-diagram-2.svg"
           alt="Cache busting strategies comparison showing query string, filename hash, and ETag approaches with their respective pros and cons"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Modern build tools like Webpack and Vite handle fingerprinting
           differently. Webpack uses <code>[contenthash]</code> placeholders in
           its output configuration, computing MD4 hashes at chunk emission time.
           Vite delegates to Rollup for production builds, using SHA-256 hashes by
           default. Both generate entry-point HTML with injected references to the
           hashed assets.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/asset-versioning-and-cache-busting-diagram-3.svg"
@@ -239,10 +240,13 @@ export default function AssetVersioningAndCacheBustingArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="min-w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-theme">
+              <HighlightBlock as="tr" tier="important">
                 <th className="px-4 py-2 text-left font-semibold text-theme">
                   Dimension
                 </th>
@@ -255,21 +259,21 @@ export default function AssetVersioningAndCacheBustingArticle() {
                 <th className="px-4 py-2 text-left font-semibold text-theme">
                   ETag
                 </th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody>
-              <tr className="border-b border-theme/30">
+              <HighlightBlock as="tr" tier="important">
                 <td className="px-4 py-2 font-medium">CDN Compatibility</td>
                 <td className="px-4 py-2">Low (some ignore query params)</td>
                 <td className="px-4 py-2">High (universally supported)</td>
                 <td className="px-4 py-2">Medium (server-dependent)</td>
-              </tr>
-              <tr className="border-b border-theme/30">
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="px-4 py-2 font-medium">Cache Precision</td>
                 <td className="px-4 py-2">Coarse (manual version bump)</td>
                 <td className="px-4 py-2">Exact (per-file content)</td>
                 <td className="px-4 py-2">Exact (per-file content)</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme/30">
                 <td className="px-4 py-2 font-medium">Network Overhead</td>
                 <td className="px-4 py-2">Full request if version changes</td>
@@ -309,28 +313,28 @@ export default function AssetVersioningAndCacheBustingArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>1. Use content hashes in filenames, not query strings.</strong>{" "}
             Content-hashed filenames (<code>[contenthash]</code> in Webpack,
             default in Vite) are the industry standard. They work with every CDN,
             proxy, and caching layer. Query string versioning is unreliable and
             should only be used as a fallback for legacy systems that cannot
             modify filenames.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>2. Set immutable caching on hashed assets.</strong> Use{" "}
             <code>Cache-Control: public, max-age=31536000, immutable</code> for
             all content-hashed assets. The <code>immutable</code> directive
             prevents browsers from revalidating even on hard refresh, saving
             unnecessary conditional requests.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>3. Always revalidate the HTML entry point.</strong> The HTML
             file is the root of your dependency tree. It must use{" "}
             <code>Cache-Control: no-cache</code> so browsers always check for a
             new version. The HTML itself is small (typically under 10 KB), so the
             revalidation cost is negligible.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>4. Deploy assets before switching the entry point.</strong>{" "}
             In an atomic deploy, upload all new hashed assets to the CDN first,
@@ -372,26 +376,26 @@ export default function AssetVersioningAndCacheBustingArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Hash instability from non-deterministic module IDs:</strong>{" "}
             Webpack&apos;s default numeric module IDs change when modules are
             added or removed, causing unrelated chunk hashes to change. This
             destroys cache efficiency. Always use{" "}
             <code>moduleIds: &apos;deterministic&apos;</code>.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Caching HTML with long max-age:</strong> If the HTML entry
             point is cached aggressively, users will continue loading old asset
             references even after a deploy. HTML must always revalidate. This is
             the single most common caching mistake.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>CDN cache poisoning from shared query-string keys:</strong>{" "}
             If multiple versions use the same query parameter name (e.g.,{" "}
             <code>?v=latest</code>), CDN edge nodes may serve stale cached
             responses for the same URL. Content hashing eliminates this by
             guaranteeing unique URLs per content version.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Partial deploys causing asset 404s:</strong> Deploying new
             HTML before all hashed assets are available results in users
@@ -435,23 +439,23 @@ export default function AssetVersioningAndCacheBustingArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Netflix:</strong> Netflix uses content-hashed asset bundles
             with immutable caching across their global CDN (Open Connect). Their
             deploy pipeline uploads new assets to all edge nodes before switching
             the HTML manifest, ensuring zero-downtime deployments. They separate
             vendor chunks (React, RxJS) from application code so that library
             updates (rare) don&apos;t invalidate frequently-changing UI code.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Google:</strong> Google&apos;s Closure Compiler generates
             content-hashed module names and uses a module server that resolves
             logical module IDs to hashed URLs. Their approach predates modern
             bundlers and demonstrates the same principle: immutable URLs for
             content-addressed assets, with a thin resolution layer that always
             serves fresh mappings.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Vercel / Next.js:</strong> Next.js automatically generates
             content-hashed filenames for all static assets in the{" "}
             <code>/_next/static/</code> directory. The build output includes a
@@ -460,7 +464,7 @@ export default function AssetVersioningAndCacheBustingArticle() {
             <code>immutable</code> caching and handles atomic deploys via their
             immutable deployment architecture where each deploy is a new,
             isolated snapshot.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Shopify:</strong> Shopify serves thousands of merchant
             storefronts, each with custom themes. They use content-hashed asset
@@ -485,27 +489,27 @@ export default function AssetVersioningAndCacheBustingArticle() {
       {/* Section 8: CDN Cache Invalidation Patterns */}
       <section>
         <h2>CDN Cache Invalidation Patterns</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Content hashing largely eliminates the need for explicit CDN cache
           invalidation for assets, because changed content produces new URLs.
           However, there are scenarios where invalidation is still necessary:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>HTML entry points:</strong> Since HTML files don&apos;t use
             content hashing, you may need to purge the CDN cache for{" "}
             <code>/index.html</code> after each deploy. Alternatively, set{" "}
             <code>s-maxage=60</code> (CDN-specific max-age) with{" "}
             <code>stale-while-revalidate=30</code> so the CDN serves stale HTML
             briefly while fetching the new version in the background.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Surrogate key purging:</strong> CDNs like Fastly and
             Cloudflare support tagging cached responses with surrogate keys. You
             can tag all assets from a specific deploy with a deploy ID, then
             purge by surrogate key during rollback. This is faster and more
             precise than purging by URL pattern.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Soft purging:</strong> Instead of hard-purging (immediate
             removal), soft purging marks content as stale. The CDN continues
@@ -519,12 +523,15 @@ export default function AssetVersioningAndCacheBustingArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel p-4">
-            <p className="font-semibold text-theme">
+            <HighlightBlock as="p" tier="important">
               Q: Why is query string versioning unreliable for cache busting?
-            </p>
-            <p className="mt-2 text-sm text-muted">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               Several CDNs and reverse proxies (including some default Squid and
               Varnish configurations) strip query strings when computing cache
               keys, meaning <code>app.js?v=1</code> and <code>app.js?v=2</code>{" "}
@@ -534,14 +541,14 @@ export default function AssetVersioningAndCacheBustingArticle() {
               always part of the cache key. Furthermore, query string versioning
               is typically manual (tied to semver, not content), so unchanged
               files get unnecessarily busted on version bumps.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel p-4">
-            <p className="font-semibold text-theme">
+            <HighlightBlock as="p" tier="important">
               Q: How do you handle a deployment rollback with content-hashed
               assets?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               Content-hashed assets make rollbacks trivial. Since each deploy
               produces uniquely named files, the previous deploy&apos;s assets

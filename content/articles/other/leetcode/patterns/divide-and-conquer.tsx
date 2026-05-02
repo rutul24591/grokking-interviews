@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,7 +24,10 @@ export default function DivideAndConquerArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">Definition & Context</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Divide and conquer is the structural pattern that takes a problem of size <em>n</em>,
         breaks it into <em>a</em> subproblems each of size roughly <em>n/b</em>, solves each
         subproblem recursively, and combines the answers into a solution for the whole. The
@@ -33,8 +37,8 @@ export default function DivideAndConquerArticle() {
         predate or accompany the early days of complexity analysis — but its modern shape was
         codified in the 1970s when the master theorem gave a clean way to read off the running
         time from the recurrence.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         For coding interviews, divide and conquer shows up in two flavours. The first is the
         family of textbook algorithms — merge sort, quicksort partition, binary search,
         quickselect — where the candidate is expected to recognise the standard recurrence and
@@ -44,7 +48,7 @@ export default function DivideAndConquerArticle() {
         and the solution emerges by recursing on each split and combining results. The second
         flavour is where strong candidates separate from average ones, because there is no
         canned algorithm to recall; the candidate has to invent the recurrence on the spot.
-      </p>
+      </HighlightBlock>
       <p>
         Recognition signals are crisp. The input has a midpoint or a clean split point. The
         problem is independent across that split — solving the left half does not depend on the
@@ -55,7 +59,10 @@ export default function DivideAndConquerArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Core Concepts</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         The pattern has three named steps. <em>Divide</em> partitions the input. The partition
         can be balanced (halve the array) or unbalanced (pivot in quicksort, where the partition
         depends on data). <em>Conquer</em> solves each subproblem recursively, with a base case
@@ -65,8 +72,8 @@ export default function DivideAndConquerArticle() {
         algorithmic content lives: a trivial combine (returning the larger of two answers) gives
         you a logarithmic algorithm; a linear combine gives you n log n; a sublinear combine
         with smart bookkeeping gives you sub-n log n.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         The master theorem formalises the running-time analysis. For a recurrence{" "}
         <em>T(n) = a · T(n/b) + f(n)</em> where <em>a ≥ 1</em>, <em>b &gt; 1</em>, and{" "}
         <em>f(n)</em> is the combine cost, three cases govern the answer. When the combine cost
@@ -76,7 +83,7 @@ export default function DivideAndConquerArticle() {
         <em>Θ(n^log_b a · log n)</em>. When the combine cost dominates the leaves and a
         regularity condition holds, the running time is <em>Θ(f(n))</em> — the root work
         dominates the total.
-      </p>
+      </HighlightBlock>
       <p>
         Memorise the three canonical instantiations and you cover most of what interviewers
         probe. Merge sort: <em>T(n) = 2T(n/2) + O(n) = O(n log n)</em>, case 2. Binary search:{" "}
@@ -94,18 +101,21 @@ export default function DivideAndConquerArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Architecture & Flow</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         The skeleton, in prose, runs as follows. A function takes a range descriptor (indices,
         bounds, or a list reference). If the range is small enough — typically zero or one
         element — return the trivial answer. Otherwise pick a split point, recurse on the
         left side, recurse on the right side, and combine the two returns into a single answer.
         The combine logic depends entirely on the problem; everything else is boilerplate.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Variant one is balanced recursion. Merge sort, binary search, and the FFT all halve the
         input at every level, giving recursion depth log₂ n. Balanced recursion has predictable
         stack usage and clean master-theorem analysis.
-      </p>
+      </HighlightBlock>
       <p>
         Variant two is data-dependent recursion. Quicksort and quickselect partition by a pivot
         whose position depends on the data; in the worst case the partition is wildly
@@ -132,21 +142,24 @@ export default function DivideAndConquerArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Trade-offs & Comparisons</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Divide and conquer versus dynamic programming. Both involve recursion. The
         differentiator is whether subproblems overlap. If you can draw the recursion tree and
         every node is unique, divide and conquer suffices. If two distinct nodes solve the same
         subproblem, you have overlap and you want memoisation — that is dynamic programming.
         Mistaking overlap for independence yields exponential time on what should be polynomial.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Divide and conquer versus iteration. For some problems, an iterative algorithm matches
         the divide-and-conquer recurrence with smaller constants and no stack overhead. Kadane&apos;s
         maximum subarray runs in O(n), beating the elegant O(n log n) divide-and-conquer
         version. The iterative versions are usually preferred in production for problems where
         both apply; divide-and-conquer is preferred when the recursive structure illuminates
         correctness or when iterative formulation is genuinely awkward.
-      </p>
+      </HighlightBlock>
       <p>
         Divide and conquer versus greedy. Greedy makes a local choice at each step and never
         backtracks; divide and conquer explores both branches of a split and combines. Greedy
@@ -163,18 +176,21 @@ export default function DivideAndConquerArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Best Practices</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Define the recursive function&apos;s contract precisely before writing it. Inputs:
         usually a range or list. Output: the answer for that range. Side effects: typically
         none. State this contract aloud at the start of the implementation; it prevents the
         most common error, which is mixing up what the recursive call actually returns versus
         what the combine logic assumes.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Keep the base case minimal but correct. Returning a sentinel for an empty range and the
         single value for a one-element range is enough for almost every problem. Adding
         complicated base-case logic is a sign that the recursive contract is off.
-      </p>
+      </HighlightBlock>
       <p>
         Pass index ranges, not slices. Slicing in many languages is O(n), which silently turns
         an O(n log n) algorithm into O(n² log n). Pass <em>(left, right)</em> indices and let
@@ -193,20 +209,23 @@ export default function DivideAndConquerArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Common Pitfalls</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Treating an overlapping-subproblem case as divide and conquer. Fibonacci is the classic
         trap: recursing on f(n − 1) + f(n − 2) without memoisation is exponential because the
         same f(k) is recomputed many times. The recursion tree exposes the overlap immediately;
         always sketch it before deciding which pattern applies.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Forgetting the combine step. Some candidates write a recursive function that solves
         each half but then returns only one of the two — the combine is missing or wrong, and
         the answer is silently incorrect on inputs where the optimal solution straddles the
         midpoint. Maximum subarray is the canonical example: the answer can lie entirely in the
         left half, entirely in the right, or cross the boundary; the cross-boundary case is the
         combine work and is easy to forget.
-      </p>
+      </HighlightBlock>
       <p>
         Worst-case quadratic blowup on adversarial inputs. Quicksort with a fixed first-element
         pivot is O(n²) on a sorted input. Either randomise the pivot or use median-of-medians.
@@ -232,22 +251,25 @@ export default function DivideAndConquerArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Real-World Use Cases</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Divide and conquer underlies a long list of production algorithms. Merge sort is the
         backbone of stable sorts in language standard libraries (Python&apos;s Timsort starts
         from runs and merges them; Java&apos;s Arrays.sort for objects is a stable Timsort
         variant). External-memory sort — sorting datasets larger than RAM — is divide-and-conquer
         with a different cost model: divide into chunks that fit in memory, sort each, merge.
         MapReduce is divide and conquer at cluster scale.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Numerical libraries lean on the FFT and on Strassen&apos;s algorithm for matrix
         multiplication. CDN and search systems use divide-and-conquer indexing — partition the
         document set, build per-shard indexes, merge query results across shards. Graph
         algorithms like Karger&apos;s min-cut and the polynomial-time approximation for
         travelling salesman use the divide-and-conquer scaffold even when the combine step is
         intricate.
-      </p>
+      </HighlightBlock>
       <p>
         On the Leetcode side, the canonical problem clusters are sort/search and recursive
         structure. <em>912. Sort an Array</em> is the entry point for merge sort or quicksort.{" "}
@@ -272,13 +294,16 @@ export default function DivideAndConquerArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>State and apply the master theorem.</strong> Given <em>T(n) = a · T(n/b) +
+        <HighlightBlock as="li" tier="important"><strong>State and apply the master theorem.</strong> Given <em>T(n) = a · T(n/b) +
         f(n)</em>, identify which case applies based on the relationship between f(n) and{" "}
-        <em>n^log_b a</em>. Walk through the three cases on a fresh recurrence.</li>
-        <li><strong>What is the worst-case running time of quicksort, and how do you avoid it?</strong>{" "}
+        <em>n^log_b a</em>. Walk through the three cases on a fresh recurrence.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>What is the worst-case running time of quicksort, and how do you avoid it?</strong>{" "}
         O(n²) on adversarial input (already sorted, all equal, etc.). Randomise the pivot or use
-        median-of-medians for an O(n) worst-case guarantee at higher constant factor.</li>
+        median-of-medians for an O(n) worst-case guarantee at higher constant factor.</HighlightBlock>
         <li><strong>Implement quickselect.</strong> Linear expected time selection of the kth
         smallest element via single-side recursion on the partition that contains k.</li>
         <li><strong>Why is merge sort stable?</strong> Because the merge step preserves the relative

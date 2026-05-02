@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,7 +24,10 @@ export default function DynamicProgrammingArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">Definition & Context</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Dynamic programming is the technique of solving a problem by breaking it into
         subproblems, solving each subproblem once, and storing the answers so that overlapping
         subproblems are not recomputed. The two preconditions are <em>optimal substructure</em> —
@@ -31,8 +35,8 @@ export default function DynamicProgrammingArticle() {
         subproblems</em> — the same subproblem is encountered along multiple recursion paths.
         Together they justify the speedup from exponential brute-force recursion to polynomial
         memoised computation.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         DP earns its reputation in interviews because the technique itself is mechanical once
         the state and recurrence are right, but defining the state and recurrence is the entire
         puzzle. The wrong state definition leads to a wrong recurrence; the wrong recurrence
@@ -40,7 +44,7 @@ export default function DynamicProgrammingArticle() {
         library of state shapes (1D prefix, 2D pair-of-strings, interval split, bitmask subset,
         tree post-order, digit position) and the recognition skill to map a new problem to one
         of them.
-      </p>
+      </HighlightBlock>
       <p>
         For staff/principal interviews, the bar is higher than &quot;solve the problem&quot;.
         Interviewers expect you to choose top-down vs. bottom-up consciously, justify the state
@@ -51,21 +55,24 @@ export default function DynamicProgrammingArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Core Concepts</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         The five-step DP recipe: define the state, write the recurrence, identify base cases,
         choose the evaluation order, extract the final answer. Define the state by writing in
         plain English what <em>dp[i]</em> or <em>dp[i][j]</em> means — &quot;the minimum number
         of coins to make amount i&quot;, &quot;the length of the longest common subsequence
         between the first i characters of s and the first j characters of t&quot;. The state
         definition is the load-bearing claim; everything else follows from it.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Write the recurrence by considering the last decision: what was the last coin used,
         what was the last character of the LCS, what was the last interval split. The answer to{" "}
         <em>dp[state]</em> is determined by the answer to <em>dp[smaller-state]</em> via that
         last decision. Express the recurrence as a function of subproblem answers, taking a min
         or max or sum over the legal last-decisions.
-      </p>
+      </HighlightBlock>
       <p>
         Identify base cases by reading off what the state means at its trivial extremes.{" "}
         <em>dp[0]</em> for &quot;coins to make 0&quot; is 0; <em>dp[i][0]</em> for &quot;LCS
@@ -88,22 +95,25 @@ export default function DynamicProgrammingArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Architecture & Flow</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Top-down memoised recursion looks structurally identical to plain recursion with a
         cache. Define a recursive function on the state; check the cache before recursing;
         compute the recurrence by recursing on smaller states; store and return. This style is
         natural for problems with sparse state spaces — when only some <em>dp[state]</em>{" "}
         entries are reachable from the initial call, top-down skips the unreachable ones for
         free.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Bottom-up tabulation iterates over the state space in dependency order and fills a
         table. The dependency order is the topological sort of the state graph; for a 1D state
         it is usually 0, 1, 2, ..., n; for a 2D state it is row-major or column-major; for an
         interval state it is by interval length. Tabulation has no recursion overhead and
         usually has better cache behaviour, which makes it the preferred style for tight inner
         loops in production.
-      </p>
+      </HighlightBlock>
       <ArticleImage
         src="/diagrams/other/leetcode/patterns/dynamic-programming-diagram-1.svg"
         alt="DP overview"
@@ -135,20 +145,23 @@ export default function DynamicProgrammingArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Trade-offs & Comparisons</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         DP versus greedy. Both have optimal substructure; DP also handles overlapping
         subproblems where greedy&apos;s greedy-choice property fails. DP is more general but
         more expensive — typically polynomial vs. greedy&apos;s linear or n log n. Try greedy
         first if the structure looks like it might admit a greedy choice; fall back to DP when
         greedy fails the counterexample test.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         DP versus divide and conquer. Both decompose into subproblems. D&amp;C subproblems are
         independent; DP subproblems overlap. The recursion tree for D&amp;C is a tree; for DP
         it is a DAG that, without memoisation, would expand into an exponential tree of
         repeated nodes. Memoisation collapses the DAG to its true size — the number of distinct
         states.
-      </p>
+      </HighlightBlock>
       <p>
         Top-down vs. bottom-up. Top-down is closer to the recurrence and easier to write under
         time pressure. Bottom-up has no recursion overhead, easier space optimisation, and
@@ -170,16 +183,19 @@ export default function DynamicProgrammingArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Best Practices</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         State the state in plain English first. Before writing any code, write a comment:
         &quot;dp[i] is the minimum number of coins to make amount i&quot;. If you cannot write
         that comment unambiguously, the state is wrong; iterate until it is precise.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Derive the recurrence by considering the last decision. What was the last coin? What
         was the last character matched? What was the last split point? The recurrence
         decomposes <em>dp[state]</em> over the legal last-decisions, taking min/max/sum.
-      </p>
+      </HighlightBlock>
       <p>
         Verify base cases before running the algorithm. Trace <em>dp[0]</em>, <em>dp[1]</em>{" "}
         manually; check they match the recurrence&apos;s degenerate case. The single most
@@ -203,18 +219,21 @@ export default function DynamicProgrammingArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Common Pitfalls</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Wrong state definition. The most common failure mode is defining <em>dp[i]</em> as
         &quot;something involving i&quot; without nailing down what exactly. &quot;dp[i] is the
         best up to index i&quot; is ambiguous — best ending at i, best in the prefix, best
         considering only i? Write the precise English; the bug usually surfaces immediately.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Missing or wrong base cases. <em>dp[0]</em> for &quot;ways to make 0&quot; is 1, not 0,
         because the empty selection is one way. <em>dp[empty][j]</em> for LCS depends on what
         empty string vs. anything looks like. Read the state definition and apply it at the
         boundary; do not guess.
-      </p>
+      </HighlightBlock>
       <p>
         Off-by-one in the recurrence. When transitioning from i to i + 1, double-check whether
         the current character is at index i or i + 1 in the input. This is especially treacherous
@@ -241,22 +260,25 @@ export default function DynamicProgrammingArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Real-World Use Cases</h2>
-      <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         Dynamic programming powers a long list of production systems. Sequence alignment in
         bioinformatics is edit distance at scale. Spell checkers use Levenshtein DP for fuzzy
         matching. The Viterbi algorithm in speech recognition is DP on a hidden Markov model.
         Compiler register allocation, query planners, and the Bellman-Ford shortest path
         algorithm are all DP. In finance, option pricing on a binomial tree is DP working
         backward from expiration.
-      </p>
-      <p>
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important">
         On the Leetcode side, the canonical DP cluster is huge. The 1D prefix family includes{" "}
         <em>70. Climbing Stairs</em> (Fibonacci), <em>198. House Robber</em> (take-or-skip),{" "}
         <em>213. House Robber II</em> (circular variant), <em>300. Longest Increasing
         Subsequence</em> (O(n²) DP or O(n log n) patience), <em>322. Coin Change</em> (min coins
         for amount), <em>139. Word Break</em> (segmentable prefix), and <em>91. Decode
         Ways</em>.
-      </p>
+      </HighlightBlock>
       <p>
         The 2D string family includes <em>1143. Longest Common Subsequence</em>, <em>72. Edit
         Distance</em>, <em>10 / 44. Regex / Wildcard Matching</em>, and <em>97. Interleaving
@@ -280,14 +302,17 @@ export default function DynamicProgrammingArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>State and prove the optimal substructure of LCS.</strong> The LCS of two strings
+        <HighlightBlock as="li" tier="important"><strong>State and prove the optimal substructure of LCS.</strong> The LCS of two strings
         ending at (i, j) is either the LCS of (i − 1, j − 1) plus 1 if the characters match, or
         the better of LCS(i − 1, j) and LCS(i, j − 1) if they do not. The optimal substructure
-        is that any optimal LCS extends an optimal LCS of a shorter prefix pair.</li>
-        <li><strong>Top-down vs. bottom-up — when do you pick which?</strong> Top-down for sparse
+        is that any optimal LCS extends an optimal LCS of a shorter prefix pair.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Top-down vs. bottom-up — when do you pick which?</strong> Top-down for sparse
         state spaces and natural recurrences; bottom-up for dense states, easier space
-        optimisation, and tighter constants.</li>
+        optimisation, and tighter constants.</HighlightBlock>
         <li><strong>Reduce 2D edit distance to O(min(m, n)) space.</strong> dp[i][j] depends on
         dp[i − 1][j], dp[i][j − 1], and dp[i − 1][j − 1] — only the previous row and current
         row are needed. Roll over two rows; total space O(n).</li>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,21 +35,24 @@ export default function SearchResultsUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Search Results UI</strong> is the interface that displays search results
           in an organized, scannable format with relevant metadata, highlighting, and
           navigation options. It is the critical moment of truth—users have expressed
           their intent through search, and now they judge whether the system understood
           them based on what they see. Well-designed results UI drives engagement, while
           poor results UI frustrates users even if the underlying search is good.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Key challenges include: presenting results clearly (title, snippet, metadata),
           showing why results match (highlighting), enabling navigation (pagination,
           infinite scroll), handling edge cases (0 results, 1 result, many results),
           and optimizing performance (fast render, lazy loading). E-commerce sites live
           or die by search results—70% of e-commerce conversions start with search.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, search results UI involves component architecture
           (result cards, lists, grids), state management (loading, error, empty states),
@@ -60,10 +64,13 @@ export default function SearchResultsUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Result Display Formats</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Different formats for different content types:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>List View:</strong> Vertical list of result cards. Most common,
@@ -88,9 +95,9 @@ export default function SearchResultsUIArticle() {
         </ul>
 
         <h3 className="mt-6">Result Components</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Essential elements of a result item:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Title:</strong> Primary identifier. Clickable link to content.
@@ -184,9 +191,12 @@ export default function SearchResultsUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production search results UI involves efficient rendering and state management.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery-search-feed-browsing/search-results-ui/results-display-layouts.svg"
@@ -198,14 +208,14 @@ export default function SearchResultsUIArticle() {
 
         <h3>Component Structure</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Results Container:</strong> Main wrapper. Manages results state
             (loading, error, empty, success). Handles pagination state.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Results Header:</strong> Shows result count ("123 results"), sort
             dropdown, view toggle (list/grid). Search time if relevant.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Results List/Grid:</strong> Renders result items. Virtualized for
             performance (100+ results). Maintains scroll position.
@@ -313,10 +323,13 @@ export default function SearchResultsUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Search results UI design involves balancing usability, performance, and user
           preferences.
-        </p>
+        </HighlightBlock>
 
         <h3>Pagination Strategy Comparison</h3>
         <div className="overflow-x-auto">
@@ -361,11 +374,11 @@ export default function SearchResultsUIArticle() {
         />
 
         <h3 className="mt-6">List vs Grid View</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>List View:</strong> More information per result (longer snippets, more
           metadata). Better for text-heavy content. Takes more vertical space. Best for:
           Documents, articles, emails.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Grid View:</strong> More results visible at once. Visual content shines.
           Less info per result. Best for: Products, images, videos.
@@ -392,15 +405,18 @@ export default function SearchResultsUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Show Result Count:</strong> Always show number of results ("123
             results"). Users need to know scope.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Highlight Matches:</strong> Bold matched terms in title and snippet.
             Users need to see why results match.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Skeleton Loading:</strong> Show skeleton screens while loading.
             Better than spinners for perceived performance.
@@ -430,15 +446,18 @@ export default function SearchResultsUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No Result Count:</strong> Users don't know how many results. Solution:
             Always show count.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No Highlighting:</strong> Users don't see why results match. Solution:
             Bold matched terms.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scroll Jump:</strong> Page jumps to top on pagination. Solution:
             Preserve scroll position.
@@ -460,17 +479,20 @@ export default function SearchResultsUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Google Search Results</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google shows title, URL, snippet with highlighted terms. Rich snippets for
           special content (recipes, events). Related searches at bottom. Pagination
           with page numbers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Sitelinks for top results—direct links to
           internal pages.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Amazon Product Results</h3>
         <p>
@@ -505,16 +527,19 @@ export default function SearchResultsUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Pagination vs infinite scroll?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Pagination vs infinite scroll?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Pagination: better for known-item search, bookmarking,
               clear position. Infinite scroll: better for exploration, mobile, continuous
               consumption. Load More button: best of both—user control with seamless
               experience. Choose based on use case: e-commerce → pagination, social feed
               → infinite scroll, most cases → Load More.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

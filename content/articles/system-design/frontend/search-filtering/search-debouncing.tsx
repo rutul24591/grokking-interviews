@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,22 +37,25 @@ export default function SearchDebouncingArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Search debouncing</strong> is a technique that delays search
           execution until the user stops typing for a specified duration. Instead
           of searching on every keystroke (which would trigger 10+ searches for a
           10-character query), debouncing waits for a pause in typing — typically
           200-500ms — before executing the search. This dramatically reduces
           unnecessary computation and API calls while maintaining responsive UX.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Without debouncing, search inputs create excessive load: each keystroke
           triggers tokenization, index lookup, scoring, and UI updates. For
           client-side search, this means wasted CPU cycles. For server-side search,
           it means unnecessary network requests — a user typing &quot;documentation&quot;
           (13 characters) could trigger 13 API calls, most for incomplete queries
           that will never be submitted.
-        </p>
+        </HighlightBlock>
         <p>
           Debouncing differs from throttling. <strong>Debouncing</strong> executes
           after the user stops typing (trailing edge) or before they start (leading
@@ -73,19 +77,22 @@ export default function SearchDebouncingArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Trailing Debounce:</strong> The most common pattern — execute
             the function after the specified delay has passed since the last event.
             If the user keeps typing, the timer resets. This ensures search runs
             for the final query, not intermediate states. Ideal for search inputs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Leading Debounce:</strong> Execute immediately on the first
             event, then ignore subsequent events until the delay passes. Useful
             when you want immediate feedback for the first character but debounced
             feedback for subsequent characters. Less common for search.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Leading + Trailing:</strong> Execute on the leading edge and
             trailing edge, but not in between. This provides immediate feedback
@@ -126,13 +133,16 @@ export default function SearchDebouncingArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Debouncing architecture consists of an event listener that captures
           input events, a timer management system that tracks pending executions,
           and the debounced function wrapper that handles timer creation and
           cancellation. The implementation must handle edge cases: rapid typing,
           component unmount, and concurrent searches.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/search-filtering/search-debouncing/debounce-timing-diagram.svg"
@@ -143,7 +153,7 @@ export default function SearchDebouncingArticle() {
         />
 
         <h3>Implementation Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Several patterns exist for implementing debounced search. The{" "}
           <strong>custom hook pattern</strong> encapsulates debounce logic in a
           reusable React hook. The <strong>utility function pattern</strong> uses
@@ -151,15 +161,18 @@ export default function SearchDebouncingArticle() {
           implementations. The <strong>ref-based pattern</strong> stores the
           timer in a React ref to persist across renders without triggering
           re-renders.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Debouncing involves trade-offs between responsiveness and efficiency.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/search-filtering/search-debouncing/debounce-implementation-patterns.svg"
@@ -169,13 +182,13 @@ export default function SearchDebouncingArticle() {
           height={500}
         />
 
-        <p className="mt-4">
+        <HighlightBlock as="p" tier="important" className="mt-4">
           The implementation patterns diagram compares three common approaches.
           Custom hooks provide the best React integration with automatic cleanup.
           Utility functions offer flexibility and are well-tested. Ref-based
           patterns are simplest but require manual cleanup. Choose based on your
           application&apos;s complexity and team preferences.
-        </p>
+        </HighlightBlock>
 
         <h3>Debounce Delay Timing</h3>
         <p>
@@ -215,19 +228,22 @@ export default function SearchDebouncingArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use 250-300ms Default:</strong> This delay balances
             responsiveness with efficiency for most use cases. Adjust based on
             analytics — if users frequently pause mid-query, increase delay; if
             searches feel sluggish, decrease.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Clear Timers on Unmount:</strong> Always clean up debounce
             timers in useEffect cleanup functions or component lifecycle methods.
             Unclear timers cause memory leaks and can update state on unmounted
             components.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Show Loading State:</strong> For searches taking &gt;100ms,
             show a loading indicator. This provides feedback that search is
@@ -256,19 +272,22 @@ export default function SearchDebouncingArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Clearing Timers:</strong> Forgetting to call
             clearTimeout() on unmount causes memory leaks and potential state
             updates on unmounted components. Always cleanup in useEffect return
             functions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Creating New Debounced Function Each Render:</strong>
             Wrapping debounce creation inside render creates a new debounced
             function each time, breaking the debounce behavior. Use useMemo or
             store the debounced function in a ref.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Debounce Too Short:</strong> 50-100ms feels instant but
             doesn&apos;t reduce searches much — fast typists can type multiple
@@ -296,22 +315,25 @@ export default function SearchDebouncingArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Documentation Site Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Documentation sites (GitBook, Docusaurus) use 200-300ms debounce for
           instant search feedback. The search is client-side (Lunr.js or
           FlexSearch), so execution is fast. Short debounce provides responsive
           feel without excessive computation.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce Product Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce sites often use 300-400ms debounce with server-side search.
           The longer delay reduces API load during peak traffic. Combined with
           minimum query length (2-3 chars) and search-as-you-type dropdown,
           provides good UX while managing server load.
-        </p>
+        </HighlightBlock>
 
         <h3>Large Data Table Filtering</h3>
         <p>
@@ -333,13 +355,16 @@ export default function SearchDebouncingArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between debouncing and throttling?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Debouncing delays function execution until a specified time has
               passed since the last event. If events keep occurring, execution
               is continuously deferred. Throttling ensures a function executes
@@ -347,7 +372,7 @@ export default function SearchDebouncingArticle() {
               For search, debouncing is preferred because it ensures search runs
               for the final, complete query. Throttling would run search
               periodically during typing, potentially for incomplete queries.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,15 +37,15 @@ export default function CICDPipelinesArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>CI/CD pipelines</strong> automate the process of building, testing, and deploying frontend applications. Continuous Integration (CI) ensures that code changes are automatically built and tested on every commit, catching integration issues early. Continuous Deployment (CD) automates the release of tested code to production environments, enabling frequent, reliable deployments. For frontend applications, CI/CD pipelines handle installing dependencies, running builds, executing tests (unit, integration, E2E), analyzing bundle size, checking for security vulnerabilities, and deploying to hosting platforms.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, CI/CD pipeline design is a critical architectural decision that impacts developer velocity, release frequency, and deployment reliability. A well-designed pipeline enables teams to ship code multiple times per day with confidence, while a poorly-designed pipeline becomes a bottleneck that slows development, causes deployment failures, and erodes team trust in the release process. Pipeline optimization (caching, parallel jobs, incremental builds) can reduce pipeline duration from 30 minutes to 3 minutes, dramatically improving developer feedback loops.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Frontend CI/CD pipelines have unique requirements compared to backend pipelines. Frontend builds produce static assets (HTML, CSS, JavaScript) that are deployed to CDNs or static hosting platforms, not running services. Frontend testing includes visual regression testing (ensuring UI looks correct), accessibility testing (ensuring WCAG compliance), and performance testing (ensuring Core Web Vitals meet thresholds). Frontend deployments often involve cache invalidation (ensuring users get fresh assets) and progressive rollouts (deploying to a percentage of users first).
-        </p>
+        </HighlightBlock>
         <p>
           The business case for CI/CD pipelines is compelling. Automated testing catches bugs before they reach production, reducing support costs and improving user experience. Automated deployments enable frequent releases (daily or multiple times per day), allowing teams to ship features faster and respond to issues quickly. Pipeline metrics (build duration, test pass rate, deployment frequency, mean time to recovery) provide visibility into development health and identify bottlenecks. For competitive organizations, CI/CD is not optional — it is essential for delivering software at the speed the market demands.
         </p>
@@ -54,15 +55,15 @@ export default function CICDPipelinesArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Continuous Integration:</strong> Automatically building and testing every code change on every commit. CI pipelines run on pull requests, ensuring that code meets quality standards before merging. CI steps include installing dependencies, running the build, executing unit and integration tests, running linters and type checkers, and analyzing code quality. CI failures block the merge, preventing broken code from reaching the main branch.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Continuous Deployment:</strong> Automatically deploying tested code to production environments. CD pipelines run after CI passes and the pull request is merged. CD steps include building for production, running E2E tests against the production build, deploying to staging for manual verification, deploying to production, and running post-deployment health checks. CD enables frequent, reliable deployments without manual intervention.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Pipeline Stages:</strong> CI/CD pipelines are organized into stages that run sequentially or in parallel. Common stages include install (dependencies), build (compile, bundle), test (unit, integration, E2E), analyze (bundle size, performance, security), deploy (to staging, then production), and verify (post-deployment health checks). Each stage must pass before the next stage runs, ensuring quality gates are enforced.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Caching:</strong> Storing build artifacts (node_modules, build cache) between pipeline runs to avoid redundant work. Caching dramatically reduces pipeline duration — installing dependencies from cache takes seconds instead of minutes. Effective caching strategies include caching node_modules (dependency installation), caching build tool cache (Webpack cache, Vite cache), and caching E2E test browser binaries (Playwright, Cypress).
           </li>
@@ -86,12 +87,12 @@ export default function CICDPipelinesArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           CI/CD pipeline architecture consists of trigger events (pull request, merge, schedule), pipeline execution (stages running on CI/CD runners), and deployment targets (CDN, static hosting, cloud platforms). The flow begins with a trigger event (developer pushes code, pull request is created), which starts the CI pipeline. CI stages run sequentially or in parallel, each stage producing artifacts (build output, test reports) that are passed to the next stage. If any stage fails, the pipeline stops and notifies the developer.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           After CI passes and the pull request is merged, the CD pipeline runs. CD builds the production bundle, runs E2E tests against the production build, deploys to staging for manual verification, deploys to production, and runs post-deployment health checks. The entire process is automated, with manual approval gates optionally placed between staging and production for regulated industries.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/build-deployment/deployment-workflow.svg"
@@ -102,9 +103,9 @@ export default function CICDPipelinesArticle() {
         />
 
         <h3>CI/CD Platform Options</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>GitHub Actions:</strong> Integrated with GitHub repositories, using workflow YAML files to define pipelines. Strengths include tight GitHub integration (pull request checks, status checks), large action marketplace (pre-built actions for common tasks), and generous free tier for public repositories. Limitations include runner performance variability (shared runners), complex workflow debugging, and limited control over runner environment. Best for: teams using GitHub, projects wanting tight repository integration.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>GitLab CI/CD:</strong> Integrated with GitLab repositories, using gitlab-ci.yml to define pipelines. Strengths include built-in container registry, integrated monitoring and security scanning, and consistent runner management. Limitations includes GitLab ecosystem lock-in, complex configuration for advanced scenarios. Best for: teams using GitLab, organizations wanting integrated DevOps platform.
         </p>
@@ -124,17 +125,17 @@ export default function CICDPipelinesArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           CI/CD pipeline design involves trade-offs between pipeline speed and thoroughness, automation and manual control, and platform convenience and flexibility. Understanding these trade-offs is essential for designing pipelines that balance quality with velocity.
-        </p>
+        </HighlightBlock>
 
         <h3>Pipeline Speed vs. Thoroughness</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Fast Pipeline:</strong> Minimal stages (build, unit tests, deploy), skipping expensive tests (E2E, visual regression, accessibility) or running them asynchronously after deployment. Advantages: fast feedback (developers get results in minutes, not hours), frequent deployments (low friction to ship), high developer satisfaction (less waiting). Limitations: lower quality gate (some issues reach production), requires strong post-deployment monitoring to catch issues early. Best for: teams with strong production monitoring and quick rollback capability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Thorough Pipeline:</strong> Comprehensive stages (build, unit tests, integration tests, E2E tests, visual regression, accessibility, performance, security scan, deploy). Advantages: high quality gate (most issues caught before production), confidence in deployments (thoroughly tested code). Limitations: slow feedback (developers wait hours for results), infrequent deployments (high friction to ship), developer frustration (long wait times). Best for: regulated industries (healthcare, finance), applications where production issues are costly.
-        </p>
+        </HighlightBlock>
 
         <h3>Automation vs. Manual Approval</h3>
         <p>
@@ -157,15 +158,15 @@ export default function CICDPipelinesArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Cache Dependencies and Build Artifacts:</strong> Cache node_modules, build tool cache, and E2E browser binaries between pipeline runs. Caching reduces pipeline duration from 10-30 minutes to 2-5 minutes for typical changes. Use CI/CD platform caching features (GitHub Actions cache, GitLab cache) or external caching services. Cache keys should be based on dependency lock files (package-lock.json, yarn.lock) so that caches are invalidated when dependencies change.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Run Fast Checks First:</strong> Order pipeline stages so that fast checks (linting, type checking, unit tests) run before slow checks (E2E tests, visual regression). If fast checks fail, the pipeline stops early, avoiding wasted time on slow checks that will be invalidated anyway. This is known as the &quot;fail fast&quot; principle — catch issues as early as possible to minimize wasted pipeline time.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Parallel Jobs for Independent Tests:</strong> Run unit tests, integration tests, and E2E tests in parallel instead of sequentially. Parallel jobs reduce total pipeline duration significantly, especially for large test suites. Limit parallel jobs by CI/CD platform concurrency limits and resource availability.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Enforce Quality Gates:</strong> Require minimum test coverage (e.g., 80%), maximum bundle size (e.g., 200KB initial load), maximum performance metrics (e.g., Lighthouse score above 90), and zero security vulnerabilities before deployment. Quality gates ensure that code meeting quality standards reaches production. Fail the pipeline if any quality gate is not met.
           </li>
@@ -182,15 +183,15 @@ export default function CICDPipelinesArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Flaky Tests:</strong> Tests that pass or fail non-deterministically (same code, different results). Flaky tests erode trust in the pipeline (developers ignore failures), waste developer time (re-running pipelines), and block deployments (flaky failures prevent merging). Fix flaky tests by identifying the root cause (timing issues, shared state, network dependency), adding retries for transient failures, and quarantining persistently flaky tests until fixed.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Slow Pipelines:</strong> Pipelines that take 30+ minutes to complete, blocking developer feedback and deployment frequency. Slow pipelines are caused by uncached dependency installation, sequential test execution, expensive E2E tests running on every commit, and inefficient build configurations. Optimize by caching dependencies, parallelizing independent jobs, running expensive tests only on merge (not every commit), and using incremental builds.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing Quality Gates:</strong> Deploying code without enforcing minimum quality standards (test coverage, bundle size, performance, security). Without quality gates, code quality degrades over time as teams prioritize feature delivery over quality. Enforce quality gates in the pipeline, failing the pipeline if standards are not met.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Environment Drift:</strong> Staging and production environments diverging over time (different software versions, different configurations, different infrastructure). Environment drift causes &quot;works on staging but fails on production&quot; issues, where code passes staging tests but fails in production. Prevent drift by using infrastructure as code (Terraform, CloudFormation) to define environments consistently, and by regularly syncing staging configuration to production.
           </li>
@@ -208,19 +209,19 @@ export default function CICDPipelinesArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>E-Commerce Platform Deployment</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           E-commerce platforms use CI/CD pipelines to deploy changes multiple times per day. CI runs on every pull request (build, unit tests, integration tests, visual regression testing for UI changes). CD deploys to staging for manual QA, then to production with canary rollout (10% of users first, monitoring for errors, then gradual increase to 100%). Pipeline includes bundle size checks (ensuring product page loads remain fast), performance checks (Lighthouse scores above threshold), and security scans (dependency vulnerability checks). This pipeline enables rapid feature delivery while maintaining high quality and performance standards.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Product with Preview Environments</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SaaS products deploy every pull request to a unique preview environment (preview-PR-123.example.com) where product managers, designers, and QA can review changes before merging. The CI pipeline builds the application, runs tests, and deploys to the preview environment. Reviewers leave feedback on the preview, and the pipeline is updated with new commits. After approval, the pull request is merged and the CD pipeline deploys to production. This process accelerates the review cycle and catches issues before they reach the main branch.
-        </p>
+        </HighlightBlock>
 
         <h3>Enterprise Application with Compliance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Enterprise applications in regulated industries (healthcare, finance) use CI/CD pipelines with manual approval gates for compliance. CI runs automatically on every commit (build, unit tests, security scans). CD deploys to staging for automated testing, then requires manual approval from the release manager before deploying to production. Pipeline generates audit logs (who approved, when, what was deployed) for compliance auditing. This pipeline balances automation with regulatory requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Open Source Project with Community Contributions</h3>
         <p>
@@ -234,18 +235,18 @@ export default function CICDPipelinesArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: What is the difference between CI and CD?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Continuous Integration (CI) automatically builds and tests every code change on every commit, ensuring that code meets quality standards before merging. CI runs on pull requests, blocking the merge if tests fail. Continuous Deployment (CD) automatically deploys tested code to production environments after the pull request is merged. CI catches integration issues early, CD enables frequent, reliable deployments. Together, CI/CD enables teams to ship code multiple times per day with confidence.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do you optimize CI/CD pipeline performance?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Strategies: cache dependencies (node_modules, build tool cache) to avoid redundant installation, cache E2E browser binaries (Playwright, Cypress), use parallel jobs for independent tests (unit, integration, E2E run concurrently), run fast checks first (linting, type checking before E2E tests) to fail fast, use incremental builds (only rebuild changed modules), and use preview environments for pull request review (catch issues before merge). These optimizations can reduce pipeline duration from 30 minutes to 3 minutes, dramatically improving developer feedback loops.
             </p>

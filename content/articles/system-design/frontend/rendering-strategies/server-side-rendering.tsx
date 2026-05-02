@@ -39,22 +39,29 @@ export default function ServerSideRenderingConciseArticle() {
           <Highlight tier="important">meaningful content immediately</Highlight>
           , enabling faster First Contentful Paint and better SEO.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SSR represents a return to traditional server rendering with a modern
           twist. In the early web (pre-2010), all rendering happened server-side
           (PHP, Rails, ASP.NET). The SPA revolution shifted rendering to
           clients, but this created SEO and performance problems. Modern SSR
           (2016+) combines the best of both worlds: server-rendered HTML for
           fast initial load plus client-side JavaScript for rich interactivity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The pattern gained mainstream adoption with frameworks like Next.js
           (2016), Nuxt.js (2016), and later SvelteKit and Remix. These
           frameworks automate the complex orchestration of rendering on servers,
           serializing state, sending HTML to browsers, and hydrating components
           with event listeners and interactivity. SSR is now the recommended
           approach for most production web applications.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Interview framing: SSR is a lever for{" "}
+          <strong>public entry routes</strong> and SEO-sensitive pages. You
+          should be able to explain when you would still pick SSG/ISR (shared
+          content) or CSR (authenticated apps) and how you would cache SSR
+          safely without leaking personalized data.
+        </HighlightBlock>
       </section>
 
       <section>
@@ -73,12 +80,12 @@ export default function ServerSideRenderingConciseArticle() {
             attaching event listeners and making it interactive. The React tree
             reconciles with existing DOM instead of replacing it.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>State Serialization:</strong> Server-side data is serialized
             (typically as JSON in a script tag), sent with HTML, and reused
             client-side to avoid refetching. This ensures consistency between
             server and client renders.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Double Rendering:</strong> Components render twice - once on
             server (to generate HTML) and once on client (during hydration).
@@ -90,6 +97,23 @@ export default function ServerSideRenderingConciseArticle() {
             before responding. This is traded for faster First Contentful Paint
             (FCP).
           </li>
+          <HighlightBlock as="li" tier="important">
+            <strong>Cacheability:</strong> SSR pages can be cached, but cache
+            strategy is subtle. You usually separate{" "}
+            <Highlight tier="important">shared/public HTML</Highlight> (cache at
+            CDN/edge) from{" "}
+            <Highlight tier="important">personalized HTML</Highlight> (cache per
+            user/session or not at all). Staff+ interviews often probe whether
+            you can explain this boundary clearly.
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            <strong>Failure Modes:</strong> SSR introduces a new class of
+            failures: your render path can time out, error, or overload under
+            spikes. You typically need{" "}
+            <Highlight tier="important">graceful degradation</Highlight> (serve
+            cached/stale HTML, partial responses, or fall back to CSR) plus
+            monitoring around TTFB and render error rate.
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -97,7 +121,11 @@ export default function ServerSideRenderingConciseArticle() {
         <h2>Architecture & Flow</h2>
         <p>The SSR architecture follows this request-response pattern:</p>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
+        <HighlightBlock
+          as="div"
+          tier="important"
+          className="my-6 rounded-lg bg-panel-soft p-6"
+        >
           <h3 className="mb-4 text-lg font-semibold">SSR Request Flow</h3>
           <ol className="space-y-3">
             <li>
@@ -141,7 +169,7 @@ export default function ServerSideRenderingConciseArticle() {
               (TTI)
             </li>
           </ol>
-        </div>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/rendering-strategies/ssr-request-sequence.svg"
@@ -191,6 +219,16 @@ export default function ServerSideRenderingConciseArticle() {
             </li>
           </ul>
         </HighlightBlock>
+
+        <HighlightBlock as="p" tier="important">
+          Production nuance: SSR performance is usually dominated by a small
+          number of dependencies (auth, personalization, primary data fetch).
+          You get staff-level points by describing{" "}
+          <strong>budgets</strong> (e.g., 500ms server render),{" "}
+          <strong>fallbacks</strong> (serve cached HTML on partial outage), and{" "}
+          <strong>observability</strong> (TTFB, render error rate, hydration
+          mismatch rate).
+        </HighlightBlock>
       </section>
 
       <section>
@@ -204,7 +242,7 @@ export default function ServerSideRenderingConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Performance</strong>
               </td>
@@ -220,8 +258,8 @@ export default function ServerSideRenderingConciseArticle() {
                 • Hydration delay before interactive
                 <br />• Server must process each request
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>SEO</strong>
               </td>
@@ -235,7 +273,7 @@ export default function ServerSideRenderingConciseArticle() {
                 • Must handle dynamic data carefully
                 <br />• Can't rely on client-only APIs
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Development</strong>
@@ -253,7 +291,7 @@ export default function ServerSideRenderingConciseArticle() {
                 <br />• Hydration mismatches can be tricky
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>User Experience</strong>
               </td>
@@ -269,8 +307,8 @@ export default function ServerSideRenderingConciseArticle() {
                 • Full page reloads on navigation (without SPA mode)
                 <br />• Flash of unstyled content (FOUC) possible
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Infrastructure</strong>
               </td>
@@ -286,7 +324,7 @@ export default function ServerSideRenderingConciseArticle() {
                 • Higher server costs vs static CSR
                 <br />• Complex caching strategies needed
               </td>
-            </tr>
+            </HighlightBlock>
           </tbody>
         </table>
 
@@ -307,46 +345,46 @@ export default function ServerSideRenderingConciseArticle() {
         <h2>Best Practices</h2>
         <p>To build performant SSR applications, follow these practices:</p>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Minimize TTFB:</strong> Keep server-side data fetching fast
             ({"&lt;"}500ms). Use caching layers (Redis, CDN edge caching). Fetch
             only critical data server-side. Consider partial SSR or streaming.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Optimize Hydration:</strong> Use selective hydration (React
             18 Suspense). Lazy load non-critical interactive components.
             Consider progressive hydration or islands architecture. Minimize
             hydration payload.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle State Carefully:</strong> Serialize only necessary
             data. Avoid serializing functions or circular references. Use
             devalue or superjson for complex types. Validate deserialized data.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Prevent Hydration Mismatches:</strong> Ensure server and
             client render identical output. Avoid using Date.now(),
             Math.random(), or browser-only APIs during render. Use useEffect for
             client-only logic.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Proper Caching:</strong> Use
             stale-while-revalidate patterns. Cache at CDN edge for
             static/semi-static pages. Implement cache invalidation strategies.
             Use ISR (Incremental Static Regeneration) for mostly-static content.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Code Split Effectively:</strong> Split by route
             automatically (Next.js does this). Lazy load heavy components below
             the fold. Use dynamic imports with SSR-safe patterns. Avoid
             hydrating everything immediately.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Streaming SSR:</strong> Stream HTML as it's generated
             (React 18 renderToPipeableStream). Send critical above-fold content
             first. Use Suspense boundaries for async components. Reduces
             perceived TTFB.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Monitor Performance:</strong> Track TTFB, FCP, TTI, and
             hydration time. Use Real User Monitoring (RUM) to catch hydration
@@ -379,19 +417,19 @@ export default function ServerSideRenderingConciseArticle() {
         />
 
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Hydration Mismatches:</strong> Server renders one thing,
             client renders another. Common causes: browser-only APIs
             (localStorage, window), Date.now(), random values, or third-party
             scripts modifying DOM before hydration. Use suppressHydrationWarning
             sparingly.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Slow Server-Side Data Fetching:</strong> Making slow API
             calls (5s+) server-side blocks TTFB, creating worse UX than CSR.
             Keep data fetching fast, use caching, or fetch non-critical data
             client-side.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Over-Hydrating:</strong> Sending too much JavaScript for
             hydration. Not all content needs interactivity. Use islands
@@ -410,22 +448,22 @@ export default function ServerSideRenderingConciseArticle() {
             public data. Use environment variables correctly (NEXT_PUBLIC_
             prefix).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Handling SSR Failures:</strong> Server errors crash the
             page. Implement graceful degradation to CSR. Use error boundaries.
             Provide fallback UI for failed SSR.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Using Browser APIs Server-Side:</strong> Accessing window,
             document, localStorage during SSR causes crashes. Always check
             typeof window !== 'undefined' or use useEffect for browser-only
             code.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Poor Caching Strategy:</strong> Re-rendering identical pages
             on every request wastes server resources. Implement CDN caching,
             ISR, or on-demand revalidation for semi-static content.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Blocking the Server Thread:</strong> Heavy computations
             during SSR block Node.js event loop, degrading performance for all
@@ -443,29 +481,29 @@ export default function ServerSideRenderingConciseArticle() {
         <h2>Real-World Use Cases</h2>
         <p>SSR excels in these scenarios:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>E-commerce Product Pages:</strong> Amazon, Shopify, and Etsy
             use SSR for product pages. Fast initial load improves conversion.
             Perfect SEO for product discovery. Content visible even if JS fails.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>News & Media Sites:</strong> The New York Times, BBC, and
             CNN use SSR for articles. Critical for SEO and social sharing. Users
             see content immediately. Ads and interactive widgets hydrate
             afterward.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Marketing Landing Pages:</strong> Product landing pages,
             SaaS homepages, and campaign pages need fast load and perfect SEO.
             SSR ensures good Core Web Vitals (ranking factor) and social
             previews.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Social Media Platforms:</strong> Twitter/X, Reddit, and
             LinkedIn use SSR for public profiles and posts. Enables link
             previews, SEO for public content, and fast initial render.
             Authenticated views may use CSR.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Documentation Sites:</strong> While often better as SSG,
             dynamic documentation (with search, personalization) benefits from
@@ -511,7 +549,11 @@ export default function ServerSideRenderingConciseArticle() {
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="important"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">
               Q: What is hydration and why is it needed?
             </p>
@@ -523,9 +565,13 @@ export default function ServerSideRenderingConciseArticle() {
               and state management work. React reconciles its virtual DOM with
               existing DOM instead of replacing it.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="important"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">Q: SSR vs CSR - when to use each?</p>
             <p className="mt-2 text-sm">
               A: Use SSR for public content needing SEO and fast initial load
@@ -535,9 +581,13 @@ export default function ServerSideRenderingConciseArticle() {
               FCP but fast subsequent navigation. Hybrid approaches (Next.js)
               let you choose per-page.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="important"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">
               Q: What are hydration mismatches and how do you prevent them?
             </p>
@@ -550,9 +600,13 @@ export default function ServerSideRenderingConciseArticle() {
               serialized from server. Use suppressHydrationWarning only when
               necessary (like timestamps).
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="crucial"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">
               Q: How would you optimize SSR performance?
             </p>
@@ -564,14 +618,14 @@ export default function ServerSideRenderingConciseArticle() {
               selective hydration. Consider ISR for mostly-static pages. Use CDN
               edge caching with stale-while-revalidate.
             </p>
-          </div>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>References & Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://web.dev/rendering-on-the-web/"
               className="text-accent hover:underline"
@@ -580,8 +634,8 @@ export default function ServerSideRenderingConciseArticle() {
             >
               Rendering on the Web - web.dev
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://nextjs.org/docs/app/building-your-application/rendering/server-components"
               className="text-accent hover:underline"
@@ -590,8 +644,8 @@ export default function ServerSideRenderingConciseArticle() {
             >
               Next.js Documentation - Server Components
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://react.dev/reference/react-dom/server"
               className="text-accent hover:underline"
@@ -600,8 +654,8 @@ export default function ServerSideRenderingConciseArticle() {
             >
               React Documentation - Server Rendering APIs
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://nuxt.com/docs/guide/concepts/rendering"
               className="text-accent hover:underline"
@@ -610,7 +664,7 @@ export default function ServerSideRenderingConciseArticle() {
             >
               Nuxt.js Guide - Rendering Modes
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://kit.svelte.dev/docs/page-options#ssr"

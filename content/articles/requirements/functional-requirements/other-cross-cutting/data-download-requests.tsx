@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function DataDownloadRequestsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data Download Requests enable users to request and download their data from the platform. Users can submit requests (submit download requests), track requests (track request status), receive notifications (notify of request completion), and download data (download prepared data). Data download requests are fundamental to data access (users can access their data), regulatory compliance (meet regulatory requirements), and user rights (users have right to their data). For platforms with user data, effective data download requests are essential for data access, regulatory compliance, and user rights.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, data download requests architecture involves request management (manage download requests), request validation (validate download requests), data preparation (prepare download data), download delivery (deliver download data), and request tracking (track download requests). The implementation must balance accessibility (users can access data) with security (secure download data) and performance (prepare downloads efficiently). Poor data download requests lead to compliance violations, user frustration, and data access issues.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of data download requests extends beyond simple data download. Request management (manage download requests). Request validation (validate download requests). Data preparation (prepare download data). Download delivery (deliver download data). Request tracking (track download requests). For staff engineers, data download requests are a data access infrastructure decision affecting data access, regulatory compliance, and user rights.
         </p>
@@ -46,13 +50,16 @@ export default function DataDownloadRequestsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Request Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Request submission enables users to submit requests. Request form (submit via form). Request API (submit via API). Request validation (validate request). Request submission enables request submission. Benefits include user access (users can access data), regulatory compliance (meet legal requirements). Drawbacks includes request overhead (processing costs), implementation complexity (submission system).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Request queue manages request queue. Request prioritization (prioritize requests). Request scheduling (schedule requests). Request processing (process requests). Request queue enables request management. Benefits include organized management (structured processing), efficient processing (queued handling). Drawbacks includes queue overhead (queue management), implementation complexity (queue system).
-        </p>
+        </HighlightBlock>
         <p>
           Request tracking tracks request status. Request pending (track pending status). Request processing (track processing status). Request complete (track complete status). Request tracking enables request tracking. Benefits include transparency (visible request status), user awareness (users know progress). Drawbacks includes tracking overhead (tracking costs), implementation complexity (tracking system).
         </p>
@@ -104,9 +111,12 @@ export default function DataDownloadRequestsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data download requests architecture spans request service, preparation service, delivery service, and security service. Request service manages requests. Preparation service manages data preparation. Delivery service manages download delivery. Security service manages request security. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/data-download-requests/download-architecture.svg"
@@ -117,9 +127,9 @@ export default function DataDownloadRequestsArticle() {
         />
 
         <h3>Request Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Request service manages download requests. Request storage (store requests). Request retrieval (retrieve requests). Request update (update requests). Request service is the core of data download requests. Benefits include centralization (one place for requests), consistency (same requests everywhere). Drawbacks includes complexity (manage requests), coupling (services depend on request service).
-        </p>
+        </HighlightBlock>
         <p>
           Request policies define request rules. Default requests (default requests). Request validation (validate requests). Request sync (sync requests). Request policies automate request management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function DataDownloadRequestsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data download requests design involves trade-offs between immediate and delayed download, comprehensive and limited data, and secure and convenient delivery. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Download: Immediate vs. Delayed</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Immediate download (download immediately). Pros: User convenience (user convenience), immediate access (immediate access), user satisfaction (user satisfaction). Cons: Performance impact (performance impact), resource usage (resource usage), may be large (may be large). Best for: Small data, user convenience.
-        </p>
+        </HighlightBlock>
         <p>
           Delayed download (download after preparation). Pros: Better performance (better performance), resource management (resource management), large data support (large data support). Cons: User delay (user delay), notification overhead (notification overhead), complexity (complexity). Best for: Large data, resource management.
         </p>
@@ -207,13 +220,16 @@ export default function DataDownloadRequestsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide request management:</strong> Request submission. Request queue. Request tracking. Let users request.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Validate requests:</strong> Identity validation. Request validation. Rate limiting.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Prepare data:</strong> Data collection. Data formatting. Data packaging.
           </li>
@@ -243,13 +259,16 @@ export default function DataDownloadRequestsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No request management:</strong> Can&apos;t request download. <strong>Solution:</strong> Provide request management.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No request validation:</strong> Can&apos;t validate request. <strong>Solution:</strong> Validate requests.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No data preparation:</strong> Can&apos;t prepare data. <strong>Solution:</strong> Prepare data.
           </li>
@@ -279,16 +298,19 @@ export default function DataDownloadRequestsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Social Media Download</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms provide download. Data download (download user data). Photo download (download photos). Post download (download posts). Users control social media download.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">E-commerce Download</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms provide download. Order download (download order history). Product download (download product data). Review download (download review history). Users control e-commerce download.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Cloud Service Download</h3>
         <p>
@@ -308,12 +330,15 @@ export default function DataDownloadRequestsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design data download requests that balances accessibility with security?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design data download requests that balances accessibility with security?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement download with security because users want accessible download (easy to request, easy to download) but want security (only authorized users, secure delivery). Download data: download user data (all data types, complete history, user-friendly)—user right, data portability. Validate request: validate download request (verify user identity, verify request valid, check rate limits)—prevent unauthorized access, ensure valid request. Secure data: secure download data (encrypt download, secure delivery, access controls)—protect data in transit, prevent unauthorized access. Monitor security: monitor security (track downloads, detect anomalies, audit access)—detect threats, ensure security maintained. The security insight: users want accessible download but want security—provide download (all data, complete, user-friendly) with validation (identity, valid, rate limits), security (encrypt, delivery, access), monitor (track, detect, audit), and balance accessibility with security.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

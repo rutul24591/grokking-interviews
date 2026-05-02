@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -80,21 +81,24 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Query Execution &amp; Planning</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Query Execution Pipeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Database query execution has three phases: <strong>Parsing</strong> (syntax check,
           validate table/column names, check permissions), <strong>Optimization</strong>
           (generate multiple execution plans, estimate costs, choose best plan),
           <strong>Execution</strong> (execute chosen plan, fetch data, return results).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>optimization phase</strong> is where query speed is determined. Query
           planner generates multiple plans: sequential scan vs index scan, nested loop vs
           hash join vs merge join, different join orders. For each plan, planner estimates
           cost (I/O, CPU, memory) based on table statistics. Lowest cost plan is chosen.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Statistics</strong> are critical for good planning: row counts, distinct
@@ -160,23 +164,26 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Optimization Techniques</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Index Usage Optimization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Query planner chooses between index scan and sequential scan based on cost estimates.
           Index scan is faster for selective queries (few rows match). Sequential scan is
           faster for non-selective queries (many rows match—overhead of index lookups exceeds
           sequential read benefit).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>When indexes are used</strong>: WHERE clause columns (equality, range),
           JOIN keys (foreign keys), ORDER BY columns (index avoids sort), covering indexes
           (index-only scan). <strong>When indexes are NOT used</strong>: functions on
           columns (<code className="inline-code">WHERE LOWER(email) = ?</code>), type
           mismatches (string vs number), OR conditions (may use index merge), low selectivity
           (few distinct values).
-        </p>
+        </HighlightBlock>
 
         <p>
           Optimization: <strong>Create appropriate indexes</strong> (WHERE, JOIN, ORDER BY
@@ -264,18 +271,21 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Optimization Approaches</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Different optimization approaches have trade-offs. Understanding them helps you
           choose the right technique for each situation.
-        </p>
+        </HighlightBlock>
 
         <h3>Index Scan vs Sequential Scan</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Index scan</strong>: Use index to find matching rows. Best for: selective
           queries (few rows match, &lt;10% of table), indexed columns. Trade-offs: random
           I/O (slower per row), index lookup overhead.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Sequential scan</strong>: Read entire table. Best for: non-selective
@@ -342,20 +352,23 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Query Optimization</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Start with EXPLAIN ANALYZE.</strong> Never optimize blind. Run EXPLAIN
           ANALYZE on slow queries, understand execution plan, identify bottlenecks (seq
           scans, sorts, high row counts). Compare estimated vs actual rows (large
           difference = statistics issue).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Create appropriate indexes.</strong> Index WHERE, JOIN, ORDER BY columns.
           Use composite indexes for multi-column queries (follow leftmost prefix rule).
           Consider covering indexes for high-traffic queries. Remove unused indexes
           (waste storage, slow writes).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Keep statistics current.</strong> Schedule ANALYZE: daily for high-change
@@ -391,18 +404,21 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>SELECT * anti-pattern.</strong> Fetching all columns wastes I/O, memory,
           network. Solution: Select only needed columns. Benefit: less data transferred,
           enables covering indexes.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Correlated subqueries.</strong> Subquery references outer query, executes
           once per outer row (very slow). Solution: Rewrite as JOIN or use window functions.
           Benefit: executes once, not N times.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>N+1 queries.</strong> Fetch parent (1 query), then fetch children for
@@ -439,20 +455,23 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Order Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce order search: <code className="inline-code">SELECT * FROM orders WHERE
           customer_id = ? AND status = 'pending' ORDER BY created_at DESC LIMIT 20</code>.
           Slow (5 seconds): sequential scan, sort. Optimized: composite index
           <code className="inline-code">(customer_id, status, created_at)</code>, select
           specific columns. Result: index scan, no sort (50ms). 100x improvement.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This pattern works because queries filter by customer_id and status, sort by
           created_at. Composite index matches query pattern exactly (filter + sort).
-        </p>
+        </HighlightBlock>
 
         <h3>Analytics Dashboard</h3>
         <p>
@@ -502,13 +521,16 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: How do you diagnose a slow query? What steps do you take?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Diagnose slow queries systematically: (1) Identify
               slow query (query logs, monitoring tools like pg_stat_statements), (2) Run
               EXPLAIN ANALYZE (understand execution plan, actual time), (3) Check for
@@ -518,7 +540,7 @@ export default function ArticlePage() {
               choice = statistics issue). Fix: (1) Add missing indexes (WHERE, JOIN,
               ORDER BY), (2) Update statistics (ANALYZE), (3) Rewrite query (eliminate
               anti-patterns), (4) Tune configuration (work_mem, effective_cache_size).
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What if EXPLAIN shows index is used but query
               is still slow? Answer: Index may not be selective enough (too many rows

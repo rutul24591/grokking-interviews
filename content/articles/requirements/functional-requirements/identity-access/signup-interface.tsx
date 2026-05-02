@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function SignupInterfaceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Signup Interface</strong> (also called Registration or Sign-up) is the
           primary entry point for new users to create an account on a platform. It is often the
           first meaningful interaction a user has with your product, making it critical for
           conversion optimization and setting the tone for the user experience. A well-designed
           signup flow can increase conversion by 50%+, while a poor flow leads to abandoned
           signups and lost revenue.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/signup-interface-flow.svg"
@@ -48,14 +52,14 @@ export default function SignupInterfaceArticle() {
           caption="Signup Interface Flow — showing registration methods, validation, email verification, and account creation"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, designing a signup interface requires balancing
           multiple competing concerns: minimizing friction to maximize conversion, collecting
           sufficient information for personalization and security, preventing abuse (bot
           registrations, fake accounts, spam), and ensuring accessibility across devices and user
           abilities. The signup flow also sets expectations for data privacy and establishes the
           foundation for the user's relationship with the platform.
-        </p>
+        </HighlightBlock>
         <p>
           Modern signup interfaces have evolved significantly: from simple email/password forms to
           multi-step wizards with progressive profiling, from synchronous validation to real-time
@@ -69,19 +73,22 @@ export default function SignupInterfaceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Signup interface is built on fundamental concepts that determine how users register and
           how accounts are created. Understanding these concepts is essential for designing
           effective signup systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Form Design Requirements:</strong> Minimal fields (email/phone, password only —
           each additional field reduces conversion by 5-15%), clear labels (above input fields, not
           placeholder-only), appropriate input types (type="email", type="tel", type="password" for
           mobile keyboard optimization), autocomplete attributes (autocomplete="email",
           autocomplete="new-password" for password manager integration). Progressive profiling
           collects additional data post-signup, not during initial registration.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Validation Requirements:</strong> Real-time validation on blur (not keystroke),
           inline error messages below fields, green checkmarks for valid fields. Email validation
@@ -107,11 +114,14 @@ export default function SignupInterfaceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Signup architecture separates form handling from account creation, enabling flexible
           registration methods with centralized user management. This architecture is critical for
           supporting diverse signup options while maintaining security.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/signup-patterns.svg"
@@ -119,14 +129,14 @@ export default function SignupInterfaceArticle() {
           caption="Signup Patterns — comparing email/password, social, SSO, passwordless, and progressive profiling flows"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Signup flow: User navigates to signup page, selects method (email/password, social,
           passwordless). For email/password: frontend validates format (email format, password
           length), submits to backend. Backend checks rate limits, validates email (not already
           registered — don't reveal if exists), checks password against breach database, creates
           account in "unverified" state, sends verification email. User clicks verification link,
           account activated, redirect to onboarding or dashboard.
-        </p>
+        </HighlightBlock>
         <p>
           Bot prevention architecture includes: reCAPTCHA v3 (invisible scoring), honeypot fields
           (server-side rejection), rate limiting (per IP, per email, exponential backoff), device
@@ -153,23 +163,26 @@ export default function SignupInterfaceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing signup interface involves trade-offs between conversion, data collection, and
           security. Understanding these trade-offs is essential for making informed architecture
           decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Single-Page vs Multi-Step Signup</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Single-Page:</strong> All fields on one page. Faster completion, less
               friction. Limitation: can feel overwhelming with many fields.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Multi-Step:</strong> Fields split across steps with progress indicator.
               Shows progress, reduces cognitive load. Limitation: more clicks, higher abandonment.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Single-page for simple signup (email + password
               only). Multi-step for complex signup (multiple required fields). Test both with your
@@ -217,19 +230,22 @@ export default function SignupInterfaceArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing signup interface requires following established best practices to ensure
           conversion, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Conversion Optimization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Minimize required fields (email + password only) — each additional field reduces
           conversion by 5-15%. Offer social signup options (Google, Apple, Facebook) — prominent
           placement, one-click signup. Show password requirements upfront (not after typing) —
           reduce validation errors. Enable password visibility toggle — users can verify password.
           Allow paste for password field (password managers) — don't block paste.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
         <p>
@@ -260,22 +276,25 @@ export default function SignupInterfaceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing signup interface to ensure high conversion,
           usable, and maintainable signup systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Too many required fields:</strong> Each field reduces conversion by 5-15%,
             users abandon. <strong>Fix:</strong> Request only email + password initially. Use
             progressive profiling for additional data post-signup.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Obscure password rules:</strong> "Must contain uppercase, number, symbol"
             frustrates users, doesn't improve security. <strong>Fix:</strong> Follow NIST
             guidelines — minimum 8 characters, no composition rules, check against breach
             databases.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No social signup:</strong> Forces users to remember another password, higher
             friction. <strong>Fix:</strong> Offer Google, Apple, Facebook signup. Make buttons
@@ -318,16 +337,19 @@ export default function SignupInterfaceArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Signup interface is critical for user acquisition. Here are real-world implementations
           from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer App (Spotify)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> High signup abandonment during onboarding. Users frustrated
           with long forms.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Minimal form (email + password only). Social signup (Google,
           Facebook, Apple). Progressive profiling post-signup (collect name, preferences after
@@ -420,14 +442,17 @@ export default function SignupInterfaceArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of signup interface design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you optimize signup conversion rates?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you optimize signup conversion rates?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Minimize friction: (1) Request only email + password initially. (2) Offer social
               signup (Google, Apple, Facebook). (3) Show password requirements upfront. (4) Enable

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function KaratsubaMultiplicationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Karatsuba multiplication</span> is a
           divide-and-conquer algorithm that multiplies two n-digit numbers using only{" "}
           <span className="font-semibold">three</span> recursive sub-multiplications instead
           of the four needed by the schoolbook split. This drops the running time from
           Θ(n²) to Θ(n^(log₂ 3)) ≈ Θ(n^1.585) — the first sub-quadratic multiplication
           algorithm in history.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Anatoly Karatsuba published it in 1962 as a 23-year-old graduate student under
           Andrey Kolmogorov, who had conjectured that Θ(n²) was optimal. Karatsuba refuted
           the conjecture in a single weekend. The technique opened a half-century of
           progressively faster multiplication algorithms — Toom–Cook (1963), Schönhage–
           Strassen (1971), Fürer (2007), and Harvey–van der Hoeven's O(n log n) (2019).
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           In practice, Karatsuba is the workhorse of bignum libraries (GMP, Python int, Java
           BigInteger, OpenSSL) for medium-sized inputs — typically 30 to a few thousand
@@ -54,20 +58,23 @@ export default function KaratsubaMultiplicationArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Split each number in half.</span> Write
           x = x₁·B^(n/2) + x₀ and y = y₁·B^(n/2) + y₀ where B is the base (10 for decimal,
           2³² for word-level bignum). Schoolbook expansion gives
           x·y = x₁y₁·B^n + (x₁y₀ + x₀y₁)·B^(n/2) + x₀y₀ — four products of n/2-digit
           numbers.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">The Karatsuba identity.</span> Compute
           z₂ = x₁·y₁, z₀ = x₀·y₀, and z₁ = (x₁ + x₀)(y₁ + y₀) − z₂ − z₀. Algebraically,
           (x₁ + x₀)(y₁ + y₀) = x₁y₁ + x₁y₀ + x₀y₁ + x₀y₀. Subtracting z₂ and z₀ leaves
           exactly the cross-term x₁y₀ + x₀y₁ — the middle coefficient. One recursive
           multiplication recovers the sum we'd otherwise need two for.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Recurrence.</span> T(n) = 3·T(n/2) + Θ(n). Master
           Theorem Case 1: leaf-work n^(log₂ 3) ≈ n^1.585 dominates the linear combine.
@@ -105,20 +112,23 @@ export default function KaratsubaMultiplicationArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Recursive structure.</span> The algorithm
           recurses until reaching a base case where schoolbook is faster. Each level
           splits operands in half, makes three recursive calls, and combines via additions
           and shifts. Implementation typically uses a fixed scratch buffer or stack
           allocation to avoid per-call malloc.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Base-case threshold.</span> Practical libraries
           switch to schoolbook below 30–80 word-sized digits. GMP's
           <code>MUL_TOOM22_THRESHOLD</code> is auto-tuned per CPU at build time. Below the
           threshold, schoolbook's tight inner loop with vector instructions (AVX-512,
           ARMv8 NEON) outruns Karatsuba's recursion overhead.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Memory pattern.</span> Karatsuba's three sub-
           multiplications are independent — perfect for parallelism — but they share input
@@ -151,17 +161,20 @@ export default function KaratsubaMultiplicationArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Karatsuba vs schoolbook.</span> Below ~30 digits,
           schoolbook wins because Karatsuba's recursion overhead and additions dominate.
           Above ~80 digits, Karatsuba pulls ahead and the gap widens with size.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Karatsuba vs Toom–Cook.</span> Toom-3 has a
           better exponent (1.465 vs 1.585) but higher constants — five recursive calls vs
           three, more complex evaluation/interpolation. Crosses over above ~250 digits.
           Toom-4, Toom-6.5, Toom-8.5 each push the threshold higher.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Karatsuba vs Schönhage–Strassen.</span> SSA uses
           number-theoretic transforms (FFT in finite fields) and runs in O(n log n log log
@@ -184,17 +197,20 @@ export default function KaratsubaMultiplicationArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Tune the base-case threshold per platform.</span>{" "}
           The exact crossover depends on cache, branch predictor, vectorization, and
           compiler. GMP runs autotuners at build time; for hand-rolled code, profile both
           paths across operand sizes and pick the inflection point.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Pre-allocate scratch space.</span> A single
           arena allocated at the top, sized 2n words, suffices for all recursive levels.
           Per-call malloc destroys performance.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Avoid full sign handling inside the recursion.
           </span> Strip signs at the top, recurse on absolute values, restore sign at the
@@ -221,16 +237,19 @@ export default function KaratsubaMultiplicationArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Negative middle term.</span> Some Karatsuba
           variants (using x₁ − x₀ instead of x₁ + x₀ to avoid carry growth) produce a
           signed middle product. Forgetting to track the sign flips the result silently.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Carry beyond n/2.</span> The sum (x₁ + x₀) can
           be one bit longer than n/2. Naively recursing on n/2 produces a truncated
           product. Pad to n/2 + 1 or use a separate handler for the carry digit.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Recursing below the schoolbook threshold.</span>{" "}
           Calling Karatsuba on 4-digit numbers is slower than schoolbook. Always check
@@ -259,18 +278,21 @@ export default function KaratsubaMultiplicationArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">RSA &amp; ECC cryptography.</span> 2048- and
           4096-bit RSA modular multiplication uses Karatsuba inside Montgomery reduction.
           OpenSSL, Bouncy Castle, and libsecp256k1 (Bitcoin) all dispatch to Karatsuba
           above small-key thresholds.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Computer algebra systems.</span> Mathematica,
           SageMath, Maple, Maxima — all rely on GMP or FLINT, which use Karatsuba for
           medium-precision arithmetic. Symbolic differentiation, polynomial GCD, factoring
           algorithms generate large bignums routinely.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Programming-language bigints.</span> Python's
           built-in <code>int</code>, Java's <code>BigInteger</code>, JavaScript's
@@ -303,16 +325,19 @@ export default function KaratsubaMultiplicationArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Derive Karatsuba's recurrence."</span> Three
           sub-multiplications on n/2-digit operands, plus O(n) additions and shifts: T(n)
           = 3T(n/2) + Θ(n) → Θ(n^(log₂ 3)).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Why isn't it always used?"</span> Constants.
           Schoolbook is faster below ~30 digits because Karatsuba does extra additions and
           recursion overhead.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">"How does Toom-3 generalize Karatsuba?"</span>{" "}
           Split each operand into 3 parts (degree-2 polynomial); evaluate the product

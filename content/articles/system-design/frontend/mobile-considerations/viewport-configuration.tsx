@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function ViewportConfigurationArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Viewport Configuration</strong> controls how a webpage is
           displayed on mobile devices through the meta viewport tag. The
           viewport is the visible area of a webpage — on desktop, this is the
@@ -46,8 +50,8 @@ export default function ViewportConfigurationArticle() {
           entire page (typically 980px wide), making text tiny and requiring
           pinch-to-zoom. The meta viewport tag tells the browser to match the
           viewport to the device width, enabling proper responsive design.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, viewport configuration involves
           understanding the difference between visual viewport (what user sees)
           and layout viewport (what CSS uses for layout), handling mobile
@@ -55,7 +59,7 @@ export default function ViewportConfigurationArticle() {
           quirks (iOS Safari zoom on input focus, Android address bar overlap).
           Proper viewport configuration is foundational — without it, responsive
           design doesn&apos;t work correctly.
-        </p>
+        </HighlightBlock>
         <p>
           Viewport configuration involves several technical considerations.{" "}
           <strong>Initial scale</strong> — starting zoom level (1.0 = 100%, no
@@ -79,20 +83,23 @@ export default function ViewportConfigurationArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Meta Viewport Tag:</strong>{" "}
             <code>&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</code>.{" "}
             <code>width=device-width</code> matches viewport to screen width.{" "}
             <code>initial-scale=1.0</code> starts at 100% zoom. Required for
             responsive design.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Visual Viewport:</strong> What the user actually sees —
             excludes browser UI (address bar, toolbar). Changes when address bar
             shows/hides. Accessed via <code>visualViewport</code> API. Important
             for fixed/sticky positioning.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Layout Viewport:</strong> What CSS uses for layout — the
             coordinate system for CSS. Typically larger than visual viewport
@@ -132,13 +139,16 @@ export default function ViewportConfigurationArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Viewport configuration architecture consists of the meta viewport tag
           (initial setup), CSS viewport units (responsive sizing), and
           JavaScript viewport APIs (dynamic handling). The architecture must
           handle different mobile browsers (iOS Safari, Android Chrome), notched
           devices, and dynamic viewport changes (address bar show/hide).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/mobile-considerations/visual-vs-layout-viewport.svg"
@@ -149,12 +159,12 @@ export default function ViewportConfigurationArticle() {
         />
 
         <h3>Mobile Browser Viewport Behavior</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>iOS Safari:</strong> Address bar at bottom (iOS 15+),
           collapses on scroll. <code>vh</code> includes address bar area — use{" "}
           <code>dvh</code> or JavaScript calculation. Zooms page when focusing
           input if font-size &lt; 16px — use 16px minimum to prevent.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Android Chrome:</strong> Address bar at top, collapses on
           scroll. <code>vh</code> more reliable than iOS. No auto-zoom on input
@@ -180,18 +190,21 @@ export default function ViewportConfigurationArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Viewport configuration involves trade-offs between control,
           accessibility, and browser compatibility.
-        </p>
+        </HighlightBlock>
 
         <h3>Scale Control Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Allow Zoom (Recommended):</strong>{" "}
           <code>user-scalable=yes</code> (default). Advantages: accessibility
           (users with vision impairment can zoom), user control. Limitations:
           users might zoom and break layout. Best for: all public websites.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Disable Zoom (Not Recommended):</strong>{" "}
           <code>user-scalable=no</code>. Advantages: consistent layout.
@@ -230,19 +243,22 @@ export default function ViewportConfigurationArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Always Include Viewport Meta Tag:</strong>{" "}
             <code>&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</code>.
             First thing in <code>&lt;head&gt;</code>. Without it, responsive
             design doesn&apos;t work.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Don&apos;t Disable Zoom:</strong> Never use{" "}
             <code>user-scalable=no</code> or <code>maximum-scale=1</code>.
             Accessibility violation (WCAG 2.1 Level A). Users need zoom for
             readability.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use 16px Minimum Font Size:</strong> iOS Safari zooms page
             when focusing input with font-size &lt; 16px. Use 16px minimum for
@@ -271,17 +287,20 @@ export default function ViewportConfigurationArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing Viewport Meta Tag:</strong> Site renders as desktop
             on mobile, tiny text, requires pinch-to-zoom. Always include viewport
             meta tag — it&apos;s the foundation of mobile web.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Disabling Zoom:</strong>{" "}
             <code>user-scalable=no</code> fails WCAG accessibility. Users with
             vision impairment can&apos;t read content. Always allow zoom.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>100vh on Mobile:</strong>{" "}
             <code>height: 100vh</code> includes area behind address bar —
@@ -308,23 +327,26 @@ export default function ViewportConfigurationArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Full-Screen Mobile App Layout</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mobile web apps need full-screen layout (header, content, footer). Use{" "}
           <code>height: 100dvh</code> for container. Header: fixed top with{" "}
           <code>env(safe-area-inset-top)</code>. Footer: fixed bottom with{" "}
           <code>env(safe-area-inset-bottom)</code>. Content: scrollable between
           header and footer. Handles notches and address bar.
-        </p>
+        </HighlightBlock>
 
         <h3>Responsive Image Gallery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Image gallery with viewport-based sizing. Images sized with{" "}
           <code>width: 100vw</code> for full-bleed effect. Lightbox uses{" "}
           <code>position: fixed; inset: 0</code> to cover viewport. Handle
           address bar show/hide — lightbox should always cover visible area.
-        </p>
+        </HighlightBlock>
 
         <h3>Mobile Form Design</h3>
         <p>
@@ -346,13 +368,16 @@ export default function ViewportConfigurationArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What does the meta viewport tag do and why is it important?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Meta viewport tag controls how webpage displays on mobile.{" "}
               <code>width=device-width</code> matches viewport to screen width
               (not desktop width). <code>initial-scale=1.0</code> starts at 100%
@@ -360,7 +385,7 @@ export default function ViewportConfigurationArticle() {
               show full 980px page, text is tiny, requires pinch-to-zoom. With
               it, responsive CSS works correctly, text is readable, proper
               mobile experience.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

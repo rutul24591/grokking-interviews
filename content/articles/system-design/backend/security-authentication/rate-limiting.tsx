@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,20 +28,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Rate limiting</strong> is the practice of controlling the rate at which clients send requests to a
           server — it limits the number of requests a client can make within a defined time window. Rate limiting
           protects APIs from abuse (credential stuffing, scraping, denial-of-service), ensures fair usage across
           clients (preventing one client from monopolizing resources), and protects backend infrastructure from
           overload (preventing database exhaustion, memory exhaustion, and cascading failures).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rate limiting is essential for any public-facing API — without it, a single client can send millions of
           requests per second, overwhelming the server and degrading service for all other clients. Rate limiting
           is also a security control — it limits the rate at which an attacker can attempt credential stuffing
           (trying stolen passwords against the login endpoint), scrape data (extracting large volumes of data
           through API calls), or perform denial-of-service attacks (overwhelming the server with requests).
-        </p>
+        </HighlightBlock>
         <p>
           The evolution of rate limiting has been shaped by increasingly sophisticated attacks and the need for
           distributed systems. Early rate limiting used simple fixed windows (counting requests per minute) —
@@ -79,20 +83,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fixed window algorithm divides time into fixed intervals (e.g., 1-minute windows) and counts the
           number of requests within each window. If the count exceeds the limit, subsequent requests are rejected
           until the window resets. Fixed window is simple and memory-efficient (one counter per client per window)
           but vulnerable to boundary spike attacks — an attacker can send the full limit at the end of one window
           and the full limit at the beginning of the next window, effectively doubling the allowed rate.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The sliding window algorithm tracks requests over a rolling time window (e.g., the last 60 seconds).
           Instead of resetting at fixed intervals, the window slides continuously — a request made 61 seconds ago
           no longer counts toward the current limit. Sliding window eliminates the boundary spike problem but
           requires more memory (storing timestamps of individual requests or using a sliding window log in Redis).
           Sliding window is the recommended algorithm for most API rate limiting use cases.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/rate-limiting-diagram-1.svg"
           alt="Rate limiting algorithms comparison showing fixed window, sliding window, token bucket, and leaky bucket"
@@ -141,20 +148,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The rate limiting architecture consists of the rate limiter (which tracks request counts and enforces
           limits), the counter store (which stores request counts — in-memory for single-server, Redis for
           distributed), the rate limit policy (which defines limits per client, endpoint, and tier), and the
           response handler (which returns rate limit headers and 429 responses when limits are exceeded).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The rate limiting flow begins with the client sending a request to the API. The rate limiter extracts
           the client identifier (API key, user ID, IP address) and the endpoint path. The rate limiter checks the
           counter store for the current request count for this client and endpoint within the current window. If
           the count is below the limit, the request is processed and the counter is incremented. If the count
           exceeds the limit, the request is rejected with a 429 Too Many Requests response and a Retry-After
           header.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/rate-limiting-diagram-3.svg"
           alt="Rate limiting strategies showing per-user, per-IP, per-endpoint, and global rate limits"
@@ -191,7 +201,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In-memory versus Redis rate limiting is a trade-off between simplicity and accuracy. In-memory rate
           limiting stores counters in the server&apos;s memory — it is simple to implement and has zero network latency,
           but it is inaccurate for multi-server deployments (each server has its own counter). Redis rate limiting
@@ -200,15 +213,15 @@ export default function ArticlePage() {
           Redis is unavailable, rate limiting fails). The recommended approach is Redis rate limiting for
           production multi-server deployments, with in-memory rate limiting for single-server deployments and
           development environments.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Fixed window versus sliding window is a trade-off between memory efficiency and accuracy. Fixed window
           uses one counter per client per window — it is memory-efficient but vulnerable to boundary spike attacks.
           Sliding window uses a log of request timestamps (or a sliding window counter) — it is accurate but uses
           more memory (storing individual timestamps or maintaining multiple sub-window counters). The recommended
           approach is sliding window for most API rate limiting use cases, with fixed window for cost-sensitive
           deployments where memory is a constraint.
-        </p>
+        </HighlightBlock>
         <p>
           Token bucket versus leaky bucket is a trade-off between burst tolerance and output consistency. Token
           bucket allows bursts up to the bucket capacity — it is ideal for APIs where bursts are expected (e.g.,
@@ -235,18 +248,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use multi-tier rate limiting — apply rate limits at multiple levels (global, per-endpoint, per-user,
           per-IP) for comprehensive protection. Each tier provides an independent layer of defense — the global
           limit protects infrastructure capacity, the per-endpoint limit protects expensive operations, the
           per-user limit ensures fair usage, and the per-IP limit prevents anonymous abuse.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use sliding window or token bucket algorithms for API rate limiting — sliding window provides smooth,
           accurate limiting without boundary spike vulnerabilities, and token bucket allows bursts while
           throttling the long-term average rate. Avoid fixed window for security-critical endpoints (login,
           payment) due to the boundary spike vulnerability.
-        </p>
+        </HighlightBlock>
         <p>
           Use Redis for distributed rate limiting — Redis provides atomic INCR + EXPIRE operations, ensuring
           accurate counting across all server instances. Redis is fast (sub-millisecond latency for INCR
@@ -278,18 +294,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using fixed window for security-critical endpoints is a common pitfall. Fixed window is vulnerable to
           boundary spike attacks — an attacker can send the full limit at the end of one window and the full
           limit at the beginning of the next window, effectively doubling the allowed rate. The fix is to use
           sliding window or token bucket for security-critical endpoints (login, payment, password reset).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not using distributed rate limiting for multi-server deployments is a common pitfall. If each server
           maintains its own rate limit counters, the effective limit is multiplied by the number of servers — a
           limit of 100 requests/min per server with 10 servers becomes 1000 requests/min effective limit. The
           fix is to use a centralized counter store (Redis) for distributed rate limiting.
-        </p>
+        </HighlightBlock>
         <p>
           Setting rate limits too low is a common pitfall. If rate limits are set too low, legitimate clients
           are rejected, degrading the user experience. The fix is to set rate limits based on actual usage
@@ -315,7 +334,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses multi-tier rate limiting for its API — global limits (10,000
           requests/min across all clients), per-endpoint limits (search: 30/min per user, checkout: 10/min per
           user, export: 2/hour per user), per-user limits based on subscription tier (Free: 100/min, Pro:
@@ -323,15 +345,15 @@ export default function ArticlePage() {
           uses Redis for distributed rate limiting across 20 API server instances, with sliding window algorithm
           for accurate limiting. The platform returns rate limit headers with every response and 429 responses
           with Retry-After headers when limits are exceeded.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses strict rate limiting for its login endpoint — 5 attempts per minute
           per user, 20 attempts per minute per IP, and 1000 attempts per minute globally. The company uses token
           bucket algorithm (bucket capacity: 5, refill rate: 1 per 12 seconds) to allow short bursts while
           throttling the long-term rate. The company monitors login rate limiting metrics and alerts on clients
           consistently hitting limits (indicating credential stuffing attacks). The company has prevented over
           1 million credential stuffing attempts per month through rate limiting.
-        </p>
+        </HighlightBlock>
         <p>
           A SaaS platform uses Redis-based distributed rate limiting for its public API — each API server
           instance sends an INCR command to Redis before processing a request, and the Redis response includes
@@ -356,14 +378,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the boundary spike problem in fixed window rate limiting, and how do you fix it?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               The boundary spike problem occurs when an attacker sends the full rate limit at the end of one window and the full rate limit at the beginning of the next window — effectively doubling the allowed rate. For example, with a 100 requests/min limit, the attacker sends 100 requests at 00:59 and 100 requests at 01:01, sending 200 requests in a 2-minute period (effectively 100 requests/min average, but 200 requests in a 2-minute sliding window).
-            </p>
+            </HighlightBlock>
             <p>
               The fix is to use sliding window rate limiting — instead of fixed windows, the sliding window counts requests over a rolling time window (e.g., the last 60 seconds). This eliminates the boundary spike problem because the window slides continuously — a request made 61 seconds ago no longer counts toward the current limit. Alternatively, use token bucket algorithm, which allows bursts up to the bucket capacity but throttles the long-term average rate.
             </p>

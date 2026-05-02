@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function AuthenticationInfrastructureArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Authentication infrastructure</strong> is the system that verifies the identity of users,
           services, and devices accessing your application. It is the foundation of all security controls —
           if authentication is compromised, every other security mechanism (authorization, encryption, audit
           logging) becomes irrelevant because the attacker is operating as a legitimate identity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authentication infrastructure encompasses identity providers (IdPs), authentication protocols (OAuth
           2.0, OpenID Connect, SAML, LDAP), token formats (JWT, opaque tokens, SAML assertions), session
           management (cookies, token storage, refresh mechanisms), and multi-factor authentication (MFA).
           For modern applications, authentication must support multiple identity sources (enterprise SSO,
           social login, email/password, passkeys), scale to millions of concurrent sessions, and maintain
           sub-100ms authentication latency.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, authentication infrastructure design demonstrates
           understanding of security fundamentals, protocol expertise, and the ability to balance security
@@ -74,13 +78,16 @@ export default function AuthenticationInfrastructureArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding authentication infrastructure requires grasping several foundational concepts about
           identity verification, token management, and protocol design.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Authentication Protocols</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           OAuth 2.0 is an authorization framework that enables third-party applications to access user
           resources without exposing credentials. OpenID Connect (OIDC) builds on OAuth 2.0 to add
           authentication — it provides an ID token (JWT) that proves the user&apos;s identity. SAML is an
@@ -88,7 +95,7 @@ export default function AuthenticationInfrastructureArticle() {
           used for querying and authenticating against directory services like Active Directory. Each protocol
           serves different use cases — OAuth 2.0/OIDC for consumer and API authentication, SAML for enterprise
           SSO, LDAP for internal directory authentication.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Token Types and Lifecycles</h3>
         <p>
@@ -112,10 +119,13 @@ export default function AuthenticationInfrastructureArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authentication architecture spans the identity provider, authentication flows, token issuance,
           session management, and federation with external identity sources.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/authentication-architecture.svg"
@@ -124,14 +134,14 @@ export default function AuthenticationInfrastructureArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">OAuth 2.0 / OIDC Authentication Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The authorization code flow with PKCE is the recommended OAuth 2.0 flow for all client types. The
           client redirects the user to the authorization server with a code challenge (PKCE). The user
           authenticates and consents. The authorization server returns an authorization code. The client
           exchanges the code for tokens (access token, refresh token, ID token) using the code verifier
           (PKCE). The client uses the access token to access protected resources. When the access token
           expires, the client uses the refresh token to obtain a new access token without re-authentication.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Token Validation Architecture</h3>
         <p>
@@ -160,25 +170,28 @@ export default function AuthenticationInfrastructureArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Approach</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Approach</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>JWT Access Tokens</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>JWT Access Tokens</strong></td>
               <td className="p-3">
                 No validation round-trip. Stateless validation. Carries claims for authorization decisions.
               </td>
               <td className="p-3">
                 Cannot be revoked until expiration. Large token size. Key rotation complexity.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Opaque Access Tokens</strong></td>
               <td className="p-3">
                 Instant revocation. Small token size. Server controls all access decisions.
@@ -186,8 +199,8 @@ export default function AuthenticationInfrastructureArticle() {
               <td className="p-3">
                 Validation round-trip on every request. Authorization server becomes bottleneck.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>SMS MFA</strong></td>
               <td className="p-3">
                 Universal compatibility. No app installation required. Familiar to users.
@@ -195,7 +208,7 @@ export default function AuthenticationInfrastructureArticle() {
               <td className="p-3">
                 Vulnerable to SIM swapping, SS7 attacks. Slow delivery. Not phishing-resistant.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>TOTP MFA</strong></td>
               <td className="p-3">
@@ -221,25 +234,28 @@ export default function AuthenticationInfrastructureArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Use Authorization Code Flow with PKCE for All Clients</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The authorization code flow with PKCE (Proof Key for Code Exchange) is now the recommended OAuth
           2.0 flow for all client types — including single-page applications and mobile apps. PKCE prevents
           authorization code interception attacks by requiring a code verifier that only the legitimate
           client possesses. The implicit flow (returning tokens directly in the URL) is deprecated and
           should never be used — tokens in URLs are exposed in browser history, server logs, and referrer
           headers.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Implement Token Rotation for Refresh Tokens</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Refresh token rotation issues a new refresh token each time the old one is used. If a stolen
           refresh token is used after the legitimate user has already rotated it, the authorization server
           detects the reuse and invalidates all tokens for that session, forcing re-authentication. This
           provides both security (stolen tokens are detected) and operational benefits (compromised sessions
           are automatically terminated).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Enforce MFA with Phishing-Resistant Factors</h3>
         <p>
@@ -264,26 +280,29 @@ export default function AuthenticationInfrastructureArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Building Custom Authentication from Scratch</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common and dangerous pitfall is building custom authentication infrastructure.
           Authentication protocols are subtle — a small implementation error can create catastrophic
           vulnerabilities. OAuth 2.0 has been exploited through redirect URI validation bugs, state
           parameter omission, and token leakage. JWT implementations have been compromised through algorithm
           confusion attacks (accepting unsigned tokens), weak signature verification, and exposed signing
           keys. Use a battle-tested identity provider rather than rolling your own.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Storing Tokens Insecurely</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Access tokens and refresh tokens must be stored securely. Storing tokens in localStorage exposes
           them to XSS attacks — any JavaScript on the page can read localStorage and exfiltrate tokens.
           Storing tokens in cookies without security flags (HttpOnly, Secure, SameSite) exposes them to
           CSRF and network interception attacks. The recommended approach: store access tokens in memory
           (JavaScript variables, lost on page refresh), store refresh tokens in HttpOnly, Secure, SameSite
           cookies (inaccessible to JavaScript, protected against CSRF).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Not Handling Token Expiration Gracefully</h3>
         <p>
@@ -309,9 +328,12 @@ export default function AuthenticationInfrastructureArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Google — Account Security and Passkeys</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google has pioneered the transition from passwords to passkeys (FIDO2/WebAuthn). Google accounts
           can now authenticate entirely without passwords — users verify identity through device biometrics
           (fingerprint, face recognition) or device PIN. The passkey is stored in the device&apos;s secure
@@ -319,10 +341,10 @@ export default function AuthenticationInfrastructureArticle() {
           database breach attacks. Google&apos;s authentication infrastructure handles billions of
           authentications per day with sub-200ms latency, using a globally distributed identity provider
           with automatic failover across regions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Okta — Enterprise Identity Federation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Okta serves as the identity provider for over 100,000 organizations, federating authentication
           across hundreds of applications. Okta&apos;s architecture supports multiple protocols (SAML, OIDC,
           SCIM, WS-Federation) and integrates with hundreds of identity sources (Active Directory, LDAP,
@@ -330,7 +352,7 @@ export default function AuthenticationInfrastructureArticle() {
           posture, behavioral biometrics) and applies adaptive MFA — requiring additional factors only when
           risk is elevated. This balances security and user experience — legitimate users authenticate
           seamlessly while anomalous logins face additional scrutiny.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Stripe — API Authentication at Scale</h3>
         <p>
@@ -357,19 +379,22 @@ export default function AuthenticationInfrastructureArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authentication infrastructure is the primary target for attackers — compromising authentication grants access to all user data and actions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Authentication Attack Vectors</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Credential Stuffing:</strong> Attackers use breached credential databases to automate login attempts. Mitigation: implement rate limiting per account, detect and block automated login patterns, require CAPTCHA after failed attempts, offer passwordless authentication.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Token Theft:</strong> Access tokens stolen via XSS, network interception, or insecure storage. Mitigation: use short-lived access tokens (5-15 min), store tokens securely (HttpOnly cookies for refresh tokens, memory for access tokens), implement token binding to prevent replay across different clients.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Phishing:</strong> Fake login pages that capture credentials. Mitigation: use FIDO2/WebAuthn (phishing-resistant), implement domain-bound authentication (passkeys are bound to the legitimate domain), educate users about phishing indicators, monitor for lookalike domains.
             </li>
@@ -410,19 +435,22 @@ export default function AuthenticationInfrastructureArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authentication infrastructure must be validated through systematic testing — security vulnerabilities, protocol compliance, and failure handling must all be verified.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Authentication Testing Suite</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Protocol Conformance Tests:</strong> Verify OAuth 2.0 / OIDC flows execute correctly — authorization code exchange, token refresh, token revocation, and PKCE validation. Test with standard OAuth testing tools (OAuth.tools, oidc-tester). Verify that all required parameters are validated and invalid requests are rejected.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Token Validation Tests:</strong> Test JWT signature verification with valid, invalid, and expired tokens. Verify audience and issuer claim validation. Test opaque token introspection with valid, revoked, and expired tokens. Verify that invalid tokens are rejected with appropriate 401 responses.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>MFA Enforcement Tests:</strong> Verify that MFA is enforced for all accounts. Test MFA bypass attempts (skipping MFA step, using expired MFA codes, replaying MFA codes). Test MFA fallback behavior when the primary factor is unavailable. Verify step-up authentication for high-risk operations.
             </li>

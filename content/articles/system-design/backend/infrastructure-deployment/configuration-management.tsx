@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,12 +38,15 @@ export default function ConfigurationManagementArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Configuration management</strong> is the practice of automating the configuration of servers, applications, and infrastructure — ensuring that systems are consistently configured to a desired state, and maintaining that state over time. Unlike Infrastructure as Code (which provisions infrastructure — creating servers, networks, databases), configuration management configures existing infrastructure — installing software, configuring services, managing users, applying security policies, and maintaining configuration consistency across hundreds or thousands of servers. Configuration management tools (Ansible, Puppet, Chef, SaltStack) enforce desired configuration states, detect and correct configuration drift, and provide auditability (who changed what configuration, when, and why).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, configuration management is essential for managing infrastructure at scale. Before configuration management, servers were configured manually (SSH into each server, install packages, edit configuration files, restart services), which was error-prone (manual mistakes, inconsistent configurations), non-reproducible (different servers had different configurations), and unmanageable at scale (configuring hundreds of servers manually is impractical). Configuration management solves all of these problems — configuration is defined declaratively (desired state), applied automatically (tools configure servers to match desired state), version-controlled (changes are tracked in Git), and idempotent (applying the same configuration multiple times produces the same result).
-        </p>
+        </HighlightBlock>
         <p>
           Configuration management involves several technical considerations. Push vs. pull models (Ansible pushes configuration from a control node to servers; Puppet and Chef pull configuration from a central server — push is simpler, pull is more scalable). Agent-based vs. agentless (Ansible is agentless — uses SSH; Puppet and Chef require agents installed on servers — agentless is simpler to set up, agent-based provides more features). Idempotency (applying the same configuration multiple times produces the same result — essential for configuration management, because configuration is applied repeatedly to maintain desired state). Declarative vs. imperative (declarative — you specify the desired state, the tool figures out how to achieve it; imperative — you specify the steps — declarative is preferred for configuration management).
         </p>
@@ -54,12 +58,15 @@ export default function ConfigurationManagementArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Desired State:</strong> The target configuration for a server or group of servers encompasses installed packages, running services, configuration files, user accounts, and security policies. The desired state is defined declaratively through Ansible playbooks, Puppet manifests, or Chef recipes — specifying what the configuration should be, not how to achieve it. The configuration management tool enforces the desired state by configuring servers to match the desired state, detecting drift, and correcting deviations. This declarative approach ensures that configuration intent is clear, auditable, and reproducible across environments.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Idempotency:</strong> Applying the same configuration multiple times produces the same result. Idempotency is essential for configuration management because configuration is applied repeatedly to maintain desired state, correct drift, and configure new servers. If configuration is not idempotent, applying it multiple times produces different results — for example, adding a line to a configuration file every time it is applied causes the file to grow with duplicate lines. Idempotent configuration ensures that applying the same configuration always produces the same result, regardless of how many times it is applied. Ansible, Puppet, and Chef all enforce idempotency through their modules and resources by checking current state before making changes.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Push vs. Pull:</strong> The push model used by Ansible sends configuration from a control node to servers via SSH. The control node connects to servers, applies configuration, and disconnects. Push is simpler to set up because no agents need to be installed on servers, but it does not scale well to thousands of servers since the control node must connect to each server sequentially or in parallel batches. The pull model used by Puppet and Chef has servers periodically connect to a central server, fetch configuration, and apply it independently. Pull scales well to thousands of servers because servers fetch configuration on their own schedule, but it requires agents and a central server to manage.
         </p>
@@ -85,12 +92,15 @@ export default function ConfigurationManagementArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Configuration management architecture consists of the configuration repository (declarative specifications for server configuration — Ansible playbooks, Puppet manifests, Chef recipes), the control node or central server (managing configuration distribution — Ansible control node pushes configuration, Puppet/Chef server distributes configuration), and the target servers (receiving and applying configuration — Ansible targets are configured via SSH, Puppet/Chef targets run agents that fetch and apply configuration). The flow begins with developers writing configuration (declarative specifications for server configuration), committing the configuration to version control (Git), and applying the configuration to servers (Ansible pushes configuration, Puppet/Chef agents pull configuration). The configuration management tool enforces the desired state (configuring servers to match desired state), detects drift (comparing actual configuration with desired state), and corrects drift (reapplying configuration).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For production deployments, configuration management is integrated into CI/CD pipelines — the pipeline validates configuration (syntax checks, dry runs), applies configuration to staging servers (testing configuration before production), and applies configuration to production servers (after validation). This ensures that all configuration changes are validated, tested, and tracked before affecting production servers.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/ansible-vs-puppet-chef.svg"
@@ -123,14 +133,17 @@ export default function ConfigurationManagementArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Configuration management involves trade-offs between push and pull models, agentless and agent-based approaches, and configuration management and Infrastructure as Code. Understanding these trade-offs is essential for choosing the right configuration management strategy.
-        </p>
+        </HighlightBlock>
 
         <h3>Push vs. Pull Model</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Push (Ansible):</strong> Configuration is pushed from a control node to servers. Advantages: simpler setup (no agents to install, manage, or update), immediate configuration application (configuration is applied when you run the playbook), no central server to manage. Limitations: does not scale well to thousands of servers (control node must connect to each server), no continuous configuration enforcement (configuration is applied on demand, not continuously), requires SSH access to all servers. Best for: small to medium server fleets, organizations wanting simple setup, ad-hoc configuration management.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Pull (Puppet, Chef):</strong> Servers pull configuration from a central server. Advantages: scales well to thousands of servers (servers fetch configuration independently), continuous configuration enforcement (agents periodically apply configuration, correcting drift automatically), no need for SSH access from control node to servers. Limitations: requires agents (install, manage, update agents on all servers), requires central server (Puppet server, Chef server — manage and maintain), configuration application is delayed (agents apply configuration on a schedule, not immediately). Best for: large server fleets, organizations wanting continuous configuration enforcement, teams already using Puppet or Chef.
         </p>
@@ -158,12 +171,15 @@ export default function ConfigurationManagementArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Write Idempotent Configuration:</strong> Ensure that configuration is idempotent by applying the same configuration multiple times and verifying it produces the same result. Use idempotent modules such as Ansible&apos;s package, service, copy, and template modules, which check current state before making changes. Avoid imperative commands such as shell commands and script executions, as they are not idempotent unless you add explicit idempotency checks. Idempotent configuration ensures that configuration can be applied repeatedly without side effects, which is fundamental to reliable configuration management at scale.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use Roles and Modules:</strong> Package common configuration patterns into reusable roles for web servers, database servers, and monitoring servers, and use modules for reusable configuration tasks like installing packages, starting services, copying files, and creating users. Roles and modules reduce duplication by using the same role across servers, ensure consistency by guaranteeing all servers of the same type have the same configuration, and simplify configuration by leveraging existing roles and modules rather than writing configuration from scratch.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Version Configuration:</strong> Store configuration in version control using Git, not in local files or central servers. Version control enables change tracking by recording who changed what configuration, when, and why. It enables code review by requiring review of configuration changes before applying them. It enables rollback by reverting to previous configuration if changes cause issues, and it enables branching by developing new configuration in branches and merging to main when ready. Never apply unversioned configuration to production servers under any circumstances.
         </p>
@@ -181,12 +197,15 @@ export default function ConfigurationManagementArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Non-Idempotent Configuration:</strong> Writing configuration that is not idempotent causes applying the same configuration multiple times to produce different results. Non-idempotent configuration leads to unexpected behavior such as duplicate lines in configuration files, duplicate packages installed, and services started multiple times. Always use idempotent modules like package, service, copy, and template, and avoid imperative commands such as shell commands and script executions unless you add explicit idempotency checks. Non-idempotent configuration is the most common source of configuration management failures and undermines the reliability guarantees that configuration management is meant to provide.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Manual Server Changes:</strong> Making manual changes to servers by SSHing into servers, changing configuration files, or installing packages outside of configuration management causes configuration drift where actual configuration differs from desired state. Manual changes are difficult to detect and correct, are not tracked with any record of who changed what, are not reviewable before applying, and are not reproducible on other servers. Always make server changes through configuration management, and treat any manual server change as a configuration management failure that must be corrected through the configuration management system.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Monolithic Configuration:</strong> Writing all configuration in a single file with hundreds or thousands of lines creates configuration that is difficult to read, maintain, review, and reuse. Monolithic configuration should be broken into roles for reusable packages targeting specific server types such as web servers, database servers, and monitoring servers, and into modules for reusable tasks like installing packages, starting services, and copying files. Separate environments with separate configuration for development, staging, and production to prevent cross-environment contamination and enable environment-specific tuning.
         </p>
@@ -204,16 +223,19 @@ export default function ConfigurationManagementArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Server Fleet Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Organizations managing hundreds or thousands of servers use configuration management to ensure consistent server configuration (same packages, same services, same security policies across all servers). Configuration management enforces desired state (all servers are configured to match the desired state), detects drift (servers that have been manually changed are identified), and corrects drift (reapplying configuration to match desired state). This pattern is used by organizations of all sizes to maintain consistent, secure, and reliable server fleets.
-        </p>
+        </HighlightBlock>
 
         <h3>Application Deployment</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Configuration management is used to deploy applications to servers (installing application code, configuring services, restarting services). Configuration management ensures that application deployment is consistent (all servers have the same application version, same configuration, same services running), reproducible (the same deployment can be reapplied to produce the same result), and auditable (all deployment changes are tracked in version control). This pattern is used by organizations practicing continuous deployment — configuration management deploys new application versions to servers automatically.
-        </p>
+        </HighlightBlock>
 
         <h3>Security Compliance</h3>
         <p>
@@ -229,15 +251,18 @@ export default function ConfigurationManagementArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is configuration management and why is it important?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Configuration management is the practice of automating the configuration of servers and infrastructure — ensuring that systems are consistently configured to a desired state, and maintaining that state over time. Configuration management eliminates manual server configuration (reducing operational overhead and human error), ensures server consistency (all servers have the same configuration), enables rapid provisioning (new servers are configured automatically), and provides auditability (all configuration changes are tracked). Configuration management is essential for managing infrastructure at scale — organizations cannot configure hundreds or thousands of servers manually.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

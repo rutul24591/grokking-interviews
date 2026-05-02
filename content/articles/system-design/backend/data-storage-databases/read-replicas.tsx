@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -79,21 +80,24 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Primary-Replica Architecture</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Primary-Replica Setup</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Primary-replica architecture</strong> has one primary (master) database and
           one or more replicas (slaves, secondaries). The primary handles all writes (INSERT,
           UPDATE, DELETE). Replicas replicate changes from primary and serve read-only traffic
           (SELECT). This separation enables independent scaling of reads and writes.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Replication is typically <strong>asynchronous</strong>: primary commits writes, then
           sends changes to replicas. Replicas apply changes independently. This provides low
           write latency (primary doesn't wait for replicas) but introduces <strong>replication
           lag</strong> (replicas are behind primary by some time).
-        </p>
+        </HighlightBlock>
 
         <p>
           Some databases support <strong>semi-synchronous replication</strong>: primary waits
@@ -153,23 +157,26 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Failover &amp; Monitoring</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Failover Mechanisms</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When primary fails, a replica must be promoted to primary to restore write capability.
           This is <strong>failover</strong>. Failover can be <strong>automatic</strong>
           (database detects failure, promotes replica automatically) or <strong>manual</strong>
           (DBA decides when to failover).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Automatic failover benefits: <strong>Fast recovery</strong> (seconds vs minutes for
           manual), <strong>No human intervention</strong> (works 24/7), <strong>Consistent
           process</strong> (no human error). Trade-offs: <strong>False positives</strong>
           (network blip triggers unnecessary failover), <strong>Data loss risk</strong> (if
           lag greater than 0, unreplicated changes lost), <strong>Split-brain risk</strong> (if old
           primary comes back online, two primaries exist).
-        </p>
+        </HighlightBlock>
 
         <p>
           Manual failover benefits: <strong>Human judgment</strong> (DBA assesses situation
@@ -236,19 +243,22 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Read Replicas vs Alternatives</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Read replicas are one of several scaling strategies. Understanding the trade-offs
           helps you choose the right approach—or combine multiple strategies.
-        </p>
+        </HighlightBlock>
 
         <h3>Read Replicas Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Read scaling</strong> is the primary advantage. Distribute reads across
           replicas, enabling linear read throughput scaling. Add more replicas for more read
           capacity. This is essential for read-heavy workloads (content feeds, product
           catalogs, analytics).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Geographic distribution</strong> enables low-latency reads. Place replicas
@@ -331,18 +341,21 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Read Replicas</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Monitor replication lag.</strong> Track lag continuously, alert on thresholds
           (10 seconds warning, 60 seconds critical). Investigate lag spikes immediately. Lag
           is the #1 issue with read replicas.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement read-your-writes routing.</strong> After a user writes, route
           their reads to primary for a window (5-10 seconds). This ensures users see their
           own changes. Implement via session tracking or sticky routing.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Use semi-sync for critical data.</strong> For financial, inventory, or
@@ -378,18 +391,21 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Ignoring replication lag.</strong> Assuming replicas are in sync causes
           stale reads. Solution: Monitor lag, implement read-your-writes routing, educate
           developers about eventual consistency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>No failover testing.</strong> Failover during incident is stressful and
           error-prone. Solution: Test quarterly, document runbook, automate where possible,
           measure RTO/RPO.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Writing to replicas.</strong> Some databases allow writes to replicas
@@ -420,20 +436,23 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Content Feeds (Twitter, Facebook)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms use read replicas for feed reads. Primary handles post
           creation, replicas serve feed reads (1000:1 read:write ratio). Benefits: read
           scaling (thousands of replicas for global traffic), geographic distribution (users
           read from local replica), analytics offload (trending algorithms run on replicas).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This pattern works because social media is read-heavy (most users consume, few
           create), eventual consistency is acceptable (seeing a post 5 seconds late is fine),
           and geographic distribution reduces latency.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce (Amazon, Shopify)</h3>
         <p>
@@ -482,21 +501,24 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: When would you use read replicas? What are the signs that read replicas are
               needed?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Use read replicas for read-heavy workloads. Signs: (1)
               Read:write ratio more than 10:1, (2) Primary CPU high due to read load, (3) Read queries
               slowing down, (4) Analytics queries impacting primary performance, (5) Need for
               geographic distribution (global users), (6) Need for high availability (failover
               capability). Don't use read replicas for write-heavy workloads (use sharding
               instead). Start with query optimization, indexing before adding replicas.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> How many replicas should you have? Answer: Typical
               1-5 replicas. More replicas increase replication lag. If you need more than 5,

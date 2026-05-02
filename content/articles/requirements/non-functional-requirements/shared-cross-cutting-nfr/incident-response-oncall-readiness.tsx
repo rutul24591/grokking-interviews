@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,19 +25,22 @@ export default function IncidentResponseOncallReadinessArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Incident Response &amp; On-call Readiness</strong> encompasses the people, processes, and
           tools for detecting, responding to, and recovering from production incidents. No matter how
           well-designed your system, incidents will occur. The difference between a minor blip and a
           catastrophic outage is often the quality of incident response.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On-call readiness means engineers are prepared, equipped, and supported when they are
           responsible for responding to incidents. Good on-call practices balance rapid response with
           sustainable engineer wellbeing. For staff and principal engineers, building effective incident
           response capabilities is a critical leadership responsibility that directly impacts system
           reliability, team morale, and organizational resilience.
-        </p>
+        </HighlightBlock>
         <p>
           Industry data shows that high-performing organizations achieve mean time to recovery measured in
           minutes rather than hours, maintain sustainable page rates with low burnout, and foster a
@@ -66,9 +70,12 @@ export default function IncidentResponseOncallReadinessArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Incident Severity Levels</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Clear severity definitions ensure appropriate response and resource allocation. SEV-1 represents
           a critical incident involving complete service outage, data loss, or security breach affecting
           all users. The impact includes complete service unavailability, data loss or corruption, security
@@ -91,10 +98,10 @@ export default function IncidentResponseOncallReadinessArticle() {
           minor UI glitches. Severity can change during an incident, so teams should start with
           appropriate severity based on initial information but be ready to adjust, since it is better to
           over-escalate initially than under-escalate and lose response time.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Incident Roles</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Clear role separation enables effective incident response, and each person should have exactly
           one role during an incident. The Incident Commander owns the incident and coordinates all
           response activities, including coordinating response efforts, making key decisions, assigning
@@ -113,7 +120,7 @@ export default function IncidentResponseOncallReadinessArticle() {
           exceeding 4 to 6 hours, roles may need to be handed off with thorough briefing of the incoming
           person, documentation of current status and open questions, and the outgoing person remaining
           available for questions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/shared-cross-cutting-nfr/incident-command-structure.svg"
@@ -151,9 +158,12 @@ export default function IncidentResponseOncallReadinessArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Alerting Pipeline Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The alerting pipeline forms the detection foundation of incident response. Monitoring systems
           collect metrics from infrastructure, applications, and business layers, feeding them into a
           time-series database. Alerting rules evaluate these metrics against thresholds and anomaly
@@ -170,10 +180,10 @@ export default function IncidentResponseOncallReadinessArticle() {
           rather than relying on a single source, including automated monitoring alerts, user reports
           through support tickets and social media, internal reports from engineers noticing issues,
           synthetic monitoring through automated health checks, and third-party vendor notifications.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Incident Triage and Escalation Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When an alert fires, the on-call engineer follows a structured triage flow. First, the alert is
           acknowledged to start the response clock. The on-call assesses severity based on user impact,
           feature impact, and the number of users affected. An Incident Commander is assigned—often the
@@ -188,7 +198,7 @@ export default function IncidentResponseOncallReadinessArticle() {
           manager is notified, and the status page is updated within 30 minutes. Throughout the response,
           the key principle is to restore service first and fix the root cause second—mitigation takes
           priority over prevention during active incidents.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Communication Infrastructure</h3>
         <p>
@@ -264,9 +274,12 @@ export default function IncidentResponseOncallReadinessArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Follow-the-Sun vs Single-Region On-Call</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Organizations with global teams face a choice between follow-the-sun on-call rotations and
           single-region coverage. Follow-the-sun distributes on-call across time zones so that engineers
           handle pages only during their local business hours, eliminating sleep disruption entirely. This
@@ -278,10 +291,10 @@ export default function IncidentResponseOncallReadinessArticle() {
           most global organizations, follow-the-sun is preferable for SEV-1 and SEV-2 incidents where
           rapid response is critical, while single-region on-call may suffice for lower-severity incidents
           that can wait until business hours.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Centralized vs Distributed Incident Command</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Centralized incident command designates a single Incident Commander who coordinates all response
           activities across the entire organization. This provides clear decision authority, consistent
           communication, and unified prioritization, but the IC can become a bottleneck for large
@@ -292,7 +305,7 @@ export default function IncidentResponseOncallReadinessArticle() {
           organizations, a centralized IC works well for single-service or small incidents, while a
           distributed command structure with an overall coordinator and service-specific leads is necessary
           for large multi-service outages.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Automated vs Manual Alerting</h3>
         <p>
@@ -440,9 +453,12 @@ export default function IncidentResponseOncallReadinessArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Preparation and Readiness</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Maintaining up-to-date runbooks for all critical services is the foundation of effective
           incident response. Runbooks should be tested regularly through fire drills and game days that
           simulate real incident scenarios, ensuring that any on-call engineer can execute them without
@@ -455,10 +471,10 @@ export default function IncidentResponseOncallReadinessArticle() {
           manageable duration, bi-weekly shifts for fewer handoffs and longer recovery periods, and a
           minimum team size of four people for weekly rotation with ideally six or more for sustainable
           on-call. Solo on-call should never occur—there must always be a backup.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Incident Execution</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           During an incident, the team should follow the established process consistently, communicate
           frequently to all stakeholders, document decisions and actions as they occur, mitigate service
           impact before fixing the root cause, and know when to escalate to higher severity or additional
@@ -467,7 +483,7 @@ export default function IncidentResponseOncallReadinessArticle() {
           contact information, and documenting the handoff in a shared channel. Communication should be
           frequent and structured, with a dedicated communications lead providing regular updates to
           stakeholders at fixed intervals.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Post-Incident and Continuous Improvement</h3>
         <p>
@@ -496,7 +512,10 @@ export default function IncidentResponseOncallReadinessArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Operating without clear roles during incidents leads to everyone trying to do everything, which
           is resolved by assigning roles early and sticking to them throughout the incident. Poor
           communication leaves stakeholders in the dark and is prevented by designating a communications
@@ -510,17 +529,27 @@ export default function IncidentResponseOncallReadinessArticle() {
           completion. Hero culture that relies on individuals rather than documented processes should be
           replaced by documented procedures and cross-training. Ignoring on-call health leads to burnout
           and turnover, requiring metric tracking, fair compensation, and page volume reduction. Attempting
-          to fix issues during an incident without safeguards is dangerous and should be avoided by having
-          rollback ready and testing fixes in staging when possible. Operating without an incident taxonomy
-          prevents trend analysis, requiring standardized severity levels and incident categorization.
-        </p>
-      </section>
+	          to fix issues during an incident without safeguards is dangerous and should be avoided by having
+	          rollback ready and testing fixes in staging when possible. Operating without an incident taxonomy
+	          prevents trend analysis, requiring standardized severity levels and incident categorization.
+	        </HighlightBlock>
+	        <HighlightBlock as="p" tier="important">
+	          A staff-level pitfall is optimizing for speed over correctness in the response loop: restarting
+	          everything, changing configs blindly, or scaling without understanding the bottleneck can amplify
+	          an incident. The mitigation is a disciplined stabilize-then-debug approach: stop the bleeding
+	          (rate limit, shed load, disable optional features), preserve evidence (logs/traces/snapshots),
+	          and apply bounded changes with clear success criteria while tracking error budgets and customer impact.
+	        </HighlightBlock>
+	      </section>
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">PagerDuty Incident Response Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           PagerDuty, as both an incident response platform provider and a practitioner of its own
           methodology, processes millions of incidents annually and publishes extensive data on incident
           response patterns. Their research shows that high-performing teams acknowledge SEV-1 incidents
@@ -531,10 +560,10 @@ export default function IncidentResponseOncallReadinessArticle() {
           templates, and integrated post-mortem workflows. They also pioneered the concept of incident
           response maturity models, helping organizations assess their readiness across detection, response,
           resolution, and learning dimensions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Google SRE Incident Response Model</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google&apos;s SRE model, documented extensively in their SRE books, has influenced incident
           response practices across the technology industry. Google uses a severity-based classification
           system with clear response time objectives, dedicated incident command training for senior
@@ -545,7 +574,7 @@ export default function IncidentResponseOncallReadinessArticle() {
           detailed, publicly-shared documents that drive industry-wide learning. They also pioneered the
           use of error budgets to balance reliability and feature velocity, connecting incident response
           to broader product decisions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Etsy Post-Mortem Culture</h3>
         <p>
@@ -585,10 +614,13 @@ export default function IncidentResponseOncallReadinessArticle() {
 
       <section>
         <h2>Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What makes a good incident commander?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What makes a good incident commander?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: A good incident commander remains calm under pressure, communicates clearly and
               frequently, delegates effectively so that the IC does not debug directly, makes decisions
               with incomplete information, ensures thorough documentation of the incident timeline and
@@ -598,7 +630,7 @@ export default function IncidentResponseOncallReadinessArticle() {
               make unilateral decisions when consensus is too slow. The IC also decides when to escalate
               to higher severity, when to bring in additional responders, and when the incident is
               resolved.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

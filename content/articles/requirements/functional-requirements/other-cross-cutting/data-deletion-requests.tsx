@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function DataDeletionRequestsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data Deletion Requests enable users to request deletion of their data from the platform. Users can submit deletion requests (submit deletion requests), track requests (track request status), receive notifications (notify of request completion), and receive confirmation (receive deletion confirmation). Data deletion requests are fundamental to user rights (users have right to delete data), regulatory compliance (meet regulatory requirements), and data privacy (protect user privacy). For platforms with user data, effective data deletion requests are essential for user rights, regulatory compliance, and data privacy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, data deletion requests architecture involves request management (manage deletion requests), request validation (validate deletion requests), data identification (identify data for deletion), data deletion (delete data), deletion confirmation (confirm deletion), and compliance tracking (track compliance). The implementation must balance user rights (users can delete data) with data integrity (maintain data integrity) and regulatory compliance (meet regulatory requirements). Poor data deletion requests lead to compliance violations, user frustration, and data privacy issues.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of data deletion requests extends beyond simple data deletion. Request management (manage deletion requests). Request validation (validate deletion requests). Data identification (identify data for deletion). Data deletion (delete data). Deletion confirmation (confirm deletion). For staff engineers, data deletion requests are a data privacy infrastructure decision affecting user rights, regulatory compliance, and data privacy.
         </p>
@@ -46,13 +50,16 @@ export default function DataDeletionRequestsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Request Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Request submission enables users to submit requests. Request form (submit via form). Request API (submit via API). Request validation (validate request). Request submission enables request submission. Benefits include user rights (users can request deletion), regulatory compliance (meet legal requirements). Drawbacks includes request overhead (processing costs), implementation complexity (submission system).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Request queue manages request queue. Request prioritization (prioritize requests). Request scheduling (schedule requests). Request processing (process requests). Request queue enables request management. Benefits include organized management (structured processing), efficient processing (queued handling). Drawbacks includes queue overhead (queue management), implementation complexity (queue system).
-        </p>
+        </HighlightBlock>
         <p>
           Request tracking tracks request status. Request pending (track pending status). Request processing (track processing status). Request complete (track complete status). Request tracking enables request tracking. Benefits include transparency (visible request status), user awareness (users know progress). Drawbacks includes tracking overhead (tracking costs), implementation complexity (tracking system).
         </p>
@@ -104,9 +111,12 @@ export default function DataDeletionRequestsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data deletion requests architecture spans request service, identification service, deletion service, and confirmation service. Request service manages requests. Identification service manages data identification. Deletion service manages data deletion. Confirmation service manages deletion confirmation. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/data-deletion-requests/deletion-architecture.svg"
@@ -117,9 +127,9 @@ export default function DataDeletionRequestsArticle() {
         />
 
         <h3>Request Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Request service manages deletion requests. Request storage (store requests). Request retrieval (retrieve requests). Request update (update requests). Request service is the core of data deletion requests. Benefits include centralization (one place for requests), consistency (same requests everywhere). Drawbacks includes complexity (manage requests), coupling (services depend on request service).
-        </p>
+        </HighlightBlock>
         <p>
           Request policies define request rules. Default requests (default requests). Request validation (validate requests). Request sync (sync requests). Request policies automate request management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function DataDeletionRequestsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data deletion requests design involves trade-offs between soft and hard deletion, comprehensive and limited identification, and automatic and manual processing. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Deletion: Soft vs. Hard</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Soft deletion (soft delete data). Pros: Recovery (data recovery), audit (audit trail), legal protection (legal protection). Cons: Storage usage (storage usage), privacy issues (privacy issues), complexity (complexity). Best for: Recovery, audit, legal protection.
-        </p>
+        </HighlightBlock>
         <p>
           Hard deletion (hard delete data). Pros: Storage savings (storage savings), privacy (privacy), compliance (compliance). Cons: No recovery (no recovery), audit issues (audit issues), legal risk (legal risk). Best for: Storage savings, privacy, compliance.
         </p>
@@ -207,13 +220,16 @@ export default function DataDeletionRequestsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide request management:</strong> Request submission. Request queue. Request tracking. Let users request.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Validate requests:</strong> Identity validation. Request validation. Deletion eligibility.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Identify data:</strong> Data discovery. Data classification. Data dependency.
           </li>
@@ -243,13 +259,16 @@ export default function DataDeletionRequestsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No request management:</strong> Can&apos;t request deletion. <strong>Solution:</strong> Provide request management.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No request validation:</strong> Can&apos;t validate request. <strong>Solution:</strong> Validate requests.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No data identification:</strong> Can&apos;t identify data. <strong>Solution:</strong> Identify data.
           </li>
@@ -279,16 +298,19 @@ export default function DataDeletionRequestsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Social Media Deletion</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms provide deletion. Account deletion (delete account). Post deletion (delete posts). Photo deletion (delete photos). Users control social media deletion.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">E-commerce Deletion</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms provide deletion. Account deletion (delete account). Order deletion (delete orders). Review deletion (delete reviews). Users control e-commerce deletion.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Cloud Service Deletion</h3>
         <p>
@@ -308,12 +330,15 @@ export default function DataDeletionRequestsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design data deletion requests that balances user rights with data integrity?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design data deletion requests that balances user rights with data integrity?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement deletion with integrity because users have right to deletion (GDPR right to erasure, CCPA right to delete) but system must maintain data integrity. Delete data: delete user data (all user data, all systems, complete deletion)—user right, compliance requirement. Validate request: validate deletion request (verify user identity, verify request valid, check legal holds)—prevent unauthorized deletion, ensure valid request. Ensure integrity: ensure data integrity (delete safely, maintain referential integrity, handle dependencies)—system remains functional after deletion. Monitor deletion: monitor deletion (track deletion progress, verify deletion complete, audit deletion)—ensure deletion actually happens, documented. The integrity insight: users want deletion but want integrity—provide deletion (all data, all systems) with validation (identity, valid, legal holds), integrity (safe, referential, dependencies), monitor (progress, verify, audit), and balance user rights with system integrity.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

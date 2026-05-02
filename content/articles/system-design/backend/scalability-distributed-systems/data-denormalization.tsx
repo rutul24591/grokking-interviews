@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Data denormalization</strong> is the deliberate introduction of
           redundant data into a database schema to optimize read performance at
           the expense of write complexity, storage efficiency, and consistency
@@ -54,8 +58,8 @@ export default function ArticlePage() {
           complex writes — is one of the most consequential design decisions a
           staff or principal engineer makes when building data-intensive systems
           at scale.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The motivation for denormalization emerges from the fundamental
           performance characteristics of relational databases. A JOIN operation
           requires the database engine to read data from two or more tables,
@@ -71,7 +75,7 @@ export default function ArticlePage() {
           serving thousands of queries per second, this latency compounds into
           saturated database connections, thread pool exhaustion, and cascading
           failures across the entire service layer.
-        </p>
+        </HighlightBlock>
         <p>
           Denormalization addresses this problem by restructuring the data so
           that the most common read queries can be served from a single table
@@ -113,8 +117,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Materialized views</strong> are the most common mechanism for
           implementing denormalization in production systems. Unlike a regular
           view (which is a stored query that executes against source tables every
@@ -135,9 +142,9 @@ export default function ArticlePage() {
           — using Kafka consumers that listen to change events and update
           Elasticsearch, Redis, or a separate read-optimized database such as
           Apache Cassandra or DynamoDB.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Write amplification</strong> is the phenomenon where a single
           logical update to the source data triggers multiple physical writes
           across denormalized copies. The amplification factor is the ratio of
@@ -159,7 +166,7 @@ export default function ArticlePage() {
           implementing idempotent consumers so that retries do not create
           duplicate writes, and periodically rebuilding denormalized views from
           source to repair any drift that accumulated over time.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Eventual consistency</strong> is the consistency model that
@@ -214,8 +221,11 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The architecture of a denormalized system centers on the data flow
           from the authoritative source of truth (the normalized source tables
           where all writes originate) through the update propagation pipeline to
@@ -231,9 +241,9 @@ export default function ArticlePage() {
           on that data, and the system enters a state of cascading inconsistency
           where the original source and the denormalized copies diverge with no
           clear mechanism for reconciliation.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           In a typical production architecture, the flow begins with an
           application service executing a write against the source database
           (PostgreSQL, MySQL, or similar). The database records the change in
@@ -255,7 +265,7 @@ export default function ArticlePage() {
           idempotency is essential because Kafka delivery semantics guarantee
           &quot;at-least-once&quot; delivery in most configurations, meaning
           duplicate deliveries are possible.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/data-denormalization-diagram-3.svg"
@@ -312,8 +322,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Denormalization must always be evaluated against the alternative:
           keeping the schema normalized and optimizing read performance through
           other means. The primary alternatives include adding covering indexes
@@ -332,7 +345,7 @@ export default function ArticlePage() {
           these approaches depends on the specific query workload, the
           read-to-write ratio, the acceptable staleness window, and the
           operational maturity of the engineering team.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -434,7 +447,7 @@ export default function ArticlePage() {
           </tbody>
         </table>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The storage cost of denormalization is frequently underestimated. When
           a user&apos;s profile data (name, email, avatar URL, preferences —
           approximately 2 KB) is duplicated across 50 million order rows, the
@@ -450,7 +463,7 @@ export default function ArticlePage() {
           up independently), network transfer costs (replicating data across
           regions), and index overhead (each denormalized store typically has
           multiple indexes to support its query patterns).
-        </p>
+        </HighlightBlock>
 
         <p>
           The decision to denormalize should be driven by measurable
@@ -472,8 +485,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Define the source of truth explicitly before creating any
           denormalized copies. Every piece of denormalized data must trace back
           to exactly one authoritative source — a specific table in a specific
@@ -483,9 +499,9 @@ export default function ArticlePage() {
           pipeline. This discipline is the single most important guardrail
           against data drift and is what separates production-grade
           denormalization from accidental data corruption.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement idempotent consumers for every update propagation pipeline.
           Idempotency means that processing the same event multiple times
           produces the same final state as processing it exactly once. This is
@@ -500,7 +516,7 @@ export default function ArticlePage() {
           number of retries (typically 3-5) are moved to a dead-letter queue for
           manual investigation rather than being silently dropped or causing an
           infinite retry loop.
-        </p>
+        </HighlightBlock>
 
         <p>
           Establish staleness budgets for each denormalized view and monitor
@@ -553,8 +569,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most destructive pitfall is creating denormalized copies without
           an explicit update propagation strategy. Engineers duplicate data to
           improve read performance for a specific query, the change ships
@@ -569,9 +588,9 @@ export default function ArticlePage() {
           This is entirely preventable by requiring that every denormalized copy
           has a documented propagation strategy before the denormalization is
           merged.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Circular update dependencies occur when Service A denormalizes data
           from Service B, and Service B denormalizes data from Service A,
           creating a cycle where an update to either service triggers updates
@@ -581,7 +600,7 @@ export default function ArticlePage() {
           denormalization dependencies — if A depends on B, B must not depend
           on A, and this constraint should be enforced by a linting rule or
           architecture decision record reviewed during design.
-        </p>
+        </HighlightBlock>
 
         <p>
           Underestimating write amplification under skewed data distributions is
@@ -616,8 +635,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-world Use Cases */}
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms are among the most extensive users of
           denormalization. An order detail page must display the product name,
           image, price, seller name, shipping address, and user information —
@@ -637,9 +659,9 @@ export default function ArticlePage() {
           their name, their old orders will show the new name within a few
           seconds, which is acceptable because the order history is not a
           financially critical view.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms like Twitter, Facebook, and Instagram use
           denormalization extensively for their feed generation. The &quot;home
           timeline&quot; — the list of posts from accounts a user follows — is
@@ -656,7 +678,7 @@ export default function ArticlePage() {
           it) to fan-out-on-write (pre-compute the timeline when a post is
           created) to handle scale, and this denormalization was essential to
           supporting celebrities with tens of millions of followers.
-        </p>
+        </HighlightBlock>
 
         <p>
           Analytics and business intelligence systems rely heavily on
@@ -696,6 +718,9 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
@@ -705,7 +730,7 @@ export default function ArticlePage() {
             denormalization to improve read performance, and what trade-offs
             would you consider?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <strong>Answer:</strong> I would create a denormalized
             order_history table that includes the user&apos;s name, email,
             product name, product image URL, and order details in a single row,
@@ -736,7 +761,7 @@ export default function ArticlePage() {
             denormalization provides net benefit. If the order history page is
             viewed 1,000 times per order creation, the 1,000x read benefit
             easily justifies the write amplification cost.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
@@ -745,7 +770,7 @@ export default function ArticlePage() {
             denormalization, and how do you design a system to handle it when a
             single user has millions of denormalized records that need updating?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <strong>Answer:</strong> Write amplification is the phenomenon where
             a single logical update to the source data triggers multiple
             physical writes across denormalized copies. The amplification factor
@@ -774,7 +799,7 @@ export default function ArticlePage() {
             writes in the system. Finally, I would monitor the consumer lag
             metric and alert if it exceeds the staleness budget, so that
             operations teams know when the update pipeline is falling behind.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

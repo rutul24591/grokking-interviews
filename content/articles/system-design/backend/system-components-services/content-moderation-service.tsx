@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -25,7 +26,10 @@ export default function ArticlePage() {
       {/* ========== Definition & Context ========== */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>content moderation service</strong> is the system responsible for enforcing safety policy on
           user-generated content (UGC) across a platform. It evaluates all forms of UGC&mdash;text posts, comments,
           images, videos, audio, profile information, and user-to-user messages&mdash;against a defined set of policy
@@ -33,8 +37,8 @@ export default function ArticlePage() {
           or escalated to specialized teams. Content moderation is simultaneously a technical systems problem, a policy
           definition problem, and a human operations problem, requiring coordination between engineering, policy, legal,
           and trust-and-safety teams.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental tension in content moderation is between safety and usability. Over-enforcement (high false
           positive rate) blocks legitimate content, frustrates users, increases support load, and can create legal
           liabilities in jurisdictions with free expression protections. Under-enforcement (high false negative rate)
@@ -42,7 +46,7 @@ export default function ArticlePage() {
           orders, the EU Digital Services Act), reputational damage, advertiser concerns, and genuine harm to users
           who encounter abuse, harassment, or illegal content. The moderation service must make this trade-off
           explicit, measurable, and tunable, rather than implicit and unobserved.
-        </p>
+        </HighlightBlock>
         <p>
           Content moderation has evolved significantly over the past decade. Early platforms relied almost entirely on
           user reports and reactive moderation: content was published immediately and reviewed only after a user flagged
@@ -64,8 +68,11 @@ export default function ArticlePage() {
       {/* ========== Core Concepts ========== */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Moderation policy</strong> is the foundation of the entire system. Policy defines what content is
           acceptable and what is not, organized into violation classes (spam, harassment, hate speech, self-harm,
           sexual content, violence, illegal content, intellectual property violations) with severity levels (low,
@@ -76,9 +83,9 @@ export default function ArticlePage() {
           is one of the most challenging aspects of moderation system design. This translation requires close
           collaboration between policy teams, legal counsel, and engineering, and it must be revisited regularly as
           new abuse patterns emerge and social norms evolve.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Automated detection</strong> uses multiple signal sources to classify content. Text-based detection
           includes keyword and regex matching (for known abusive phrases, slurs, or spam patterns), natural language
           processing (NLP) models for toxicity scoring, sentiment analysis, and intent classification, and named entity
@@ -90,7 +97,7 @@ export default function ArticlePage() {
           analysis for spoken content. Each detection method has different accuracy, latency, and cost characteristics,
           and the moderation system combines them through a signal aggregation layer that produces a unified
           classification with confidence scores for each violation class.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Human review</strong> is essential for content that automated systems cannot classify with sufficient
@@ -150,17 +157,20 @@ export default function ArticlePage() {
       {/* ========== Architecture & Flow ========== */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The moderation system architecture is a pipeline that transforms raw content into moderation decisions
           through multiple processing stages. Content arrives at the ingestion layer through various paths: synchronous
           API calls when a user submits a post or comment, asynchronous event streams for background processing of
           images and videos, and user report submissions that trigger re-evaluation of already-published content. The
           ingestion layer normalizes the content into a common format (content type, text body, media references,
           metadata including user ID, timestamp, and posting surface) and enqueues it for processing.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The signal collection stage runs multiple detection methods in parallel on the content. For text, this
           includes keyword/regex matching (fast, low-latency), NLP model inference (moderate latency, requires ML
           infrastructure), and reputation scoring based on the posting user&apos;s history (fast, requires a user
@@ -169,7 +179,7 @@ export default function ArticlePage() {
           frame extraction runs asynchronously, producing a set of frames that are then processed through the image
           detection pipeline. Each detection method produces a signal: a structured output containing the violation
           class, the confidence score, and any evidence (matched keywords, model output probabilities, hash matches).
-        </p>
+        </HighlightBlock>
 
         <p>
           The signal aggregation stage combines the individual signals into a unified classification. This is not
@@ -229,8 +239,11 @@ export default function ArticlePage() {
       {/* ========== Trade-offs & Comparison ========== */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most significant trade-off in content moderation is the false positive versus false negative balance.
           Every detection threshold adjustment moves this balance: lowering the auto-block threshold catches more
           violating content (reducing false negatives) but also blocks more legitimate content (increasing false
@@ -239,9 +252,9 @@ export default function ArticlePage() {
           content) far exceeds the cost of a false positive (blocking a piece of legitimate content that can be
           restored through appeal). For lower-severity violations like mild profanity or borderline spam, the cost
           of false positives is higher because they directly impact user experience and trust in the platform.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pre-publication versus post-publication moderation represents another fundamental trade-off. Pre-publication
           provides the strongest safety guarantee but introduces latency that degrades the user experience and increases
           compute costs (all content must be moderated before it can be served). At scale, pre-publication moderation
@@ -252,7 +265,7 @@ export default function ArticlePage() {
           high-visibility posts, content matching known violation patterns) and post-publication moderation for
           lower-risk content, with the risk classification determined by the user&apos;s reputation score and the
           content&apos;s characteristics.
-        </p>
+        </HighlightBlock>
 
         <p>
           Building moderation infrastructure in-house versus using third-party moderation services (such as Amazon
@@ -325,8 +338,11 @@ export default function ArticlePage() {
       {/* ========== Best Practices ========== */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Invest heavily in the policy-to-implementation translation process. Moderation policy written in natural
           language is inherently ambiguous, and different engineers will interpret the same policy differently. The
           solution is to maintain a structured policy representation that captures violation classes, severity levels,
@@ -335,16 +351,16 @@ export default function ArticlePage() {
           should update this structured representation, and the change should be reviewed by both policy and engineering
           teams before deployment. This approach ensures that the enforcement behavior matches the policy intent and
           that changes are traceable and auditable.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement shadow evaluation for all policy and model changes before enforcement. When a new model version
           or policy rule is ready, run it alongside the current enforcement system without taking action on its
           decisions. Compare the shadow decisions against the current system&apos;s decisions and against human review
           outcomes to estimate the new system&apos;s false positive and false negative rates. Only deploy to enforcement
           when the shadow evaluation shows acceptable performance. Shadow evaluation is the single most important
           guardrail against moderation incidents caused by policy or model changes.
-        </p>
+        </HighlightBlock>
 
         <p>
           Design the human review queue with prioritization, SLAs, and capacity management. Not all content in the
@@ -389,8 +405,11 @@ export default function ArticlePage() {
       {/* ========== Common Pitfalls ========== */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           False positive spikes caused by policy or model changes are the most common and damaging moderation
           incidents. A new model version or policy rule is deployed that has a higher block rate than intended, and
           legitimate content is blocked at scale. Users become frustrated, support tickets flood in, and the platform&apos;s
@@ -399,9 +418,9 @@ export default function ArticlePage() {
           evaluation period was too short to capture edge cases. The prevention strategy is rigorous shadow evaluation
           on representative traffic, gradual enforcement rollout with monitoring, and automated circuit breakers that
           pause enforcement when block rate anomalies are detected.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Review queue backlogs occur when the inflow of content requiring human review exceeds the review capacity.
           This can happen due to a spike in user-generated content volume, a policy change that routes more content
           to review, a decrease in model confidence (causing more borderline classifications), or reviewer
@@ -412,7 +431,7 @@ export default function ArticlePage() {
           thresholds to route less content to review (accepting higher false negative rates during the backlog
           period), scale review capacity through overtime or external partners, and improve model accuracy to reduce
           the overall volume of borderline content.
-        </p>
+        </HighlightBlock>
 
         <p>
           Adversarial adaptation is an ongoing arms race between the moderation system and bad actors. Attackers
@@ -458,8 +477,11 @@ export default function ArticlePage() {
       {/* ========== Real-world Use Cases ========== */}
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms with hundreds of millions of users face the most demanding moderation requirements.
           These platforms must moderate content at massive scale (billions of posts, comments, images, and videos per
           day) across dozens of languages and cultural contexts. Their moderation systems typically use a tiered
@@ -469,9 +491,9 @@ export default function ArticlePage() {
           rate translates to millions of incorrectly blocked content pieces per day, generating massive support load
           and user frustration. These platforms invest heavily in multilingual detection models, cultural context
           understanding, and continuous model improvement through the feedback loop.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce marketplaces face a different moderation landscape focused on product listing quality, counterfeit
           detection, and seller behavior. The moderation system evaluates product listings for policy violations
           (prohibited items, counterfeit goods, misleading descriptions), reviews seller profiles for fraudulent
@@ -480,7 +502,7 @@ export default function ArticlePage() {
           detection (comparing listing images to authentic product photos), text analysis for misleading descriptions,
           and behavioral analysis for fraudulent seller patterns. The appeal process in e-commerce is particularly
           important because a blocked listing directly impacts seller revenue, and disputes have financial consequences.
-        </p>
+        </HighlightBlock>
 
         <p>
           Online education and professional networking platforms have moderation requirements focused on maintaining
@@ -509,21 +531,24 @@ export default function ArticlePage() {
       {/* ========== Interview Questions & Answers ========== */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-6">
-            <p className="font-semibold text-heading">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-heading">
               Q1: Your platform sees a 3x spike in content volume over a weekend, and the human review queue backlog
               is growing beyond SLA. What do you do?
-            </p>
+            </HighlightBlock>
             <div className="mt-3 text-sm text-muted">
-              <p className="mt-2">
+              <HighlightBlock as="p" tier="important" className="mt-2">
                 This is a capacity crisis that requires immediate triage and medium-term resolution. The immediate
                 response is to prioritize the existing backlog by severity: ensure that critical and high-severity
                 items are being reviewed first, even if it means that low-severity items wait longer. This may
                 temporarily violate SLAs for low-priority items but ensures that the most dangerous content is
                 addressed.
-              </p>
+              </HighlightBlock>
               <p className="mt-2">
                 Simultaneously, adjust the automated detection thresholds to reduce the inflow to the review queue.
                 By raising the confidence threshold for routing to human review (e.g., from 0.60 to 0.75), more

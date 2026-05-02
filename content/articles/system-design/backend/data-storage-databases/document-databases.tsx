@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -76,21 +77,24 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Document Data Modeling</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Embedding vs Referencing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fundamental design decision in document databases is whether to embed related data
           within a single document or reference it in separate documents. This choice shapes query
           performance, document size, update patterns, and overall system architecture.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Embedding</strong> stores related data inline within a single document. A user
           document might contain an array of order documents, a blog post might embed comments, or
           a product might embed reviews. Embedding enables single-query reads—the entire data
           structure is retrieved in one operation. This is ideal for one-to-few relationships where
           the embedded data is always accessed with the parent and has bounded growth.
-        </p>
+        </HighlightBlock>
 
         <p>
           However, embedding has limits. MongoDB has a 16MB document size limit; exceeding this
@@ -160,22 +164,25 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Sharding &amp; Scaling</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Shard Key Selection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Sharding distributes data across multiple nodes to scale storage and throughput. The shard
           key determines how data is partitioned—choosing poorly leads to hot spots (one node
           overloaded) and inefficient queries. Good shard keys have high cardinality (many unique
           values), even distribution (no hot spots), and align with query patterns (most queries
           include the shard key).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Bad shard keys</strong> include low-cardinality fields (status, type—few unique
           values cause uneven distribution), monotonically increasing fields (timestamp—new data
           always goes to the same shard), and rarely queried fields (if queries don't include the
           shard key, all shards must be scanned).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Good shard keys</strong> include user_id (high cardinality, even distribution,
@@ -236,22 +243,25 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Document DB vs Relational</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Document databases and relational databases represent different design philosophies.
           Relational databases prioritize data integrity through schema enforcement, normalization,
           and ACID transactions. Document databases prioritize flexibility and performance through
           schema-less design, denormalization, and eventual consistency. Neither is universally
           better—the right choice depends on your requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>When Document Databases Excel</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Schema flexibility</strong> is the primary advantage. Adding fields requires no
           migrations—just write the new field. This enables rapid iteration during development and
           accommodates evolving requirements. Content management systems, user profiles, and product
           catalogs benefit from this flexibility.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Hierarchical data</strong> maps naturally to documents. A blog post with comments,
@@ -303,19 +313,22 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Document Databases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Model for your queries.</strong> Don't model data based on entities—model based
           on how you'll query it. If you frequently query orders by customer and date, structure
           documents and indexes to support that. Denormalize strategically to avoid joins.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Keep documents bounded.</strong> Avoid unbounded arrays (event logs, audit
           trails) that grow indefinitely. Use the bucket pattern: group related items into
           fixed-size buckets (e.g., 100 events per document), creating new buckets as needed.
           This prevents document size explosions.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Use schema validation.</strong> Even in schema-flexible databases, enforce
@@ -346,20 +359,23 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Unbounded arrays.</strong> Embedding an unbounded array (e.g., all user activity
           events) will eventually hit document size limits. Solution: use the bucket pattern (group
           events into fixed-size documents), reference events in a separate collection, or use a
           time-series database for event data.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Over-embedding.</strong> Embedding too much data causes large documents, slow
           writes, and wasted I/O (fetching data you don't need). Solution: reference rarely
           accessed data, embed only frequently accessed subsets, and use projection queries to
           fetch specific fields.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Ignoring index coverage.</strong> Queries that don't use indexes scan entire
@@ -389,22 +405,25 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Content Management (Medium, WordPress)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Content management systems store articles, blog posts, and pages with varying structures.
           A blog post has title, body, author, tags, and comments. A video post has title,
           description, video URL, and transcripts. A poll has question, options, and votes. Document
           databases handle this polymorphism naturally—each content type is a document with relevant
           fields, no schema migrations needed.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Medium uses MongoDB to store millions of articles with embedded comments, responses, and
           metadata. The flexible schema allows new content types (newsletters, podcasts) without
           database changes. Read performance is excellent—entire articles with comments load in
           single queries.
-        </p>
+        </HighlightBlock>
 
         <h3>User Profiles (LinkedIn, Adobe)</h3>
         <p>
@@ -452,14 +471,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: When would you choose embedding over referencing in a document database? Give a
               concrete example.
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Choose embedding when you have a one-to-few relationship,
               data is always accessed together, and document size is bounded. Example: A blog post
               with comments. Comments are tightly coupled to the post (always fetched together),
@@ -468,7 +490,7 @@ export default function ArticlePage() {
               relationships where the "many" side is unbounded or accessed independently. Example:
               User orders—reference orders in a separate collection because a user can have unlimited
               orders, and you might query orders independently (order history, order status).
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What if embedded comments grow too large? Answer: Use the
               bucket pattern—group comments into buckets of 50, store recent comments embedded,

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function LegacyBrowserSupportArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Legacy browser support</strong> refers to the organizational
           and engineering practices involved in maintaining web application
           compatibility with older browser versions that lack support for modern
@@ -50,8 +54,8 @@ export default function LegacyBrowserSupportArticle() {
           successor Edge launched, requiring web teams to maintain compatibility
           with a browser that lacked support for CSS Grid, ES2015+ JavaScript
           syntax, CSS Custom Properties, and numerous modern web APIs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The challenge of legacy browser support is fundamentally a business
           decision with engineering implications, not the reverse. Dropping
           support for a browser reduces development and testing costs but risks
@@ -63,7 +67,7 @@ export default function LegacyBrowserSupportArticle() {
           is the user population at risk, what alternatives exist for those
           users, and what is the timeline for natural attrition as those users
           eventually upgrade.
-        </p>
+        </HighlightBlock>
         <p>
           Legacy browser support is not a binary decision — the industry has
           evolved toward tiered support models where legacy browsers receive a
@@ -95,8 +99,11 @@ export default function LegacyBrowserSupportArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Support Tier Policy:</strong> A formal document defining
             which browsers receive which level of support. Tier 1 (fully
             supported) receives feature parity and visual consistency testing.
@@ -106,8 +113,8 @@ export default function LegacyBrowserSupportArticle() {
             upgrade notice. The policy is version-controlled, reviewed
             quarterly, and derived from analytics data and business
             requirements.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Analytics-Driven Sunset Planning:</strong> The practice of
             using production analytics to track legacy browser usage over time
             and plan for support removal. When a browser version&apos;s traffic
@@ -117,7 +124,7 @@ export default function LegacyBrowserSupportArticle() {
             a browser will naturally fall below the threshold and plan the
             engineering work (removing polyfills, dropping transpilation
             targets) accordingly.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Compatibility Cost Accounting:</strong> The practice of
             tracking the engineering costs attributable to legacy browser
@@ -184,19 +191,22 @@ export default function LegacyBrowserSupportArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Legacy browser support architecture spans build pipeline
           configuration, runtime capability detection, and organizational
           decision-making processes. The following diagrams illustrate the key
           architectural patterns.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/web-standards-and-compatibility/legacy-browser-support-diagram-1.svg"
           alt="Legacy browser support decision framework showing analytics data, cost analysis, tier assignment, and sunset timeline"
           caption="Figure 1: Legacy support decision framework — how analytics data and cost analysis drive tier assignment and sunset planning."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The decision framework begins with analytics data showing browser
           version distribution across the user population. Each browser version
           is evaluated against two dimensions: the user population it represents
@@ -211,7 +221,7 @@ export default function LegacyBrowserSupportArticle() {
           or sunset. The framework outputs a compatibility contract with
           explicit tier assignments and a sunset timeline for browsers trending
           toward the removal threshold.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/web-standards-and-compatibility/legacy-browser-support-diagram-2.svg"
@@ -261,6 +271,9 @@ export default function LegacyBrowserSupportArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr>
@@ -276,7 +289,7 @@ export default function LegacyBrowserSupportArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2">
                 Maintaining legacy support
               </td>
@@ -290,8 +303,8 @@ export default function LegacyBrowserSupportArticle() {
                 loading). Restricts ability to adopt modern platform features.
                 Adds testing and maintenance costs. Slows development velocity.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2">
                 Dropping legacy support
               </td>
@@ -305,7 +318,7 @@ export default function LegacyBrowserSupportArticle() {
                 contractual requirements. Requires careful sunset communication.
                 Abrupt removal risks negative user perception.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="border border-theme p-2">Tiered support model</td>
               <td className="border border-theme p-2">
@@ -353,8 +366,11 @@ export default function LegacyBrowserSupportArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Base support decisions on analytics data, not assumptions:
             </strong>{" "}
@@ -366,8 +382,8 @@ export default function LegacyBrowserSupportArticle() {
             surprising patterns: an enterprise product might have significant IE
             11 traffic while a consumer product might have more Safari iOS 13
             users than expected.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Formalize support tiers in a compatibility contract:
             </strong>{" "}
@@ -378,7 +394,7 @@ export default function LegacyBrowserSupportArticle() {
             support all review and agree on the contract. The contract
             eliminates ambiguity about what &quot;supporting&quot; a browser
             means and prevents ad hoc support commitments.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Track and report compatibility cost:</strong> Quantify the
             engineering cost of legacy browser support including polyfill bundle
@@ -433,8 +449,11 @@ export default function LegacyBrowserSupportArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Supporting legacy browsers without data justification:
             </strong>{" "}
@@ -444,8 +463,8 @@ export default function LegacyBrowserSupportArticle() {
             population has already migrated, and the team is maintaining support
             for a non-existent audience. Always validate support decisions with
             current analytics data, refreshed at least quarterly.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Treating legacy support as all-or-nothing:</strong> Teams
             often frame legacy support as a binary choice — full support or no
             support. The tiered model (full, functional, basic, unsupported)
@@ -453,7 +472,7 @@ export default function LegacyBrowserSupportArticle() {
             reducing the engineering burden. A legacy user who can complete core
             tasks with a simplified UI is better served than one who is blocked
             entirely because full support was deemed too expensive.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Accumulating legacy technical debt without tracking it:
@@ -504,7 +523,10 @@ export default function LegacyBrowserSupportArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Microsoft 365&apos;s IE 11 sunset:</strong> Microsoft&apos;s
           decision to end IE 11 support for Microsoft 365 services (announced
           August 2020, effective August 2021) demonstrated a structured sunset
@@ -515,8 +537,8 @@ export default function LegacyBrowserSupportArticle() {
           finally redirection to Edge. The phased approach gave enterprise
           customers time to plan their own migrations while progressively
           reducing Microsoft&apos;s IE 11 maintenance burden.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>GitHub&apos;s browser support policy:</strong> GitHub
           publishes a clear browser support policy that targets the latest two
           versions of each major browser (Chrome, Firefox, Safari, Edge). When a
@@ -526,7 +548,7 @@ export default function LegacyBrowserSupportArticle() {
           rolls forward with browser releases. The policy is simple enough that
           developers internalize it without referencing documentation, reducing
           the overhead of support decisions in daily development.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Japanese financial services IE 11 dependency:</strong> Several
           Japanese banks and financial institutions maintained IE 11 as their
@@ -557,39 +579,45 @@ export default function LegacyBrowserSupportArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Legacy Browser Support introduces security considerations around
           supporting browsers with known vulnerabilities and ensuring security
           features degrade gracefully.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
             Legacy Browser Security Patterns
           </h3>
-          <ul className="space-y-2">
-            <li>
-              <strong>Known Vulnerabilities:</strong> Legacy browsers have
-              unpatched security vulnerabilities. Mitigation: implement
-              server-side security measures, use Content Security Policy,
-              implement feature detection to avoid vulnerable features.
-            </li>
-            <li>
-              <strong>Graceful Security Degradation:</strong> Security features
-              must work across all supported browsers. Mitigation: implement
-              security at multiple layers, ensure fallbacks maintain security,
-              test security across all supported browsers.
-            </li>
-          </ul>
-        </div>
+	          <ul className="space-y-2">
+	            <HighlightBlock as="li" tier="important">
+	              <strong>Known Vulnerabilities:</strong> Legacy browsers have
+	              unpatched security vulnerabilities. Mitigation: implement
+	              server-side security measures, use Content Security Policy,
+	              implement feature detection to avoid vulnerable features.
+	            </HighlightBlock>
+	            <HighlightBlock as="li" tier="important">
+	              <strong>Graceful Security Degradation:</strong> Security features
+	              must work across all supported browsers. Mitigation: implement
+	              security at multiple layers, ensure fallbacks maintain security,
+	              test security across all supported browsers.
+	            </HighlightBlock>
+	          </ul>
+	        </div>
       </section>
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Legacy Browser Support performance depends on polyfill overhead,
           fallback efficiency, and feature detection cost.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
@@ -604,16 +632,16 @@ export default function LegacyBrowserSupportArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Legacy Load Time</td>
                 <td className="p-2">&lt;3 seconds</td>
                 <td className="p-2">Lighthouse</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Polyfill Overhead</td>
                 <td className="p-2">&lt;100KB</td>
                 <td className="p-2">Bundle analysis</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Legacy Functionality</td>
                 <td className="p-2">100% core features</td>
@@ -626,10 +654,13 @@ export default function LegacyBrowserSupportArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Legacy Browser Support has significant development and maintenance
           costs but may be necessary for certain user bases.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
@@ -654,25 +685,28 @@ export default function LegacyBrowserSupportArticle() {
           <h3 className="mb-3 font-semibold">
             When to Support Legacy Browsers
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Support legacy browsers when: (1) analytics show significant legacy
             browser usage (&lt; 5%), (2) you serve enterprise/government users
             with locked browsers, (3) you serve users in regions with older
             browser prevalence. Avoid when: (1) legacy usage is &lt;1%, (2) the
             cost outweighs the benefit, (3) you can encourage browser upgrades.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you decide when to drop support for a legacy browser?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The decision framework balances user population against
               engineering cost. Pull analytics data showing the browser&apos;s
               traffic share, revenue attribution, and usage trend over time.
@@ -686,7 +720,7 @@ export default function LegacyBrowserSupportArticle() {
               engineering data, not purely an engineering decision. For
               enterprise products, factor in contractual obligations and
               customer communication timelines.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

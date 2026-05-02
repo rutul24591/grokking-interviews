@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -42,7 +43,7 @@ export default function FontLoadingStrategiesArticle() {
       {/* 1. Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Font loading strategies</strong> govern how a browser discovers,
           downloads, and renders custom web fonts. Because font files are
           render-blocking resources that are only discovered after CSS is parsed
@@ -51,8 +52,8 @@ export default function FontLoadingStrategiesArticle() {
           immediately in a fallback font (causing a visual shift when the custom
           font loads) versus hiding text until the custom font is ready (causing
           invisible content).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Three acronyms capture the primary failure modes:{" "}
           <strong>FOIT</strong> (Flash of Invisible Text), where the browser
           hides text until the font arrives;{" "}
@@ -61,8 +62,8 @@ export default function FontLoadingStrategiesArticle() {
           <strong>FOFT</strong> (Flash of Faux Text), a two-stage technique
           pioneered by Zach Leatherman that loads a minimal roman subset first,
           synthesizes bold/italic via CSS, and then upgrades to the full family.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the staff/principal level, font loading is rarely an isolated
           concern. It intersects with Cumulative Layout Shift (CLS), Largest
           Contentful Paint (LCP), critical rendering path optimization, caching
@@ -71,7 +72,7 @@ export default function FontLoadingStrategiesArticle() {
           re-layouts on every page navigation. Understanding the tradeoffs
           between reliability, perceived performance, and visual fidelity is
           essential when designing frontend architectures at scale.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">
@@ -92,28 +93,28 @@ export default function FontLoadingStrategiesArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>FOIT (Flash of Invisible Text):</strong> The default behavior
             in most browsers. Text using a custom font is invisible during the
             block period (up to 3 seconds in Chrome/Firefox). If the font arrives
             within the block period, it renders immediately. If not, the browser
             falls back to a system font (swap period) or gives up entirely.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>FOUT (Flash of Unstyled Text):</strong> Text renders
             immediately in a fallback/system font, then swaps to the custom font
             once loaded. This is the behavior of{" "}
             <code>font-display: swap</code>. Content is always readable, but the
             swap causes a visible reflow and layout shift.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>FOFT (Flash of Faux Text):</strong> A staged loading
             approach. The roman (regular weight) subset loads first since it is
             small. The browser synthesizes bold and italic via{" "}
             <code>font-synthesis</code> or CSS transforms. Once the full family
             downloads, it swaps in. This minimizes the visual disruption of
             multiple font file swaps.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>font-display descriptor:</strong> A CSS <code>@font-face</code>{" "}
             descriptor that controls the block and swap periods. Values:{" "}
@@ -160,24 +161,24 @@ export default function FontLoadingStrategiesArticle() {
       {/* 3. Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The following diagram compares the three primary font loading behaviors
           from the user&apos;s perspective. FOIT hides text entirely during the
           block period, FOUT shows fallback text immediately but causes a swap,
           and FOFT minimizes disruption through staged loading.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/font-loading-strategies-diagram-1.svg"
           alt="FOIT vs FOUT vs FOFT timeline comparison showing what the user sees during font loading for each strategy"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <code>font-display</code> descriptor gives developers direct
           control over the block and swap period durations. The choice between
           values depends on whether you prioritize visual stability (CLS),
           content readability, or brand consistency.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/font-loading-strategies-diagram-2.svg"
@@ -185,14 +186,14 @@ export default function FontLoadingStrategiesArticle() {
         />
 
         <h3>The Preload Advantage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Because fonts are late-discovered resources, the single most impactful
           optimization is <code>&lt;link rel=&quot;preload&quot;&gt;</code>. By
           adding a preload hint in the HTML <code>&lt;head&gt;</code>, the
           browser starts downloading the font in parallel with CSS rather than
           waiting for the render tree. This can save 500-1000 ms on typical
           pages.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/font-loading-strategies-diagram-3.svg"
@@ -248,32 +249,35 @@ export default function FontLoadingStrategiesArticle() {
       {/* 4. Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="min-w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-theme">
+              <HighlightBlock as="tr" tier="important">
                 <th className="px-4 py-2 text-left font-semibold">Strategy</th>
                 <th className="px-4 py-2 text-left font-semibold">CLS Impact</th>
                 <th className="px-4 py-2 text-left font-semibold">Content Visibility</th>
                 <th className="px-4 py-2 text-left font-semibold">Complexity</th>
                 <th className="px-4 py-2 text-left font-semibold">Best For</th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody>
-              <tr className="border-b border-theme">
+              <HighlightBlock as="tr" tier="important">
                 <td className="px-4 py-2 font-medium">FOIT (block)</td>
                 <td className="px-4 py-2">None (text invisible)</td>
                 <td className="px-4 py-2">Poor — hidden up to 3s</td>
                 <td className="px-4 py-2">None</td>
                 <td className="px-4 py-2">Icon fonts, short text</td>
-              </tr>
-              <tr className="border-b border-theme">
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="px-4 py-2 font-medium">FOUT (swap)</td>
                 <td className="px-4 py-2">High — visible reflow</td>
                 <td className="px-4 py-2">Great — instant fallback</td>
                 <td className="px-4 py-2">Low</td>
                 <td className="px-4 py-2">Content-heavy sites, blogs</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme">
                 <td className="px-4 py-2 font-medium">FOFT (staged)</td>
                 <td className="px-4 py-2">Low — minimal shifts</td>
@@ -356,7 +360,7 @@ export default function FontLoadingStrategiesArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>1. Self-host fonts and preload critical subsets.</strong>{" "}
             Since Chrome 86 partitions the HTTP cache per site, Google Fonts no
             longer benefits from cross-site caching. Self-hosting eliminates two
@@ -364,8 +368,8 @@ export default function FontLoadingStrategiesArticle() {
             <code>&lt;link rel=&quot;preload&quot;&gt;</code> with stable URLs.
             Always include the <code>crossorigin</code> attribute on font
             preloads even for same-origin, as fonts require CORS.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>2. Use font-display: fallback or optional.</strong>{" "}
             <code>swap</code> guarantees the custom font appears but at the cost
             of CLS. <code>fallback</code> provides a short block period (~100ms)
@@ -373,13 +377,13 @@ export default function FontLoadingStrategiesArticle() {
             swaps, otherwise the fallback sticks. <code>optional</code> eliminates
             CLS entirely by never swapping mid-session; the font is cached for
             the next navigation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>3. Ship WOFF2 only.</strong> WOFF2 has 96%+ global browser
             support. Dropping WOFF and TTF fallbacks simplifies your build and
             reduces CDN storage. Only include older formats if you must support
             IE 11 or older Android WebView.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>4. Subset aggressively.</strong> Use tools like{" "}
             <code>glyphhanger</code>, <code>pyftsubset</code>, or{" "}
@@ -416,26 +420,26 @@ export default function FontLoadingStrategiesArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Missing crossorigin on preload:</strong> Font preloads
             require the <code>crossorigin</code> attribute even for same-origin
             resources. Without it, the browser fetches the font twice — once for
             the preload (without CORS) and again for the actual font request
             (with CORS). This doubles download time and wastes bandwidth.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Preloading too many fonts:</strong> Each preload competes
             with other critical resources for bandwidth. Preload only the 1-2
             fonts needed above the fold. Loading 6+ preloads simultaneously
             can delay CSS and JavaScript, hurting LCP.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Using font-display: swap for all fonts:</strong>{" "}
             <code>swap</code> causes CLS every time a font loads. For body text,{" "}
             <code>fallback</code> or <code>optional</code> are safer choices.
             Reserve <code>swap</code> for hero/heading fonts where brand
             consistency is non-negotiable.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not subsetting:</strong> Shipping a full Google Fonts file
             with Latin Extended, Cyrillic, Greek, and Vietnamese subsets when
@@ -466,26 +470,26 @@ export default function FontLoadingStrategiesArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>GitHub:</strong> Uses a system font stack (
             <code>-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, ...</code>)
             for the UI, eliminating font loading entirely. Custom fonts are only
             used for the marketing site where brand identity matters. This gives
             the app near-instant text rendering on every platform.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Medium:</strong> Adopted <code>font-display: swap</code>{" "}
             early on for their custom serif font, accepting FOUT in exchange for
             readable content during load. They self-host fonts and preload the
             primary weight. Their fallback stack uses Georgia which has similar
             metrics, minimizing CLS during the swap.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Smashing Magazine:</strong> Pioneered the FOFT approach,
             loading a subset roman font first, then upgrading. They saw a 40%
             reduction in perceived font loading time and virtually eliminated
             layout shifts from font swapping.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Google Search:</strong> Uses{" "}
             <code>font-display: optional</code> for custom fonts. On the first
@@ -507,13 +511,16 @@ export default function FontLoadingStrategiesArticle() {
       {/* 8. Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel p-4">
-            <p className="font-semibold text-theme">
+            <HighlightBlock as="p" tier="important">
               Q: What is the difference between FOIT, FOUT, and FOFT, and when
               would you choose each?
-            </p>
-            <p className="mt-2 text-sm text-muted">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               FOIT hides text until the custom font loads (default browser
               behavior), providing a clean swap but risking invisible content for
               up to 3 seconds. FOUT shows fallback text immediately and swaps
@@ -525,14 +532,14 @@ export default function FontLoadingStrategiesArticle() {
               (via <code>font-display: swap</code>) for content sites where
               readability is paramount. Choose FOFT when loading a large font
               family (4+ files) to minimize the number and impact of reflows.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel p-4">
-            <p className="font-semibold text-theme">
+            <HighlightBlock as="p" tier="important">
               Q: Why should you self-host fonts instead of using Google Fonts CDN
               in 2024+?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               Three reasons: (1) Since Chrome 86 (2020), the HTTP cache is
               partitioned by top-level site, so fonts from{" "}

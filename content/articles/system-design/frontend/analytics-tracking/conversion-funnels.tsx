@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Conversion funnel</strong> is a model that represents the sequential steps a user takes toward a desired outcome (conversion). Each step represents a progressive commitment—users who complete earlier steps are more likely to complete later steps. Funnel analysis measures drop-off between steps, identifies friction points, and quantifies optimization impact.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Unlike general journey tracking (which captures all paths), funnels are prescriptive—they define the ideal path. Users may deviate, but the funnel measures progression through the intended flow. Common funnels include signup (landing to signup form to email verification to onboarding), checkout (cart to shipping to payment to confirmation), and activation (signup to key action to value realization).
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, conversion funnel tracking requires balancing four competing concerns. <strong>Accuracy</strong> means precisely measuring step completion and drop-off. <strong>Flexibility</strong> means accommodating alternative paths and step variations. <strong>Attribution</strong> means connecting funnel performance to traffic sources, experiments, and user segments. <strong>Actionability</strong> means making funnel data actionable for optimization efforts.
         </p>
@@ -48,14 +52,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Funnel Definition</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A funnel is defined by steps, conversion window, entry criteria, and completion criteria. <strong>Steps</strong> are an ordered sequence of events or pages, such as viewed_landing_page to started_signup to completed_signup. <strong>Conversion window</strong> is the time period within which steps must be completed, such as 24 hours or 7 days. <strong>Entry criteria</strong> defines what qualifies as entering the funnel, such as first page view or first event. <strong>Completion criteria</strong> defines what qualifies as conversion, which is final step completion.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For example, a checkout funnel includes cart_viewed to checkout_started to shipping_entered to payment_submitted to purchase_completed. The conversion window is 24 hours.
-        </p>
+        </HighlightBlock>
 
         <h3>Funnel Metrics</h3>
         <p>
@@ -112,14 +119,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust conversion funnel architecture treats funnels as first-class analytics products with proper event tracking, data modeling, and analysis tooling.
-        </p>
+        </HighlightBlock>
 
         <h3>Funnel Event Tracking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement funnel event tracking with consistent naming for funnel steps like funnelname_stepname. Include event properties like funnel_id, step_number, user_id, session_id, and timestamp. Track both step entry and step completion for time analysis. Track step errors separately like payment_failed with error reason.
-        </p>
+        </HighlightBlock>
         <p>
           Create a funnel tracking utility that enforces consistent event structure.
         </p>
@@ -160,12 +170,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Conversion funnel tracking involves trade-offs between precision, flexibility, and complexity. Strict linear funnels provide the best precision but poor flexibility and low complexity. This is best for simple flows like checkout. Flexible order funnels provide good precision and good flexibility with medium complexity. This is best for onboarding flows. Open entry funnels provide fair precision but best flexibility with high complexity. This is best for multi-entry flows.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that funnel type should match user behavior. Use strict linear for required sequences. Use flexible for optional order. Use open entry for multi-entry flows.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -173,12 +186,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Define clear funnels by documenting each funnel with steps, entry criteria, and conversion definition. Track step entry and completion to distinguish between starting a step and completing it. Include error states by tracking errors at each step for debugging.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Segment by cohort to analyze funnels by traffic source, device, and user segment. Set up alerts for sudden drops in funnel conversion. Run A/B tests on high-drop-off steps. Monitor trends by tracking funnel conversion over time and investigating changes. Document benchmarks by establishing baseline conversion rates for each funnel.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -186,12 +202,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Funnels with 10+ steps are hard to analyze. Consolidate where possible. Users may skip steps, so track alternative paths. Without time limits (conversion window), funnels include stale data. Aggregate funnels hide segment-specific issues, so segment your analysis.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Drawing conclusions from small samples or without significance testing leads to statistical errors. Measuring funnels without an optimization strategy means no action plan.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -199,16 +218,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce: Checkout Funnel Optimization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce site had 75% cart abandonment and didn't know where users dropped off. The solution was implementing detailed checkout funnel tracking, tracking each step from cart to shipping to payment to confirmation, and adding error tracking. They found 40% drop-off at shipping calculation. After adding a shipping calculator to the cart page, abandonment decreased to 60% and revenue increased 20%.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS: Signup Funnel Simplification</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A SaaS company had a 5-step signup process with 80% drop-off. The solution was analyzing step-by-step drop-off, removing 2 optional steps, and making email verification post-signup instead of pre-signup. Signup conversion increased from 20% to 45%. Verified email rate remained unchanged at 90% verified post-signup.
-        </p>
+        </HighlightBlock>
 
         <h3>Marketplace: Multi-Entry Funnel Analysis</h3>
         <p>
@@ -226,14 +248,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How do you define and measure a conversion funnel?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Define steps as an ordered sequence of events or pages. Set a conversion window as the time period for step completion (e.g., 24 hours). Define entry criteria for what qualifies as entering the funnel. Track metrics including step conversion rate, overall conversion rate, drop-off rate, and time to convert.
-            </p>
+            </HighlightBlock>
             <p>
               Example: Checkout funnel: cart_viewed to checkout_started to shipping_entered to payment_submitted to purchase_completed. Measure conversion at each step.
             </p>

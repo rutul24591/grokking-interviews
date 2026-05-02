@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function EventSourcingSystemsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Event sourcing systems capture all changes to application state as a sequence of events: payment events (payment initiated, payment authorized, payment captured, payment refunded), billing events (invoice generated, invoice paid, invoice overdue, invoice voided), subscription events (subscription created, subscription upgraded, subscription downgraded, subscription cancelled). For staff and principal engineers, event sourcing involves event store design (append-only event storage, event versioning, event migration), projections and read models (build read models from events, optimize for queries), CQRS integration (separate write model from read model, optimize each independently), and event replay (replay events for debugging, replay events for new features, replay events for disaster recovery).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of event sourcing extends beyond simple event logging. Event versioning handles schema changes (add fields, remove fields, change field types), event migration migrates old events to new schema (migrate events on read, migrate events in background), event consistency ensures events are consistent (event ordering, event causality, event idempotency). Projections build read models from events (build current state from events, build historical state from events), CQRS separates write model from read model (write model optimized for writes, read model optimized for reads), event replay replays events for debugging (replay events to reproduce issues), replay events for new features (replay events to build new read models), replay events for disaster recovery (replay events to recover from disasters).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, event sourcing architecture involves event sourcing fundamentals (events as source of truth, append-only event storage, event versioning), event store design (event storage, event indexing, event retention), projections and read models (build read models from events, optimize for queries), CQRS integration (separate write model from read model, optimize each independently), and event replay and debugging (replay events for debugging, replay events for new features, replay events for disaster recovery). The system must support multiple event types (payment events, billing events, subscription events), multiple projections (current state projections, historical state projections, analytics projections), and multiple replay scenarios (debugging replay, new features replay, disaster recovery replay).
         </p>
@@ -47,13 +51,16 @@ export default function EventSourcingSystemsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Event Sourcing Fundamentals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Events as source of truth: events are the single source of truth for application state. Current state: derived from events (replay events to build current state), not stored separately (don&apos;t store current state, derive from events). Historical state: available from events (replay events to build historical state), point-in-time queries (query state at specific point in time). Benefits: complete audit trail (all changes captured, all changes logged), temporal queries (query state at specific point in time, query state changes over time), event replay (replay events for debugging, replay events for new features, replay events for disaster recovery).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Append-only event storage: events are appended to event store, never modified, never deleted. Immutability: events are immutable (once stored, can&apos;t be modified, can&apos;t be deleted), corrections are new events (don&apos;t modify events, add correction events). Ordering: events are ordered (event order matters, event sequence matters), sequence numbers (each event has sequence number, events ordered by sequence number). Benefits: simplicity (append-only is simple, no updates, no deletes), audit trail (all changes captured, all changes logged), event replay (replay events in order, rebuild state from events).
-        </p>
+        </HighlightBlock>
         <p>
           Event versioning: events have schema, schema changes over time (add fields, remove fields, change field types). Versioning strategies: upcasting (migrate old events to new schema on read), event migration (migrate old events to new schema in background), schema evolution (design schema for evolution, design schema for compatibility). Compatibility: backward compatibility (new schema can read old events), forward compatibility (old schema can read new events, ignore new fields). Benefits: schema evolution (evolve schema over time, add features, change features), event compatibility (old events compatible with new schema, new events compatible with old schema).
         </p>
@@ -116,9 +123,12 @@ export default function EventSourcingSystemsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Event sourcing architecture spans event sourcing fundamentals, event store, projections and read models, CQRS integration, and event replay. Event sourcing fundamentals capture all changes as events (events as source of truth, append-only event storage, event versioning). Event store stores events (event storage, event indexing, event retention). Projections and read models build read models from events (build read models, optimize for queries). CQRS integration separates write model from read model (optimize each independently). Event replay replays events for debugging, new features, and disaster recovery.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/event-sourcing-systems/event-sourcing-architecture.svg"
@@ -129,9 +139,9 @@ export default function EventSourcingSystemsArticle() {
         />
 
         <h3>Event Sourcing Fundamentals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event capture captures all changes as events. Sources: payment systems (payment events, charges, refunds, disputes), billing systems (billing events, invoices, credits, debits), subscription systems (subscription events, subscriptions, upgrades, downgrades, cancellations). Events: payment initiated (payment initiated event, payment details), payment authorized (payment authorized event, authorization details), payment captured (payment captured event, capture details), payment refunded (payment refunded event, refund details). Benefits: complete audit trail (all changes captured, all changes logged), temporal queries (query state at specific point in time, query state changes over time).
-        </p>
+        </HighlightBlock>
         <p>
           Event storage stores events in append-only event store. Storage: event tables (event_id, aggregate_id, event_type, event_data, timestamp, sequence_number), event streams (events grouped by aggregate_id, events ordered by sequence_number). Immutability: events are immutable (once stored, can&apos;t be modified, can&apos;t be deleted), corrections are new events (don&apos;t modify events, add correction events). Benefits: simplicity (append-only is simple, no updates, no deletes), audit trail (all changes captured, all changes logged).
         </p>
@@ -202,14 +212,17 @@ export default function EventSourcingSystemsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Event sourcing design involves trade-offs between completeness, complexity, performance, and scalability. Understanding these trade-offs enables informed decisions aligned with business requirements and operational capabilities.
-        </p>
+        </HighlightBlock>
 
         <h3>Event Sourcing vs. State Storage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event sourcing (store events, derive state). Pros: Complete audit trail (all changes captured, all changes logged), temporal queries (query state at specific point in time, query state changes over time), event replay (replay events for debugging, replay events for new features, replay events for disaster recovery). Cons: Complexity (event sourcing is complex, event versioning, event migration), query complexity (query current state requires replay, query performance overhead), storage overhead (store all events, store full history). Best for: Audit-required systems (financial systems, compliance systems), temporal requirements (query historical state, query state changes), replay requirements (replay for debugging, replay for new features, replay for disaster recovery).
-        </p>
+        </HighlightBlock>
         <p>
           State storage (store current state, update state). Pros: Simplicity (store current state, update state), query performance (query current state directly, no replay), storage efficiency (store only current state, don&apos;t store full history). Cons: No audit trail (changes not captured, changes not logged), no temporal queries (can&apos;t query historical state, can&apos;t query state changes), no event replay (can&apos;t replay events, can&apos;t rebuild state). Best for: Simple systems (no audit requirements, no temporal requirements), performance-critical (query performance critical, storage efficiency critical), no replay requirements (no debugging replay, no new features replay, no disaster recovery replay).
         </p>
@@ -261,13 +274,16 @@ export default function EventSourcingSystemsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement event versioning:</strong> Event versions (version 1, version 2, version 3), versioning strategies (explicit versioning, implicit versioning), compatibility (backward compatibility, forward compatibility). Benefits: schema evolution (evolve schema over time, add features, change features), event compatibility (old events compatible with new schema, new events compatible with old schema).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Design append-only event store:</strong> Append-only storage (events appended, never modified, never deleted), event tables (event_id, aggregate_id, event_type, event_data, timestamp, sequence_number), event streams (events grouped by aggregate_id, events ordered by sequence_number). Benefits: simplicity (append-only is simple, no updates, no deletes), audit trail (all changes captured, all changes logged).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Build projections and read models:</strong> Projections (build read models from events, build projections from events), read models (current state read models, historical state read models, analytics read models), query optimization (read models optimized for queries, optimized for specific queries). Benefits: query performance (fast queries, low latency queries), query flexibility (flexible queries, multiple read models for multiple queries).
           </li>
@@ -297,13 +313,16 @@ export default function EventSourcingSystemsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No event versioning:</strong> Schema changes break old events. Solution: Event versioning (version 1, version 2, version 3), versioning strategies (explicit versioning, implicit versioning), compatibility (backward compatibility, forward compatibility).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Modify events:</strong> Events modified, audit trail broken. Solution: Append-only storage (events appended, never modified, never deleted), corrections are new events (don&apos;t modify events, add correction events).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No projections:</strong> Query current state requires full replay. Solution: Projections (build read models from events, build projections from events), read models (current state read models, historical state read models, analytics read models).
           </li>
@@ -333,16 +352,19 @@ export default function EventSourcingSystemsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Financial Trading System</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Financial trading system implements event sourcing for audit and compliance. Events: order placed (order placed event, order details), order matched (order matched event, match details), order filled (order filled event, fill details), order cancelled (order cancelled event, cancel details). Event store: append-only event storage (events appended, never modified, never deleted), event indexing (index by order_id, index by event_type, index by timestamp), indefinite retention (events retained indefinitely, full history). Projections: current order state (current order state, query current orders), historical order state (historical order state, query historical orders), analytics (trading analytics, trading metrics). Benefits: audit trail (complete audit trail, all changes logged), compliance (meet compliance requirements, pass compliance audits), replay (replay events for debugging, replay events for new features, replay events for disaster recovery).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">E-commerce Order System</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce order system implements event sourcing for order tracking and customer service. Events: order created (order created event, order details), order paid (order paid event, payment details), order shipped (order shipped event, shipping details), order delivered (order delivered event, delivery details), order returned (order returned event, return details). Event store: append-only event storage (events appended, never modified, never deleted), event indexing (index by order_id, index by customer_id, index by timestamp), compliance retention (events retained for compliance period, deleted after). Projections: current order state (current order state, query current orders), customer order history (customer order history, query customer orders), analytics (sales analytics, sales metrics). Benefits: order tracking (track orders, track order changes), customer service (customer service can see order history, customer service can see order changes), replay (replay events for debugging, replay events for new features, replay events for disaster recovery).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Subscription Billing System</h3>
         <p>
@@ -362,12 +384,15 @@ export default function EventSourcingSystemsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is event sourcing and when should you use it?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What is event sourcing and when should you use it?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Event sourcing: capture all changes to application state as a sequence of events (events as source of truth, append-only event storage). Use when: audit-required (financial systems, compliance systems, all changes must be logged), temporal requirements (query historical state, query state changes over time), replay requirements (replay for debugging, replay for new features, replay for disaster recovery). Don&apos;t use when: simple systems (no audit requirements, no temporal requirements), performance-critical (query performance critical, storage efficiency critical), no replay requirements (no debugging replay, no new features replay, no disaster recovery replay).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

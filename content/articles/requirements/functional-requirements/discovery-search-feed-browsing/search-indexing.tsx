@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,14 +39,17 @@ export default function SearchIndexingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Search Indexing</strong> is the process of transforming raw
           content into optimized data structures that enable fast, relevant
           search results. It is the foundation of any search system—without
           proper indexing, even the most sophisticated ranking algorithms cannot
           retrieve relevant documents efficiently.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Search indexing solves the fundamental information retrieval problem:
           given millions or billions of documents, find the handful relevant to
           a user's query in milliseconds. The inverted index—mapping terms to
@@ -54,7 +58,7 @@ export default function SearchIndexingArticle() {
           and Lucene build on this foundation with additional optimizations:
           field-level indexes, document vectors, term frequencies, and position
           information.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, understanding indexing architecture is
           critical. You'll design indexing pipelines that handle millions of
@@ -66,12 +70,15 @@ export default function SearchIndexingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Inverted Index</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The inverted index is the core data structure of full-text search.
           Instead of storing documents and their contents (forward index), it
           stores terms and which documents contain them.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Term Dictionary:</strong> Sorted list of all unique terms in
@@ -94,7 +101,7 @@ export default function SearchIndexingArticle() {
         </ul>
 
         <h3 className="mt-6">Analyzers</h3>
-        <p>Analyzers transform raw text into indexed terms. They consist of:</p>
+        <HighlightBlock as="p" tier="important">Analyzers transform raw text into indexed terms. They consist of:</HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Character Filters:</strong> Pre-process text (strip HTML,
@@ -165,10 +172,13 @@ export default function SearchIndexingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production search indexing requires a robust pipeline that handles
           high-volume document ingestion while maintaining search availability.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery/search-indexing/inverted-index-structure.svg"
@@ -246,9 +256,9 @@ export default function SearchIndexingArticle() {
         />
 
         <h3 className="mt-6">Sharding and Replication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For large-scale search, indexes are distributed across multiple nodes:
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -307,10 +317,13 @@ export default function SearchIndexingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Indexing strategy involves balancing search performance, index
           freshness, storage efficiency, and indexing throughput.
-        </p>
+        </HighlightBlock>
 
         <h3>Analyzer Complexity vs Performance</h3>
         <div className="overflow-x-auto">
@@ -368,11 +381,11 @@ export default function SearchIndexingArticle() {
         />
 
         <h3 className="mt-6">Index Freshness vs Throughput</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Near-Real-Time (NRT):</strong> Refresh interval 1-5 seconds.
           Users see changes quickly. Higher indexing overhead (frequent segment
           creation). Best for: chat, comments, real-time dashboards.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Batch Indexing:</strong> Refresh interval minutes to hours.
           Bulk index large batches. Lower overhead, better throughput. Best for:
@@ -411,17 +424,20 @@ export default function SearchIndexingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Design Mappings Upfront:</strong> Define field types,
             analyzers, and mappings before indexing. Changing mappings often
             requires reindexing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Choose Shard Count Carefully:</strong> Too few shards limits
             scaling. Too many shards causes overhead. Target 10-50GB per shard.
             Estimate growth and set primary shards accordingly.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Index Templates:</strong> Define templates for
             consistent mappings, settings, and aliases across indexes. Essential
@@ -456,18 +472,21 @@ export default function SearchIndexingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Too Many Shards:</strong> Each shard consumes memory and
             file handles. 1000+ shards causes cluster instability. Solution:
             Plan shard count based on data volume, use index templates with
             appropriate settings.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Unbounded Index Growth:</strong> No ILM policy, indices grow
             forever. Solution: Implement ILM with rollover, shrink, and delete
             phases. Archive old data to cold storage.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Inefficient Analyzers:</strong> Over-complex analyzer chains
             slow indexing. Solution: Profile analyzer performance, use simpler
@@ -499,19 +518,22 @@ export default function SearchIndexingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>GitHub Code Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           GitHub indexes billions of lines of code across millions of
           repositories. Uses custom analyzers for code tokenization (split
           camelCase, snake_case). Indexes symbols, function names, and comments
           separately. Implements sharding by repository ID.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Custom tokenizer handles programming
           language syntax. Indexes code structure (AST) for semantic search, not
           just text match.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Slack Message Search</h3>
         <p>
@@ -554,12 +576,15 @@ export default function SearchIndexingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you handle incremental indexing?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Event-driven architecture with message queue
               (Kafka, Kinesis). Content change → event → indexing service →
               update index. Batch small updates every few seconds for
@@ -568,7 +593,7 @@ export default function SearchIndexingArticle() {
               micro-batching (accumulate events, bulk index every N seconds).
               Monitor indexing lag (time from content change to search
               availability).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

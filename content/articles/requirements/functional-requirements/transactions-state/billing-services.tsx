@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,12 +36,15 @@ export default function BillingServicesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Billing services manage the financial aspects of recurring revenue: billing cycles (when to bill), invoicing (what to charge), proration (mid-cycle changes), tax calculation (sales tax, VAT, GST), billing dunning (failed payment recovery), and credit/debit memos (adjustments). For staff and principal engineers, billing services involve complex calculation logic (proration, tax), compliance requirements (tax regulations, invoicing laws), and integration with payment gateways (charge cards, process payments).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of billing services extends beyond simple recurring charges. Billing cycles vary by customer (monthly, annual, custom), invoicing must comply with regional laws (EU invoicing requirements, US tax laws), proration must handle mid-cycle changes (upgrades, downgrades, add-ons), tax calculation must comply with multiple jurisdictions (sales tax, VAT, GST), and billing dunning must recover failed payments while maintaining customer relationships. The system must handle edge cases (leap years, month-end billing, timezone differences) gracefully with accurate calculations.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, billing services architecture involves billing engine (calculate charges, generate invoices), tax engine (calculate tax, comply with regulations), dunning orchestration (retry failed payments, communicate with customers), and billing analytics (revenue recognition, billing metrics). The system must support multiple billing models (subscription, usage-based, one-time), multiple currencies (multi-currency billing), and multiple regions (tax compliance, invoicing laws). Analytics track billing health (successful charges, failed charges, recovery rate), tax compliance (tax collected, tax remitted), and revenue recognition (recognized revenue, deferred revenue).
         </p>
@@ -48,13 +52,16 @@ export default function BillingServicesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Billing Cycles</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Billing frequency defines how often customers are billed. Frequencies: daily (usage-based, pay-as-you-go), weekly (services, subscriptions), monthly (most common, SaaS), quarterly (enterprise, B2B), annual (discounted, committed), custom (every 3 months, every 6 months). Configuration: frequency (daily, weekly, monthly, quarterly, annual), billing day (day of week, day of month, anniversary date), timezone (customer timezone, business timezone). Edge cases: month-end billing (31st doesn&apos;t exist in all months), leap years (Feb 29), timezone differences (customer in different timezone).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Billing day determines when in the cycle billing occurs. Options: calendar day (1st of month, 15th of month), anniversary day (same day each month as signup), last day of month (end of month billing). Behavior: if billing day doesn&apos;t exist (31st in 30-day month), bill on last day of month. Configuration: billing day (1-31, last), grace period (1-7 days after billing day), timezone (customer timezone, business timezone). Edge cases: signup on 31st (bill on last day of shorter months), timezone differences (bill at midnight customer time vs. business time).
-        </p>
+        </HighlightBlock>
         <p>
           Billing period defines the period being billed. Period start: cycle start date (anniversary, calendar), period end: cycle end date (day before next billing). Proration: if mid-cycle change (upgrade, downgrade), calculate prorated amount (days remaining / days in period). Invoicing: invoice shows period start, period end, days in period, prorated amounts. Configuration: period type (calendar month, 30-day month, anniversary), proration method (daily, weekly, monthly), invoice timing (in advance, in arrears).
         </p>
@@ -117,9 +124,12 @@ export default function BillingServicesArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Billing services architecture spans billing engine, tax engine, dunning orchestration, and billing analytics. Billing engine calculates charges (subscriptions, usage, one-time), generates invoices (PDF, HTML, XML), and manages billing cycles (frequency, billing day, period). Tax engine calculates tax (sales tax, VAT, GST), determines jurisdiction (customer location, product location), and ensures compliance (tax collection, tax remittance). Dunning orchestration handles failed billing (retry logic, communication cadence, access levels). Billing analytics tracks billing health (successful charges, failed charges, recovery rate), tax compliance (tax collected, tax remitted), and revenue recognition (recognized revenue, deferred revenue).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/billing-services/billing-architecture.svg"
@@ -130,9 +140,9 @@ export default function BillingServicesArticle() {
         />
 
         <h3>Billing Engine</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Billing cycle manager manages billing cycles. Responsibilities: determine billing date (billing day, timezone), generate billing run (customers to bill, billing date), calculate charges (subscriptions, usage, one-time), generate invoices (PDF, HTML, XML). Configuration: billing frequency (daily, weekly, monthly, quarterly, annual), billing day (1-31, last), timezone (customer, business). Edge cases: month-end billing (31st doesn&apos;t exist in all months), leap years (Feb 29), timezone differences (customer in different timezone).
-        </p>
+        </HighlightBlock>
         <p>
           Invoice generator generates invoices. Input: customer info (name, address, tax ID), billing period (start, end, days), line items (subscriptions, usage, one-time), tax info (tax rate, tax amount), payment terms (due date, late fees). Process: generate invoice number (sequential, unique), calculate totals (subtotal, discounts, tax, total), format invoice (PDF, HTML, XML), deliver invoice (email, portal, mail). Output: invoice (PDF, HTML, XML), invoice data (for analytics, reporting). Configuration: invoice template (branding, layout), invoice numbering (prefix, separator, padding), delivery method (email, portal, mail).
         </p>
@@ -192,14 +202,17 @@ export default function BillingServicesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Billing services design involves trade-offs between accuracy, complexity, compliance, and customer experience. Understanding these trade-offs enables informed decisions aligned with business model and operational capabilities.
-        </p>
+        </HighlightBlock>
 
         <h3>Proration: Daily vs. Weekly vs. Monthly</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Daily proration (charge/credit per day). Pros: Most accurate (pay for exact days), fairest (customer pays for what they use), transparent (easy to explain). Cons: Most complex (calculate days in period, handle leap years), most calculations (daily rate, days remaining), most edge cases (month-end, leap years). Best for: Most production systems—accurate, fair, expected by customers.
-        </p>
+        </HighlightBlock>
         <p>
           Weekly proration (charge/credit per week). Pros: Simpler (calculate weeks, not days), fewer calculations (weekly rate, weeks remaining), fewer edge cases (weeks don&apos;t vary like months). Cons: Less accurate (round to weeks, not days), less fair (customer may pay for unused days), less transparent (harder to explain). Best for: Weekly billing cycles (services, subscriptions), simpler billing (don&apos;t need daily accuracy).
         </p>
@@ -251,13 +264,16 @@ export default function BillingServicesArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement accurate proration:</strong> Daily proration (most accurate, fairest), handle edge cases (month-end, leap years), clear communication (explain proration on invoice). Benefits: customer trust (accurate billing), fewer disputes (clear calculation), compliance (some regions require accurate proration).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use third-party tax engine:</strong> Avalara, TaxJar, Vertex (vendor handles complexity), automatic updates (tax rates, rules), compliance (vendor liable for errors). Benefits: simplified (don&apos;t build tax logic), compliant (vendor updates), lower risk (vendor liable).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Bill in advance for subscriptions:</strong> Standard practice (customers expect), better cash flow (collect before delivering), lower churn (customer paid, less likely to cancel). Benefits: cash flow (collect upfront), retention (paid customers stay), simplicity (bill, then deliver).
           </li>
@@ -287,13 +303,16 @@ export default function BillingServicesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Inaccurate proration:</strong> Wrong calculations, unclear communication. Solution: Daily proration (most accurate), handle edge cases (month-end, leap years), clear communication (explain on invoice).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>In-house tax calculation:</strong> Complex, error-prone, compliance risk. Solution: Third-party tax engine (Avalara, TaxJar, Vertex), automatic updates, vendor liability.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Poor invoice design:</strong> Missing required fields, unclear layout, unprofessional. Solution: Invoice template (branding, layout), required fields (invoice number, customer info, billing period, line items, tax, total), professional design.
           </li>
@@ -323,16 +342,19 @@ export default function BillingServicesArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Stripe Billing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe Billing: comprehensive billing platform. Features: subscription billing (recurring, fixed amount), usage-based billing (pay-per-use, tiered pricing), invoicing (professional invoices, multiple formats), proration (daily proration, mid-cycle changes), tax calculation (automatic tax, multiple jurisdictions), dunning (retry logic, communication cadence). Integration: Stripe Payments (charge cards, process payments), Stripe Tax (tax calculation, compliance), Stripe Invoicing (invoice generation, delivery).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Chargebee Billing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Chargebee: subscription billing platform. Features: subscription billing (recurring, fixed amount), invoicing (professional invoices, multiple formats), proration (daily proration, mid-cycle changes), tax calculation (Avalara, TaxJar integration), dunning (retry logic, communication cadence), credit/debit memos (billing adjustments). Integration: payment gateways (Stripe, Braintree, PayPal), tax engines (Avalara, TaxJar), accounting systems (QuickBooks, Xero).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Recurly Billing</h3>
         <p>
@@ -352,12 +374,15 @@ export default function BillingServicesArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you calculate proration for mid-cycle changes?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you calculate proration for mid-cycle changes?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Daily proration: (new price - old price) × (days remaining / days in period). Example: upgrade from $30/month to $60/month on day 15 of 30-day period. Days remaining: 15. Proration: ($60 - $30) × (15/30) = $15 charge. Timing: immediate (charge now, separate invoice) or next billing (charge at next billing, combined with next invoice). Edge cases: month-end billing (31st doesn&apos;t exist in all months), leap years (Feb 29), multiple changes (combine prorations).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

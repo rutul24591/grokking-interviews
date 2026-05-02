@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Interactive Visualizations</strong> enable users to explore data through direct manipulation rather than static viewing. Interactions include hover (tooltips), click (selection), brush (range selection), zoom (scale changes), pan (navigation), and filter (data subset). Interactivity transforms visualizations from presentations into exploration tools.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff/principal engineers, interactive visualization design requires balancing exploration capability with usability. Too few interactions limit insight discovery. Too many interactions overwhelm users. The right interactions depend on data characteristics, user goals, and context of use.
-        </p>
+        </HighlightBlock>
         <p>
           Interactivity adds complexity to visualization architecture. State must track interaction state (selected points, zoom level, filters). Updates must be responsive (under 100ms for direct manipulation). Accessibility must be maintained for keyboard and screen reader users.
         </p>
@@ -42,6 +46,9 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/interaction-patterns.svg"
@@ -50,12 +57,12 @@ export default function ArticlePage() {
         />
 
         <h3>Interaction Types</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Hover (Tooltips)</strong> displays details on demand. Users hover over data points to see exact values. Tooltips should be informative (show relevant fields), positioned carefully (avoid obscuring data), and dismiss quickly (on mouse out).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Click (Selection)</strong> enables point selection. Users click to select individual points or groups. Selection enables comparison (compare selected vs unselected), filtering (show only selected), and actions (export selected, drill down).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Brush (Range Selection)</strong> enables selecting ranges of data. Users drag to select a range on an axis. Brush enables filtering (show only brushed range), comparison (compare brushed vs unbrushed), and coordination (brush one view, see selection in other views).
         </p>
@@ -113,9 +120,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Interactive visualization architecture requires decisions about event handling, state management, and update patterns.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/multi-view-coordination.svg"
@@ -124,9 +134,9 @@ export default function ArticlePage() {
         />
 
         <h3>Event Handling Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement a layered event handling architecture. <strong>Low-level events</strong> (mouse, touch, keyboard) are captured by the visualization container. <strong>Interaction events</strong> (hover, click, brush) are derived from low-level events. <strong>Application events</strong> (filter changed, selection changed) are dispatched to the application.
-        </p>
+        </HighlightBlock>
         <p>
           Event handling should be declarative where possible. Describe interactions (onHover, onClick, onBrush) rather than implementing low-level event handlers. Libraries like D3-brush and react-use-gesture provide declarative interaction primitives.
         </p>
@@ -176,9 +186,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Interactive visualization design involves trade-offs between exploration capability, usability, and implementation complexity.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -221,16 +234,19 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that interactions should serve exploration goals, not be added for their own sake. Each interaction should answer a user question. Start with essential interactions (hover, click), add advanced interactions (brush, zoom) based on user needs.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Provide visual feedback for all interactions. Highlight hovered points. Show selection clearly. Indicate zoom level and pan position. Users should always understand interaction state.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/accessibility-patterns.svg"
@@ -238,9 +254,9 @@ export default function ArticlePage() {
           caption="Accessibility — use position over color, provide ARIA labels, enable keyboard navigation, use colorblind-safe palettes, write alt text descriptions"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Make interactions discoverable. Use visual cues (cursor changes, hover highlights) to indicate interactivity. Provide help text or tutorials for complex interactions. Don't hide critical interactions.
-        </p>
+        </HighlightBlock>
         <p>
           Support undo for destructive interactions. Clearing selection, removing filters, and resetting zoom should be undoable. Provide reset buttons for each interaction type.
         </p>
@@ -257,12 +273,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Adding interactions without purpose clutters the interface. Each interaction should serve a clear exploration goal. Don't add zoom because it's possible—add it because users need to see detail.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not providing visual feedback confuses users. Users should always understand what's selected, what's filtered, and what's hovered. Use highlighting, color changes, and tooltips for feedback.
-        </p>
+        </HighlightBlock>
         <p>
           Ignoring keyboard accessibility excludes users. Keyboard-only users must be able to navigate and interact. Screen reader users must understand data and state. Test accessibility during development.
         </p>
@@ -279,14 +298,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Analytics Dashboard: Multi-View Coordination</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An analytics dashboard needed to coordinate multiple charts. Users needed to select a time range in one chart and see the selection reflected in all other charts.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong> Implemented brushing in time series chart. Brush state stored in global state. All charts subscribed to brush state. Selected time range highlighted in all charts.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Results:</strong> Users could explore correlations across metrics. Time range selection synchronized across all views. Analysis time reduced by 50% compared to manual filtering.
         </p>
@@ -327,14 +349,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What interactions would you implement for a time series visualization?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Essential interactions: hover (tooltips with exact values), click (select time point), brush (select time range). Advanced interactions: zoom (change time scale), pan (navigate time), filter (show/hide series).
-            </p>
+            </HighlightBlock>
             <p>
               Implementation: Use D3-brush for range selection. Implement zoom via scale transforms. Store interaction state (selected range, zoom level) in component state or global store.
             </p>

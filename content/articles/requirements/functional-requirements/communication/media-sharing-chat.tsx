@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function MediaSharingChatArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Media sharing in chat enables users to share images, videos, and files within conversations, transforming text-only communication into rich multimedia experiences. Users share photos from events, documents for collaboration, videos for entertainment, and files for work. Media sharing increases engagement—messages with images receive 2x more responses than text-only. The feature requires efficient upload, preview generation, secure storage, and fast delivery.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of media sharing stems from handling diverse file types, sizes, and formats. Images need compression and thumbnail generation. Videos need transcoding for playback compatibility. Files need virus scanning and type validation. Upload must handle poor network conditions with retry logic. Storage must scale to petabytes for large platforms. Delivery must be fast globally via CDN. Security must prevent malware distribution while respecting user privacy.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, media sharing implementation involves distributed systems challenges. Upload infrastructure must handle traffic spikes (holiday photo sharing). Processing pipelines must scale independently (image compression, video transcoding). Storage must be cost-effective (hot storage for recent, cold for old). CDN integration ensures fast global delivery. Security scanning must be thorough without adding latency. The architecture must balance quality with performance—high-resolution images look better but take longer to upload.
         </p>
@@ -47,13 +51,16 @@ export default function MediaSharingChatArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Media Types and Formats</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Images: JPEG, PNG, GIF, WebP, HEIC. JPEG for photos (lossy compression, small size). PNG for graphics (lossless, transparency). GIF for animations (limited colors). WebP for modern browsers (better compression). HEIC for iOS (efficient but limited support). Convert to WebP/JPEG for compatibility.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Videos: MP4, MOV, AVI, WebM. MP4 (H.264) for universal compatibility. MOV for iOS. WebM for web (open format). Transcode uploads to MP4 for consistency. Generate multiple resolutions (360p, 720p, 1080p) for adaptive streaming. Thumbnail extraction for preview.
-        </p>
+        </HighlightBlock>
         <p>
           Documents: PDF, DOCX, XLSX, PPTX, TXT. PDF for universal viewing. Office formats for editing. TXT for simple text. Preview generation for documents (first page thumbnail). Virus scanning mandatory for all documents.
         </p>
@@ -108,9 +115,12 @@ export default function MediaSharingChatArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Media sharing architecture spans client upload, processing pipeline, storage, and delivery. Client prepares and uploads media. Processing pipeline compresses, transcodes, scans. Storage holds originals and derivatives. CDN delivers to recipients.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/media-sharing-chat/media-sharing-architecture.svg"
@@ -121,9 +131,9 @@ export default function MediaSharingChatArticle() {
         />
 
         <h3>Client Upload</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           File selection: native file picker (mobile: camera/gallery, desktop: file browser). Multiple selection support. Preview before send (thumbnail grid). Remove individual files. Add caption per file.
-        </p>
+        </HighlightBlock>
         <p>
           Client-side processing: image compression (WebP, 80% quality, max 1920px). Thumbnail generation (256x256). Video thumbnail extraction (first frame). File type validation (magic bytes). Size check (fail if over limit).
         </p>
@@ -186,14 +196,17 @@ export default function MediaSharingChatArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Media sharing design involves trade-offs between quality, performance, storage cost, and user experience. Understanding these trade-offs enables informed decisions aligned with product goals and user expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Compression: Quality vs Size</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           High quality: minimal compression (90%+ quality). Pros: Best visual quality, user satisfaction. Cons: Large files, slow upload, high storage cost. Best for: Professional use, photography apps.
-        </p>
+        </HighlightBlock>
         <p>
           Balanced: moderate compression (70-80% quality). Pros: Good quality, reasonable size. Cons: Some quality loss. Best for: Most consumer apps (WhatsApp, Instagram).
         </p>
@@ -245,13 +258,16 @@ export default function MediaSharingChatArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Compress client-side:</strong> Compress images before upload (80% quality, max 1920px). Reduces upload time 5-10x. Generate thumbnail locally for instant preview.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use multipart upload:</strong> For files &gt;10MB, use multipart upload. Parallel chunks, resume on failure. Better reliability for large files.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement retry logic:</strong> Retry failed uploads (3 retries, exponential backoff). Store progress for resume. Inform user of retry.
           </li>
@@ -281,13 +297,16 @@ export default function MediaSharingChatArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No compression:</strong> Uploading original files wastes bandwidth. Solution: Client-side compression, server-side optimization.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No retry logic:</strong> Failed uploads frustrate users. Solution: Implement retry with exponential backoff, resume support.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No virus scanning:</strong> Malware distribution risk. Solution: Scan all files in quarantine before visible.
           </li>
@@ -317,16 +336,19 @@ export default function MediaSharingChatArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>WhatsApp Media Sharing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WhatsApp compresses images heavily (WebP, ~100KB). Videos transcoded to MP4. Documents up to 100MB (2GB for Premium). Media stored encrypted. Gallery per conversation. Auto-download settings (WiFi/cellular/never).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Instagram Direct</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Instagram uses existing Instagram CDN for media. Images compressed, multiple resolutions. Videos transcoded with adaptive streaming. Ephemeral media (disappearing photos/videos). Reactions on media messages.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Slack File Sharing</h3>
         <p>
@@ -346,12 +368,15 @@ export default function MediaSharingChatArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle large file uploads?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle large file uploads?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Multipart upload: split file into 5-10MB chunks, upload in parallel. Each chunk retried independently. Resume from last successful chunk on failure. Background upload continues when app backgrounded. Progress tracking per chunk. Server reassembles chunks, processes.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

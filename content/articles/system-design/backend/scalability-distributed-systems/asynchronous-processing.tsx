@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -42,7 +43,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Asynchronous processing</strong> is an architectural pattern
           where the producer of a task or event does not wait for the consumer
           to complete the processing before continuing. Instead, the producer
@@ -55,8 +59,8 @@ export default function ArticlePage() {
           the most powerful patterns in distributed systems, enabling
           independent scaling, fault isolation, traffic spike buffering, and
           the ability to fan out a single event to multiple consumers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The alternative is <strong>synchronous processing</strong>, where the
           producer directly invokes the consumer (via REST, gRPC, or similar)
           and blocks until the consumer responds. Synchronous processing is
@@ -66,7 +70,7 @@ export default function ArticlePage() {
           the consumer&apos;s processing speed, and it requires the producer to
           handle the consumer&apos;s failure modes directly (retries, timeouts,
           circuit breakers).
-        </p>
+        </HighlightBlock>
         <p>
           Asynchronous processing is fundamental to event-driven architecture,
           where services communicate by publishing and consuming events rather
@@ -97,8 +101,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>message queue</strong> (or event bus) is the intermediary
           that stores messages between producers and consumers. It provides
           several key guarantees: <strong>durability</strong> — messages are
@@ -111,9 +118,9 @@ export default function ArticlePage() {
           the message before it is removed from the queue. If the consumer
           crashes before acknowledging, the message is redelivered to another
           consumer.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Delivery guarantees</strong> are one of the most critical
           concepts in asynchronous processing. There are three levels:{""}
           <strong>At-most-once</strong> — the message is delivered zero or one
@@ -133,7 +140,7 @@ export default function ArticlePage() {
           published exactly once). Exactly-once is the most expensive guarantee
           and is typically achieved by combining at-least-once delivery with
           idempotent consumers (using a unique message ID to detect duplicates).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Backpressure</strong> is the mechanism by which a consumer
@@ -188,6 +195,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/asynchronous-processing-diagram-1.svg"
@@ -195,7 +205,7 @@ export default function ArticlePage() {
           caption="Async processing — the producer publishes to the queue and continues; consumers process messages independently and at their own pace"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The producer flow begins with the application generating an event
           (e.g., an order is created) and publishing it to the message queue.
           The queue persists the message to disk and returns an acknowledgment
@@ -206,9 +216,9 @@ export default function ArticlePage() {
           durability guarantees). The consumers process the message
           independently, each at its own pace, and each consumer&apos;s
           processing latency is independent of the producer&apos;s latency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The consumer flow begins with the consumer polling the queue for new
           messages (in Kafka) or receiving a push notification from the queue
           (in RabbitMQ). The consumer retrieves one or more messages, processes
@@ -222,7 +232,7 @@ export default function ArticlePage() {
           message twice must produce the same result as processing it once —
           because redelivery is possible and the consumer cannot distinguish
           between a first delivery and a redelivery.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/asynchronous-processing-diagram-2.svg"
@@ -255,8 +265,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Asynchronous processing must be compared against synchronous
           processing for each use case. Synchronous processing is simpler to
           implement, provides immediate results, and is easier to debug (the
@@ -272,18 +285,18 @@ export default function ArticlePage() {
           complexity (managing the queue, monitoring consumer lag, handling
           dead-letter messages), and debugging difficulty (the call chain spans
           multiple independent processes).
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Property</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Property</th>
               <th className="p-3 text-left">Synchronous</th>
               <th className="p-3 text-left">Asynchronous</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Coupling</strong>
               </td>
@@ -293,8 +306,8 @@ export default function ArticlePage() {
               <td className="p-3">
                 Loose — producer and consumer independent
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Latency</strong>
               </td>
@@ -304,7 +317,7 @@ export default function ArticlePage() {
               <td className="p-3">
                 Producer returns immediately (~5–20 ms)
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Consistency</strong>
@@ -345,8 +358,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Design consumers to be idempotent — processing the same message twice
           must produce the same result as processing it once. This is essential
           because message redelivery is possible (the consumer may crash after
@@ -358,9 +374,9 @@ export default function ArticlePage() {
           message, it checks whether the message ID has already been processed —
           if yes, it skips processing and acknowledges the message; if no, it
           processes the message, records the message ID, and then acknowledges.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Monitor consumer lag continuously and alert when it exceeds
           acceptable thresholds. Consumer lag is the number of messages in the
           queue that have not yet been processed by the consumer. It is the most
@@ -371,7 +387,7 @@ export default function ArticlePage() {
           be set based on the application&apos;s tolerance for processing delay
           (e.g., alert when consumer lag exceeds 10,000 messages or when the
           estimated processing time for the backlog exceeds 1 hour).
-        </p>
+        </HighlightBlock>
 
         <p>
           Implement backpressure to prevent queue overflow when consumers fall
@@ -414,8 +430,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Assuming that the message queue guarantees exactly-once delivery is a
           common misconception. Most message queues (Kafka, RabbitMQ, SQS)
           provide at-least-once delivery by default — they guarantee that every
@@ -429,9 +448,9 @@ export default function ArticlePage() {
           Exactly-once delivery requires the consumer to be idempotent — it must
           detect and discard duplicate messages using a unique message ID or an
           idempotency key.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Not handling poison pill messages can block the entire queue. A poison
           pill is a message that cannot be processed successfully (due to a bug
           in the consumer, a schema mismatch, or an invalid message format). If
@@ -442,7 +461,7 @@ export default function ArticlePage() {
           implement a DLQ with a maximum retry count, so that poison pill
           messages are moved to the DLQ after a few retries, allowing the
           consumer to continue processing subsequent messages.
-        </p>
+        </HighlightBlock>
 
         <p>
           Ignoring consumer lag until it becomes a crisis is a common
@@ -488,8 +507,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-world Use Cases */}
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uber uses Kafka for its real-time data pipeline, where every trip
           event (trip requested, driver matched, trip started, trip completed,
           payment processed) is published to a Kafka topic and consumed by
@@ -500,9 +522,9 @@ export default function ArticlePage() {
           process events at its own pace. Uber&apos;s Kafka cluster processes
           trillions of messages per day, with consumer lag monitored continuously
           and auto-scaling consumers when the lag exceeds thresholds.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix uses async processing for its content ingestion pipeline,
           where new content (movies, TV shows, metadata) is published to a
           message queue and consumed by multiple services (transcoding,
@@ -514,7 +536,7 @@ export default function ArticlePage() {
           ensure that no content is lost during processing, and a dead-letter
           queue for content that fails to process (e.g., due to a corrupt video
           file or a metadata schema mismatch).
-        </p>
+        </HighlightBlock>
 
         <p>
           Shopify uses async processing for its order fulfillment pipeline,
@@ -548,6 +570,9 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
@@ -555,7 +580,7 @@ export default function ArticlePage() {
           asynchronous system? Is it possible without exactly-once delivery from
           the message queue?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Yes, exactly-once processing is achievable even if the message queue
             only provides at-least-once delivery. The key is to combine
             at-least-once delivery with <em>idempotent consumers</em>. An
@@ -563,8 +588,8 @@ export default function ArticlePage() {
             processes a message once or multiple times. This is achieved by
             including a unique message ID (or idempotency key) in each message
             and tracking which message IDs have been processed.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The consumer maintains a deduplication table (a database table or an
             in-memory store) that records the message IDs it has already
             processed. When the consumer receives a message, it first checks
@@ -578,7 +603,7 @@ export default function ArticlePage() {
             consumer processes the message but crashes before recording the
             message ID, causing the message to be redelivered and processed
             again.
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             The deduplication table must be durable (persisted to disk) and must
           be pruned periodically to prevent unbounded growth. The pruning policy

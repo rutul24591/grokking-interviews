@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,15 +38,15 @@ export default function VisualRegressionTestingArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Visual regression testing</strong> (also known as screenshot testing, visual testing, or UI testing) verifies that the visual appearance of an application has not changed unexpectedly. It works by capturing screenshots of the application (or specific components) and comparing them against baseline screenshots (known-good screenshots). If the comparison detects pixel differences beyond an acceptable threshold, the test fails, indicating a visual regression. Visual regression testing catches visual bugs that functional tests cannot — layout shifts, color changes, font changes, missing elements, broken styling, and responsive design issues.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, visual regression testing is the final quality gate for user-facing changes. Functional tests (unit, integration, E2E) verify that the application works correctly (buttons click, forms submit, data loads), but they do not verify that the application looks correct (layout, colors, fonts, spacing). Visual bugs are among the most noticeable and impactful production issues — users see them immediately, they erode user trust, and they are difficult to catch with functional tests. Visual regression testing catches visual bugs before they reach production, ensuring that the application looks correct for users.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Visual regression testing involves several technical considerations. Screenshot comparison (capturing screenshots, comparing against baselines, detecting pixel differences, applying tolerance thresholds), dynamic content handling (screenshots with dynamic content — timestamps, user-generated content, animations — cause false positives, requiring content stabilization or masking), baseline management (managing baseline screenshots, updating baselines when changes are intentional, reviewing baseline changes), cross-browser and cross-viewport testing (testing across different browsers, viewport sizes, and devices to catch browser-specific and responsive design issues), and tool selection (Percy, Chromatic, Playwright screenshot assertions, Cypress visual regression plugins — each with different features, pricing, and integration capabilities).
-        </p>
+        </HighlightBlock>
         <p>
           The business case for visual regression testing is user experience assurance and brand consistency. Visual bugs directly impact user perception — a broken layout, incorrect colors, or missing elements make the application look unprofessional and unreliable. For e-commerce applications, visual bugs can reduce conversion rates (broken product pages, missing add-to-cart buttons). For SaaS applications, visual bugs can reduce user trust (broken dashboards, misaligned forms). For brand-critical applications, visual bugs can damage brand perception (incorrect logos, inconsistent styling). Visual regression testing ensures that the application looks correct for users, maintaining user trust, conversion rates, and brand consistency.
         </p>
@@ -58,15 +59,15 @@ export default function VisualRegressionTestingArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Screenshot Capture:</strong> Capturing screenshots of the application (or specific components) in a controlled environment. Screenshots are captured in a consistent browser (same version, same rendering engine), viewport size (specific dimensions, e.g., 1280x720), and environment (same CSS, same fonts, same network conditions). Consistent screenshot capture ensures that screenshots are comparable — differences are caused by code changes, not environment variability. Playwright and Cypress provide screenshot capture capabilities, and cloud services (Percy, Chromatic) provide managed screenshot capture with consistent environments.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Baseline Management:</strong> Managing baseline screenshots (known-good screenshots that represent the expected visual appearance). Baselines are captured initially (when the visual regression test is created), reviewed (to ensure they are correct), and committed to version control (or stored in a cloud service). When code changes are made, new screenshots are captured and compared against baselines. If differences are detected, they are reviewed — intentional changes (design updates, new features) result in baseline updates, unintentional changes (bugs, regressions) result in code fixes. Baseline management is the core workflow of visual regression testing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Pixel Diff Analysis:</strong> Comparing new screenshots against baselines to detect pixel differences. Pixel diff algorithms compare each pixel in the new screenshot against the corresponding pixel in the baseline, highlighting differences (different color, missing element, extra element). Tolerance thresholds determine when differences are significant enough to fail the test — small differences (anti-aliasing, sub-pixel rendering) are ignored, large differences (layout shifts, missing elements) fail the test. Pixel diff analysis is automated (cloud services handle it automatically, open-source tools provide diff images).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Dynamic Content Handling:</strong> Handling screenshots with dynamic content (timestamps, user-generated content, animations, ads) that changes between captures, causing false positives (differences that are not caused by code changes). Strategies include content stabilization (mocking dynamic content with static values — fixed timestamps, static user data, disabled animations), content masking (blurring or ignoring specific regions of the screenshot — timestamp areas, ad regions), and content exclusion (excluding specific components from visual regression testing — components with dynamic content, third-party embeds). Dynamic content handling is essential for reliable visual regression testing.
           </li>
@@ -90,12 +91,12 @@ export default function VisualRegressionTestingArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Visual regression testing architecture consists of the screenshot capture layer (capturing screenshots in a controlled environment), the comparison layer (comparing new screenshots against baselines, detecting pixel differences), the baseline management layer (storing, updating, and reviewing baselines), and the review workflow layer (presenting differences to developers, approving intentional changes, flagging unintentional changes). The flow begins with capturing baseline screenshots (known-good screenshots committed to version control or stored in a cloud service). When code changes are made, new screenshots are captured, compared against baselines, and differences are presented for review.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For CI/CD integration, the flow involves the CI/CD pipeline capturing screenshots on every pull request, comparing them against baselines, and presenting results for review. If differences are detected, the pull request is flagged for visual review. The developer reviews the differences — intentional changes are approved (baselines updated), unintentional changes are fixed (code corrected, tests re-run). Once all differences are resolved, the pull request is approved for merging.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/testing-strategies/screenshot-comparison.svg"
@@ -106,9 +107,9 @@ export default function VisualRegressionTestingArticle() {
         />
 
         <h3>Tool Comparison</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Percy:</strong> A cloud-based visual testing service by BrowserStack. Strengths include automatic screenshot capture (integrates with CI/CD, captures screenshots on every pull request), cross-browser and cross-viewport testing (captures screenshots across multiple browsers and viewport sizes), developer-friendly review interface (side-by-side comparison, pixel diff highlighting, baseline approval), and integration with popular frameworks (Playwright, Cypress, Selenium, Storybook). Limitations include pricing (per-screenshot pricing can be expensive for large test suites), and dependency on cloud service (screenshots stored on Percy&apos;s servers). Best for: teams wanting managed visual testing with comprehensive features.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Chromatic:</strong> A cloud-based visual testing service by Storybook maintainers. Strengths include Storybook integration (captures screenshots of Storybook stories, tests components in isolation), UI review workflow (side-by-side comparison, pixel diff highlighting, baseline approval), and component-level testing (tests individual components, not just full pages). Limitations includes Storybook requirement (requires Storybook setup), less suitable for full-page testing (focused on component testing), and pricing (per-screenshot pricing). Best for: teams using Storybook, component-level visual testing, design system testing.
         </p>
@@ -128,17 +129,17 @@ export default function VisualRegressionTestingArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Visual regression testing involves trade-offs between test coverage and test maintenance, screenshot accuracy and test reliability, and cloud services and open-source tools. Understanding these trade-offs is essential for designing effective visual regression testing strategies.
-        </p>
+        </HighlightBlock>
 
         <h3>Cloud Services vs. Open-Source Tools</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Cloud Services (Percy, Chromatic):</strong> Managed visual testing services. Advantages: developer-friendly review interfaces (side-by-side comparison, pixel diff highlighting, baseline approval workflows), automatic screenshot capture (integrates with CI/CD, captures on every pull request), cross-browser and cross-viewport testing (captures across multiple environments), baseline management (stored in cloud, versioned, reviewable). Limitations: pricing (per-screenshot pricing, expensive for large test suites), cloud dependency (screenshots stored on third-party servers, requires internet access), setup complexity (service integration, CI/CD configuration). Best for: teams with budget, comprehensive visual testing needs, developer experience prioritization.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Open-Source Tools (Playwright screenshots, Jest image snapshot):</strong> Self-hosted visual testing tools. Advantages: no additional cost (included in existing tools), offline capability (screenshots stored locally), simple setup (capture screenshot, compare against baseline). Limitations: no managed review workflow (diffs are images, no developer-friendly interface), manual baseline management (screenshots in version control, large binary files), no cross-browser comparison (one browser at a time), no automated baseline approval. Best for: teams with budget constraints, simple visual testing needs, offline testing requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Full-Page vs. Component Testing</h3>
         <p>
@@ -161,15 +162,15 @@ export default function VisualRegressionTestingArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Stabilize Dynamic Content:</strong> Mock dynamic content with static values to prevent false positives. Replace timestamps with fixed values, mock user-generated content with static data, disable animations (CSS animation: none), and hide third-party embeds (ads, social widgets). Content stabilization ensures that screenshots are comparable — differences are caused by code changes, not dynamic content variability.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Consistent Screenshot Environments:</strong> Capture screenshots in a consistent browser (same version, same rendering engine), viewport size (specific dimensions), and environment (same CSS, same fonts, same network conditions). Inconsistent environments cause false positives (differences caused by environment variability, not code changes). Cloud services provide consistent environments automatically (managed browser instances, consistent rendering). For self-hosted tools, use containerized browsers (Docker with fixed browser version) for consistency.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Set Appropriate Tolerance Thresholds:</strong> Configure tolerance thresholds to ignore small differences (anti-aliasing, sub-pixel rendering) while catching large differences (layout shifts, missing elements). Tolerance is typically expressed as a percentage (e.g., 0.1% = 0.1% of pixels can differ). Too low tolerance causes false positives (small rendering differences fail tests), too high tolerance causes false negatives (large visual bugs pass tests). Calibrate tolerance based on your application&apos;s rendering characteristics.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Review Baselines Carefully:</strong> When updating baselines (after intentional design changes), review the new baselines carefully to ensure they are correct. Incorrect baselines (visual bugs approved as intentional changes) cause future tests to pass incorrectly (the bug becomes the new baseline). Use the review workflow to compare old and new baselines, ensuring that changes are intentional and correct.
           </li>
@@ -186,15 +187,15 @@ export default function VisualRegressionTestingArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>False Positives from Dynamic Content:</strong> Screenshots with dynamic content (timestamps, user-generated content, animations) causing false positives (differences that are not caused by code changes). False positives erode trust in visual regression tests (developers ignore failures, assuming they are dynamic content), waste developer time (reviewing false positives), and block deployments (false positive failures prevent merging). Fix by stabilizing dynamic content (mock with static values, mask dynamic regions, exclude dynamic components).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Inconsistent Screenshot Environments:</strong> Capturing screenshots in different environments (different browser versions, different viewport sizes, different CSS/fonts), causing false positives. Inconsistent environments make screenshots incomparable — differences are caused by environment variability, not code changes. Use consistent environments (containerized browsers, fixed browser versions, specific viewport sizes) for reliable screenshot comparison.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Incorrect Baseline Approval:</strong> Approving incorrect baselines (visual bugs approved as intentional changes), causing future tests to pass incorrectly. When a visual bug is approved as a baseline update, the bug becomes the expected appearance — future tests pass, and the bug is never caught. Review baselines carefully before approving — compare old and new baselines, ensure changes are intentional and correct.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Too Many Screenshots:</strong> Capturing screenshots of every page, component, and state, resulting in thousands of screenshots. Large screenshot suites are expensive to maintain (every UI change requires baseline updates), slow to review (developers spend hours reviewing screenshots), and prone to false positives (more screenshots = more dynamic content issues). Focus on critical pages and components (home page, checkout, dashboard, key components) — not every page and component needs visual regression testing.
           </li>
@@ -212,19 +213,19 @@ export default function VisualRegressionTestingArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>E-Commerce Product Page Testing</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           E-commerce platforms use visual regression testing to verify product pages — product images, pricing, add-to-cart buttons, reviews, and recommendations. Visual bugs on product pages directly impact conversion rates (broken layout, missing buttons, incorrect pricing). Visual regression tests capture screenshots of product pages across different browsers and viewport sizes, comparing against baselines to catch visual bugs. Dynamic content (pricing, reviews, recommendations) is mocked with static values to prevent false positives. Visual regression testing ensures that product pages look correct for users, maintaining conversion rates.
-        </p>
+        </HighlightBlock>
 
         <h3>Design System Component Testing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Design systems use visual regression testing (often with Chromatic and Storybook) to verify component appearance — buttons, inputs, cards, modals, and other UI components. Visual bugs in design system components affect all applications that use the components (incorrect colors, broken layout, missing states). Visual regression tests capture screenshots of each component in each state (default, hover, active, disabled, error), comparing against baselines to catch visual bugs. Component-level testing isolates visual bugs to specific components, making debugging efficient.
-        </p>
+        </HighlightBlock>
 
         <h3>Responsive Design Testing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Applications with responsive designs use visual regression testing to verify appearance across different viewport sizes (desktop, tablet, mobile). Responsive design bugs (layout shifts, element reordering, font scaling issues) affect user experience on specific devices. Visual regression tests capture screenshots at multiple viewport sizes (e.g., 1280px, 768px, 375px), comparing against baselines to catch responsive design bugs. Cross-viewport testing ensures that the application looks correct across all device sizes.
-        </p>
+        </HighlightBlock>
 
         <h3>Brand Consistency Testing</h3>
         <p>
@@ -238,18 +239,18 @@ export default function VisualRegressionTestingArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: What is visual regression testing and how does it differ from functional testing?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Visual regression testing verifies that the visual appearance of an application has not changed unexpectedly — it compares screenshots against baselines to detect pixel differences. Functional testing verifies that the application works correctly — buttons click, forms submit, data loads. Visual regression testing catches visual bugs (layout shifts, color changes, missing elements) that functional tests cannot. Functional tests verify behavior, visual regression tests verify appearance. Both are essential — functional tests ensure the application works, visual regression tests ensure the application looks correct.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do you handle dynamic content in visual regression testing?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Strategies: stabilize content (mock dynamic content with static values — fixed timestamps, static user data, disabled animations), mask regions (blur or ignore specific regions of the screenshot — timestamp areas, ad regions), and exclude components (exclude components with dynamic content from visual regression testing — third-party embeds, ads, user-generated content). Content stabilization is the most reliable approach — it ensures that screenshots are comparable, differences are caused by code changes, not dynamic content variability. Mock dynamic content at the data layer (API mocks, static data fixtures) before rendering.
             </p>

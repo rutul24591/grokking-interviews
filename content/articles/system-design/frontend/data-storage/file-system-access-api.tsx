@@ -502,36 +502,40 @@ export default function FileSystemAccessApiConciseArticle() {
       {/* ============================================================
           SECTION 10: References
           ============================================================ */}
-      <section>
-        <h2>References</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/File_System_API" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              MDN Web Docs — File System API
-            </a> — Comprehensive reference for all interfaces including OPFS.
-          </li>
-          <li>
-            <a href="https://web.dev/articles/file-system-access" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              web.dev — The File System Access API: simplifying access to local files
-            </a> — Google's guide with interactive demos and code samples.
-          </li>
-          <li>
-            <a href="https://sqlite.org/wasm/doc/trunk/persistence.md" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              SQLite Wasm — Persistence via OPFS
-            </a> — Official SQLite documentation on OPFS-backed persistence for the Wasm build.
-          </li>
-          <li>
-            <a href="https://fs.spec.whatwg.org/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              WHATWG File System Standard
-            </a> — The living specification for the File System API and Origin Private File System.
-          </li>
-          <li>
-            <a href="https://web.dev/articles/origin-private-file-system" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              web.dev — Origin Private File System
-            </a> — Deep dive into OPFS, sync access handles, and performance benchmarks.
-          </li>
-        </ul>
-      </section>
+	      <section>
+	        <h2>References</h2>
+	        <HighlightBlock as="p" tier="crucial">
+	          In interviews, cite File System Access primarily for “native-like” UX and OPFS performance, but always
+	          pair it with a compatibility story (fallback to IndexedDB / download-upload flows, and permission UX).
+	        </HighlightBlock>
+	        <ul className="space-y-2">
+	          <HighlightBlock as="li" tier="important">
+	            <a href="https://developer.mozilla.org/en-US/docs/Web/API/File_System_API" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+	              MDN Web Docs — File System API
+	            </a> — Comprehensive reference for all interfaces including OPFS.
+	          </HighlightBlock>
+	          <HighlightBlock as="li" tier="important">
+	            <a href="https://web.dev/articles/file-system-access" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+	              web.dev — The File System Access API: simplifying access to local files
+	            </a> — Google's guide with interactive demos and code samples.
+	          </HighlightBlock>
+	          <HighlightBlock as="li" tier="important">
+	            <a href="https://sqlite.org/wasm/doc/trunk/persistence.md" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+	              SQLite Wasm — Persistence via OPFS
+	            </a> — Official SQLite documentation on OPFS-backed persistence for the Wasm build.
+	          </HighlightBlock>
+	          <li>
+	            <a href="https://fs.spec.whatwg.org/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+	              WHATWG File System Standard
+	            </a> — The living specification for the File System API and Origin Private File System.
+	          </li>
+	          <HighlightBlock as="li" tier="important">
+	            <a href="https://web.dev/articles/origin-private-file-system" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+	              web.dev — Origin Private File System
+	            </a> — Deep dive into OPFS, sync access handles, and performance benchmarks.
+	          </HighlightBlock>
+	        </ul>
+	      </section>
     </ArticleLayout>
   );
 }

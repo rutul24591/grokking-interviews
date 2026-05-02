@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function MobileFirstDesignArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Mobile-First Design</strong> is a design and development
           approach that starts with designing for mobile devices, then
           progressively enhances the experience for larger screens. Coined by
@@ -47,8 +48,8 @@ export default function MobileFirstDesignArticle() {
           desktops. This approach forces content prioritization (what&apos;s
           essential?), performance optimization (mobile networks are slower),
           and touch-friendly interaction design from the start.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, mobile-first is both a design philosophy
           and a technical implementation strategy. Technically, mobile-first CSS
           means base styles target mobile, with <code>min-width</code> media
@@ -57,7 +58,13 @@ export default function MobileFirstDesignArticle() {
           styles that get overridden. Design-wise, mobile-first forces
           difficult decisions about feature priority that benefit all users, not
           just mobile.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: start from constraints (latency/CPU/memory/touch),
+          then state how you enforce them (responsive assets, performance budgets,
+          critical CSS, device testing) and how you measure impact (LCP/INP,
+          conversion, bounce).
+        </HighlightBlock>
         <p>
           Mobile-first involves several technical considerations.{" "}
           <strong>CSS architecture</strong> — base styles for mobile,{" "}
@@ -82,26 +89,26 @@ export default function MobileFirstDesignArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Progressive Enhancement:</strong> Start with basic,
             universally-supported HTML/CSS. Layer on advanced features for
             capable browsers. Core content accessible everywhere, enhanced
             experience for modern browsers. Mobile-first is progressive
             enhancement applied to viewport size.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>min-width Media Queries:</strong> Mobile-first CSS uses{" "}
             <code>min-width</code> (not <code>max-width</code>). Base styles =
             mobile. <code>@media (min-width: 600px)</code> adds tablet
             enhancements. <code>@media (min-width: 1024px)</code> adds desktop
             layout. Mobile doesn&apos;t download desktop CSS.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Content Prioritization:</strong> Mobile constraints force
             decisions: what content is essential? What can be deferred? What
             navigation patterns work for touch? These decisions benefit desktop
             users too — clearer hierarchy, faster load, focused content.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Touch-First Interaction:</strong> Design for touch input
             first (no hover states, large tap targets, swipe gestures). Mouse
@@ -127,6 +134,7 @@ export default function MobileFirstDesignArticle() {
           src="/diagrams/system-design-concepts/frontend/mobile-considerations/mobile-first-css-architecture.svg"
           alt="Mobile-First CSS Architecture showing base styles for mobile with min-width media queries for larger screens"
           caption="Mobile-first CSS — base styles target mobile, min-width media queries progressively enhance for tablet and desktop; mobile doesn't download desktop CSS"
+          captionTier="important"
           width={900}
           height={550}
         />
@@ -135,29 +143,30 @@ export default function MobileFirstDesignArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Mobile-first architecture consists of base styles (mobile),
           progressive enhancements (tablet, desktop), and conditional loading
           (don&apos;t load desktop-only assets for mobile). The architecture
           must handle the full range of devices while ensuring mobile users get
           optimized experience.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/mobile-considerations/progressive-enhancement-layers.svg"
           alt="Progressive Enhancement Layers showing core content, enhanced layout, and advanced features stacked"
           caption="Progressive enhancement layers — core HTML content works everywhere, CSS adds layout, JavaScript adds interactivity; each layer enhances the previous"
+          captionTier="important"
           width={900}
           height={500}
         />
 
         <h3>CSS Architecture Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Single Mobile-First Stylesheet:</strong> All CSS in one file,
           mobile base styles first, then <code>min-width</code> media queries.
           Advantages: simple, easy to maintain. Limitations: mobile downloads
           desktop CSS (even if not applied). Best for: small to medium sites.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Split by Breakpoint:</strong> Separate CSS files per
           breakpoint. Mobile loads <code>mobile.css</code>, desktop loads{" "}
@@ -176,6 +185,7 @@ export default function MobileFirstDesignArticle() {
           src="/diagrams/system-design-concepts/frontend/mobile-considerations/content-prioritization-mobile-first.svg"
           alt="Content Prioritization showing how mobile constraints force content hierarchy decisions"
           caption="Content prioritization — mobile screen constraints force decisions: essential content first (navigation, primary action), secondary content deferred (related links, footer)"
+          captionTier="important"
           width={900}
           height={500}
         />
@@ -184,19 +194,19 @@ export default function MobileFirstDesignArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Mobile-first involves trade-offs between design complexity,
           development workflow, and user experience.
-        </p>
+        </HighlightBlock>
 
         <h3>Mobile-First vs. Desktop-First</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Mobile-First:</strong> Base styles for mobile,{" "}
           <code>min-width</code> queries. Advantages: mobile-optimized CSS,
           forces content prioritization, better performance. Limitations:
           designers accustomed to desktop tools may find mobile canvas
           constraining. Best for: new projects, content-focused sites.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Desktop-First:</strong> Base styles for desktop,{" "}
           <code>max-width</code> queries. Advantages: designers work on large
@@ -213,11 +223,11 @@ export default function MobileFirstDesignArticle() {
         </p>
 
         <h3>Breakpoint Strategy Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Few Breakpoints (3-4):</strong> Mobile, tablet, desktop,
           large desktop. Advantages: simpler CSS, easier maintenance.
           Limitations: may not optimize for all devices. Best for: most sites.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Many Breakpoints (6+):</strong> Fine-grained control per
           device range. Advantages: optimized experience per device.
@@ -236,28 +246,28 @@ export default function MobileFirstDesignArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Start with Mobile Wireframes:</strong> Design mobile layout
             first in wireframing phase. Forces content prioritization before
             visual design. Then design tablet and desktop as enhancements.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use min-width Media Queries:</strong> Base CSS = mobile.{" "}
             <code>@media (min-width: 600px)</code> for tablet,{" "}
             <code>@media (min-width: 1024px)</code> for desktop. Mobile
             doesn&apos;t download desktop overrides.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Design for Touch First:</strong> Minimum 44×44px touch
             targets. No hover-only interactions. Swipe gestures for common
             actions. Mouse users adapt to touch-optimized; touch users
             can&apos;t adapt to mouse-optimized.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Optimize Images for Mobile:</strong> Use srcset for
             responsive images. Mobile shouldn&apos;t download desktop-sized
             images. Consider lazy loading for below-fold images.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Test on Real Mobile Devices:</strong> Browser DevTools
             simulate viewport but not touch, performance, or network. Test on
@@ -276,28 +286,28 @@ export default function MobileFirstDesignArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Claiming Mobile-First, Implementing Desktop-First:</strong>{" "}
             Design mobile mockups but write <code>max-width</code> CSS. This
             isn&apos;t mobile-first — mobile downloads all desktop CSS. Use{" "}
             <code>min-width</code> queries for true mobile-first.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Hiding Content Instead of Prioritizing:</strong> Using{" "}
             <code>display: none</code> to hide desktop content on mobile.
             Better: don&apos;t include non-essential content in mobile HTML, or
             load conditionally.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring Touch:</strong> Designing interactions for mouse
             (hover states, small click targets). Touch users can&apos;t hover.
             Design for touch first.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Too Many Breakpoints:</strong> Setting breakpoints for
             every device width. Maintenance nightmare. Use 3-4 key breakpoints
             (600px, 900px, 1200px) or content-based breakpoints.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not Testing Performance:</strong> Mobile-first isn&apos;t
             just layout — it&apos;s performance. Test on 3G networks. Measure
@@ -315,24 +325,29 @@ export default function MobileFirstDesignArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: quantify impact (conversion, bounce, CWV) and show
+          how you enforce mobile constraints via budgets, responsive assets, and
+          real-device testing.
+        </HighlightBlock>
 
         <h3>News Website Redesign</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Major news site (The Guardian) redesigned mobile-first. Started with
           mobile wireframes, prioritized headline and article content. Navigation
           simplified for mobile (hamburger menu). Desktop added sidebar, related
           articles, enhanced typography. Result: 30% faster mobile load time,
           20% increase in mobile engagement.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce Checkout Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce site optimized checkout mobile-first. Mobile: single
           column, large form fields, sticky &quot;Place Order&quot; button,
           auto-fill for address. Desktop: multi-column, additional payment
           options, gift wrapping. Mobile-first approach reduced mobile cart
           abandonment by 25%.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Dashboard</h3>
         <p>
@@ -356,6 +371,11 @@ export default function MobileFirstDesignArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: lead with constraints, then concrete decisions
+          (breakpoints, responsive assets, navigation), and close with
+          measurement + guardrails (CWV, budgets, device testing).
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -363,7 +383,7 @@ export default function MobileFirstDesignArticle() {
               Q: What&apos;s the difference between mobile-first and progressive
               enhancement?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Mobile-first is progressive enhancement applied to viewport
               size. Progressive enhancement: start with basic HTML (works
               everywhere), layer on CSS (layout), then JavaScript
@@ -372,14 +392,14 @@ export default function MobileFirstDesignArticle() {
               desktop (min-width: 1024px). Both approaches ensure core
               functionality works for all users, enhancements for capable
               devices/browsers.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How do you implement mobile-first CSS?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Base styles target mobile (no media query). Use{" "}
               <code>min-width</code> media queries for larger screens. Example:{" "}
               <code>
@@ -391,7 +411,7 @@ export default function MobileFirstDesignArticle() {
               doesn&apos;t download desktop padding override. This approach
               ensures mobile users get optimized CSS without desktop overrides,
               reducing bundle size and improving load times on mobile networks.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function KMPArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Knuth-Morris-Pratt algorithm (KMP) finds all occurrences of a
           pattern P of length m in a text T of length n in O(n + m) time —
           guaranteed worst case, with no dependence on alphabet size or
@@ -45,15 +49,15 @@ export default function KMPArticle() {
           re-examine those text characters; the pattern's own structure
           tells you the longest suffix of the matched portion that is also
           a prefix of P, so you can resume comparison there.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Donald Knuth, James H. Morris, and Vaughan Pratt published the
           algorithm in 1977 — though Morris and Pratt had developed an
           earlier version in 1970, and Knuth refined the failure function
           analysis. The algorithm was the first to break the O(n·m) barrier
           of naive matching for the single-pattern case and remains the
           textbook reference for "linear-time string matching."
-        </p>
+        </HighlightBlock>
         <p>
           KMP's importance is partly historical, partly pedagogical, and
           partly structural. Historically, it was the first proof that the
@@ -86,7 +90,10 @@ export default function KMPArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <em>failure function</em> (also called the LPS array) is the
           algorithm's beating heart. For a pattern P, lps[i] is the length
           of the longest proper prefix of P[0..i] that equals a suffix of
@@ -95,8 +102,8 @@ export default function KMPArticle() {
           if you've matched P[0..i] in the text and then a mismatch
           happens, lps[i] tells you how much of the prefix you can reuse
           rather than starting over.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Computing the LPS array. Use two pointers: i (current position)
           and k (length of the longest border so far). Walk i from 1 to
           m-1. If P[i] == P[k], extend the border: lps[i] = ++k. Otherwise
@@ -104,7 +111,7 @@ export default function KMPArticle() {
           k drops to 0 and still no match, lps[i] = 0. Total time O(m) —
           each character extends k at most once, and each fallback strictly
           decreases k, so the amortized cost per position is O(1).
-        </p>
+        </HighlightBlock>
         <p>
           The search loop uses the same two-pointer logic against the text.
           i walks the text (never backwards); j tracks how much of the
@@ -164,18 +171,21 @@ export default function KMPArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           KMP needs minimal state: an integer LPS array of length m, two
           integer cursors. Memory O(m); the text pointer is a single
           integer. This makes KMP attractive in embedded and streaming
           contexts where state must be tight.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/kmp-diagram-2.svg"
           alt="String-matching algorithms compared and Z-algorithm intro"
           caption="KMP within the broader family — Z-algorithm, Boyer-Moore, Rabin-Karp, Aho-Corasick — and where each shines."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           For streaming applications, KMP processes text one character at
           a time without buffering. Network intrusion detection systems
           watching packet payloads, log-tail alerting, and serial-port
@@ -183,7 +193,7 @@ export default function KMPArticle() {
           j cursor in O(m) state, process incoming bytes immediately,
           report matches as they happen. Boyer-Moore can't do this
           cleanly because its skip heuristic requires lookahead.
-        </p>
+        </HighlightBlock>
         <p>
           For multi-pattern matching, build an Aho-Corasick automaton:
           a trie of all patterns plus failure links. Once built (O(total
@@ -212,14 +222,17 @@ export default function KMPArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>KMP vs naive.</strong> Naive matching is O(n·m) worst
           case (e.g., P = "aaab", T = "aaaaaa..."). KMP eliminates the
           re-comparison of text characters, dropping to O(n + m). On
           random inputs, naive is often "fast enough" because mismatches
           fail quickly; KMP's win is on adversarial or structured inputs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>KMP vs Boyer-Moore.</strong> Boyer-Moore can skip
           characters using bad-character and good-suffix heuristics,
           achieving sublinear average-case performance — O(n/m) on
@@ -227,7 +240,7 @@ export default function KMPArticle() {
           degrade to O(n·m) on adversarial inputs. KMP guarantees O(n
           + m) always. Pick KMP for predictable latency, Boyer-Moore
           for average-case throughput on large alphabets.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>KMP vs Z-algorithm.</strong> Same asymptotic bound,
           same family. Z-algorithm has slightly cleaner proofs and is
@@ -263,19 +276,22 @@ export default function KMPArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Handle the empty-pattern case.</strong> A pattern of
           length 0 trivially matches at every position. Most
           implementations either special-case this or rely on the loop
           structure naturally producing the right answer; verify with a
           unit test.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use lps[i] consistently as "length, not index."</strong>
           The LPS array stores lengths (0 to i). When falling back, the
           new pattern position is lps[j - 1], not lps[j] — a frequent
           off-by-one in homegrown implementations.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Compute LPS exactly once per pattern.</strong> If
           you're searching the same pattern in many texts (a stable
@@ -316,18 +332,21 @@ export default function KMPArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Off-by-one in LPS construction.</strong> The most
           common bug. The recurrence is lps[i] = lps[k - 1] + 1 only
           when P[i] == P[k]; otherwise k = lps[k - 1] and you retry.
           Dropping the "k - 1" or mishandling k = 0 produces silently
           wrong LPS arrays.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Resetting j to 0 after match.</strong> If you reset j
           = 0 after each full match, you miss overlapping occurrences.
           Fall back j = lps[j - 1] instead.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Using LPS to locate the next mismatch retry
           incorrectly.</strong> On text mismatch with j &gt; 0, you fall
@@ -365,26 +384,29 @@ export default function KMPArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/kmp-diagram-3.svg"
           alt="KMP applications and selection criteria"
           caption="Where KMP and its derivatives show up in production — and the criteria for choosing it over Boyer-Moore, Rabin-Karp, or Aho-Corasick."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Network intrusion detection systems.</strong> Snort,
           Suricata, and Bro/Zeek use Aho-Corasick (KMP generalized to
           tries) to match packet payloads against thousands of attack
           signatures simultaneously. The need for worst-case linearity
           on adversarial input is a defining requirement: an attacker
           can craft traffic that breaks Boyer-Moore.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Antivirus signature scanning.</strong> Classical
           antivirus engines (ClamAV) used Aho-Corasick on virus-signature
           tries. Modern engines combine AC with hash-based scanning
           (locality-sensitive hashing) and behavioral analysis, but the
           KMP-family algorithms remain in the core scanning loop.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Bioinformatics.</strong> Exact substring search in DNA
           (4-letter alphabet) or protein (20-letter alphabet) sequences.
@@ -428,17 +450,20 @@ export default function KMPArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement KMP.</strong> The canonical question.
           Construct the LPS array, then search. Strong candidates handle
           overlapping matches and explain the no-text-backtrack invariant
           clearly.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Find the longest proper prefix of S that is also a
           suffix.</strong> A pure LPS-array problem. Run the LPS
           construction on S; answer is lps[n - 1].
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Shortest Palindrome (LeetCode 214).</strong> Add the
           fewest characters to the front of s to make a palindrome.

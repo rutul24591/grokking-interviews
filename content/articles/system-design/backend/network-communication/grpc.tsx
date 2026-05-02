@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p className="lead text-lg text-muted">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="lead text-lg text-muted">
           gRPC is a high-performance, open-source remote procedure call framework originally developed at Google that uses HTTP/2 as its transport protocol and Protocol Buffers as its interface definition language and message serialization format. Unlike REST, which relies on human-readable JSON transmitted over HTTP/1.1 or HTTP/2 with a resource-oriented semantics defined by URL paths and HTTP methods, gRPC defines services as collections of methods that accept and return strongly typed messages, with the framework handling all serialization, transport multiplexing, flow control, and connection management automatically. The combination of binary serialization through protobuf, which is significantly more compact and faster to parse than JSON, HTTP/2 multiplexing that allows multiple concurrent streams over a single persistent TCP connection, and generated client and server code that eliminates boilerplate serialization and deserialization logic, makes gRPC one of the most efficient inter-service communication protocols available for production microservice architectures.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           gRPC was designed to address the limitations that Google observed with its internal Stubby RPC system when building microservice architectures at planetary scale, and was subsequently open-sourced as gRPC to provide the broader industry with a standardized, polyglot, high-performance RPC framework. The key design goals were performance, minimizing latency and CPU overhead for high-throughput service communication in environments where millions of RPCs per second flow between services; strong typing, with contracts defined in protobuf that are compiled into type-safe client and server code in multiple programming languages, catching contract violations at compile time rather than at runtime; bidirectional streaming, enabling real-time, low-latency data flows between services without the polling overhead inherent in request-response patterns; and polyglot support, with generated code for over a dozen languages with consistent semantics so that services written in different languages can communicate through a shared contract definition.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, the critical gRPC challenges extend far beyond defining protobuf services and generating code. Those are the straightforward mechanical aspects of adoption. The real challenges involve designing schema evolution strategies that maintain backward and forward compatibility across services that are deployed independently on different release cadences, implementing deadline and cancellation propagation across deep call chains to prevent resource exhaustion when downstream services become slow or unresponsive, selecting load balancing strategies that work correctly with HTTP/2 persistent connections where traditional connection-level load balancing fails, handling error semantics that differ fundamentally from HTTP status codes and require status-code-aware retry logic, and building observability into a protocol that does not expose its binary payloads to traditional HTTP monitoring tools. These challenges require deep understanding of HTTP/2 internals, protobuf serialization semantics, distributed systems failure modes, and the operational patterns that make gRPC viable at production scale.
         </p>
@@ -42,14 +46,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Protocol Buffers as Interface Definition Language</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Protocol Buffers serve simultaneously as the interface definition language that describes the service contract and as the message serialization format that encodes data for transport over the network. A proto file defines message types, which are structured data records with typed fields, and service definitions, which are collections of RPC methods that accept and return those messages. The protoc compiler processes proto files and generates code in the target language: message classes with serialization and deserialization methods, service interface definitions for servers to implement, and client stubs for callers to invoke. This code generation eliminates the runtime overhead of dynamic schema interpretation that JSON parsing requires and provides compile-time type checking that catches contract violations before the code reaches production.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Protobuf message encoding uses a compact binary format where each field is represented as a key-value pair in the serialized byte stream. The key combines the field number, a unique positive integer assigned to each field in the message definition, and the wire type, which indicates how the value is encoded as a varint for variable-length integers, as a fixed 64-bit or 32-bit value, or as a length-delimited blob for strings, bytes, and embedded messages. This encoding is extremely compact: a message with several integer and string fields might encode to just a few dozen bytes, compared to hundreds of bytes in equivalent JSON with field names repeated for every message. More importantly, protobuf encoding and decoding are extremely fast because the parser processes fields sequentially as a byte stream without string parsing for field names, without dynamic object allocation for nested structures, and without type coercion between string representations and native types. For high-throughput services processing millions of RPCs per second, the CPU savings from protobuf serialization versus JSON can translate to measurable reductions in infrastructure cost and latency.
-        </p>
+        </HighlightBlock>
         <p>
           Protobuf schema evolution follows strict rules designed to ensure backward compatibility, where new servers can read messages produced by old clients, and forward compatibility, where old servers can read messages produced by new clients. The critical rule is that field numbers must never be reused: when a field is removed from a message definition, its number is marked as reserved using the reserved keyword so that it cannot be accidentally assigned to a new field in a future version. Adding a new field with a previously unused field number is both backward-compatible, because old clients and servers ignore fields they do not recognize, and forward-compatible, because new clients and servers handle missing fields by using the declared default values. Changing a field&apos;s type is only compatible for certain specific transitions such as int32 to int64 or fixed32 to fixed64, and breaks compatibility for all other transitions. These rules are enforced through code review processes and automated compatibility checking in continuous integration pipelines using tools that validate protobuf changes against previous versions, ensuring that schema modifications do not break existing deployed clients or servers.
         </p>
@@ -73,10 +80,13 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           A production gRPC architecture involves generated client stubs that serialize protobuf messages and manage persistent HTTP/2 connections, server implementations that deserialize incoming messages and route them to handler functions, and optionally intermediary proxies such as Envoy or gRPC-Gateway that provide load balancing, observability, protocol translation, and policy enforcement. The flow of an RPC through these components determines its end-to-end latency, reliability characteristics, and observability, and understanding this flow is essential for designing resilient service architectures.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/grpc-client-server-communication.svg`}
@@ -85,9 +95,9 @@ export default function ArticlePage() {
         />
 
         <h3>Deadline and Cancellation Propagation Across Service Chains</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Deadlines, also referred to as timeouts, in gRPC are a critical mechanism for preventing cascading resource exhaustion in deep service call chains where each service depends on downstream services to complete their work. When a client initiates an RPC, it specifies a deadline as an absolute timestamp by which the RPC must complete. The server receives this deadline through the RPC context and can query how much time remains before the deadline expires. If the server needs to make downstream RPCs to other services as part of processing the request, it should propagate a derived deadline to those downstream RPCs. The derived deadline is calculated as the original deadline minus the time already elapsed since the request was received, minus a small buffer typically representing ten to twenty percent of the remaining time to account for network latency and the processing overhead of handling the downstream response.
-        </p>
+        </HighlightBlock>
         <p>
           This deadline propagation ensures that every service in the call chain knows exactly how much time it has to complete its work, and can fail fast if the remaining deadline is insufficient for meaningful processing rather than waiting for a downstream service that will not complete in time. Cancellation is the complementary mechanism: when a client no longer needs the result of an RPC, because the user navigated away from the page, the request was superseded by a newer request, or the deadline has expired, the client cancels the RPC and the gRPC framework propagates the cancellation signal to the server. The server should respond by aborting any in-progress processing and releasing all resources associated with the cancelled RPC. Cancellation is especially critical for streaming RPCs: if a client cancels a bidirectional stream, the server must immediately stop sending messages, clean up any state associated with the stream, and close the stream gracefully. Failure to handle cancellation correctly leads to resource leaks including goroutines, threads, and database connections that accumulate over time and eventually exhaust server resources, causing degraded performance or complete service unavailability.
         </p>
@@ -123,14 +133,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           gRPC is not universally superior to REST, and the choice between them depends on the communication pattern, the consumer profile, the performance requirements, and the operational context of the services being designed. gRPC excels for internal service-to-service communication in microservice architectures where performance, type safety, and streaming capabilities are important differentiators. The binary serialization through protobuf reduces network bandwidth consumption and eliminates the CPU overhead of parsing text-based formats, the generated code eliminates boilerplate and provides compile-time type checking that catches contract violations before deployment, and the HTTP/2 transport enables efficient multiplexing of many concurrent RPCs over a single connection and low-latency bidirectional streaming. For environments where services communicate frequently with small to medium-sized messages and the cumulative latency savings matter, such as high-frequency trading platforms, real-time analytics pipelines, or machine learning inference serving, gRPC provides measurable performance advantages over JSON-based REST communication.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           REST excels for public-facing APIs, browser-accessible services, and scenarios where human readability, cacheability, and broad ecosystem support are priorities that outweigh raw performance. JSON is human-readable, which aids debugging, development, and operational troubleshooting by allowing engineers to inspect request and response bodies directly in logs and monitoring tools. REST endpoints are naturally cacheable through standard HTTP cache headers, enabling CDN caching that dramatically reduces origin server load for read-heavy workloads, while gRPC responses are not cacheable through standard HTTP caching mechanisms because every RPC targets the same endpoint URL with a POST method. The REST ecosystem has broader tooling support including API gateways, monitoring platforms, client generators in virtually every programming language, documentation generators, and testing frameworks. For browser clients, REST is the natural choice because browsers natively support HTTP/1.1 and HTTP/2 with JSON through the fetch API and XMLHttpRequest, while gRPC requires gRPC-Web with a translation proxy or gRPC-Gateway with a REST-to-gRPC translation layer, both of which add complexity and do not support the full feature set of native gRPC.
-        </p>
+        </HighlightBlock>
 
         <p>
           The operational complexity of running gRPC at scale is meaningfully higher than REST across several dimensions. Debugging gRPC requires specialized tools such as grpcurl, BloomRPC, or Wireshark with HTTP/2 and protobuf dissection capabilities because the binary payloads are not human-readable in transit and cannot be inspected through standard browser developer tools or simple log tailing. Monitoring gRPC requires instrumenting the client and server with interceptors that capture latency metrics, error rates, and throughput at the method level, because traditional HTTP monitoring tools that inspect request and response bodies cannot parse protobuf-encoded messages. Schema evolution requires disciplined protobuf management including field number reservation, compatibility checking through automated tooling, and version tracking across deployments, which is more complex than REST&apos;s flexible JSON schema evolution where fields can be added or removed with minimal coordination. Service discovery and load balancing require gRPC-aware infrastructure such as Envoy proxies or client-side load balancing implementations because traditional HTTP load balancers do not handle HTTP/2 persistent connections correctly and create traffic hotspots. For organizations without the operational maturity to handle these complexities, REST may be the more pragmatic and sustainable choice.
@@ -143,14 +156,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Enforce strict protobuf compatibility rules through automated validation integrated into the continuous integration and deployment pipeline. Every protobuf change should be validated for backward and forward compatibility before merging into the main branch: new fields must use unique field numbers that have never been used before in that message, removed fields must be marked with the reserved keyword to prevent accidental reuse, type changes must be compatible with the defined safe transitions such as int32 to int64, and optional fields should have sensible default values that produce correct behavior when the field is absent. Use tools such as buf, which provides protobuf linting, breaking change detection, and schema registry capabilities, to automate compatibility checking, and integrate these checks into the CI/CD pipeline so that incompatible changes are caught during code review rather than discovered through production failures. Treat protobuf schemas as public API contracts with the same versioning discipline, deprecation policies, and change management rigor that you would apply to a public REST API.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement deadline propagation across all service call chains to prevent cascading resource exhaustion when downstream services become slow or unresponsive. Every gRPC client should set an explicit deadline for each RPC based on the end-to-end latency budget for the request flow, considering the total time available from the original user request or triggering event. Every gRPC server should extract the deadline from the incoming RPC context and propagate a derived deadline to any downstream RPCs it initiates as part of processing the request. The derived deadline should be the remaining time from the original deadline minus a small buffer to account for network latency between services and the processing overhead of handling the downstream response. Servers should check the remaining deadline before starting expensive operations such as database queries or external API calls, and should abort early with a DEADLINE_EXCEEDED error if the remaining time is insufficient to complete the operation meaningfully. This pattern ensures that failures propagate quickly through the call chain rather than accumulating latency at each hop until the original client&apos;s timeout fires.
-        </p>
+        </HighlightBlock>
 
         <p>
           Use client-side load balancing for internal gRPC communication where the client has access to a service registry and can manage backend discovery, and use proxy-based load balancing for cross-environment or cross-organization communication where the client should not have direct knowledge of individual backend instances. Client-side load balancing provides better load distribution because the client can distribute individual RPCs across available backends rather than being pinned to a single backend by the persistent connection, and provides faster response to backend changes because the client detects failed backends through connection health monitoring and reconnects immediately. However, it requires the client to implement service discovery, health checking, and reconnection logic, which adds non-trivial complexity to every client implementation. For organizations running a service mesh such as Istio or Linkerd, the mesh&apos;s sidecar proxy handles load balancing transparently, providing the benefits of client-side load balancing including sophisticated load distribution algorithms, health checking, and automatic failover without requiring any client-side logic or configuration.
@@ -167,14 +183,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Reusing protobuf field numbers after removing fields is a critical mistake that causes silent data corruption when old clients or servers interpret messages with the modified schema. If field number five was originally used for a string field called name and is later removed and the number five is reassigned to a new integer field called age, an old client sending a message with a name value encoded at field number five will have that data interpreted as an age value by the new server, producing silently incorrect data that may not be detected until the corruption causes downstream failures or incorrect business outcomes. The remedy is to never reuse field numbers under any circumstances: when a field is removed, add its number to the reserved list in the protobuf definition immediately. The protoc compiler and tools like buf will reject any attempt to assign a reserved number to a new field, catching the mistake at build time rather than discovering it through production data corruption that may be difficult to trace and even more difficult to reverse.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Using a traditional layer 4 load balancer for gRPC traffic creates severe traffic hotspots because the load balancer distributes TCP connections across backend instances, not individual RPCs, and a single gRPC client uses one persistent HTTP/2 connection for all of its RPCs. All RPCs from that client are sent to the same backend instance, while other backend instances in the pool may sit significantly underutilized. The fix is to use proxy-based load balancing through a gRPC-aware proxy such as Envoy that understands the gRPC protocol and distributes individual RPCs across backend instances, or client-side load balancing where the client receives a list of backend addresses from a service registry and distributes RPCs across them directly, or DNS-based load balancing where DNS resolution returns multiple backend addresses. For Kubernetes deployments, using a service mesh such as Istio or Linkerd provides gRPC-aware load balancing through sidecar proxies that intercept and distribute traffic without requiring changes to the application code.
-        </p>
+        </HighlightBlock>
 
         <p>
           Not propagating deadlines through downstream RPC calls causes cascading latency and eventual resource exhaustion across the entire service call chain. When service A calls service B without setting a deadline, and service B calls service C without setting a deadline, a slow or unresponsive service C causes service B to hold resources such as threads, goroutines, and database connections indefinitely waiting for a response that may never arrive. Service A, in turn, holds its resources indefinitely waiting for service B, and this pattern propagates upward until all resources across all services in the call chain are exhausted. The fix is to set explicit deadlines on every RPC call at every level of the call chain and to propagate derived deadlines from the original client deadline through every hop. In Go, this is accomplished through context.WithDeadline or context.WithTimeout, plumbing the context object through every function call that initiates downstream RPCs. In other languages, the equivalent deadline and cancellation mechanism provided by the gRPC library for that language must be used consistently.
@@ -195,16 +214,19 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Netflix: Content Encoding and Transcoding Pipeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix uses gRPC extensively throughout its content processing pipeline, where raw video content uploaded from studios is encoded, transcoded into multiple formats and quality levels, quality-checked, and prepared for distribution through the Netflix Open Connect content delivery network. The pipeline involves dozens of processing stages including ingestion, quality analysis, encoding, packaging, and quality verification, each implemented as an independent microservice that communicates with adjacent stages via gRPC. The choice of gRPC is driven by the need for high-throughput communication carrying large metadata payloads that describe video assets, encoding parameters, quality metrics, and processing status, and by the benefits of strong typing through protobuf contracts that ensure each processing stage receives correctly structured data from the preceding stage. The streaming capabilities of gRPC are used for real-time progress reporting: as a video file is being encoded, which can take hours for high-resolution content, the encoding service streams progress updates to the orchestration service, enabling real-time monitoring dashboards and early detection of encoding failures that would otherwise not be discovered until the encoding job completes.
-        </p>
+        </HighlightBlock>
 
         <h3>CockroachDB: Distributed Database Internode Communication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CockroachDB uses gRPC for all internode communication within its distributed SQL database cluster, where Raft consensus messages, data replication streams, range splits and merges, distributed transaction coordination, and health check probes all flow through gRPC between database nodes. The choice of gRPC is driven by the extreme performance requirements of a database system where every microsecond of internode communication latency directly impacts transaction commit latency visible to the end user, and by the reliability requirements where the correctness of the distributed database depends on the reliable delivery of consensus and replication messages. CockroachDB&apos;s implementation demonstrates gRPC operating at the extreme end of the performance spectrum, where the efficiency of protobuf serialization and HTTP/2 multiplexing directly determines the transaction throughput of the database, and the reliability of gRPC connections determines the consistency and availability guarantees of the entire database cluster.
-        </p>
+        </HighlightBlock>
 
         <h3>Cisco: Cloud-Native Network Functions for 5G Infrastructure</h3>
         <p>
@@ -219,17 +241,20 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions and Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Why can&apos;t you use a traditional layer 4 load balancer for gRPC traffic, and what are the viable alternatives?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A traditional layer 4 load balancer operates at the TCP connection level and distributes incoming connections across backend instances. In HTTP/1.1, each request typically uses a separate TCP connection or a short-lived connection from a pool, so connection-level distribution approximates request-level distribution with reasonable balance. In gRPC, a client establishes a single persistent HTTP/2 connection to a backend server and sends all of its RPCs over that connection for the lifetime of the connection, which can be hours or days. A layer 4 load balancer will route that single connection to one backend instance, meaning all RPCs from that client go to the same backend, creating severe traffic hotspots where one backend instance is overloaded while others in the pool are idle.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             The viable alternatives are proxy-based load balancing, where an intermediary proxy such as Envoy terminates the client&apos;s HTTP/2 connection, inspects each individual RPC, and distributes RPCs to backend instances using algorithms like round-robin or least-connections, establishing its own HTTP/2 connections to the backends. Client-side load balancing, where the client receives a list of available backend addresses from a service registry and distributes RPCs across them directly, eliminating the intermediary hop but requiring the client to manage discovery, health checking, and reconnection. DNS-based load balancing, where DNS resolution returns multiple backend IP addresses and the gRPC client distributes RPCs across them, which is simplest to configure but provides less control and slower adaptation to backend changes. For production deployments at scale, proxy-based load balancing through a service mesh sidecar proxy is the most widely adopted approach because it requires no client-side logic and provides sophisticated load distribution, health checking, and observability.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="rounded-lg bg-panel-soft p-6">

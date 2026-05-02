@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function SocialMediaOptimizationArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Social Media Optimization (SMO)</strong> is the practice of
           engineering web pages to produce compelling, accurate, and visually
           rich previews when URLs are shared on social platforms — Facebook,
@@ -45,8 +46,8 @@ export default function SocialMediaOptimizationArticle() {
           and messaging apps. Unlike SEO, which focuses on search engine
           discovery, SMO focuses on how content appears in social contexts where
           the preview card is the primary driver of click-through decisions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           When a URL is shared on a social platform, the platform&apos;s crawler
           fetches the page, extracts metadata (Open Graph tags, Twitter Card
           tags, or fallback HTML elements), downloads the referenced preview
@@ -55,8 +56,8 @@ export default function SocialMediaOptimizationArticle() {
           social crawlers parse raw HTML only. If metadata is missing or
           injected client-side via JavaScript, the preview card will be blank,
           generic, or broken.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the staff/principal engineer level, SMO is a cross-cutting
           infrastructure concern. It requires integration with the rendering
           pipeline (meta tags must be in server-rendered HTML), the image
@@ -67,14 +68,14 @@ export default function SocialMediaOptimizationArticle() {
           shared with a missing or broken OG image loses massive engagement
           potential — the difference between a rich preview card and a plain
           text link can mean 2-3x more clicks.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Open Graph Protocol:</strong> Developed by Facebook in 2010,
             the Open Graph (OG) protocol is the universal standard for social
             media metadata. Core properties include <code>og:title</code>{" "}
@@ -87,8 +88,8 @@ export default function SocialMediaOptimizationArticle() {
             <code>article:author</code>. OG tags are read by Facebook, LinkedIn,
             Pinterest, WhatsApp, Telegram, Slack, Discord, and most modern
             platforms.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Twitter Cards:</strong> Twitter&apos;s proprietary meta tag
             system. Four card types: <code>summary</code> (small square image
             with text), <code>summary_large_image</code> (large banner image
@@ -99,8 +100,8 @@ export default function SocialMediaOptimizationArticle() {
             (author&apos;s handle). Twitter falls back to OG tags when
             Twitter-specific tags are absent, so implementing OG tags provides
             basic Twitter coverage automatically.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>OG Image Specifications:</strong> The recommended OG image
             size is 1200×630 pixels (1.91:1 ratio) — this works well across
             Facebook, LinkedIn, Twitter (summary_large_image), and messaging
@@ -109,7 +110,7 @@ export default function SocialMediaOptimizationArticle() {
             (not SVG or WebP, which some platforms don&apos;t support). Critical
             content should be within the center 60% of the image to account for
             platform-specific cropping.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Dynamic OG Image Generation:</strong> Instead of
             pre-creating OG images for every page, dynamic OG images are
@@ -157,15 +158,15 @@ export default function SocialMediaOptimizationArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Social media optimization requires understanding how different
           platforms discover, process, and cache page metadata.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/social-media-optimization-diagram-1.svg"
           alt="Social sharing meta tag ecosystem showing how Open Graph, Twitter Cards, and platform-specific tags are consumed by different social platforms"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The meta tag ecosystem is hierarchical with fallback chains. Primary
           tags (OG and Twitter) are consumed by their respective platforms. When
           platform-specific tags are missing, platforms fall back to OG tags,
@@ -173,12 +174,12 @@ export default function SocialMediaOptimizationArticle() {
           image on page). Implementing a complete OG tag set provides baseline
           coverage across all platforms, with Twitter Card tags adding
           platform-specific enhancements.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/social-media-optimization-diagram-2.svg"
           alt="Dynamic OG image generation pipeline showing how edge functions receive parameters, render components, and return generated images"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           Dynamic OG image generation eliminates the need to pre-create and
           store images for every page. An edge function receives page parameters
           (title, author, category, brand colors) via query string, renders a
@@ -187,7 +188,7 @@ export default function SocialMediaOptimizationArticle() {
           tag on each page points to this function with appropriate parameters.
           Edge deployment ensures low latency regardless of where the social
           crawler requests from.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/social-media-optimization-diagram-3.svg"
           alt="Social crawler architecture and cache invalidation flow showing how platforms fetch, cache, and refresh page metadata"
@@ -206,16 +207,19 @@ export default function SocialMediaOptimizationArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="important">
               <th className="p-3 text-left">Approach</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
+            </HighlightBlock>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">Static OG Images</td>
               <td className="p-3">
                 Hand-designed for maximum visual impact; no generation
@@ -227,8 +231,8 @@ export default function SocialMediaOptimizationArticle() {
                 stale when content changes; storage costs for large sites;
                 design bottleneck
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">Dynamic OG Images (Edge)</td>
               <td className="p-3">
                 Scales to millions of pages; always reflects current content;
@@ -239,7 +243,7 @@ export default function SocialMediaOptimizationArticle() {
                 Satori); edge function compute costs; debugging rendering
                 issues; limited layout complexity
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3 font-medium">Screenshot-Based OG Images</td>
               <td className="p-3">
@@ -272,26 +276,26 @@ export default function SocialMediaOptimizationArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Implement Complete OG Tags on Every Public Page:</strong> At
             minimum: og:title, og:description, og:image, og:url, and og:type.
             These five tags ensure baseline coverage across all social
             platforms. Missing og:image is the single most impactful omission —
             pages shared without images receive dramatically fewer clicks.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use 1200×630 as the Standard OG Image Size:</strong> This
             1.91:1 ratio works well across Facebook, LinkedIn, Twitter
             (summary_large_image), and messaging apps. Keep critical content in
             the center 60% to account for cropping. Test on mobile devices where
             preview cards are smaller.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Serve OG Tags in Server-Rendered HTML:</strong> Social
             crawlers do not execute JavaScript. OG tags injected client-side are
             invisible to every social platform. Always include OG tags in the
             initial HTML response from the server.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Validate Before Publishing:</strong> Use Facebook Sharing
             Debugger, Twitter Card Validator, and LinkedIn Post Inspector to
@@ -333,21 +337,21 @@ export default function SocialMediaOptimizationArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Client-Side OG Tag Injection:</strong> Single-page
             applications that inject meta tags via JavaScript (react-helmet, Vue
             Meta) produce blank social previews because social crawlers
             don&apos;t execute JavaScript. This is the most common and most
             impactful SMO mistake.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Invalidating Social Cache After Updates:</strong>{" "}
             Updating OG tags without invalidating platform caches means old
             previews persist for days or weeks. After changing a page&apos;s
             title, description, or image, manually scrape the URL using each
             platform&apos;s debugging tool.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Using Images That Don&apos;t Render Well at Small Sizes:
             </strong>{" "}
@@ -355,7 +359,7 @@ export default function SocialMediaOptimizationArticle() {
             Detailed photography, small text, or complex graphics become
             illegible at thumbnail size. Use bold text, high contrast, and
             simple compositions that remain clear at any display size.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Missing og:url or Setting It Incorrectly:</strong> Without
             og:url, platforms use the shared URL as the canonical reference. If
@@ -384,28 +388,28 @@ export default function SocialMediaOptimizationArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Vercel/Next.js:</strong> Pioneered dynamic OG image
             generation with @vercel/og, which uses Satori to convert React
             components to images at the edge. Their documentation, blog posts,
             and marketing pages all use dynamically generated OG images with
             consistent brand styling, page-specific titles, and author
             information.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>GitHub:</strong> Generates dynamic social preview images for
             repositories, showing the repo name, description, star count,
             language distribution, and contributor avatars. These rich previews
             make GitHub links immediately recognizable and informative when
             shared on social platforms.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Spotify:</strong> Creates rich sharing previews for songs,
             albums, playlists, and podcasts. Each shared link includes album art
             as the OG image, artist name in the title, and a compelling
             description. The Twitter player card type enables inline audio
             playback directly in the Twitter feed.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>The New York Times:</strong> Implements article-specific OG
             images using headline photography, with article:published_time and
@@ -419,13 +423,16 @@ export default function SocialMediaOptimizationArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do social media crawlers differ from search engine
               crawlers?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Social crawlers (Facebook, Twitter, LinkedIn) do not execute
               JavaScript — they only parse raw HTML. Search engine crawlers
               (Googlebot) can execute JavaScript in a headless browser. Social
@@ -434,12 +441,12 @@ export default function SocialMediaOptimizationArticle() {
               They cache results aggressively (Facebook for up to 30 days)
               unlike search engines which re-crawl frequently. Social crawlers
               are triggered by sharing events, not by systematic site crawling.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How would you implement dynamic OG image generation?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: I would use an edge function (Vercel OG/Satori, or Cloudflare
               Workers) that accepts page parameters as query strings. The
@@ -507,7 +514,7 @@ export default function SocialMediaOptimizationArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://ogp.me/"
               target="_blank"
@@ -516,8 +523,8 @@ export default function SocialMediaOptimizationArticle() {
             >
               The Open Graph Protocol — Official Specification
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards"
               target="_blank"
@@ -526,8 +533,8 @@ export default function SocialMediaOptimizationArticle() {
             >
               Twitter Cards Documentation
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developers.facebook.com/tools/debug/"
               target="_blank"
@@ -536,7 +543,7 @@ export default function SocialMediaOptimizationArticle() {
             >
               Facebook Sharing Debugger
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://vercel.com/docs/functions/og-image-generation"

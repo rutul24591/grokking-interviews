@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,7 +35,10 @@ export default function RenderingStrategyArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Rendering Strategy</strong> determines where and when an
           application&apos;s HTML is generated — on the server, in the browser,
           at build time, or at request time. This fundamental architectural
@@ -46,8 +50,8 @@ export default function RenderingStrategyArticle() {
           long-term implications — choosing incorrectly leads to poor SEO, slow
           performance, high infrastructure costs, or development bottlenecks
           that are expensive to correct.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The evolution of rendering strategies reflects the web&apos;s changing
           demands. Early websites were server-rendered (PHP, ASP, JSP) — the
           server generated complete HTML for every request. The rise of Single
@@ -58,7 +62,7 @@ export default function RenderingStrategyArticle() {
           rendering with modern frameworks like Next.js, Nuxt, and SvelteKit
           offering hybrid approaches that combine the best of server and client
           rendering.
-        </p>
+        </HighlightBlock>
         <p>
           Today&apos;s frontend engineers must understand multiple rendering
           strategies and choose based on content type (static, dynamic, or
@@ -74,7 +78,10 @@ export default function RenderingStrategyArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Client-Side Rendering sends a minimal HTML shell to the browser, and
           JavaScript builds the entire UI dynamically. The browser downloads the
           HTML shell, then downloads and executes the JavaScript bundle, which
@@ -86,8 +93,8 @@ export default function RenderingStrategyArticle() {
           trade-off is slow initial load (must download JavaScript before seeing
           content), poor SEO (search engines may not execute JavaScript), and a
           blank screen during JavaScript download and execution.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Server-Side Rendering generates HTML on the server for each request.
           The browser receives fully-rendered HTML and can display content
           immediately, achieving fast First Contentful Paint. JavaScript then
@@ -98,7 +105,7 @@ export default function RenderingStrategyArticle() {
           JavaScript fails). The trade-off is increased server load (must render
           on every request), higher TTFB (server processing adds latency), and
           complex infrastructure (need server capacity for traffic spikes).
-        </p>
+        </HighlightBlock>
         <p>
           Static Site Generation pre-renders HTML at build time and caches it
           on a CDN. No server processing occurs at request time — the CDN serves
@@ -120,7 +127,10 @@ export default function RenderingStrategyArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Incremental Static Regeneration combines SSG&apos;s performance with
           dynamic updates. Pages are pre-generated at build time and served from
           the CDN. After a revalidation period expires (e.g., 60 seconds), the
@@ -135,8 +145,8 @@ export default function RenderingStrategyArticle() {
           ungenerated pages (initial generation happens on demand), and the
           complexity of managing revalidation periods across different content
           types.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Hybrid rendering combines multiple strategies within a single
           application. Different pages use different rendering based on their
           requirements: SSG for marketing pages and blog posts (static content,
@@ -147,7 +157,7 @@ export default function RenderingStrategyArticle() {
           rendering straightforward — Next.js uses <code>getStaticProps</code>{" "}
           for SSG, <code>getServerSideProps</code> for SSR, and{" "}
           <code>revalidate</code> for ISR, configured per-page.
-        </p>
+        </HighlightBlock>
         <p>
           The decision framework for selecting rendering strategy follows a
           logical flow. First, determine whether content is user-specific — if
@@ -169,7 +179,10 @@ export default function RenderingStrategyArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Performance comparison across rendering strategies reveals clear
           patterns. SSG provides the fastest FCP (pre-built HTML from CDN) and
           fast TTI (minimal hydration). SSR provides fast FCP but medium TTI
@@ -181,8 +194,8 @@ export default function RenderingStrategyArticle() {
           load, CSR and SSG require no server processing per request, ISR
           requires occasional regeneration, and SSR requires processing on every
           request.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The hydration process in SSR and SSG is a critical performance
           consideration. Hydration is when JavaScript attaches event listeners
           to server-rendered HTML, making it interactive. Until hydration
@@ -194,7 +207,7 @@ export default function RenderingStrategyArticle() {
           (hydrating components as they enter the viewport), and islands
           architecture (hydrating independent &quot;islands&quot; of
           interactivity within a static page).
-        </p>
+        </HighlightBlock>
         <p>
           Core Web Vitals implications vary by rendering strategy. SSG and ISR
           have the best LCP because pre-built HTML arrives from the CDN
@@ -217,7 +230,10 @@ export default function RenderingStrategyArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Adopt hybrid rendering as the default architecture for most
           applications. Use SSG for static content (marketing pages, blog posts,
           documentation), ISR for periodically updated content (product
@@ -227,8 +243,8 @@ export default function RenderingStrategyArticle() {
           rendering per-page using your framework&apos;s built-in mechanisms —
           this provides the right rendering strategy for each page&apos;s
           specific requirements without over-engineering the entire application.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Optimize hydration to minimize the gap between FCP and TTI. Use
           React 18&apos; selective hydration to prioritize interactive
           components. Split JavaScript into route-level chunks so that only the
@@ -238,7 +254,7 @@ export default function RenderingStrategyArticle() {
           (blog posts, articles), consider partial hydration — hydrate only the
           components that need interactivity (comments, share buttons) while
           leaving the article text as static HTML.
-        </p>
+        </HighlightBlock>
         <p>
           Monitor rendering strategy impact on Core Web Vitals continuously.
           Track LCP, TTI, and CLS separately for pages using different rendering
@@ -254,7 +270,10 @@ export default function RenderingStrategyArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using CSR for public-facing content is the most common rendering
           mistake. Marketing pages, blog posts, product pages, and any content
           that benefits from search engine indexing should never be CSR-only
@@ -265,8 +284,8 @@ export default function RenderingStrategyArticle() {
           matter. If migrating an existing CSR application, incrementally adopt
           server rendering for critical pages first (homepage, landing pages,
           product pages).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Over-using SSR when SSG or ISR would suffice creates unnecessary
           server load and higher TTFB. If a page&apos;s content does not change
           per request (product detail pages that update daily, blog posts that
@@ -275,7 +294,7 @@ export default function RenderingStrategyArticle() {
           (ISR). The server resources spent on redundant rendering can be
           redirected to pages that truly need dynamic rendering (search results,
           personalized content).
-        </p>
+        </HighlightBlock>
         <p>
           Neglecting the hydration experience creates a frustrating gap between
           seeing content and being able to interact with it. A page that
@@ -291,7 +310,10 @@ export default function RenderingStrategyArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms use hybrid rendering to balance SEO, performance,
           and dynamic content needs. Product detail pages use ISR — statically
           generated with periodic revalidation for price and inventory updates,
@@ -303,8 +325,8 @@ export default function RenderingStrategyArticle() {
           needed. Search results use SSR because they are dynamic and benefit
           from SEO indexing. This hybrid approach optimizes each page type for
           its specific requirements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           News and media websites prioritize content delivery speed and SEO. The
           Washington Post and The New York Times use SSG for article pages —
           articles are pre-rendered at publish time and served from CDN,
@@ -314,7 +336,7 @@ export default function RenderingStrategyArticle() {
           Interactive features (polls, quizzes, comment sections) use CSR for
           rich client-side interactivity. The result is article pages that load
           in under 1 second with excellent SEO and social sharing.
-        </p>
+        </HighlightBlock>
         <p>
           SaaS dashboards and admin panels use CSR because they are
           authenticated, user-specific applications where SEO does not matter.
@@ -329,12 +351,15 @@ export default function RenderingStrategyArticle() {
 
       <section>
         <h2>Advanced Rendering Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Streaming SSR implementation with React 18 Suspense and selective hydration transforms the traditional SSR model from an all-or-nothing approach to a progressive delivery system. In traditional SSR, the server renders the entire component tree to HTML and sends it as a single response — the browser cannot display anything until the full HTML arrives. With streaming SSR, the server sends the HTML in chunks as each component finishes rendering. Components wrapped in React Suspense boundaries act as streaming units — when a component awaits data (an API call, a database query), the server sends a loading placeholder for that component and continues rendering the rest of the page. When the data arrives, the server sends the completed component HTML as a subsequent chunk in the same HTTP response. The browser progressively reveals content — the header, navigation, and above-the-fold content appear first, followed by below-the-fold sections as their data becomes available. Selective hydration complements streaming SSR by prioritizing which components become interactive first. Instead of hydrating the entire page in sequence, React hydrates components in order of user interaction priority — the components visible in the viewport are hydrated first, while below-the-fold components wait. This means a user can interact with the visible content (click buttons, scroll, navigate) before the entire page is hydrated, significantly reducing the Time to Interactive. The implementation requires structuring the application with Suspense boundaries at logical data-fetching points (product details, reviews, recommendations) and configuring the server to stream the response using the ReadableStream API.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Edge rendering with Vercel Edge Functions and Cloudflare Workers moves the SSR computation from origin servers to CDN edge locations, dramatically reducing TTFB for globally distributed users. In traditional SSR, the server runs in one or a few data centers, and users far from those data centers experience high latency (the HTML must travel from the origin to the user). With edge rendering, the SSR code runs at the edge location closest to the user — the HTML is generated within 50-100ms of the user&apos;s location, and the response travels the remaining distance as static HTML. The challenge is that edge environments have constraints — limited execution time (Cloudflare Workers allows 10-50ms for free tiers, up to 30 seconds for paid), limited memory (128MB-1GB), and restricted APIs (no filesystem access, no native modules). Edge rendering is best suited for pages that do not require heavy computation — marketing pages, blog posts, product detail pages with cached data. Pages that require database queries, complex business logic, or real-time data should fall back to origin SSR, with the edge function acting as a reverse proxy that forwards the request to the origin and streams the response back to the user. The hybrid approach — edge rendering for static and cached pages, origin SSR for dynamic pages — provides the best balance of performance and capability. Edge rendering also enables personalization at the edge — the edge function can read cookies or headers (user&apos;s locale, authentication status, A/B test variant) and inject user-specific content into the cached HTML template without an origin round-trip, using Edge Side Includes (ESI) or template stitching.
-        </p>
+        </HighlightBlock>
         <p>
           Partial prerendering combines the speed of static generation with the flexibility of server rendering by pre-rendering the static shell of a page at build time and dynamically rendering only the personalized sections at request time. The page structure is divided into static sections (layout, navigation, footer, common content) that are pre-rendered and cached at the edge, and dynamic sections (user-specific content, real-time data, personalized recommendations) that are rendered on each request. When a user requests the page, the edge server serves the pre-rendered static shell immediately (TTFB under 50ms), and the dynamic sections are rendered in parallel and streamed into the page as they complete. This approach achieves near-SSG performance for the majority of the page while maintaining SSR flexibility for the personalized sections. Next.js implements partial prerendering through its Partial Prerendering feature (introduced in Next.js 14), which uses React Suspense boundaries to delineate static and dynamic sections at build time. The static sections are pre-rendered into a RSC (React Server Component) payload that is cached at the edge, and the dynamic sections are rendered on demand. The trade-off is build complexity — the build process must analyze the component tree to identify static and dynamic sections, and the caching strategy must account for the combinatorial explosion of static variants (different locales, different A/B test variants, different feature flag combinations).
         </p>
@@ -351,12 +376,15 @@ export default function RenderingStrategyArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: When would you choose CSR over SSR?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Choose CSR for authenticated applications where SEO does not
               matter — dashboards, admin panels, internal tools, real-time
               collaborative apps. CSR is simpler to host (static CDN), has clear
@@ -364,7 +392,7 @@ export default function RenderingStrategyArticle() {
               navigation after the initial load. Avoid CSR for public content
               that needs SEO or social sharing. If a page benefits from search
               engine indexing, use SSR, SSG, or ISR.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

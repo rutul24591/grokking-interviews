@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,7 +36,10 @@ export default function MultiStepFormsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Multi-step forms</strong> (also called wizards or stepped forms)
           break complex forms into a sequence of smaller, manageable steps.
           Instead of presenting users with a single overwhelming form containing
@@ -43,8 +47,8 @@ export default function MultiStepFormsArticle() {
           through a logical progression. Each step focuses on a related group of
           fields (Personal Info → Address → Payment → Review), and users navigate
           between steps using Previous/Next buttons.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Multi-step forms improve completion rates for complex forms by reducing
           cognitive load — users focus on one section at a time. They also enable
           conditional logic (if user selects &quot;Business&quot; account type, show
@@ -53,7 +57,7 @@ export default function MultiStepFormsArticle() {
           complexity: state must persist across steps, navigation must be
           controlled (can users go back? can they skip steps?), and validation
           must run per-step before allowing progression.
-        </p>
+        </HighlightBlock>
         <p>
           The architecture of multi-step forms involves several concerns.{" "}
           <strong>Step state management</strong> tracks the current step, completed
@@ -69,15 +73,18 @@ export default function MultiStepFormsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Step Configuration:</strong> Define steps as a configuration
             array with metadata: step ID, title, description, required fields,
             optional callback for conditional display. This declarative approach
             makes it easy to add/remove steps, reorder them, or conditionally
             show steps based on previous answers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Navigation Modes:</strong> <strong>Linear</strong> — users
             must complete steps in order, can go back to previous steps.{" "}
             <strong>Skip-able</strong> — users can skip optional steps and
@@ -85,7 +92,7 @@ export default function MultiStepFormsArticle() {
             any step via a step indicator (like a progress bar with clickable
             steps). <strong>Conditional branching</strong> — step sequence
             changes based on answers (different paths for different user types).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Step Validation:</strong> Validate all required fields in
             the current step before allowing progression to the next step.
@@ -119,12 +126,15 @@ export default function MultiStepFormsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Multi-step form architecture centers on a step manager that controls
           navigation, validation, and data persistence. The step manager
           maintains the current step index, accumulated form data, and
           validation state for each step.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/forms-validation/multi-step-forms/wizard-architecture.svg"
@@ -135,13 +145,13 @@ export default function MultiStepFormsArticle() {
         />
 
         <h3>Navigation Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Different navigation patterns suit different use cases. Linear
           navigation is simplest — users proceed step-by-step, can go back but
           not skip ahead. Free navigation allows clicking any step in the
           progress indicator. Conditional branching changes the step sequence
           based on answers.
-        </p>
+        </HighlightBlock>
 
         <h3>Progress Indicator Design</h3>
         <p>
@@ -162,21 +172,24 @@ export default function MultiStepFormsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Multi-step forms trade increased implementation complexity for
           improved UX on complex forms. They&apos;re not appropriate for simple
           forms (a login form should never be multi-step). The decision to use
           multi-step versus single-page forms should be driven by user research,
           form complexity, and completion rate data.
-        </p>
+        </HighlightBlock>
 
         <h3>Single-Page vs Multi-Step</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Single-page forms</strong> show all fields at once. Best for
           simple forms (&lt;10 fields), forms where users need to see all fields
           for context, and when implementation simplicity is prioritized.
           Downside: overwhelming for complex forms, higher abandonment rates.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Multi-step forms</strong> break forms into steps. Best for
           complex forms (20+ fields), forms with logical sections, and when
@@ -224,16 +237,19 @@ export default function MultiStepFormsArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Checkout Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce checkouts are the quintessential multi-step form. A typical
           flow includes: Cart Review → Shipping Address → Shipping Method →
           Payment → Review &amp; Place Order. Each step has distinct validation
           requirements and the ability to go back is critical (users often
           reconsider shipping options after seeing the total).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Key implementation considerations: persist cart and entered data
           across steps (and across sessions via localStorage), show order summary
           in a sidebar throughout the flow, allow guest checkout (don&apos;t
@@ -241,7 +257,7 @@ export default function MultiStepFormsArticle() {
           1-Click ordering represents the ultimate optimization — collapsing the
           entire multi-step flow into a single action for returning customers
           with saved preferences.
-        </p>
+        </HighlightBlock>
 
         <h3>Insurance Quote Application</h3>
         <p>
@@ -300,17 +316,20 @@ export default function MultiStepFormsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Clear Progress Indication:</strong> Always show where users
             are in the process (Step 2 of 5) and what steps remain. This
             reduces anxiety about &quot;how much longer?&quot;
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Allow Going Back:</strong> Users should be able to go back
             and change previous answers without losing data. Going back should
             preserve all entered values.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Validate Before Proceeding:</strong> Don&apos;t allow users
             to proceed to the next step with invalid data. Show clear errors
@@ -331,17 +350,20 @@ export default function MultiStepFormsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Too Many Steps:</strong> Breaking a 10-field form into 10
             single-field steps is annoying, not helpful. Group related fields
             into logical steps (5-10 fields per step is typical).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Losing Data on Navigation:</strong> Going back and forth
             should never lose entered data. This is the most frustrating bug in
             multi-step forms.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No Way to Skip Optional Steps:</strong> If a step is
             optional, provide a &quot;Skip&quot; button. Don&apos;t force users
@@ -357,17 +379,20 @@ export default function MultiStepFormsArticle() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you manage state across multiple form steps?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use a centralized store (Zustand, Redux, or React Context) to
               hold all form data. Each step reads from and writes to this shared
               store. The store also tracks current step index, completed steps,
               and validation state per step.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

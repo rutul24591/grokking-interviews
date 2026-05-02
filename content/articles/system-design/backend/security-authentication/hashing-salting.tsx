@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,20 +28,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Hashing</strong> is a one-way cryptographic function that transforms input data (such as a password)
           into a fixed-size output (the hash). Unlike encryption, hashing is irreversible — given the hash, it is
           computationally infeasible to recover the original input. This property makes hashing ideal for password
           storage: the system stores the hash, not the password, and verifies passwords by hashing the candidate and
           comparing it to the stored hash.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Salting</strong> is the practice of adding a unique, random value (the salt) to each password before
           hashing. The salt ensures that identical passwords produce different hashes — if two users have the same
           password, their hashes will differ because their salts differ. Salting prevents rainbow table attacks
           (precomputed tables of password-hash mappings) and ensures that an attacker must brute force each password
           individually rather than cracking multiple passwords simultaneously.
-        </p>
+        </HighlightBlock>
         <p>
           Password hashing is the single most important security control for user authentication. If passwords are
           stored in plaintext or hashed with a fast hash function (MD5, SHA-256), a database breach exposes all user
@@ -83,21 +87,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A cryptographic hash function has four essential properties: it is one-way (given the hash, it is
           computationally infeasible to recover the input), deterministic (the same input always produces the same
           output), collision-resistant (it is computationally infeasible to find two different inputs that produce
           the same hash), and it exhibits the avalanche effect (changing one bit of input changes approximately 50
           percent of the output bits). These properties ensure that hashes are unique, unpredictable, and cannot be
           reversed or manipulated.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Salt generation is critical for password hashing security. The salt must be unique per password (generated
           using a cryptographically secure random number generator — CSPRNG), at least 128 bits (16 bytes) in length,
           and stored alongside the hash (the salt is not secret — it is needed to verify passwords). The salt ensures
           that identical passwords produce different hashes, preventing rainbow table attacks and ensuring that an
           attacker must brute force each password individually.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/hashing-salting-diagram-1.svg"
           alt="Password hashing flow showing plaintext password, salt generation, hashing with bcrypt/Argon2, and stored hash"
@@ -154,21 +161,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The password hashing architecture consists of the hashing library (bcrypt, Argon2), the salt generator
           (CSPRNG), and the storage layer (database). During registration, the user submits a password, the server
           generates a random salt, hashes the password with the salt using the chosen algorithm, and stores the
           result (algorithm parameters, salt, and hash) in the database. During login, the user submits a password,
           the server retrieves the stored hash, extracts the salt and parameters, hashes the candidate password,
           and compares the result to the stored hash using constant-time comparison.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The stored hash format is standardized — for bcrypt, it is $2b$cost$salt+hash (where $2b$ identifies the
           bcrypt variant, cost is the work factor, salt is 22 base64 characters, and hash is 31 base64 characters).
           For Argon2, it is $argon2id$v=19$m=memory,t=iterations,p=parallelism$salt$hash. The stored format includes
           all the information needed to verify a password — the algorithm, parameters, salt, and hash — so the
           verification code does not need to be configured separately.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/hashing-salting-diagram-3.svg"
           alt="Cryptographic hash function properties and comparison of password hashing vs general-purpose hashing"
@@ -203,15 +213,18 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           bcrypt versus Argon2 is the primary trade-off in password hashing algorithm selection. bcrypt is more
           widely supported (available in every programming language and framework), has been battle-tested for over
           25 years, and is simpler to configure (only the work factor needs to be set). Argon2 is more secure
           (memory-hard, resistant to GPU/ASIC attacks), won the 2015 Password Hashing Competition, and is the
           recommended algorithm for new systems. However, Argon2 is less widely supported (not available in all
           languages/frameworks) and requires more configuration (memory, iterations, parallelism).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Work factor vs user experience is a trade-off between security and performance. A higher work factor
           increases the hash computation time, making brute force attacks more expensive but also increasing the
           login time for legitimate users. The recommended work factor is one that produces a 0.25-0.5 second hash
@@ -219,7 +232,7 @@ export default function ArticlePage() {
           For high-traffic systems (millions of logins per day), the aggregate CPU cost of hashing can be significant
           — each login requires 0.25-0.5 seconds of CPU time, so a system with 1 million logins per day requires
           250,000-500,000 seconds (70-140 hours) of CPU time for password hashing alone.
-        </p>
+        </HighlightBlock>
         <p>
           Memory-hard vs CPU-hard hashing is a trade-off between GPU resistance and resource usage. Memory-hard
           algorithms (Argon2, scrypt) require a configurable amount of memory to compute the hash, making them
@@ -247,20 +260,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use Argon2id for new systems and bcrypt for existing systems. Argon2id is the most secure password hashing
           algorithm available — it is memory-hard, resistant to GPU/ASIC attacks, and was the winner of the 2015
           Password Hashing Competition. If Argon2 is not available in your programming language or framework, use
           bcrypt — it is widely supported, battle-tested, and provides adequate security with proper work factor
           configuration.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Configure the work factor to produce a 0.25-0.5 second hash computation time. Benchmark your server
           hardware to determine the appropriate work factor — for bcrypt, cost=12 is a reasonable starting point on
           modern hardware. For Argon2, use the default parameters (memory=64 MB, iterations=3, parallelism=4) and
           adjust based on your server hardware. Re-benchmark periodically as hardware gets faster and increase the
           work factor accordingly.
-        </p>
+        </HighlightBlock>
         <p>
           Use unique salts generated by a CSPRNG for each password. Never reuse salts, never derive salts from the
           password or username, and never use a static salt. All well-tested password hashing libraries handle salt
@@ -289,19 +305,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using fast hash functions (MD5, SHA-256) for password hashing is a critical security failure. Fast hash
           functions enable attackers to crack millions of passwords per second using GPUs. If passwords are hashed
           with MD5 or SHA-256, a database breach exposes all user passwords within hours. The fix is to use bcrypt
           or Argon2 — slow, memory-hard algorithms that limit attackers to hundreds or thousands of guesses per
           second.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using a static salt (the same salt for all passwords) defeats the purpose of salting. If all passwords use
           the same salt, identical passwords produce identical hashes, enabling rainbow table attacks. The fix is to
           use a unique salt for each password, generated by a CSPRNG. All well-tested password hashing libraries
           handle this automatically.
-        </p>
+        </HighlightBlock>
         <p>
           Not increasing the work factor as hardware gets faster is a common operational pitfall. A work factor that
           produces a 0.5 second hash computation time today will produce a 0.25 second hash computation time in 2
@@ -329,22 +348,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses bcrypt with cost=12 for password hashing — each password hash takes
           approximately 0.3 seconds to compute on their server hardware. The platform implements work factor
           rehashing — when the cost factor is increased (from 12 to 13), users are automatically rehashed with the
           new cost factor when they log in. The platform also implements breached password detection using the Have I
           Been Pwned API — passwords that appear in the breach database are rejected during registration and password
           change. The platform has had zero successful credential-stuffing attacks since implementing these controls.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses Argon2id with memory=64 MB, iterations=3, parallelism=4 for password
           hashing — each password hash takes approximately 0.4 seconds to compute. The company enforces a minimum
           password length of 14 characters (no complexity requirements) and checks all passwords against the Have I
           Been Pwned API. The company migrated from MD5-based hashes to Argon2id using transparent migration — when
           users logged in with MD5-based hashes, the server verified the password against the MD5 hash and rehashed
           it with Argon2id. The migration completed within 6 months as all active users logged in.
-        </p>
+        </HighlightBlock>
         <p>
           A healthcare organization uses bcrypt with cost=13 for password hashing — each password hash takes
           approximately 0.6 seconds to compute (longer than typical due to HIPAA compliance requirements). The
@@ -368,14 +390,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: Why can&apos;t you use SHA-256 for password hashing?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               SHA-256 is designed for speed — it can compute millions of hashes per second on commodity hardware, and billions per second on GPUs. This speed is the enemy of password security — an attacker with a breached database can crack millions of SHA-256-hashed passwords per hour using GPU-accelerated brute force attacks.
-            </p>
+            </HighlightBlock>
             <p>
               Password hashing algorithms (bcrypt, Argon2) are designed to be slow — they limit attackers to hundreds or thousands of guesses per second. Additionally, Argon2 is memory-hard, making it resistant to GPU and ASIC attacks that exploit SHA-256&apos;s low memory usage. SHA-256 should never be used for password storage — use bcrypt or Argon2 instead.
             </p>

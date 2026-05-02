@@ -283,7 +283,11 @@ export default function TokenRefreshStrategiesArticle() {
             <strong>Secure + SameSite:</strong> Always set these flags
           </HighlightBlock>
           <HighlightBlock as="li" tier="crucial">
-            <strong>Never localStorage:</strong> Accessible via XSS
+            <strong>Never localStorage:</strong> Treat browser-readable storage
+            as compromised under XSS. If tokens are in localStorage/sessionStorage,
+            any XSS becomes immediate account takeover. Prefer HttpOnly cookies
+            (plus rotation + reuse detection) so XSS cannot directly exfiltrate
+            refresh tokens.
           </HighlightBlock>
           <li>
             <strong>Domain scoping:</strong> Restrict cookies to specific subdomain

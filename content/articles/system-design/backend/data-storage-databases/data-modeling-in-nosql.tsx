@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -79,21 +80,24 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Query-First Design</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>The Relational vs NoSQL Mindset</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Relational modeling starts with entities and relationships. You identify entities
           (Customer, Order, Product), define their attributes, then normalize to eliminate
           redundancy. The goal: one source of truth, no update anomalies. Queries are an
           afterthought—the schema works for all queries via joins.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           NoSQL modeling starts with queries. You identify access patterns (get order by ID,
           list orders by customer, get orders by date), then design data structures optimized
           for each pattern. The goal: efficient queries, minimal joins. Redundancy is acceptable—
           you trade write cost for read performance. This is <strong>query-first design</strong>.
-        </p>
+        </HighlightBlock>
 
         <p>
           The mindset shift: <strong>Relational: Normalize → Query</strong> vs
@@ -156,22 +160,25 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Patterns by Database Type</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Document Database Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Document databases (MongoDB, Cosmos DB) excel at hierarchical data. Common patterns:
           <strong>Embedded documents</strong> for one-to-few (order with items, post with comments).
           <strong>Referenced documents</strong> for one-to-many (user with orders, author with
           books). <strong>Polymorphic patterns</strong> for varying schemas (products with
           category-specific fields: books have ISBN, shirts have size). <strong>Tree structures</strong>
           for hierarchies (categories, org charts) using parent references or materialized paths.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Indexing is critical. Create indexes on fields used in queries (filter fields, sort
           fields). Compound indexes cover multi-field queries. Use index analysis tools to verify
           index usage and identify slow queries. Monitor index size—indexes have write overhead.
-        </p>
+        </HighlightBlock>
 
         <h3>Key-Value Store Patterns</h3>
         <p>
@@ -248,20 +255,23 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Selecting the Right Database</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           NoSQL databases occupy different niches. Understanding the trade-offs helps you select
           the right database for your access patterns. There is no universally best database—only
           the best database for your specific use case.
-        </p>
+        </HighlightBlock>
 
         <h3>Key-Value Stores</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Best for:</strong> Simple key-based lookups, caching, sessions, feature flags,
           rate limiting. <strong>Strengths:</strong> Microsecond latency, simple API, horizontal
           scaling. <strong>Limitations:</strong> No complex queries, no relationships, data model
           constrained by key design. <strong>Examples:</strong> Redis, DynamoDB, Memcached.
-        </p>
+        </HighlightBlock>
 
         <h3>Document Databases</h3>
         <p>
@@ -318,20 +328,23 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for NoSQL Data Modeling</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Start with query patterns.</strong> List all queries your application will run.
           For each query, identify: what data is accessed, what filters are applied, what latency
           is required. Design data models optimized for these queries. Don't start with entities—
           start with queries.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Embrace denormalization.</strong> Accept that data will be duplicated. This is
           a feature, not a bug. Denormalization enables single-query reads, which is the goal.
           Plan for update propagation: when duplicated data changes, how will you update all
           copies? For immutable data (orders, events), this isn't a problem.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Model for access patterns, not entities.</strong> A user entity might need
@@ -363,19 +376,22 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Modeling after relational schemas.</strong> The most common mistake is
           translating relational schemas directly to NoSQL. This loses the benefits of NoSQL
           (single-query reads, horizontal scaling). Solution: Start fresh with query-first
           design. Don't think in tables and joins—think in documents and access patterns.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Unbounded growth.</strong> Embedding unbounded arrays (comments, events) causes
           document size explosions. Solution: Use the bucket pattern (group into fixed-size
           documents), reference in separate collections, or use time-based partitioning.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>High cardinality in time series.</strong> Using unique IDs as tags creates one
@@ -406,22 +422,25 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce (Amazon, Shopify)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms use polyglot persistence. Product catalogs use document databases
           (flexible schemas for varying product attributes). Shopping carts use key-value stores
           (fast lookups, TTL expiration). Orders use relational databases (ACID transactions for
           payment and inventory). User activity uses time series databases (clickstream analytics).
           Recommendations use graph databases (users who bought X also bought Y).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Data modeling: Product documents embed variants (size, color), categories, and reviews.
           Order documents embed line items (denormalized product names and prices at purchase time).
           User profiles reference order IDs (unbounded collection). This hybrid approach optimizes
           for each query pattern.
-        </p>
+        </HighlightBlock>
 
         <h3>Social Media (Facebook, Twitter)</h3>
         <p>
@@ -472,14 +491,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: How does NoSQL data modeling differ from relational modeling? Give a concrete
               example.
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Relational modeling starts with entities and relationships,
               normalizes to eliminate redundancy, then queries via joins. NoSQL modeling starts
               with queries, denormalizes for read performance, and uses single-query reads.
@@ -489,7 +511,7 @@ export default function ArticlePage() {
               document. Trade-off: updating product name requires updating all order documents,
               but orders are immutable historical records so this is acceptable. Relational:
               Normalize → Query. NoSQL: Query → Denormalize.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> When would you not denormalize? Answer: When data
               changes frequently and is referenced in many places. Example: User email address

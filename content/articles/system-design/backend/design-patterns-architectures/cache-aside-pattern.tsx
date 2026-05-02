@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cache-aside</strong> (also called <em>lazy loading</em> or <em>lazy caching</em>) is a caching pattern in which the application code explicitly manages the interaction between the cache and the backing data store. On a read request, the application first queries the cache. If the data exists (a cache hit), it is returned immediately. If the data does not exist (a cache miss), the application reads from the backing store, populates the cache with the result, and then returns the data to the caller. On a write request, the application writes to the backing store and then invalidates or updates the corresponding cache entry.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The defining characteristic of cache-aside is that the <strong>application owns the caching logic</strong>. This contrasts with patterns like read-through or write-through, where a caching infrastructure layer transparently intercepts reads and writes. In cache-aside, the cache is treated as an optional performance accelerator, not as a system of record. The backing store remains the authoritative source of truth at all times.
-        </p>
+        </HighlightBlock>
         <p>
           Cache-aside is one of the most widely adopted caching patterns in production systems because it offers a favorable balance of simplicity, safety, and flexibility. Since the application controls caching behavior, teams can adopt it incrementally without migrating existing data stores or introducing new infrastructure dependencies. If the cache becomes unavailable, the system degrades gracefully by falling back to the backing store. This survivability makes cache-aside the default choice for many organizations introducing caching into their architecture for the first time.
         </p>
@@ -55,6 +59,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/cache-aside-pattern-diagram-1.svg"
@@ -63,12 +70,12 @@ export default function ArticlePage() {
         />
 
         <h3>Cache-Aside Read Path</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The read path in cache-aside follows a deterministic sequence. When a request arrives, the application constructs a cache key from the request parameters and queries the cache. If the key exists and has not expired, the cached value is deserialized and returned. This is a cache hit, and it avoids any interaction with the backing store. If the key does not exist or has expired, this is a cache miss. The application then queries the backing store, receives the result, serializes it, writes it to the cache with an associated TTL, and returns the result to the caller. The next request for the same key will hit the cache until the TTL expires or the entry is explicitly invalidated.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This flow means that the first request for any given key always incurs the full cost of a backing store query. Subsequent requests benefit from the cached value until eviction or expiry. The TTL acts as a freshness guarantee: it bounds the maximum staleness of any cached value. A shorter TTL means fresher data but more frequent backing store queries. A longer TTL reduces backing store load but increases the window during which stale data may be served. Selecting the right TTL is therefore not just a performance decision but a correctness decision that must align with business requirements for data freshness.
-        </p>
+        </HighlightBlock>
 
         <h3>Cache-Aside Write Path</h3>
         <p>
@@ -155,14 +162,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production-grade cache-aside implementation involves multiple interacting components: the application layer, the distributed cache layer, the backing store, and the operational tooling that monitors and manages caching behavior.
-        </p>
+        </HighlightBlock>
 
         <h3>Read Flow Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The read flow begins when a client request reaches the application. The application constructs a cache key from the request parameters, incorporating version prefixes and tenant identifiers as needed. The application queries the cache using the constructed key. If the key exists and has not expired, the value is deserialized and returned immediately. This is the fast path and should complete in single-digit milliseconds for an in-memory cache.
-        </p>
+        </HighlightBlock>
         <p>
           If the key does not exist or has expired, the application enters the slow path. Before querying the backing store, the application should acquire a single-flight lock for this key to prevent stampedes. The application then queries the backing store, which may involve complex SQL joins, API calls, or disk reads. The result is serialized and written to the cache with an appropriate TTL. The single-flight lock is released, and any waiting requests receive the same result. Finally, the application returns the result to the client.
         </p>
@@ -209,12 +219,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Every caching decision involves trade-offs between consistency, latency, complexity, and cost. Understanding these trade-offs is what separates a functional implementation from a production-grade one.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Consistency versus latency</strong> is the primary trade-off. Stronger consistency requires either invalidating the cache on every write (increasing miss rates and backing store load) or updating the cache synchronously (increasing write latency). Weaker consistency allows longer TTLs and fewer cache operations, reducing both read and write latency but serving stale data. The staff-level decision is to classify data by its freshness requirement and apply different caching strategies per data type. User-facing content might tolerate minutes of staleness, while inventory counts might require seconds.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Cache invalidation versus TTL expiration</strong> presents another trade-off. Invalidation on write guarantees that the next read fetches fresh data but increases miss rates. TTL expiration is simpler but means the cache may serve stale data for up to the TTL duration. The hybrid approach is to invalidate on write for frequently accessed keys and rely on TTL for infrequently accessed keys. This requires the application to track access patterns or to use heuristics based on the data type.
         </p>
@@ -260,12 +273,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design cache keys with versioning prefixes so that schema or serialization changes invalidate all keys for a given data type without requiring a full cache flush. A key format like <code>v2:user:123:profile</code> allows you to increment the version prefix to <code>v3</code> when the data structure changes, effectively invalidating all <code>v2</code> keys at once. Include tenant identifiers in multi-tenant systems to prevent data leakage between tenants.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Set TTL values based on the freshness budget of the data, not on performance targets. A product description that changes monthly can use a TTL of hours or days. A stock price that changes every second needs a TTL of seconds or should not be cached at all. Classify your data into freshness tiers and assign TTLs accordingly. Use jitter to stagger TTL expirations and prevent stampedes when large numbers of keys expire simultaneously.
-        </p>
+        </HighlightBlock>
         <p>
           Implement cache stampede protection using single-flight request coalescing for popular keys. Without stampede protection, a cache restart or mass expiration can overwhelm the backing store and cause a cascading failure. Single-flight ensures that only one request per key queries the backing store, while all other concurrent requests wait for the result. For distributed systems, use a distributed lock or a centralized promise cache to coordinate across application instances.
         </p>
@@ -288,12 +304,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is treating the cache as a system of record. When the application starts depending on the cache for correctness rather than performance, cache failures become system failures. The cache should always be treatable as disposable: if it is flushed, the system should continue to function, albeit with higher latency. This mindset ensures that the backing store remains capable of handling the full load when necessary.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Silent correctness drift is another critical pitfall. The system continues to operate and return responses, but the data is stale. This is particularly dangerous when staleness affects business-critical values like account balances, inventory counts, or feature flag states. Without explicit monitoring for staleness, these issues can persist for hours or days before being detected. The mitigation is to implement staleness monitoring by comparing cached values against backing store values for a sample of keys and alerting when the difference exceeds the expected TTL window.
-        </p>
+        </HighlightBlock>
         <p>
           Cache stampede during mass expiration is a well-known but frequently unaddressed risk. When a large number of keys share the same TTL and expire simultaneously, the resulting miss spike can overwhelm the backing store. This is especially dangerous during cache restarts or deployments when the entire cache is cold. The mitigation is to use jittered TTLs, single-flight coalescing, and to warm the cache proactively after deployments rather than waiting for organic traffic to repopulate it.
         </p>
@@ -313,14 +332,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>User Profile Reads with Tiered Freshness</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A social media platform caches user profiles using cache-aside with tiered freshness. The public profile fields, such as display name and bio, are cached with a TTL of 30 minutes because they change infrequently and tolerate brief staleness. The account status field, which indicates whether the account is suspended, is cached with a TTL of 5 seconds because it requires near-immediate consistency. The follower count is cached with a TTL of 5 minutes and updated asynchronously through a background job. This approach optimizes cache hit ratios while respecting the different freshness requirements of different fields within the same data entity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The platform uses Redis Cluster with consistent hashing to distribute profile data across 12 cache nodes. Each application instance maintains a local LRU cache for the top 1,000 most-accessed profiles, reducing distributed cache calls for celebrity or high-traffic accounts. Single-flight coalescing prevents stampedes during cache restarts, and jittered TTLs ensure that profile expirations are spread across time windows rather than concentrated at specific moments.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce Product Catalog with Invalidation on Write</h3>
         <p>
@@ -360,14 +382,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: Explain the cache-aside pattern and when you would choose it over read-through or write-through caching.</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Cache-aside is a pattern where the application explicitly manages the interaction between the cache and the backing store. On reads, the application checks the cache first, and on a miss, it queries the backing store and populates the cache. On writes, the application writes to the backing store and then invalidates or updates the cache entry. The key distinction is that the application owns the caching logic, not the cache infrastructure.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               I would choose cache-aside over read-through when I need fine-grained control over caching behavior, when the access pattern involves complex queries that a caching layer cannot transparently handle, or when I want incremental adoption without changing infrastructure. Cache-aside is safer for retrofitting into existing systems because the cache is an optional accelerator, not a required component.
             </p>

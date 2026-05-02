@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,12 +38,15 @@ export default function RateLimitingServiceArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Rate limiting service</strong> is a centralized infrastructure component that controls the rate at which clients can access shared resources (APIs, databases, compute services, file storage) by tracking request counts per client identity over defined time windows and rejecting or delaying requests that exceed configured thresholds. Rate limiting protects backend services from overload (preventing cascading failures when traffic spikes exceed capacity), enforces fair usage policies (ensuring no single client consumes disproportionate resources), prevents abuse (brute force attacks, scraping, denial-of-service), and manages cost (controlling resource consumption in multi-tenant systems where each tenant pays for a specific usage tier).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, designing a rate limiting service is a distributed systems challenge that balances accuracy, latency, and availability. The technical difficulty lies not in counting requests (a simple counter can do that) but in enforcing limits accurately across hundreds of service nodes sharing the same client population, with sub-millisecond decision latency (rate limiting adds overhead to every request, so it must be fast), bounded memory usage (tracking millions of client identities without consuming excessive memory), graceful degradation when the rate limiting infrastructure fails (fail-open to maintain availability or fail-closed to maintain protection), and hierarchical limit enforcement (global limits, per-tenant limits, per-user limits, per-endpoint limits — all enforced simultaneously without race conditions).
-        </p>
+        </HighlightBlock>
         <p>
           Rate limiting service design involves several technical considerations. Algorithm selection (token bucket for burst tolerance with smooth average rate, sliding window log for accurate counting over time, leaky bucket for traffic smoothing, fixed window counter for simplicity — each with different trade-offs in accuracy, memory usage, and burst handling). Distributed enforcement (shared counter storage in Redis or similar, atomic increment-and-check operations, handling replica lag and clock skew, maintaining consistency across nodes). Hierarchical limits (enforcing multiple limit tiers simultaneously — global, tenant, user, endpoint — where a request must pass all tiers to be allowed). Multi-tenant isolation (ensuring that one tenant&apos;s traffic spike does not consume another tenant&apos;s allocated rate limit quota, preventing noisy neighbor problems). Client identification (determining which client a request belongs to using API keys, user IDs, IP addresses, or combinations thereof, handling clients that rotate identifiers to evade limits).
         </p>
@@ -54,14 +58,17 @@ export default function RateLimitingServiceArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Token Bucket Algorithm</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The token bucket algorithm maintains a bucket of tokens that fills at a fixed rate (for example, 10 tokens per second) up to a maximum capacity (for example, 100 tokens). Each incoming request consumes one token from the bucket. If tokens are available, the request is allowed; if the bucket is empty, the request is rejected or queued. The token bucket allows controlled bursting — a client that has been idle accumulates tokens up to the bucket capacity, and can then send a burst of requests up to the capacity limit before being throttled back to the sustained rate. This burst tolerance is useful for real-world traffic patterns where requests arrive in bursts rather than at perfectly even intervals.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The token bucket is implemented efficiently by tracking two values: the current token count and the last refill timestamp. When a request arrives, the algorithm calculates how many tokens have been added since the last refill (based on elapsed time and the fill rate), adds them to the current count (capped at the maximum capacity), updates the last refill timestamp, and then checks whether the current count is sufficient for the request. If so, it decrements the count and allows the request; if not, it rejects the request. This implementation requires only two values per client identity, making it memory-efficient for tracking millions of clients.
-        </p>
+        </HighlightBlock>
 
         <h3>Sliding Window Log Algorithm</h3>
         <p>
@@ -99,9 +106,12 @@ export default function RateLimitingServiceArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The rate limiting service architecture consists of the client identification layer (extracting the client identity from the request — API key, user ID, or IP address), the shared counter storage (Redis cluster maintaining per-client counters for each limit tier), the rate limit evaluation engine (checking counters against configured limits and returning allow/reject decisions), and the configuration management system (storing and distributing rate limit configurations — limits per tier, per client, per endpoint — to all evaluation engine instances). The flow begins with an incoming request to a rate-limited service. The service extracts the client identity from the request (API key from the Authorization header, or IP address from the connection), constructs a composite key for each limit tier (for example, `{"global:all"}`, `{"tenant:{tenant_id}"}`, `{"user:{user_id}"}`, `{"endpoint:{endpoint_path}"}`), and sends a batch counter check to the rate limiting service.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/system-components-services/rl-architecture.svg"
@@ -111,9 +121,9 @@ export default function RateLimitingServiceArticle() {
           height={550}
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The rate limiting service evaluates each tier sequentially — checking the global counter, then the tenant counter, then the user counter, then the endpoint counter. If any counter exceeds its configured limit, the request is rejected with a 429 Too Many Requests response, including headers that communicate the rate limit status (X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset). If all counters pass, the request is allowed, and all counters are incremented atomically. The atomic increment-and-check operation is implemented using Redis Lua scripts (which execute atomically on the Redis server) or Redis MULTI/EXEC transactions with WATCH for optimistic locking. This ensures that concurrent requests from the same client do not race past the limit due to non-atomic read-then-increment operations.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/system-components-services/rl-algorithms.svg"
@@ -152,14 +162,17 @@ export default function RateLimitingServiceArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rate limiting service design involves trade-offs between accuracy and performance, centralized and distributed enforcement, and strict and lenient limit enforcement. Understanding these trade-offs is essential for designing rate limiting strategies that match your system&apos;s reliability requirements and traffic patterns.
-        </p>
+        </HighlightBlock>
 
         <h3>Token Bucket Versus Sliding Window</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Token Bucket:</strong> Allows controlled bursting up to the bucket capacity while enforcing a sustained average rate. Advantages: memory-efficient (only two values per client: current token count and last refill timestamp), supports natural traffic patterns (bursts followed by idle periods), and computationally inexpensive (simple arithmetic operations). Limitations: allows up to 2x the intended limit over short time windows (a client can exhaust the bucket and then immediately consume newly generated tokens), which may be unacceptable for billing or quota enforcement. Best for: API rate limiting, DDoS protection, traffic shaping where burst tolerance is acceptable.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Sliding Window:</strong> Counts requests over a precise sliding time window. Advantages: highly accurate (no boundary effects, no burst amplification), suitable for billing and quota enforcement, and provides exact rate limiting (clients cannot exceed the limit over any time window). Limitations: memory-intensive (one entry per request), computationally expensive (counting entries within the window for every request), and requires distributed state (shared storage across service nodes). Best for: billing systems, usage quotas, compliance-driven limits where accuracy is non-negotiable.
         </p>
@@ -192,16 +205,19 @@ export default function RateLimitingServiceArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Use Redis for Distributed Counter Storage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Redis is the standard choice for distributed rate limit counter storage because it provides atomic operations (INCR, ZADD, ZREMRANGEBYSCORE), sub-millisecond latency, and high availability (Redis Sentinel, Redis Cluster). Implement rate limit checks as atomic Redis Lua scripts that perform the read-increment-check operation in a single atomic step, preventing race conditions between concurrent requests. Use Redis Cluster for horizontal scaling — partition counters by client ID hash across multiple Redis nodes to distribute the load. For high-traffic systems (millions of checks per second), consider using Redis with pipelining to batch multiple counter checks into a single network round-trip, reducing the per-request latency overhead.
-        </p>
+        </HighlightBlock>
 
         <h3>Implement Hierarchical Limits for Multi-Tenant Systems</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Multi-tenant systems require hierarchical rate limits to ensure fair resource allocation and prevent noisy neighbor problems. Enforce limits at multiple tiers: global (protects the entire system), per-tenant (prevents one tenant from consuming all resources), per-user (prevents individual users from exceeding their tier&apos;s allocation), and per-endpoint (protects expensive endpoints from overuse). Each tier is checked sequentially, and the request is rejected if any tier&apos;s limit is exceeded. Configure limits based on the tenant&apos;s pricing tier (higher tiers get higher limits) and monitor limit utilization per tenant to identify tenants that consistently hit their limits (candidates for tier upgrades) and tenants that never use their full allocation (candidates for tier downgrades).
-        </p>
+        </HighlightBlock>
 
         <h3>Return Rate Limit Headers in Every Response</h3>
         <p>
@@ -227,16 +243,19 @@ export default function RateLimitingServiceArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Using Fixed Window Counters Without Boundary Protection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Fixed window counters divide time into fixed slots (e.g., 1-minute windows) and count requests per slot. The problem is that a client can send 2x the intended limit by timing requests at the boundary between two windows — sending the maximum number of requests at the end of window N and the maximum number of requests at the beginning of window N+1, effectively sending 2x the limit within a 1-minute period. The mitigation is to use a sliding window algorithm (which counts requests over a true sliding window, not fixed boundaries) or to use a token bucket (which naturally limits the sustained rate regardless of timing). If fixed window counters must be used, implement overlapping windows (checking both the current and previous window) to reduce the boundary effect.
-        </p>
+        </HighlightBlock>
 
         <h3>Not Handling Retry Storms</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When clients receive 429 responses, they typically retry after a delay. If the delay is too short (or if clients retry immediately), the retry traffic adds to the already-excessive request rate, making the overload worse. This is the retry storm problem — rate limiting triggers retries, retries increase the load, and the increased load triggers more rate limiting. The mitigation is to include a Retry-After header in 429 responses that instructs clients to wait a sufficient amount of time before retrying (typically several seconds to minutes, depending on the window size). Additionally, implement exponential backoff on the client side (increasing the retry delay with each successive 429 response) to prevent retry storms from escalating.
-        </p>
+        </HighlightBlock>
 
         <h3>Failing Closed Without Graceful Degradation</h3>
         <p>
@@ -262,16 +281,19 @@ export default function RateLimitingServiceArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>API Platform Tier-Based Rate Limiting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           API platforms (Stripe, Twilio, GitHub, Shopify) use rate limiting to enforce pricing tiers — free tier users have lower limits (100 requests per minute), paid tier users have higher limits (10,000 requests per minute), and enterprise tier users have the highest limits (100,000 requests per minute). The rate limiting service enforces these limits based on the API key associated with each request, returning 429 responses when limits are exceeded. Rate limit headers inform clients of their remaining quota, and the platform&apos;s dashboard displays real-time usage and limit utilization. Companies like Stripe process billions of API requests per month and rely on rate limiting to ensure fair resource allocation across their 100,000+ developer users.
-        </p>
+        </HighlightBlock>
 
         <h3>Authentication Endpoint Protection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Authentication endpoints (login, password reset, email verification) are high-value targets for abuse — brute force attacks attempt thousands of password guesses per second, and credential stuffing attacks try leaked username/password pairs from data breaches. Rate limiting services protect these endpoints with strict per-user and per-IP limits — for example, 5 login attempts per user per minute, 20 login attempts per IP per minute, and 3 password reset requests per user per hour. These limits are significantly lower than general API limits because the cost of a successful attack (account compromise) is much higher than the cost of rejecting legitimate traffic (a user who forgot their password and needs a few extra attempts). The rate limiting service tracks failed attempts separately from successful ones, resetting the counter after a successful login.
-        </p>
+        </HighlightBlock>
 
         <h3>Multi-Tenant SaaS Resource Isolation</h3>
         <p>
@@ -287,15 +309,18 @@ export default function RateLimitingServiceArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between token bucket and sliding window rate limiting, and when would you use each?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Token bucket allows controlled bursting — a client can send up to the bucket capacity in a single burst, then is throttled to the sustained fill rate. It uses only two values per client (token count, last refill time), making it memory-efficient. Sliding window counts requests over a precise sliding time window, providing exact rate limiting without burst amplification, but requires storing one entry per request, making it memory-intensive. Use token bucket for API rate limiting where burst tolerance is acceptable (real-world traffic is bursty). Use sliding window for billing, quota enforcement, and compliance-driven limits where accuracy is non-negotiable and clients cannot exceed the limit over any time window.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

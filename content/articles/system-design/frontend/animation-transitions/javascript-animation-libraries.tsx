@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function JavaScriptAnimationLibrariesArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>JavaScript animation libraries</strong> provide imperative or
           declarative APIs for orchestrating complex motion sequences that
           exceed the capabilities of CSS transitions and keyframe animations.
@@ -48,8 +52,8 @@ export default function JavaScriptAnimationLibrariesArticle() {
           lifecycle and state. Libraries bridge this gap by scheduling frame
           updates through <code>requestAnimationFrame</code>, computing
           interpolated values, and applying them to DOM elements or React state.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The JavaScript animation ecosystem has consolidated around a handful
           of dominant libraries, each occupying a distinct niche. GSAP
           (GreenSock Animation Platform) is the gold standard for imperative
@@ -63,7 +67,7 @@ export default function JavaScriptAnimationLibrariesArticle() {
           introduced physics-based interpolation where animations are governed
           by spring dynamics (mass, tension, friction) rather than fixed
           durations, producing motion that feels natural and interruptible.
-        </p>
+        </HighlightBlock>
         <p>
           At the staff-engineer level, choosing an animation library is an
           architectural decision with long-term consequences. GSAP adds roughly
@@ -93,8 +97,11 @@ export default function JavaScriptAnimationLibrariesArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Imperative vs Declarative Animation:</strong> Imperative
             libraries (GSAP) give you a timeline object where you explicitly
             sequence tweens, set durations, and add callbacks. Declarative
@@ -102,8 +109,8 @@ export default function JavaScriptAnimationLibrariesArticle() {
             and the library handles the interpolation. Imperative offers more
             control for complex sequences; declarative integrates better with
             component-based architectures.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Spring Physics:</strong> Instead of specifying a duration
             and easing curve, spring-based animations define physical
             properties: stiffness (how taut the spring is), damping (how
@@ -113,7 +120,7 @@ export default function JavaScriptAnimationLibrariesArticle() {
             distance to the target. Springs are inherently interruptible —
             changing the target mid-animation redirects the spring from its
             current position and velocity.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Timeline Orchestration:</strong> Complex animations involve
             multiple elements animating in coordinated sequences —
@@ -190,12 +197,15 @@ export default function JavaScriptAnimationLibrariesArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/javascript-animation-libraries-diagram-1.svg"
           alt="Comparison of animation library architectures showing GSAP timeline, Framer Motion declarative, and Web Animations API approaches"
           caption="Figure 1: Animation library architecture comparison — imperative timelines vs declarative components vs native API"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The three dominant animation paradigms differ fundamentally in how
           they interface with the browser. GSAP operates outside the rendering
           framework: it directly manipulates element styles via{" "}
@@ -209,14 +219,14 @@ export default function JavaScriptAnimationLibrariesArticle() {
           animations on the compositor thread with minimal JavaScript overhead
           — conceptually similar to CSS animations but with a JavaScript
           control surface.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/javascript-animation-libraries-diagram-2.svg"
           alt="Spring physics animation model showing mass, stiffness, damping parameters and interruptibility"
           caption="Figure 2: Spring physics model — animation driven by physical properties with natural interruptibility"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           Spring physics fundamentally changes the animation mental model. In
           a duration-based animation, you specify how long the animation should
           take and the easing curve that controls acceleration. In a
@@ -229,7 +239,7 @@ export default function JavaScriptAnimationLibrariesArticle() {
           the spring redirects from its current position and velocity without
           any discontinuity. This makes springs ideal for gesture-driven
           interfaces where the user&apos;s intent changes continuously.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/javascript-animation-libraries-diagram-3.svg"
@@ -256,6 +266,9 @@ export default function JavaScriptAnimationLibrariesArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr>
@@ -274,7 +287,7 @@ export default function JavaScriptAnimationLibrariesArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2 font-medium">API Style</td>
               <td className="border border-theme p-2">
                 Imperative timeline — chain tweens, add labels, scrub
@@ -285,8 +298,8 @@ export default function JavaScriptAnimationLibrariesArticle() {
               <td className="border border-theme p-2">
                 Imperative function calls — animate(el, keyframes, options)
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2 font-medium">
                 Bundle Size
               </td>
@@ -299,7 +312,7 @@ export default function JavaScriptAnimationLibrariesArticle() {
               <td className="border border-theme p-2">
                 ~4 KB — delegates to native Web Animations API
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="border border-theme p-2 font-medium">
                 Framework Coupling
@@ -363,22 +376,25 @@ export default function JavaScriptAnimationLibrariesArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Match the library to the project&apos;s needs:</strong> For
             React applications with component-level animations, Framer Motion
             provides the best developer experience. For marketing pages with
             complex scroll-driven timelines, GSAP with ScrollTrigger is
             unmatched. For simple animations where bundle size matters most,
             Motion One or raw Web Animations API keeps the footprint minimal.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use springs for interactive animations:</strong> Any
             animation that responds to user input (drag, hover, scroll) should
             use spring-based interpolation. Springs are interruptible by nature
             — changing the target mid-animation produces a smooth redirect,
             while duration-based animations snap or stutter when interrupted.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Clean up imperative animations on unmount:</strong> GSAP
             tweens and timelines continue running after a component unmounts,
@@ -415,22 +431,25 @@ export default function JavaScriptAnimationLibrariesArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory leaks from un-killed timelines:</strong> GSAP
             timelines run independently of React&apos;s lifecycle. If a
             component unmounts while a timeline is playing, the timeline
             continues executing and attempts to update removed DOM nodes,
             causing errors and leaking memory. Always call{" "}
             <code>timeline.kill()</code> in a cleanup function.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Overusing AnimatePresence:</strong> Wrapping every component
             in AnimatePresence adds overhead. The library must track children by
             key, maintain a map of exiting elements, and delay DOM cleanup. Use
             it only where exit animations are visually necessary — page
             transitions, modal closes, list item removals.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Fighting the framework with imperative code:</strong> Using
             GSAP inside React without understanding React&apos;s rendering model
@@ -462,23 +481,26 @@ export default function JavaScriptAnimationLibrariesArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Airbnb:</strong> Uses Framer Motion throughout their React
             application for listing card hover effects, photo gallery
             transitions, search results reordering, and the booking flow. Their
             layout animations use the <code>layout</code> prop to smoothly
             rearrange search results when filters change, avoiding the jarring
             snap that CSS alone would produce.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Apple Product Pages:</strong> Uses GSAP with ScrollTrigger
             to create their signature scroll-driven product reveal animations.
             The iPhone, MacBook, and Vision Pro pages feature pin-scrub
             timelines where scrolling controls the progress of complex
             multi-element sequences — device rotation, text fade-in, background
             color shifts — all synchronized to the scroll position.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Linear:</strong> Uses Framer Motion for their project
             management interface animations — issue card drag-and-drop, board
@@ -499,13 +521,16 @@ export default function JavaScriptAnimationLibrariesArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-medium">
+            <HighlightBlock as="p" tier="important" className="font-medium">
               When would you choose GSAP over Framer Motion in a React project?
-            </p>
-            <p className="mt-2">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2">
               Choose GSAP when the project requires complex timeline
               orchestration — sequential animations with labels, scrubbing
               timelines to specific points, scroll-driven sequences with
@@ -518,7 +543,7 @@ export default function JavaScriptAnimationLibrariesArticle() {
               and unmount transitions, hover and tap feedback, layout
               rearrangement, and drag gestures — where tight integration with
               React&apos;s lifecycle provides a better developer experience.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Model Context Protocol (MCP)</strong> is an open,
           standardized protocol that defines how Large Language Models and
           AI agents discover, connect to, and interact with external data
@@ -35,8 +39,8 @@ export default function ArticlePage() {
           integration layer, its own tool descriptions, its own authentication
           flow, and its own error handling — duplicating effort across
           thousands of projects.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           MCP standardizes this integration by defining a universal interface
           between AI applications (the hosts, like Claude Desktop or IDE
           plugins) and data/tool providers (the servers, like database
@@ -49,7 +53,7 @@ export default function ArticlePage() {
           between computers and peripherals — before USB, every device needed
           its own port and driver; after USB, any device works with any
           computer through a single standard.
-        </p>
+        </HighlightBlock>
         <p>
           For software engineers, MCP is significant because it shifts the
           integration burden from the AI application developer to the tool
@@ -91,7 +95,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           MCP architecture consists of three primary components:{" "}
           <strong>MCP hosts</strong> (the applications that want to use AI — IDEs,
           chat applications, agent frameworks), <strong>MCP servers</strong> (the
@@ -101,8 +108,8 @@ export default function ArticlePage() {
           server communicate via JSON-RPC over stdio or HTTP/SSE, with the
           protocol defining the message formats for discovery, capability
           negotiation, tool execution, and resource access.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Resources</strong> in MCP are data sources that the model can
           read but not modify. A resource has a URI-like identifier, a name, a
           description, and a MIME type. Examples include: a file on disk
@@ -112,7 +119,7 @@ export default function ArticlePage() {
           the content in a standardized format. Resources enable the model to
           access external data without the host application needing to know
           what data sources exist or how to query them.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Tools</strong> in MCP are actions that the model can execute.
           A tool has a name, a description, a JSON Schema for its input
@@ -253,7 +260,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The MCP connection and interaction flow follows a well-defined
           sequence. When an MCP host starts, it reads its configuration to
           determine which MCP servers to connect to. For each server, it
@@ -263,8 +273,8 @@ export default function ArticlePage() {
           server&apos;s capabilities in response. The host then sends an{" "}
           <strong>initialized</strong> notification to acknowledge the
           connection is ready.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Once connected, the host can request the server&apos;s{" "}
           <strong>resources/list</strong> to discover available data sources,{" "}
           <strong>tools/list</strong> to discover available actions, and{" "}
@@ -274,7 +284,7 @@ export default function ArticlePage() {
           use a tool, the host routes the tool call request to the appropriate
           MCP server, which executes it and returns the result. The host then
           feeds the result back to the LLM as an observation.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/mcp-resource-discovery.svg"
@@ -364,7 +374,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           MCP versus <strong>custom tool integration</strong> is the primary
           architectural decision. Custom integration gives you full control
           over every aspect of the tool interface — how tools are described to
@@ -376,8 +389,8 @@ export default function ArticlePage() {
           any number of MCP servers. The trade-off is that MCP is less flexible
           — you must work within the protocol&apos;s constraints, and the
           protocol may not support every integration pattern you need.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           MCP versus <strong>OpenAPI/Swagger-based tool discovery</strong>{" "}
           presents another comparison. OpenAPI describes REST APIs in a
           machine-readable format, and several projects (LangChain&apos;s
@@ -389,7 +402,7 @@ export default function ArticlePage() {
           sources. MCP is more general — it can expose any data source or
           action, not just HTTP APIs — but requires building a dedicated MCP
           server for each integration.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>local versus remote</strong> server decision affects
           both architecture and security. Local MCP servers (running as
@@ -463,7 +476,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           When building MCP servers, invest heavily in{" "}
           <strong>tool descriptions and parameter schemas</strong>. These are
           the LLM&apos;s only understanding of what the tool does, and their
@@ -474,8 +490,8 @@ export default function ArticlePage() {
           tool descriptions by having an LLM use the tool without any
           additional context — if the LLM can&apos;t figure it out from the
           description alone, the description is insufficient.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement <strong>resource templating</strong> for resources that
           follow a pattern. Instead of listing every file in a directory as a
           separate resource, define a URI template (file:///path-templated) that
@@ -483,7 +499,7 @@ export default function ArticlePage() {
           requested. This keeps the resource list manageable even for large
           data sources and enables the model to construct resource URIs
           programmatically.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Version your MCP server</strong> and include the version in
           the initialize response. As your MCP server evolves (new tools,
@@ -582,7 +598,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is{" "}
           <strong>exposing too many tools or resources</strong> in a single MCP
           server. When an MCP server advertises 50+ tools, the LLM struggles
@@ -593,8 +612,8 @@ export default function ArticlePage() {
           a &quot;database-read&quot; server and a
           &quot;database-write&quot; server, or a &quot;search&quot; server
           and an &quot;action&quot; server).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Inadequate error reporting</strong> from MCP servers causes
           cascading failures. When a tool execution fails, returning a generic
           &quot;error&quot; message gives the LLM no information to diagnose
@@ -604,7 +623,7 @@ export default function ArticlePage() {
           the LLM to self-correct. This is particularly important for
           parameter validation errors, where the LLM may have misunderstood
           the schema.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assuming the host understands your resource structure</strong>{" "}
           is a subtle but common issue. MCP servers that expose hierarchical
@@ -673,7 +692,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Developer tool integrations</strong> — MCP servers for
           Git, file systems, terminal execution, and language servers enable
           AI coding assistants to interact with the developer&apos;s
@@ -681,8 +703,8 @@ export default function ArticlePage() {
           MCP to connect to local tools, and IDE plugins can add their own MCP
           servers to expose project-specific capabilities (running tests,
           checking build status, deploying to staging).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Enterprise data access</strong> — MCP servers for internal
           databases, knowledge bases, CRM systems, and monitoring tools give
           AI assistants secure, controlled access to organizational data. The
@@ -691,7 +713,7 @@ export default function ArticlePage() {
           (no destructive queries). This pattern is used by companies building
           internal AI assistants that need to answer questions about company
           data.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Cloud infrastructure management</strong> — MCP servers for
           AWS, GCP, and Azure enable AI agents to query cloud resource status,
@@ -750,13 +772,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: What problem does MCP solve and why is it important for the AI
             ecosystem?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             MCP solves the &quot;integration tax&quot; problem: every AI
             application that needs external tools or data currently builds its
             own integration layer from scratch. If there are N AI applications
@@ -765,8 +790,8 @@ export default function ArticlePage() {
             authentication, error handling, and data formatting. This is
             unsustainable as the number of AI applications and data sources
             grows.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             MCP reduces this to N+M by defining a universal protocol. Each
             data source/tool provider builds one MCP server (M servers), and
             each AI application connects to any number of MCP servers through
@@ -774,7 +799,7 @@ export default function ArticlePage() {
             that made USB, HTTP, and SQL successful — standardization enables
             an ecosystem where tool providers and application developers can
             innovate independently.
-          </p>
+          </HighlightBlock>
           <p>
             For the AI ecosystem, MCP is important because it enables small
             teams to build powerful AI applications without massive

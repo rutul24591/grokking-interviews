@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,13 +35,16 @@ export default function SSOIntegrationsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Single Sign-On (SSO) Integrations</strong> enable users to authenticate once with
           an Identity Provider (IdP) and access multiple applications without re-authenticating. For
           enterprise customers, SSO is often a mandatory requirement — it enables centralized
           identity management, improves security (centralized MFA enforcement), and reduces IT
           overhead (no password resets for your application).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/sso-flow.svg"
@@ -48,7 +52,7 @@ export default function SSOIntegrationsArticle() {
           caption="SSO Flow — showing SAML and OIDC flows with IdP integration"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing SSO requires deep understanding of SAML
           2.0 (XML-based assertions, enterprise standard), OpenID Connect (OIDC — JSON-based,
           modern standard), identity provider integration (Okta, Azure AD, OneLogin, Ping
@@ -56,7 +60,7 @@ export default function SSOIntegrationsArticle() {
           directory synchronization (SCIM protocol for automated user provisioning), and deployment
           patterns (multi-IdP support, domain-based routing). The implementation must support
           multiple IdPs while maintaining security and providing seamless user experience.
-        </p>
+        </HighlightBlock>
         <p>
           Modern SSO has evolved from simple SAML integrations to sophisticated multi-protocol
           systems supporting SAML, OIDC, and social login simultaneously. Organizations like Okta,
@@ -69,12 +73,15 @@ export default function SSOIntegrationsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SSO is built on fundamental concepts that determine how authentication flows work and how
           identity is federated between systems. Understanding these concepts is essential for
           designing effective SSO integrations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>SAML 2.0:</strong> Security Assertion Markup Language is an XML-based standard
           for exchanging authentication and authorization data between IdP and Service Provider
           (SP). SAML uses XML assertions containing user attributes (email, name, groups). Flow:
@@ -82,7 +89,7 @@ export default function SSOIntegrationsArticle() {
           assertion, SP validates signature and creates session. SAML is enterprise standard,
           supported by all major IdPs (Okta, Azure AD, OneLogin). Complexity: high (XML parsing,
           complex configuration).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>OpenID Connect (OIDC):</strong> Modern identity layer on top of OAuth 2.0. Uses
           JSON Web Tokens (JWT) instead of XML. Simpler than SAML, preferred for new
@@ -108,11 +115,14 @@ export default function SSOIntegrationsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SSO architecture separates identity management (IdP) from application access (SP),
           enabling centralized authentication with distributed application access. This architecture
           is critical for enterprise deployments where users access multiple applications.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/saml-flow.svg"
@@ -120,7 +130,7 @@ export default function SSOIntegrationsArticle() {
           caption="SAML 2.0 Flow — showing SP-initiated SSO with SAML assertion exchange between IdP and SP"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           SAML flow (SP-initiated): User navigates to application (SP). SP checks for existing
           session — if none, generates SAML AuthnRequest, redirects user to IdP SSO URL. User
           authenticates at IdP (if not already authenticated). IdP generates SAML assertion
@@ -128,7 +138,7 @@ export default function SSOIntegrationsArticle() {
           to SP Assertion Consumer Service (ACS) URL. SP validates assertion signature (using IdP
           public key), checks assertion conditions (expiry, audience), extracts user attributes,
           creates local session, redirects user to original destination.
-        </p>
+        </HighlightBlock>
         <p>
           OIDC flow: Similar to SAML but uses JSON instead of XML. SP redirects to IdP
           authorization endpoint. User authenticates at IdP. IdP returns authorization code. SP
@@ -155,25 +165,28 @@ export default function SSOIntegrationsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing SSO integrations involves trade-offs between protocol complexity, enterprise
           requirements, and implementation effort. Understanding these trade-offs is essential for
           making informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">SAML vs OIDC</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>SAML:</strong> Enterprise standard, widely deployed, XML-based assertions,
               supports complex attribute mapping. Limitation: high complexity (XML parsing, complex
               configuration), larger payloads, older technology.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>OIDC:</strong> Modern standard, JSON-based (JWT), simpler implementation,
               preferred for new integrations. Limitation: less mature than SAML, some legacy IdPs
               don't support.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Support both. OIDC for new integrations (simpler),
               SAML for enterprise customers (required). Many IdPs support both. Start with OIDC,
@@ -225,20 +238,23 @@ export default function SSOIntegrationsArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing SSO requires following established best practices to ensure security,
           usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Validate all SAML signatures and OIDC tokens — never accept unsigned assertions/tokens.
           Implement proper certificate rotation — support multiple certificates during overlap
           period, monitor expiry, alert before expiry. Use secure assertion consumer endpoints —
           HTTPS only, validate audience condition. Implement replay attack prevention — track used
           assertion IDs, implement time windows. Enforce HTTPS for all SSO endpoints — no HTTP
           allowed.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
         <p>
@@ -270,21 +286,24 @@ export default function SSOIntegrationsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing SSO to ensure secure, usable, and
           maintainable integrations.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No signature validation:</strong> Accepting unsigned assertions/tokens,
             security vulnerability. <strong>Fix:</strong> Always validate SAML signatures and OIDC
             tokens. Reject unsigned assertions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Certificate mismanagement:</strong> Expired certificates cause outages, no
             rotation process. <strong>Fix:</strong> Implement certificate rotation, support
             multiple certificates during overlap, monitor expiry, alert 30 days before.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No replay prevention:</strong> Same assertion can be reused, replay attacks.{" "}
             <strong>Fix:</strong> Track used assertion IDs (store in cache with TTL), implement
@@ -330,17 +349,20 @@ export default function SSOIntegrationsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SSO is critical for enterprise deployments. Here are real-world implementations from
           production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS (Salesforce)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Enterprise customers require SSO for compliance. Multiple IdPs
           (Okta, Azure AD, OneLogin). JIT provisioning for user onboarding. Group-to-role mapping
           for automatic role assignment.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Support SAML + OIDC. Domain-based IdP routing. JIT
           provisioning with attribute mapping. Group-to-role mapping (IdP groups → Salesforce
@@ -438,14 +460,17 @@ export default function SSOIntegrationsArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of SSO design, implementation, and operational
           concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: SAML vs OIDC — which to support?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: SAML vs OIDC — which to support?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Support both. SAML for legacy enterprise customers (still widely deployed,
               required by many enterprises), OIDC for modern deployments (simpler, preferred for

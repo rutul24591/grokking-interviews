@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ChaosTestingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Chaos Testing</strong>, also known as Chaos Engineering, is the disciplined practice
           of intentionally injecting failures into systems to validate resilience, discover hidden
           weaknesses, and build confidence in the system&apos;s ability to withstand real-world
@@ -32,8 +36,8 @@ export default function ChaosTestingArticle() {
           incidents, chaos testing proactively breaks systems in controlled, measurable ways to
           learn about failure modes and improve architectural resilience before they cause outages
           that affect users.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Netflix pioneered chaos engineering with Chaos Monkey in 2010, randomly terminating
           production instances to ensure their architecture could handle instance failures gracefully.
           This practice has since evolved from a novel approach into a mature engineering discipline
@@ -41,7 +45,7 @@ export default function ChaosTestingArticle() {
           technology companies worldwide. The discipline has expanded beyond simple instance
           termination to encompass network failures, dependency failures, stateful failures, and
           even security-focused chaos testing.
-        </p>
+        </HighlightBlock>
         <p>
           The core principles of chaos engineering follow a scientific method. First, define the
           steady state by identifying measurable metrics that represent system health, including
@@ -69,7 +73,10 @@ export default function ChaosTestingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Failure injection patterns span several categories of system behavior, each testing
           different aspects of resilience. Compute failures test how the system handles instance
           and pod failures. Instance termination validates auto-scaling and load balancing
@@ -79,8 +86,8 @@ export default function ChaosTestingArticle() {
           and auto-scaling triggers. Memory pressure testing consumes memory to test out-of-memory
           handling and pod eviction policies. Disk full testing fills disk space to validate disk
           monitoring and graceful degradation when storage is exhausted.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Network failures test the system&apos;s ability to handle communication breakdowns between
           services. Latency injection adds artificial delay to network calls to test timeout
           configurations and user experience degradation under slow conditions. Packet loss
@@ -90,7 +97,7 @@ export default function ChaosTestingArticle() {
           strategies. Network blackhole testing drops all traffic to a specific service to validate
           circuit breaker behavior and graceful degradation when dependencies are completely
           unreachable.
-        </p>
+        </HighlightBlock>
         <p>
           Dependency failures test how the system responds when internal or external services
           become unavailable. Database failure testing kills database connections to validate
@@ -121,7 +128,10 @@ export default function ChaosTestingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Each chaos experiment follows a structured lifecycle that ensures scientific rigor
           and controlled risk. The experiment begins by defining a clear hypothesis such as
           &quot;if service X fails, requests will route to service Y with less than 100
@@ -133,8 +143,8 @@ export default function ChaosTestingArticle() {
           or users and increasing gradually as confidence grows. Abort conditions are defined
           to specify when the experiment must be stopped immediately, such as when error rate
           exceeds a critical threshold.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Blast radius control is essential for running chaos experiments safely in production
           environments. Percentage-based control affects a defined percentage of traffic,
           starting with 1% and increasing gradually as confidence in system resilience grows.
@@ -144,7 +154,7 @@ export default function ChaosTestingArticle() {
           Service scope targeting focuses on non-critical services first before progressing
           to core infrastructure. Time-boxing ensures experiments auto-stop after a defined
           duration, preventing runaway experiments from causing extended damage.
-        </p>
+        </HighlightBlock>
         <p>
           Steady state definition establishes the baseline of normal system behavior against
           which experiment results are compared. Latency steady state might define P50 under
@@ -166,7 +176,10 @@ export default function ChaosTestingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The tooling landscape for chaos engineering spans infrastructure-level tools,
           network-level tools, application-level tools, and custom injection mechanisms, each
           with distinct trade-offs. Infrastructure-level tools like Chaos Monkey, Chaos Mesh,
@@ -175,8 +188,8 @@ export default function ChaosTestingArticle() {
           are powerful for testing infrastructure resilience but require deep integration with
           the deployment platform and may not be suitable for multi-cloud environments where
           tool compatibility varies across providers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Network-level tools like Toxiproxy, Linux Traffic Control, and Pumba operate at the
           network layer, injecting latency, packet loss, and connection resets between services.
           These tools are highly effective for testing application-level resilience patterns
@@ -184,7 +197,7 @@ export default function ChaosTestingArticle() {
           real-world failure mode: degraded network communication. However, they require
           network-level access and configuration, which may not be available in all deployment
           environments, particularly managed platforms where network control is restricted.
-        </p>
+        </HighlightBlock>
         <p>
           Application-level tools like the Chaos Toolkit, Gremlin, and custom middleware
           operate within the application layer, injecting failures through HTTP middleware,
@@ -221,7 +234,10 @@ export default function ChaosTestingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Structured chaos testing events known as game days provide a controlled environment
           for teams to practice failure response and discover resilience gaps. Game day
           preparation involves defining specific failure scenarios, assigning roles to team
@@ -233,8 +249,8 @@ export default function ChaosTestingArticle() {
           improvements, and creates action items. Remediation generates tickets for discovered
           issues and tracks them to completion. Game days should occur monthly or quarterly
           to maintain muscle memory and keep resilience skills sharp across the team.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designating chaos engineering champions within teams promotes chaos testing adoption
           and provides expertise for experiment design. Champions receive advanced training
           in chaos engineering practices and serve as the first point of contact for teams
@@ -242,7 +258,7 @@ export default function ChaosTestingArticle() {
           experiments safely, and they maintain the organization&apos;s chaos testing playbook
           with documented scenarios, expected outcomes, and lessons learned from previous
           experiments.
-        </p>
+        </HighlightBlock>
         <p>
           Using chaos testing as a production readiness gate ensures that new services meet
           resilience standards before handling production traffic. Pre-launch chaos tests
@@ -271,7 +287,10 @@ export default function ChaosTestingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most dangerous pitfall in chaos engineering is running experiments without
           properly defining abort conditions. Without clear criteria for stopping an experiment,
           a chaos test that reveals an unexpected and severe failure mode can cascade into
@@ -279,15 +298,15 @@ export default function ChaosTestingArticle() {
           based on error rate thresholds, latency degradation limits, or business metric
           impacts, and the abort mechanism must be tested and immediately accessible before
           the experiment begins.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Running chaos experiments without establishing a steady state baseline renders
           the results meaningless. Without knowing what normal system behavior looks like,
           it is impossible to determine whether the system behaved correctly during the
           failure injection. Teams must define and measure steady state metrics before
           running any chaos experiment, and these metrics must be monitored in real-time
           during the experiment to detect deviations.
-        </p>
+        </HighlightBlock>
         <p>
           Treating chaos engineering as a one-time exercise rather than a continuous practice
           leads to resilience decay over time. Systems evolve continuously through code changes,
@@ -308,7 +327,10 @@ export default function ChaosTestingArticle() {
 
       <section>
         <h2>Real-world use cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms use chaos testing to validate resilience during peak shopping
           periods when system failures have direct revenue impact. A major online retailer
           runs chaos experiments targeting their checkout flow, testing payment service
@@ -317,8 +339,8 @@ export default function ChaosTestingArticle() {
           revealed that payment retry logic created a thundering herd problem that overwhelmed
           the payment service during failure recovery, a finding that led to implementing
           exponential backoff with jitter and circuit breaker patterns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Financial services companies use chaos testing to validate the resilience of
           transaction processing systems where data consistency is paramount. A payment
           processor tests database failover scenarios to measure transaction handling during
@@ -328,7 +350,7 @@ export default function ChaosTestingArticle() {
           discovered that their application-level retry logic during database failover
           created connection pool exhaustion, leading to a complete redesign of their
           database client configuration.
-        </p>
+        </HighlightBlock>
         <p>
           Streaming media companies use chaos testing to validate content delivery resilience.
           A video streaming platform tests CDN failover by simulating CDN provider outages,
@@ -353,10 +375,13 @@ export default function ChaosTestingArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is chaos engineering and why is it important?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What is chaos engineering and why is it important?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Chaos engineering is the disciplined practice of intentionally injecting failures
               into systems to validate resilience and discover weaknesses before they cause
               production outages. It is important for several reasons. Failures will inevitably
@@ -367,7 +392,7 @@ export default function ChaosTestingArticle() {
               systems by verifying that failures are detected and the right people are notified.
               It validates runbooks and incident response procedures by exercising them in controlled
               conditions rather than during actual emergencies.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

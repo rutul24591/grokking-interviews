@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -40,7 +41,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>quorum</strong> in a distributed system is the minimum
           number of nodes that must participate in a read or write operation for
           the operation to be considered successful. In a system with N
@@ -51,8 +55,8 @@ export default function ArticlePage() {
           N</code> — guarantees that every read quorum intersects with every
           write quorum in at least one node, ensuring that a read operation will
           always encounter at least one node that has the latest written value.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Quorum-based consistency was formalized by Herlihy and Wing in the
           context of quorum consensus protocols, but its most famous
           application is in Amazon&apos;s Dynamo system (2007), which introduced{" "}
@@ -66,7 +70,7 @@ export default function ArticlePage() {
           This tunability allows the same system to serve both latency-sensitive
           operations (where eventual consistency is acceptable) and
           correctness-critical operations (where strong consistency is required).
-        </p>
+        </HighlightBlock>
         <p>
           The quorum mechanism is distinct from consensus-based replication
           (Raft, Paxos). Consensus protocols require a majority agreement for{" "}
@@ -93,8 +97,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>quorum intersection proof</strong> is the mathematical
           foundation that guarantees strong consistency when <code>R + W &gt;
           N</code>. Consider a system with N = 5 nodes, W = 3 (writes must be
@@ -108,9 +115,9 @@ export default function ArticlePage() {
           returns the latest value among all nodes in the read quorum (in case
           some nodes have stale values), ensuring that the client sees the most
           recent write.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           When <code>R + W ≤ N</code>, the intersection is not guaranteed — a
           read quorum and a write quorum may be disjoint sets of nodes. In this
           case, the read may return a stale value (one that does not include the
@@ -121,7 +128,7 @@ export default function ArticlePage() {
           choose lower latency (R = 1, W = 1) for operations that can tolerate
           eventual consistency, while using stronger consistency (R + W &gt; N)
           for operations that require it.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Sloppy quorum</strong> is a Dynamo-specific extension that
@@ -177,6 +184,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/quorum-diagram-1.svg"
@@ -184,7 +194,7 @@ export default function ArticlePage() {
           caption="Quorum intersection — R + W &gt; N guarantees that every read quorum overlaps with every write quorum, ensuring the read sees the latest value"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The write flow in a quorum-based system begins with the client sending
           a write request to the N preferred nodes (determined by consistent
           hashing or directory-based routing). Each preferred node that receives
@@ -198,9 +208,9 @@ export default function ArticlePage() {
           taken for the W-th fastest node to respond — not the slowest of all N
           nodes, which is a significant latency advantage over requiring all N
           nodes to acknowledge.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The read flow is symmetric: the client sends a read request to the N
           preferred nodes, waits for R responses, and returns the latest value
           among the responses. If the R responses have different values (due to
@@ -212,7 +222,7 @@ export default function ArticlePage() {
           latency advantage is one of the key benefits of quorum-based
           consistency: the client can choose R and W to achieve the desired
           balance between latency and consistency.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/quorum-diagram-2.svg"
@@ -249,8 +259,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Quorum-based consistency must be compared against the alternatives:
           leader-based replication (strong consistency with a single writer) and
           leaderless replication with no quorum (eventual consistency with no
@@ -264,19 +277,19 @@ export default function ArticlePage() {
           guarantee) provides the lowest latency but the weakest consistency —
           reads may return arbitrarily stale data, and there is no guarantee
           that the system will converge without anti-entropy.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Property</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Property</th>
               <th className="p-3 text-left">ONE (R=1, W=1)</th>
               <th className="p-3 text-left">QUORUM (R+W&gt;N)</th>
               <th className="p-3 text-left">ALL (R=N, W=N)</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Write Latency</strong>
               </td>
@@ -289,8 +302,8 @@ export default function ArticlePage() {
               <td className="p-3">
                 Slowest of N nodes (~50 ms)
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Read Latency</strong>
               </td>
@@ -303,7 +316,7 @@ export default function ArticlePage() {
               <td className="p-3">
                 Slowest of N nodes (~50 ms)
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Consistency</strong>
@@ -347,8 +360,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choose R and W based on the operation&apos;s consistency requirement,
           not system-wide. Not all operations require strong consistency — a
           product catalog read can tolerate eventual consistency (R = 1, W = 1)
@@ -359,9 +375,9 @@ export default function ArticlePage() {
           consistency is one of quorum&apos;s most powerful features — it allows
           the system to provide strong consistency where needed and eventual
           consistency where possible, optimizing both latency and correctness.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Monitor read repair and anti-entropy as first-class operational
           metrics. Track the rate of read repairs per second (indicating how
           often reads encounter stale replicas), the average number of stale
@@ -374,7 +390,7 @@ export default function ArticlePage() {
           A long anti-entropy completion time indicates that the system is
           accumulating inconsistencies faster than it can resolve them, which
           may lead to data divergence if not addressed.
-        </p>
+        </HighlightBlock>
 
         <p>
           Configure the hinted handoff retention period based on the expected
@@ -410,8 +426,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Assuming that R + W &gt; N guarantees strong consistency under sloppy
           quorum is a critical misconception. The quorum intersection proof
           assumes that writes go to the N preferred nodes and reads read from
@@ -424,9 +443,9 @@ export default function ArticlePage() {
           CAP sense. If the application requires strong consistency, it must use
           strict quorum (writes and reads go only to preferred nodes) and accept
           that writes may fail when fewer than W preferred nodes are available.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Not handling version conflicts during read repair can cause data loss.
           When a read encounters two different values with the same version
           number (concurrent writes), a naive read repair might arbitrarily pick
@@ -441,7 +460,7 @@ export default function ArticlePage() {
           This is the approach used by Riak, which returns siblings with their
           vector clocks and allows the client to resolve and write back the
           resolved value.
-        </p>
+        </HighlightBlock>
 
         <p>
           Ignoring the storage overhead of hinted handoff can cause disk space
@@ -474,8 +493,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-world Use Cases */}
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon DynamoDB uses quorum-based consistency with tunable consistency
           levels. For each operation, the client can choose between eventually
           consistent reads (R = 1, the fastest replica responds) and strongly
@@ -488,9 +510,9 @@ export default function ArticlePage() {
           the scenes — the client does not configure R and W directly, but
           chooses from the higher-level consistency modes (eventual vs strong)
           that map to specific R and W values.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Apache Cassandra uses quorum-based consistency with per-operation
           consistency levels. Cassandra&apos; consistency levels include ONE
           (R = 1 or W = 1), QUORUM (R = majority or W = majority), ALL (R =
@@ -504,7 +526,7 @@ export default function ArticlePage() {
           quorum-based consistency includes read repair, hinted handoff, and
           anti-entropy (via Merkle trees), providing a comprehensive
           consistency management framework.
-        </p>
+        </HighlightBlock>
 
         <p>
           Riak uses quorum-based consistency with the additional concept of{" "}
@@ -541,13 +563,16 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: Prove that R + W &gt; N guarantees that a read will always see
           the latest write. What happens if R + W = N?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The proof follows from the pigeonhole principle. Consider a system
             with N nodes. A write quorum requires W nodes to acknowledge the
             write, and a read quorum requires R nodes to respond to the read.
@@ -558,15 +583,15 @@ export default function ArticlePage() {
             the write quorum) and is being read by the read operation (it is in
             the read quorum). Therefore, the read operation will encounter at
             least one node with the latest written value.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             If R + W = N, the intersection is not guaranteed. The read quorum
             and write quorum could be disjoint sets — for example, with N = 4,
             R = 2, W = 2, the write quorum could be nodes{" "}
             {`{A, B}`} and the read
             quorum could be nodes {`{C, D}`}, with no overlap. In this case, the
             read would not encounter the latest write and may return stale data.
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             If R + W &lt; N, the intersection is even less likely — the read
             and write quorums are more likely to be disjoint, and the

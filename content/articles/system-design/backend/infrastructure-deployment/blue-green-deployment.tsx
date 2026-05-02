@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,12 +37,15 @@ export default function BlueGreenDeploymentArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Blue-green deployment</strong> is a release strategy that maintains two identical production environments (blue and green), with only one environment serving live traffic at any time. When deploying a new version, the new version is deployed to the inactive environment, tested thoroughly, and then traffic is switched from the active environment to the newly deployed environment. If issues are detected after the switch, traffic can be immediately switched back to the previous environment, providing instant rollback capability. This strategy enables zero-downtime deployments with minimal risk.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, blue-green deployment is a fundamental pattern for achieving deployment reliability and rollback capability. Unlike traditional deployments where the new version replaces the old version in-place (risking downtime if the new version fails), blue-green deployment keeps the old version running until the new version is verified healthy and traffic is switched. The switch is instantaneous (DNS change, load balancer configuration update, or CDN origin change), so users experience no downtime during the deployment.
-        </p>
+        </HighlightBlock>
         <p>
           Blue-green deployment involves several technical considerations. Infrastructure requirements (maintaining two identical production environments — doubling infrastructure cost during deployment), traffic switching mechanism (DNS, load balancer, CDN origin — determining how traffic is routed between environments), database compatibility (new version must work with the existing database schema, and the old version must continue working during the transition), and session management (user sessions must survive the environment switch — using client-side sessions or shared session stores).
         </p>
@@ -53,12 +57,15 @@ export default function BlueGreenDeploymentArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Two Identical Environments:</strong> Blue and green environments are identical production environments with the same infrastructure, same configuration, and same CDN setup. One environment is active and serving live traffic while the other remains inactive and available for deployment. Environments are switched on each deployment — if blue is active now, green becomes active after deployment, and vice versa. This alternation ensures that every deployment has a known-good fallback environment ready for instant rollback.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Traffic Switching:</strong> The mechanism for redirecting user traffic from the active environment to the newly deployed environment determines both the speed and reliability of the deployment. Common methods include DNS record updates where changing the DNS record points to the new environment with TTL considerations affecting propagation delay, load balancer configuration updates that modify the backend pool to point to the new environment providing instant switching, and CDN origin updates that change the CDN origin to the new environment. The switch should be as instantaneous as possible to minimize user impact and ensure zero-downtime deployment.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Instant Rollback:</strong> If issues are detected after the traffic switch, traffic can be immediately switched back to the previous environment. Since the previous environment is still running and unchanged, the rollback is instantaneous requiring no rebuild and no redeploy — just a traffic switch. This is the key advantage of blue-green deployment over in-place deployments, where rollback requires redeploying the previous version which can take minutes or hours depending on the application size and complexity.
         </p>
@@ -84,12 +91,15 @@ export default function BlueGreenDeploymentArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Blue-green deployment architecture consists of two identical environments (blue and green), a traffic router (DNS, load balancer, or CDN) that directs traffic to the active environment, and a deployment pipeline that deploys to the inactive environment, runs health checks, and switches traffic. The flow begins with the active environment (e.g., blue) serving live traffic. The new version is deployed to the inactive environment (green), health checks are run against the green environment, and if health checks pass, traffic is switched from blue to green. The blue environment remains available for instant rollback.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           After the traffic switch, the green environment becomes the new active environment, and the blue environment becomes the new inactive environment (available for the next deployment). The previous version on the blue environment is retained until the next deployment overwrites it, providing a safety net for rollback. Over time, the blue and green environments alternate roles on each deployment.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/blue-green-flow.svg"
@@ -122,14 +132,17 @@ export default function BlueGreenDeploymentArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Blue-green deployment involves trade-offs between deployment speed, infrastructure cost, rollback speed, and user impact. Understanding these trade-offs is essential for deciding when to use blue-green deployment versus other deployment strategies.
-        </p>
+        </HighlightBlock>
 
         <h3>Blue-Green vs. Rolling Deployment</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Blue-Green:</strong> Two full environments, instant traffic switch. Advantages: instant rollback (switch back instantly), simple deployment logic (all-or-nothing switch), zero-downtime guaranteed (traffic switch is instant). Limitations: double infrastructure cost, all users see the new version at once (no gradual exposure). Best for: applications requiring instant rollback, teams wanting simple deployment logic.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Rolling:</strong> Gradual instance replacement, one at a time or in batches. Advantages: lower infrastructure cost (only need capacity for one additional batch), gradual exposure (issues affect only a subset of users). Limitations: slower rollback (must roll back instance by instance), potential for mixed-version requests (some requests hit old instances, some hit new). Best for: large-scale applications where double infrastructure cost is prohibitive.
         </p>
@@ -154,12 +167,15 @@ export default function BlueGreenDeploymentArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Automate the Entire Process:</strong> The deployment process spanning deployment to the inactive environment, running health checks, switching traffic, and verifying post-switch health should be fully automated through the CI/CD pipeline. Manual steps introduce risk through human error and inconsistent execution while also slowing down deployments. Automation ensures consistent, reliable deployments every time and eliminates the variability that comes from different team members executing different steps in slightly different ways. A fully automated pipeline also provides an audit trail of every deployment, which is critical for compliance and incident investigation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Run Comprehensive Health Checks Before Switching:</strong> Before switching traffic, run health checks against the newly deployed environment to validate that the application is functioning correctly. Health checks should include HTTP endpoint checks to ensure the application responds to requests, functional tests to verify that key features work as expected, performance tests to confirm that response times meet acceptable thresholds, and smoke tests to validate critical user flows such as login, checkout, or data submission. Only switch traffic if all health checks pass, as switching to a broken environment would cause downtime and require immediate rollback.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Ensure Database Backward Compatibility:</strong> The new version must work with the existing database schema to prevent deployment failures during the transition. Use the expand-contract pattern where you first expand the schema to support both versions by adding new columns while keeping old columns, then deploy the new version which uses the new columns, and finally after the old version is decommissioned, contract the schema by removing old columns. This ensures that the old version continues working during the transition, preventing downtime due to database incompatibility and ensuring that rollback never fails because of schema changes.
         </p>
@@ -177,12 +193,15 @@ export default function BlueGreenDeploymentArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Database Schema Incompatibility:</strong> Deploying a new version with non-backward-compatible database schema changes causes the old version to fail during the transition period. The old version may fail when interacting with the new schema due to missing columns, changed constraints, or removed tables. This is one of the most common causes of failed rollbacks in blue-green deployments. Always use backward-compatible schema changes through the expand-contract pattern to ensure that rollback does not break due to database incompatibility. Schema changes should be additive — never remove or modify existing columns until the old version is fully decommissioned and no longer needs to read from them.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Session Invalidation:</strong> Switching environments without ensuring session compatibility causes users to be logged out en masse, creating a poor user experience and potentially triggering a flood of support tickets. If sessions are stored server-side in the active environment, switching environments invalidates all user sessions immediately. Use client-side sessions with JWT tokens or shared session stores with a Redis cluster accessible by both environments to ensure sessions survive the environment switch. The client-side approach is simplest since it requires no additional infrastructure and tokens are inherently environment-agnostic.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>DNS Propagation Delay:</strong> Using DNS updates for traffic switching without considering TTL time to live causes inconsistent user experiences during deployment. DNS records are cached by resolvers based on TTL values, so some users may be directed to the old environment during the propagation period while others reach the new environment. This creates a split-brain scenario where different users see different versions simultaneously. Use low TTL such as 60 seconds before deployment to minimize propagation delay, or preferably use load balancer or CDN updates for truly instant switching that affects all users simultaneously.
         </p>
@@ -200,16 +219,19 @@ export default function BlueGreenDeploymentArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Platform Deployment</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms (Amazon, Shopify stores) use blue-green deployment for zero-downtime releases during peak shopping periods. The new version is deployed to the green environment, tested with automated smoke tests (product page loads, checkout flow works, payment processing succeeds), and traffic is switched from blue to green. If checkout errors are detected after the switch, traffic is immediately switched back to blue (instant rollback). This ensures that shopping experience is never disrupted during deployments, maintaining revenue and user trust.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Application Deployment</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SaaS applications (Slack, Notion, Figma) use blue-green deployment for frequent releases (multiple times per day). The new version is deployed to the inactive environment, health checks verify functionality, and traffic is switched. Client-side sessions (JWT tokens) ensure that user sessions survive the environment switch. Monitoring alerts detect any post-deployment issues, triggering instant rollback if needed. This pattern enables SaaS teams to ship features rapidly while maintaining high availability.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Services Application Deployment</h3>
         <p>
@@ -225,15 +247,18 @@ export default function BlueGreenDeploymentArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How does blue-green deployment achieve zero-downtime?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Blue-green deployment maintains two identical production environments (blue and green), with one serving live traffic. The new version is deployed to the inactive environment, tested, and traffic is switched from the active to the newly deployed environment. The switch is instantaneous (DNS change, load balancer update, CDN origin update), so users experience no downtime. The previous environment remains running, enabling instant rollback if issues are detected.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

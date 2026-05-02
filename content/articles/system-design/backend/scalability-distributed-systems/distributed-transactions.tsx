@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>distributed transaction</strong> is a unit of work that
           spans multiple independent data stores or services, where the
           transaction must either commit atomically (all participants persist
@@ -48,8 +52,8 @@ export default function ArticlePage() {
           transaction engine become exponentially harder to maintain when the
           transaction boundary crosses network partitions, independent failure
           domains, and heterogeneous storage engines.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In a monolithic database, a transaction that deducts from an
           account balance and creates an order record is a single ACID
           transaction: the database engine writes both changes to its write-ahead
@@ -63,7 +67,7 @@ export default function ArticlePage() {
           these guarantees. Instead, a <em>distributed transaction protocol</em>{" "}
           must orchestrate the commit/abort decision across participants, each
           of which maintains its own independent transaction state.
-        </p>
+        </HighlightBlock>
         <p>
           The canonical protocol is <strong>Two-Phase Commit (2PC)</strong>,
           standardized in the X/Open XA specification in 1991 and implemented by
@@ -101,8 +105,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fundamental challenge of distributed transactions is captured by
           the <strong>atomic commitment problem</strong>: given N participants,
           each of which independently decides to commit or abort, how do we
@@ -117,9 +124,9 @@ export default function ArticlePage() {
           there is always a failure scenario where the protocol blocks
           indefinitely. This theoretical limitation is the root cause of
           2PC&apos;s blocking behavior.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Two-Phase Commit (2PC)</strong> operates in two rounds. In
           Phase 1, the coordinator writes a begin record to its durable log and
           sends a PREPARE message to all participants. Each participant executes
@@ -135,7 +142,7 @@ export default function ArticlePage() {
           coordinator writes an abort record and sends ABORT to all participants.
           Each participant then finalizes its local transaction (committing or
           rolling back) and sends an acknowledgment to the coordinator.
-        </p>
+        </HighlightBlock>
 
         <p>
           The blocking vulnerability of 2PC arises from the gap between Phase 1
@@ -196,6 +203,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/distributed-transactions-diagram-1.svg"
@@ -203,7 +213,7 @@ export default function ArticlePage() {
           caption="Two-Phase Commit — the coordinator collects votes from all participants in Phase 1, then sends a global COMMIT or ABORT decision in Phase 2"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The 2PC coordinator is a critical infrastructure component that must
           be highly available and durable. It maintains a transaction log (often
           called the <em>transaction state log</em> or <em>decision log</em>)
@@ -219,9 +229,9 @@ export default function ArticlePage() {
           WAITING to COMMITTED or ABORTED is the critical decision point — once
           the coordinator writes this decision to its durable log, the decision
           is irreversible, even if the coordinator crashes immediately after.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each participant in a 2PC transaction is a database or service that
           supports a prepare/commit protocol. In relational databases, this is
           typically implemented via the XA protocol: the database receives an{" "}
@@ -237,7 +247,7 @@ export default function ArticlePage() {
           be <em>in-doubt</em> — they have committed locally (in the WAL) but
           cannot make the commit visible to other transactions until the
           coordinator&apos;s decision arrives.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/distributed-transactions-diagram-2.svg"
@@ -291,8 +301,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The choice between 2PC, 3PC, saga, and eventual consistency is
           fundamentally a choice along the spectrum of consistency versus
           availability versus latency. 2PC provides the strongest consistency
@@ -309,7 +322,7 @@ export default function ArticlePage() {
           process) provides the lowest latency and highest throughput but
           requires building a reconciliation engine that detects and resolves
           inconsistencies after the fact.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -398,7 +411,7 @@ export default function ArticlePage() {
           </tbody>
         </table>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For production systems, the saga pattern is the dominant choice for
           high-throughput workloads. It provides sufficient consistency for most
           business use cases (eventual atomicity is acceptable for e-commerce
@@ -411,14 +424,17 @@ export default function ArticlePage() {
           analytical workloads, logging pipelines, and monitoring systems where
           temporary inconsistencies are inconsequential and the reconciliation
           job provides a safety net.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           When using the saga pattern, make every compensating action idempotent
           by design. The simplest approach is to assign a unique saga ID to each
           saga execution and include this ID in every compensating action. The
@@ -431,9 +447,9 @@ export default function ArticlePage() {
           executed twice, the second execution generates the same refund ID, and
           the payment service detects the duplicate and returns success without
           processing a second refund.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Design sagas with compensation-first semantics. Each step should be
           designed alongside its compensating action, not as an afterthought.
           The compensating action must be a <em>semantic</em> undo, not a
@@ -446,7 +462,7 @@ export default function ArticlePage() {
           modifications — it should check the current state and apply the
           semantically correct adjustment, not assume the data is in the same
           state as when the original step executed.
-        </p>
+        </HighlightBlock>
 
         <p>
           Log every saga state transition to a durable, append-only event log
@@ -494,8 +510,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Using 2PC for high-throughput OLTP workloads is one of the most
           costly architectural mistakes. 2PC&apos;s two-network-round-trip
           overhead and lock-holding behavior make it fundamentally unsuited for
@@ -509,9 +528,9 @@ export default function ArticlePage() {
           typically discover the throughput ceiling during load testing and are
           forced to migrate to sagas — a migration that requires rewriting the
           transaction logic and is non-trivial.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Writing non-idempotent compensating actions is a critical bug that
           causes data corruption during retry scenarios. If a compensating
           action is not idempotent, and the orchestrator retries it after a
@@ -524,7 +543,7 @@ export default function ArticlePage() {
           network partitions) that are hard to reproduce. The fix is to enforce
           idempotency at the compensating action level using a unique saga ID,
           as described in the best practices section.
-        </p>
+        </HighlightBlock>
 
         <p>
           Allowing sagas to expose intermediate states to end users creates a
@@ -579,8 +598,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon&apos;s order processing system uses sagas for its core
           transaction flow. When a customer places an order, the saga executes:
           Step 1 creates the order record in the order service&apos;s database,
@@ -594,9 +616,9 @@ export default function ArticlePage() {
           is acceptable because the customer-facing UI shows a &quot;order
           processing&quot; state during saga execution, and the customer does
           not see individual step outcomes.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uber&apos;s trip lifecycle is managed by a saga that spans multiple
           microservices. When a rider requests a trip, the saga: Step 1 creates
           the trip record, Step 2 matches the rider with a driver (via the
@@ -608,7 +630,7 @@ export default function ArticlePage() {
           Apache Kafka, uses Kafka&apos;s ordered partitions to ensure that saga
           events for a single trip are processed in order, and Kafka&apos;s
           durability ensures that saga state survives service crashes.
-        </p>
+        </HighlightBlock>
 
         <p>
           Netflix uses 2PC for its financial reporting pipeline, where strict
@@ -645,6 +667,9 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
@@ -652,7 +677,7 @@ export default function ArticlePage() {
             failure scenario where blocking occurs and explain why the
             participants cannot resolve it on their own.
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             2PC is called a blocking protocol because there exists a failure
             scenario in which participants that have voted COMMIT are unable to
             determine the global transaction outcome and must wait indefinitely
@@ -660,8 +685,8 @@ export default function ArticlePage() {
             coordinator sends PREPARE to all participants, all participants vote
             COMMIT, and then the coordinator crashes <em>before</em> writing the
             decision (COMMIT or ABORT) to its durable log.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             At this point, each participant is in the prepared state — it has
             written the transaction to its WAL, acquired locks, and voted
             COMMIT. The participant cannot unilaterally commit because it does
@@ -673,7 +698,7 @@ export default function ArticlePage() {
             Similarly, the participant cannot unilaterally abort because it is
             possible that all participants voted COMMIT and the coordinator was
             about to send COMMIT — aborting would also violate atomicity.
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             The participant is therefore stuck: it holds locks (blocking other
             transactions on the same data), it cannot commit, and it cannot

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -80,21 +81,24 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Query Patterns &amp; Anti-Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Efficient Query Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use LIMIT/OFFSET for pagination</strong>: Prevents fetching all rows.
           <code className="inline-code">SELECT * FROM orders ORDER BY created_at DESC LIMIT 20
           OFFSET 40</code> fetches page 3 (20 rows per page). Trade-off: OFFSET becomes slow
           for deep pages (scans all previous rows). Solution: keyset pagination (see below).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use EXISTS instead of IN for subqueries</strong>: EXISTS short-circuits on
           first match. <code className="inline-code">SELECT * FROM customers WHERE EXISTS
           (SELECT 1 FROM orders WHERE orders.customer_id = customers.id)</code>. IN evaluates
           entire subquery first. EXISTS is faster for large subquery results.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Use UNION ALL instead of UNION</strong>: UNION removes duplicates (requires
@@ -169,22 +173,25 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: JOINs &amp; Pagination</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>JOIN Optimization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>JOIN types and performance</strong>: INNER JOIN (fastest—only matching rows),
           LEFT JOIN (moderate—all left rows + matching right), RIGHT JOIN (similar to LEFT),
           FULL OUTER JOIN (slowest—all rows from both), CROSS JOIN (avoid—Cartesian product).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Index JOIN keys</strong>: Foreign keys and JOIN columns should be indexed.
           <code className="inline-code">SELECT * FROM orders JOIN customers ON
           orders.customer_id = customers.id</code>—index on
           <code className="inline-code">orders.customer_id</code> enables efficient lookup.
           Without index: nested loop with full table scan (slow). With index: nested loop with
           index lookup (fast).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Subquery vs JOIN</strong>: Correlated subqueries execute once per outer row
@@ -254,18 +261,21 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: SQL Optimization Approaches</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Different SQL optimization approaches have trade-offs. Understanding them helps you
           choose the right technique for each situation.
-        </p>
+        </HighlightBlock>
 
         <h3>OFFSET vs Keyset Pagination</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>OFFSET</strong>: Simple, supports arbitrary page navigation. Trade-offs:
           slow for deep pages (scans all previous rows), performance degrades linearly. Use
           for: admin dashboards, search results (need page numbers).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Keyset</strong>: Fast for all pages (constant time), uses index efficiently.
@@ -330,18 +340,21 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for SQL Queries</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use prepared statements.</strong> Prevents SQL injection, enables query
           plan caching. <code className="inline-code">SELECT * FROM users WHERE email =
           ?</code> (parameterized). Never concatenate user input into SQL strings.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Select specific columns.</strong> Avoid SELECT * (fetches unnecessary
           columns). Benefits: less I/O, less network transfer, enables covering indexes.
           <code className="inline-code">SELECT id, email FROM users</code>.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Use transactions for multi-step operations.</strong> Ensures atomicity
@@ -385,18 +398,21 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>SELECT * anti-pattern.</strong> Fetches all columns (unnecessary I/O,
           network, memory). Solution: Select only needed columns. Benefit: less data
           transferred, enables covering indexes.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Correlated subqueries.</strong> Executes once per outer row (very slow).
           Solution: Rewrite as JOIN or use window functions. Benefit: executes once, not N
           times.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Large OFFSET pagination.</strong> Scans all previous rows (slow for deep
@@ -433,9 +449,12 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Product Search (Keyset Pagination)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Product listing with pagination: <code className="inline-code">SELECT id, name,
           price FROM products WHERE category_id = ? ORDER BY created_at DESC LIMIT 20
           OFFSET 1000</code>. Slow for deep pages (5 seconds). Optimized: keyset pagination
@@ -443,17 +462,17 @@ export default function ArticlePage() {
           = ? AND created_at &lt; ? ORDER BY created_at DESC LIMIT 20</code> with index on
           <code className="inline-code">(category_id, created_at)</code>. Result: 50ms
           (100x faster).
-        </p>
+        </HighlightBlock>
 
         <h3>User Dashboard (Aggregation with Window Functions)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           User order summary: <code className="inline-code">SELECT user_id, COUNT(*),
           SUM(total), AVG(total) FROM orders GROUP BY user_id</code>. With ranking:
           <code className="inline-code">SELECT user_id, COUNT(*) as order_count, RANK()
           OVER (ORDER BY COUNT(*) DESC) as rank FROM orders GROUP BY user_id</code>. Window
           function replaces self-join (single pass, cleaner). Result: 200ms vs 2 seconds
           (10x faster).
-        </p>
+        </HighlightBlock>
 
         <h3>Data Migration (Bulk INSERT with COPY)</h3>
         <p>
@@ -476,14 +495,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: What's the difference between OFFSET and keyset pagination? When would you
               use each?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> OFFSET pagination:
               <code className="inline-code">LIMIT 20 OFFSET 1000</code> (skip 1000 rows,
               return 20). Simple, supports arbitrary page navigation. Trade-offs: slow for
@@ -494,7 +516,7 @@ export default function ArticlePage() {
               requires unique ordering column. Use OFFSET for: admin dashboards, search
               results (need page numbers). Use keyset for: infinite scroll, feeds (Twitter,
               Facebook), large datasets with deep pagination.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> How much faster is keyset vs OFFSET? Answer: For
               OFFSET 1000: 10-100x faster. For OFFSET 100000: 100-1000x faster. Keyset is

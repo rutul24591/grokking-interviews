@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -42,7 +43,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>split-brain problem</strong> occurs when a distributed
           system experiences a network partition that divides the cluster into
           two or more isolated groups, and each group independently elects its
@@ -56,8 +60,8 @@ export default function ArticlePage() {
           writes, potentially modifying the same keys with conflicting values —
           and the system must reconcile these conflicting histories without
           losing data or violating application-level invariants.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Split brain is not merely a theoretical concern. It is one of the most
           dangerous failure modes in production distributed systems because it
           directly threatens <strong>data correctness</strong>. Unlike a simple
@@ -70,7 +74,7 @@ export default function ArticlePage() {
           processing in e-commerce platforms, and configuration drift in
           infrastructure management systems where two control planes issued
           conflicting updates to the same resources.
-        </p>
+        </HighlightBlock>
         <p>
           The split-brain problem is fundamentally tied to the CAP theorem
           (Brewer&apos;s theorem, formalized by Gilbert and Lynch in 2002),
@@ -101,8 +105,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Network partition</strong> is the root cause of split brain. A
           partition occurs when network connectivity between subsets of nodes in
           a cluster is lost or degraded to the point that nodes cannot
@@ -120,9 +127,9 @@ export default function ArticlePage() {
           mechanism must use timeouts and will inevitably produce false positives
           (declaring a healthy node dead because its heartbeat was delayed by
           network congestion).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Leader election</strong> is the mechanism by which a
           distributed cluster designates one node as the coordinator responsible
           for sequencing writes. In consensus-based systems like Raft or Paxos,
@@ -140,7 +147,7 @@ export default function ArticlePage() {
           partitioned — during a partition, each partition group may hold its
           own election with its own majority, resulting in two leaders with the
           same term number in different partitions.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Quorum enforcement</strong> is the primary defense against
@@ -206,8 +213,11 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The architecture of a split-brain-resistant system has three
           interconnected layers: the <strong>coordination layer</strong>
           (responsible for leader election and quorum management), the{" "}
@@ -223,9 +233,9 @@ export default function ArticlePage() {
           contrast, is typically a shared resource (a distributed key-value
           store, a replicated log, or a consensus group) that all leaders must
           write through, making it the correct place to enforce fencing.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The flow of a write operation in a split-brain-resistant system
           proceeds as follows. First, a client sends a write request to the
           leader. The leader assigns the write a fencing token (its current
@@ -240,7 +250,7 @@ export default function ArticlePage() {
           returns the result to the client. If the leader cannot reach a quorum
           (because it is in the minority partition), it cannot commit the write
           and must return an error to the client.
-        </p>
+        </HighlightBlock>
 
         <p>
           When a partition occurs, the cluster splits into two or more groups,
@@ -302,8 +312,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fundamental trade-off in split-brain design is between{" "}
           <strong>correctness and availability</strong>. A CP system guarantees
           that no conflicting writes can occur — during a partition, only the
@@ -321,9 +334,9 @@ export default function ArticlePage() {
           will silently corrupt data; if it is slow, the system will have an
           extended period of inconsistency that may violate application-level
           invariants.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Within the conflict resolution space, there are several strategies,
           each with its own trade-offs. <strong>Last-writer-wins (LWW)</strong>{" "}
           is the simplest strategy: each write is tagged with a timestamp, and
@@ -341,7 +354,7 @@ export default function ArticlePage() {
           (e.g., user session data, caching layers) but is inappropriate for
           use cases where every write carries semantic meaning (e.g., financial
           transactions, inventory management).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Version vectors</strong> (and their predecessor, vector
@@ -410,8 +423,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use odd-sized clusters (3 or 5 nodes) for the coordination layer to
           minimize the probability of tied elections and to ensure that a clear
           majority can always be formed. An even-sized cluster (e.g., 4 nodes)
@@ -424,9 +440,9 @@ export default function ArticlePage() {
           every write (because the leader must wait for 4 acknowledgments
           instead of 3). For most production systems, a 5-node cluster provides
           the optimal balance of fault tolerance and performance.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Place cluster nodes across independent failure domains (availability
           zones, racks, or data centers) to ensure that a single failure event
           cannot take down a majority of nodes. If all 5 nodes of a Raft cluster
@@ -440,7 +456,7 @@ export default function ArticlePage() {
           the furthest region, adding 100ms to write latency. In many cases, it
           is preferable to deploy a single-region cluster for the coordination
           layer and use asynchronous replication to a disaster-recovery region.
-        </p>
+        </HighlightBlock>
 
         <p>
           Implement fencing at the storage layer, not at the compute layer. The
@@ -486,8 +502,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most dangerous pitfall is <strong>allowing writes without
           quorum</strong>. Some systems are configured to accept writes as long
           as the leader is reachable, without requiring a quorum of
@@ -499,9 +518,9 @@ export default function ArticlePage() {
           Every production system that uses leader-based replication must
           enforce quorum for writes, and the quorum enforcement must be tested
           under partition scenarios.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Another common pitfall is <strong>relying on leader election alone
           without fencing</strong>. Leader election ensures that at most one
           leader exists <em>when the cluster is not partitioned</em>. During a
@@ -512,7 +531,7 @@ export default function ArticlePage() {
           token can write to storage. Systems that use leader election without
           fencing are vulnerable to split brain and should be considered unsafe
           for production use.
-        </p>
+        </HighlightBlock>
 
         <p>
           A third pitfall is <strong>ignoring the partition recovery
@@ -556,8 +575,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>etcd and Kubernetes</strong> provide the canonical example of
           split-brain prevention in production. etcd uses Raft for consensus,
           with a 5-node cluster typically deployed across 3 availability zones.
@@ -571,9 +593,9 @@ export default function ArticlePage() {
           the control plane to be temporarily unavailable than for it to make
           conflicting scheduling decisions that could result in duplicate pod
           scheduling or resource conflicts.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Apache Kafka</strong> uses a partition-leader model with
           fencing tokens (called &quot;leader epoch&quot; in Kafka terminology)
           to prevent split brain at the partition level. Each Kafka partition
@@ -589,7 +611,7 @@ export default function ArticlePage() {
           fully caught up with the leader, and writes are only committed when
           acknowledged by all replicas in the ISR set (configurable to a
           minimum).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Amazon DynamoDB</strong> and similar AP databases use sloppy
@@ -625,21 +647,24 @@ export default function ArticlePage() {
       {/* Section 8: Common Interview Questions with Detailed Answers */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="text-lg font-semibold mb-3">
             Q1: What is the split-brain problem, and how does it occur in a
             distributed system?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Split brain occurs when a network partition divides a distributed
             cluster into two or more isolated groups, and each group
             independently elects its own leader (or promotes its own primary)
             and begins accepting writes. The term comes from the medical
             condition where a severed corpus callosum causes two independent
             centers of consciousness.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The mechanism is: (1) A network partition occurs, dividing the
             cluster into isolated groups. (2) Each group&apos;s nodes detect
             that they cannot reach the current leader (because the leader is in
@@ -649,7 +674,7 @@ export default function ArticlePage() {
             clients in their respective partitions. (5) When the partition
             heals, the two leaders have divergent state — different writes to
             the same keys — that must be reconciled.
-          </p>
+          </HighlightBlock>
           <p>
             The root cause is that leader election requires communication with a
             quorum of nodes, and during a partition, each partition group can

@@ -41,9 +41,9 @@ export default function RequestCancellationArticle() {
           <strong>Request Cancellation</strong> is the practice of terminating
           in-flight HTTP requests that are no longer needed, preventing wasted
           bandwidth, avoiding state updates on unmounted components, and
-          eliminating race conditions where stale responses overwrite newer data.
-          The <strong>AbortController API</strong>, standardized in the DOM
-          specification and implemented in all modern browsers (Chrome 66+,
+          eliminating race conditions where stale responses overwrite newer
+          data. The <strong>AbortController API</strong>, standardized in the
+          DOM specification and implemented in all modern browsers (Chrome 66+,
           Firefox 57+, Safari 11.1+, Edge 79+), provides a unified mechanism for
           canceling DOM operations including fetch requests, event listeners,
           and any API that supports abort signals.
@@ -58,8 +58,8 @@ export default function RequestCancellationArticle() {
           whether a component was mounted (error-prone), or wrapping XHR in
           Promise libraries with custom cancellation (non-standard).
           AbortController solved this by introducing a signal-based pattern: the
-          controller creates a signal, the signal is passed to the operation, and
-          calling controller.abort() signals all listening operations to
+          controller creates a signal, the signal is passed to the operation,
+          and calling controller.abort() signals all listening operations to
           terminate.
         </HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
@@ -91,10 +91,10 @@ export default function RequestCancellationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           Request cancellation with AbortController is built on six foundational
           concepts that govern how signals are created, propagated, and handled:
-        </HighlightBlock>
+        </p>
         <ul>
           <HighlightBlock as="li" tier="crucial">
             <strong>AbortController and AbortSignal:</strong> AbortController is
@@ -120,8 +120,8 @@ export default function RequestCancellationArticle() {
             the signal, cancellation will not reach the network layer and the
             request will complete even after the component unmounts. This is a
             common source of memory leaks: developers add AbortController at the
-            component level but forget to thread the signal through
-            intermediate layers.
+            component level but forget to thread the signal through intermediate
+            layers.
           </HighlightBlock>
           <HighlightBlock as="li" tier="important">
             <strong>AbortError Handling:</strong> When a request is aborted, the
@@ -161,7 +161,7 @@ export default function RequestCancellationArticle() {
             processed. This is the canonical use case for AbortController in
             search-as-you-type interfaces.
           </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Timeout-Based Cancellation:</strong> AbortController
             supports timeout-based cancellation via setTimeout. The pattern is:
             create controller, set a timeout that calls controller.abort() after
@@ -173,23 +173,21 @@ export default function RequestCancellationArticle() {
             AbortSignal.timeout(ms) (newer API) that creates a signal that
             auto-aborts after a specified duration, simplifying timeout
             implementation.
-          </HighlightBlock>
+          </li>
         </ul>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           The request cancellation architecture consists of several layers
           working together: signal creation at the UI layer, signal propagation
           through intermediate layers, abort handling at the network layer, and
           error handling at the response layer.
-        </HighlightBlock>
+        </p>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">
-            Cancellation Lifecycle
-          </h3>
+          <h3 className="mb-4 text-lg font-semibold">Cancellation Lifecycle</h3>
           <ol className="space-y-3">
             <HighlightBlock as="li" tier="crucial">
               <strong>1. Controller Creation:</strong> Component creates
@@ -214,9 +212,9 @@ export default function RequestCancellationArticle() {
               rejects with AbortError
             </HighlightBlock>
             <HighlightBlock as="li" tier="crucial">
-              <strong>5. Error Handling:</strong> Catch block checks
-              error.name === 'AbortError', silently ignores if true, handles
-              genuine errors otherwise
+              <strong>5. Error Handling:</strong> Catch block checks error.name
+              === 'AbortError', silently ignores if true, handles genuine errors
+              otherwise
             </HighlightBlock>
           </ol>
         </div>
@@ -256,19 +254,19 @@ export default function RequestCancellationArticle() {
           captionTier="important"
         />
 
-        <HighlightBlock as="p" tier="important">
+        <p>
           The race condition diagram illustrates the canonical use case:
           search-as-you-type. Without cancellation, three requests are in flight
           simultaneously, and responses may arrive out of order. With
           cancellation, each keystroke aborts the previous request, ensuring
           only the latest request completes. This reduces bandwidth (only one
           response is downloaded instead of three) and prevents stale data from
-          overwriting fresh data. The pattern is: store controller reference in a
-          ref, on new search term, call ref.current?.abort() to cancel previous
-          request, create new controller, pass signal to fetch.
-        </HighlightBlock>
+          overwriting fresh data. The pattern is: store controller reference in
+          a ref, on new search term, call ref.current?.abort() to cancel
+          previous request, create new controller, pass signal to fetch.
+        </p>
 
-        <HighlightBlock as="p" tier="important">
+        <p>
           For timeout-based cancellation, the flow is similar but with an
           automatic abort trigger. The component creates a controller, sets a
           timeout to call abort() after N milliseconds, and passes the signal to
@@ -279,7 +277,7 @@ export default function RequestCancellationArticle() {
           5 seconds. This is supported in modern browsers (Chrome 100+, Firefox
           99+, Safari 15.4+) and is the preferred approach for timeout-based
           cancellation.
-        </HighlightBlock>
+        </p>
 
         <HighlightBlock as="p" tier="crucial">
           From an architecture perspective, cancellation should be centralized
@@ -399,17 +397,17 @@ export default function RequestCancellationArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           These practices represent hard-won lessons from operating
           cancellation-aware frontend applications at scale:
-        </HighlightBlock>
+        </p>
         <ol className="space-y-3">
           <HighlightBlock as="li" tier="crucial">
             <strong>Always Cancel in Cleanup Functions:</strong> In React
             useEffect, always return a cleanup function that calls
             controller.abort(). This ensures requests are canceled when the
-            component unmounts or the effect re-runs. The pattern is to create
-            a controller, pass the signal to fetch in the effect, and return a
+            component unmounts or the effect re-runs. The pattern is to create a
+            controller, pass the signal to fetch in the effect, and return a
             cleanup function that calls abort. This is the single most important
             cancellation practice -- it prevents memory leaks, React warnings,
             and race conditions.
@@ -420,8 +418,8 @@ export default function RequestCancellationArticle() {
             an error to users. Cancellation is expected behavior, not an error
             condition. Log AbortError at debug level for observability, but do
             not show error UI or trigger error boundaries. The pattern is to
-            check the error name in the catch block and return early if it is
-            an abort error, otherwise handle it as a genuine error.
+            check the error name in the catch block and return early if it is an
+            abort error, otherwise handle it as a genuine error.
           </HighlightBlock>
           <HighlightBlock as="li" tier="crucial">
             <strong>Propagate Signals Through All Layers:</strong> Ensure the
@@ -442,14 +440,13 @@ export default function RequestCancellationArticle() {
             controller in a ref, abort the current controller on new search,
             create a new controller, and pass the signal to fetch.
           </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Use AbortSignal.timeout for Deadlines:</strong> For requests
-            that should not exceed a certain duration, use
-            AbortSignal.timeout instead of manual setTimeout. This creates a
-            signal that auto-aborts after the specified duration. Combine with
-            manual abort for unmount cleanup by using AbortSignal.any to
-            combine multiple signals.
-          </HighlightBlock>
+            that should not exceed a certain duration, use AbortSignal.timeout
+            instead of manual setTimeout. This creates a signal that auto-aborts
+            after the specified duration. Combine with manual abort for unmount
+            cleanup by using AbortSignal.any to combine multiple signals.
+          </li>
           <HighlightBlock as="li" tier="important">
             <strong>Do Not Retry Canceled Requests:</strong> When integrating
             cancellation with retry logic, ensure retries are not attempted for
@@ -459,7 +456,7 @@ export default function RequestCancellationArticle() {
             name and return early if it is an abort error, otherwise proceed
             with retry logic.
           </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Use Libraries for Automatic Cancellation:</strong> For new
             projects, consider using React Query or SWR which handle
             cancellation automatically. These libraries abort in-flight requests
@@ -469,7 +466,7 @@ export default function RequestCancellationArticle() {
             signals). For existing projects with custom fetch logic, gradually
             migrate to these libraries or extract cancellation logic into
             reusable hooks.
-          </HighlightBlock>
+          </li>
           <HighlightBlock as="li" tier="important">
             <strong>Test Cancellation Behavior:</strong> Write tests that verify
             requests are canceled on unmount. Use mocking to simulate slow
@@ -484,10 +481,10 @@ export default function RequestCancellationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           These mistakes appear frequently even in production applications at
           well-funded companies:
-        </HighlightBlock>
+        </p>
         <ul className="space-y-3">
           <HighlightBlock as="li" tier="crucial">
             <strong>Not Propagating Signals:</strong> Creating AbortController
@@ -519,29 +516,30 @@ export default function RequestCancellationArticle() {
             <strong>Creating Controller in Render:</strong> Creating
             AbortController directly in the component body (not in useEffect)
             means a new controller is created on every render, and the previous
-            controller is lost (cannot be aborted). Always create the
-            controller inside useEffect or store it in a ref so it persists
-            across renders and can be aborted in cleanup.
+            controller is lost (cannot be aborted). Always create the controller
+            inside useEffect or store it in a ref so it persists across renders
+            and can be aborted in cleanup.
           </HighlightBlock>
           <HighlightBlock as="li" tier="important">
-            <strong>Forgetting to Clear Timeout:</strong> When using
-            setTimeout for timeout-based cancellation, forgetting to clear the
-            timeout if the request completes successfully. This causes the
-            timeout to fire after completion, potentially triggering cleanup
-            logic or causing memory leaks. Always clear the timeout in both
-            success and error handlers: const timeoutId = setTimeout(abort,
-            5000); fetch().then(() =&gt; clearTimeout(timeoutId)).catch(() =&gt;
+            <strong>Forgetting to Clear Timeout:</strong> When using setTimeout
+            for timeout-based cancellation, forgetting to clear the timeout if
+            the request completes successfully. This causes the timeout to fire
+            after completion, potentially triggering cleanup logic or causing
+            memory leaks. Always clear the timeout in both success and error
+            handlers: const timeoutId = setTimeout(abort, 5000); fetch().then(()
+            =&gt; clearTimeout(timeoutId)).catch(() =&gt;
             clearTimeout(timeoutId)).
           </HighlightBlock>
           <li>
             <strong>Not Handling Abort in Event Listeners:</strong>
-            AbortController can also cancel event listeners since addEventListener
-            accepts a signal option, but developers often forget to use this. For
-            example, adding scroll or resize listeners without a signal means
-            they persist after component unmount. The pattern is to create a
-            controller, pass the signal to addEventListener in the options
-            object, and return a cleanup function that calls abort. This
-            automatically removes the listener on abort.
+            AbortController can also cancel event listeners since
+            addEventListener accepts a signal option, but developers often
+            forget to use this. For example, adding scroll or resize listeners
+            without a signal means they persist after component unmount. The
+            pattern is to create a controller, pass the signal to
+            addEventListener in the options object, and return a cleanup
+            function that calls abort. This automatically removes the listener
+            on abort.
           </li>
           <li>
             <strong>Using Mounted Flag Instead of Cancellation:</strong> Relying
@@ -570,8 +568,8 @@ export default function RequestCancellationArticle() {
         </HighlightBlock>
         <ul className="space-y-3">
           <HighlightBlock as="li" tier="crucial">
-            <strong>Search-as-You-Type:</strong> Search boxes that trigger
-            API requests on every keystroke (e.g., GitHub's repository search,
+            <strong>Search-as-You-Type:</strong> Search boxes that trigger API
+            requests on every keystroke (e.g., GitHub's repository search,
             Algolia instant search). Without cancellation, typing "react"
             triggers four requests ("r", "re", "rea", "react"), and if the "r"
             request is slowest, its response may overwrite the "react" results.
@@ -648,8 +646,10 @@ export default function RequestCancellationArticle() {
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q1: How do you prevent race conditions in search-as-you-type
-              implementations?</p>
+            <p className="font-semibold">
+              Q1: How do you prevent race conditions in search-as-you-type
+              implementations?
+            </p>
             <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               <strong>Answer:</strong> I use AbortController to cancel previous
               requests when a new search term is entered. I store the
@@ -665,38 +665,45 @@ export default function RequestCancellationArticle() {
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q2: How do you handle AbortError in catch blocks?</p>
+            <p className="font-semibold">
+              Q2: How do you handle AbortError in catch blocks?
+            </p>
             <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
-              <strong>Answer:</strong> I check if the error name is AbortError and
-              return early without surfacing an error to users. Cancellation is
-              expected behavior, not an error condition. I might log it at debug
-              level for observability, but I do not show error UI, trigger error
-              boundaries, or retry the request. The pattern is to catch the error,
-              check if it is an abort error, return early if it is, and handle
-              other errors normally. This ensures users do not see confusing error
-              messages when they navigate away from a page or cancel an operation.
+              <strong>Answer:</strong> I check if the error name is AbortError
+              and return early without surfacing an error to users. Cancellation
+              is expected behavior, not an error condition. I might log it at
+              debug level for observability, but I do not show error UI, trigger
+              error boundaries, or retry the request. The pattern is to catch
+              the error, check if it is an abort error, return early if it is,
+              and handle other errors normally. This ensures users do not see
+              confusing error messages when they navigate away from a page or
+              cancel an operation.
             </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q3: Where should AbortController be created and cleaned up in a
-              React component?</p>
+            <p className="font-semibold">
+              Q3: Where should AbortController be created and cleaned up in a
+              React component?
+            </p>
             <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> Create the AbortController inside
               useEffect (not in the component body) and return a cleanup
               function that calls abort(). Creating it in the component body
               means a new controller is created on every render, and the
               previous controller is lost (cannot be aborted). Creating it in
-              useEffect ensures it persists for the lifetime of the effect.
-              The pattern is to create the controller inside useEffect, pass
-              the signal to fetch, and return a cleanup function that calls
-              abort(). The cleanup function runs when the component unmounts or
-              the effect re-runs, canceling any in-flight requests.
+              useEffect ensures it persists for the lifetime of the effect. The
+              pattern is to create the controller inside useEffect, pass the
+              signal to fetch, and return a cleanup function that calls abort().
+              The cleanup function runs when the component unmounts or the
+              effect re-runs, canceling any in-flight requests.
             </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q4: How do you implement timeout-based request cancellation?</p>
+            <p className="font-semibold">
+              Q4: How do you implement timeout-based request cancellation?
+            </p>
             <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> I use AbortSignal.timeout(ms) if
               available (modern browsers), which creates a signal that
@@ -712,8 +719,10 @@ export default function RequestCancellationArticle() {
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q5: How do you propagate AbortController signals through multiple
-              layers (component → hook → API client → fetch)?</p>
+            <p className="font-semibold">
+              Q5: How do you propagate AbortController signals through multiple
+              layers (component → hook → API client → fetch)?
+            </p>
             <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> Each layer must accept an optional signal
               parameter and pass it to the next layer. The component creates the
@@ -729,8 +738,10 @@ export default function RequestCancellationArticle() {
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q6: What are the consequences of not canceling requests on
-              component unmount?</p>
+            <p className="font-semibold">
+              Q6: What are the consequences of not canceling requests on
+              component unmount?
+            </p>
             <p className="mt-2 text-sm">
               <strong>Answer:</strong> Three main issues: (1) Memory leaks --
               the response arrives after unmount and attempts to update state on
@@ -750,67 +761,79 @@ export default function RequestCancellationArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview anchor: cancellation is about preventing wasted work and
+          avoiding race conditions (stale writes). You should describe a single
+          cancellation model end-to-end (UI intent -&gt; AbortSignal -&gt;
+          server idempotency).
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
-            MDN Web Docs: <a
+          <HighlightBlock as="li" tier="important">
+            MDN Web Docs:{" "}
+            <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController"
               className="text-accent hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              AbortController 
+              AbortController
             </a>
-          </li>
-          <li>
-            MDN Web Docs: <a
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            MDN Web Docs:{" "}
+            <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal"
               className="text-accent hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              AbortSignal 
+              AbortSignal
             </a>
-          </li>
+          </HighlightBlock>
           <li>
-            DOM Specification: <a
+            DOM Specification:{" "}
+            <a
               href="https://dom.spec.whatwg.org/#interface-abortsignal"
               className="text-accent hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              AbortSignal 
+              AbortSignal
             </a>
           </li>
-          <li>
-            Fetch Specification: <a
+          <HighlightBlock as="li" tier="important">
+            Fetch Specification:{" "}
+            <a
               href="https://fetch.spec.whatwg.org/#aborting-fetch"
               className="text-accent hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Aborting Fetch 
+              Aborting Fetch
             </a>
-          </li>
+          </HighlightBlock>
           <li>
-            React Documentation: <a
+            React Documentation:{" "}
+            <a
               href="https://react.dev/learn/synchronizing-with-effects#fetching-data"
               className="text-accent hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Cleanup in useEffect 
+              Cleanup in useEffect
             </a>
           </li>
-          <li>
-            web.dev: <a
+          <HighlightBlock as="li" tier="important">
+            web.dev:{" "}
+            <a
               href="https://web.dev/articles/abortcontroller"
               className="text-accent hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Patterns for AbortController 
+              Patterns for AbortController
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://github.com/whatwg/dom/issues/985"
@@ -818,7 +841,7 @@ export default function RequestCancellationArticle() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              AbortSignal.timeout() Proposal 
+              AbortSignal.timeout() Proposal
             </a>
           </li>
         </ul>

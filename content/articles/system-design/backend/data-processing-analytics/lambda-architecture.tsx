@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,22 +25,25 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Lambda Architecture</strong> is a data processing architecture that combines batch and stream
           processing to achieve both accuracy and low latency. It was proposed by Nathan Marz (creator of Apache Storm)
           as a solution to the fundamental tension in data processing: batch processing provides accurate results but
           high latency, while stream processing provides low latency but approximate results. Lambda Architecture
           resolves this tension by maintaining both a batch layer (for accurate, comprehensive results) and a speed
           layer (for fast, approximate results), and merging their outputs in a serving layer.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The architecture consists of three layers. The batch layer processes all historical data periodically
           (daily, hourly) using a batch processing engine (Hadoop, Spark), producing batch views that are accurate
           but stale. The speed layer processes recent data continuously using a stream processing engine (Storm,
           Flink), producing speed views that are fresh but approximate. The serving layer merges the batch and speed
           views to provide query results that are both accurate and low-latency — the batch view provides the accurate
           foundation, and the speed view fills the gap between the last batch run and the present.
-        </p>
+        </HighlightBlock>
         <p>
           Lambda Architecture is designed to be fault-tolerant and robust. The batch layer serves as the source of
           truth — if the speed layer produces incorrect results (due to approximate algorithms or state recovery
@@ -83,21 +87,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Immutability is the foundation of Lambda Architecture. All data is stored in an immutable, append-only
           master dataset — records are never updated or deleted, only appended. This ensures that the batch layer can
           recompute views from the entire dataset at any time, producing correct results even if previous computations
           were incorrect. Immutability also simplifies fault tolerance — if a computation fails, it can be rerun from
           the master dataset without worrying about data that has been modified or deleted.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Recomputation is the mechanism by which the batch layer ensures correctness. Periodically (daily, hourly),
           the batch layer recomputes all views from the entire master dataset, overwriting the previous batch views.
           This recomputation is idempotent — running it multiple times produces the same result — so if a batch run
           fails or produces incorrect results, it can be rerun without affecting correctness. The batch layer&apos;s
           recomputation is the source of truth — any errors in the speed layer&apos;s approximate results are eventually
           corrected by the batch layer&apos;s recomputation.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/lambda-architecture-diagram-1.svg"
           alt="Lambda Architecture showing batch layer, speed layer, and serving layer with master dataset and views"
@@ -143,19 +150,22 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Lambda architecture flow begins with event sources (application services, CDC connectors, IoT devices)
           writing events to both the master dataset (for the batch layer) and the speed layer&apos;s input stream (for the
           speed layer). The events are written to both simultaneously — typically through a fan-out mechanism where the
           producer writes to the master dataset and publishes to a message broker (Kafka) that the speed layer
           consumes from.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The batch layer runs on a schedule (daily, hourly), reading the entire master dataset and recomputing the
           batch views from scratch. The batch views are written to the serving layer, overwriting the previous batch
           views. The batch layer uses a batch processing engine (Hadoop MapReduce, Spark) that can parallelize over
           the entire dataset, making it efficient for large-scale computation.
-        </p>
+        </HighlightBlock>
         <p>
           The speed layer runs continuously, consuming events from the message broker and computing incremental
           updates to the views. The speed layer&apos;s updates are written to the serving layer, where they are merged
@@ -185,20 +195,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Lambda versus Kappa is the primary trade-off. Lambda provides accuracy (batch layer) and low latency
           (speed layer) but requires maintaining two codebases and a complex merge logic. Kappa simplifies the
           architecture by using a single stream processor for both real-time and historical processing, but it
           requires long log retention and is less efficient for large-scale reprocessing. The choice depends on the
           reprocessing requirements and the organization&apos;s operational expertise.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Lambda versus batch-only is a trade-off between latency and complexity. Batch-only architectures are
           simpler (one codebase, one execution engine) but have high latency — queries return stale results until the
           next batch run completes. Lambda provides low-latency queries (through the speed layer) but at the cost of
           operational complexity. The choice depends on the latency requirements — if queries can tolerate hours of
           staleness, batch-only is simpler. If queries require seconds or minutes of freshness, Lambda is necessary.
-        </p>
+        </HighlightBlock>
         <p>
           Lambda versus stream-only (Kappa) is a trade-off between reprocessing efficiency and architectural
           simplicity. Lambda&apos;s batch layer can reprocess large historical datasets efficiently (parallelizing over the
@@ -211,18 +224,21 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Keep the batch and speed layer codebases in sync by using a shared computation library. The computation
           logic (aggregations, joins, filters) should be implemented in a shared library that is used by both the
           batch and speed layers. This ensures that both layers implement the same logic and reduces the risk of
           inconsistencies between the two codebases.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Monitor the divergence between batch and speed views — track the difference between the batch view result
           and the speed view result for the same time window, and alert when the divergence exceeds a defined
           threshold. This catches bugs in the speed layer&apos;s approximate algorithms before they affect production
           queries.
-        </p>
+        </HighlightBlock>
         <p>
           Automate batch runs and view deployment — use an orchestration tool (Airflow, Oozie) to schedule batch
           runs, validate the batch view results, and deploy them to the serving layer. Automated batch runs ensure
@@ -238,20 +254,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Batch and speed layer codebases diverging over time is the most common Lambda failure. When the computation
           logic is updated in the batch layer but not in the speed layer (or vice versa), the two layers produce
           inconsistent results. The merge logic cannot reconcile inconsistent results, so queries return incorrect
           results. The fix is to use a shared computation library for both layers and to enforce code review for
           changes to the computation logic.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Speed layer state corruption causing persistent incorrect results is a subtle failure. If the speed
           layer&apos;s state (aggregations, windowed counts) is corrupted (due to a crash, network partition, or bug), the
           speed layer will produce incorrect results until its state is rebuilt. The batch layer will eventually
           correct the results, but until the next batch run, queries return incorrect results. The fix is to implement
           state checkpointing in the speed layer, so that it can recover from the latest checkpoint after a failure.
-        </p>
+        </HighlightBlock>
         <p>
           Merge logic that does not handle edge cases correctly produces incorrect query results. The merge logic
           must handle edge cases such as: the speed view has no data (the batch run just completed), the batch view
@@ -263,22 +282,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large social media platform uses Lambda Architecture for its real-time analytics pipeline, where user
           activity events (likes, shares, comments) are processed to produce real-time engagement metrics. The batch
           layer runs hourly, recomputing all engagement metrics from the master dataset using Spark. The speed layer
           processes events continuously using Storm, producing incremental updates to the engagement metrics. The
           serving layer merges the batch and speed views to serve queries from the analytics dashboard, providing
           results that are both accurate (from the batch layer) and fresh (from the speed layer).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses Lambda Architecture for its fraud detection pipeline, where transaction
           events are processed to produce real-time risk scores. The batch layer runs daily, recomputing risk scores
           from the master dataset using Hadoop MapReduce. The speed layer processes events continuously using Flink,
           producing incremental updates to the risk scores. The serving layer merges the batch and speed views to
           serve queries from the fraud detection system, providing risk scores that are both accurate (from the batch
           layer) and fresh (from the speed layer).
-        </p>
+        </HighlightBlock>
         <p>
           A technology company uses Lambda Architecture for its monitoring pipeline, where system metrics (CPU,
           memory, network) are processed to produce real-time health scores. The batch layer runs hourly,
@@ -291,25 +313,28 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How does Lambda Architecture ensure fault tolerance, and what happens when the speed layer fails?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Lambda Architecture ensures fault tolerance through the batch layer&apos;s recomputation. The batch layer
             periodically recomputes all views from the entire master dataset, producing accurate results that
             overwrite any incorrect results from the speed layer. If the speed layer fails (due to a crash, network
             partition, or state corruption), its results may be incorrect, but the batch layer will eventually
             recompute the correct results and overwrite the incorrect ones.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             When the speed layer fails, queries return approximate results until the speed layer recovers and the
             next batch run completes. The serving layer continues to merge the batch view (accurate up to the last
             batch run) with the speed view (which may be incorrect or unavailable), so the query results are partially
             correct — accurate for the historical data covered by the batch view, and approximate or missing for the
             recent data covered by the speed view.
-          </p>
+          </HighlightBlock>
           <p>
             To minimize the impact of speed layer failures, the speed layer should implement state checkpointing —
             periodically saving its state (aggregations, windowed counts) to durable storage, so that it can recover

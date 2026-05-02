@@ -383,9 +383,9 @@ export default function ObserverPatternArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           The Observer Pattern introduces security considerations around event injection, memory leaks that can be exploited for denial-of-service, and proper cleanup to prevent information leaks.
-        </HighlightBlock>
+        </p>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Event Injection Attacks</h3>
@@ -432,7 +432,7 @@ export default function ObserverPatternArticle() {
 
       <section>
         <h2>Testing Strategies</h2>
-        <HighlightBlock as="p" tier="important">
+        <HighlightBlock as="p" tier="crucial">
           Testing observer implementations requires validating both the notification mechanism and the cleanup behavior. Memory leak testing is critical for long-running applications.
         </HighlightBlock>
 
@@ -490,7 +490,7 @@ export default function ObserverPatternArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <HighlightBlock as="p" tier="important">
+        <HighlightBlock as="p" tier="crucial">
           Observer Pattern performance depends on notification efficiency, observer count, and cleanup overhead. Understanding performance characteristics is essential for production systems.
         </HighlightBlock>
 
@@ -576,7 +576,7 @@ export default function ObserverPatternArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <HighlightBlock as="p" tier="important">
+        <HighlightBlock as="p" tier="crucial">
           Observer Pattern has minimal direct infrastructure costs but significant developer productivity and performance implications.
         </HighlightBlock>
 
@@ -653,7 +653,7 @@ export default function ObserverPatternArticle() {
               Q: How do IntersectionObserver and MutationObserver differ from
               custom observer implementations?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Browser Observer APIs are implemented natively in the browser
               engine and integrated with the rendering pipeline.
               IntersectionObserver leverages the compositor thread to detect
@@ -664,7 +664,7 @@ export default function ObserverPatternArticle() {
               thread and cannot access internal browser state. The native APIs
               are order-of-magnitude more efficient for their specific use
               cases.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -745,8 +745,12 @@ export default function ObserverPatternArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: observers are everywhere (DOM events, React subscriptions, browser observers). Strong
+          answers mention lifecycle cleanup, backpressure for high-frequency sources, and isolation from failures.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API"
               className="text-accent hover:underline"
@@ -755,8 +759,8 @@ export default function ObserverPatternArticle() {
             >
               MDN — Intersection Observer API
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver"
               className="text-accent hover:underline"
@@ -765,8 +769,8 @@ export default function ObserverPatternArticle() {
             >
               MDN — MutationObserver
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.patterns.dev/vanilla/observer-pattern"
               className="text-accent hover:underline"
@@ -775,8 +779,8 @@ export default function ObserverPatternArticle() {
             >
               patterns.dev — Observer Pattern
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://react.dev/reference/react/useSyncExternalStore"
               className="text-accent hover:underline"
@@ -785,7 +789,7 @@ export default function ObserverPatternArticle() {
             >
               React Documentation — useSyncExternalStore
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://refactoring.guru/design-patterns/observer"

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Compound Components</strong> are a pattern where multiple components work together to provide a cohesive API. A parent component provides shared state and context. Child components consume that context and render specific parts. The components are designed to be used together, creating a flexible yet constrained API that guides developers toward correct usage.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compound components address a fundamental challenge: how do we create component APIs that are both flexible and intuitive? Without compound components, components either accept many configuration props (hard to discover and maintain) or are rigid with no flexibility. Compound components enable flexible composition while maintaining a clear, discoverable API.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, compound components are an essential pattern for design system and component library development. They enable building components that are easy to use correctly and hard to use incorrectly. The pattern provides the flexibility of render props with cleaner JSX syntax and better developer experience.
         </p>
@@ -45,6 +49,9 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/component-design/compound-components-pattern.svg"
@@ -53,12 +60,12 @@ export default function ArticlePage() {
         />
 
         <h3>Compound Component Fundamentals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Compound components consist of a parent component and child components that work together. The parent creates and owns a context. The parent renders children within a context provider. Child components consume the context to access shared state. This enables children to communicate indirectly through the parent's context.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The key insight is that compound components share state implicitly through context rather than explicitly through props. A Select component manages selected value state. Option components read that state to know if they're selected. The Select and Option components are coupled through context, not through direct prop passing.
-        </p>
+        </HighlightBlock>
 
         <h3>Context as Communication Channel</h3>
         <p>
@@ -95,14 +102,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing compound components requires careful context design, state management, and API decisions.
-        </p>
+        </HighlightBlock>
 
         <h3>Context Design</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Design context for the compound component's needs. Include all state that children need to access. Include actions that children might need to trigger. Use TypeScript to define the context type clearly. Provide a default value that throws an error if used outside the parent, helping catch misuse early.
-        </p>
+        </HighlightBlock>
         <p>
           Consider what state should be in context versus what should be props. State that multiple children need goes in context. State that's specific to one child stays as props. Keep context focused on shared concerns.
         </p>
@@ -134,9 +144,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compound components involve trade-offs between flexibility, explicitness, and complexity.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/component-design/compound-vs-render-props.svg"
@@ -185,19 +198,22 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that compound components provide excellent developer experience for complex components with multiple related parts. The pattern guides developers toward correct usage while enabling flexibility. Use compound components for components like Select, Accordion, Tabs, and Form where multiple parts need to share state.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use context for shared state, not for everything. Keep child-specific state as props. Only put state in context that multiple children need to access. This keeps the context focused and reduces unnecessary re-renders.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Support both controlled and uncontrolled usage when appropriate. Accept an optional value prop. If provided, use controlled mode. If not, use internal state. This enables both simple and complex use cases.
-        </p>
+        </HighlightBlock>
         <p>
           Provide clear error messages when children are used incorrectly. If a child is used outside the parent, throw an error with a helpful message. This helps developers debug misuse quickly. Document which components are meant to be used together.
         </p>
@@ -211,12 +227,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Putting too much state in context causes unnecessary re-renders. When context value changes, all consumers re-render. If context includes state that only some children need, those children re-render unnecessarily. Split context by concern to minimize re-renders.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not supporting controlled mode limits flexibility. Some use cases require external state management. Always consider whether controlled mode would be useful. Supporting both modes adds complexity but enables more use cases.
-        </p>
+        </HighlightBlock>
         <p>
           Enforcing strict child types reduces flexibility. Requiring children to be exact component types prevents custom children that consume context. Prefer flexible compound components that accept any children consuming context.
         </p>
@@ -230,14 +249,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Design System: Select Component</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A design system needed a Select component that could handle various scenarios. Some selects were single-select, some multi-select, some with search, some with custom option rendering. The solution was a compound component with Select, SelectTrigger, SelectValue, SelectContent, and SelectOption children sharing context.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Results included a flexible API that handled all select variations, consistent behavior across all selects, and intuitive usage that was hard to get wrong. The Select component became one of the most used components in the system.
-        </p>
+        </HighlightBlock>
 
         <h3>Dashboard: Accordion Component</h3>
         <p>
@@ -266,14 +288,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What are compound components and how do they work?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Compound components are multiple components that work together to provide a cohesive API. The parent component creates and owns context. Child components consume context to access shared state. This enables children to communicate indirectly through the parent's context without prop drilling.
-            </p>
+            </HighlightBlock>
             <p>
               Examples include Select with Option children, Accordion with Panel children, and Tabs with TabList and TabPanel children. The parent manages shared state, children access it through context.
             </p>

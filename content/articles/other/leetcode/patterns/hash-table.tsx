@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,21 +24,24 @@ export default function HashTableArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The hash-table pattern is the use of a hash-based set, map, or counter as the load-bearing data structure of
         a solution. The structure provides O(1) average-case insert, delete, and membership-test, which collapses
         nested searches into single passes. In interview problems, the hash table rarely is the answer by itself —
         it is the supporting structure that lets a clever observation run in linear time. The art is choosing what
         to store as the key and what to store as the value.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Three roles cover the vast majority of uses. As a <strong>set</strong>, the hash table answers &quot;have I
         seen this value before?&quot; — duplicates, cycles, visited nodes. As a <strong>map</strong>, it associates
         a key with metadata: the index where a value last appeared, the count of an occurrence, the head of a
         bucket. As a <strong>counter</strong>, it provides multiset semantics — anagram tests, frequency
         comparisons, sliding-window character counts. Most interview questions reduce to picking one of these three
         and choosing the right key.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Recognition signals are unambiguous. &quot;Pair (a, b) with a + b = k&quot; — map of complements. &quot;Group
         these strings by anagram class&quot; — map of signature → bucket. &quot;Longest streak / consecutive run /
@@ -54,21 +58,24 @@ export default function HashTableArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Average vs. worst-case.</strong> Hash tables give O(1) average-case operations under uniform
         hashing assumption. Worst case is O(n) per operation when hashes collide — adversarial inputs can force
         this. Standard library implementations (Java HashMap pre-Java 8, Python dict, Go map) handle this with
         either treeification on long chains (Java 8+ uses a red-black tree above eight collisions per bucket) or
         randomised hash seeds (Python, Rust). On Leetcode the average-case bound is what matters; in
         production-leaning system-design rounds the worst case is fair game.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Choosing the key.</strong> The key must be hashable and must capture exactly the equivalence
         relation of the problem. For anagram grouping, sorted-string is a valid signature but a 26-int count tuple
         is faster (O(n) vs. O(n log n) per word). For visited-node tracking, the node identity (pointer) suffices.
         For coordinate problems, a tuple (row, col) is idiomatic. Bad key choices include floating-point values
         (precision drift), mutable objects (rehash invalidation), and over-coarse signatures (false grouping).
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Storing the right value.</strong> The value is what the algorithm needs at lookup time. For
         two-sum, the value is the index (so we can return positions). For sliding-window counters, the value is
@@ -103,16 +110,19 @@ export default function HashTableArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Set-membership template.</strong> Walk the input maintaining a set of values seen so far. For each
         element, if it is in the set, that is the duplicate / cycle / repeat. Otherwise add it. This is the entire
         template for 217 (Contains Duplicate) and the visited-set in cycle detection.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Two-sum template.</strong> Walk i from 0 to n − 1. For each A[i] compute complement = target −
         A[i]. If complement is in the map, return (map[complement], i). Otherwise insert A[i] → i. The lookup
         precedes the insert — that is the discipline.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Group-by-signature template.</strong> For each item, compute a canonical signature (sorted
         characters, count tuple, normalised form) and append the item to a bucket keyed by that signature. After
@@ -146,19 +156,22 @@ export default function HashTableArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Hash table vs. sort.</strong> Both can solve duplicate detection, intersection, and pair-finding.
         Sort is O(n log n) time, O(1) extra space (in-place); hash is O(n) time, O(n) space. Default to hash for
         time-bound problems and sort when memory is constrained or when ordering itself matters (sort gives the
         items in a useful order as a side effect; hash does not).
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Hash map vs. tree map.</strong> Hash gives O(1) average; tree gives O(log n) worst case. Use a
         tree map (TreeMap, std::map, sorted dict) when ordered iteration, range queries, or floor/ceiling lookups
         are needed — these are O(log n) on a tree, impossible without a full scan on a hash. 729 (My Calendar) and
         352 (Data Stream as Disjoint Intervals) need tree maps; replacing them with hash maps changes the
         complexity from O(log n) to O(n) per operation.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Hash table vs. counting array.</strong> When the key universe is small and known (lowercase
         letters, ASCII bytes, small-int IDs), a fixed-size array beats a hash map: better cache locality, no
@@ -185,16 +198,19 @@ export default function HashTableArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Pick the smallest key encoding that works.</strong> A 26-int tuple beats a sorted string for
         anagram signatures. A frozen tuple beats a JSON-stringified blob for coordinate keys. Smaller keys hash
         faster and avoid the constant-factor traps that turn a &quot;clearly O(n)&quot; solution into a TLE.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Use the standard hash structures.</strong> dict, set, Counter in Python; HashMap, HashSet in Java;
         unordered_map, unordered_set in C++. Counter (or defaultdict(int)) is the right tool for counter
         problems — clearer than manual get-or-default arithmetic.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Pair hash with the right secondary structure.</strong> For ordered constraints, pair with a
         linked list or deque. For random access, with a dynamic array. For ordered iteration, replace with a tree
@@ -219,16 +235,19 @@ export default function HashTableArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Inserting before looking up in two-sum.</strong> If A[i] is inserted before the complement check,
         a single element can pair with itself when target = 2 × A[i]. The pair would be (i, i) — invalid. Lookup
         first, insert after.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Forgetting to remove zero-count keys.</strong> In sliding-window counters, the &quot;number of
         distinct keys&quot; is map.size(). If you decrement a count to zero but leave the key, size() lies. Either
         delete on decrement-to-zero, or maintain a separate distinct-count integer that updates explicitly.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Using floating-point as keys.</strong> Floating-point equality is unreliable; two computations
         that should yield 0.1 may differ in the last bit and hash differently. Either round to a fixed precision
@@ -257,14 +276,17 @@ export default function HashTableArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode Problems)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>1. Two Sum.</strong> The introductory hash-map pattern. Walk once with a value → index map and
         check for the complement. The lookup-before-insert ordering is the part most candidates muddle.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>217. Contains Duplicate.</strong> Hash set, single pass. Compare to the sort-based O(n log n)
         alternative when asked about extra space.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>219. Contains Duplicate II.</strong> Map of value → last index. On each visit, check if the
         previous index is within k; either way, overwrite the index. The overwrite is the &quot;insert after&quot;
@@ -307,12 +329,15 @@ export default function HashTableArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>What is the average and worst-case complexity of a hash-map lookup?</strong> O(1) average under
+        <HighlightBlock as="li" tier="important"><strong>What is the average and worst-case complexity of a hash-map lookup?</strong> O(1) average under
         uniform hashing; O(n) worst case under collision. Modern implementations mitigate with treeification (Java)
-        or randomisation (Python).</li>
-        <li><strong>Why does two-sum look up before inserting?</strong> To prevent the same index pairing with itself
-        when target = 2 × A[i]. Insert-first counts the current index as a candidate.</li>
+        or randomisation (Python).</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Why does two-sum look up before inserting?</strong> To prevent the same index pairing with itself
+        when target = 2 × A[i]. Insert-first counts the current index as a candidate.</HighlightBlock>
         <li><strong>How does LRU cache achieve O(1)?</strong> Hash map for O(1) lookup of nodes, doubly linked list
         for O(1) reorder. The map points at the list node so we can splice without searching.</li>
         <li><strong>How does GetRandom in 380 stay O(1)?</strong> Maintain values in a dynamic array and a map from

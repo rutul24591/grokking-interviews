@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,15 +25,18 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An <strong>error budget</strong> is the mathematical complement of a Service Level Objective (SLO). If an SLO
           declares that a service must be available 99.9% of the time over a rolling 30-day window, the error budget is
           the remaining 0.1% — the amount of unreliability the service is permitted to exhibit without violating its
           objective. In concrete terms, 0.1% of 30 days equals approximately 43 minutes of allowable &quot;bad&quot; time
           distributed across that entire window. This number is not a target to consume; it is a ceiling that defines the
           boundary between acceptable operational risk and SLO violation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Error budgets originated from Google&apos;s Site Reliability Engineering (SRE) practice and have since become
           the foundational mechanism for aligning reliability engineering with product development velocity. Before error
           budgets, reliability work and feature work existed in perpetual tension: reliability improvements were
@@ -40,7 +44,7 @@ export default function ArticlePage() {
           features had visible, immediate business impact. Error budgets solved this alignment problem by creating a
           shared, quantitative currency that both reliability engineers and product managers could reason about
           jointly.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, understanding error budgets is not merely an operational concern — it is an
           architectural one. The decision to set an SLO at 99.9% versus 99.99% has profound implications for system
@@ -59,14 +63,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The error budget framework rests on three interlocking concepts: the Service Level Indicator (SLI) that
           measures what &quot;good&quot; looks like, the Service Level Objective (SLO) that sets the target threshold,
           and the budget itself that quantifies the permissible gap between perfect reliability and the SLO. Each of
           these layers carries specific design decisions that determine whether the budget becomes a useful operational
           tool or a misleading metric.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The SLI is the foundation. It must measure something that directly correlates with user experience. Common
           SLIs include availability (the proportion of successful requests), latency (the proportion of requests served
           within a defined threshold, such as the 95th percentile under 300 milliseconds), and correctness (the
@@ -75,7 +82,7 @@ export default function ArticlePage() {
           counts all failed health-check probes from internal monitoring will overcount failures that users never
           experience. The SLI definition is therefore a reliability engineering decision, not merely a measurement
           choice.
-        </p>
+        </HighlightBlock>
         <p>
           The SLO translates the SLI into a target. Setting an SLO requires understanding the user journey&apos;s
           criticality. A payment processing service demands a higher SLO than an internal analytics dashboard. However,
@@ -106,13 +113,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Error budgets are not passive measurements — they are active control systems that feed back into the
           development lifecycle. The architecture of an error budget system consists of four interconnected layers:
           telemetry collection, SLI computation, budget tracking, and policy enforcement. Each layer must be designed
           with the failure modes of the layers below it in mind.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Telemetry collection is the base layer. It requires that every request to the service be classified as either
           &quot;good&quot; or &quot;bad&quot; according to the SLI definition. For an availability SLI, this typically
           means counting HTTP 2xx and 3xx responses as good, and HTTP 4xx (sometimes excluded), 5xx, and timeouts as
@@ -120,7 +130,7 @@ export default function ArticlePage() {
           client-visible failures but misses failures that occur after the load balancer returns a response. Measuring
           at the application layer captures internal failures but may miss failures in the network path. Mature
           organizations often instrument multiple points and reconcile the measurements to construct a complete picture.
-        </p>
+        </HighlightBlock>
         <p>
           SLI computation aggregates the raw telemetry into a ratio: good events divided by total valid events, computed
           over a rolling window. The window length matters. A 30-day rolling window provides stability — a single bad
@@ -159,7 +169,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Error budgets introduce several fundamental trade-offs that staff engineers must navigate when designing
           reliability systems. The first trade-off concerns SLO granularity. A single SLO for an entire service is simple
           to implement but masks the reality that different user journeys have different reliability requirements. A
@@ -168,8 +181,8 @@ export default function ArticlePage() {
           tracker, and policy configuration. The pragmatic approach is to define one primary SLO aligned to the most
           critical user journey, supplemented by secondary SLOs for other journeys that inform but do not directly drive
           policy decisions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The second trade-off concerns the choice between rolling and calendar-based windows. Rolling windows (e.g., the
           last 30 days at any given moment) smooth out transient spikes because the bad events from any single day
           gradually age out of the window. This stability is valuable for teams that want to avoid reactive policy
@@ -178,7 +191,7 @@ export default function ArticlePage() {
           month does not affect the next month&apos;s budget, even though the underlying reliability problem persists.
           Google&apos;s SRE practice favors rolling windows for operational alerting and calendar windows for reporting
           and retrospective purposes.
-        </p>
+        </HighlightBlock>
         <p>
           The third trade-off concerns budget allocation across dependencies. When a service depends on multiple
           downstream services, the upstream service&apos;s error budget is partially consumed by downstream failures. If
@@ -205,15 +218,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Begin with user-centric SLIs. The most common mistake organizations make is defining SLIs around internal
           metrics that are easy to collect rather than around user experience. An SLI based on server CPU utilization
           tells you nothing about whether users can complete their tasks. An SLI based on the proportion of successful
           checkout transactions tells you exactly what matters. The effort to instrument user-centric SLIs is higher — it
           often requires distributed tracing, request-level tagging, and correlation across service boundaries — but the
           resulting budget is far more actionable because it reflects genuine user pain rather than infrastructure noise.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement multi-window, multi-burn-rate alerting from the outset. A single burn rate threshold either pages
           too frequently (if set too sensitive) or misses sustained degradation (if set too coarse). The industry
           standard, as documented in the Google SRE Workbook, uses two windows with paired burn rate thresholds. For a
@@ -222,7 +238,7 @@ export default function ArticlePage() {
           and sustained, avoiding alerts for brief spikes while catching genuine incidents. A secondary alert (non-paging)
           can fire on a 1x burn rate over 6 hours, warning the team that the budget is being consumed at an unsustainable
           rate without demanding immediate intervention.
-        </p>
+        </HighlightBlock>
         <p>
           Define policies explicitly and automate their enforcement. A policy ladder that exists only in a team
           document will not be followed during the pressure of an active budget crisis. Policies should be encoded into
@@ -251,7 +267,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most insidious pitfall is the SLI measurement mismatch. This occurs when the SLI indicates that the budget
           is healthy while users are experiencing significant pain, or conversely, when the budget is burning for issues
           that users do not notice. The former case typically arises when the SLI measures only server-side success rates
@@ -261,8 +280,8 @@ export default function ArticlePage() {
           practice. Detecting measurement mismatch requires correlating budget burn with user-reported incidents, support
           tickets, and customer feedback — if the budget is not burning when users complain, or burning when users are
           satisfied, the SLI definition needs revision.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Gaming the budget is another common failure mode. When error budgets are tied to performance evaluations or
           team metrics, engineers have an incentive to manipulate the SLI definition to make the budget appear healthier
           than it is. Tactics include excluding certain failure classes from the SLI, widening latency thresholds to
@@ -270,7 +289,7 @@ export default function ArticlePage() {
           less visible. The antidote is transparency: SLI definitions should be publicly documented, changes to SLI
           scope should require cross-team review, and budget reports should be visible to all stakeholders, not just the
           owning team.
-        </p>
+        </HighlightBlock>
         <p>
           Ignoring cohort-level pain is a subtler pitfall. An overall budget may look healthy while a specific subset of
           users — those in a particular geographic region, those using a specific client version, or those accessing a
@@ -301,7 +320,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At Google, error budgets are the central mechanism that governs the relationship between SRE teams and product
           development teams. When a service&apos;s error budget is healthy, the product team ships features at their
           preferred cadence. When the budget is low, SREs can require additional reliability work before approving new
@@ -310,8 +332,8 @@ export default function ArticlePage() {
           serving billions of users while maintaining development velocity across hundreds of product teams. The key
           insight from Google&apos;s practice is that error budgets work only when they carry real authority: SREs must
           have the organizational backing to slow down or stop deployments when the budget demands it.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Netflix uses error budgets in the context of its chaos engineering practice. By deliberately injecting failures
           into production systems using tools like Chaos Monkey, Netflix continuously consumes a portion of its error
           budget in controlled ways. This approach serves two purposes: it validates that the system&apos;s resilience
@@ -320,7 +342,7 @@ export default function ArticlePage() {
           stress. The budget then becomes a measure of the system&apos;s resilience headroom — the gap between the budget
           consumed by controlled chaos experiments and the total available budget indicates how much additional,
           uncontrolled failure the system can absorb.
-        </p>
+        </HighlightBlock>
         <p>
           Financial services organizations use error budgets to manage the tension between regulatory compliance
           requirements and development agility. A trading platform may have a regulatory mandate for 99.99% availability,
@@ -342,27 +364,30 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How do error budgets change the relationship between product velocity and system reliability?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Error budgets transform the reliability-versus-velocity conversation from a subjective argument into a
             quantitative decision framework. Without error budgets, reliability improvements compete with features for
             engineering resources on the basis of qualitative risk assessments — &quot;we should fix this because it
             might cause an outage&quot; — which are easy to deprioritize in favor of visible feature work. With error
             budgets, the conversation becomes: &quot;our budget is 40% consumed with 20 days remaining in the window; at
             the current burn rate, we will violate our SLO. We need to invest in reliability now.&quot;
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The critical mechanism is that error budgets give reliability engineering the authority to slow down product
             development when the system is not healthy. This is not a veto — it is a data-driven gate. When the budget
             is healthy, the product team ships freely. When the budget is low, the team exercises caution. When the
             budget is exhausted, reliability work takes precedence. This dynamic ensures that reliability is not an
             afterthought but a first-class concern that modulates development velocity in proportion to the system&apos;s
             actual operational health.
-          </p>
+          </HighlightBlock>
           <p>
             From an organizational perspective, this requires trust. Product teams must trust that the SRE team is using
             the budget as a genuine reliability signal, not as a gatekeeping tool. SRE teams must trust that product

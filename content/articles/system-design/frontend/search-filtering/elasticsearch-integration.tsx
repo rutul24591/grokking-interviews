@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,21 +37,24 @@ export default function ElasticsearchIntegrationArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Elasticsearch</strong> is a distributed search and analytics
           engine based on Lucene. It provides full-text search, structured
           search, aggregations, and analytics capabilities. For frontend
           engineers, Elasticsearch integration means building UIs that query
           Elasticsearch APIs, handle search responses, and provide rich search
           experiences (facets, filters, highlighting, suggestions).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Elasticsearch is widely used for e-commerce search (Amazon, eBay),
           log analysis (ELK stack), documentation search (GitHub docs), and
           enterprise search (internal knowledge bases). It handles large-scale
           search (millions of documents) with sub-100ms latency, making it
           suitable for user-facing search where speed is critical.
-        </p>
+        </HighlightBlock>
         <p>
           Frontend integration involves several components. <strong>Query
           construction</strong> — building Elasticsearch Query DSL from user
@@ -73,8 +77,11 @@ export default function ElasticsearchIntegrationArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Query DSL:</strong> Elasticsearch&apos;s JSON-based query
             language. Key query types: <strong>match</strong> (full-text search
             with analysis), <strong>term</strong> (exact match for keywords),
@@ -82,15 +89,15 @@ export default function ElasticsearchIntegrationArticle() {
             (combine queries with must/should/must_not),{" "}
             <strong>multi_match</strong> (search across multiple fields).
             Frontend constructs or parameterizes these queries.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Aggregations:</strong> Compute metrics over search results.
             <strong>Terms aggregation</strong> — count by field value (for
             facets). <strong>Range aggregation</strong> — count by range (for
             price histograms). <strong>Metrics aggregations</strong> — min, max,
             avg, sum. Aggregations power faceted search and analytics
             dashboards.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Highlighting:</strong> Show matching portions of documents.
             Elasticsearch returns highlighted snippets with matched terms
@@ -132,12 +139,15 @@ export default function ElasticsearchIntegrationArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Elasticsearch integration architecture consists of a query builder that
           constructs Query DSL from UI state, an API client that handles HTTP
           requests, a response parser that extracts hits and aggregations, and
           UI components that display results and filters.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/search-filtering/elasticsearch-integration/frontend-architecture.svg"
@@ -148,14 +158,14 @@ export default function ElasticsearchIntegrationArticle() {
         />
 
         <h3>Query Construction Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Two patterns exist for constructing queries. <strong>Client-side
           construction</strong> — frontend builds full Query DSL. Provides
           flexibility but exposes query logic to users. <strong>Backend
           API</strong> — frontend sends parameters (query, filters, sort),
           backend builds Query DSL. Hides query logic, adds validation, can
           optimize queries. Most production systems use backend API.
-        </p>
+        </HighlightBlock>
         <p>
           For backend API, design RESTful endpoints: <code>POST
           /api/search</code> with body containing query parameters. Or use
@@ -168,10 +178,13 @@ export default function ElasticsearchIntegrationArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Elasticsearch integration involves trade-offs between flexibility,
           security, and performance.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/search-filtering/elasticsearch-integration/query-construction-patterns.svg"
@@ -181,13 +194,13 @@ export default function ElasticsearchIntegrationArticle() {
           height={500}
         />
 
-        <p className="mt-4">
+        <HighlightBlock as="p" tier="important" className="mt-4">
           The query construction patterns diagram compares two approaches.
           Client-side DSL construction offers flexibility but exposes query
           structure to users. Backend API parameterization hides query logic,
           adds validation, and enables query optimization. For production
           systems, always use backend API to prevent query injection attacks.
-        </p>
+        </HighlightBlock>
 
         <h3>Direct vs Proxy Access</h3>
         <p>
@@ -231,19 +244,22 @@ export default function ElasticsearchIntegrationArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Backend API:</strong> Never expose Elasticsearch
             directly to frontend. Build backend API that validates input,
             constructs queries, and handles authentication. This prevents query
             injection attacks and schema exposure.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Query Timeout:</strong> Set timeout on Elasticsearch
             queries (3-5 seconds). Handle timeout gracefully — show partial
             results or error message. Don&apos;t let slow queries hang UI
             indefinitely.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cache Common Queries:</strong> Cache popular queries at CDN
             or backend level. Use cache key based on query parameters. Invalidate
@@ -271,18 +287,21 @@ export default function ElasticsearchIntegrationArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Exposing Elasticsearch Directly:</strong> This is a security
             risk — users can craft malicious queries, access unauthorized data,
             or overload the cluster. Always use backend API with authentication.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Handling Zero Results:</strong> When search returns
             zero results, don&apos;t just show &quot;no results&quot;. Suggest
             alternatives: broaden filters, check spelling, show popular items.
             Help users recover.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring Highlighting:</strong> Without highlighting, users
             don&apos;t understand why results matched. Always request and
@@ -311,23 +330,26 @@ export default function ElasticsearchIntegrationArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Product Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce sites use Elasticsearch for product search with faceted
           filtering (brand, price, category, rating). Queries combine full-text
           search (product name, description) with filters (in stock, price
           range). Aggregations power facet counts. Highlighting shows matching
           terms in product descriptions.
-        </p>
+        </HighlightBlock>
 
         <h3>Documentation Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Documentation sites (GitHub, GitLab) use Elasticsearch for searching
           docs. Queries search title and content with boosting (title matches
           rank higher). Highlighting shows matching sections. Suggesters provide
           &quot;Did you mean&quot; for typos.
-        </p>
+        </HighlightBlock>
 
         <h3>Log Analysis Dashboard</h3>
         <p>
@@ -349,21 +371,24 @@ export default function ElasticsearchIntegrationArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you construct Elasticsearch queries from frontend
               filters?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Map UI filters to Elasticsearch query types. Search box →
               multi_match query. Category filter → term query. Price range →
               range query. Brand filter (multi-select) → terms query. Combine
               with bool query (must for required filters, filter for
               non-scoring filters). Sort → sort parameter. Pagination →
               from/size or search_after.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

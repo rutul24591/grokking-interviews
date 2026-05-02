@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>circuit breaker pattern</strong> is a resilience mechanism that wraps calls to external dependencies—databases, third-party APIs, internal microservices—and monitors their health in real time. When a dependency exhibits sustained failures or excessive latency, the circuit breaker transitions from its normal operating state to a fail-fast state, rejecting calls immediately rather than allowing them to consume system resources while waiting for timeouts. After a configurable cool-down period, the breaker enters a controlled recovery phase where a limited number of probe calls test whether the dependency has regained health.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The pattern borrows its name from electrical circuit breakers in power distribution. In electrical systems, a breaker trips when current exceeds safe thresholds, physically disconnecting the circuit to prevent fire or equipment damage. In software, the breaker &quot;trips&quot; when error rates or latency cross configured thresholds, logically disconnecting the call path to prevent cascading failures across the distributed system.
-        </p>
+        </HighlightBlock>
         <p>
           The core motivation is not abstract &quot;failure handling&quot;—it is the protection of finite system resources. A slow or failing dependency can consume thread pools, database connections, HTTP client sockets, and memory queues until the entire process degrades. Without a circuit breaker, the failure of one downstream service can propagate upstream, taking down unrelated features that share the same process or infrastructure. The circuit breaker interrupts this cascade by making dependency health an explicit, observable decision point.
         </p>
@@ -55,6 +59,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/circuit-breaker-pattern-diagram-1.svg"
@@ -63,12 +70,12 @@ export default function ArticlePage() {
         />
 
         <h3>Circuit Breaker States</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The circuit breaker operates as a finite state machine with three primary states: closed, open, and half-open. Understanding the behavior of each state and the conditions that trigger transitions between them is fundamental to designing effective resilience strategies.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>closed state</strong> represents normal operation. Calls flow through the breaker to the dependency without interference. During this state, the breaker acts as an observer, recording outcomes for each call—successes, failures, and timeouts. It maintains a rolling window of metrics, typically tracking error rate, total call volume, and sometimes latency percentiles. The breaker remains closed as long as the observed failure metrics stay within configured thresholds. The closed state is where most breakers spend their time, and its configuration determines how sensitively the breaker reacts to emerging problems.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>open state</strong> is the tripped state. When the breaker detects that failure conditions have been met—such as error rate exceeding fifty percent over a rolling window of ten seconds with at least twenty samples—it transitions to open. In this state, calls are rejected immediately without reaching the dependency. The rejection can take several forms: throwing an exception, returning a default value, invoking a fallback function, or returning a degraded response to the caller. The open state persists for a configured duration called the &quot;wait duration&quot; or &quot;cool-down period.&quot; This period is critical because it gives the failing dependency time to recover without receiving additional traffic that could prevent recovery.
         </p>
@@ -128,14 +135,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Call Flow Through a Circuit Breaker</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding the complete call flow through a circuit breaker is essential for debugging production issues and designing correct integrations. When a caller invokes a protected dependency, the circuit breaker first checks its current state. If the state is closed, the call proceeds to the dependency, and the outcome—success, failure, or timeout—is recorded in the sliding window metrics. The caller waits for the response as usual.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           If the state is open, the breaker intercepts the call before it reaches the dependency. It immediately invokes the configured fallback strategy—returning a cached value, a default response, or throwing a specific exception that the caller can handle. The caller receives a response without consuming any network or thread resources for the failing dependency. This is the &quot;fail fast&quot; behavior that prevents cascade.
-        </p>
+        </HighlightBlock>
         <p>
           If the state is half-open, the breaker checks whether probe capacity is available. If the probe slot is full—other probes are already in flight—the call is rejected with the fallback response. If a probe slot is available, the call proceeds to the dependency. The outcome of the probe determines the next state transition: success closes the breaker, failure re-opens it. The probe outcome is also recorded in the metrics window for observability.
         </p>
@@ -165,14 +175,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>Circuit Breaker vs. Retry Pattern</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The retry pattern and the circuit breaker pattern are often confused because both address dependency failures, but they serve fundamentally different purposes and operate at different scales. The retry pattern is a <strong>caller-centric</strong> strategy: it handles transient failures for individual requests by attempting the call again, typically with exponential backoff and jitter. Retries are effective for transient issues like brief network hiccups, temporary database locks, or momentary service overload. The retry pattern assumes that the failure is temporary and that a subsequent attempt will succeed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The circuit breaker pattern is a <strong>system-centric</strong> strategy: it monitors aggregate failure rates across many requests and changes system behavior when a dependency appears systematically unhealthy. The breaker does not care about individual transient failures—it cares about sustained patterns that indicate a real problem. When the breaker is open, retries are pointless because the dependency is confirmed unhealthy.
-        </p>
+        </HighlightBlock>
         <p>
           The interaction between retry and circuit breaker is critical. Retries should operate <strong>inside</strong> the circuit breaker, not outside it. The correct layering is: caller wraps a circuit breaker, the circuit breaker wraps a retry policy, and the retry policy wraps the actual dependency call. This ensures that retries exhaust their attempts within a single breaker observation window. If retries operate outside the breaker, each retry attempt is counted as a separate call, inflating the failure count and potentially causing the breaker to trip prematurely. Worse, if the breaker is open, retries should not execute at all—the breaker should short-circuit them.
         </p>
@@ -208,16 +221,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Configure Thresholds Based on Dependency Capacity</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Circuit breaker thresholds should not be chosen arbitrarily. They should be derived from the known capacity and behavior of the dependency. Understand the dependency&apos;s expected error rate under normal conditions—some services have baseline error rates of one to two percent due to client-side issues. Set the error rate threshold above this baseline with appropriate margin. Understand the dependency&apos;s typical latency distribution—p50, p95, and p99—and set latency thresholds above the p99 but below the level that causes caller-side timeouts. Understand the dependency&apos;s traffic patterns and set minimum request volumes that account for low-traffic periods.
-        </p>
+        </HighlightBlock>
 
         <h3>Expose Breaker State as First-Class Observability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Circuit breaker state transitions should be visible in monitoring dashboards, not buried in logs. Export breaker state as a metric with labels for the dependency name, endpoint, and current state. Alert on state transitions—specifically on transitions to open and on prolonged open states. Correlate breaker state with dependency latency and error rate metrics to understand whether the breaker is tripping correctly or generating false positives. Track the duration spent in each state over time to identify dependencies that are chronically unstable.
-        </p>
+        </HighlightBlock>
 
         <h3>Design Fallbacks with the Same Rigor as Happy Paths</h3>
         <p>
@@ -240,16 +256,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Flapping: Rapid Open-Close Oscillations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Flapping occurs when a circuit breaker rapidly alternates between open and closed states, creating unstable client behavior. This happens when the failure signal is noisy—borderline error rates that hover around the threshold—or when the cool-down period is too short for the dependency to genuinely recover. Flapping causes the system to repeatedly enter and exit degraded mode, creating inconsistent user experience and potentially amplifying load on the dependency as traffic surges and recedes with each state transition. The mitigation involves longer rolling windows to smooth noise, higher minimum request counts before evaluation, more conservative error rate thresholds, and a half-open probe policy that requires multiple consecutive successes before closing.
-        </p>
+        </HighlightBlock>
 
         <h3>Sticky Open: Failure to Recover</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Sticky open occurs when a circuit breaker remains in the open state long after the dependency has recovered. This happens when the half-open probe policy is too conservative—too few probes or probes that are routed to still-unhealthy instances—or when the breaker&apos;s failure classification is too broad, counting transient client-side errors as dependency failures. The result is that traffic remains in degraded mode unnecessarily, impacting user experience and potentially causing incidents to be declared for a problem that has already resolved. The mitigation involves controlled probe policies that send enough concurrent probes to get a reliable signal, dependency health checks that verify recovery before allowing probes, and manual override procedures for on-call engineers to force-closed a stuck breaker.
-        </p>
+        </HighlightBlock>
 
         <h3>Probe Overload: Recovery Probes Cause Re-Failure</h3>
         <p>
@@ -272,14 +291,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Netflix Hystrix: Pioneering Application-Level Circuit Breaking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix developed Hystrix as one of the first widely-adopted circuit breaker libraries after experiencing cascading failures in their microservice architecture. Hystrix implemented circuit breakers at the application level, wrapping each dependency call with isolation, monitoring, and fallback logic. Hystrix used thread pool isolation as its bulkhead mechanism, ensuring that each dependency had its own resource pool. When a dependency failed, only its thread pool was affected—other dependencies continued to function normally. Hystrix also provided a real-time dashboard showing breaker states, latency distributions, and thread pool utilization, giving operators unprecedented visibility into dependency health.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Netflix approach demonstrated that circuit breakers are most effective when combined with bulkheading, when fallback behavior is explicitly designed for each dependency, and when breaker state is visible and actionable. Hystrix has since been superseded by Resilience4j and by infrastructure-level approaches like service mesh, but its design principles remain foundational.
-        </p>
+        </HighlightBlock>
 
         <h3>Resilience4j: Functional Circuit Breaking for Java</h3>
         <p>
@@ -311,14 +333,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What are the three states of a circuit breaker and how do they interact?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               The circuit breaker has three states: closed, open, and half-open. In the closed state, calls flow normally while the breaker monitors outcomes—successes, failures, and timeouts—over a sliding window. When the error rate or failure count crosses a configured threshold, the breaker transitions to the open state.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               In the open state, calls are rejected immediately without reaching the dependency. The breaker either throws an exception, returns a fallback response, or serves a degraded response. This is the &quot;fail fast&quot; behavior that prevents wasting system resources on a known-unhealthy dependency. The breaker remains open for a configured cool-down period.
             </p>

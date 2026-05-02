@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function PermissionValidationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Permission Validation</strong> is the enforcement layer of authorization that
           verifies an authenticated user has the required permissions to perform a specific action
           or access a specific resource. It is the gatekeeper that protects against unauthorized
           access, privilege escalation, and data breaches. Without proper permission validation,
           even the strongest authentication is meaningless — an attacker who bypasses auth can
           access everything.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/permission-validation-flow.svg"
@@ -48,14 +52,14 @@ export default function PermissionValidationArticle() {
           caption="Permission Validation Flow — showing request interception, policy evaluation, and enforcement"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing permission validation requires deep
           understanding of validation patterns (middleware, decorators, policy-based), caching
           strategies (JWT claims, Redis, invalidation), resource-level permissions (ownership
           checks, hierarchical resources), and operational concerns (audit logging, performance,
           multi-tenant isolation). The implementation must provide sub-millisecond permission
           checks while maintaining security and consistency.
-        </p>
+        </HighlightBlock>
         <p>
           Modern permission validation has evolved from simple role checks to sophisticated
           policy-based systems. Organizations like Google, Netflix, and Amazon use centralized
@@ -69,12 +73,15 @@ export default function PermissionValidationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Permission validation is built on fundamental concepts that determine how permissions are
           checked, cached, and enforced. Understanding these concepts is essential for designing
           effective authorization systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Validation Patterns:</strong> There are four primary patterns for permission
           validation: Middleware/Interceptor (check permissions before handler execution, return 403
           if denied), Decorator (@RequirePermission('create:post') for clean syntax), Code-level
@@ -82,7 +89,7 @@ export default function PermissionValidationArticle() {
           (centralized policy evaluation with engines like OPA). Each pattern has trade-offs —
           middleware provides consistent enforcement, decorators provide clean syntax, code-level
           provides flexibility, policy-based provides centralization.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Resource-Level Permissions:</strong> Beyond role-based permissions (user has
           'edit' permission), resource-level permissions check if user can access specific
@@ -110,11 +117,14 @@ export default function PermissionValidationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Permission validation architecture separates validation logic from business logic,
           enabling centralized permission management with distributed enforcement. This architecture
           is critical for scaling authorization across distributed systems.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/resource-permissions.svg"
@@ -122,7 +132,7 @@ export default function PermissionValidationArticle() {
           caption="Resource Permissions — showing ownership checks, role-based access, and hierarchical permissions"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The validation flow starts when a request arrives at the API gateway. The gateway
           extracts user context (user_id, roles, permissions from JWT), forwards request to
           appropriate service. The service checks permission via middleware (before handler
@@ -131,7 +141,7 @@ export default function PermissionValidationArticle() {
           role?). Permission check result is cached (JWT or Redis) for subsequent requests. If
           denied, return 403 Forbidden. If allowed, proceed with handler execution. All checks are
           logged for audit.
-        </p>
+        </HighlightBlock>
         <p>
           Caching architecture is critical for performance. JWT approach: include permissions array
           in token claims during authentication, validate signature on each request, extract
@@ -161,25 +171,28 @@ export default function PermissionValidationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing permission validation systems involves trade-offs between performance,
           consistency, and complexity. Understanding these trade-offs is essential for making
           informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">JWT vs Redis Caching</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>JWT Claims:</strong> Embed permissions in token. Sub-1ms access (no network
               call), stateless validation. Limitation: stale until token refresh (permissions don't
               take effect immediately), token size grows with permissions.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Redis Cache:</strong> Store permissions in Redis (user_id → Set). ~1ms
               lookup, real-time permissions (invalidate on change). Limitation: network call,
               Redis dependency, cache invalidation complexity.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Hybrid:</strong> JWT for common permissions (read, write), Redis for
               detailed permissions (admin, delete). Best of both — fast common case, real-time
@@ -231,13 +244,16 @@ export default function PermissionValidationArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing permission validation requires following established best practices to
           ensure security, performance, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use deny-by-default for all permissions — if permission not explicitly granted, deny
           access. Implement permission caching with proper invalidation — JWT for common
           permissions, Redis for detailed, invalidate on role change. Log all authorization
@@ -245,7 +261,7 @@ export default function PermissionValidationArticle() {
           constant-time comparison for permission checks — prevent timing attacks. Separate
           permission validation from business logic — middleware for enforcement, handlers for
           business logic.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Performance</h3>
         <p>
@@ -277,21 +293,24 @@ export default function PermissionValidationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing permission validation to ensure secure,
           performant, and maintainable authorization systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No caching:</strong> Database query on every permission check, slow performance
             under load. <strong>Fix:</strong> Cache in JWT (for common permissions) or Redis (for
             detailed permissions). Invalidate on role change.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Stale cache:</strong> Permission changes don't take effect immediately,
             security gap. <strong>Fix:</strong> Invalidate cache on role change, force token
             refresh, use permission_version for validation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No resource checks:</strong> Permission allows access to all resources, not
             just owned resources. <strong>Fix:</strong> Combine role permissions with ownership
@@ -336,17 +355,20 @@ export default function PermissionValidationArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Permission validation is critical for organizations with security and compliance
           requirements. Here are real-world implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS (Salesforce)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Multi-tenant SaaS with complex permission requirements. Each
           tenant has custom roles, permissions, and resource hierarchies. Need to isolate
           permissions between tenants while supporting custom configurations.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Tenant-scoped permissions (tenant_id in all permission
           checks). Custom role builder for each tenant. Hierarchical permissions (folder →
@@ -447,14 +469,17 @@ export default function PermissionValidationArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of permission validation design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle permission changes?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle permission changes?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Invalidate cache immediately — clear Redis cache for user, increment
               permission_version in user record. Force token refresh — include permission_version

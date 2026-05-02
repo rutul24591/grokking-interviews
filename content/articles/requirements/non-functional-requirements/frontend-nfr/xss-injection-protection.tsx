@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function XSSInjectionProtectionArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cross-Site Scripting (XSS)</strong> is a code injection
           attack where malicious scripts are injected into trusted websites.
           When users visit the compromised page, the malicious script executes
@@ -50,8 +54,8 @@ export default function XSSInjectionProtectionArticle() {
           applications — with server-side rendering, dangerouslySetInnerHTML,
           third-party integrations, and user-generated content — create numerous
           XSS vectors.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           XSS attacks are classified by how the malicious script is delivered
           and executed. Reflected XSS reflects the malicious script off the web
           server — the attacker crafts a URL with a malicious script in a query
@@ -66,7 +70,7 @@ export default function XSSInjectionProtectionArticle() {
           and written back to the DOM using innerHTML or similar. DOM-based XSS
           is particularly dangerous because server-side defenses (WAF, input
           validation) cannot detect it — the payload never reaches the server.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer interviews, XSS questions test
           security awareness, understanding of browser security models, and
@@ -82,7 +86,10 @@ export default function XSSInjectionProtectionArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Output encoding (escaping) is the primary defense against XSS. It
           converts special characters to their HTML entity equivalents before
           rendering user input — ampersand to <code>&amp;amp;</code>, less-than
@@ -97,8 +104,8 @@ export default function XSSInjectionProtectionArticle() {
           <code>dangerouslySetInnerHTML</code> in React, <code>v-html</code> in
           Vue, or <code>innerHTML</code> in vanilla JavaScript — which render
           raw HTML without encoding.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Input validation supplements output encoding by ensuring that user
           input conforms to expected formats and ranges. Validate type (numbers
           should be numbers, emails should match email pattern), length (enforce
@@ -110,7 +117,7 @@ export default function XSSInjectionProtectionArticle() {
           prevent XSS — it is a supplementary defense. A determined attacker
           can craft input that passes validation but still executes as script
           when rendered without encoding.
-        </p>
+        </HighlightBlock>
         <p>
           Content Security Policy (CSP) provides an additional layer of
           protection by specifying which sources of content are allowed to load
@@ -143,7 +150,10 @@ export default function XSSInjectionProtectionArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The XSS defense architecture follows a defense-in-depth model with
           four layers. Layer 1 is output encoding — every user input is encoded
           for its rendering context before being inserted into the DOM.
@@ -158,8 +168,8 @@ export default function XSSInjectionProtectionArticle() {
           comments with formatting), sanitization libraries (DOMPurify,
           sanitize-html) strip dangerous elements and attributes while
           preserving safe formatting.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Framework-specific XSS prevention leverages each framework&apos;s
           built-in protections while avoiding patterns that bypass them. React
           automatically escapes JSX interpolations — <code>user input in braces</code>
@@ -170,7 +180,7 @@ export default function XSSInjectionProtectionArticle() {
           first. Angular has built-in XSS protection through its templating
           system and DomSanitizer service — the danger is
           bypassSecurityTrust* methods that disable sanitization.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/xss-defense-layers.svg"
@@ -194,7 +204,10 @@ export default function XSSInjectionProtectionArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CSP strictness versus developer convenience is a fundamental
           trade-off. A strict CSP (no <code>&apos;unsafe-inline&apos;</code>,
           no <code>&apos;unsafe-eval&apos;</code>, specific domain allowlist)
@@ -207,8 +220,8 @@ export default function XSSInjectionProtectionArticle() {
           them to use external scripts with nonces, then enforce the strict
           policy. The refactoring effort is significant but provides meaningful
           XSS protection.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Sanitization library selection involves trade-offs between strictness
           and flexibility. DOMPurify is fast, widely-used, and
           framework-agnostic — it is the recommended default for most use cases.
@@ -222,7 +235,7 @@ export default function XSSInjectionProtectionArticle() {
           legitimate formatting (users cannot bold or italicize text), while
           overly lenient sanitization may miss dangerous patterns — the
           allowlist must be carefully curated and regularly updated.
-        </p>
+        </HighlightBlock>
         <p>
           Framework auto-encoding versus manual sanitization depends on the
           input type. For plain text input (names, emails, comments), framework
@@ -238,7 +251,10 @@ export default function XSSInjectionProtectionArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use framework auto-encoding as the default defense — never bypass it
           without a compelling reason. In React, use JSX interpolation
           (<code>{"{userInput}"}</code>) instead of{" "}
@@ -250,8 +266,8 @@ export default function XSSInjectionProtectionArticle() {
           <code>javascript:</code>, <code>data:</code>, and{" "}
           <code>vbscript:</code> URL schemes, allowing only http:, https:, and
           relative URLs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement Content Security Policy as a safety net that catches any
           XSS that bypasses encoding and sanitization. Configure script-src to
           allow only your own origin and specific trusted third-party domains.
@@ -262,7 +278,7 @@ export default function XSSInjectionProtectionArticle() {
           reporting to a monitoring endpoint so you are alerted when legitimate
           scripts are blocked (indicating incomplete CSP configuration) or when
           unauthorized scripts attempt to execute (indicating a potential attack).
-        </p>
+        </HighlightBlock>
         <p>
           Avoid dangerous JavaScript patterns that enable XSS. Never use{" "}
           <code>eval()</code>, <code>Function()</code> constructor, or{" "}
@@ -279,7 +295,10 @@ export default function XSSInjectionProtectionArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using dangerouslySetInnerHTML with unsanitized content is the most
           common React XSS vulnerability. Developers use it to render HTML
           content from a CMS, WYSIWYG editor, or API response without realizing
@@ -288,8 +307,8 @@ export default function XSSInjectionProtectionArticle() {
           malicious HTML. The fix is to always sanitize with DOMPurify before
           passing HTML to dangerouslySetInnerHTML, and to configure DOMPurify
           with a strict allowlist of allowed tags and attributes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Prototype pollution is a JavaScript-specific injection vulnerability
           where attackers modify Object.prototype through unsanified merge or
           clone operations on user-controlled objects. When an object is merged
@@ -300,7 +319,7 @@ export default function XSSInjectionProtectionArticle() {
           checks or code paths. Prevention: use Object.create(null) for maps,
           avoid recursive merge with user input, and use libraries that patch
           prototype pollution (lodash 4.17.21+).
-        </p>
+        </HighlightBlock>
         <p>
           Relying solely on client-side input validation for security is a
           fundamental error. Client-side validation (HTML5 form validation,
@@ -316,7 +335,10 @@ export default function XSSInjectionProtectionArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Social media platforms face the highest XSS risk because they render
           user-generated content (posts, comments, profiles, messages) to other
           users. Twitter, Facebook, and Reddit use a combination of framework
@@ -327,8 +349,8 @@ export default function XSSInjectionProtectionArticle() {
           reported content. The constant arms race between attackers finding
           new XSS vectors and platforms patching them has led to increasingly
           strict CSP policies and comprehensive sanitization allowlists.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content management systems (WordPress, Contentful, Sanity) must
           balance rich text editing capabilities with XSS prevention. They
           sanitize all HTML content on the server side before storage using
@@ -340,7 +362,7 @@ export default function XSSInjectionProtectionArticle() {
           options. The CMS also encodes output on the server side when rendering
           pages, providing defense in depth even if sanitization misses
           something.
-        </p>
+        </HighlightBlock>
         <p>
           Financial applications implement the strictest XSS prevention because
           successful XSS in a banking application enables session hijacking,
@@ -356,12 +378,15 @@ export default function XSSInjectionProtectionArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What are the three types of XSS and how do they differ?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Reflected XSS reflects malicious input off the server via URLs
               — the victim must click a malicious link. Stored XSS persists
               malicious content on the server (comments, profiles) — victims
@@ -371,7 +396,7 @@ export default function XSSInjectionProtectionArticle() {
               innerHTML, never reaching the server, so server-side defenses
               cannot detect it. Stored XSS is most severe, DOM XSS is hardest
               to detect server-side.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

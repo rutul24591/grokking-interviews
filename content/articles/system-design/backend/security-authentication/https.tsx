@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,7 +28,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>HTTPS (Hypertext Transfer Protocol Secure)</strong> is HTTP layered on top of TLS (Transport Layer
           Security) — it encrypts HTTP communication between the client and server, providing confidentiality
           (eavesdroppers cannot read the traffic), integrity (attackers cannot modify the traffic), and
@@ -35,14 +39,14 @@ export default function ArticlePage() {
           all web communication — browsers mark non-HTTPS sites as &quot;Not Secure,&quot; search engines rank HTTPS sites
           higher, and compliance standards (PCI-DSS, HIPAA, SOC 2) require HTTPS for all communication involving
           sensitive data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           HTTPS is not a separate protocol from HTTP — it is HTTP running over an encrypted TLS connection. The
           difference is that with HTTP, the traffic is plaintext and visible to anyone on the network path (ISPs,
           public Wi-Fi operators, nation-state actors), while with HTTPS, the traffic is encrypted and only the
           client and server can read it. The TLS layer sits between the application layer (HTTP) and the transport
           layer (TCP), encrypting all HTTP headers, cookies, and body content.
-        </p>
+        </HighlightBlock>
         <p>
           The evolution of HTTPS has been driven by the increasing sophistication of network attacks. Early web
           traffic was entirely HTTP (plaintext), making it vulnerable to eavesdropping, session hijacking, and
@@ -77,22 +81,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The HTTPS connection begins with DNS resolution (the client resolves the domain name to an IP address),
           followed by the TCP handshake (three-way handshake to establish the connection), followed by the TLS
           handshake (key exchange, certificate validation, cipher suite negotiation), followed by the HTTP request
           and response over the encrypted TLS connection. For TLS 1.3, the total handshake requires two round-trips
           (one for TCP, one for TLS) before the first HTTP request can be sent. For TLS 1.2, it requires three
           round-trips (one for TCP, two for TLS).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           HTTP/2 is a major revision of HTTP that improves performance over HTTPS. HTTP/2 introduces multiplexing
           (multiple requests and responses can be sent simultaneously over a single connection), header compression
           (HPACK reduces header overhead), server push (the server can send resources before the client requests
           them — deprecated in HTTP/3), and binary framing (HTTP/2 is binary, not text-based like HTTP/1.1).
           HTTP/2 requires HTTPS — most browsers only support HTTP/2 over TLS, so enabling HTTP/2 requires a valid
           TLS certificate and proper TLS configuration.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/https-diagram-1.svg"
           alt="HTTPS architecture comparing HTTP (insecure) vs HTTPS (secure) with TLS layer encryption"
@@ -142,22 +149,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The HTTPS architecture consists of the TLS library (OpenSSL, BoringSSL, LibreSSL, rustls) that implements
           the TLS protocol, the certificate store (which holds the server&apos;s TLS certificate and private key), and
           the HTTP server (Nginx, Apache, Envoy) that serves HTTP requests over the TLS connection. The TLS library
           handles the TLS handshake, encryption, and decryption. The certificate store provides the server&apos;s
           certificate and private key for the TLS handshake. The HTTP server serves HTTP requests over the encrypted
           TLS connection.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The HTTPS request flow begins with the client resolving the domain name to an IP address (DNS resolution),
           establishing a TCP connection (three-way handshake), performing the TLS handshake (key exchange,
           certificate validation, cipher suite negotiation), sending the HTTP request over the encrypted TLS
           connection, and receiving the HTTP response over the encrypted TLS connection. For TLS 1.3, the total
           handshake requires two round-trips (one for TCP, one for TLS). For HTTP/2, multiple requests can be
           multiplexed over the same connection, reducing the per-request overhead.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/https-diagram-3.svg"
           alt="HTTPS security properties showing confidentiality, integrity, authentication, and attacks prevented"
@@ -193,7 +203,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           TLS termination at the edge versus end-to-end TLS is a trade-off between operational simplicity and
           security. TLS termination at the edge (load balancer, CDN) simplifies backend server configuration —
           backends do not need TLS certificates, and the edge can inspect and route traffic based on HTTP headers.
@@ -201,15 +214,15 @@ export default function ArticlePage() {
           unacceptable for high-security environments. End-to-end TLS ensures that traffic is encrypted at all
           points in the network, but requires each backend server to have a TLS certificate (which can be an
           internal CA certificate).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           HTTP/2 versus HTTP/1.1 is a trade-off between performance and complexity. HTTP/2 provides multiplexing
           (multiple requests over a single connection), header compression (HPACK), and server push — significantly
           improving performance for HTTPS sites with many resources. However, HTTP/2 requires more server resources
           (connection state for multiplexing) and is more complex to configure. HTTP/1.1 is simpler and uses fewer
           server resources, but requires multiple connections for parallel requests (connection pooling), which
           increases overhead.
-        </p>
+        </HighlightBlock>
         <p>
           HTTP/3 versus HTTP/2 is a trade-off between performance on lossy networks and compatibility. HTTP/3
           (over QUIC) solves head-of-line blocking and provides faster connection establishment (0-RTT for repeat
@@ -234,18 +247,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use TLS 1.3 exclusively, with TLS 1.2 as a fallback for compatibility. Disable TLS 1.0 and 1.1 — they
           have known vulnerabilities and are deprecated by all major browsers. Use strong cipher suites
           (TLS_AES_256_GCM_SHA384, TLS_CHACHA20_POLY1305_SHA256) and disable all insecure cipher suites (RC4, 3DES,
           CBC-mode ciphers).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enable HTTP/2 for all HTTPS sites — HTTP/2 provides significant performance improvements (multiplexing,
           header compression) with minimal configuration overhead. Most modern servers (Nginx, Apache, Envoy)
           support HTTP/2 out of the box. Enable HTTP/3 if your infrastructure supports it (QUIC/UDP) — it provides
           additional performance improvements on mobile and high-latency networks.
-        </p>
+        </HighlightBlock>
         <p>
           Enable HSTS with a max-age of at least 31536000 (one year) and includeSubDomains. Submit your domain to
           the HSTS preload list for maximum protection — this ensures that browsers always use HTTPS for your
@@ -277,20 +293,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Expired certificates causing service outages is the most common HTTPS operational failure. Certificates
           have a limited validity period, and if they are not renewed before expiration, TLS connections fail and
           users see browser warnings. The fix is to automate certificate management using the ACME protocol —
           certificates are obtained, installed, and renewed automatically. Additionally, monitor certificate
           expiration and alert on certificates expiring within 30 days.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Mixed content undermining HTTPS security is a common deployment pitfall. When an HTTPS page loads HTTP
           resources, the page is considered to have mixed content, and an attacker can modify the HTTP resources to
           inject malicious content into the HTTPS page. The fix is to ensure all resources are loaded over HTTPS —
           update all resource URLs to use https:// or protocol-relative URLs, and use the browser&apos;s mixed content
           reporting tools to identify and fix issues.
-        </p>
+        </HighlightBlock>
         <p>
           Not enabling HSTS is a common security pitfall. Without HSTS, an attacker can perform an SSL stripping
           attack — intercepting the initial HTTP request and preventing the upgrade to HTTPS, allowing the attacker
@@ -316,22 +335,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses HTTPS with TLS 1.3, HTTP/2, and HSTS for all customer-facing
           communication — the website, API, and admin dashboard all run over HTTPS. The platform uses AWS
           Certificate Manager to manage TLS certificates, with automatic renewal and deployment. The platform
           enforces HSTS with a max-age of one year and includeSubDomains, and it monitors certificate expiration
           with alerts at 30, 14, and 7 days before expiration. The platform has achieved PCI-DSS compliance in part
           due to its HTTPS configuration.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses end-to-end TLS for all internal communication — the load balancer
           terminates the client&apos;s TLS connection and establishes a new TLS connection to the backend server using
           an internal CA certificate. This ensures that traffic is encrypted at all points in the network — between
           the client and the load balancer, and between the load balancer and the backend server. The company uses
           HashiCorp Vault as its internal CA, issuing certificates to each backend server with a 24-hour validity
           period and automatic rotation.
-        </p>
+        </HighlightBlock>
         <p>
           A SaaS platform uses HTTPS with HTTP/3 for its customer-facing API — the platform uses Cloudflare&apos;s CDN
           for TLS termination, HTTP/2 for most clients, and HTTP/3 for clients that support QUIC. The platform
@@ -352,14 +374,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is HSTS, and why is it important for HTTPS?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               HSTS (HTTP Strict Transport Security) is an HTTP response header (Strict-Transport-Security) that instructs browsers to always use HTTPS for the domain. When a browser receives an HSTS header, it remembers the directive and automatically upgrades all future HTTP requests to HTTPS, even if the user types &quot;http://&quot; or clicks an HTTP link.
-            </p>
+            </HighlightBlock>
             <p>
               HSTS is important because it prevents SSL stripping attacks — where an attacker intercepts the initial HTTP request and prevents the upgrade to HTTPS, allowing the attacker to read and modify the traffic. Without HSTS, the initial HTTP request is vulnerable. HSTS should be configured with a max-age of at least 31536000 (one year) and includeSubDomains to protect all subdomains.
             </p>

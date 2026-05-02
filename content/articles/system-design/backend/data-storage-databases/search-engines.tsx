@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -86,9 +87,12 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Inverted Index &amp; Ranking</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Inverted Index</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Inverted index</strong> is the core data structure of search engines. Maps
           terms (words) to documents containing them. Example: Documents: Doc 1 = "the cat
           sat", Doc 2 = "the dog ran". Inverted index: <code className="inline-code">"cat"
@@ -96,15 +100,15 @@ export default function ArticlePage() {
           <code className="inline-code">"the" → [Doc 1, Doc 2]</code>. Search "cat": lookup
           "cat" in index, return [Doc 1]. Performance: O(1) lookup (hash table) or O(log n)
           (tree), sub-second even for millions of documents.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Inverted index stores: <strong>Term</strong> (the word), <strong>Document IDs</strong>
           (which docs contain term), <strong>Positions</strong> (where in document - for phrase
           search), <strong>Frequency</strong> (how often in document - for ranking). Benefits:
           fast lookup (O(1) or O(log n)), supports complex queries (AND, OR, phrase), enables
           ranking (term frequency, positions).
-        </p>
+        </HighlightBlock>
 
         <h3>Tokenization &amp; Analysis</h3>
         <p>
@@ -150,23 +154,26 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Elasticsearch &amp; Alternatives</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Elasticsearch</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Elasticsearch</strong> is the most popular search engine (distributed, REST
           API, real-time). Architecture: <strong>Indices</strong> (like databases - collection
           of documents), <strong>Documents</strong> (JSON records - like rows),
           <strong>Shards</strong> (distributed across nodes - horizontal scaling),
           <strong>Replicas</strong> (copies for availability).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Indexing: <code className="inline-code">POST /products/_doc/1 {"{"} "name":
           "Running Shoes", "price": 100 {"}"}</code>. Search:
           <code className="inline-code">GET /products/_search {"{"} "query": {"{"} "match":
           {"{"} "name": "running shoes" {"}"} {"}"} {"}"}</code>. Returns: ranked results
           (BM25), highlighting (matched terms), facets (counts by category).
-        </p>
+        </HighlightBlock>
 
         <p>
           Benefits: <strong>Distributed</strong> (scale horizontally), <strong>Real-time</strong>
@@ -232,19 +239,22 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Search Engines vs Database LIKE</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding the trade-offs between search engines and database LIKE queries helps
           you choose the right tool.
-        </p>
+        </HighlightBlock>
 
         <h3>Search Engine Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Performance</strong> is the primary advantage. Inverted index lookup
           (O(1) or O(log n)) vs full table scan (O(n)). 100-1000x faster for large datasets.
           Example: 1M documents, search "running shoes": Elasticsearch (50ms),
           <code className="inline-code">LIKE '%running shoes%'</code> (5-10 seconds).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Relevance ranking</strong>: Search engines rank by relevance (BM25). Best
@@ -335,19 +345,22 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Search Engines</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use dedicated search engine.</strong> For serious full-text search, use
           Elasticsearch or Solr. PostgreSQL FTS for simple cases. Avoid
           <code className="inline-code">LIKE '%term%'</code> for large datasets.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Custom analyzers.</strong> Define analyzers per domain. E-commerce: handle
           brand names, product codes, synonyms (TV = television). Legal: Latin terms,
           abbreviations. Medical: drug names, abbreviations. Benefits: better matching
           (domain-specific normalization).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Configure synonyms.</strong> Define synonym lists: "sneakers, trainers,
@@ -389,18 +402,21 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>LIKE '%term%' for full-text search.</strong> Full table scan (slow for
           large tables). Solution: use search engine (Elasticsearch, Solr) or PostgreSQL
           FTS. Benefits: 100-1000x faster, relevance ranking.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>No text analysis.</strong> Default analyzer may not fit domain. "Running"
           doesn't match "run". Solution: custom analyzers (stemming, synonyms, domain-specific
           normalization). Benefits: better matching (improved recall).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Database for full-text search.</strong> Database isn't optimized for text
@@ -436,24 +452,27 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Product Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce uses Elasticsearch for product search: inverted index (fast lookup),
           BM25 ranking (best products first), faceted search (filter by category, price,
           brand), autocomplete (suggest as you type), "did you mean?" (typo correction),
           synonyms (TV = television). Benefits: fast search (50ms), relevant results
           (higher conversion), better UX (autocomplete, fuzzy matching).
-        </p>
+        </HighlightBlock>
 
         <h3>Content/Blog Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Content site uses search engine for article search: full-text search (search
           within article content), highlighting (show matched terms in context), fuzzy
           matching (handle typos), relevance ranking (best articles first). Benefits:
           users find content fast, relevant results (engage longer), better UX
           (highlighting, fuzzy matching).
-        </p>
+        </HighlightBlock>
 
         <h3>Log Analytics (ELK Stack)</h3>
         <p>
@@ -477,13 +496,16 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: What is an inverted index? How does it enable fast search?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Inverted index maps terms to documents containing
               them. Example: "cat" → [Doc 1, Doc 5], "dog" → [Doc 2, Doc 3]. Search "cat":
               lookup "cat" in index (O(1) hash table or O(log n) tree), return [Doc 1,
@@ -491,7 +513,7 @@ export default function ArticlePage() {
               database LIKE '%cat%' scans all documents (O(n), very slow for large
               datasets). Inverted index also stores: positions (for phrase search),
               frequency (for ranking).
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> How is inverted index built? Answer: Indexing
               pipeline: documents → tokenizer (split into words) → analyzer (normalize,

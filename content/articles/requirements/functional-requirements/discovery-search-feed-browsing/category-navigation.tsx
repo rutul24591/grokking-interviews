@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,21 +35,24 @@ export default function CategoryNavigationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Category Navigation</strong> is the hierarchical browsing structure that
           enables users to explore content by topic, classification, or taxonomy. It is a
           fundamental discovery mechanism—users who browse categories often have different
           intent than search users (exploring vs. finding specific items). Well-designed
           category navigation reduces cognitive load, provides context, and helps users
           understand the scope of content available.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Category navigation appears in many forms: e-commerce (Products → Electronics →
           Phones), news sites (News → World → Europe), documentation (Docs → API →
           Authentication), and content platforms (Topics → Technology → AI). The challenge
           is balancing depth (enough granularity) with usability (not too many clicks to
           reach content).
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, category navigation involves information architecture
           (taxonomy design, hierarchy depth), UI patterns (sidebar, mega menu, breadcrumbs),
@@ -59,10 +63,13 @@ export default function CategoryNavigationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Hierarchy Depth</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           How deep should category hierarchies go:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>1-2 Levels:</strong> Simple sites, small catalogs (&lt;100 items).
@@ -87,9 +94,9 @@ export default function CategoryNavigationArticle() {
         </ul>
 
         <h3 className="mt-6">Navigation Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Common UI patterns for category navigation:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Sidebar Tree:</strong> Expandable/collapsible category tree. Always
@@ -191,10 +198,13 @@ export default function CategoryNavigationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production category navigation involves efficient data loading and state
           management.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery-search-feed-browsing/category-navigation/navigation-patterns.svg"
@@ -260,9 +270,9 @@ export default function CategoryNavigationArticle() {
         />
 
         <h3 className="mt-6">Mobile Navigation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mobile-specific considerations:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Off-Canvas Drawer:</strong> Slide-in navigation from left. Maximizes
@@ -313,10 +323,13 @@ export default function CategoryNavigationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Category navigation design involves balancing usability, performance, and
           discoverability.
-        </p>
+        </HighlightBlock>
 
         <h3>Loading Strategy Comparison</h3>
         <div className="overflow-x-auto">
@@ -361,11 +374,11 @@ export default function CategoryNavigationArticle() {
         />
 
         <h3 className="mt-6">Hierarchy Depth Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Shallow (1-2 levels):</strong> Fast navigation, users reach content
           quickly. Risk: Too many categories at top level, overwhelming choice. Best
           for: Small catalogs.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Medium (3-4 levels):</strong> Balanced. Enough granularity without
           excessive clicks. Most users accept 3-4 clicks. Best for: Most production
@@ -395,15 +408,18 @@ export default function CategoryNavigationArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Limit Depth:</strong> Max 3-4 levels. If deeper, use faceted search
             or tags for fine-grained classification.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Show Counts:</strong> Display item count per category ("123 articles").
             Helps users gauge category size.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Highlight Active:</strong> Clearly highlight current category. Users
             should always know where they are.
@@ -433,15 +449,18 @@ export default function CategoryNavigationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Too Deep:</strong> 5+ levels causes navigation friction. Solution:
             Flatten hierarchy, use faceted search for refinement.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No Active State:</strong> Users don't know where they are. Solution:
             Highlight current category, use breadcrumbs.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Slow Loading:</strong> Loading entire tree on mount. Solution: Lazy
             load subcategories, prefetch on hover.
@@ -463,17 +482,20 @@ export default function CategoryNavigationArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Amazon Category Navigation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon uses mega menu for top categories (All), sidebar for subcategories.
           Shows product counts, popular subcategories. Breadcrumbs on product pages.
           Handles 10M+ products with 5-6 level hierarchy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Contextual navigation—subcategories change
           based on parent category selected.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Documentation Sites (GitBook, Notion)</h3>
         <p>
@@ -511,16 +533,19 @@ export default function CategoryNavigationArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How deep should category hierarchy be?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How deep should category hierarchy be?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Max 3-4 levels for most sites. Each level adds
               cognitive load and click friction. If you need more granularity, use
               faceted search (filters within categories) or tags. Exception: Very
               large catalogs (100K+ items) may need 5 levels, but provide shortcuts
               (search, featured categories) to reduce clicks.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

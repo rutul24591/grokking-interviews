@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,19 +28,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>RBAC (Role-Based Access Control)</strong> is an authorization model that grants permissions to
           users based on their organizational role rather than individual identity. In RBAC, permissions are
           assigned to roles (e.g., Admin, Manager, Editor, Viewer), and users are assigned to roles. A user
           inherits all permissions associated with their role — if a user is assigned the &quot;Manager&quot; role, they
           automatically receive all permissions granted to the Manager role.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           RBAC is the most widely deployed access control model in enterprise applications — it is simple to
           understand, easy to audit, and aligns naturally with organizational structures. RBAC is required by
           major compliance standards (SOX, HIPAA, PCI-DSS, SOC 2) and is supported by all major platforms
           (AWS IAM, Azure RBAC, Google Cloud IAM, Kubernetes RBAC, Active Directory).
-        </p>
+        </HighlightBlock>
         <p>
           RBAC addresses a fundamental challenge in access control — managing permissions for thousands of users.
           Without RBAC, each user would need individual permission assignments (user A can read documents, user B
@@ -76,22 +80,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Role hierarchy is the practice of organizing roles in a hierarchical structure where higher-level roles
           inherit permissions from lower-level roles. For example, the Admin role inherits all permissions from
           Manager, Editor, and Viewer roles; the Manager role inherits all permissions from Editor and Viewer
           roles; and the Editor role inherits all permissions from the Viewer role. Role hierarchy reduces
           permission duplication — each permission is assigned to only one role (the lowest role that needs it),
           and higher-level roles automatically inherit it.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Separation of duties (SoD) is the practice of ensuring that no single user can perform conflicting
           actions. For example, the user who creates a financial transaction should not be the same user who
           approves it; the user who develops code should not be the same user who deploys it to production. SoD
           is enforced by assigning conflicting permissions to mutually exclusive roles — a user cannot be
           assigned to both roles simultaneously. SoD is required by compliance standards (SOX, PCI-DSS) and is
           essential for preventing fraud and errors.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/rbac-role-based-access-control-diagram-1.svg"
           alt="RBAC architecture showing users assigned to roles, roles assigned to permissions, and permissions controlling access to resources"
@@ -139,20 +146,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The RBAC architecture consists of the role store (which stores roles and their permission assignments),
           the user-role assignment store (which stores user-role assignments), the permission evaluator (which
           evaluates whether a user&apos;s role grants permission for the requested action), and the audit logger (which
           logs all permission checks). Each component is independent — if one component fails, the others still
           provide protection.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The RBAC permission evaluation flow begins with the user sending a request to access a resource. The
           permission evaluator retrieves the user&apos;s role assignments from the user-role assignment store, retrieves
           the permissions associated with each role from the role store, and evaluates whether any of the
           user&apos;s roles grant permission for the requested action. If a role grants permission, the request is
           allowed; if not, it is denied with a 403 Forbidden response.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/rbac-role-based-access-control-diagram-3.svg"
           alt="RBAC vs ABAC comparison showing role-based access control versus attribute-based access control approaches"
@@ -186,7 +196,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           RBAC versus ABAC (Attribute-Based Access Control) is the primary trade-off in access control model
           selection. RBAC is simple to understand, easy to audit, and aligns with organizational structures.
           However, RBAC cannot express context-aware rules (e.g., &quot;allow access only during business hours&quot; or
@@ -195,8 +208,8 @@ export default function ArticlePage() {
           to design, implement, and audit. The recommended approach for most organizations is RBAC for
           standard access control (role-based permissions) with ABAC extensions for context-aware rules
           (time-based, location-based, device-based access control).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Role hierarchy versus flat roles is a trade-off between permission management and clarity. Role
           hierarchy reduces permission duplication — each permission is assigned to only one role (the lowest
           role that needs it), and higher-level roles inherit it automatically. However, role hierarchy can be
@@ -205,7 +218,7 @@ export default function ArticlePage() {
           permissions, with no inheritance. However, flat roles require duplicating permissions across multiple
           roles. The recommended approach is role hierarchy for organizations with many roles and clear
           inheritance patterns, and flat roles for organizations with few roles and simple permission structures.
-        </p>
+        </HighlightBlock>
         <p>
           Centralized RBAC (single role store for all applications) versus decentralized RBAC (each application
           manages its own roles) is a trade-off between consistency and autonomy. Centralized RBAC provides
@@ -237,18 +250,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Follow the principle of least privilege — assign users to the role with the minimum permissions
           necessary for their job function. Do not assign users to higher-level roles (e.g., Admin) for
           convenience — create new roles with specific permissions if needed. Regularly audit role permissions
           to ensure they align with the principle of least privilege.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement separation of duties (SoD) for conflicting roles — define pairs of mutually exclusive roles
           (e.g., Developer and Deployer, Creator and Approver, User and Auditor) and enforce SoD constraints
           during role assignment. SoD is required by compliance standards (SOX, PCI-DSS) and is essential for
           preventing fraud and errors.
-        </p>
+        </HighlightBlock>
         <p>
           Use role hierarchy to reduce permission duplication — assign permissions to the lowest role that needs
           them, and let higher-level roles inherit permissions automatically. This reduces the number of
@@ -282,21 +298,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Role explosion is a common RBAC pitfall — creating too many roles to handle fine-grained access
           requirements (e.g., &quot;manager-europe-readonly&quot;, &quot;manager-asia-write&quot;, &quot;editor-project-alpha&quot;). Role
           explosion makes role management unmanageable — administrators cannot remember what each role does, and
           users are assigned to the wrong roles. The fix is to use ABAC for fine-grained access control
           (e.g., &quot;allow Managers to access resources in their region&quot;) rather than creating a role for each
           combination of attributes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Permission creep is a common RBAC pitfall — users accumulating permissions over time as they change
           roles, without losing old permissions. When a user moves from Editor to Manager, they are assigned to
           the Manager role but retain their Editor role assignment, giving them more permissions than needed. The
           fix is to implement automated role deprovisioning — when a user is assigned to a new role, their old
           role assignments are automatically removed (or reviewed by an administrator).
-        </p>
+        </HighlightBlock>
         <p>
           Assigning users to Admin role for convenience is a common RBAC pitfall — administrators assign users
           to the Admin role because it is easier than figuring out the correct role. This violates the principle
@@ -326,7 +345,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses RBAC for its internal applications — roles are defined based on job
           functions (Customer Support, Marketing, Engineering, Finance, Admin), and each role has specific
           permissions (Customer Support: read:orders, write:orders; Marketing: read:analytics, write:campaigns;
@@ -334,15 +356,15 @@ export default function ArticlePage() {
           all permissions). The platform implements role hierarchy (Admin inherits all permissions from other
           roles) and separation of duties (Engineering:deploy:production and Finance:approve:payments are
           mutually exclusive). The platform audits role assignments quarterly and alerts on anomalous patterns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses RBAC with SoD for its banking application — roles are defined based
           on job functions (Teller, Loan Officer, Branch Manager, Compliance, Admin), and SoD constraints are
           enforced (Teller and Compliance are mutually exclusive, Loan Officer and Branch Manager are mutually
           exclusive for the same loan). The company automates role provisioning and deprovisioning through HR
           system integration — when an employee&apos;s job function changes, their role assignments are updated
           automatically. The company achieves SOX compliance in part due to its RBAC and SoD controls.
-        </p>
+        </HighlightBlock>
         <p>
           A healthcare organization uses RBAC for its patient data system — roles are defined based on clinical
           functions (Doctor, Nurse, Pharmacist, Billing, Admin), and each role has specific permissions (Doctor:
@@ -367,14 +389,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is separation of duties, and why is it important in RBAC?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Separation of duties (SoD) is the practice of ensuring that no single user can perform conflicting actions — for example, creating and approving a financial transaction, developing and deploying code, or accessing patient records and billing for those records. SoD is enforced by assigning conflicting permissions to mutually exclusive roles — a user cannot be assigned to both roles simultaneously.
-            </p>
+            </HighlightBlock>
             <p>
               SoD is important because it prevents fraud and errors — if a single user can perform conflicting actions, they can commit fraud (create a fake transaction and approve it) or make errors (deploy untested code to production) without detection. SoD is required by compliance standards (SOX, PCI-DSS) and is essential for organizations that handle sensitive data (financial, healthcare, government).
             </p>

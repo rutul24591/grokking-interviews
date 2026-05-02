@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +30,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Time-series optimization</strong> refers to the set of techniques used to
           efficiently store, query, and manage time-stamped data that arrives continuously at
           high throughput. Time-series data is characterized by append-only writes (data is
@@ -38,8 +42,8 @@ export default function ArticlePage() {
           summaries for long-term storage). These characteristics require specialized storage
           engines, indexing strategies, and retention policies that differ significantly from
           general-purpose databases.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider a monitoring system that collects 1 million metrics per second from 10,000
           servers, each reporting CPU, memory, disk, and network metrics every second. Over the
           course of a day, this generates 86.4 billion data points. Storing this data in a
@@ -49,7 +53,7 @@ export default function ArticlePage() {
           using append-only storage (LSM trees), time-based partitioning, data compression
           (delta encoding, Gorilla compression), and downsampling (aggregating 1-second data
           into 1-minute, 1-hour, and 1-day summaries).
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, time-series optimization requires understanding the
           trade-offs between data resolution and storage cost (higher resolution = more storage),
@@ -76,6 +80,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/time-series-storage-architecture.svg`}
@@ -84,21 +91,21 @@ export default function ArticlePage() {
         />
 
         <h3>Append-Only Storage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Time-series data is inherently append-only: new data points are always written with
           the current timestamp, and existing data points are rarely updated or deleted. This
           enables the use of append-optimized storage engines (LSM trees, write-ahead logs)
           that provide high write throughput by batching random writes into sequential writes.
           Unlike general-purpose databases that must support random reads and writes, time-series
           databases can optimize for sequential writes and time-range reads.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Append-only storage also simplifies data compression: consecutive data points for
           the same metric are stored contiguously on disk, enabling delta encoding (storing the
           difference between consecutive values) and run-length encoding (storing repeated
           values as a count-value pair). These compression techniques reduce storage costs by
           10-100x compared to uncompressed storage.
-        </p>
+        </HighlightBlock>
 
         <h3>Time-Based Partitioning</h3>
         <p>
@@ -146,9 +153,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Data Compression for Time-Series</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Time-series data is highly compressible because consecutive data points for the same
           metric are often similar (e.g., CPU usage changes gradually). Compression techniques
           include <strong>delta encoding</strong> (storing the difference between consecutive
@@ -156,15 +166,15 @@ export default function ArticlePage() {
           algorithm that stores XOR differences between consecutive floating-point values,
           achieving 10-20x compression), and <strong>run-length encoding</strong> (storing
           repeated values as a count-value pair).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Gorilla compression is particularly effective for time-series data because it exploits
           the temporal locality of metric values: consecutive values are often identical or
           differ by a small amount. The algorithm stores the first value in full, and subsequent
           values as XOR differences from the previous value. If the XOR difference is zero
           (identical values), it stores a single bit. If the XOR difference is small, it stores
           the significant bits. This achieves 10-20x compression for typical time-series data.
-        </p>
+        </HighlightBlock>
 
         <h3>Query Optimization</h3>
         <p>
@@ -192,20 +202,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Time-series optimization involves trade-offs between data resolution, storage cost,
           and query performance. Higher resolution (1-second data) provides more detailed
           insights but consumes more storage and slows down long-range queries. Lower
           resolution (1-minute or 1-hour data) reduces storage costs and speeds up long-range
           queries but loses fine-grained detail.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The downsampling strategy determines what information is preserved: averaging
           preserves the mean but loses outliers; min/max preserves extremes but loses
           distribution; percentiles (P50, P95, P99) preserve distribution but require more
           storage. The choice depends on the query requirements: if users need to identify
           outliers, store min/max; if users need to understand distribution, store percentiles.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -213,18 +226,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use time-based partitioning with partition sizes aligned to query patterns. If most
           queries span 1 hour of data, use 1-hour partitions. If most queries span 1 day of
           data, use 1-day partitions. Avoid partitions that are too small (many small files,
           file system overhead) or too large (scan more data than needed for short queries).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement a multi-tier retention policy: raw data for 7 days, 1-minute aggregates
           for 30 days, 1-hour aggregates for 1 year, 1-day aggregates indefinitely. This
           balances storage costs against query requirements: recent data is available at full
           resolution, historical data is available at lower resolution.
-        </p>
+        </HighlightBlock>
         <p>
           Use Gorilla compression for floating-point metrics (CPU, memory, latency) and
           delta encoding for integer metrics (request count, error count). Gorilla compression
@@ -245,18 +261,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is storing raw data at full resolution for too long, consuming
           excessive storage and degrading query performance. The fix is to implement a
           multi-tier retention policy that downsamples data after a short retention period
           (7 days for raw data) and keeps only downsampled data for long-term storage.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not partitioning by time causes full-table scans for time-range queries. Without
           time-based partitioning, every query must scan all data, regardless of the time
           range. The fix is to partition data by time (e.g., 1-day partitions) and prune
           partitions that do not overlap with the query&apos;s time range.
-        </p>
+        </HighlightBlock>
         <p>
           Using a general-purpose database (e.g., PostgreSQL) for high-throughput time-series
           data leads to poor write performance and high storage costs. General-purpose databases
@@ -277,25 +296,28 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Prometheus: Monitoring at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Prometheus uses a custom time-series storage engine with 2-hour blocks, delta
           encoding, and Gorilla compression. Data is stored in 2-hour blocks on disk, with
           each block containing all samples for that time window. Blocks are compacted into
           larger blocks (4 hours, 8 hours, etc.) and eventually deleted according to the
           retention policy. Prometheus achieves 1-2 bytes per sample with Gorilla compression,
           enabling it to store millions of time series on a single node.
-        </p>
+        </HighlightBlock>
 
         <h3>InfluxDB: Time-Series Database</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           InfluxDB uses a time-structured merge tree (TSM tree) for storage, which is an LSM
           tree variant optimized for time-series data. TSM trees use Gorilla compression for
           floating-point values and delta encoding for timestamps, achieving 10-20x compression.
           InfluxDB supports continuous queries for automatic downsampling and retention policies
           for automatic data expiration.
-        </p>
+        </HighlightBlock>
 
         <h3>TimescaleDB: PostgreSQL Extension</h3>
         <p>
@@ -312,19 +334,22 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What makes time-series data different from general-purpose data?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Time-series data is characterized by append-only writes (data is always written
               with the current timestamp), time-range queries (queries that filter by time
               range), and downsampling (aggregating high-resolution data into lower-resolution
               summaries). These characteristics enable append-optimized storage engines (LSM
               trees) that provide high write throughput by batching random writes into
               sequential writes.
-            </p>
+            </HighlightBlock>
             <p>
               Unlike general-purpose data, time-series data is rarely updated or deleted, is
               queried primarily by time range, and benefits from aggressive compression

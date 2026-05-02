@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,12 +28,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>shared database anti-pattern</strong> occurs when two or more independently deployed services read from and write to the same database schema as their primary integration mechanism. Even when services maintain separate codebases, repositories, and deployment pipelines, a shared schema creates a <strong>shared fate</strong>: schema migrations, performance contention, data semantics, and incident response become cross-team coordination problems that undermine the very independence microservices promise to deliver.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This pattern is exceptionally tempting because it feels like a &ldquo;single source of truth.&rdquo; In a monolithic application, a single database is not only acceptable but expected. The problem emerges when teams extract services from a monolith or build new services but leave the database shared. The shared database then becomes the path of least resistance for service-to-service integration: &ldquo;just add a column,&rdquo; &ldquo;just query that table directly,&rdquo; or &ldquo;just join against the users table.&rdquo; Each of these decisions feels harmless in isolation but collectively erodes service boundaries.
-        </p>
+        </HighlightBlock>
         <p>
           In service-oriented systems, the database is not merely persistent storage; it becomes an implicit API. When that API is implicit—tables and columns acting as interfaces—it is extraordinarily difficult to version, difficult to secure, and difficult to evolve without breaking consumers. A shared schema turns every column change into a potentially breaking change for every service that reads it.
         </p>
@@ -55,14 +59,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Data Coupling Through Shared Persistence</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Data coupling is the most insidious form of service coupling because it is invisible in code-level dependency graphs. When service A reads from a table that service B writes to, there is no import statement, no function call, and no API contract that reveals the dependency. The coupling lives entirely in the database schema. This makes the dependency invisible to build systems, invisible to deployment pipelines, and invisible to developers who join the team months later.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The coupling manifests in several concrete ways. <strong>Schema coupling</strong> means that any column added, removed, renamed, or retyped affects every service that queries that table. A service that added an index to optimize its own queries can degrade write performance for other services sharing the table. <strong>Semantic coupling</strong> occurs when services interpret the same column differently: one service treats a nullable <code>status</code> field as &ldquo;pending when null&rdquo; while another treats it as &ldquo;unknown when null.&rdquo; <strong>Temporal coupling</strong> arises when services must be deployed in a specific order because a schema migration changes the data format that downstream services expect.
-        </p>
+        </HighlightBlock>
         <p>
           Data coupling also creates correctness risks. When service B writes directly to a table that service A considers its domain, service B can violate invariants that service A would normally enforce. For example, if an Orders service enforces &ldquo;do not ship unpaid orders&rdquo; through application logic, but a Shipping service writes directly to the orders table to mark an order as shipped, the invariant is silently bypassed. The shared database enables correctness failures that are extremely difficult to detect because no single service is responsible for the full state transition.
         </p>
@@ -106,14 +113,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>How Shared Databases Emerge in Practice</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shared databases rarely start as an architectural decision. They emerge through a predictable sequence of events. A monolith is built with a single database, which is the correct default for a single deployment unit. As the organization grows, teams extract services from the monolith to improve development velocity and deployment independence. The services are deployed separately, but they continue to read and write the original monolith database because migrating data is expensive and risky. Over time, new services are built that also connect to the shared database because it is the easiest integration path. The shared database becomes the system&rsquo;s central nervous system: every service depends on it, and no team can change it without coordinating with every other team.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This emergence pattern is important because it means the shared database is not a design choice; it is a <strong>migration state</strong> that became permanent. Treating it as a permanent architecture is the anti-pattern. Treating it as a transitional state with explicit guardrails and a migration plan is a pragmatic engineering decision.
-        </p>
+        </HighlightBlock>
 
         <h3>Migration Strategies: Escaping the Shared Database</h3>
         <p>
@@ -161,14 +171,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>Shared Database Versus Database-Per-Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fundamental trade-off between shared databases and database-per-service architectures is between short-term development velocity and long-term organizational scalability. A shared database enables rapid development in the early stages of a system because data integration requires no API design, no event schema, and no data synchronization logic. Teams can query directly, join across domains, and iterate quickly. This velocity is real and valuable for startups and small teams.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The cost compounds over time. As the number of services grows, the coordination overhead of schema changes grows quadratically. Each schema change potentially affects every service that reads that table. Performance isolation disappears: one service&rsquo;s inefficient query degrades everyone. Security boundaries blur because shared credentials prevent fine-grained access control. The database becomes a bottleneck for organizational growth because every team&rsquo;s velocity is constrained by the team with the slowest schema review process.
-        </p>
+        </HighlightBlock>
         <p>
           Database-per-service reverses this trade-off. Initial development is slower because every cross-service data access requires an API call or an event subscription. Data consistency becomes eventual rather than immediate. Teams must design APIs, handle failures, and manage data synchronization. However, each service can evolve its schema independently, deploy without coordinating with other teams, isolate its performance characteristics, and enforce its own security policies. The system scales organizationally because each team owns its data and its contracts.
         </p>
@@ -201,14 +214,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Establish Clear Data Ownership</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every table in every database should have a single owning service or team. The owner defines the schema, enforces invariants, manages migrations, and is responsible for data quality. This ownership should be documented and enforced through database credentials: only the owning service should have write access to its tables. Other services that need data should access it through the owner&rsquo;s API or through event subscriptions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Ownership extends beyond write access. The owning service should define the semantic meaning of each column, the valid ranges for values, the lifecycle rules for rows, and the archival and deletion policies. When another service needs data, it should request it through a stable contract—an API endpoint or an event schema—not through direct table access.
-        </p>
+        </HighlightBlock>
 
         <h3>Use Explicit APIs for Cross-Service Data Access</h3>
         <p>
@@ -248,13 +264,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is treating the shared database as a permanent architecture rather than a migration state. Teams accept the coordination overhead as &ldquo;just how things work&rdquo; and stop questioning whether the coupling is necessary. This is organizational learned helplessness, and it is the single biggest barrier to decoupling.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another pitfall is migrating storage without migrating access patterns. Teams move a table to a new database but continue to allow other services to query it directly through the new database&rsquo;s connection string. The physical location of the data changed, but the coupling did not. The migration provided no decoupling benefit and incurred all the operational cost.
-        </p>
+        </HighlightBlock>
         <p>
           Dual-write without compensating transactions is a frequent correctness failure. Teams write to both the old and new stores but do not handle the case where one write succeeds and the other fails. The two stores diverge, and the divergence is discovered weeks later when data inconsistency causes a production incident. The fix is to use compensating transactions or to adopt CDC, which reads the transaction log and guarantees that every committed change is captured exactly once.
         </p>
@@ -274,14 +293,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Platform: Orders and Shipping Coupling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A mid-size e-commerce platform had an Orders service and a Shipping service sharing a database. The Shipping service wrote directly to the <code>orders</code> table to update shipment status. Over time, the Orders service added business invariants: orders could not be shipped until payment was confirmed, inventory was allocated, and fraud checks passed. However, the Shipping service bypassed these checks because it wrote directly to the table. A correctness incident occurred when orders were shipped without payment confirmation, resulting in unrecoverable revenue loss.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The resolution was to restore ownership. The Orders service became the sole writer of the <code>orders</code> table and exposed a <code>transitionShipment</code> API that enforced all invariants. The Shipping service called this API to request shipment. The Orders service published a <code>ShipmentApproved</code> event, which the Shipping service consumed to build a local read model of shippable orders. CDC via Debezium replicated order data to the Shipping service&rsquo;s read model. The shared database was eliminated for this domain, and correctness incidents dropped to zero.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Services: Regulatory Compliance and Data Isolation</h3>
         <p>
@@ -313,14 +335,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: Why is a shared database considered an anti-pattern in microservices architecture?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               A shared database is an anti-pattern because it creates hidden coupling between services that undermines the core benefits of microservices: independent deployment, independent evolution, and clear ownership. When multiple services read and write the same schema, schema changes require cross-team coordination, performance contention in one service degrades all others, and data semantics can drift between services interpreting the same columns differently.
-            </p>
+            </HighlightBlock>
             <p>
               The database becomes an implicit API that is unversioned, unmonitored, and unsecured. Services can bypass each other&rsquo;s business invariants by writing directly to shared tables, creating correctness risks that are extremely difficult to detect. In a production incident, the shared database becomes a single point of failure that couples the blast radius across all dependent services.
             </p>

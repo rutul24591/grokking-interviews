@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function NetworkingFundamentalsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Networking fundamentals</strong> encompass the protocols, devices, and architectural patterns that enable communication between distributed systems. For backend engineers, networking is not abstract theory — it is the foundation upon which every microservice, API, and database connection depends. When a request fails with a timeout, when latency spikes unexpectedly, or when services cannot discover each other, the root cause often lies in networking: misconfigured routes, exhausted NAT ports, firewall rules blocking legitimate traffic, or MTU mismatches causing silent packet drops.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The core challenge in networking is balancing connectivity with security. Every connection path between services is a potential attack vector, yet over-restrictive network policies break legitimate communication and create brittle systems that fail during incidents. Modern cloud networking introduces additional complexity: virtual private clouds (VPCs), software-defined networking (SDN), service meshes, and container networking overlays all operate simultaneously, each with its own configuration model and failure modes. Understanding how these layers interact is essential for debugging production issues and designing resilient architectures.
-        </p>
+        </HighlightBlock>
         <p>
           This guide covers the networking concepts that backend engineers encounter daily: routing and switching (how packets move), NAT (how private services reach the internet), firewalls and security groups (how traffic is filtered), load balancers (how traffic is distributed), and VPNs/private links (how networks are connected securely). Each concept is explained with production examples, operational pitfalls, and debugging strategies drawn from real incidents at scale.
         </p>
@@ -36,16 +40,19 @@ export default function NetworkingFundamentalsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Networking fundamentals are built on several interconnected concepts that govern how data moves between systems and how security boundaries are enforced. Understanding these concepts provides the foundation for debugging connectivity issues and designing network-aware applications.
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Routing:</strong> Routing is the process of forwarding packets between networks based on destination IP addresses. Routers maintain routing tables that map destination prefixes to next-hop addresses. When a packet arrives, the router performs a longest-prefix match to determine the best route. In cloud environments, route tables are explicit configurations attached to subnets, defining where traffic to specific destinations should flow (e.g., 0.0.0.0/0 → Internet Gateway for public subnets, 0.0.0.0/0 → NAT Gateway for private subnets). Routing failures manifest as timeouts or "no route to host" errors, and debugging requires checking route tables at each hop along the path.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Switching:</strong> Switching forwards frames within a single broadcast domain (local network) based on MAC addresses. Switches maintain MAC address tables that map MAC addresses to physical ports. When a frame arrives, the switch looks up the destination MAC and forwards to the appropriate port. If the MAC is unknown, the switch floods the frame to all ports (except the source). Switching is faster than routing because it operates at Layer 2 without IP header inspection, but it is limited to local networks. In cloud environments, switching is abstracted away — the cloud provider handles L2 forwarding, and engineers interact only with L3 routing.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>NAT (Network Address Translation):</strong> NAT allows devices with private IP addresses to communicate with the public internet by translating private IPs to public IPs at the network edge. Source NAT (SNAT) translates the source IP of outbound packets; destination NAT (DNAT) translates the destination IP of inbound packets. NAT maintains a translation table mapping private IP:port pairs to public IP:port pairs. At scale, NAT becomes a bottleneck because each connection consumes a port, and ports are limited (~65,535 per IP). Large systems deploy multiple NAT gateways and monitor port utilization to prevent exhaustion. NAT failures manifest as "Cannot assign requested address" errors when ports are exhausted.
           </li>
@@ -81,9 +88,12 @@ export default function NetworkingFundamentalsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding how traffic flows through network components is essential for debugging and designing resilient systems. A typical request from a user's browser to a backend database traverses multiple network boundaries, each with its own security policies and failure modes.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Typical Request Path in Cloud Architecture</h3>
@@ -106,9 +116,9 @@ export default function NetworkingFundamentalsArticle() {
           </ol>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Network Segmentation by Trust:</strong> Modern cloud architectures segment networks by trust boundary. Public subnets contain entry points (load balancers, bastion hosts) that must be reachable from the internet. Private subnets contain application servers that should only be reachable from public subnets. Isolated subnets contain databases and sensitive services that should only be reachable from specific application subnets. This segmentation limits blast radius: if a public-facing service is compromised, the attacker cannot directly access databases without pivoting through multiple security boundaries.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>East-West vs North-South Traffic:</strong> North-south traffic flows between clients and servers (internet to VPC). East-west traffic flows between services within the VPC (microservice to microservice, application to database). Traditional firewalls focus on north-south traffic, but modern zero-trust architectures also control east-west traffic with service meshes or microsegmentation. This prevents lateral movement: if one service is compromised, the attacker cannot freely access other services within the same network.
@@ -117,6 +127,9 @@ export default function NetworkingFundamentalsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -188,12 +201,12 @@ export default function NetworkingFundamentalsArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">VPN vs Private Link: When to Use Each</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <strong>Use VPN when:</strong> you need to connect entire networks (site-to-site), support remote users (client VPN), or connect to partners/third parties. VPNs are flexible and work over the public internet, but latency and reliability depend on internet quality.
-          </p>
-          <p className="mt-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-3">
             <strong>Use Private Link when:</strong> you need low-latency, high-reliability connectivity between specific services (e.g., VPC to SaaS provider), want to avoid internet exposure entirely, or need to comply with data residency requirements. Private links are more expensive and less flexible but provide dedicated, predictable connectivity.
-          </p>
+          </HighlightBlock>
           <p className="mt-3">
             <strong>Best practice:</strong> Use Private Link for critical service-to-service connectivity (databases, payment processors, SaaS integrations) where latency and reliability matter. Use VPN for network-to-network connectivity, remote access, and non-critical integrations where flexibility is more important than performance.
           </p>
@@ -202,16 +215,19 @@ export default function NetworkingFundamentalsArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production networking requires discipline and operational rigor. These best practices prevent common misconfigurations and accelerate incident response.
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Default-Deny with Explicit Allowlists:</strong> Start with firewall rules that deny all traffic by default, then explicitly allow only known traffic patterns. This prevents accidental exposure of services. Document each allow rule with a ticket number or justification (e.g., "Allow 443 from ALB SG - JIRA-1234"). Review rules quarterly to remove stale entries. Default-allow rules ("allow all from 10.0.0.0/8") are a leading cause of security incidents.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Segment by Environment and Trust:</strong> Separate production, staging, and development environments into different VPCs or subnets with strict boundaries. Production should never be reachable from development. Within production, segment by trust: public subnets for entry points, private subnets for applications, isolated subnets for databases. Use security groups to enforce "need-to-know" communication: databases allow only application security groups, applications allow only load balancer security groups.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Monitor NAT Gateway Metrics:</strong> NAT gateways have port limits (~55,000 ports per gateway, ~1,000 new connections/second). Monitor ports used, packets dropped, and connection rate. Set alerts at 70% utilization. Scale horizontally with multiple NAT gateways for high-traffic services. NAT exhaustion manifests as intermittent "Cannot assign requested address" errors that are notoriously difficult to debug without proper monitoring.
           </li>
@@ -229,16 +245,19 @@ export default function NetworkingFundamentalsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Even experienced engineers fall into networking traps. These pitfalls are common sources of production incidents and debugging delays.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Overlapping CIDR Blocks:</strong> When peering VPCs or connecting on-premises to cloud, overlapping CIDR blocks cause routing failures. VPC-A uses 10.0.0.0/16, VPC-B also uses 10.0.0.0/16 — peering fails because routes conflict. Prevention: centralize CIDR allocation with IPAM tools, document all assignments, validate CIDRs before peering. This is the most common multi-region networking mistake.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Security Group Reference Loops:</strong> Security group A allows traffic from security group B, and security group B allows traffic from security group A. This creates a circular dependency that can cause unexpected behavior during instance launches. Prevention: design security group hierarchy as a DAG (directed acyclic graph), document allowed references, use automation to detect loops.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>MTU Mismatch with Encapsulation:</strong> VPNs, VXLAN, and service meshes add encapsulation overhead (50-100 bytes), reducing effective MTU. If the underlying network has 1500-byte MTU, encapsulated packets may exceed MTU and get fragmented or dropped. Prevention: lower MTU on tunnel interfaces (1400 bytes is safe), enable Path MTU Discovery, test with large payloads.
           </li>
@@ -253,15 +272,18 @@ export default function NetworkingFundamentalsArticle() {
 
       <section>
         <h2>Production Case Studies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-world networking incidents demonstrate how theoretical concepts manifest in production and how systematic debugging accelerates resolution.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Case Study 1: NAT Gateway Port Exhaustion</h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             <strong>Symptom:</strong> Intermittent "Cannot assign requested address" errors when making outbound HTTP requests to third-party APIs. Errors occur 2-3 times per hour, lasting 5-10 minutes each.
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             <strong>Debugging Process:</strong> Application logs showed connection failures. Network team confirmed no firewall issues. <code>netstat</code> revealed thousands of connections in TIME_WAIT state. CloudWatch metrics showed NAT gateway ports at 98% utilization.
           </p>
@@ -317,9 +339,12 @@ export default function NetworkingFundamentalsArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding networking performance characteristics helps set realistic SLOs and identify bottlenecks.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Typical Latency by Network Hop</h3>
@@ -364,12 +389,12 @@ export default function NetworkingFundamentalsArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">NAT Gateway Limits (AWS)</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Ports per NAT Gateway:</strong> ~55,000 unique source ports
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Bandwidth:</strong> Up to 10 Gbps, scales automatically
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Packets per Second:</strong> Varies by packet size, ~1M pps for small packets
             </li>
@@ -385,19 +410,22 @@ export default function NetworkingFundamentalsArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Networking costs are often overlooked until they appear on the monthly bill. Understanding cost drivers helps optimize architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Major Networking Cost Components</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Data Transfer Out:</strong> Internet egress costs $0.09/GB (AWS, first 10TB). This is often the largest networking cost for public-facing services. CDN caching reduces origin egress. Compression reduces payload size.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Cross-AZ Traffic:</strong> Data transfer between AZs costs $0.01/GB each direction. Microservices chattering across AZs can accumulate significant costs. Co-locate communicating services in the same AZ when possible.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>NAT Gateway:</strong> ~$32/month per gateway plus $0.045/GB processed. High-traffic services can incur thousands monthly in NAT processing fees. VPC endpoints eliminate NAT costs for AWS service access.
             </li>
@@ -431,19 +459,22 @@ export default function NetworkingFundamentalsArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Networking and security are inseparable. Every network boundary is a security boundary, and misconfigurations are a leading cause of breaches.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Defense in Depth with Network Segmentation</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Perimeter Security:</strong> WAFs, DDoS protection, and edge firewalls filter malicious traffic before it reaches applications. Cloud providers offer managed services (AWS WAF, Cloudflare) that scale automatically.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Network Segmentation:</strong> Separate public, private, and isolated subnets by trust boundary. Public subnets contain only entry points (load balancers, bastions). Private subnets contain applications. Isolated subnets contain databases. Security groups enforce "need-to-know" communication.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Zero Trust:</strong> Assume the network is hostile. Authenticate and authorize every request, even between services in the same VPC. Use mTLS for service-to-service authentication. Implement least-privilege IAM policies for service accounts.
             </li>
@@ -474,12 +505,15 @@ export default function NetworkingFundamentalsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is the difference between a router and a switch?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What is the difference between a router and a switch?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Switches operate at Layer 2 (data link layer) and forward frames based on MAC addresses within a single broadcast domain (local network). Routers operate at Layer 3 (network layer) and forward packets based on IP addresses between different networks. Switches are faster but limited to local networks; routers enable large-scale connectivity but introduce complexity like route tables and policy enforcement. In cloud environments, switching is abstracted away, and engineers interact primarily with routing configurations.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

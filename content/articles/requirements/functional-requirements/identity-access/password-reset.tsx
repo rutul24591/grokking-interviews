@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function PasswordResetArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Password Reset</strong> (also called Forgot Password) is the self-service flow
           that allows users to regain account access when they've forgotten their password. It is
           one of the most critical security flows — it can be exploited for account takeover if
           implemented incorrectly, yet must remain accessible for legitimate users. Password reset
           is the most common account recovery mechanism, used by billions of users daily across
           web and mobile applications.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/password-reset-flow.svg"
@@ -48,7 +52,7 @@ export default function PasswordResetArticle() {
           caption="Password Reset Flow — showing request, token generation, email delivery, and password update"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, designing a password reset flow requires deep
           understanding of security threats (email enumeration, token guessing, token leakage,
           timing attacks), token generation (cryptographically secure, hash storage), delivery
@@ -56,7 +60,7 @@ export default function PasswordResetArticle() {
           long enough for usability), and post-reset session handling (invalidate all sessions,
           notification emails). The flow must balance security (preventing unauthorized resets)
           with accessibility (legitimate users can recover accounts easily).
-        </p>
+        </HighlightBlock>
         <p>
           Modern password reset has evolved from simple email links to multi-factor recovery
           (email + SMS), risk-based flows (additional verification for high-risk accounts), and
@@ -69,19 +73,22 @@ export default function PasswordResetArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Password reset is built on fundamental concepts that determine how tokens are generated,
           delivered, validated, and how sessions are managed post-reset. Understanding these
           concepts is essential for designing secure reset flows.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Request Reset:</strong> User enters email address on "Forgot Password" page.
           Backend validates email format, checks rate limits (3/hour per email, 10/hour per IP),
           generates token if email exists (don't reveal if exists — prevent enumeration), sends
           reset email. Always show generic response ("If this email exists, we'll send a reset
           link") — never reveal if email is registered. Log request with email, IP, timestamp for
           fraud detection.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Token Generation:</strong> Cryptographically random token (256-bit / 32 bytes)
           generated using crypto.randomBytes(). Store bcrypt hash in database (not plaintext) —
@@ -111,12 +118,15 @@ export default function PasswordResetArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Password reset architecture separates token management from email delivery, enabling
           flexible delivery mechanisms (email, SMS, backup codes) with centralized token
           management. This architecture is critical for handling edge cases (expired tokens,
           multiple reset requests) and optimizing security.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/password-reset-security.svg"
@@ -124,7 +134,7 @@ export default function PasswordResetArticle() {
           caption="Security Measures — showing token hashing, rate limiting, session invalidation, and enumeration protection"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Password reset flow: User navigates to "Forgot Password" page, enters email. Backend
           validates email format, checks rate limits, generates token (crypto.randomBytes(32)),
           stores bcrypt hash with expiry (1 hour), sends reset email via email provider. User
@@ -132,7 +142,7 @@ export default function PasswordResetArticle() {
           checks expiry, checks not used. User enters new password (with strength meter). Backend
           hashes new password (bcrypt/argon2), stores in database, invalidates all sessions,
           deletes reset token, sends confirmation email, redirects to login or dashboard.
-        </p>
+        </HighlightBlock>
         <p>
           Security architecture includes: token hashing (bcrypt, not plaintext), rate limiting
           (prevent abuse — 3/hour per email, 10/hour per IP), enumeration protection (don't reveal
@@ -161,23 +171,26 @@ export default function PasswordResetArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing password reset involves trade-offs between security, user experience, and
           operational complexity. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Token Expiry: Short vs Long</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Short (15 min - 1 hour):</strong> More secure, limits attack window.
               Limitation: users who don't check email quickly get expired tokens, support tickets.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Long (4-24 hours):</strong> Better UX, accommodates delayed email checking.
               Limitation: longer attack window (but still low risk with secure tokens).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> 1 hour for most applications. 15 min for
               high-security (banking, admin accounts). 4-24 hours only for low-security apps.
@@ -227,20 +240,23 @@ export default function PasswordResetArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing password reset requires following established best practices to ensure
           security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use cryptographically secure random tokens (256-bit) — crypto.randomBytes(32), not
           Math.random(). Store token hashes, not plaintext — bcrypt hash of token, prevents token
           exposure in database breach. Set short token expiry (1 hour standard, 15 min for
           high-security). Rate limit reset requests — 3/hour per email, 10/hour per IP, prevent
           abuse. Use generic response messages — "If this email exists, we'll send a reset link",
           prevent email enumeration.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
         <p>
@@ -272,22 +288,25 @@ export default function PasswordResetArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing password reset to ensure secure, usable,
           and maintainable reset flows.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Email enumeration:</strong> "Email not found" reveals registered emails,
             attackers can build email lists. <strong>Fix:</strong> Use generic message "If email
             exists, we'll send reset link". Same response time for all cases (prevent timing
             attacks).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Long token expiry:</strong> Tokens valid for days enables account takeover,
             extended attack window. <strong>Fix:</strong> Set short expiry (1 hour standard, 15
             min for high-security).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Storing plaintext tokens:</strong> Database breach exposes all tokens,
             attackers can reset any password. <strong>Fix:</strong> Store token hashes
@@ -329,17 +348,20 @@ export default function PasswordResetArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Password reset is critical for account recovery. Here are real-world implementations
           from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Platform (Amazon)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> High volume of password resets during holiday sales (100K+
           requests/day). Account takeover attempts via password reset abuse. Elderly customers
           need simple flow.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Rate limiting (3 requests/hour), generic response messages,
           token expiry (1 hour), session invalidation on reset. Simple 3-step flow. Phone support
@@ -437,14 +459,17 @@ export default function PasswordResetArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of password reset design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you prevent email enumeration in password reset?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you prevent email enumeration in password reset?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Always show generic message "If this email exists, we'll send a reset link". Never
               reveal if email is registered. Use same response time for all cases (prevent timing

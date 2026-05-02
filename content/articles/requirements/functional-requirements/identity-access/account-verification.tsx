@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,13 +34,16 @@ export default function AccountVerificationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Account Verification</strong> is the process of confirming user identity through
           email, phone, document upload, or manual review. It prevents fake accounts, enables
           account recovery, ensures reliable communication channels, and meets compliance
           requirements (KYC, AML). Verification is critical for platforms handling sensitive data,
           financial transactions, or regulated content.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/account-verification-flow.svg"
@@ -47,14 +51,14 @@ export default function AccountVerificationArticle() {
           caption="Account Verification Flow — showing verification methods, token generation, validation, and approval workflow"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing account verification requires deep
           understanding of verification methods (email, phone, document, manual), token generation
           and validation, verification workflows (automatic vs manual review), security patterns
           (fraud detection, document validation), and compliance requirements (KYC for financial
           services, age verification for restricted content). The implementation must balance
           security (thorough verification) with user experience (minimize friction).
-        </p>
+        </HighlightBlock>
         <p>
           Modern account verification has evolved from simple email confirmation to multi-factor
           verification (email + phone + document), automated document verification (OCR, facial
@@ -67,19 +71,22 @@ export default function AccountVerificationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Account verification is built on fundamental concepts that determine how users prove
           identity and gain verified status. Understanding these concepts is essential for
           designing effective verification systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Verification Methods:</strong> Email verification (send code/link to email, user
           confirms ownership), Phone verification (SMS OTP or voice call to phone number), Document
           verification (upload government ID, passport, driver's license — automated OCR + manual
           review), Manual review (support team verifies identity via video call, support ticket).
           Each method has different security levels and friction — email/phone are low-friction but
           lower security, document verification is high-security but high-friction.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Verification Token:</strong> Cryptographically random token (256-bit) generated
           for each verification attempt. Store hash in database (not plaintext). Set expiry (24
@@ -103,11 +110,14 @@ export default function AccountVerificationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Account verification architecture separates verification methods from core authentication,
           enabling flexible verification flows with centralized status management. This architecture
           is critical for supporting diverse verification requirements while maintaining security.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/verification-token-flow.svg"
@@ -115,7 +125,7 @@ export default function AccountVerificationArticle() {
           caption="Verification Token Flow — showing token generation, delivery, validation, expiry, and single-use invalidation"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Verification flow: User requests verification (email, phone, document). Backend generates
           token (crypto.randomBytes(32)), stores hash with expiry, sends verification (email/SMS
           with code, document upload instructions). User completes verification (enters code,
@@ -123,7 +133,7 @@ export default function AccountVerificationArticle() {
           marks account as verified, invalidates token, grants appropriate access level. For
           document verification: OCR extracts data, validates against provided info, queues for
           manual review if needed.
-        </p>
+        </HighlightBlock>
         <p>
           Security architecture includes: rate limiting (prevent abuse — 3 verification
           requests/hour), fraud detection (detect suspicious patterns, block known fraud IPs),
@@ -151,23 +161,26 @@ export default function AccountVerificationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing account verification involves trade-offs between security, user experience, and
           operational complexity. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Email vs Phone vs Document Verification</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Email:</strong> Low friction, universal, free. Limitation: lower security
               (email can be compromised), not suitable for high-value accounts.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Phone:</strong> Low friction, works on all phones, SMS costs. Limitation:
               SIM swapping risk, not available in all countries.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Document:</strong> Highest security, compliance (KYC/AML). Limitation: high
               friction, operational cost (manual review), privacy concerns.
@@ -216,19 +229,22 @@ export default function AccountVerificationArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing account verification requires following established best practices to ensure
           security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Generate cryptographically secure tokens (256-bit) — crypto.randomBytes(32), not
           Math.random(). Store token hashes, not plaintext — bcrypt hash, prevents exposure in
           database breach. Set appropriate token expiry (24 hours for email, 10 minutes for SMS).
           Rate limit verification requests — 3/hour per user, prevent abuse. Log all verification
           attempts — detect fraud patterns.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
         <p>
@@ -260,19 +276,22 @@ export default function AccountVerificationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing account verification to ensure secure,
           usable, and maintainable verification systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No token expiry:</strong> Tokens valid forever, security risk.{" "}
             <strong>Fix:</strong> Set appropriate expiry (24 hours for email, 10 minutes for SMS).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Storing plaintext tokens:</strong> Database breach exposes all tokens.{" "}
             <strong>Fix:</strong> Store bcrypt hash of token, not plaintext.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No rate limiting:</strong> Allows brute force attacks on verification.{" "}
             <strong>Fix:</strong> Rate limit verification requests (3/hour per user).
@@ -311,17 +330,20 @@ export default function AccountVerificationArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Account verification is critical for security and compliance. Here are real-world
           implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Payment Platform (Stripe)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> KYC/AML compliance for payment processors. Need to verify
           business identity, beneficial owners. High-value transactions require enhanced
           verification.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Progressive verification — email/phone at signup, document
           verification for higher limits. Automated document verification (OCR), manual review for
@@ -415,14 +437,17 @@ export default function AccountVerificationArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of account verification design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What verification methods do you support and why?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What verification methods do you support and why?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Support multiple methods for different security levels: (1) Email verification —
               low friction, universal, for basic account activation. (2) Phone verification —

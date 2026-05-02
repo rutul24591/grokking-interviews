@@ -184,33 +184,105 @@
           "slug": "high-level-design",
           "subcategories": [
             { "name": "Core Product Systems", "slug": "core-product-systems" },
-            { "name": "Realtime & Collaboration Systems", "slug": "realtime-collaboration-systems" },
-            { "name": "Platform / SDK / Infra Systems", "slug": "platform-sdk-infra-systems" },
+            {
+              "name": "Realtime & Collaboration Systems",
+              "slug": "realtime-collaboration-systems"
+            },
+            {
+              "name": "Platform / SDK / Infra Systems",
+              "slug": "platform-sdk-infra-systems"
+            },
             { "name": "AI / Modern Systems", "slug": "ai-modern-systems" },
-            { "name": "Media & Rich Content Systems", "slug": "media-rich-content-systems" },
-            { "name": "E-commerce & Marketplace", "slug": "ecommerce-marketplace" },
+            {
+              "name": "Media & Rich Content Systems",
+              "slug": "media-rich-content-systems"
+            },
+            {
+              "name": "E-commerce & Marketplace",
+              "slug": "ecommerce-marketplace"
+            },
             { "name": "Social & Engagement", "slug": "social-engagement" },
-            { "name": "Enterprise / SaaS Systems", "slug": "enterprise-saas-systems" },
-            { "name": "Search & Discovery Systems", "slug": "search-discovery-systems" },
+            {
+              "name": "Enterprise / SaaS Systems",
+              "slug": "enterprise-saas-systems"
+            },
+            {
+              "name": "Search & Discovery Systems",
+              "slug": "search-discovery-systems"
+            },
             { "name": "Data-Heavy Systems", "slug": "data-heavy-systems" },
-            { "name": "Messaging & Communication", "slug": "messaging-communication" },
-            { "name": "Security, Auth & Privacy Systems", "slug": "security-auth-privacy-systems" },
-            { "name": "Developer Experience Systems", "slug": "developer-experience-systems" },
-            { "name": "Performance / Scale Edge Cases", "slug": "performance-scale-edge-cases" },
-            { "name": "Cross-Platform & Mobile Systems", "slug": "cross-platform-mobile-systems" },
-            { "name": "Experimentation & Growth Systems", "slug": "experimentation-growth-systems" },
-            { "name": "Knowledge & Content Systems", "slug": "knowledge-content-systems" },
-            { "name": "Emerging & Future Systems", "slug": "emerging-future-systems" },
-            { "name": "Payments & Fintech Systems", "slug": "payments-fintech-systems" },
-            { "name": "Notification Delivery Platform", "slug": "notification-delivery-platform" },
-            { "name": "Scheduling & Calendar Systems", "slug": "scheduling-calendar-systems" },
-            { "name": "File Storage / Cloud Drive Systems", "slug": "file-storage-cloud-drive-systems" },
-            { "name": "Maps & Location Intelligence", "slug": "maps-location-intelligence" },
-            { "name": "Ads & Monetization Systems", "slug": "ads-monetization-systems" },
-            { "name": "Feature Configuration / Admin Systems", "slug": "feature-configuration-admin-systems" },
-            { "name": "Data Import / Export Systems", "slug": "data-import-export-systems" },
-            { "name": "Error Handling & Reliability Systems", "slug": "error-handling-reliability-systems" },
-            { "name": "Personalization Systems", "slug": "personalization-systems" },
+            {
+              "name": "Messaging & Communication",
+              "slug": "messaging-communication"
+            },
+            {
+              "name": "Security, Auth & Privacy Systems",
+              "slug": "security-auth-privacy-systems"
+            },
+            {
+              "name": "Developer Experience Systems",
+              "slug": "developer-experience-systems"
+            },
+            {
+              "name": "Performance / Scale Edge Cases",
+              "slug": "performance-scale-edge-cases"
+            },
+            {
+              "name": "Cross-Platform & Mobile Systems",
+              "slug": "cross-platform-mobile-systems"
+            },
+            {
+              "name": "Experimentation & Growth Systems",
+              "slug": "experimentation-growth-systems"
+            },
+            {
+              "name": "Knowledge & Content Systems",
+              "slug": "knowledge-content-systems"
+            },
+            {
+              "name": "Emerging & Future Systems",
+              "slug": "emerging-future-systems"
+            },
+            {
+              "name": "Payments & Fintech Systems",
+              "slug": "payments-fintech-systems"
+            },
+            {
+              "name": "Notification Delivery Platform",
+              "slug": "notification-delivery-platform"
+            },
+            {
+              "name": "Scheduling & Calendar Systems",
+              "slug": "scheduling-calendar-systems"
+            },
+            {
+              "name": "File Storage / Cloud Drive Systems",
+              "slug": "file-storage-cloud-drive-systems"
+            },
+            {
+              "name": "Maps & Location Intelligence",
+              "slug": "maps-location-intelligence"
+            },
+            {
+              "name": "Ads & Monetization Systems",
+              "slug": "ads-monetization-systems"
+            },
+            {
+              "name": "Feature Configuration / Admin Systems",
+              "slug": "feature-configuration-admin-systems"
+            },
+            {
+              "name": "Data Import / Export Systems",
+              "slug": "data-import-export-systems"
+            },
+            {
+              "name": "Error Handling & Reliability Systems",
+              "slug": "error-handling-reliability-systems"
+            },
+            {
+              "name": "Personalization Systems",
+              "slug": "personalization-systems"
+            },
             { "name": "Other", "slug": "other-hld" }
           ]
         },
@@ -218,21 +290,54 @@
           "name": "Low-Level Design",
           "slug": "low-level-design",
           "subcategories": [
-            { "name": "Component-level / UI Pattern Questions", "slug": "component-level-ui-patterns" },
+            {
+              "name": "Component-level / UI Pattern Questions",
+              "slug": "component-level-ui-patterns"
+            },
             { "name": "Forms & Input Systems", "slug": "forms-input-systems" },
-            { "name": "Data-heavy UI Components", "slug": "data-heavy-ui-components" },
-            { "name": "File, Media & Content Systems", "slug": "file-media-content-systems" },
+            {
+              "name": "Data-heavy UI Components",
+              "slug": "data-heavy-ui-components"
+            },
+            {
+              "name": "File, Media & Content Systems",
+              "slug": "file-media-content-systems"
+            },
             { "name": "Search & Discovery", "slug": "search-discovery" },
-            { "name": "Communication & Collaboration", "slug": "communication-collaboration" },
-            { "name": "Complex Interaction Systems", "slug": "complex-interaction-systems" },
-            { "name": "Networking & Data Systems", "slug": "networking-data-systems" },
+            {
+              "name": "Communication & Collaboration",
+              "slug": "communication-collaboration"
+            },
+            {
+              "name": "Complex Interaction Systems",
+              "slug": "complex-interaction-systems"
+            },
+            {
+              "name": "Networking & Data Systems",
+              "slug": "networking-data-systems"
+            },
             { "name": "Auth & User Systems", "slug": "auth-user-systems" },
-            { "name": "Offline & Advanced UX Systems", "slug": "offline-advanced-ux-systems" },
-            { "name": "State & Interaction Modeling", "slug": "state-interaction-modeling" },
+            {
+              "name": "Offline & Advanced UX Systems",
+              "slug": "offline-advanced-ux-systems"
+            },
+            {
+              "name": "State & Interaction Modeling",
+              "slug": "state-interaction-modeling"
+            },
             { "name": "AI / Modern Systems", "slug": "ai-modern-systems-lld" },
-            { "name": "Web Platform / Browser APIs", "slug": "web-platform-browser-apis" },
-            { "name": "Real-world Scenario LLD", "slug": "real-world-scenario-lld" },
-            { "name": "Architecture / System-level LLD", "slug": "architecture-system-level-lld" }
+            {
+              "name": "Web Platform / Browser APIs",
+              "slug": "web-platform-browser-apis"
+            },
+            {
+              "name": "Real-world Scenario LLD",
+              "slug": "real-world-scenario-lld"
+            },
+            {
+              "name": "Architecture / System-level LLD",
+              "slug": "architecture-system-level-lld"
+            }
           ]
         }
       ]
@@ -276,7 +381,7 @@
           "slug": "leetcode",
           "subcategories": [
             { "name": "Patterns", "slug": "patterns" },
-            { "name": "Problems", "slug": "problems" }
+            { "name": "Problems", "slug": "problems", "comingSoon": true }
           ]
         },
         {

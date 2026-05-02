@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function PerceivedPerformanceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Perceived Performance</strong> refers to how fast users feel
           an application is, which often differs significantly from actual
           measured performance. While objective metrics like Load Time, Time to
@@ -49,8 +53,8 @@ export default function PerceivedPerformanceArticle() {
           search 20% less, even though search quality was unchanged. LinkedIn
           discovered that optimizing perceived performance — not actual load
           time — increased user engagement by 15%.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The distinction between perceived and actual performance becomes even
           more critical when examining real-world production systems at scale.
           In large organizations, engineering teams often spend months shaving
@@ -67,7 +71,7 @@ export default function PerceivedPerformanceArticle() {
           to optimizing what the human experiences, is what separates senior
           engineers from staff and principal engineers who understand that
           system design ultimately serves human cognition, not server metrics.
-        </p>
+        </HighlightBlock>
         <p>
           The importance of perceived performance stems from how human cognition
           works. Users form impressions within milliseconds, and their patience
@@ -130,7 +134,10 @@ export default function PerceivedPerformanceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The psychology of waiting explains why some wait times feel longer
           than others. Occupied time feels shorter than unoccupied time — users
           perceive time as passing more quickly when they are engaged, which is
@@ -146,8 +153,8 @@ export default function PerceivedPerformanceArticle() {
           peak-end rule states that users remember experiences based on their
           peak (most intense moment) and end, not the average — a smooth, fast
           completion can make a slow process feel acceptable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The psychological principle of occupied versus unoccupied time has
           deep implications for how we design loading experiences. When users
           are given nothing to process visually, their attention shifts to the
@@ -164,7 +171,7 @@ export default function PerceivedPerformanceArticle() {
           backend code. The engineering effort to implement skeleton screens is
           modest compared to the gains, which is why this pattern has become
           ubiquitous in applications serving at scale.
-        </p>
+        </HighlightBlock>
         <p>
           The concept of fair versus unfair waits deserves particular attention
           in system design because it directly maps to architectural decisions
@@ -281,7 +288,10 @@ export default function PerceivedPerformanceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The perceived performance architecture integrates multiple techniques
           that work together to create the perception of speed. Progressive
           loading is the foundational pattern — content is loaded and displayed
@@ -293,8 +303,8 @@ export default function PerceivedPerformanceArticle() {
           image loading shows low-quality image placeholders (tiny blurred
           versions) that sharpen as the full image downloads, providing
           continuous visual feedback rather than a sudden appearance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The architecture of progressive loading at production scale requires
           careful orchestration between the server, the network layer, and the
           client rendering engine. On the server side, APIs must be designed to
@@ -314,7 +324,7 @@ export default function PerceivedPerformanceArticle() {
           boundary can display its own loading state while waiting for its
           specific data dependency, allowing the page to fill in progressively
           as each boundary resolves independently.
-        </p>
+        </HighlightBlock>
         <p>
           Smart loading indicators are selected based on the type and duration
           of the wait. Spinners are appropriate for indeterminate waits of
@@ -432,7 +442,10 @@ export default function PerceivedPerformanceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Skeleton screens versus loading spinners is a well-studied trade-off.
           Skeleton screens reduce perceived wait time by 20-30% compared to
           spinners because they provide visual information about what is loading
@@ -445,8 +458,8 @@ export default function PerceivedPerformanceArticle() {
           happening. The recommendation is to use skeleton screens for all
           content loading scenarios and reserve spinners for brief operations
           (button click feedback, form submission confirmation).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The engineering cost analysis of skeleton screens versus spinners
           reveals a nuanced decision framework that depends on the scale and
           complexity of the application. For a small application with a handful
@@ -470,7 +483,7 @@ export default function PerceivedPerformanceArticle() {
           hinges on the number of unique loading contexts, the maturity of the
           design system, and the organization&apos;s willingness to invest in
           skeleton infrastructure upfront to reduce per-feature costs over time.
-        </p>
+        </HighlightBlock>
         <p>
           Optimistic UI versus pessimistic UI (waiting for server confirmation
           before updating) is a trade-off between perceived speed and data
@@ -549,7 +562,10 @@ export default function PerceivedPerformanceArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use skeleton screens for all content loading states — list items,
           detail pages, dashboards, and search results. Design skeletons that
           match the actual content layout: same number of lines, same spacing,
@@ -558,8 +574,8 @@ export default function PerceivedPerformanceArticle() {
           that reveal sections as they load — the header skeleton is replaced
           first, then the body, then the sidebar — creating the perception that
           the page is filling in progressively rather than loading all at once.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The design and implementation of progressive skeleton systems requires
           coordination between the design team, the frontend engineering team,
           and the backend API team to ensure that skeleton sections map cleanly
@@ -582,7 +598,7 @@ export default function PerceivedPerformanceArticle() {
           percent opacity — so that it is visible without being distracting. On
           dark themes, the shimmer inverts to a dark-to-lighter-dark sweep with
           similar subtlety.
-        </p>
+        </HighlightBlock>
         <p>
           Apply optimistic UI updates for actions with high success rates. When
           a user likes a post, update the like count and button state
@@ -672,7 +688,10 @@ export default function PerceivedPerformanceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Fake progress bars that jump to 100% before the operation is complete
           destroy user trust. When a progress bar reaches 100% and the operation
           is still running, users perceive the application as broken or
@@ -681,8 +700,8 @@ export default function PerceivedPerformanceArticle() {
           and spinners for operations without measurable progress. If a progress
           bar must be used for an indeterminate operation, cap it at 90% and
           only jump to 100% when the operation actually completes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The erosion of trust caused by fake progress bars is one of the most
           damaging perceived performance anti-patterns because it actively
           penalizes the application for attempting to optimize perception. When
@@ -703,7 +722,7 @@ export default function PerceivedPerformanceArticle() {
           of the progress bar so the user sees granular advancement rather than
           a monotonically increasing bar that stalls near the end. If the
           operation has no measurable stages, a spinner is the honest choice.
-        </p>
+        </HighlightBlock>
         <p>
           Overusing optimistic UI for actions that frequently fail creates a
           confusing user experience where changes appear and disappear
@@ -793,7 +812,10 @@ export default function PerceivedPerformanceArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Facebook pioneered skeleton screens to address user perception that
           the app was slow during content loading, even though actual load times
           were competitive. They replaced loading spinners with skeleton screens
@@ -802,8 +824,8 @@ export default function PerceivedPerformanceArticle() {
           though actual load times were unchanged, and engagement increased by
           8%. This case study established skeleton screens as the standard
           loading pattern for content-heavy applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Facebook&apos;s skeleton screen implementation deserves deeper
           examination because it illustrates how perceived performance
           optimization at scale requires organizational commitment beyond a
@@ -827,7 +849,7 @@ export default function PerceivedPerformanceArticle() {
           translated to millions of additional daily interactions, demonstrating
           that perceived performance optimization at Facebook&apos;s scale is
           not a UX nicety but a business-critical investment.
-        </p>
+        </HighlightBlock>
         <p>
           Twitter implemented optimistic UI for tweeting — tweets appear
           instantly in the timeline with a &quot;sending&quot; indicator. If the
@@ -919,12 +941,15 @@ export default function PerceivedPerformanceArticle() {
 
       <section>
         <h2>Advanced Perceived Performance Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Skeleton screen design systems require a systematic approach to creating loading placeholders that are consistent, maintainable, and accurate representations of the eventual content across the entire application. The design system defines skeleton variants that correspond to each content component — a card skeleton matches the card component&apos;s layout (image placeholder, title placeholder, text line placeholders, action button placeholders), a list skeleton matches the list item layout, a table skeleton matches the column structure, and a form skeleton matches the input field layout. Each skeleton uses the same CSS grid or flexbox layout as its corresponding content component, ensuring pixel-perfect alignment when the skeleton transitions to content. The shimmer animation — a subtle gradient sweep across the placeholder areas — is implemented as a CSS animation on a pseudo-element (::before or ::after) with a linear gradient that moves from left to right, using the animation property with a 1-2 second duration and infinite iteration count. The shimmer color should be subtle — a slightly lighter shade than the placeholder background — to indicate activity without being distracting. The skeleton design system should be built as a set of reusable React components (SkeletonCard, SkeletonList, SkeletonTable, SkeletonForm) that accept the same props as their content counterparts (number of items, column count, variant) so that the skeleton can be configured to match the specific content layout it is replacing. The skeleton components should be integrated into the data fetching layer — when a query is in the loading state, the skeleton component is rendered; when the data arrives, the skeleton is replaced by the content component. This integration is handled automatically by data fetching libraries (React Query&apos;s isLoading state, SWR&apos;s isLoading flag, Apollo Client&apos;s loading state) that manage the transition between loading and loaded states.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Optimistic UI failure handling is the most critical and most overlooked aspect of optimistic update implementation. The happy path — update local state, fire API request, receive success, done — is trivial. The failure path is where the engineering challenge lies, because when a request fails, the application must not only revert the visual change but also communicate clearly to the user what happened, why it happened, and what they can do about it. A rollback that silently reverts a change without explanation leaves users confused and distrustful of the application — they saw their action succeed (the message was sent, the like was applied, the item was added to cart) and then it disappeared without explanation. The implementation must queue optimistic updates with metadata about the original server state (the value before the update), the attempted change (the value the user set), and the rollback procedure (how to revert to the original state). When the API request fails, the rollback procedure is executed — the local state is reverted to the original server state, and a user-facing error notification is displayed (&quot;Your message could not be sent. Please try again.&quot;). For critical actions (payment submissions, account changes, order placements), optimistic UI is inappropriate — the user should see a loading indicator and wait for server confirmation before the action is considered complete. For non-critical actions (liking posts, following users, updating preferences), optimistic UI with rollback is appropriate because the success rate is high and the rollback is rare. The failure rate should be monitored — if more than 5% of optimistic updates fail, the feature should be reconsidered (the API may be unreliable, the network conditions may be poor, or the action may not be suitable for optimistic UI).
-        </p>
+        </HighlightBlock>
         <p>
           Prefetching architecture at scale involves intelligent prediction of user navigation intent and pre-loading resources for predicted navigations without consuming excessive bandwidth or degrading the current page&apos;s performance. The prediction model ranges from simple heuristics to machine learning approaches. Simple heuristics include link hover detection (when the user hovers over a link for 100-200ms, there is a high probability they will click it within the next 500ms), viewport-based prefetching (links visible in the viewport are candidates for prefetching, under the assumption that visible links are likely next navigations), and navigation history analysis (users who visit page A frequently navigate to page B next, so prefetch page B when the user is on page A). More advanced approaches use Markov chain models trained on aggregate navigation data to predict the probability of each possible next page given the current page and the user&apos;s recent navigation history. Next.js implements viewport-based prefetching by default — when a Link component enters the viewport, Next.js prefetches the JavaScript bundle for the linked page in the background, using requestIdleCallback to ensure the prefetch does not compete with critical resources. Google&apos;s Guess.js uses a Markov chain model to predict navigation probabilities and prefetches resources for links that exceed a confidence threshold (typically 30-50% probability). The critical engineering constraint in all prefetching systems is bandwidth budgeting — every prefetched byte that goes unused is waste, and on metered connections or bandwidth-constrained environments, aggressive prefetching can actively harm the user experience. Production prefetching systems implement adaptive strategies that reduce or disable prefetching on slow connections (navigator.connection.effectiveType is &quot;3g&quot; or slower), limit the total concurrent prefetch bandwidth (no more than 2-3 prefetches in flight simultaneously), and prioritize prefetching for pages that are small (under 100KB) and likely to be visited (confidence above 50%).
         </p>
@@ -941,13 +966,16 @@ export default function PerceivedPerformanceArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between actual and perceived
               performance?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Actual performance is measured by objective metrics — load
               time, Time to Interactive, First Contentful Paint, API response
               times. Perceived performance is how fast users feel the
@@ -958,7 +986,7 @@ export default function PerceivedPerformanceArticle() {
               for terrible actual performance — skeleton screens on a 10-second
               load still feel slow. Combine both: optimize actual performance
               first, then enhance with perceived performance techniques.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               The distinction matters in interviews because it reveals whether
               a candidate understands that user experience is ultimately

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Rollback strategies</strong> are methods for reverting a system to a known-good state after a faulty change. They are a core element of safe deployment and incident response, providing a reliable recovery path when a change introduces errors, performance degradation, or data corruption. Rollback is not just a deployment concern—it applies to code changes, configuration updates, schema migrations, and infrastructure modifications. Every change that can go wrong needs a rollback strategy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A rollback is not always a simple code revert. Data migrations, schema changes, and irreversible side effects often complicate the process. If the new version changed a database schema, sent emails to users, or charged customers, rolling back the code does not undo those effects. The rollback strategy must address not just the code but the side effects, the data state, and the compatibility between the old and new versions.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, rollback strategies require balancing four competing concerns. <strong>Speed</strong> means rollback must be fast enough to fit within the error budget—the longer rollback takes, the more user impact accumulates. <strong>Safety</strong> means rollback must not introduce new problems—rolling back to a version that is incompatible with the current schema or data state creates a second incident. <strong>Scope</strong> means rollback must be targeted—reverting an entire system because one feature is faulty is unnecessarily disruptive. <strong>Reversibility</strong> means the rollback itself must be reversible—if the rollback makes things worse, you need a path back to the previous state.
         </p>
@@ -48,6 +52,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/reliability-fault-tolerance/rollback-strategy-comparison.svg"
@@ -56,12 +63,12 @@ export default function ArticlePage() {
         />
 
         <h3>Blue-Green Deployments</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Blue-green deployment maintains two identical production environments: blue (current) and green (new). Traffic flows to the blue environment while the green environment is deployed and validated. Once the green environment is confirmed healthy, traffic is switched from blue to green. If issues are detected, traffic is switched back to blue—instant rollback.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Blue-green provides the fastest rollback—traffic switching takes seconds to minutes, depending on the routing mechanism. The trade-off is infrastructure cost: you need two complete production environments, which doubles infrastructure spend for the deployment duration. For stateful services, blue-green also requires careful data management—both environments must be compatible with the same database schema, or data synchronization is needed during the transition.
-        </p>
+        </HighlightBlock>
         <p>
           Blue-green is ideal for stateless services and services with backward-compatible schema changes. It is less suitable for services with irreversible side effects or incompatible schema changes, because the old version may not work with the new data state. Blue-green works best when both versions can coexist with the same data and infrastructure.
         </p>
@@ -128,14 +135,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust rollback architecture treats rollback as a first-class capability with standardized patterns, automated triggers, and rehearsed procedures. The flow begins with a change (code deploy, config update, schema migration) that introduces a problem. Detection systems identify the issue through error rate spikes, latency degradation, or resource exhaustion. The rollback decision is made—automated or manual—based on predefined criteria. The rollback is executed—traffic switch, flag disable, or code redeploy. Recovery is validated through monitoring and health checks.
-        </p>
+        </HighlightBlock>
 
         <h3>Rollback vs Fix-Forward Decision Framework</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Not every incident should be rolled back. If the failure is data-related, rollback may not fix the issue and can make it worse. If the new version fixed a critical security vulnerability, rollback reintroduces the vulnerability. Teams should define explicit criteria for when to rollback versus fix forward.
-        </p>
+        </HighlightBlock>
         <p>
           Rollback is appropriate when the issue is caused by the change itself (bug, misconfiguration, performance regression) and rolling back restores the previous healthy state. Fix-forward is appropriate when rollback would not restore correctness (schema incompatibility, data corruption), when rollback would reintroduce another critical issue (security vulnerability), or when the fix is well-scoped and the recovery path is clear.
         </p>
@@ -168,12 +178,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rollback speed versus rollback safety is the fundamental trade-off. Aggressive rollback—immediate traffic switch, automatic rollback on any metric deviation—reduces downtime but can revert fixes or security changes and can be triggered by transient issues. Conservative rollback—manual assessment, multi-signal confirmation, staged rollback—protects correctness but prolongs incidents. The right balance depends on the service's availability target and the cost of incorrect rollback.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature flags offer the most flexibility but add the most complexity. Blue-green deployments offer the fastest rollback but cost the most in infrastructure. Canary releases offer the best balance of speed, cost, and risk reduction but require sophisticated monitoring and automated traffic shifting. The choice depends on the service's criticality, the team's operational maturity, and the available infrastructure budget.
-        </p>
+        </HighlightBlock>
         <p>
           Data migrations represent the hardest rollback trade-off. Two-phase migrations (additive changes, backfill, then removal) are safe but increase short-term complexity and maintenance burden. Single-phase migrations (direct schema change) are simple but make rollback impossible or risky. The safe approach is always two-phase, even though it requires more engineering effort upfront.
         </p>
@@ -184,12 +197,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use backward-compatible migrations for all schema changes. Deploy code that supports both old and new schemas, migrate data gradually, and remove old schema only after the system has been stable. This makes rollback a valid option rather than a gamble. Document the rollback path for every migration and test it in staging before executing in production.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Automate rollbacks with guardrails. Define explicit rollback criteria—error budget burn rate, error rate thresholds, latency degradation—and automate the rollback trigger when criteria are met. Guard the automation with sanity checks: require multiple independent signals, include cooldowns to prevent rollback storms, and keep manual overrides available. Human delays are a leading cause of extended outages—automation reduces decision time.
-        </p>
+        </HighlightBlock>
         <p>
           Keep feature flags under governance. Audit flags regularly, document default states, define ownership for each flag, and remove stale flags quickly. Flag debt—the accumulation of unused or forgotten flags—creates unexpected interactions and makes rollback unpredictable. A feature flag system without governance is worse than no feature flag system because it creates a false sense of safety.
         </p>
@@ -203,12 +219,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rolling back code while data remains changed is the most dangerous rollback pitfall. If a schema migration removes a column and the rollback deploys old code that expects that column, the system remains broken. The rollback must account for data state changes, not just code changes. This is why backward-compatible migrations are essential—they ensure that both old and new code work with the current data state.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rolling back too late, after users have already interacted with the new logic in irreversible ways, creates compound damage. If the new version charged users, sent emails, or changed permissions, rolling back the code does not reverse those effects. The rollback strategy must include compensations and customer-facing communication, not only deployment mechanics. Changes with irreversible side effects should ship behind feature flags with staged rollout.
-        </p>
+        </HighlightBlock>
         <p>
           Feature flag debt causes unpredictable rollback behavior. If flags are not well-governed, the system can become inconsistent—some features enabled, some disabled, with unclear interactions between them. Rollback becomes unpredictable because the system state depends on the combination of active flags, not just the deployed code. Regular flag audits and automatic flag expiration prevent this pitfall.
         </p>
@@ -222,16 +241,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce: Blue-Green Rollback During Black Friday</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce platform deployed a new checkout service during the week before Black Friday using blue-green deployment. The new version passed all staging tests and initial health checks. After switching traffic to the new version, monitoring detected a 3 percent error rate increase in payment processing—a bug that only appeared under production load patterns. The team rolled back by switching traffic back to the blue environment within 90 seconds. The instant rollback prevented what would have been a significant revenue impact during the highest-traffic week of the year.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Platform: Canary Release with Automated Rollback</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A B2B SaaS platform deployed a new search service using canary releases with automated rollback triggers. The rollout started at 1 percent of traffic with monitoring on error rate, p99 latency, and CPU utilization. At 10 percent, p99 latency increased from 200ms to 800ms due to an unoptimized query pattern. The automated rollback trigger detected the latency degradation and shifted traffic back to the old version within 2 minutes. The team identified the query issue, fixed it, and re-deployed the following day with a successful rollout.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Services: Feature Flag Rollback for Compliance</h3>
         <p>
@@ -249,14 +271,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How do you roll back a migration that removed data?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               You usually cannot. Data-destructive migrations should be treated as one-way doors. The safe approach is additive changes first: add new schema, write both old and new formats, backfill with checkpoints, and only later remove old fields after verification. This makes rollback possible because the old data and schema remain available.
-            </p>
+            </HighlightBlock>
             <p>
               If data is already removed, recovery depends on backups, event logs, or reconstruction from sources of truth. Restore from the most recent backup and replay any changes that occurred after the backup. If you have event sourcing or write-ahead logs, replay events to reconstruct the deleted data. The key lesson is to plan the recovery path before executing a destructive migration.
             </p>

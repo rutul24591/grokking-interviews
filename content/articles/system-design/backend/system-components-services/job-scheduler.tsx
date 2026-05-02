@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -24,21 +25,24 @@ export default function JobSchedulerArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>job scheduler</strong> is a distributed system that manages the lifecycle of asynchronous tasks from
           creation through execution to completion or failure. It provides a reliable execution layer for work that
           cannot or should not be processed synchronously within the request-response cycle: email delivery, report
           generation, data synchronization, image processing, batch computations, and event-driven workflows. The job
           scheduler decouples work production from work consumption, enabling producers to enqueue tasks at any rate
           while consumers process them at their own pace.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Job schedulers are foundational infrastructure in modern distributed systems. They absorb traffic spikes by
           buffering work in queues, they provide retry semantics that make operations resilient to transient failures,
           they enable delayed and recurring execution for time-based workflows, and they provide observability into
           system throughput and backlog. Without a job scheduler, systems must process all work synchronously, creating
           tight coupling between components and making the system fragile to load spikes and downstream failures.
-        </p>
+        </HighlightBlock>
         <p>
           The fundamental architectural challenge in job scheduler design is ensuring reliable execution in the face of
           worker failures, network partitions, and resource contention. A job that is claimed by a worker but never
@@ -59,7 +63,10 @@ export default function JobSchedulerArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Job queues</strong> are the central data structure of a scheduler, storing pending jobs ordered by
           priority and arrival time. Production schedulers use multiple queues: a high-priority queue for time-sensitive
           jobs that must be processed immediately, a medium-priority queue for standard work, and a low-priority queue
@@ -68,8 +75,8 @@ export default function JobSchedulerArticle() {
           scheduler restarts. The queue ordering determines which job is dispatched next: strict priority ordering
           always drains the high-priority queue before touching lower queues, while weighted fair queuing allocates a
           percentage of processing capacity to each queue to prevent starvation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Job lifecycle management</strong> tracks each job through states: pending (waiting in queue), running
           (claimed by a worker), completed (successfully executed), failed (execution error), retrying (waiting for
           retry after backoff), and dead (moved to dead letter queue after exhausting retries). State transitions are
@@ -77,7 +84,7 @@ export default function JobSchedulerArticle() {
           claims a job from the queue, processes it, and marks it complete or failed. If the worker crashes during
           processing, the job is detected as stale through a heartbeat or visibility timeout mechanism and re-queued for
           another worker to claim.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Visibility timeouts</strong> are the primary mechanism for detecting failed jobs. When a worker claims
           a job, the scheduler sets a visibility timeout (e.g., five minutes) during which the job is invisible to
@@ -125,20 +132,23 @@ export default function JobSchedulerArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The job scheduler architecture consists of job producers that create and enqueue jobs, a job queue layer that
           stores and orders pending jobs, a scheduler engine that dispatches jobs to workers, a worker pool that
           executes job handlers, a state management layer that tracks job lifecycle and handles failure detection, and a
           monitoring system that provides observability into queue health and worker performance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Job producers enqueue jobs by calling the scheduler API with a job type, payload, priority, and optional
           scheduling parameters (delay, recurrence). The scheduler validates the request, assigns a unique job ID and
           idempotency key, and stores the job in the appropriate queue based on priority. For delayed jobs, the job is
           stored in a sorted set (Redis ZADD) ordered by the scheduled execution time, and a background process
           periodically checks for jobs whose execution time has arrived and moves them to the active queue. For recurring
           jobs, the scheduler maintains a cron expression and creates a new job instance each time the schedule fires.
-        </p>
+        </HighlightBlock>
         <p>
           The scheduler engine dispatches jobs from the queue to available workers using a claim-based model. Workers
           poll the queue (or receive jobs via push from a message broker) and atomically claim the next available job.
@@ -176,7 +186,10 @@ export default function JobSchedulerArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The primary trade-off in job scheduler design is between delivery guarantee and performance. At-most-once
           delivery (fire-and-forget) provides the highest throughput because the scheduler does not track job completion
           or retry failures, but jobs can be lost if the worker crashes. At-least-once delivery (retry on failure)
@@ -185,8 +198,8 @@ export default function JobSchedulerArticle() {
           requires a distributed transaction or two-phase commit protocol that adds significant latency and complexity.
           Production systems overwhelmingly choose at-least-once delivery with idempotent handlers because it provides
           the best balance of reliability and performance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Building a job scheduler in-house versus adopting an existing solution (Celery, BullMQ, Sidekiq, AWS SQS with
           Lambda, Apache Kafka) involves a build-versus-buy decision. Existing solutions provide mature implementations
           of queue management, retry logic, visibility timeouts, dead letter queues, and monitoring integrations. They
@@ -197,7 +210,7 @@ export default function JobSchedulerArticle() {
           the reliability of established solutions. Organizations with standard job scheduling needs should adopt
           existing solutions, while organizations with specialized requirements (custom scheduling algorithms,
           integration with proprietary systems) may justify the investment in a custom scheduler.
-        </p>
+        </HighlightBlock>
         <p>
           The choice between Redis-based and database-based job storage affects performance, durability, and operational
           complexity. Redis-based queues (using lists, sorted sets, and streams) provide sub-millisecond latency and
@@ -240,22 +253,25 @@ export default function JobSchedulerArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design all job handlers to be idempotent. Each job should have a unique idempotency key that is checked
           against a deduplication store before execution. If the key is already present, the handler returns the cached
           result without re-executing. The deduplication store should use Redis SETNX with a TTL equal to the maximum
           retry window, ensuring that old idempotency keys are eventually cleaned up. Idempotency is the single most
           important property for reliable job processing because it prevents the duplicate execution that is inherent in
           at-least-once delivery semantics.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement exponential backoff with jitter for retry strategies. The backoff formula should be base-delay
           multiplied by two to the power of the retry count, capped at a maximum delay, plus a random jitter component
           to prevent retry storms. For example, with a base delay of one second and maximum delay of sixty seconds, the
           first retry happens after one to two seconds, the second after two to four seconds, the third after four to
           eight seconds, and so on. The jitter (uniform random value between zero and the base delay) spreads retries
           across time, preventing the thundering herd problem where many failed jobs retry simultaneously.
-        </p>
+        </HighlightBlock>
         <p>
           Monitor queue depth continuously and auto-scale workers based on backlog. Set up alerts for when queue depth
           exceeds a configurable threshold (e.g., one thousand pending jobs), and configure auto-scaling to add workers
@@ -291,21 +307,24 @@ export default function JobSchedulerArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not making job handlers idempotent is the most common and destructive pitfall in job scheduler usage. When a
           job is retried due to a false failure detection (the worker completed the job but crashed before acknowledging
           completion), the duplicate execution can cause data corruption, duplicate notifications, double charges, and
           other serious issues. Every job handler must be designed to handle duplicate execution gracefully: check
           whether the work has already been done and skip execution if so. This requires storing the idempotency key and
           result in a durable store before performing any side effects.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Setting visibility timeouts too short causes excessive duplicate execution and wasted resources. If the
           visibility timeout is shorter than the actual job duration, the job is re-queued and executed by another worker
           while the first worker is still processing. This creates duplicate work, increases load on downstream
           services, and can cause data inconsistency if the job handler is not idempotent. The visibility timeout must
           be set based on measured job duration distribution, not guessed arbitrarily.
-        </p>
+        </HighlightBlock>
         <p>
           Using a single queue for all job types creates head-of-line blocking and unpredictable latency. When a burst
           of slow jobs enters the queue, fast jobs behind them are delayed until the slow jobs are processed. This is
@@ -340,20 +359,23 @@ export default function JobSchedulerArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Celery is the most widely used job scheduler in the Python ecosystem, powering asynchronous task processing
           for thousands of organizations. Celery uses Redis or RabbitMQ as the message broker, provides retry logic with
           exponential backoff, supports task chaining and grouping for complex workflows, and includes a monitoring
           dashboard (Flower) for real-time queue health. Celery&apos;s architecture demonstrates the producer-consumer
           pattern with a broker-based queue, worker pool, and result backend for storing task outcomes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Sidekiq is the dominant job scheduler in the Ruby ecosystem, using Redis as the backing store and providing
           high-throughput job processing with a multi-threaded worker model. Sidekiq supports priority queues, delayed
           jobs, recurring jobs, and a web-based monitoring interface. Sidekiq Enterprise adds rate limiting, reliability
           features (persistent jobs that survive restarts), and dead job tracking. Sidekiq&apos;s design demonstrates
           how to achieve high throughput with Redis-based queues and multi-threaded workers.
-        </p>
+        </HighlightBlock>
         <p>
           Netflix uses a custom job scheduler called Conductor for orchestrating complex microservice workflows.
           Conductor provides a JSON-based DSL for defining workflows as directed acyclic graphs of tasks, with support
@@ -380,12 +402,15 @@ export default function JobSchedulerArticle() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How would you design a job scheduler that guarantees no job is lost, even if the scheduler crashes during dispatch?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The key is durable job storage and atomic state transitions. Jobs are stored in a durable queue backed by
             PostgreSQL or Redis with persistence enabled (AOF with fsync every second). When the scheduler dispatches a
             job to a worker, it performs an atomic claim operation: the job state is updated from pending to running
@@ -398,14 +423,14 @@ export default function JobSchedulerArticle() {
             failed) and re-queues them. This combination of durable storage, atomic state transitions, leader election,
             and recovery processes ensures that no job is lost even if the scheduler crashes at any point during
             dispatch.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 2: How do you prevent duplicate job execution when a worker crashes after completing the job but before acknowledging completion?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             This is the classic distributed systems problem of distinguishing between a failed job and a completed job
             with a lost acknowledgment. The solution is idempotency at the job handler level. Each job has a unique
             idempotency key that is stored in a deduplication store before any side effects are performed. When a worker
@@ -416,7 +441,7 @@ export default function JobSchedulerArticle() {
             before acknowledging completion, the job is re-queued and claimed by another worker. The new worker checks
             the deduplication store, finds the idempotency key, and skips execution. The deduplication store should use
             Redis SETNX with a TTL equal to the maximum retry window, ensuring that old keys are eventually cleaned up.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,21 +24,24 @@ export default function BitManipulationArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Bit manipulation uses the binary representation of integers as a first-class data
         structure. Each bit is a flag, each integer is a set, and bitwise operators are the
         algebra. The pattern&apos;s win is twofold: a 32-bit int can represent any subset of a
         32-element universe in O(1) memory, and bitwise operations compute on all bits in
         parallel — a single AND tests all 32 flags at once. For problem sizes that fit in 30 to
         60 bits, this is the difference between brute force and feasible.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Recognition signals: the problem mentions binary representation, parity, XOR, set
         membership of a small universe, &quot;every element appears twice except&quot;, &quot;
         count the bits&quot;, &quot;subsets&quot;, &quot;maximum XOR&quot;. Implicit signals
         include constraints like n ≤ 20 (bitmask DP fits) or operations on integers without
         explicit set machinery.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         The pattern matters because it appears in low-level system code, hash table internals,
         cryptographic primitives, networking flag fields, and SIMD-style algorithms. Mastering
@@ -52,18 +56,21 @@ export default function BitManipulationArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Six operators.</strong> AND (and; intersection of bits), OR (or; union of bits),
         XOR (exclusive-or; toggle/parity), NOT (one&apos;s complement), shift left (multiply by
         powers of two), shift right (divide). Java distinguishes arithmetic right shift (&gt;&gt;,
         sign-extending) from logical right shift (&gt;&gt;&gt;, zero-filling); Python only has
         arithmetic; C and JavaScript have both with type quirks.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Bit primitives.</strong> Set bit i: x | (1 &lt;&lt; i). Clear bit i: x &amp;
         ~(1 &lt;&lt; i). Toggle bit i: x ^ (1 &lt;&lt; i). Test bit i: (x &gt;&gt; i) &amp; 1.
         These four are the lingua franca of every bit-fiddling algorithm.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Lowest set bit.</strong> x &amp; -x isolates the lowest set bit. This is a
         consequence of two&apos;s complement: -x flips all bits and adds one, leaving only the
@@ -105,16 +112,19 @@ export default function BitManipulationArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/bit-manipulation-diagram-1.svg" alt="Bit manipulation toolkit" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The single-number template (Leetcode 136): XOR all elements; the result is the unique
         survivor because each duplicated value cancels. O(n) time, O(1) space.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         For 137 (single number II — every element appears three times except one), the trick
         is to count each bit position modulo 3. Two integers ones and twos act as a 2-bit
         counter: ones tracks the bits seen once, twos tracks the bits seen twice; bits seen
         three times are cleared from both. After processing, ones holds the survivor.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         For 260 (single number III — exactly two unique numbers among pairs), XOR everything
         to get the XOR of the two unique numbers; isolate any set bit via XOR &amp; -XOR; this
@@ -146,18 +156,21 @@ export default function BitManipulationArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Bitmask DP vs. recursive backtracking.</strong> Bitmask DP enumerates all 2^n
         states explicitly with memoisation, O(2^n) states, O(n) transitions — total O(n * 2^n).
         Backtracking explores the same space but typically without memoisation, costing O(n!).
         Bitmask DP wins by a factorial factor when subproblems repeat.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>XOR-based set vs. hashset.</strong> XOR identifies single occurrences in a
         stream of pairs in O(1) memory. Hashset solves a more general problem (count, locate)
         but uses O(n) memory. Use XOR when the problem is the special &quot;all but one
         appear twice&quot; structure.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Brian Kernighan vs. shift-and-mask popcount.</strong> Kernighan is O(popcount).
         Shift-and-mask is O(W). Built-in popcount instructions (Java&apos;s
@@ -182,15 +195,18 @@ export default function BitManipulationArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/bit-manipulation-diagram-2.svg" alt="Bitmask DP and submask enumeration" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Use language built-ins for popcount.</strong> Integer.bitCount, __builtin_popcount,
         x.bit_count() — all O(1) on modern hardware. Implement Kernighan only when not
         available.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Use unsigned shift for cross-language portability.</strong> &gt;&gt;&gt; in Java
         avoids sign-extension surprises when treating ints as bit patterns.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Validate that n fits in the integer width.</strong> 32-bit int holds 32-element
         masks; long holds 64. For n &gt; 64, use BitSet or arrays.
@@ -213,14 +229,17 @@ export default function BitManipulationArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Sign-extension on right shift.</strong> Negative ints in Java with &gt;&gt; do
         not behave as you expect for bit-pattern operations. Use &gt;&gt;&gt;.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Off-by-one on shift amounts.</strong> 1 &lt;&lt; 32 is undefined behaviour in
         many languages. Use long (1L &lt;&lt; n) when n approaches the integer width.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>XOR on negative numbers in Python.</strong> Python ints are arbitrary precision
         and the binary representation extends infinitely on the left for negatives. For 32-bit
@@ -245,13 +264,16 @@ export default function BitManipulationArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>136. Single Number.</strong> XOR of all elements.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>137. Single Number II.</strong> Bit-by-bit count mod 3, or the two-counter
         trick.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>260. Single Number III.</strong> XOR everything, isolate a differing bit,
         partition.
@@ -290,11 +312,14 @@ export default function BitManipulationArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/bit-manipulation-diagram-3.svg" alt="Canonical bit manipulation Leetcode problems" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why does XOR find the unique element among pairs?</strong> XOR is associative
-        and commutative; pairs cancel to zero; the survivor is the only one not cancelled.</li>
-        <li><strong>How does Brian Kernighan&apos;s popcount work?</strong> x &amp; (x - 1) clears
-        the lowest set bit. The iteration count equals the number of set bits.</li>
+        <HighlightBlock as="li" tier="important"><strong>Why does XOR find the unique element among pairs?</strong> XOR is associative
+        and commutative; pairs cancel to zero; the survivor is the only one not cancelled.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>How does Brian Kernighan&apos;s popcount work?</strong> x &amp; (x - 1) clears
+        the lowest set bit. The iteration count equals the number of set bits.</HighlightBlock>
         <li><strong>Why is x &amp; -x the lowest set bit?</strong> -x in two&apos;s complement is
         ~x + 1. The +1 propagates carries through the trailing zeros, leaving the lowest set
         bit aligned in both x and -x.</li>

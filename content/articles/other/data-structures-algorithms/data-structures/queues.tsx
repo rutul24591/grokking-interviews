@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function QueuesArticle() {
       {/* SECTION 1 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>queue</strong> is a collection with first-in, first-out
           (FIFO) access semantics: elements are enqueued at the tail and
           dequeued from the head, in the order they arrived. The interface
@@ -46,8 +50,8 @@ export default function QueuesArticle() {
           the throat of every request pipeline, every scheduler, every
           message bus, and every backpressure-aware stream in production
           software.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The FIFO discipline matches fairness: whoever arrived first is
           served first. It matches temporal ordering: processing in enqueue
           order preserves causal sequence. It matches decoupling: producer
@@ -56,7 +60,7 @@ export default function QueuesArticle() {
           why queues are the universal connector between asynchronous
           components — from hardware interrupt handlers to browser event
           loops to distributed task pipelines.
-        </p>
+        </HighlightBlock>
         <p>
           Implementations fall into a handful of canonical shapes.{" "}
           <strong>Circular buffers (ring buffers)</strong> over arrays give
@@ -83,23 +87,26 @@ export default function QueuesArticle() {
       {/* SECTION 2 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           FIFO ordering invariant
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Elements must leave in enqueue order. Two concurrent consumers
           pulling from the same queue still each see a contiguous
           subsequence of the arrival order — no concurrent queue reorders
           messages visible to a given consumer. This invariant is what
           makes the queue a substitute for direct synchronous messaging:
           the reader can trust the sequence.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Circular buffer layout
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A ring buffer uses a fixed-size array plus head and tail indices
           that wrap modulo the capacity. Enqueue writes at tail and advances;
           dequeue reads at head and advances. The &quot;full&quot; and
@@ -111,7 +118,7 @@ export default function QueuesArticle() {
           <code>java.util.ArrayDeque</code>, Rust&apos;s <code>VecDeque</code>,
           and most hardware-interface queues (PCIe queues, network driver
           ring descriptors).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Bounded vs unbounded
@@ -138,11 +145,14 @@ export default function QueuesArticle() {
       {/* SECTION 3 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Circular buffer mechanics
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The ring is two monotonically increasing counters modulo the
           capacity. On enqueue: check not-full, write{" "}
           <code>buf[tail % cap]</code>, increment tail. On dequeue: check
@@ -151,12 +161,12 @@ export default function QueuesArticle() {
           bitmask — a single AND instruction — which is why production
           concurrent ring buffers (LMAX Disruptor, every DPDK data-plane)
           insist on power-of-two capacities.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Two-stack queue (amortized)
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An elegant design derivable from scratch in an interview: one
           stack for enqueues, another for dequeues. Enqueue pushes on the
           in-stack. Dequeue pops from the out-stack; when empty, transfer
@@ -165,7 +175,7 @@ export default function QueuesArticle() {
           per operation. The worst-case single dequeue is O(n) during a
           transfer — which disqualifies this design for latency-sensitive
           workloads despite its amortized elegance.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Concurrent queues
@@ -196,6 +206,9 @@ export default function QueuesArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Operation complexity
@@ -220,7 +233,7 @@ export default function QueuesArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Ring buffer vs linked queue
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Ring buffers win on cache behavior, memory density, allocator
           avoidance, and predictable latency (no resize spikes, no heap
           alloc per enqueue). They lose when capacity is truly unknown or
@@ -229,19 +242,19 @@ export default function QueuesArticle() {
           an unbounded queue.&quot; Linked queues win for lock-free
           Michael-Scott designs and when the capacity estimate could vary
           by orders of magnitude.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Queue vs priority queue
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A priority queue relaxes FIFO to ordered-by-priority retrieval.
           Implementations are typically heaps, not queues. If the workload
           demands priority scheduling (OS runqueues with nice values, task
           schedulers with deadlines, Dijkstra&apos;s shortest path), reach
           for a heap. A priority queue is not a queue in the FIFO sense;
           the shared name is occasionally a source of confusion.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Single-producer vs multi-producer concurrency
@@ -263,19 +276,22 @@ export default function QueuesArticle() {
       {/* SECTION 5 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Bound your queues.</strong> Set an explicit capacity
             with a documented overflow policy (block, drop-oldest, drop-
             newest, reject with error). Unbounded queues in production are
             latent OOMs waiting for an upstream slow-down.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use power-of-two capacities for ring buffers.</strong>{" "}
             Replaces modulo with a single AND, simplifies overflow
             detection, and aligns naturally with cache-line-aware index
             layouts.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Match concurrency model to workload.</strong> SPSC,
             MPSC, SPMC, MPMC all have different optimal data structures.
@@ -310,19 +326,22 @@ export default function QueuesArticle() {
       {/* SECTION 6 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Unbounded queue under outage.</strong> Classic pattern:
             queue grows for minutes until process OOMs, taking the service
             down. The incident report invariably reads &quot;upstream
             slowed down but queue was unbounded&quot;.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Off-by-one in full/empty distinction.</strong> A ring
             buffer where head == tail can mean either empty (cap slots
             free) or full (0 slots free). Pick one convention (reserved
             slot or count) and test at both boundaries.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Memory reordering in lock-free queues.</strong> On
             ARM and POWER, writes can be observed out of order across
@@ -363,11 +382,14 @@ export default function QueuesArticle() {
       {/* SECTION 7 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Event loop queues in browsers and Node
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every JavaScript runtime maintains at least two queues — the
           macrotask queue (events, timers, I/O callbacks) and the
           microtask queue (promise resolutions, queueMicrotask). Each
@@ -376,12 +398,12 @@ export default function QueuesArticle() {
           predictable — two setTimeouts with the same delay run in
           insertion order. The actual implementation inside V8 and SpiderMonkey
           is a ring buffer with careful memory barriers.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Message brokers (Kafka, RabbitMQ, SQS)
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Kafka partitions are append-only logs with consumer offsets
           tracking per-consumer read position — FIFO queue semantics
           distributed across a cluster with durability guarantees.
@@ -391,7 +413,7 @@ export default function QueuesArticle() {
           ordering) queue flavors. All three expose the same FIFO abstraction
           at vastly different scale, durability, and ordering-strength
           points.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           LMAX Disruptor and hot-path trading
@@ -431,12 +453,15 @@ export default function QueuesArticle() {
       {/* SECTION 8 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: Implement a queue using two stacks.
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Maintain an <code>in</code> stack for enqueues and an{" "}
               <code>out</code> stack for dequeues. Enqueue pushes to{" "}
               <code>in</code>. Dequeue pops from <code>out</code>; if empty,
@@ -446,7 +471,7 @@ export default function QueuesArticle() {
               Good for immutable-data systems where allocations are cheap;
               poor for latency-critical workloads where tail-latency
               predictability is the priority.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

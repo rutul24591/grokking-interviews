@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Script loading strategy</strong> is the set of architectural and operational decisions that determine <strong>when</strong>, <strong>how</strong>, and <strong>under what constraints</strong> JavaScript is fetched and executed in the browser—especially <strong>third-party scripts</strong> such as analytics tags, A/B testing frameworks, chat widgets, payments, identity providers, and embedded content SDKs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Third-party scripts are unique because they introduce a new trust boundary and a new failure domain into your application. They run in your origin context by default, which means they can access DOM, cookies, storage, and in-memory data. They also compete for the most scarce resource in a frontend system: <strong>main-thread time</strong> on a heterogeneous fleet of devices (mid-range phones, low-memory tablets, slow networks).
-        </p>
+        </HighlightBlock>
         <p>
           The business impact of poor script loading decisions is significant and often underestimated:
         </p>
@@ -62,6 +66,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/third-party-integration/script-loading-timeline.svg"
@@ -70,9 +77,9 @@ export default function ArticlePage() {
         />
 
         <h3>Script Loading Attributes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           HTML provides three primary ways to load scripts, each with different blocking behavior:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>&lt;script&gt; (blocking):</strong> The browser stops HTML parsing, fetches the script, executes it, then resumes parsing. This is the default behavior and the most harmful to performance. Use only for critical scripts that must run before DOM is available.
@@ -84,9 +91,9 @@ export default function ArticlePage() {
             <strong>&lt;script async&gt;:</strong> The browser fetches the script in parallel. Execution happens as soon as the script is downloaded, potentially interrupting HTML parsing. Scripts execute in arbitrary order. Best for independent scripts like analytics that don&apos;t depend on DOM or other scripts.
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The choice between defer and async depends on dependencies: if scripts depend on each other or need DOM access, use defer. If scripts are independent and fire-and-forget, use async.
-        </p>
+        </HighlightBlock>
 
         <h3>Critical Rendering Path</h3>
         <p>
@@ -180,14 +187,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust script loading architecture treats third-party scripts as <strong>untrusted dependencies</strong> that must be isolated, monitored, and controlled.
-        </p>
+        </HighlightBlock>
 
         <h3>Decision Framework</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use this decision tree to determine the appropriate loading strategy for each script:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Is the script critical for initial render?</strong> If yes, load early with appropriate strategy. If no, defer or lazy load.
@@ -316,9 +326,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Script loading strategies involve trade-offs between performance, complexity, and reliability.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -361,9 +374,9 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that <strong>no single strategy fits all scripts</strong>. Each third-party script should be evaluated individually based on its criticality, dependencies, and trust level.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -371,13 +384,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Audit Third-Party Scripts Regularly:</strong> Quarterly review of all third-party scripts. Remove unused scripts, consolidate duplicates, and negotiate better terms with vendors.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Set Performance Budgets:</strong> Define maximum third-party script budget (e.g., 300KB total, 5 scripts max). Enforce in CI/CD with tools like Lighthouse CI.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Self-Host Critical Scripts:</strong> For critical scripts (analytics, A/B testing), consider self-hosting to control caching and reduce DNS lookups.
           </li>
@@ -410,13 +426,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Loading All Scripts Upfront:</strong> Loading every third-party script on page load wastes bandwidth and delays interactivity. Lazy load scripts for features users may not use.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Using Blocking Scripts:</strong> Default &lt;script&gt; tags block HTML parsing. Use defer or async unless the script must run before DOM is available.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No CSP or SRI:</strong> Loading scripts without CSP or SRI exposes your application to supply chain attacks. Always verify script integrity and restrict sources.
           </li>
@@ -440,14 +459,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Site: Reducing Third-Party Impact</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Problem:</strong> E-commerce site had 15 third-party scripts (analytics, A/B testing, chat, payments, ads). Page load time was 6+ seconds on mobile, conversion rate suffering.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong> Audited all scripts, removed 5 unused scripts. Deferred non-critical scripts. Lazy loaded chat widget on user click. Implemented CSP and SRI.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Results:</strong> Page load time reduced from 6.2s to 2.8s on mobile. Conversion rate increased 18%. Security posture improved with CSP/SRI.
         </p>
@@ -491,14 +513,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between async and defer attributes on script tags?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Both async and defer allow scripts to download in parallel without blocking HTML parsing, but they differ in execution timing:
-            </p>
+            </HighlightBlock>
             <ul className="space-y-2 mb-3">
               <li>
                 <strong>async:</strong> Script executes as soon as it&apos;s downloaded, potentially interrupting HTML parsing. Scripts execute in arbitrary order (whoever downloads first runs first).

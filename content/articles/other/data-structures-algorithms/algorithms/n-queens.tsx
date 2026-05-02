@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function NQueensArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The <span className="font-semibold">N-Queens problem</span> asks how to place n
           non-attacking queens on an n×n chessboard. Two queens attack if they share a row,
           column, or diagonal. Variants ask for any one solution (a placement problem),
           for the count of all solutions, or for completion of a partially filled board
           (which is NP-complete).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Originally posed by Max Bezzel in 1848 as the eight-queens puzzle, the problem
           became a touchstone for both combinatorial mathematics and computer science.
           Gauss studied solution counts in 1850. The first computer program for it was
           Lehmer's in 1960. Today it's the canonical benchmark for backtracking,
           constraint-satisfaction solvers, and parallel search.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Why N-Queens dominates interview repertoire and CS curricula: it has a clean
           state representation, a small set of constraints (column + two diagonals), and
@@ -54,20 +58,23 @@ export default function NQueensArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Row-by-row decomposition.</span> Since each row
           must contain exactly one queen (any solution has n queens in n rows), assign
           rows in order, choosing the column for each row. This collapses the state-space
           tree from C(n², n) cells × choices into n branches per level, a tree of depth n
           — a massive improvement before any pruning.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Three conflict sets.</span> A queen at (r, c)
           attacks: column c, the / diagonal where r − c is constant, and the \ diagonal
           where r + c is constant. Maintain three boolean (or bit) sets indexed by c, r −
           c (offset to non-negative), and r + c. Constant-time check whether (r, c) is
           legal.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Bitmask representation.</span> For n ≤ 32, use
           three integers — cols, diag1 (/), diag2 (\) — with bits indicating occupied
@@ -114,18 +121,21 @@ export default function NQueensArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Naive boolean-array implementation.</span> Three
           arrays: cols[n], diag1[2n−1], diag2[2n−1]. At row r, iterate c from 0 to n−1;
           if all three are free at (r, c), set them true, recurse to row r+1, and reset on
           return. Easy to write, easy to debug; runs to n=14 in seconds.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Bitmask implementation.</span> Three integers,
           shifts on each call. ~10× faster because no array indexing, no branch
           mispredictions, and the inner loop is a tight bit-manipulation idiom that fits
           in registers. n=15 in 100ms, n=18 in seconds, n=20 in minutes.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Symmetry-class enumeration.</span> Solve only
           half the row-0 columns. For odd n, the central column requires special handling
@@ -157,16 +167,19 @@ export default function NQueensArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Find one vs find all.</span> One solution: O(n)
           via constructive formula, no search needed. All solutions: backtracking, time
           empirically ~n^O(n).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Bitmask vs boolean array.</span> Bitmask is ~10×
           faster in tight loops and limits n to 32–64 (machine word). Boolean array works
           for arbitrary n but is slower per node visited.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">N-Queens vs general CSP.</span> N-Queens is a
           well-structured CSP with regular conflict patterns. General CSPs (Sudoku, graph
@@ -189,16 +202,19 @@ export default function NQueensArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Use bitmask for n ≤ 32.</span> Three ints, fast
           shifts, bit-iteration via <code>x &amp; −x</code>. The reference implementation
           for high-performance N-Queens.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Halve the search via symmetry.</span> Only try
           row-0 queen in columns 0 to ⌈n/2⌉ − 1; multiply non-symmetric by 8. Trivial to
           implement, near-double speedup.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Profile node-visit count, not wall time.</span>{" "}
           Comparing implementations on wall time confounds compiler optimization with
@@ -224,17 +240,20 @@ export default function NQueensArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Off-by-one in diagonal indexing.</span> The /
           diagonal index r − c can be negative; offset by n − 1 to make it non-negative.
           The \ diagonal r + c ranges from 0 to 2n − 2. Wrong sizing of these arrays
           causes silent corruption.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Forgetting to undo state.</span> In array-based
           implementations, marking a column / diagonal occupied without unmarking on
           return causes false conflicts and missed solutions.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Wrong shift direction in bitmask.</span> diag1
           shifts left, diag2 shifts right. Swapping them produces wrong answers that look
@@ -265,18 +284,21 @@ export default function NQueensArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Constraint-solver benchmark.</span> Every CSP
           solver (OR-Tools, Choco, Gecode), every SAT solver, and every parallel search
           framework uses N-Queens as a baseline. It tests pruning effectiveness, branching
           heuristics, and parallelization — at one canonical input.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">High-performance computing demo.</span> Beowulf
           cluster tutorials, MPI workshops, GPU programming courses use N-Queens to
           demonstrate work-stealing, branch divergence, and Amdahl's law. The TU Dresden
           n=27 result on a custom FPGA pipeline (2016) is a notable HPC milestone.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Compiler-test problem.</span> N-Queens stresses
           register allocation (with deep recursion), branch prediction (irregular pruning),
@@ -310,16 +332,19 @@ export default function NQueensArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Solve N-Queens — return all distinct
           solutions."</span> Row-by-row backtracking with three sets, append a copy of the
           column array on each successful placement at row n.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Count solutions only — N-Queens II."</span> Same
           algorithm, just increment a counter on success. With bitmasks and symmetry
           breaking, n=14 finishes in seconds.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">"Why is one queen per row a valid
           assumption?"</span> Because every solution has exactly n queens on n rows; by

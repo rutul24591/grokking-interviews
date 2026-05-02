@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,10 @@ export default function IdentityProvidersArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Identity Providers (IdP)</strong> are third-party services that manage user
           identities and authentication for organizations. Instead of maintaining separate
           credentials for each application, users authenticate once with their IdP and access
@@ -41,7 +45,7 @@ export default function IdentityProvidersArticle() {
           is often a mandatory requirement — it enables centralized identity management, improves
           security (centralized MFA enforcement, immediate access revocation on termination), and
           reduces IT overhead (no password resets for your application).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/identity-providers.svg"
@@ -49,7 +53,7 @@ export default function IdentityProvidersArticle() {
           caption="Identity Provider Landscape — comparing enterprise, social, and government identity providers"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, integrating with identity providers requires deep
           understanding of SAML 2.0 (XML-based assertions, enterprise standard), OpenID Connect
           (OIDC — JSON-based, modern standard), directory sync (SCIM protocol for automated user
@@ -57,7 +61,7 @@ export default function IdentityProvidersArticle() {
           group-to-role mapping (IdP groups → local roles), and deployment patterns (multi-IdP
           support, domain-based routing). The implementation must support multiple IdPs while
           maintaining security and providing seamless user experience.
-        </p>
+        </HighlightBlock>
         <p>
           Major IdPs include Okta (market leader, 17,000+ customers), Azure AD (Microsoft
           ecosystem, Office 365 integration), OneLogin (SMB focused), Ping Identity (enterprise
@@ -70,18 +74,21 @@ export default function IdentityProvidersArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           IdP integration is built on fundamental concepts that determine how identity is federated
           between systems. Understanding these concepts is essential for designing effective IdP
           integrations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Enterprise IdPs:</strong> Okta, Azure AD, OneLogin, Ping Identity serve
           enterprise customers. Support SAML + OIDC. Features: centralized user management, MFA
           enforcement, automated provisioning (SCIM), group-to-role mapping, audit logging.
           Enterprise IdPs integrate with HR systems (Workday, SAP SuccessFactors) for automated
           user lifecycle management. Pricing: per-user per-month ($2-8/user/month).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Social IdPs:</strong> Google, Facebook, Apple, GitHub serve consumer applications.
           Support OIDC (some support SAML). Features: social login, simplified onboarding, reduced
@@ -106,12 +113,15 @@ export default function IdentityProvidersArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           IdP integration architecture separates identity management (IdP) from application access
           (SP), enabling centralized authentication with distributed application access. This
           architecture is critical for enterprise deployments where users access multiple
           applications.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/idp-integration.svg"
@@ -119,14 +129,14 @@ export default function IdentityProvidersArticle() {
           caption="IdP Integration Architecture — showing protocol integration, attribute mapping, and trust configuration"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           IdP integration flow: User accesses application (SP). SP checks for existing session — if
           none, redirects to IdP (based on email domain or manual selection). User authenticates at
           IdP (if not already authenticated). IdP generates assertion/token (SAML assertion or OIDC
           ID token) containing user attributes (email, name, groups), signs with IdP private key,
           returns to SP. SP validates signature (using IdP public key), checks conditions (expiry,
           audience), extracts user attributes, creates local session, grants access.
-        </p>
+        </HighlightBlock>
         <p>
           Enterprise integration architecture includes: JIT provisioning (auto-create users on
           first login), SCIM integration (automated user provisioning), group-to-role mapping (IdP
@@ -154,25 +164,28 @@ export default function IdentityProvidersArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing IdP integrations involves trade-offs between protocol complexity, enterprise
           requirements, and implementation effort. Understanding these trade-offs is essential for
           making informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Okta vs Azure AD vs OneLogin</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Okta:</strong> Market leader (17,000+ customers), best enterprise features,
               extensive app integrations (7,000+), strong API. Limitation: premium pricing
               ($4-8/user/month).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Azure AD:</strong> Microsoft ecosystem, Office 365 integration, included with
               Microsoft 365 subscriptions. Limitation: complex for non-Microsoft shops, Azure
               dependency.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>OneLogin:</strong> SMB focused, simpler setup, competitive pricing
               ($2-4/user/month). Limitation: fewer enterprise features, smaller ecosystem.
@@ -222,20 +235,23 @@ export default function IdentityProvidersArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing IdP integration requires following established best practices to ensure
           security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Validate all IdP signatures and tokens — never accept unsigned assertions/tokens.
           Implement proper certificate rotation — support multiple certificates during overlap
           period, monitor expiry, alert before expiry. Use secure assertion consumer endpoints —
           HTTPS only, validate audience condition. Implement replay attack prevention — track used
           assertion IDs, implement time windows. Enforce HTTPS for all IdP endpoints — no HTTP
           allowed.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
         <p>
@@ -267,21 +283,24 @@ export default function IdentityProvidersArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing IdP integration to ensure secure, usable,
           and maintainable integrations.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No signature validation:</strong> Accepting unsigned assertions/tokens,
             security vulnerability. <strong>Fix:</strong> Always validate IdP signatures and
             tokens. Reject unsigned assertions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Certificate mismanagement:</strong> Expired certificates cause outages, no
             rotation process. <strong>Fix:</strong> Implement certificate rotation, support
             multiple certificates during overlap, monitor expiry, alert 30 days before.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No replay prevention:</strong> Same assertion can be reused, replay attacks.{" "}
             <strong>Fix:</strong> Track used assertion IDs (store in cache with TTL), implement
@@ -327,17 +346,20 @@ export default function IdentityProvidersArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           IdP integration is critical for enterprise deployments. Here are real-world
           implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS (Slack)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Enterprise customers require SSO with their IdP. Multiple IdPs
           (Okta, Azure AD, OneLogin). JIT provisioning for user onboarding. Group-to-role mapping
           for automatic role assignment (admin, owner, member).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Support SAML + OIDC. Domain-based IdP routing. JIT
           provisioning with attribute mapping. Group-to-role mapping (IdP groups → Slack roles).
@@ -435,14 +457,17 @@ export default function IdentityProvidersArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of IdP integration design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you support multiple IdPs?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you support multiple IdPs?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Configuration per tenant/domain — store IdP config (metadata URL, entity ID,
               certificates) in database. Route to correct IdP based on email domain — user enters

@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -25,7 +26,10 @@ export default function ArticlePage() {
       {/* ========== Definition & Context ========== */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An <strong>authentication service</strong> is the system responsible for verifying the identity of a caller
           and establishing a trusted identity context that downstream services can rely upon. It owns the entire
           credential lifecycle: accepting and validating credentials during login, issuing proof-of-identity artifacts
@@ -34,8 +38,8 @@ export default function ArticlePage() {
           sits at the boundary between the external world and your internal systems, making it simultaneously the most
           attacked surface, the most scrutinized compliance boundary, and the most critical availability dependency in
           most application architectures.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The distinction between authentication and authorization is fundamental but frequently conflated in practice.
           Authentication answers the question &quot;who are you?&quot; by verifying claimed identity through credential
           comparison against a stored identity record. Authorization answers &quot;what are you allowed to do?&quot; by
@@ -44,7 +48,7 @@ export default function ArticlePage() {
           stateful operation requiring strong consistency for credential verification, while authorization is a
           read-heavy decision operation that benefits from caching and distribution. Understanding this divergence is
           essential for designing systems that scale without compromising security.
-        </p>
+        </HighlightBlock>
         <p>
           Modern authentication spans multiple protocols and paradigms. Direct authentication involves verifying
           passwords, passkeys, or API keys against a locally managed identity store. Federated authentication delegates
@@ -66,8 +70,11 @@ export default function ArticlePage() {
       {/* ========== Core Concepts ========== */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The foundation of any authentication system is the <strong>credential verification mechanism</strong>. When a
           user submits a password, the system must compare it against a stored representation without ever storing the
           plaintext password itself. Modern systems use adaptive password hashing functions such as Argon2id, bcrypt, or
@@ -78,9 +85,9 @@ export default function ArticlePage() {
           recommendation is to target a hash computation time of approximately 200-500 milliseconds, which makes
           credential stuffing economically infeasible while keeping login latency acceptable. This tuning must be
           revisited periodically as hardware capabilities increase.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Multi-factor authentication (MFA)</strong> adds additional verification factors beyond knowledge
           (password) to possession (TOTP tokens, hardware security keys, push notifications) and inherence (biometrics).
           The security improvement from MFA is substantial: NIST estimates that MFA blocks over 99 percent of automated
@@ -91,7 +98,7 @@ export default function ArticlePage() {
           adoption requires user education and hardware provisioning. A production system typically supports multiple MFA
           methods with a risk-based approach: requiring stronger factors for high-risk actions and allowing weaker
           factors for routine authentication.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Token-based authentication</strong> has largely replaced session-only approaches in distributed
@@ -141,8 +148,11 @@ export default function ArticlePage() {
       {/* ========== Architecture & Flow ========== */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The authentication service architecture can be understood as a set of interconnected components that handle
           distinct aspects of the identity verification and credential management pipeline. At the entry point, clients
           initiate authentication flows by submitting credentials to the authentication service, typically through an API
@@ -150,9 +160,9 @@ export default function ArticlePage() {
           service then coordinates with several downstream components: the identity store for credential verification,
           the MFA provider for second-factor challenges, the session or token store for credential issuance, and the
           audit logging system for recording all authentication events.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The identity store is the system of record for user identity data and credential material. It stores password
           hashes (never plaintext passwords), MFA secrets (TOTP seeds, registered WebAuthn public keys), account status
           flags (locked, disabled, MFA-enrolled), and metadata such as the last successful login timestamp and failed
@@ -161,7 +171,7 @@ export default function ArticlePage() {
           blocks all login attempts. For this reason, production identity stores typically run on multi-node databases
           with synchronous replication within a region, and the authentication service implements connection pooling and
           circuit breaking to handle degraded database performance gracefully.
-        </p>
+        </HighlightBlock>
 
         <p>
           The MFA provider component manages the challenge-response flow for second-factor verification. When a login
@@ -221,8 +231,11 @@ export default function ArticlePage() {
       {/* ========== Trade-offs & Comparison ========== */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most consequential architectural decision in authentication system design is the choice between stateless
           token-based authentication and stateful session-based authentication. Stateless JWTs offer significant
           advantages for distributed systems: any service can validate a token locally by checking the signature and
@@ -232,9 +245,9 @@ export default function ArticlePage() {
           creates a security gap: if a token is compromised, it remains valid until it expires. Short token lifetimes
           mitigate this but increase the frequency of refresh operations, which are stateful and require the auth service
           to be available.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stateful sessions solve the revocation problem elegantly: deleting a session from the store immediately
           invalidates it, and the next request using that session ID will be rejected. Sessions also enable rich
           features like listing all active sessions for a user, force-logging out specific devices, and detecting
@@ -243,7 +256,7 @@ export default function ArticlePage() {
           sharded, replicated, and engineered for high availability with failover capabilities. Many organizations find
           that the operational complexity of a highly available session store exceeds the complexity of managing
           token revocation through short lifetimes and refresh token rotation.
-        </p>
+        </HighlightBlock>
 
         <p>
           The hybrid approach, which is the most common in production systems at scale, combines both patterns. Access
@@ -314,8 +327,11 @@ export default function ArticlePage() {
       {/* ========== Best Practices ========== */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Credential storage must follow modern cryptographic standards. Passwords should be hashed with Argon2id, which
           won the Password Hashing Competition in 2015 and is resistant to GPU-based cracking through its memory-hard
           design. If Argon2id is not available, bcrypt with a work factor calibrated to 200-500ms is the next best
@@ -323,9 +339,9 @@ export default function ArticlePage() {
           enable billions of guesses per second on commodity hardware. Additionally, implement breached password detection
           by checking new and changed passwords against known breached password databases (such as Have I Been Pwned&apos;s
           k-anonymity API) to prevent users from choosing passwords that have already been exposed in data breaches.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Token storage on the client side is a frequent source of vulnerabilities. Access tokens and refresh tokens
           should be stored in HttpOnly, Secure, SameSite cookies, never in localStorage or sessionStorage. HttpOnly
           prevents JavaScript access to the cookie, mitigating XSS-based token theft. Secure ensures the cookie is only
@@ -334,7 +350,7 @@ export default function ArticlePage() {
           this reopens CSRF attack vectors that must be mitigated through CSRF tokens or SameParty cookies. The
           recommendation is to keep tokens server-side in a session whenever possible and avoid exposing them to the
           browser entirely.
-        </p>
+        </HighlightBlock>
 
         <p>
           Key rotation for JWT signing keys must be performed with a staged approach to avoid mass authentication
@@ -376,8 +392,11 @@ export default function ArticlePage() {
       {/* ========== Common Pitfalls ========== */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most destructive authentication outage pattern is the login storm, which occurs when a large number of
           users are forced to re-authenticate simultaneously. This can happen when a deployment invalidates all active
           sessions, when signing keys are rotated without proper staging (causing all existing tokens to fail
@@ -387,16 +406,16 @@ export default function ArticlePage() {
           mitigation is to stagger token expiry times with randomized jitter, implement exponential backoff with jitter
           on refresh failures, and avoid synchronized expiry windows. During planned maintenance, consider extending
           token TTLs temporarily to reduce the refresh load when services come back online.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Another common pitfall is the use of JWTs for sessions that require revocation. Many teams adopt JWTs for
           their simplicity and then discover that they cannot immediately log users out or revoke compromised tokens.
           The workaround of maintaining a token denylist defeats the purpose of stateless tokens and introduces the same
           operational complexity as session management. If revocation is a requirement, either use stateful sessions
           from the start or adopt the hybrid model with server-side refresh tokens that can be revoked while keeping
           access tokens stateless.
-        </p>
+        </HighlightBlock>
 
         <p>
           Insufficient protection against credential stuffing is a frequent security gap. Credential stuffing attacks
@@ -440,8 +459,11 @@ export default function ArticlePage() {
       {/* ========== Real-world Use Cases ========== */}
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Large-scale consumer platforms like social networks face unique authentication challenges due to their user
           base size and the need to balance security with user experience. These systems typically implement a tiered
           authentication strategy: password-based login for the initial authentication, with optional MFA for security-conscious
@@ -451,9 +473,9 @@ export default function ArticlePage() {
           risk thresholds are exceeded. At the scale of hundreds of millions of users, even a 0.1 percent false positive
           rate on MFA challenges translates to hundreds of thousands of frustrated users, so the risk engine must be
           finely tuned with continuous feedback from user support tickets and appeal outcomes.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Enterprise SaaS platforms serving business customers have different requirements. They typically need to
           support SSO through SAML 2.0 and OIDC for integration with corporate identity providers like Active Directory,
           Okta, and Azure AD. This introduces the complexity of identity mapping: the external identity from the
@@ -462,7 +484,7 @@ export default function ArticlePage() {
           created in the system on their first SSO login, with default roles and permissions determined by the
           organization&apos;s configuration. Multi-tenant SaaS platforms additionally need to ensure that authentication
           tokens are scoped to the correct tenant, preventing cross-tenant access through token manipulation.
-        </p>
+        </HighlightBlock>
 
         <p>
           Financial services and healthcare applications operate under strict regulatory requirements (PCI DSS, HIPAA,
@@ -489,22 +511,25 @@ export default function ArticlePage() {
       {/* ========== Interview Questions & Answers ========== */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-6">
-            <p className="font-semibold text-heading">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-heading">
               Q1: You need to design authentication for a microservices architecture with 50+ services. How do you
               structure token validation to avoid creating a bottleneck at the authentication service?
-            </p>
+            </HighlightBlock>
             <div className="mt-3 text-sm text-muted">
-              <p className="mt-2">
+              <HighlightBlock as="p" tier="important" className="mt-2">
                 The solution is to separate token issuance from token validation. The authentication service issues
                 short-lived JWTs signed with an asymmetric key pair (RS256 or ES256). The public key is published
                 through a JWKS endpoint that all downstream services can fetch and cache locally. Each service validates
                 incoming JWTs by checking the signature against the cached public key, verifying the issuer and audience
                 claims, and confirming the token is within its validity window. This validation is entirely local and
                 takes 1-2 milliseconds, requiring no network call to the authentication service.
-              </p>
+              </HighlightBlock>
               <p className="mt-2">
                 The authentication service is only involved in the initial login and subsequent token refresh operations,
                 which occur far less frequently than per-request validation. For refresh, the service maintains a

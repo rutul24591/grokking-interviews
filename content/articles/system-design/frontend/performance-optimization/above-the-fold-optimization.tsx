@@ -705,11 +705,11 @@ export default function AboveTheFoldOptimizationArticle() {
       {/* ============================================================
           SECTION 11: Interview Questions & Answers
           ============================================================ */}
-      <section>
-        <h2>Interview Questions & Answers</h2>
-        <HighlightBlock as="p" tier="crucial">
-          Interview bar: explain the critical rendering path, how you prioritize LCP, and how you avoid CLS/INP regressions while doing so.
-        </HighlightBlock>
+	      <section>
+	        <h2>Interview Questions & Answers</h2>
+	        <HighlightBlock as="p" tier="crucial">
+	          Interview bar: explain the critical rendering path, how you prioritize LCP, and how you avoid CLS/INP regressions while doing so.
+	        </HighlightBlock>
         <HighlightBlock as="p" tier="important">
           Strong answers mention concrete tactics: critical CSS, preload/fetchpriority, SSR/SSG, deferring non-critical JS, and font strategy.
         </HighlightBlock>
@@ -717,19 +717,19 @@ export default function AboveTheFoldOptimizationArticle() {
           Always discuss measurement: lab tools for iteration, field p75 for success, and mobile-first validation.
         </HighlightBlock>
 
-        <div className="space-y-6">
-          <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <h3 className="text-lg font-semibold mb-3">Question 1: What is above-the-fold optimization and why does it matter?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="crucial" className="mb-3">
-              Above-the-fold optimization prioritizes loading and rendering content visible in the initial
-              viewport without scrolling. It matters because <strong>perceived performance matters more than
-              total load time</strong> — users judge page quality within 2-3 seconds.
-            </HighlightBlock>
-            <p className="mb-3">
-              Techniques include critical CSS inlining, LCP image optimization, SSR/SSG, font optimization,
-              and JavaScript deferral. These directly improve Core Web Vitals (LCP, FCP, CLS).
-            </p>
+	          <div className="space-y-6">
+	            <div className="rounded-lg border border-theme bg-panel-soft p-5">
+	              <h3 className="text-lg font-semibold mb-3">Question 1: What is above-the-fold optimization and why does it matter?</h3>
+	              <p className="text-muted mb-3"><strong>Answer:</strong></p>
+	              <p className="mb-3">
+	                Above-the-fold optimization prioritizes loading and rendering content visible in the initial
+	                viewport without scrolling. It matters because <strong>perceived performance matters more than
+	                total load time</strong> — users judge page quality within 2-3 seconds.
+	              </p>
+	              <p className="mb-3">
+	                Techniques include critical CSS inlining, LCP image optimization, SSR/SSG, font optimization,
+	                and JavaScript deferral. These directly improve Core Web Vitals (LCP, FCP, CLS).
+	              </p>
             <p>
               Business impact is significant: Amazon found every 100ms latency cost 1% in sales. Google found
               500ms delay reduced traffic by 20%.
@@ -859,22 +859,26 @@ export default function AboveTheFoldOptimizationArticle() {
           ============================================================ */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          For interviews, connect above-the-fold tactics to measurable outcomes: LCP/FCP/CLS/INP, the critical rendering
+          path, and prioritization (what must be discovered and rendered first vs what can wait).
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://web.dev/above-the-fold/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev — Above-the-Fold Content
             </a> — Guide to optimizing above-the-fold content for Core Web Vitals.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://web.dev/critical-css/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev — Critical CSS
             </a> — Techniques for extracting and inlining critical CSS.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://web.dev/optimize-lcp/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev — Optimize LCP
             </a> — Strategies for improving Largest Contentful Paint.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://web.dev/font-optimization/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev — Font Optimization

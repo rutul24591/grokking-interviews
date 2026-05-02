@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,20 +24,23 @@ export default function BinarySearchPatternArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The binary search pattern halves a search space at each step using a monotone decision rule. It runs in
         O(log n) time and O(1) space and applies anywhere monotonicity holds: sorted arrays, but also feasibility
         functions where &quot;if x works, then x + 1 works,&quot; rotated sorted arrays, infinite streams, and even
         2D matrices with row/column ordering. As an interview pattern, it&apos;s asked at every level — from FizzBuzz
         warm-ups (Leetcode 704) to staff-tier parametric-search problems (410, 668, 1631).
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Three template families cover almost every interview variant. <strong>Exact match</strong>: classic
         [lo, hi] search returning the index of a target value. <strong>Lower bound / upper bound</strong>: find the
         first index where a predicate flips from false to true (or vice versa) — the most useful template, because
         most interview problems reduce to it. <strong>Parametric search</strong>: binary-search the answer itself,
         with a feasibility check at each midpoint — the staff-level differentiator.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Recognition signals: a sorted (or sortable) input, a question of the form &quot;first / last index where X
         holds&quot;, &quot;does the value v exist&quot;, or &quot;minimum / maximum value such that property P holds.&quot;
@@ -51,19 +55,22 @@ export default function BinarySearchPatternArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>The half-open lower-bound template.</strong> Initialise lo = 0, hi = n (exclusive on the right). Loop
         while lo &lt; hi. Compute mid = lo + (hi - lo) / 2 (avoids overflow). If predicate(mid) is true, set hi = mid
         (mid might be the answer, don&apos;t exclude it). Else lo = mid + 1 (mid is excluded). At termination, lo ==
         hi, and that value is the first index where the predicate is true (or n if no such index exists). This single
         template handles search-insert, first-occurrence, last-occurrence (with a sign flip), and almost every
         boundary problem.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Why the half-open form is preferred.</strong> Inclusive bounds [lo, hi] need a separate termination
         condition (lo &gt; hi) and a final check whether lo or hi holds the answer. Half-open [lo, hi) is uniform:
         the loop ends at lo == hi, that value is the answer (or the size if no answer). Off-by-one bugs vanish.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Mid computation and overflow.</strong> &quot;mid = (lo + hi) / 2&quot; overflows when lo + hi exceeds
         the integer max — a real concern in C++ / Java with billion-element ranges or parametric searches over Long
@@ -95,18 +102,21 @@ export default function BinarySearchPatternArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The lower-bound template is the workhorse. Given a predicate p(i) that is monotone (false then true across
         the range), the template returns the smallest i where p is true, or n if p is never true. Cast every binary
         search question into this form. &quot;Find target in sorted array&quot; → first i where A[i] ≥ target; check
         equality at the end. &quot;Search insert position&quot; → first i where A[i] ≥ target; return that index.
         &quot;First bad version&quot; → first i where isBadVersion(i) is true.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         For upper-bound (last index where p is true), invert: lower-bound of &quot;not p&quot; gives the first
         false, and that minus 1 is the last true. Or rewrite the predicate as p&apos;(i) = !p(i) and apply
         lower-bound.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Rotated sorted array.</strong> The trick is that for any midpoint, at least one half [lo, mid] or
         [mid, hi - 1] is sorted. Compare A[mid] to A[lo] (or A[hi - 1]) to decide which half is sorted, then check
@@ -143,17 +153,20 @@ export default function BinarySearchPatternArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Binary search vs. <strong>linear search</strong>: binary requires monotonicity; linear doesn&apos;t. For n &lt;
         ~64, linear search often beats binary on cache-friendly hardware due to lower constant factors. For larger
         arrays, binary search is strictly better.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Binary search vs. <strong>two-pointer</strong>: two-pointer answers relational pair questions on sorted input
         in O(n); binary search answers point-lookup or boundary questions in O(log n). For sorted Two Sum,
         two-pointer is O(n); fix-one-and-binary-search-complement is O(n log n). Two-pointer wins. For
         first-occurrence, binary search wins.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Binary search vs. <strong>hash table</strong>: hash gives O(1) expected lookup but O(n) space and no
         order-aware queries (predecessor, successor, range). Binary search gives O(log n) lookup, O(1) space, and
@@ -176,16 +189,19 @@ export default function BinarySearchPatternArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Standardise on the half-open lower-bound template. Use it for everything; you avoid template-confusion bugs.
         For exact match, run lower-bound and check equality at lo. For upper-bound, lower-bound on the negated
         predicate or use lower-bound of (target + 1).
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Always use mid = lo + (hi - lo) / 2. Never &quot;(lo + hi) / 2&quot; in production code, even when overflow
         seems impossible — Joshua Bloch&apos;s &quot;Nearly All Binary Searches and Mergesorts Are Broken&quot; is
         required reading.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         State the monotonicity argument out loud before writing code. &quot;Predicate p(i) is false for i &lt; k and
         true for i ≥ k for some unknown k&quot; — this one sentence is the entire correctness proof of the binary
@@ -206,14 +222,17 @@ export default function BinarySearchPatternArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Mixing inclusive and exclusive bounds.</strong> Choose [lo, hi] inclusive everywhere or [lo, hi)
         half-open everywhere — never mix. Mid update, predicate, and termination all depend on the convention.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Overflow on midpoint.</strong> &quot;(lo + hi) / 2&quot; overflows when both are near INT_MAX. Use lo
         + (hi - lo) / 2.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Infinite loop on non-progress.</strong> If neither hi = mid nor lo = mid + 1 happens, the loop runs
         forever. With [lo, hi) and mid = lo + (hi - lo) / 2, mid is always in [lo, hi), so each branch makes strict
@@ -240,17 +259,20 @@ export default function BinarySearchPatternArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Binary search is the backbone of <strong>database B-tree indexes</strong> (each node is a binary search over
         keys), <strong>sorted-set data structures</strong> (std::lower_bound, Java TreeMap), <strong>git
         bisect</strong> (binary-search the commit that broke the build — parametric on a monotone &quot;is
         broken&quot; predicate), <strong>memory allocators</strong> (best-fit by size), and <strong>numerical
         methods</strong> (root finding via bisection). Whenever a sorted index exists or a feasibility predicate is
         monotone, binary search is the default.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Below are the canonical Leetcode problems that map to this pattern.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>704. Binary Search.</strong> The base template. Memorise it.
       </p>
@@ -302,12 +324,15 @@ export default function BinarySearchPatternArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Walk through the half-open lower-bound template.</strong> lo = 0, hi = n. While lo &lt; hi: mid = lo +
+        <HighlightBlock as="li" tier="important"><strong>Walk through the half-open lower-bound template.</strong> lo = 0, hi = n. While lo &lt; hi: mid = lo +
         (hi - lo) / 2; if predicate(mid) hi = mid else lo = mid + 1. Return lo. Lo is the smallest index where
-        predicate is true, or n if no such index.</li>
-        <li><strong>Why mid = lo + (hi − lo) / 2?</strong> To avoid integer overflow. (lo + hi) / 2 overflows when lo +
-        hi exceeds INT_MAX. Both formulas give the same value otherwise.</li>
+        predicate is true, or n if no such index.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Why mid = lo + (hi − lo) / 2?</strong> To avoid integer overflow. (lo + hi) / 2 overflows when lo +
+        hi exceeds INT_MAX. Both formulas give the same value otherwise.</HighlightBlock>
         <li><strong>Search in Rotated Sorted Array — explain the algorithm.</strong> At any midpoint, at least one half
         [lo..mid] or [mid..hi] is sorted (because rotation creates exactly one discontinuity). Determine which by
         comparing A[mid] with A[lo]. Check whether target is in the sorted half&apos;s range; recurse on that half if

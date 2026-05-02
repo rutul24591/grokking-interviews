@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Event listener cleanup</strong> is the practice of ensuring that DOM and application event subscriptions are reliably removed when they are no longer needed. In long-lived SPAs, missing cleanup is one of the most common sources of memory retention because listeners often hold references to callbacks, and callbacks often hold references to closures and state.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In a traditional multi-page app, navigation naturally tears down the page and releases listeners. In a React/Next.js SPA, views mount and unmount without a full reload. That makes cleanup a correctness and reliability concern: leaks from listeners accumulate across route transitions, and performance degradation can appear only after many interactions.
-        </p>
+        </HighlightBlock>
         <p>
           Listener hygiene is also a performance issue even without leaks: large numbers of listeners increase dispatch overhead, can trigger more work per event (especially for high-frequency events like scroll and pointer move), and can retain references to DOM nodes that would otherwise be eligible for collection.
         </p>
@@ -62,6 +66,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/memory-management/event-listener-cleanup-retention.svg"
@@ -70,12 +77,12 @@ export default function ArticlePage() {
         />
 
         <h3>Why Listeners Retain Memory</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event systems maintain internal registries that map targets to listeners. If a listener remains registered, the runtime treats it as reachable: the registry references the callback, and the callback references its closure (captured state, sometimes including large data structures or DOM handles). This is how "just one listener" can retain a surprisingly large object graph.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The retention chain looks like this:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Event Target (window, document, element):</strong> Lives for the session or until explicitly removed.
@@ -182,9 +189,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A scalable listener architecture has three goals: (1) predictable ownership, (2) minimal listener cardinality, and (3) reliable teardown.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/memory-management/event-listener-cleanup-patterns.svg"
@@ -193,9 +203,9 @@ export default function ArticlePage() {
         />
 
         <h3>Attach: Narrowest Scope Principle</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Attach listeners at the narrowest scope that achieves the behavioral requirement. For view-specific behaviors, attach when the view becomes active. For global behaviors (for example, app-wide keyboard shortcuts), centralize attachment in a top-level boundary with explicit enable/disable semantics so it is still testable.
-        </p>
+        </HighlightBlock>
         <p>
           In React, this typically means:
         </p>
@@ -307,6 +317,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -343,21 +356,21 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level bias is to minimize listener cardinality and centralize teardown, while avoiding "global" patterns unless they are explicitly bounded and reviewed.
-        </p>
+        </HighlightBlock>
 
-        <h3>When to Use Each Strategy</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>Per-Node:</strong> Use for small, static sets of elements (e.g., 5-10 buttons). Avoid for lists that can grow beyond 50 items.
-          </li>
-          <li>
-            <strong>Delegation:</strong> Default choice for lists, tables, grids, or any dynamic content. Attach to container, route based on event.target.
-          </li>
-          <li>
-            <strong>Global:</strong> Use sparingly for truly app-wide behaviors (keyboard shortcuts, online/offline detection). Document the global listener and its purpose.
-          </li>
+	        <h3>When to Use Each Strategy</h3>
+	        <ul className="space-y-2">
+	          <HighlightBlock as="li" tier="important">
+	            <strong>Per-Node:</strong> Use for small, static sets of elements (e.g., 5-10 buttons). Avoid for lists that can grow beyond 50 items.
+	          </HighlightBlock>
+	          <HighlightBlock as="li" tier="important">
+	            <strong>Delegation:</strong> Default choice for lists, tables, grids, or any dynamic content. Attach to container, route based on event.target.
+	          </HighlightBlock>
+	          <li>
+	            <strong>Global:</strong> Use sparingly for truly app-wide behaviors (keyboard shortcuts, online/offline detection). Document the global listener and its purpose.
+	          </li>
           <li>
             <strong>Custom Hook:</strong> Use to standardize patterns across teams. Encapsulates best practices for attach/detach.
           </li>
@@ -369,13 +382,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Define Ownership:</strong> Every listener belongs to a scope (component/view/feature/session) with explicit attach/detach points. Document the owner and lifetime.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Prefer Delegation for Large/Dynamic DOM:</strong> Reduce listener count and retention edges. One listener on a container is better than 100 listeners on children.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Avoid Capturing Large State:</strong> Keep handler closures small; use indirection rather than closure-capturing big graphs. Use refs for mutable state.
           </li>
@@ -402,13 +418,16 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Listeners Registered Outside Lifecycles:</strong> Attaching in module scope or singletons makes cleanup easy to miss. Always attach within component/route lifecycle.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Anonymous Handlers Without Tracking:</strong> If you cannot reference the original handler, detaching becomes error-prone. Always store handler references.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Retaining DOM References in Closures:</strong> Event handlers accidentally keep detached nodes alive. Clear DOM refs in cleanup and avoid capturing them in long-lived closures.
           </li>
@@ -432,14 +451,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Keyboard Shortcuts</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Problem:</strong> App-wide keyboard shortcuts need to work across routes but should not accumulate listeners.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong> Single global keydown listener with route-aware handler. Handler checks current route and active element before executing shortcuts. Listener attached once at app root, never removed.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Key Insight:</strong> Global listener is acceptable when it&apos;s truly one listener with bounded behavior. The handler logic determines which shortcuts are active based on application state.
         </p>
@@ -494,14 +516,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How can an event listener create a memory leak in a garbage-collected runtime?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               The event system keeps a registry of listeners. If the listener remains registered, the callback is reachable via that registry. The callback then keeps its closure reachable, which can include large application state or DOM references. Missing detach turns view-lifetime objects into session-lifetime retention.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               The retention chain is: Event Target → Listener Registry → Callback → Closure → Captured State. Breaking any link allows GC to collect downstream objects. The most practical break point is removing the listener from the registry.
             </p>

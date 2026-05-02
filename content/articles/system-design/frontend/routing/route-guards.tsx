@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,27 +25,27 @@ export default function RouteGuardsArticle() {
     <ArticleLayout metadata={metadata}>
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Route guards (also called route protection or route authorization) are mechanisms that
           control access to routes based on conditions — typically authentication status and user
           permissions. When a user attempts to navigate to a protected route, the guard evaluates
           whether the user meets the requirements. If they do, the route renders normally. If not,
           the user is redirected (usually to a login page) or shown an unauthorized message.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Route guards operate at two levels. <strong>Client-side guards</strong> prevent the UI
           from rendering protected content and redirect unauthorized users. They improve UX but are
           not a security boundary — any determined user can bypass client-side JavaScript.{" "}
           <strong>Server-side guards</strong> (middleware, API authorization) are the actual security
           layer that prevents unauthorized data access. Production applications need both: client-side
           for UX, server-side for security.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Every modern framework provides patterns for route protection. React Router uses loader
           functions that check auth state and throw redirects. Next.js uses middleware that runs
           on the server before the route renders. Angular has built-in <code>canActivate</code>{" "}
           guards. The implementation varies but the concept is universal.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -57,14 +58,14 @@ export default function RouteGuardsArticle() {
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Authentication Guards</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           The most common guard type. Checks whether the user is authenticated (has a valid
           session/token) before allowing access to a route. If not authenticated, the user is
           redirected to the login page. The original URL is typically preserved (via a{" "}
           <code>returnTo</code> query parameter or in session storage) so the user can be sent
           back after successful authentication.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementation in React typically involves a wrapper component:{" "}
           <code>{"<ProtectedRoute>"}</code> checks auth state from context or a store. If
           authenticated, it renders children. If not, it renders a{" "}
@@ -72,17 +73,17 @@ export default function RouteGuardsArticle() {
           guard is a <code>loader</code> that checks auth and throws{" "}
           <code>redirect(&quot;/login&quot;)</code> if unauthorized — this runs before the component
           renders, preventing any flash of protected content.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Authorization Guards (RBAC)</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Beyond authentication, authorization guards check whether the authenticated user has
           permission to access a specific route. Role-Based Access Control (RBAC) maps roles
           (admin, editor, viewer) to route access. More granular permission-based systems check
           specific capabilities (can_edit_users, can_view_analytics). The route configuration
           declares required roles/permissions, and the guard compares them against the user&apos;s
           actual roles.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Guard Composition</h3>
         <p>
@@ -104,16 +105,16 @@ export default function RouteGuardsArticle() {
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Server-Side Route Protection</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Next.js middleware runs on the server (at the edge) before any route renders. It can
           read cookies, verify JWTs, check session tokens, and redirect or rewrite the request.
           This is the most secure guard: the protected page&apos;s HTML, JavaScript, and data are
           never sent to unauthorized users. The middleware function receives the request and can
           return <code>NextResponse.redirect()</code> or <code>NextResponse.next()</code>.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Client-Side Guard Patterns</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Three common client-side patterns: (1) <strong>Wrapper component</strong> — a{" "}
           <code>{"<RequireAuth>"}</code> component that checks auth state and redirects or renders
           children. Simple but can flash protected content before the redirect fires.
@@ -121,17 +122,17 @@ export default function RouteGuardsArticle() {
           checks auth before the component mounts. No flash of content, but requires the data
           router API. (3) <strong>Higher-order route config</strong> — a function that wraps route
           definitions with auth metadata, processed by a custom router component.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Token Refresh During Navigation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Route guards must handle expired tokens gracefully. If a guard checks a JWT and finds
           it expired, it should attempt a silent token refresh (using a refresh token) before
           redirecting to login. Only if the refresh fails should the user be logged out. This
           prevents unnecessary logouts during long sessions. React Router loaders are ideal for
           this — the loader can await the token refresh, and the UI shows a loading state during
           the refresh attempt.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -142,19 +143,22 @@ export default function RouteGuardsArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
         <div className="my-6 overflow-x-auto rounded-lg border border-theme">
           <table className="min-w-full text-sm">
             <thead className="bg-panel-soft">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <th className="px-4 py-3 text-left font-semibold">Approach</th>
                 <th className="px-4 py-3 text-left font-semibold">Security</th>
                 <th className="px-4 py-3 text-left font-semibold">UX</th>
                 <th className="px-4 py-3 text-left font-semibold">Complexity</th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr><td className="px-4 py-3 font-medium">Client-side wrapper</td><td className="px-4 py-3">Low (bypassable)</td><td className="px-4 py-3">May flash content</td><td className="px-4 py-3">Low</td></tr>
-              <tr><td className="px-4 py-3 font-medium">Loader guard</td><td className="px-4 py-3">Low (bypassable)</td><td className="px-4 py-3">No flash, loading state</td><td className="px-4 py-3">Medium</td></tr>
+              <HighlightBlock as="tr" tier="important"><td className="px-4 py-3 font-medium">Client-side wrapper</td><td className="px-4 py-3">Low (bypassable)</td><td className="px-4 py-3">May flash content</td><td className="px-4 py-3">Low</td></HighlightBlock>
+              <HighlightBlock as="tr" tier="important"><td className="px-4 py-3 font-medium">Loader guard</td><td className="px-4 py-3">Low (bypassable)</td><td className="px-4 py-3">No flash, loading state</td><td className="px-4 py-3">Medium</td></HighlightBlock>
               <tr><td className="px-4 py-3 font-medium">Server middleware</td><td className="px-4 py-3">High (server enforced)</td><td className="px-4 py-3">Clean redirect</td><td className="px-4 py-3">Medium</td></tr>
               <tr><td className="px-4 py-3 font-medium">API-level auth</td><td className="px-4 py-3">Highest (data-level)</td><td className="px-4 py-3">Requires client handling</td><td className="px-4 py-3">Medium</td></tr>
               <tr><td className="px-4 py-3 font-medium">Combined (recommended)</td><td className="px-4 py-3">Highest</td><td className="px-4 py-3">Best</td><td className="px-4 py-3">Higher</td></tr>
@@ -166,9 +170,9 @@ export default function RouteGuardsArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>Always enforce authorization on the server (middleware or API) — client-side guards are UX, not security</li>
-          <li>Preserve the intended destination URL so users return to it after authentication</li>
-          <li>Use route loaders or middleware to check auth before rendering — avoid flashing protected content</li>
+          <HighlightBlock as="li" tier="crucial">Always enforce authorization on the server (middleware or API) — client-side guards are UX, not security</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Preserve the intended destination URL so users return to it after authentication</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Use route loaders or middleware to check auth before rendering — avoid flashing protected content</HighlightBlock>
           <li>Handle token expiration gracefully — attempt silent refresh before redirecting to login</li>
           <li>Compose guards through nested routes — auth guard on layout, role guards on specific pages</li>
           <li>Show appropriate feedback for unauthorized access — distinguish between &quot;not logged in&quot; (redirect to login) and &quot;insufficient permissions&quot; (show 403 page)</li>
@@ -179,9 +183,9 @@ export default function RouteGuardsArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li><strong>Client-only protection:</strong> Relying solely on client-side guards. Users can disable JavaScript, modify state, or access API endpoints directly. Always guard on the server</li>
-          <li><strong>Flash of protected content:</strong> Rendering the protected component before the auth check completes. Use loader guards or server middleware to prevent this</li>
-          <li><strong>Lost redirect URL:</strong> Not saving the original URL before redirecting to login. Users must manually navigate back after authentication</li>
+          <HighlightBlock as="li" tier="crucial"><strong>Client-only protection:</strong> Relying solely on client-side guards. Users can disable JavaScript, modify state, or access API endpoints directly. Always guard on the server</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Flash of protected content:</strong> Rendering the protected component before the auth check completes. Use loader guards or server middleware to prevent this</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Lost redirect URL:</strong> Not saving the original URL before redirecting to login. Users must manually navigate back after authentication</HighlightBlock>
           <li><strong>Infinite redirect loop:</strong> A guard that redirects to login, but the login page is also guarded, or the auth check fails repeatedly. Always ensure the redirect target is accessible</li>
           <li><strong>Stale auth state:</strong> Checking a cached auth state that&apos;s expired. Verify tokens server-side or check expiration times before trusting cached auth</li>
           <li><strong>Route chunk exposure:</strong> Even if the component doesn&apos;t render, the JavaScript chunk may be downloaded and inspected. Sensitive business logic should never be in client-side code</li>
@@ -192,42 +196,50 @@ export default function RouteGuardsArticle() {
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">SaaS Admin Panels</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Multi-tenant SaaS applications use layered route guards. The outermost guard checks
             authentication. The next layer checks organization membership (is this user part of
             this org?). The innermost layer checks role-based permissions (is this user an admin
             of this org?). Each layer corresponds to a nested route boundary: app layout → org
             layout → admin layout → page.
-          </p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
+            Call out the boundary clearly: UI guards are for UX, but the enforcement must happen in
+            middleware/API authorization. Design both so redirects don&apos;t leak sensitive route
+            existence and so unauthorized responses remain cache-safe.
+          </HighlightBlock>
         </div>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Next.js Middleware</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Next.js middleware runs at the edge before any route renders. A common pattern: check
             for an auth cookie, verify the JWT, and redirect to <code>/login</code> if invalid.
             The middleware matcher config specifies which routes are protected:{" "}
             <code>{"matcher: [\"/dashboard/:path*\", \"/settings/:path*\"]"}</code>. This ensures
             the protected page&apos;s HTML and RSC payload are never generated for unauthorized users.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why are client-side route guards not sufficient for security?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important">Q: Why are client-side route guards not sufficient for security?</HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Client-side JavaScript can be disabled, modified, or bypassed entirely. A user
               can use browser dev tools to modify auth state, directly call API endpoints, or
               disable the guard logic. Client-side guards only control the UI — they prevent rendering
               protected components but cannot prevent data access. Server-side authorization
               (middleware, API guards) is the actual security boundary that prevents unauthorized
               data from being returned.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you prevent the flash of protected content in a React SPA?</p>
+            <HighlightBlock as="p" tier="important">Q: How do you prevent the flash of protected content in a React SPA?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Use React Router&apos;s loader functions to check auth before the route component
               mounts. If the loader throws a redirect response, the component never renders. For

@@ -311,7 +311,7 @@ export default function CodeSplittingArticle() {
       <section>
         <h2>Trade-offs & Comparison</h2>
 
-        <HighlightBlock as="p" tier="crucial">
+        <HighlightBlock as="p" tier="important">
           Code splitting is fundamentally a{" "}
           <Highlight tier="important">cost-shifting strategy</Highlight>: you trade{" "}
           <Highlight tier="important">initial load</Highlight> bytes for{" "}
@@ -740,11 +740,11 @@ export default function CodeSplittingArticle() {
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 2: What are the trade-offs of code splitting? When might you NOT want to split code?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="crucial" className="mb-3">
+            <p className="mb-3">
               The primary trade-off is <strong>navigation latency</strong>. When a user navigates to a route whose chunk 
               is not yet loaded, they experience a delay (100-1000ms) while the chunk downloads. Without proper loading 
               states, this creates a poor user experience.
-            </HighlightBlock>
+            </p>
             <p className="mb-3">
               Other trade-offs include increased HTTP requests (mitigated by HTTP/2), loading waterfalls if chunks have 
               dependencies, SSR complexity, and debugging overhead.
@@ -888,8 +888,12 @@ export default function CodeSplittingArticle() {
           ============================================================ */}
       <section>
         <h2>References</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Use references to validate the mechanics (dynamic import, chunk graphs) and the operational realities (caching,
+          SSR chunk preloading, chunk-load failures after deploys). In interviews, anchor on metrics and failure modes.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://web.dev/reduce-javascript-payloads-with-code-splitting/" 
               className="text-accent hover:underline" 
@@ -901,8 +905,8 @@ export default function CodeSplittingArticle() {
             <p className="text-sm text-muted mt-1">
               Google&apos;s comprehensive guide on code splitting strategies and their impact on Core Web Vitals.
             </p>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://webpack.js.org/guides/code-splitting/" 
               className="text-accent hover:underline" 
@@ -914,7 +918,7 @@ export default function CodeSplittingArticle() {
             <p className="text-sm text-muted mt-1">
               Official Webpack guide covering bundle splitting, splitChunks optimization, and dynamic imports.
             </p>
-          </li>
+          </HighlightBlock>
           <li>
             <a 
               href="https://nextjs.org/docs/app/building-your-application/optimizing/lazy-loading" 
@@ -941,7 +945,7 @@ export default function CodeSplittingArticle() {
               ECMAScript specification and browser compatibility for the dynamic import() syntax.
             </p>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://philipwalton.com/articles/normalizing-cache-behavior-across-browsers-with-service-workers/" 
               className="text-accent hover:underline" 
@@ -953,7 +957,7 @@ export default function CodeSplittingArticle() {
             <p className="text-sm text-muted mt-1">
               Deep dive into browser caching behavior and how code splitting affects cache efficiency.
             </p>
-          </li>
+          </HighlightBlock>
           <li>
             <a 
               href="https://www.smashingmagazine.com/2019/04/code-splitting-lazy-loading-components-react/" 

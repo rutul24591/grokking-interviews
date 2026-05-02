@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,22 +25,25 @@ export default function LinearSearchArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Linear Search scans a sequence from one end to the other, comparing each element to the
           target, returning the index of the first match or −1 if no match exists. It is the
           simplest search algorithm and the only one that works on arbitrary unsorted input without
           preprocessing. Time is Θ(n) worst case and Θ(n) expected for a uniformly random target
           position; best case is Θ(1) when the target is at the start. Space is Θ(1). No algorithm
           is simpler, and for sufficiently small n or cache-resident data, no algorithm is faster.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The apparent triviality of linear search hides real engineering nuance. On modern CPUs,
           a tight linear scan of a cache-resident array runs at 10–50 GB/s — comparable to memory
           bandwidth. A binary search over the same data may be slower despite O(log n) asymptotic
           because of branch mispredictions and cache-line thrashing on small inputs. The rule of
           thumb &quot;linear for n &lt; 64, binary for n &gt; 64&quot; is workload-specific but worth internalizing:
           asymptotic analysis describes growth, not constants, and for small n the constants win.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Linear search is the primitive behind every std::find, Array.indexOf, and list.index
           in mainstream standard libraries. It is also the foundation of SIMD-accelerated string
@@ -67,17 +71,20 @@ export default function LinearSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">Sequential access &amp; cache behavior</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Linear search&apos;s killer feature is sequential memory access. Modern CPUs prefetch the
           next cache line while processing the current one, giving effectively 0-latency access
           to sequential data. On a 64-byte cache line, 16 int32 values are loaded per miss — a
           linear scan of 16 elements costs one memory access, not sixteen. This is why linear
           search on cache-resident arrays saturates memory bandwidth: the CPU is ahead of the
           data by hundreds of cycles.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">Branch prediction &amp; the early-exit cost</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The inner loop has two branches: &quot;done yet?&quot; (bounds check) and &quot;found it?&quot; (comparison).
           Branch predictors learn that both are usually not-taken, so the loop runs at nearly
           one iteration per cycle. The first mispredict is when the match is found — typically a
@@ -85,7 +92,7 @@ export default function LinearSearchArticle() {
           dominant; for small arrays with no match, the loop unrolls cleanly. Branchless variants
           replace the comparison with arithmetic (e.g., sum of (arr[i] == target) · i) to avoid
           mispredicts entirely.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">SIMD acceleration</h3>
         <p className="mb-4">
           SSE2 (128-bit), AVX2 (256-bit), and AVX-512 (512-bit) vector instructions let a single
@@ -114,21 +121,24 @@ export default function LinearSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A production linear search has four tiers. For n &lt; 4, unroll the loop completely (no
           branch overhead). For 4 ≤ n &lt; 32, scalar loop with loop-invariant target in register.
           For 32 ≤ n &lt; 10M, SIMD vectorized loop with 4–8× unrolling. For n &gt; 10M, prefetching
           hints (PREFETCHT0 on lines 512 bytes ahead) plus SIMD. Glibc&apos;s memchr follows roughly
           this structure, with different code paths triggered by compile-time length hints.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Parallel linear search splits the array across threads, each scanning their chunk. Early
           termination is subtle: the first thread to find a match must signal others to stop. Naive
           implementations poll a shared atomic flag every iteration, causing cache-line ping-pong.
           Better: each thread polls every K iterations (K ≈ 256) or uses work-stealing so idle
           threads take unclaimed chunks. OpenMP&apos;s parallel_find and C++17&apos;s std::find with
           execution::par use this pattern, getting near-linear scaling up to memory-bandwidth limits.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Distributed linear search is a broadcast-and-collect: every node scans its partition, the
           first hit wins (lowest-rank node with a match, by convention). Spark&apos;s rdd.filter().first()
@@ -146,22 +156,25 @@ export default function LinearSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Binary Search</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Binary search is O(log n) but requires sorted input. Linear is O(n) on any input. For
           small n (&lt; 64) or cache-resident arrays, linear is faster in practice because of branch
           prediction and prefetching. For n &gt; 1000 with sorted data, binary wins definitively.
           Rule: if you pay for sorting once and query many times, binary; if you query once or data
           mutates often, linear.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Hash Table Lookup</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Hash tables are O(1) expected but require O(n) space and hashing overhead. Linear search
           is O(n) but has zero setup cost. For n &lt; 16–32 distinct keys, linear search beats hash
           lookup because the hash computation itself costs 15–20 cycles — more than scanning the
           array. Small-array-optimized hash maps (absl::flat_hash_set, Rust&apos;s SmallMap) fall back
           to linear search below a size threshold.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Tree Lookup</h3>
         <p className="mb-4">
           Trees (BST, B-tree) give O(log n) with O(n) space and O(log n) insert. Linear on an
@@ -181,9 +194,12 @@ export default function LinearSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc pl-6 mb-4 space-y-2">
-          <li><strong>Default to linear for n &lt; 64</strong> on cache-resident data. Binary&apos;s O(log n) advantage is swamped by branch mispredicts.</li>
-          <li><strong>Let the compiler autovectorize</strong> — simple <code>for</code> loops with fixed-size loads become SIMD with -O3.</li>
+          <HighlightBlock as="li" tier="important"><strong>Default to linear for n &lt; 64</strong> on cache-resident data. Binary&apos;s O(log n) advantage is swamped by branch mispredicts.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Let the compiler autovectorize</strong> — simple <code>for</code> loops with fixed-size loads become SIMD with -O3.</HighlightBlock>
           <li><strong>Keep target in a register</strong> by loop-invariant code motion; don&apos;t recompute on each iteration.</li>
           <li><strong>For streaming data, linear is the default</strong> — no preprocessing possible.</li>
           <li><strong>Move-to-front or sort by frequency</strong> when queries follow Zipf&apos;s law — average-case gain is large.</li>
@@ -196,9 +212,12 @@ export default function LinearSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc pl-6 mb-4 space-y-2">
-          <li><strong>Using linear on large sorted data</strong> where binary is trivially applicable — quadratic time in n queries.</li>
-          <li><strong>Off-by-one bounds</strong>: <code>i &lt;= n</code> vs <code>i &lt; n</code>, especially with sentinels.</li>
+          <HighlightBlock as="li" tier="important"><strong>Using linear on large sorted data</strong> where binary is trivially applicable — quadratic time in n queries.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Off-by-one bounds</strong>: <code>i &lt;= n</code> vs <code>i &lt; n</code>, especially with sentinels.</HighlightBlock>
           <li><strong>Branch-prediction regressions</strong> on random data — consider branchless.</li>
           <li><strong>Not short-circuiting on first match</strong> when uniqueness is assumed — wasted work.</li>
           <li><strong>Re-scanning the same dataset repeatedly</strong> instead of building an index — O(Q·n) total when O(n + Q log n) is available.</li>
@@ -209,16 +228,19 @@ export default function LinearSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>libc memchr / strchr</strong>: linear byte search accelerated by SIMD. The
           foundation of every string operation on Linux, Windows, and macOS — called billions of
           times per second in web servers, databases, and file systems.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>std::find, Array.indexOf, list.index</strong>: standard library default. Small-n
           search for dictionary keys, enum values, configuration lookup. Billion-call-per-second
           scale.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Intrusion detection (Snort, Suricata)</strong>: match packet payload against
           thousands of signatures using Aho-Corasick (generalized linear search across patterns)
@@ -252,9 +274,12 @@ export default function LinearSearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <ol className="list-decimal pl-6 mb-4 space-y-2">
-          <li><strong>Implement linear search.</strong> Loop with early exit on match; return index or −1.</li>
-          <li><strong>When is linear faster than binary?</strong> Small n (&lt; 64), unsorted data, cache-resident, mutable.</li>
+          <HighlightBlock as="li" tier="important"><strong>Implement linear search.</strong> Loop with early exit on match; return index or −1.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>When is linear faster than binary?</strong> Small n (&lt; 64), unsorted data, cache-resident, mutable.</HighlightBlock>
           <li><strong>How does SIMD accelerate linear search?</strong> Compare 4–16 elements per instruction via broadcast + PCMPEQ + bitmask.</li>
           <li><strong>Self-organizing linear search.</strong> Move-to-front on hit; adapts to query distribution; O(H) expected where H = distribution entropy.</li>
           <li><strong>Find first and last occurrence in unsorted array.</strong> Two linear scans or one scan tracking both indices.</li>

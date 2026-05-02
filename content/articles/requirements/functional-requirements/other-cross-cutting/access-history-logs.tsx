@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function AccessHistoryLogsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Access History Logs enable users to view who and what has accessed their account and data. Users can see login history (when, where, what device), device history (what devices are logged in), third-party access (what apps have access), and activity logs (what actions were taken). Access history is fundamental to account security (users can detect unauthorized access), transparency (users know who accessed their data), and compliance (GDPR, CCPA require access transparency). For platforms with user accounts, effective access history is essential for security, trust, and regulatory compliance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, access history architecture involves logging infrastructure (capture all access events), log storage (store logs securely, retain appropriately), log presentation (display logs to users in understandable format), access notifications (notify users of significant access), and security monitoring (detect suspicious access patterns). The implementation must balance transparency (users see all access) with privacy (logs don&apos;t expose others&apos; privacy) and security (logs don&apos;t enable attacks). Poor access history leads to undetected breaches, user distrust, and compliance violations.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of access history extends beyond simple logging. Log completeness (capture all access, not just some). Log accuracy (accurate timestamps, locations, devices). Log retention (how long to keep logs). Log privacy (logs may contain others&apos; data). Real-time notifications (notify of suspicious access immediately). Historical analysis (users can review past access). For staff engineers, access history is a security and transparency infrastructure decision affecting user trust, security, and compliance.
         </p>
@@ -46,13 +50,16 @@ export default function AccessHistoryLogsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Login History</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Login history tracks all account access. Timestamp (when login occurred). Location (where login occurred - IP geolocation). Device (what device was used). Browser/app (what browser or app). Success/failure (whether login succeeded). Login history enables users to detect unauthorized access (logins they don&apos;t recognize). Benefits include security (detect breaches), transparency (users see all access). Drawbacks include privacy (location data is sensitive), complexity (accurate geolocation).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Failed login tracking records failed login attempts. Timestamp (when attempt occurred). Location (where attempt originated). Device (what device attempted). Reason (why failed - wrong password, 2FA failure). Failed login tracking enables detection of brute force attacks (many failed attempts). Benefits include security (detect attacks), account protection (lock after too many failures). Drawbacks includes false positives (legitimate users locked out).
-        </p>
+        </HighlightBlock>
         <p>
           Session management tracks active login sessions. Session list (all active sessions). Session details (device, location, login time). Session termination (logout from specific sessions). Session management enables users to control active access (logout from old devices). Benefits include security (terminate suspicious sessions), control (manage active access). Drawbacks includes complexity (manage multiple sessions).
         </p>
@@ -104,9 +111,12 @@ export default function AccessHistoryLogsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Access history architecture spans logging infrastructure, log storage, presentation layer, and security monitoring. Logging infrastructure captures all access events. Log storage stores logs securely with appropriate retention. Presentation layer displays logs to users. Security monitoring analyzes logs for suspicious activity. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/access-history-logs/history-architecture.svg"
@@ -117,9 +127,9 @@ export default function AccessHistoryLogsArticle() {
         />
 
         <h3>Logging Infrastructure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Logging infrastructure captures all access events. Event capture (capture login, device, API, third-party events). Event enrichment (add location, device details). Event validation (ensure log integrity). Event transmission (send to log storage). Logging infrastructure is the foundation of access history - must capture all events reliably.
-        </p>
+        </HighlightBlock>
         <p>
           Log integrity ensures logs are tamper-proof. Cryptographic signing (sign logs to detect tampering). Append-only storage (logs can&apos;t be modified). Audit trail (track who accessed logs). Log integrity is critical for security (logs must be trustworthy) and compliance (logs as evidence).
         </p>
@@ -159,14 +169,17 @@ export default function AccessHistoryLogsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Access history design involves trade-offs between completeness and privacy, retention and cost, and real-time and digest notifications. Understanding these trade-offs enables informed decisions aligned with security requirements and user needs.
-        </p>
+        </HighlightBlock>
 
         <h3>Logging: Complete vs. Selective</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Complete logging (log all access). Pros: Maximum transparency (users see everything), security (detect all unauthorized access), compliance (meet logging requirements). Cons: Privacy concern (logs contain sensitive data), storage cost (more logs = more storage), complexity (manage all logs). Best for: Security-focused platforms, regulated industries.
-        </p>
+        </HighlightBlock>
         <p>
           Selective logging (log only significant access). Pros: Reduced privacy impact (less sensitive data logged), lower storage cost (fewer logs), simpler management. Cons: May miss important access (not everything logged), reduced security (may not detect all unauthorized), compliance risk (may not meet requirements). Best for: Privacy-focused platforms, low-risk access.
         </p>
@@ -207,13 +220,16 @@ export default function AccessHistoryLogsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Log all access events:</strong> Logins, devices, API access, third-party access. Complete audit trail. Tamper-proof logs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide clear log presentation:</strong> Chronological list. Expandable details. Filtering and search. Visual timeline.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Enable session management:</strong> Show active sessions. Allow session termination. Logout from all devices.
           </li>
@@ -243,13 +259,16 @@ export default function AccessHistoryLogsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Incomplete logging:</strong> Not all access logged. <strong>Solution:</strong> Log all access events - logins, devices, API, third-party.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Poor log presentation:</strong> Users can&apos;t understand logs. <strong>Solution:</strong> Clear format, visual timeline, filtering, search.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No session management:</strong> Can&apos;t terminate suspicious sessions. <strong>Solution:</strong> Enable session termination, logout from all.
           </li>
@@ -279,16 +298,19 @@ export default function AccessHistoryLogsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Gmail Account Activity</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Gmail provides detailed access history. Last account activity (recent access with IP, location, time). Device information (what device accessed). Access type (browser, mobile, POP/IMAP). Security alerts (suspicious access notified). Session management (sign out all other sessions). Users can detect unauthorized access and secure account.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Facebook Security Settings</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook provides comprehensive access history. Where you&apos;re logged in (list of devices/locations). Login alerts (notify of unrecognized logins). Two-factor authentication logs. Third-party app access (what apps have access). Users can review and terminate suspicious sessions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Google Account Activity</h3>
         <p>
@@ -308,12 +330,15 @@ export default function AccessHistoryLogsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design access history that balances transparency with privacy?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design access history that balances transparency with privacy?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement privacy-aware logging that captures essential security information without exposing sensitive details. Log access events (who accessed, when, what resource, outcome) but minimize sensitive data—store approximate location (city-level) instead of full GPS coordinates, truncate IP addresses to /24 subnet, hash device fingerprints. Users should only access their own logs, never others&apos;. Implement log retention limits (90 days detailed, 1 year aggregated) to comply with data minimization principles. Use anonymization for analytics—aggregate login patterns without storing individual identifiers. The key insight: users deserve transparency about their account access, but logs shouldn&apos;t become privacy violations themselves or create honeypots for attackers.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

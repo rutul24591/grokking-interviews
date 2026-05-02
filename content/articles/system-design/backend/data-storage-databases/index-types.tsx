@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -83,16 +84,19 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Composite, Partial, &amp; Covering Indexes</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Composite (Multi-Column) Indexes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Composite indexes</strong> span multiple columns:
           <code className="inline-code">CREATE INDEX ON users (last_name, first_name)</code>.
           The index is sorted by first column (last_name), then by second column (first_name)
           within each last_name value. This enables efficient queries on both columns together.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Leftmost prefix rule</strong> is critical: composite index
           <code className="inline-code">(a, b, c)</code> supports queries on:
           <code className="inline-code">(a)</code> alone,
@@ -102,7 +106,7 @@ export default function ArticlePage() {
           <code className="inline-code">(c)</code> alone, or
           <code className="inline-code">(b, c)</code> together. The index can only be used
           from the leftmost column onwards.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Column order matters</strong>: put most selective columns first (filter out
@@ -167,9 +171,12 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Specialized Indexes</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>GIN Indexes (Generalized Inverted Index)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>GIN</strong> is an inverted index: maps values to rows (opposite of normal
           index). Used for: <strong>Arrays</strong>
           (<code className="inline-code">WHERE tags overlaps {'{'}postgres, sql{'}'}</code>—overlap
@@ -177,15 +184,15 @@ export default function ArticlePage() {
           (<code className="inline-code">WHERE data contains {'{'}"key": "value"{'}'}</code>—contains
           operator), <strong>Full-text search</strong>
           (<code className="inline-code">WHERE text matches query</code>).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           GIN excels at <strong>containment queries</strong> (does this array contain X?, does
           this JSON contain this key-value?). Trade-offs: <strong>Slower writes</strong>
           (updating inverted index is expensive), <strong>Larger index size</strong> (multiple
           entries per row), <strong>Powerful queries</strong> (enables queries impossible with
           B-Tree).
-        </p>
+        </HighlightBlock>
 
         <h3>GiST Indexes (Generalized Search Tree)</h3>
         <p>
@@ -245,19 +252,22 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Index Type Selection</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each index type has trade-offs. Understanding them helps you choose the right index
           for each use case.
-        </p>
+        </HighlightBlock>
 
         <h3>B-Tree (Default)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Best for</strong>: 90% of use cases, general-purpose indexing.
           <strong>Supports</strong>: equality, range queries, sorting, prefix matching.
           <strong>Write overhead</strong>: moderate. <strong>Index size</strong>: 10-30% of
           table size. <strong>Use when</strong>: unsure which index to use (safe default).
-        </p>
+        </HighlightBlock>
 
         <h3>Hash</h3>
         <p>
@@ -322,18 +332,21 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Index Types</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use B-Tree by default.</strong> B-Tree handles 90% of use cases. Only use
           specialized indexes (GIN, GiST, BRIN) when you have specific needs (arrays, JSON,
           geometric, time-series).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Order composite index columns wisely.</strong> Put most selective columns
           first (filter out most rows). Match query patterns (ORDER BY columns last for
           sorting benefit). Follow leftmost prefix rule.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Use partial indexes for filtered queries.</strong> If queries frequently
@@ -369,20 +382,23 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Wrong composite index column order.</strong> Index
           <code className="inline-code">(last_name, first_name)</code> doesn't help queries
           on <code className="inline-code">(first_name)</code> alone. Solution: Put most
           selective columns first, follow leftmost prefix rule, create separate indexes if
           needed.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Using B-Tree for arrays/JSON.</strong> B-Tree doesn't support containment
           queries on arrays/JSON. Solution: Use GIN index for arrays/JSON
           (<code className="inline-code">USING GIN</code>).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Creating partial index without matching queries.</strong> Partial index
@@ -412,9 +428,12 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Product Search (Composite + GIN)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce products table: composite index
           <code className="inline-code">(category_id, price, rating)</code> for filtering
           + sorting. GIN index on <code className="inline-code">tags</code> array for tag
@@ -422,17 +441,17 @@ export default function ArticlePage() {
           category_id = ? AND price BETWEEN ? AND ? AND tags contains {'{'}new{'}'}</code>
           ORDER BY rating DESC. Benefits: fast product search (100ms vs 5 seconds), supports filtering
           + tag search + sorting efficiently.
-        </p>
+        </HighlightBlock>
 
         <h3>Time-Series Events (BRIN)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Events table (1 billion rows): BRIN index on
           <code className="inline-code">created_at</code>. Query:
           <code className="inline-code">SELECT * FROM events WHERE created_at BETWEEN ? AND
           ?</code>. BRIN index is tiny (1-2GB vs 100GB for B-Tree), fast writes (minimal
           overhead), efficient range scans. Benefits: 50x smaller index, 10x faster writes,
           efficient time-range queries.
-        </p>
+        </HighlightBlock>
 
         <h3>User Preferences (JSONB + GIN)</h3>
         <p>
@@ -457,13 +476,16 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: What is a composite index? How does column order affect query performance?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Composite index spans multiple columns:
               <code className="inline-code">CREATE INDEX ON users (last_name, first_name)</code>.
               Column order matters due to leftmost prefix rule: index
@@ -473,7 +495,7 @@ export default function ArticlePage() {
               <code className="inline-code">(b)</code> or <code className="inline-code">(c)</code>
               alone. Order: put most selective columns first (filters out most rows), match
               query pattern (ORDER BY columns last for sorting benefit).
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What if queries use columns in different orders?
               Answer: Create separate indexes (e.g., <code className="inline-code">(a,

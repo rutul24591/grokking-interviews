@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +30,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Geo-sharding</strong> is the practice of partitioning data by geographic region,
           storing each partition in the region where the data originates or where the majority of
           its users are located. Unlike traditional sharding which partitions data by hash key or
@@ -37,8 +41,8 @@ export default function ArticlePage() {
           boundary) as the partition key. This provides data locality (low latency for local
           reads), regulatory compliance (data residency requirements), and operational isolation
           (regional failures do not cascade globally).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consider a global social media platform with users in the United States, European Union,
           and Asia-Pacific. Without geo-sharding, all user data might be stored in a single region
           (e.g., US East), resulting in high latency for European and Asian users (80-220ms RTT)
@@ -47,7 +51,7 @@ export default function ArticlePage() {
           regions, and APAC users&apos; data in APAC regions. Each user reads and writes to their
           local shard with single-digit millisecond latency, and data residency requirements are
           naturally satisfied.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, geo-sharding requires balancing three competing concerns.
           <strong>Latency</strong> means users should read and write to their local shard for
@@ -76,6 +80,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/geo-sharding-architecture.svg`}
@@ -84,21 +91,21 @@ export default function ArticlePage() {
         />
 
         <h3>Geographic Partition Key Design</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The partition key determines which shard a record belongs to. For geo-sharding, the
           partition key is typically derived from the user&apos;s geographic location (country,
           region, or data residency zone). The key design must be deterministic (the same user
           always maps to the same shard), stable (the user&apos;s shard does not change frequently),
           and coarse-grained enough to avoid excessive cross-shard queries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Common partition key strategies include: country code (each country has its own shard,
           simple but may create many small shards), region code (group countries into regions like
           EU, NA, APAC, balances shard count and compliance), and data residency zone (define
           shards based on legal boundaries like &quot;EU data stays in EU&quot;). The choice
           depends on the number of regions served, regulatory requirements, and expected traffic
           distribution across regions.
-        </p>
+        </HighlightBlock>
 
         <h3>Data Residency and Compliance</h3>
         <p>
@@ -148,23 +155,26 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Regional Shard Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each regional shard is a self-contained database cluster serving the users in that
           region. The shard includes a primary database (for writes), read replicas (for local
           read scaling), and a local cache (for frequently accessed data). The shard is isolated
           from other regions: it has its own network, storage, and compute resources. This
           isolation provides natural failure containment: if the EU shard experiences an outage,
           only EU users are affected.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The application layer routes requests to the appropriate shard based on the user&apos;s
           geographic location. This routing can be implemented at multiple levels: DNS routing
           (resolve the database hostname to the nearest region&apos;s IP), application-level
           routing (the application determines the shard based on the user&apos;s country code),
           or proxy-level routing (a regional proxy forwards requests to the local shard).
-        </p>
+        </HighlightBlock>
 
         <h3>Replication Across Regions</h3>
         <p>
@@ -196,7 +206,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Geo-sharding involves trade-offs between data locality, cross-region access complexity,
           and operational overhead. Compared to a single global database, geo-sharding provides
           lower read latency for local users and natural compliance with data residency laws, but
@@ -204,15 +217,15 @@ export default function ArticlePage() {
           full global replication (where all data is copied to every region), geo-sharding uses
           less storage and avoids compliance violations, but cannot answer cross-region queries
           without coordination.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that geo-sharding is not a binary choice but a spectrum.
           Some data (personal data, financial records) must be geo-sharded for compliance. Some
           data (public content, global metadata) can be globally replicated for simpler access.
           The right approach is a hybrid: geo-shard compliance-sensitive data, globally replicate
           public data, and implement selective cross-region access patterns for data that falls
           in between.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -220,21 +233,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design partition keys based on regulatory boundaries rather than arbitrary geographic
           divisions. Use data residency zones (EU, US, APAC) as shard boundaries rather than
           individual countries, which creates too many small shards. Ensure the partition key is
           stable: a user&apos;s shard should not change when they travel, because their data&apos;s
           residency requirements are based on their account&apos;s registered location, not their
           current physical location.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement cross-region access controls at the application layer: before a query crosses
           region boundaries, verify that the data transfer complies with applicable regulations.
           Log all cross-region access for audit purposes. Use data anonymization for cross-region
           analytics: strip personally identifiable information before replicating data to other
           regions for aggregate analysis.
-        </p>
+        </HighlightBlock>
         <p>
           Monitor cross-region replication lag and alert when it exceeds acceptable thresholds.
           Implement read-your-writes consistency for cross-region reads: if a user writes to their
@@ -248,22 +264,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is designing geo-shards that are too granular (one shard per
           country). This creates many small shards, each with its own operational overhead
           (backups, monitoring, scaling), and makes cross-region queries extremely complex
           (coordinating across dozens of shards). The fix is to group countries into regions
           (EU, NA, APAC) that align with regulatory boundaries and traffic patterns, resulting
           in 5-10 manageable shards.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common pitfall is ignoring cross-region query latency. A query that fans out
           to three regions (US, EU, APAC) is as slow as the slowest region&apos;s response. If
           the APAC region has 200ms RTT from the US, the query takes at least 200ms plus
           processing time. The fix is to minimize cross-region queries through data denormalization
           (replicate frequently-needed cross-region data locally) and query optimization (batch
           cross-region requests, use asynchronous fan-out with eventual consistency).
-        </p>
+        </HighlightBlock>
         <p>
           Not planning for shard rebalancing is a critical pitfall. If one region&apos;s traffic
           grows significantly (e.g., APAC traffic doubles), that region&apos;s shard may become
@@ -285,24 +304,27 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>TikTok: Regional Data Isolation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           TikTok implements geo-sharding to comply with data residency regulations across dozens
           of countries. User data is stored in the region where the user resides: EU users&apos;
           data in EU data centers, US users&apos; data in US data centers, and so on. Cross-region
           access is restricted: content moderation teams can only access data from their own
           region, and analytics data is anonymized before cross-region aggregation.
-        </p>
+        </HighlightBlock>
 
         <h3>AWS: Regional Service Endpoints</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           AWS services are geo-sharded by design: each AWS region is an independent shard with
           its own database clusters, storage, and compute. DynamoDB tables are created per-region,
           and cross-region replication is an opt-in feature (DynamoDB Global Tables). This
           architecture gives customers control over where their data is stored, enabling compliance
           with data residency requirements while providing low-latency access to local users.
-        </p>
+        </HighlightBlock>
 
         <h3>Stripe: Payment Data Localization</h3>
         <p>
@@ -319,17 +341,20 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is geo-sharding and when should you use it?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Geo-sharding partitions data by geographic region, storing each region&apos;s data in
               that region&apos;s database shard. It is used when: data residency laws require data
               to stay within specific boundaries (GDPR, India&apos;s data localization), read
               latency for local users is critical, and regional failure isolation is desired.
-            </p>
+            </HighlightBlock>
             <p>
               Use geo-sharding when regulatory compliance or latency requirements justify the
               operational complexity of managing multiple regional shards. Avoid it for small-scale

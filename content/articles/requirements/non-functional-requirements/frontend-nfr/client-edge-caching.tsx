@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function ClientEdgeCachingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Client Caching</strong> stores resources in the user&apos;s
           browser to eliminate redundant network requests, while{" "}
           <strong>Edge Caching</strong> stores resources at CDN edge locations
@@ -46,8 +50,8 @@ export default function ClientEdgeCachingArticle() {
           against web performance issues. When configured correctly, 80-90% of
           requests never reach the origin server, dramatically reducing
           infrastructure costs while improving user experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The performance impact is measurable and significant. A client cache
           hit results in zero network latency — the resource loads instantly
           from disk or memory. An edge cache hit reduces round-trip time from
@@ -57,7 +61,7 @@ export default function ClientEdgeCachingArticle() {
           of cache invalidation strategies. The right caching architecture
           balances freshness requirements with performance goals while remaining
           operationally manageable.
-        </p>
+        </HighlightBlock>
         <p>
           Browser caching has evolved from simple HTTP cache headers to a
           multi-layered system encompassing memory cache, disk cache, service
@@ -72,7 +76,10 @@ export default function ClientEdgeCachingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Browser caching operates through multiple storage layers, each with
           different characteristics and lifecycles. The memory cache is the
           fastest layer, storing resources in RAM for the duration of the tab
@@ -85,8 +92,8 @@ export default function ClientEdgeCachingArticle() {
           the Cache API, giving developers full control over what is stored, how
           it is retrieved, and when it is invalidated. This layer powers offline
           support and custom caching strategies like stale-while-revalidate.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Cache-Control HTTP header is the primary mechanism for controlling
           browser and CDN caching behavior. It accepts multiple directives that
           can be combined to express precise caching intentions. The max-age
@@ -98,7 +105,7 @@ export default function ClientEdgeCachingArticle() {
           does not mean &quot;do not cache&quot; as commonly misunderstood. The
           no-store directive is the actual instruction to never store the
           response in any cache, used for sensitive data like tokens or PII.
-        </p>
+        </HighlightBlock>
         <p>
           Validation mechanisms complement freshness directives. The ETag header
           provides a resource fingerprint (typically a hash of the content) that
@@ -121,7 +128,10 @@ export default function ClientEdgeCachingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CDN edge caching sits between the browser and the origin server,
           intercepting requests at geographically distributed edge locations.
           When a user requests a resource, DNS routing directs them to the
@@ -132,8 +142,8 @@ export default function ClientEdgeCachingArticle() {
           origin&apos;s Cache-Control headers, and serves it to the user.
           Subsequent requests from any user served by that edge location receive
           the cached response until the TTL expires.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Modern edge computing platforms extend caching beyond static file
           serving. Cloudflare Workers, AWS Lambda@Edge, and Vercel Edge
           Functions allow running JavaScript, WebAssembly, or other code at edge
@@ -145,7 +155,7 @@ export default function ClientEdgeCachingArticle() {
           own trade-offs: cold starts add 50-500ms latency, execution time is
           limited (typically 10-50ms for free tiers), and available APIs are
           restricted (no filesystem access, limited network capabilities).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/cdn-edge-caching.svg"
@@ -178,7 +188,10 @@ export default function ClientEdgeCachingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cache-Control directive selection involves critical trade-offs between
           freshness and performance. Setting long max-age values (1 year with
           immutable) on static assets maximizes performance — the browser never
@@ -192,8 +205,8 @@ export default function ClientEdgeCachingArticle() {
           provides instant response times with eventual freshness, ideal for
           content that updates periodically but does not need to be perfectly
           current.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Edge caching decisions depend on content type and personalization
           requirements. Fully static content (images, CSS, JavaScript) is an
           obvious candidate for edge caching with long TTLs. Semi-dynamic
@@ -204,7 +217,7 @@ export default function ClientEdgeCachingArticle() {
           caching the page shell and injecting user-specific data at the edge
           using Edge Side Includes (ESI) or template stitching. The trade-off is
           increased edge compute complexity versus origin server load reduction.
-        </p>
+        </HighlightBlock>
         <p>
           CDN provider selection involves evaluating network coverage, feature
           set, and pricing model. Cloudflare offers the largest network with a
@@ -222,7 +235,10 @@ export default function ClientEdgeCachingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Adopt a layered caching strategy that matches content characteristics
           to caching behavior. Static assets with content-hashed filenames
           should use <code>public, max-age=31536000, immutable</code> — cache
@@ -235,8 +251,8 @@ export default function ClientEdgeCachingArticle() {
           <code>public, max-age=60, s-maxage=3600</code> to cache for 1 minute
           in the browser and 1 hour at the CDN edge. Sensitive data should use{" "}
           <code>no-store</code> to prevent any caching.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement cache key customization to maximize cache hit rates. By
           default, CDN cache keys include the URL path and Host header. Customize
           the cache key to include query parameters that affect content
@@ -247,7 +263,7 @@ export default function ClientEdgeCachingArticle() {
           Accept-Encoding to store separate gzip and Brotli versions. Most CDN
           providers offer cache key customization through their dashboard or
           configuration API.
-        </p>
+        </HighlightBlock>
         <p>
           Design cache invalidation into your deployment pipeline. Every
           deployment should trigger a CDN purge of HTML pages (to pick up new
@@ -263,7 +279,10 @@ export default function ClientEdgeCachingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most frequent caching mistake is confusing no-cache with
           no-store. The no-cache directive means &quot;cache but revalidate
           before every use&quot; — the response is stored and served with a
@@ -273,8 +292,8 @@ export default function ClientEdgeCachingArticle() {
           sensitive data to browser caches, while using no-store when you meant
           no-cache eliminates all caching benefits and increases origin load.
           This distinction is critical for security-sensitive applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common error is setting long Cache-Control TTLs on HTML pages
           without a purge strategy. If HTML is cached for 1 hour at the CDN and
           you deploy a new version of the application, users continue receiving
@@ -283,7 +302,7 @@ export default function ClientEdgeCachingArticle() {
           use no-cache for HTML (always revalidate) and trigger a CDN purge of
           HTML paths on every deployment. Alternatively, use versioned HTML
           URLs, but this breaks bookmarking and sharing.
-        </p>
+        </HighlightBlock>
         <p>
           Failing to account for cache variation leads to serving incorrect
           content to users. If a page serves different content based on the
@@ -299,7 +318,10 @@ export default function ClientEdgeCachingArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           News and media websites face extreme caching challenges due to
           breaking news updates and high traffic spikes. The New York Times uses
           a multi-layer caching strategy: article HTML is served from edge cache
@@ -310,8 +332,8 @@ export default function ClientEdgeCachingArticle() {
           stale-if-error directive ensures that if the origin becomes
           unavailable during an outage, the CDN continues serving stale content
           for up to 24 hours, maintaining site availability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms require sophisticated caching strategies that
           balance performance with dynamic pricing and inventory data. Product
           listing pages use edge caching with 5-minute TTLs and purge-on-change
@@ -323,7 +345,7 @@ export default function ClientEdgeCachingArticle() {
           the checkout load. Image optimization at the edge (Cloudflare Images,
           Imgix) serves appropriately sized and formatted images based on device
           capabilities, reducing bandwidth by 30-50%.
-        </p>
+        </HighlightBlock>
         <p>
           Single-page applications (SPAs) present unique caching challenges
           because the entire application is delivered as JavaScript bundles. The
@@ -340,12 +362,15 @@ export default function ClientEdgeCachingArticle() {
 
       <section>
         <h2>Advanced Caching Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CDN architecture at the enterprise level involves multi-layered edge computing capabilities that extend far beyond static file serving. Modern CDNs like Cloudflare, Fastly, and AWS CloudFront operate thousands of Points of Presence (PoPs) globally, each capable of running compute logic at the edge. Edge computing transforms the CDN from a passive cache into an active processing layer — Edge Side Includes (ESI) allow composing pages from multiple cached fragments at the edge, combining a cached header fragment, a cached product listing fragment, and a personalized user fragment into a complete HTML response without any origin round-trip. Cache key optimization is critical for maximizing edge cache hit rates — the default cache key (URL path plus Host header) is often insufficient for dynamic applications. Customizing the cache key to include only the query parameters that affect content (pagination, filters, locale) while excluding irrelevant parameters (UTM tracking, session IDs, cache-busting timestamps) dramatically improves cache efficiency. For internationalized sites, the cache key must include Accept-Language or the URL locale prefix to serve different language versions from the edge. For compressed responses, the cache key must account for Accept-Encoding to store separate gzip and Brotli versions, preventing the CDN from serving Brotli-compressed content to browsers that only support gzip.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cache invalidation at scale is one of the most challenging operational problems in distributed systems. The fundamental tension is between cache consistency (ensuring all edge locations serve the latest content) and cache performance (maximizing hit rates to reduce origin load). Versioned URLs solve this for static assets — embedding a content hash in the filename means the URL changes when content changes, and the old URL can be cached forever with immutable headers. But for dynamic content (user profiles, product prices, inventory levels), versioned URLs are impractical because the content changes too frequently. CDN purge APIs provide programmatic invalidation by URL, URL prefix, or cache tag. Cache tags (supported by Fastly and Cloudflare) allow tagging responses with metadata during the cache population process, and later purging all responses with a specific tag — for example, purging all product pages when a product&apos;s price changes, or purging all articles in a category when the category layout is updated. The purge operation propagates to all edge locations asynchronously, typically completing within 30-120 seconds globally. For applications requiring immediate invalidation (breaking news, flash sales), the purge API is integrated into the content publishing workflow — when an editor publishes an article, the CMS automatically triggers a purge of the article URL, the listing page, the sitemap, and any related content pages. The challenge is that purge operations are rate-limited by CDN providers (typically 100-1000 purges per minute), so applications with high content velocity must use cache tag invalidation (purging by tag rather than individual URLs) to stay within rate limits while maintaining content freshness.
-        </p>
+        </HighlightBlock>
         <p>
           Stale-while-revalidate implementation details reveal the nuanced engineering required to balance instant response times with eventual freshness. The stale-while-revalidate Cache-Control directive (supported by browsers and CDNs) allows serving a cached response immediately while asynchronously fetching a fresh version in the background. For example, max-age=60, stale-while-revalidate=30 means the response is fresh for 60 seconds, then for the next 30 seconds the cached version is served instantly while a background request fetches the new version. The next request after the background fetch completes receives the fresh response. At the CDN level, stale-while-revalidate is implemented by the edge server checking the response age — if the response is within the max-age window, it is served as fresh; if it is within the stale-while-revalidate window, it is served immediately while a background fetch is initiated; if it exceeds both windows, the edge fetches a fresh response synchronously before serving. The implementation must handle concurrent requests during the stale-while-revalidate window intelligently — if 100 users request the same stale resource simultaneously, the CDN should initiate only one background fetch (request coalescing) rather than 100 redundant fetches that would overwhelm the origin server. Cloudflare implements this through its stale-while-revalidate feature, and Fastly provides similar functionality through its shielding architecture where a single shield POP handles background fetches on behalf of all edge POPs.
         </p>
@@ -362,12 +387,15 @@ export default function ClientEdgeCachingArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between memory cache and disk cache?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Memory cache stores resources in RAM and is the fastest cache
               layer, but it is cleared when the tab closes and is not shared
               across tabs. It is used for the current page&apos;s resources and
@@ -377,7 +405,7 @@ export default function ClientEdgeCachingArticle() {
               restarts and is shared across tabs from the same origin. Both
               serve different purposes — memory cache for immediate reuse within
               a session, disk cache for cross-session performance.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

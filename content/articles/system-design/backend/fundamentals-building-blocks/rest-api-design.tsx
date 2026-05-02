@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,12 +25,15 @@ export default function RestApiDesignArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>REST (Representational State Transfer)</strong> is an architectural style for designing networked applications, introduced by Roy Fielding in his 2000 doctoral dissertation. REST defines a set of constraints for building scalable, reliable, and maintainable APIs: uniform interface, stateless interactions, cacheability, layered systems, and code-on-demand (optional).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In practice, a &quot;RESTful&quot; API is one where:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>URLs identify resources</strong> (users, orders, products)—not actions.</li>
           <li><strong>HTTP methods communicate intent</strong> (GET = read, POST = create, PUT = replace, DELETE = remove).</li>
@@ -75,11 +79,14 @@ export default function RestApiDesignArticle() {
 
       <section>
         <h2>REST Architectural Constraints</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">1. Uniform Interface</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           All resources are accessed using a consistent, standard interface:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Resource identification:</strong> Each resource has a unique URI (<code>/users/123</code>).</li>
           <li><strong>Resource manipulation through representations:</strong> Clients interact with resource representations (JSON, XML), not the resource directly.</li>
@@ -88,9 +95,9 @@ export default function RestApiDesignArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">2. Stateless Interactions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each request contains all information needed to process it. The server does not store client context between requests:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Session state on client:</strong> Authentication tokens, pagination cursors are sent with each request.</li>
           <li><strong>Server benefits:</strong> Any server can handle any request, enabling horizontal scaling and simple failover.</li>
@@ -131,19 +138,22 @@ export default function RestApiDesignArticle() {
 
       <section>
         <h2>Resource Modeling</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">What Is a Resource?</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A resource is any concept, object, or entity that your API manages:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Concrete resources:</strong> Users, products, orders, invoices.</li>
           <li><strong>Abstract resources:</strong> Search results, reports, analytics.</li>
           <li><strong>Relationships:</strong> User&apos;s orders, product&apos;s reviews.</li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Key principle:</strong> Resources should reflect business concepts, not database tables. A &quot;User&quot; resource may aggregate data from multiple tables (users, profiles, preferences).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/fundamentals-building-blocks/rest-api-crud-operations.svg"
@@ -154,16 +164,19 @@ export default function RestApiDesignArticle() {
 
       <section>
         <h2>Resource Modeling</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">URL Design Best Practices</h3>
 
         <h4 className="mt-4 mb-2 font-semibold">Use Nouns, Not Verbs</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           RESTful APIs use nouns for resources and HTTP methods for actions. Good examples include GET for listing users, POST for creating users, GET for retrieving a specific user, PUT for updating, and DELETE for removing. Bad examples use verb-based URLs like getUsers, createUser, updateUser, or deleteUser because HTTP methods already convey the action.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Why:</strong> HTTP methods already convey the action. Adding verbs to URLs is redundant and breaks REST conventions.
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">Use Plural Nouns for Collections</h4>
         <p>
@@ -213,6 +226,9 @@ export default function RestApiDesignArticle() {
 
       <section>
         <h2>HTTP Methods and Semantics</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -286,17 +302,17 @@ export default function RestApiDesignArticle() {
         </table>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Safe Methods</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Safe methods do not modify server state. They can be cached, prefetched, and retried without side effects:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>GET:</strong> Retrieve data. Safe.</li>
           <li><strong>HEAD:</strong> Like GET, but headers only. Safe.</li>
           <li><strong>OPTIONS:</strong> Get supported methods. Safe.</li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why it matters:</strong> Browsers, proxies, and CDNs may prefetch or cache safe requests. Never use GET for actions that modify state (e.g., <code>GET /delete-user?id=123</code> is dangerous).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Idempotent Methods</h3>
         <p>
@@ -321,11 +337,14 @@ export default function RestApiDesignArticle() {
 
       <section>
         <h2>Status Codes and Error Handling</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Status Code Guidelines</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use status codes to communicate outcomes clearly:
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -429,25 +448,28 @@ export default function RestApiDesignArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Error Response Format</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use a consistent error format across all endpoints with a nested error object containing machine-readable codes, human-readable messages, request IDs for debugging, and field-level details for validation failures.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Pagination, Filtering, and Sorting</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Pagination Strategies</h3>
 
         <h4 className="mt-4 mb-2 font-semibold">Offset Pagination</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Offset pagination uses offset and limit parameters to skip records and return a fixed-size page. It is simple and supports random access to any page. However, performance degrades with depth because large offsets require scanning many rows, and results can be inconsistent under concurrent writes.
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">Cursor Pagination</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cursor pagination uses an opaque cursor pointing to a position in the result set. The client receives a cursor with each response and uses it to fetch the next page. This approach provides consistent performance because it uses an index, and stable results under writes. However, it does not support random access and requires iterating from the start.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Recommendation:</strong> Use cursor pagination for large datasets (over 10,000 rows) or frequently-updated data.
         </p>
@@ -470,18 +492,21 @@ export default function RestApiDesignArticle() {
 
       <section>
         <h2>Versioning and Backward Compatibility</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Prefer Additive Changes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The safest API change is additive:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Safe:</strong> Adding new fields, endpoints, or optional parameters.</li>
           <li><strong>Breaking:</strong> Removing fields, changing types, changing default behavior.</li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Rule:</strong> Clients should ignore unknown fields. This enables additive evolution without versioning.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Strategies</h3>
 
@@ -539,11 +564,14 @@ export default function RestApiDesignArticle() {
 
       <section>
         <h2>Caching Strategies</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">HTTP Caching Headers</h3>
         <ul>
-          <li><strong>Cache-Control:</strong> <code>max-age=3600</code> (cache for 1 hour), <code>no-store</code> (don&apos;t cache), <code>private</code> (browser only).</li>
-          <li><strong>ETag:</strong> Entity tag for validation (<code>&quot;abc123&quot;</code>).</li>
+          <HighlightBlock as="li" tier="important"><strong>Cache-Control:</strong> <code>max-age=3600</code> (cache for 1 hour), <code>no-store</code> (don&apos;t cache), <code>private</code> (browser only).</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>ETag:</strong> Entity tag for validation (<code>&quot;abc123&quot;</code>).</HighlightBlock>
           <li><strong>Last-Modified:</strong> Timestamp for validation.</li>
           <li><strong>Vary:</strong> Headers that affect cache key (<code>Vary: Accept-Encoding</code>).</li>
         </ul>
@@ -557,18 +585,21 @@ export default function RestApiDesignArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Conditional Requests</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Conditional requests use If-None-Match headers with ETag values. If the resource hasn't changed, the server returns 304 Not Modified with no body. This saves bandwidth and reduces server load.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Security Considerations</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Authentication</h3>
         <ul>
-          <li><strong>Bearer Tokens:</strong> <code>Authorization: Bearer &lt;token&gt;</code>.</li>
-          <li><strong>API Keys:</strong> <code>X-API-Key: &lt;key&gt;</code>.</li>
+          <HighlightBlock as="li" tier="important"><strong>Bearer Tokens:</strong> <code>Authorization: Bearer &lt;token&gt;</code>.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>API Keys:</strong> <code>X-API-Key: &lt;key&gt;</code>.</HighlightBlock>
           <li><strong>OAuth 2.0:</strong> For delegated authorization.</li>
         </ul>
 
@@ -596,14 +627,17 @@ export default function RestApiDesignArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">1. Stripe Payment API (Idempotency)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Prevent duplicate charges from network retries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong> Idempotency keys for all POST requests. Keys retained for 24 hours. Same response returned for duplicates.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Result:</strong> Safe retries, no duplicate charges.
         </p>
@@ -666,14 +700,17 @@ export default function RestApiDesignArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Verb-based URLs:</strong> <code>/createUser</code> instead of <code>POST /users</code>. <strong>Solution:</strong> Use nouns, HTTP methods for actions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Unbounded list endpoints:</strong> <code>GET /all-users</code> returns 100,000 rows. <strong>Solution:</strong> All collections MUST paginate.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>200 for errors:</strong> Returning <code>{`{ "success": false }`}</code> with HTTP 200. <strong>Solution:</strong> Use appropriate 4xx/5xx status codes.
           </li>
@@ -703,13 +740,16 @@ export default function RestApiDesignArticle() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q1: What are the REST architectural constraints? Why do they matter?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: What are the REST architectural constraints? Why do they matter?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: REST constraints: (1) Uniform interface (resources, standard methods, self-descriptive messages), (2) Stateless interactions (no server-side session), (3) Cacheability (responses define cacheability), (4) Layered system (intermediaries), (5) Code on demand (optional). These constraints enable scalability (stateless = horizontal scaling), reliability (cacheability = reduced load), and maintainability (uniform interface = predictable APIs).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

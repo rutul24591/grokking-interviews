@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function CurrencyFormattingArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Currency formatting</strong> is the practice of displaying
           monetary values according to locale-specific conventions. This
           encompasses currency symbols ($, €, £, ¥), symbol positioning
@@ -46,8 +47,8 @@ export default function CurrencyFormattingArticle() {
           applications, correct currency formatting is critical — incorrect
           formatting causes pricing confusion, checkout abandonment, and
           customer support tickets.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, currency formatting involves architectural
           decisions about storage (always store in smallest unit — cents, not
           dollars), conversion (real-time exchange rates vs. cached rates), and
@@ -55,8 +56,8 @@ export default function CurrencyFormattingArticle() {
           currency). The key insight: store in canonical format (integer cents,
           ISO currency code), format only for display with locale-aware
           formatting.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Currency formatting involves several technical challenges.{" "}
           <strong>Symbol positioning</strong> — $100 (US), 100$ (Canada French),
           100 € (Germany). <strong>Decimal precision</strong> — most currencies
@@ -65,7 +66,7 @@ export default function CurrencyFormattingArticle() {
           conversion, rate caching for performance, rate display disclaimers.{" "}
           <strong>Multiple currencies</strong> — displaying prices in both local
           and customer&apos;s currency for transparency.
-        </p>
+        </HighlightBlock>
         <p>
           The business case for correct currency formatting is direct: pricing
           clarity drives conversions. Users abandon checkout when prices are
@@ -80,24 +81,24 @@ export default function CurrencyFormattingArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Currency Code (ISO 4217):</strong> Three-letter codes like
             USD, EUR, GBP, JPY. Always store currency code with amount — never
             assume currency from locale. Same locale can use different
             currencies (en-US uses USD, en-GB uses GBP).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Minor Units:</strong> Store amounts in smallest unit (cents,
             pence, satoshis) as integers. $10.99 → 1099 cents. Avoids floating
             point errors (0.1 + 0.2 ≠ 0.3). Convert to major units only for
             display.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Currency Symbol vs. Code:</strong> Symbol ($, €, £) is
             locale-dependent and can be ambiguous ($ is USD, CAD, AUD, etc.).
             Code (USD, EUR) is unambiguous. Use symbol for consumer-facing
             display, code for B2B or when ambiguity matters.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Exchange Rates:</strong> Real-time rates from APIs
             (OpenExchangeRates, CurrencyLayer, Fixer). Cache rates for
@@ -128,13 +129,13 @@ export default function CurrencyFormattingArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Currency formatting architecture consists of a storage layer (integer
           cents + ISO currency code), a conversion layer (exchange rate APIs),
           and a display layer (Intl.NumberFormat with currency options). The
           architecture must handle rate caching, fallback rates, and
           multi-currency display.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/internationalization-i18n-localization-l10n/currency-conversion-flow.svg"
@@ -145,18 +146,18 @@ export default function CurrencyFormattingArticle() {
         />
 
         <h3>Storage Best Practices</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Database:</strong> Store amount as integer (BIGINT for large
           amounts), currency as CHAR(3). Example: <code>amount_cents: 1099</code>,{" "}
           <code>currency: &apos;USD&apos;</code>. Never store as FLOAT/DOUBLE —
           floating point errors cause money discrepancies.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>API Response:</strong> Return amount and currency separately.
           Example: <code>{`{ amount: 1099, currency: "USD" }`}</code>. Don&apos;t
           return formatted strings — frontend formats based on user&apos;s
           locale.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Exchange Rate Storage:</strong> Cache rates with timestamp.
           Example: <code>{`{ base: "USD", rates: { EUR: 0.92, GBP: 0.79 }, timestamp: "2026-04-02T14:30:00Z" }`}</code>.
@@ -175,24 +176,24 @@ export default function CurrencyFormattingArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Currency implementation involves trade-offs between accuracy,
           performance, and complexity.
-        </p>
+        </HighlightBlock>
 
         <h3>Exchange Rate Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Real-time API:</strong> Fetch rates on each page load.
           Advantages: always accurate. Limitations: API cost, latency, rate
           limits. Best for: high-value transactions where accuracy matters
           (B2B, enterprise).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cached Rates:</strong> Fetch rates every 5-15 minutes, cache
           globally. Advantages: fast, low API cost. Limitations: slight
           staleness. Best for: e-commerce, SaaS pricing. Add disclaimer for
           transparency.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Fixed Rates:</strong> Manually set rates, update weekly/monthly.
           Advantages: predictable pricing, no API dependency. Limitations:
@@ -223,24 +224,24 @@ export default function CurrencyFormattingArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Store in Smallest Unit:</strong> Always store as integer
             cents (1099, not 10.99). Use BIGINT for large amounts. Convert to
             major units only for display. This avoids all floating point money
             errors.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Always Include Currency Code:</strong> Store and transmit
             currency code with every amount. Never assume currency from locale
             or user&apos;s location. Same locale can use different currencies
             (en-US → USD, en-GB → GBP).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Intl.NumberFormat:</strong>{" "}
             <code>new Intl.NumberFormat(locale, {`{ style: 'currency', currency: 'USD' }`})</code>.
             Handles symbol, position, decimals, and separators automatically.
             Zero bundle size, always up-to-date.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Show Rate Timestamp:</strong> When displaying converted
             prices, show when rates were fetched (&quot;Rates as of 2:30 PM
@@ -264,22 +265,22 @@ export default function CurrencyFormattingArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Using FLOAT for Money:</strong> Floating point causes
             rounding errors (0.1 + 0.2 = 0.30000000000000004). Use integer cents
             or DECIMAL type in database. For calculations, use libraries like
             decimal.js or dinero.js.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Assuming Symbol Position:</strong> $100 (US), 100$ (Canada
             French), 100 € (Germany). Don&apos;t hardcode symbol position — use
             Intl API which handles this correctly.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Handling Currency Changes:</strong> User changes
             currency preference but prices don&apos;t update. Ensure currency
             change triggers re-fetch of converted prices, not just reformatting.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Displaying Wrong Currency at Checkout:</strong> Browsing in
             EUR but checkout charges USD. Always clearly display which currency
@@ -304,32 +305,32 @@ export default function CurrencyFormattingArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>Global E-Commerce</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           E-commerce sites (Amazon, Shopify stores) display prices in
           customer&apos;s local currency. Product pages show converted prices
           from base currency. Checkout clearly states which currency will be
           charged. Exchange rates cached for 15 minutes with timestamp display.
           Multi-currency pricing for enterprise customers.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Subscription Pricing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SaaS companies (Stripe, GitHub) offer pricing in multiple currencies.
           Customers select preferred currency at signup. Prices are fixed in
           each currency (not real-time conversion) for billing predictability.
           Currency change requires support ticket or account settings change.
           Invoices display in customer&apos;s currency.
-        </p>
+        </HighlightBlock>
 
         <h3>Travel and Hospitality</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Travel sites (Booking.com, Airbnb) show prices in both local currency
           and customer&apos;s home currency. Hotel rates displayed as
           &quot;€100/night (approximately $108)&quot;. Clear disclaimer that
           converted amount is estimate, actual charge in hotel&apos;s currency.
           Payment processed in hotel&apos;s currency, customer&apos;s bank does
           final conversion.
-        </p>
+        </HighlightBlock>
 
         <h3>Cryptocurrency Exchanges</h3>
         <p>
@@ -347,24 +348,24 @@ export default function CurrencyFormattingArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: Why should you store money as integer cents instead of decimal
               dollars?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Floating point arithmetic causes rounding errors: 0.1 + 0.2 =
               0.30000000000000004, not 0.3. Over many transactions, these errors
               accumulate. Integer arithmetic is exact: 10 + 20 = 30, always.
               Store $10.99 as 1099 cents. Convert to dollars only for display.
               For calculations requiring decimals (percentage discounts), use
               libraries like decimal.js that implement fixed-point arithmetic.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do you handle real-time currency conversion for e-commerce?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Fetch exchange rates from API (OpenExchangeRates, Fixer) every
               5-15 minutes, cache globally (Redis). On product page, convert

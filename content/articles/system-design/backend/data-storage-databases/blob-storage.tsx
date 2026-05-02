@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -78,22 +79,25 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Blob Types &amp; Containers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Blob Types</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Blob storage offers three blob types optimized for different workloads. <strong>Block
           blobs</strong> are for general file storage (up to 4.75 TB). Data is uploaded as blocks
           (up to 4,000 blocks), each block uploaded independently and in parallel, then committed
           (reassembled). This enables efficient uploads (parallel, resumable) and is ideal for
           documents, media files, backups, and distribution packages.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Page blobs</strong> are for random read/write workloads (up to 8 TB). Data is
           organized as pages (512 bytes each), and you can read/write at any page offset. This is
           essential for VM disks (VHD format), where the VM needs random access to disk sectors.
           Page blobs are not optimized for sequential uploads—use block blobs for that.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Append blobs</strong> are for append-only workloads (up to 195 GB). Data is
@@ -149,22 +153,25 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Specialized Features</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Snapshots</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Snapshots</strong> are read-only, point-in-time copies of blobs. Creating a
           snapshot captures the blob state at that moment. The snapshot is stored efficiently
           (only changed blocks are stored, not full copy). Snapshots enable: <strong>Backup</strong>
           (capture state before changes), <strong>Recovery</strong> (restore from snapshot after
           accidental modification), <strong>Testing</strong> (test against snapshot without
           affecting production data).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Incremental snapshots</strong> (page blobs only) store only changes since the
           previous snapshot. This is far more efficient than full snapshots for frequently-changing
           data (VM disks). Restore any snapshot to recover a previous state.
-        </p>
+        </HighlightBlock>
 
         <h3>Leases</h3>
         <p>
@@ -216,19 +223,22 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Blob vs Object Storage</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Blob storage and object storage (S3) are often used interchangeably—both store
           unstructured data in flat namespaces with HTTP access. But there are differences.
-        </p>
+        </HighlightBlock>
 
         <h3>Blob Storage Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Specialized blob types</strong> are the primary advantage. Page blobs enable
           VM disk storage (random read/write at 512-byte offsets)—object storage cannot do this.
           Append blobs optimize for append-only workloads (logs)—more efficient than object
           storage's overwrite model. Block blobs are comparable to S3 objects.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Snapshots</strong> are built-in and efficient. Incremental snapshots (page
@@ -287,18 +297,21 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Blob Storage</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Choose the right blob type.</strong> Block blobs for general files, page blobs
           for VM disks/random access, append blobs for logs. Using the wrong type causes
           inefficiency (e.g., appending to block blobs requires rewriting the entire blob).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use lifecycle management.</strong> Define tier transitions and expiration
           rules when creating containers. Don't wait until storage costs explode. Typical
           policy: Hot → Cool (30 days) → Archive (1 year) → Delete (7 years).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Use SAS tokens for access.</strong> Don't share storage account keys. Generate
@@ -328,18 +341,21 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Using block blobs for random access.</strong> Block blobs don't support random
           read/write—use page blobs for VM disks. Attempting random access to block blobs requires
           downloading entire blob, modifying, re-uploading (inefficient).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Not setting lifecycle policies.</strong> Data accumulates in expensive Hot
           tier. Solution: Define lifecycle policies from day one. Transition data to cooler
           tiers based on age.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Sharing storage account keys.</strong> Keys grant full access to entire storage
@@ -370,22 +386,25 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>VM Disk Storage (Azure VMs)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Azure VMs use page blobs for OS and data disks. VHD files are stored as page blobs,
           enabling random read/write at 512-byte offsets (required for disk I/O). Snapshots
           capture VM state for backup. Incremental snapshots minimize storage costs (only
           changed blocks stored). This is the primary use case for page blobs.
-        </p>
+        </HighlightBlock>
 
         <h3>Log Aggregation (Application Logs)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Applications stream logs to append blobs. Each log entry is appended efficiently
           (no rewrite). Multiple instances can append to the same blob (with coordination).
           Lifecycle policies transition old logs to cooler tiers, then delete after retention
           period. This is more efficient than block blobs for append-only workloads.
-        </p>
+        </HighlightBlock>
 
         <h3>Media Upload Platform (User-Generated Content)</h3>
         <p>
@@ -408,13 +427,16 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: When would you choose blob storage over object storage? Give a concrete example.
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Choose blob storage when you need specialized blob types
               or Azure ecosystem integration. Example: VM disk storage for Azure VMs. Page blobs
               support random read/write at 512-byte offsets—required for VHD format. Object
@@ -423,7 +445,7 @@ export default function ArticlePage() {
               model. If you're on Azure, blob storage integrates seamlessly with Azure services
               (VMs, Functions, Data Lake). Choose object storage for: multi-cloud, S3
               compatibility, broader third-party support.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What if you need both random access and append? Answer:
               Use different blob types for different workloads. Page blobs for random access (VM

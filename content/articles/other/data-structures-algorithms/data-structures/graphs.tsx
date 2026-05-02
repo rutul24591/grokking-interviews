@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function GraphsArticle() {
     <ArticleLayout metadata={metadata}>
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition & Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A graph G = (V, E) is a set of vertices V and a set of edges E ⊆ V × V connecting them. It is the most general relational structure in computing — every other linked structure (tree, linked list, DAG, state machine) is a constrained graph. Edges may be directed or undirected, weighted or unweighted, and the same pair of vertices may permit multiple edges (multigraph) or self-loops.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Graph theory predates computing by two centuries — Euler&apos;s 1736 solution to the Königsberg bridges problem is generally cited as its founding result. But the structure became central to systems engineering when problems started to scale: PageRank reduces to an eigenvector computation on a 100-billion-edge web graph; Facebook&apos;s social graph drives feed ranking; Git is a DAG of commits; Kubernetes scheduling reasons about a constraint graph; React&apos;s reconciler walks a fiber tree (a DAG with parent pointers).
-        </p>
+        </HighlightBlock>
         <p>
           What makes graphs hard isn&apos;t the abstract definition — it&apos;s that the choice of <em>representation</em> dominates everything. A 1-billion-vertex graph stored as an adjacency matrix needs an exabyte; the same graph as an adjacency list fits in a few hundred GB. A staff engineer&apos;s job is rarely to invent a new graph algorithm — it&apos;s to pick the right representation, prove the operation is O(V + E) instead of O(V²), and recognize when a problem reduces to BFS or topological sort.
         </p>
@@ -36,12 +40,15 @@ export default function GraphsArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Three independent dimensions classify graphs. <strong>Direction:</strong> undirected edges are symmetric (Facebook friendship); directed edges are not (Twitter follow, build dependency). <strong>Weight:</strong> unweighted edges only encode connectivity; weighted edges carry cost, distance, capacity, or probability. <strong>Acyclicity:</strong> a graph with no cycles permits topological ordering and dynamic programming over vertices; a graph with cycles requires explicit visited tracking.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Vertex <em>degree</em> is the number of incident edges. In directed graphs, in-degree and out-degree are tracked separately. The <em>density</em> |E|/|V|² distinguishes sparse graphs (most real-world graphs — social, web, road) from dense ones (cliques, complete bipartite). Sparse graphs admit O(V + E) algorithms; dense graphs collapse that to O(V²), which often makes matrix representations competitive.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           A <em>path</em> is a sequence of vertices connected by edges. A <em>cycle</em> is a path that returns to its start. <em>Connectivity</em> in undirected graphs partitions vertices into connected components; in directed graphs, the corresponding notion is strongly connected components (every vertex reachable from every other within the SCC). A <em>tree</em> is a connected acyclic undirected graph; a <em>forest</em> is a disjoint union of trees; a <em>DAG</em> is a directed acyclic graph.
         </p>
@@ -57,12 +64,15 @@ export default function GraphsArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture & Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The two canonical representations are <strong>adjacency list</strong> and <strong>adjacency matrix</strong>. Adjacency list stores, for each vertex, the collection of its neighbors — typically a per-vertex array (or hash set, if edge-existence checks dominate). Total space is O(V + E). Iterating the neighbors of v is O(deg(v)); checking whether edge (u, v) exists is O(deg(u)) unless neighbors are stored in a hash set.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Adjacency matrix is a V × V boolean (or numeric, if weighted) matrix where M[u][v] indicates whether the edge exists. Edge-existence is O(1); iterating neighbors is O(V) — always, even if the vertex has only one neighbor. Space is O(V²), which is fine for V ≈ 1000 but ruinous beyond. For dense graphs or matrix-algebra algorithms (PageRank, Floyd-Warshall, transitive closure), the matrix wins on both space and runtime.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           A third option, <strong>compressed sparse row (CSR)</strong>, packs the adjacency list into two flat arrays: a column-index array containing all neighbors concatenated, and a row-pointer array indicating where each vertex&apos;s neighbors begin. CSR is the format used by NetworkX, igraph, and most high-performance graph libraries because the contiguous layout maximizes cache hits during traversal. The trade-off: CSR is read-optimized; mutating the graph requires rebuilding both arrays.
         </p>
@@ -81,12 +91,15 @@ export default function GraphsArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Trade-offs & Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The two foundational traversals — <strong>BFS</strong> and <strong>DFS</strong> — both run in O(V + E), but explore in fundamentally different orders. BFS uses a queue and visits vertices in order of distance from the source, which is exactly why it solves single-source shortest path on unweighted graphs. DFS uses a stack (or recursion) and dives as deep as possible before backtracking, which is what enables topological sort, cycle detection, and SCC algorithms.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           For weighted shortest path, the algorithm depends on edge sign. <strong>Dijkstra</strong> handles non-negative weights in O((V + E) log V) using a binary heap, or O(E + V log V) with a Fibonacci heap. <strong>Bellman-Ford</strong> handles negative weights (and detects negative cycles) in O(V·E). <strong>A*</strong> adds a heuristic to Dijkstra for goal-directed search — used in maps, games, and planning. <strong>Floyd-Warshall</strong> computes all-pairs shortest paths in O(V³) — viable for V ≤ ~500.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           For <strong>minimum spanning tree</strong>, Kruskal&apos;s algorithm sorts edges and uses union-find in O(E log E); Prim&apos;s grows a tree from a seed using a heap in O((V + E) log V). Both produce the same total weight on a connected graph. <strong>Topological sort</strong> on a DAG is O(V + E) via DFS post-order or Kahn&apos;s algorithm (repeatedly remove zero-in-degree vertices).
         </p>
@@ -100,9 +113,12 @@ export default function GraphsArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li><strong>Default to adjacency list.</strong> Unless your graph is dense or you need O(1) edge lookups for a matrix algorithm, the adjacency list is correct. Most real-world graphs are sparse.</li>
-          <li><strong>Use integer vertex ids.</strong> Map domain identifiers (UUIDs, URLs) to dense integer ids on graph construction. This lets you use bit arrays for visited tracking and typed arrays for adjacency, dramatically improving cache behavior.</li>
+          <HighlightBlock as="li" tier="important"><strong>Default to adjacency list.</strong> Unless your graph is dense or you need O(1) edge lookups for a matrix algorithm, the adjacency list is correct. Most real-world graphs are sparse.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Use integer vertex ids.</strong> Map domain identifiers (UUIDs, URLs) to dense integer ids on graph construction. This lets you use bit arrays for visited tracking and typed arrays for adjacency, dramatically improving cache behavior.</HighlightBlock>
           <li><strong>Pick the right traversal.</strong> BFS for shortest hops, DFS for cycle detection / topo sort / SCC, Dijkstra for non-negative weights, Bellman-Ford only if negatives are possible. Don&apos;t reach for Dijkstra when BFS suffices.</li>
           <li><strong>Use iterative DFS for deep graphs.</strong> Recursive DFS overflows the call stack on graphs deeper than a few thousand vertices. Use an explicit stack with simulated frame state for production code.</li>
           <li><strong>Detect cycles early.</strong> If your graph should be a DAG (build dependencies, schema migrations), validate acyclicity at ingestion via topological sort. Cycles caught at the source are easier to debug than cycles caught at runtime.</li>
@@ -113,9 +129,12 @@ export default function GraphsArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li><strong>Forgetting visited tracking.</strong> The most common bug in graph code. Without a visited set, any cycle creates infinite recursion. Even DAGs need it if vertices are reachable via multiple paths.</li>
-          <li><strong>Using DFS for shortest path.</strong> DFS does not produce shortest paths in unweighted graphs — it returns the first path it happens to find. Use BFS.</li>
+          <HighlightBlock as="li" tier="important"><strong>Forgetting visited tracking.</strong> The most common bug in graph code. Without a visited set, any cycle creates infinite recursion. Even DAGs need it if vertices are reachable via multiple paths.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Using DFS for shortest path.</strong> DFS does not produce shortest paths in unweighted graphs — it returns the first path it happens to find. Use BFS.</HighlightBlock>
           <li><strong>Dijkstra with negative weights.</strong> Dijkstra&apos;s correctness proof relies on non-negative weights — once a vertex is popped from the heap, its distance is final. Negative edges can invalidate already-finalized distances. Use Bellman-Ford instead, or transform weights if possible.</li>
           <li><strong>Storing edges as (u, v) tuples without indexing.</strong> If you need to query &quot;neighbors of v&quot;, an unindexed edge list forces O(E) scans per query. Build an adjacency list once.</li>
           <li><strong>Recursion depth on deep DFS.</strong> JavaScript&apos;s default stack is ~10k frames; deep dependency graphs (compiler IR, large file trees) exceed this. Convert to iterative DFS.</li>
@@ -126,12 +145,15 @@ export default function GraphsArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Social networks.</strong> Facebook, LinkedIn, and Twitter store the social graph as a partitioned adjacency list across thousands of machines. Friend-of-friend queries are 2-hop BFS; PageRank-style relevance scoring runs as iterative matrix-vector multiplication on the edge graph. Facebook&apos;s TAO is essentially a distributed graph cache layered on top of MySQL.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Maps and routing.</strong> Google Maps, Waze, and OpenStreetMap model the road network as a weighted directed graph (one-way streets, turn restrictions). Routing uses contraction hierarchies — a precomputed shortcut graph that lets bidirectional Dijkstra find continental-scale routes in milliseconds. The classical Dijkstra would take seconds on a graph with 100M nodes.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Build systems and package managers.</strong> npm, Bazel, Make, Webpack, and Gradle all model the build as a DAG of files/modules. Topological sort produces the build order; cycle detection rejects circular dependencies; incremental builds prune the DAG to the affected subgraph. Webpack&apos;s module graph is the canonical example in the JavaScript ecosystem.
         </p>
@@ -150,10 +172,13 @@ export default function GraphsArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: When would you choose an adjacency matrix over an adjacency list?</p>
-            <p className="mt-2 text-sm">A: When the graph is dense (E ≈ V²), when you need O(1) edge-existence lookups in the hot path, or when you&apos;re running matrix-algebra algorithms like PageRank or Floyd-Warshall. For typical sparse graphs (social, web, road), the matrix is wasteful — both in space (O(V²)) and traversal time (neighbor iteration is O(V) instead of O(deg(v))).</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: When would you choose an adjacency matrix over an adjacency list?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">A: When the graph is dense (E ≈ V²), when you need O(1) edge-existence lookups in the hot path, or when you&apos;re running matrix-algebra algorithms like PageRank or Floyd-Warshall. For typical sparse graphs (social, web, road), the matrix is wasteful — both in space (O(V²)) and traversal time (neighbor iteration is O(V) instead of O(deg(v))).</HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: Why doesn&apos;t Dijkstra work with negative edge weights?</p>

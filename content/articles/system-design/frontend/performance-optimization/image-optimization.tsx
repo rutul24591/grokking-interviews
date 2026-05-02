@@ -693,14 +693,14 @@ export default function ImageOptimizationArticle() {
         </HighlightBlock>
 
         <div className="space-y-6">
-          <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <h3 className="text-lg font-semibold mb-3">Question 1: Why are images the highest-ROI optimization target?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="important" className="mb-3">
-              Images typically account for 50-70% of total page weight. A single unoptimized hero 
-              image can be 5 MB — more than the rest of the page combined. The optimization potential 
-              is enormous:
-            </HighlightBlock>
+            <div className="rounded-lg border border-theme bg-panel-soft p-5">
+              <h3 className="text-lg font-semibold mb-3">Question 1: Why are images the highest-ROI optimization target?</h3>
+              <p className="text-muted mb-3"><strong>Answer:</strong></p>
+              <p className="mb-3">
+                Images typically account for 50-70% of total page weight. A single unoptimized hero 
+                image can be 5 MB — more than the rest of the page combined. The optimization potential 
+                is enormous:
+              </p>
             <ul className="space-y-1">
               <li>• Modern formats (AVIF, WebP) provide 30-50% better compression than JPEG</li>
               <li>• Responsive images ensure mobile users don&apos;t download desktop-sized files</li>
@@ -759,13 +759,13 @@ export default function ImageOptimizationArticle() {
             </p>
           </div>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <h3 className="text-lg font-semibold mb-3">Question 4: When should you NOT lazy-load an image?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <HighlightBlock as="p" tier="crucial" className="mb-3">
-              Never lazy-load the LCP (Largest Contentful Paint) element — typically the hero image 
-              or main heading. Lazy-loading the LCP adds 1-3 seconds to LCP because:
-            </HighlightBlock>
+            <div className="rounded-lg border border-theme bg-panel-soft p-5">
+              <h3 className="text-lg font-semibold mb-3">Question 4: When should you NOT lazy-load an image?</h3>
+              <p className="text-muted mb-3"><strong>Answer:</strong></p>
+              <p className="mb-3">
+                Never lazy-load the LCP (Largest Contentful Paint) element — typically the hero image 
+                or main heading. Lazy-loading the LCP adds 1-3 seconds to LCP because:
+              </p>
             <ul className="space-y-1">
               <li>• Image won&apos;t start downloading until JavaScript executes</li>
               <li>• Intersection Observer must trigger the load</li>
@@ -833,8 +833,12 @@ export default function ImageOptimizationArticle() {
           ============================================================ */}
       <section>
         <h2>References</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: be fluent in the image delivery pipeline (transform + CDN), and the browser knobs that affect
+          Web Vitals (LCP priority, CLS via dimensions, bandwidth via srcset/sizes and modern formats).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://web.dev/fast/#optimize-your-images" 
               className="text-accent hover:underline" 
@@ -846,8 +850,8 @@ export default function ImageOptimizationArticle() {
             <p className="text-sm text-muted mt-1">
               Google&apos;s comprehensive guide to image optimization techniques.
             </p>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images" 
               className="text-accent hover:underline" 
@@ -859,8 +863,8 @@ export default function ImageOptimizationArticle() {
             <p className="text-sm text-muted mt-1">
               Complete guide to srcset, sizes, and picture element.
             </p>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a 
               href="https://nextjs.org/docs/app/api-reference/components/image" 
               className="text-accent hover:underline" 
@@ -872,7 +876,7 @@ export default function ImageOptimizationArticle() {
             <p className="text-sm text-muted mt-1">
               Next.js built-in image optimization component documentation.
             </p>
-          </li>
+          </HighlightBlock>
           <li>
             <a 
               href="https://caniuse.com/webp" 

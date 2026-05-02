@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function FrontendDeploymentStrategyArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Frontend Deployment Strategy</strong> encompasses the
           processes, tools, and infrastructure for releasing frontend
           applications to production users. This includes the CI/CD pipeline
@@ -49,8 +53,8 @@ export default function FrontendDeploymentStrategyArticle() {
           deployment strategy is a critical systems-level concern that balances
           release velocity (how fast can we ship changes) with reliability (how
           confident are we that each release is safe).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Modern frontend deployment has evolved from manual FTP uploads to
           sophisticated automated pipelines with preview deployments for every
           pull request, canary releases that gradually expose changes to users,
@@ -60,7 +64,7 @@ export default function FrontendDeploymentStrategyArticle() {
           multiple times per day with confidence, while the wrong strategy
           creates deployment anxiety, weekend release freezes, and production
           incidents that could have been prevented.
-        </p>
+        </HighlightBlock>
         <p>
           Deployment architecture decisions have long-term organizational
           impact. The choice of hosting platform (Vercel, Netlify, AWS S3 +
@@ -87,7 +91,10 @@ export default function FrontendDeploymentStrategyArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Hosting platforms for frontend applications fall into three
           categories. Static hosting platforms (Vercel, Netlify, Cloudflare
           Pages) are purpose-built for modern frontend frameworks — they
@@ -101,8 +108,8 @@ export default function FrontendDeploymentStrategyArticle() {
           on EC2 or VMs, Docker containers on Kubernetes) offers maximum control
           and customization but requires significant DevOps expertise to
           configure, secure, and maintain.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The CI/CD pipeline is the automation that transforms code commits into
           production deployments. A well-designed pipeline follows a sequential
           flow: install dependencies (from cache for speed), run linting and
@@ -113,7 +120,7 @@ export default function FrontendDeploymentStrategyArticle() {
           monitoring. Each stage is a gate — if any stage fails, the pipeline
           stops and the team is notified. The entire pipeline should complete in
           under 10 minutes to maintain fast feedback loops.
-        </p>
+        </HighlightBlock>
         <p>
           CDN configuration is integral to deployment because the CDN serves the
           deployed assets to end users. Static assets (JavaScript, CSS, fonts,
@@ -149,7 +156,10 @@ export default function FrontendDeploymentStrategyArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The deployment pipeline architecture orchestrates the flow from code
           commit to production serving. When a developer pushes a commit, the CI
           system triggers the pipeline. The build stage installs dependencies
@@ -161,8 +171,8 @@ export default function FrontendDeploymentStrategyArticle() {
           smoke tests verify critical user flows (login, core functionality,
           checkout). After staging verification, the deployment is promoted to
           production.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production deployment follows a controlled rollout strategy. For
           static frontend deployments, the new version is deployed atomically —
           the CDN origin is updated with new files, and the CDN cache for HTML
@@ -172,7 +182,7 @@ export default function FrontendDeploymentStrategyArticle() {
           SSR applications, canary deployment routes a small percentage of
           traffic to the new server instances while the majority continues
           receiving responses from the current version.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/cicd-pipeline.svg"
@@ -215,7 +225,10 @@ export default function FrontendDeploymentStrategyArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Deployment strategy selection depends on the application architecture
           and risk tolerance. Blue-green deployment maintains two identical
           production environments and switches traffic from one to the other,
@@ -228,8 +241,8 @@ export default function FrontendDeploymentStrategyArticle() {
           enabling stakeholders to review changes in a production-like setting
           before merging — invaluable for design review and product validation
           but adds CI/CD complexity and hosting costs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Hosting platform choice involves trade-offs between convenience and
           control. Vercel and Netlify provide the smoothest developer experience
           — Git integration, automatic preview deployments, built-in CDN, edge
@@ -240,7 +253,7 @@ export default function FrontendDeploymentStrategyArticle() {
           certificates, and DNS management. For most teams, the developer
           productivity gains of managed platforms justify the cost premium until
           traffic volumes make the cost difference significant.
-        </p>
+        </HighlightBlock>
         <p>
           Pipeline speed versus thoroughness is a fundamental trade-off. A
           comprehensive pipeline with extensive E2E tests, security scans,
@@ -270,7 +283,10 @@ export default function FrontendDeploymentStrategyArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Automate every step of the deployment pipeline. Manual deployment
           steps are error-prone, unrepeatable, and create tribal knowledge that
           is lost when team members leave. The ideal workflow is: push code,
@@ -280,8 +296,8 @@ export default function FrontendDeploymentStrategyArticle() {
           Use infrastructure-as-code (Terraform, CloudFormation) for hosting
           and CDN configuration so that infrastructure changes are reviewed and
           versioned alongside application code.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement comprehensive post-deploy verification. Run smoke tests
           against production immediately after deployment — test login, core
           user flows, and critical API endpoints. Monitor error rates in Sentry
@@ -291,7 +307,7 @@ export default function FrontendDeploymentStrategyArticle() {
           if error rates increase by more than 20% or if LCP degrades by more
           than 500ms compared to baseline. Document the verification checklist
           and automate as much of it as possible.
-        </p>
+        </HighlightBlock>
         <p>
           Maintain deployment history and rollback capability. Every deployment
           should be tagged with the Git commit SHA, timestamp, and the developer
@@ -319,7 +335,10 @@ export default function FrontendDeploymentStrategyArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Deploying without a rollback plan is the most dangerous deployment
           mistake. Every deployment should have a tested rollback procedure that
           can be executed in under 5 minutes. Teams that deploy without
@@ -329,8 +348,8 @@ export default function FrontendDeploymentStrategyArticle() {
           version. The prevention strategy is to test rollback procedures
           regularly (quarterly disaster recovery drills), retain deployment
           history, and ensure all database migrations are backward-compatible.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CDN cache inconsistency after deployment causes users to receive stale
           HTML that references JavaScript and CSS files that no longer exist on
           the server, resulting in 404 errors and broken pages. This happens
@@ -339,7 +358,7 @@ export default function FrontendDeploymentStrategyArticle() {
           (always revalidate with ETag) and trigger a CDN purge of HTML paths
           on every deployment. Alternatively, version the HTML URL itself, but
           this breaks bookmarks and external links.
-        </p>
+        </HighlightBlock>
         <p>
           Running E2E tests against production without proper safeguards can
           cause data corruption, trigger real user notifications, and incur
@@ -365,7 +384,10 @@ export default function FrontendDeploymentStrategyArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           High-traffic e-commerce platforms during peak events (Black Friday,
           holiday sales) require deployment strategies that minimize risk during
           periods when downtime is most costly. The standard approach is a code
@@ -376,8 +398,8 @@ export default function FrontendDeploymentStrategyArticle() {
           metrics are stable. Rollback procedures are pre-documented and tested,
           and the on-call team has direct access to rollback controls without
           going through the standard deployment pipeline.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SaaS companies with multi-tenant architectures use blue-green
           deployment to ensure zero downtime for their customers. The new version
           is deployed to the &quot;green&quot; environment while the
@@ -388,7 +410,7 @@ export default function FrontendDeploymentStrategyArticle() {
           Datadog, where even minutes of downtime affect thousands of
           businesses. The infrastructure cost of maintaining two environments is
           justified by the business impact of downtime.
-        </p>
+        </HighlightBlock>
         <p>
           Open-source projects and documentation sites use simple static
           deployments with preview environments for every pull request. Vercel
@@ -413,12 +435,15 @@ export default function FrontendDeploymentStrategyArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is your deployment strategy for a frontend application?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: CI/CD pipeline with automated tests (unit, integration, E2E),
               linting, and type-checking as gates. Preview deployments for every
               PR for stakeholder review. On merge to main, deploy to staging,
@@ -427,7 +452,7 @@ export default function FrontendDeploymentStrategyArticle() {
               performance metrics. Use managed hosting (Vercel/Netlify) for
               static sites with built-in CDN and one-click rollback. Target
               multiple deploys per day with confidence.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

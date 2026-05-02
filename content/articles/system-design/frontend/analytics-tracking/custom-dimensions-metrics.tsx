@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Custom dimensions and metrics</strong> extend standard analytics with business-specific data. While standard analytics captures generic data like page views, sessions, and bounce rate, custom dimensions and metrics capture what matters to your business: user tier, content category, product price, subscription plan, feature usage, and domain-specific attributes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Custom dimensions are qualitative attributes (strings, categories) that segment data: user_tier equals premium, content_category equals tutorial, subscription_plan equals enterprise. Custom metrics are quantitative values (numbers) that can be aggregated: cart_value equals 99.99, video_watch_time equals 180, search_results_count equals 25.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, custom dimensions and metrics require balancing four competing concerns. <strong>Flexibility</strong> means capturing any business attribute needed for analysis. <strong>Governance</strong> means preventing dimension and metric sprawl that makes data unmanageable. <strong>Performance</strong> means custom data increases storage and query costs. <strong>Privacy</strong> means custom data must not include PII without consent.
         </p>
@@ -48,6 +52,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/analytics-tracking/event-taxonomy.svg"
@@ -56,12 +63,12 @@ export default function ArticlePage() {
         />
 
         <h3>Dimensions vs. Metrics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding the distinction is fundamental. <strong>Dimensions</strong> are qualitative attributes used for segmentation and grouping. Examples include user_tier, content_category, and traffic_source. Dimensions cannot be summed or averaged. <strong>Metrics</strong> are quantitative values that can be aggregated. Examples include revenue, watch_time, and items_in_cart. Metrics can be summed, averaged, and counted.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For example, "Average revenue by user tier" — user_tier is the dimension (grouping), revenue is the metric (aggregated).
-        </p>
+        </HighlightBlock>
 
         <h3>Dimension Scope</h3>
         <p>
@@ -121,14 +128,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust custom dimensions and metrics architecture treats custom data as first-class schema with proper validation, storage, and querying.
-        </p>
+        </HighlightBlock>
 
         <h3>Custom Data Collection Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement custom data collection by maintaining a schema registry of all custom dimensions and metrics with types, allowed values, and owners. Validate custom data against the schema before sending and reject invalid data. Define default values for optional dimensions. Include schema version with data for backward compatibility.
-        </p>
+        </HighlightBlock>
         <p>
           Create a tracking utility that validates custom data against schema before sending to analytics.
         </p>
@@ -163,12 +173,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Custom dimensions and metrics involves trade-offs between flexibility, governance, and cost. Open schema provides the best flexibility but poor governance and high cost from sprawl. This is best for early-stage exploration. Registered schema provides good flexibility and good governance with medium cost. This is best for most organizations. Strict schema provides poor flexibility but the best governance and low cost. This is best for regulated industries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that registered schema with lightweight governance works best for most organizations. Require registration, but make it easy.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -176,12 +189,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Define a naming convention using consistent naming with snake_case and prefix by domain. Document everything by documenting each dimension and metric with description, owner, and examples. Validate data by validating custom data against schema before sending.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Monitor cardinality and alert on high-cardinality dimensions. Audit regularly with quarterly audits of dimension and metric usage. Deprecate unused dimensions and metrics. Avoid PII by never including PII in custom dimensions without consent. Use defaults by defining default values for optional dimensions. Pre-aggregate common aggregations for fast queries.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -189,12 +205,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Dimension sprawl with hundreds of unused dimensions makes it hard to find what matters. No documentation means nobody knows what dimensions mean or who owns them. High cardinality dimensions used for grouping cause performance issues.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Including PII without consent violates regulations. Averaging averages or summing ratios leads to wrong aggregation. No validation allows invalid data to pollute analytics.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -202,16 +221,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>SaaS: User Tier Analysis</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A SaaS company couldn't analyze behavior by subscription tier in standard analytics. The solution was adding user_tier (free, pro, enterprise) as a user-level dimension and adding mrr (monthly recurring revenue) as a metric. They discovered pro users had 3x higher engagement than free, and enterprise had 5x LTV. After focusing product development on pro features, revenue increased 30%.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce: Product Attribution</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce site couldn't analyze sales by product attributes. The solution was adding product-level dimensions: product_category, product_brand, and product_margin_tier. They added revenue and margin as metrics. They discovered high-margin products had low visibility. After adjusting recommendations, margin increased 15%.
-        </p>
+        </HighlightBlock>
 
         <h3>Media: Content Performance</h3>
         <p>
@@ -229,14 +251,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between custom dimensions and custom metrics?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Dimensions are qualitative attributes for segmentation. Examples include user_tier and content_category. Dimensions cannot be summed or averaged. Metrics are quantitative values for aggregation. Examples include revenue and watch_time. Metrics can be summed, averaged, and counted.
-            </p>
+            </HighlightBlock>
             <p>
               Example query: "Average revenue by user tier" — user_tier is dimension (grouping), revenue is metric (aggregated).
             </p>

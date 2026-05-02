@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,19 +25,22 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Message ordering</strong> is the guarantee that messages are processed in the same order they were
           produced, or a defined order that preserves correctness. In distributed systems, ordering is not automatic —
           network delays, clock skew, retries, and parallel processing can cause messages to arrive or be processed out
           of order. The ordering guarantee that a system provides depends on its partitioning strategy, network
           behavior, and consumer configuration.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Ordering matters when the processing of a message depends on the state produced by previous messages. For
           example, if a message updates a user&apos;s account balance, it must be processed after the message that deposited
           funds and before the message that withdraws funds. If these messages are processed out of order, the account
           balance will be incorrect — potentially resulting in overdrafts, lost deposits, or incorrect audit trails.
-        </p>
+        </HighlightBlock>
         <p>
           The fundamental trade-off in message ordering is between ordering and throughput. Strict ordering (all
           messages processed in production order) requires a single processing path, which limits throughput to the
@@ -76,21 +80,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Partition-based ordering is the most common ordering mechanism in message brokers. Messages are assigned to
           partitions based on a partition key (for example, user ID, order ID, or device ID), and all messages with
           the same key go to the same partition. Within a partition, messages are strictly ordered by their offset,
           and consumers read messages in offset order. This ensures that messages for the same entity (user, order,
           device) are processed in order, while messages for different entities are processed concurrently for
           throughput.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Sequence numbers are an application-level mechanism for ordering messages within a stream. Each message is
           assigned a monotonically increasing sequence number by the producer, and the consumer uses the sequence
           number to detect gaps (missing messages) and reorder out-of-order messages. Sequence numbers are essential
           for end-to-end ordering, because the broker&apos;s partition-based ordering does not guarantee ordering across
           partitions or from producer to consumer.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/message-ordering-diagram-1.svg"
           alt="Message ordering showing ordered messages within a partition versus out-of-order messages across partitions, with strategies for maintaining order"
@@ -133,20 +140,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The message ordering architecture begins with the producer assigning each message to a partition based on
           its partition key. The producer uses a consistent hashing function (hash(key) % N, where N is the number of
           partitions) to ensure that all messages with the same key go to the same partition. The producer may also
           assign a sequence number to each message for end-to-end ordering, and include a timestamp (either
           producer-time or event-time) for event-time processing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The message broker stores messages in partitions, assigning each message an offset within its partition.
           The offset is a monotonically increasing number that defines the order of messages within the partition. The
           broker guarantees that messages within a partition are delivered to consumers in offset order — a consumer
           reads messages from offset 0, then 1, then 2, and so on, never skipping or reordering messages within a
           partition.
-        </p>
+        </HighlightBlock>
         <p>
           The consumer reads messages from one or more partitions and processes them. If the consumer reads from a
           single partition, messages are processed in order. If the consumer reads from multiple partitions, messages
@@ -179,15 +189,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Single partition versus multiple partitions is the primary trade-off between ordering and throughput. A
           single partition provides total ordering (all messages processed in production order) but limits throughput
           to the capacity of a single processing path. Multiple partitions provide parallelism (messages processed
           concurrently across partitions) but no ordering guarantee across partitions. The recommended approach is to
           use per-key partitioning — messages with the same key go to the same partition (ensuring ordering for
           related messages), while messages with different keys go to different partitions (enabling parallelism).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Strict ordering versus eventual consistency is a trade-off between correctness and availability. Strict
           ordering ensures that messages are processed in order, but it requires blocking or buffering when messages
           arrive out of order, which reduces availability. Eventual consistency allows messages to be processed out of
@@ -195,7 +208,7 @@ export default function ArticlePage() {
           numbers). The choice depends on the consistency requirements — if the system must be correct at all times
           (for example, financial transactions), strict ordering is necessary. If the system can tolerate temporary
           inconsistency (for example, analytics dashboards), eventual consistency is more efficient.
-        </p>
+        </HighlightBlock>
         <p>
           Sequence numbers versus idempotent updates is a trade-off between complexity and performance. Sequence
           numbers require the consumer to buffer and reorder out-of-order messages, which adds complexity and latency
@@ -207,18 +220,21 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use per-key partitioning to ensure ordering for related messages while enabling parallelism for unrelated
           messages. The partition key should be the entity that requires ordering — for example, user ID for user
           profile updates, order ID for order status changes, or device ID for IoT sensor readings. All messages for
           the same entity go to the same partition, ensuring that they are processed in order.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design processing logic to be idempotent whenever possible. Idempotent processing eliminates the need for
           ordering guarantees, because the final state is correct regardless of the order in which messages are
           processed. For example, setting a value (SET balance = 100) is idempotent, while incrementing a value
           (balance += 10) is not — if the increment is applied twice, the result is incorrect.
-        </p>
+        </HighlightBlock>
         <p>
           Use sequence numbers for end-to-end ordering when idempotent processing is not possible. The producer
           assigns a monotonically increasing sequence number to each message, and the consumer uses the sequence
@@ -242,20 +258,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Assuming cross-partition ordering when only within-partition ordering is guaranteed is the most common
           ordering pitfall. Messages in different partitions are processed independently and concurrently, so their
           relative order is not preserved. If the processing logic assumes cross-partition ordering, it will produce
           incorrect results when messages arrive out of order. The fix is to ensure that messages that require
           ordering are written to the same partition (by using the same partition key).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not handling late events causes data loss or incorrect results. When late events arrive (events with
           event-time timestamps earlier than the current watermark), the processing logic must decide how to handle
           them. If the logic drops late events, data is lost. If the logic processes late events without updating
           previously computed results, the results are incorrect. The fix is to configure a late event handling policy
           (drop, buffer, or correct) and to implement it consistently across all processing logic.
-        </p>
+        </HighlightBlock>
         <p>
           Clock skew between producers causing incorrect event-time timestamps is a subtle ordering issue. If
           producers have unsynchronized clocks, they may assign event-time timestamps that do not reflect the actual
@@ -274,20 +293,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses per-key partitioning for its transaction processing pipeline, where all
           transactions for the same account are written to the same partition (partitioned by account ID). This
           ensures that transactions for the same account are processed in order, preventing overdrafts and incorrect
           balance calculations. Transactions for different accounts are processed concurrently for throughput, as they
           do not require ordering relative to each other.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A social media platform uses sequence numbers for its activity feed pipeline, where user activities (posts,
           likes, comments) are assigned sequence numbers by the producer. The consumer uses the sequence numbers to
           detect gaps and reorder out-of-order activities, ensuring that the activity feed is displayed in the correct
           order. Late activities (due to network delays or retries) are buffered and inserted into the correct position
           in the feed.
-        </p>
+        </HighlightBlock>
         <p>
           An IoT platform uses idempotent state updates for its device monitoring pipeline, where device sensor
           readings are processed to update the device&apos;s current state. Each reading is a complete state update (not a
@@ -305,24 +327,27 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How do you ensure ordering for messages that are related (for example, updates to the same entity)?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The standard approach is per-key partitioning — all messages for the same entity (user, order, device) are
             written to the same partition by using the entity&apos;s ID as the partition key. The message broker guarantees
             that messages within a partition are processed in offset order, so messages for the same entity are
             processed in order.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             For end-to-end ordering (from producer to consumer), the producer should also assign sequence numbers to
             messages, and the consumer should use the sequence numbers to detect gaps and reorder out-of-order
             messages. This is necessary because the broker&apos;s within-partition ordering does not guarantee end-to-end
             ordering — network delays, retries, and consumer concurrent processing can cause messages to arrive or be
             processed out of order.
-          </p>
+          </HighlightBlock>
           <p>
             If the processing logic is idempotent, ordering is not required — applying the same update multiple times
             produces the same state as applying it once. This eliminates the need for per-key partitioning and

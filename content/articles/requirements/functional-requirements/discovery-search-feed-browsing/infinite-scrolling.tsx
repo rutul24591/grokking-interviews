@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,21 +34,24 @@ export default function InfiniteScrollingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Infinite Scrolling</strong> is a web design pattern that automatically
           loads additional content as the user scrolls down the page, creating a seamless,
           uninterrupted browsing experience. Unlike traditional pagination (page 1, 2, 3...),
           infinite scroll eliminates explicit navigation, allowing users to continuously
           discover content without clicking "next page."
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Infinite scroll became popular with the rise of social media (Facebook, Twitter,
           Instagram) and content discovery platforms (Pinterest, TikTok). It excels for
           exploratory browsing where users don't have a specific target—they're consuming
           content for entertainment or discovery. However, it presents challenges: footer
           accessibility, scroll position restoration, memory management for long sessions,
           and SEO implications.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, infinite scroll implementation involves balancing
           user experience with technical constraints: when to trigger loading (threshold
@@ -59,10 +63,13 @@ export default function InfiniteScrollingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Trigger Mechanisms</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Detecting when to load more content is the core challenge of infinite scroll:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Scroll Event Listener:</strong> Listen to window scroll events, calculate
@@ -81,9 +88,9 @@ export default function InfiniteScrollingArticle() {
         </ul>
 
         <h3 className="mt-6">Cursor-based vs Offset Pagination</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           How you request the next page of data matters for consistency:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Offset-based (page=1, page=2):</strong> Simple but problematic. If
@@ -144,10 +151,13 @@ export default function InfiniteScrollingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust infinite scroll implementation involves multiple components managing
           detection, data fetching, and rendering.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery-search-feed-browsing/infinite-scrolling/trigger-mechanisms.svg"
@@ -229,10 +239,10 @@ export default function InfiniteScrollingArticle() {
         />
 
         <h3 className="mt-6">Memory Management Strategy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           As users scroll through hundreds or thousands of items, memory management becomes
           critical:
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -293,10 +303,13 @@ export default function InfiniteScrollingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Infinite scroll involves balancing user experience, performance, and technical
           constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Infinite Scroll vs Pagination</h3>
         <div className="overflow-x-auto">
@@ -357,11 +370,11 @@ export default function InfiniteScrollingArticle() {
         />
 
         <h3 className="mt-6">Trigger Threshold Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Small Threshold (100-200px):</strong> Loads content just before user
           reaches end. Minimal wasted bandwidth if user stops scrolling. Risk: Visible
           loading state if network is slow.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Medium Threshold (300-500px):</strong> Balanced approach. Most production
           systems use this range. Content loads with buffer, rarely visible loading state.
@@ -396,16 +409,19 @@ export default function InfiniteScrollingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Intersection Observer:</strong> More efficient than scroll events.
             Place sentinel element at bottom, observe when visible. Fallback to scroll
             listener for older browsers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Debouncing:</strong> Prevent multiple simultaneous triggers.
             Use 100-200ms debounce on scroll events. Cancel pending requests on new trigger.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Cursor-based Pagination:</strong> Never use offset-based pagination
             for infinite scroll. Cursors prevent duplicates when data changes.
@@ -443,15 +459,18 @@ export default function InfiniteScrollingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No Debouncing:</strong> Trigger fires multiple times, loads duplicate
             pages. Solution: Implement debounce + loading flag to prevent concurrent requests.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Using Offset Pagination:</strong> Data changes cause duplicates or gaps.
             Solution: Use cursor-based or key-based pagination.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Memory Leak:</strong> Accumulating DOM nodes without virtualization.
             Solution: Implement virtualization or unload old items.
@@ -481,17 +500,20 @@ export default function InfiniteScrollingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter Feed</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter uses infinite scroll with "Load More" button hybrid approach. After
           initial auto-load, shows button for explicit loading. Implements cursor-based
           pagination, virtualization for performance. Footer accessible via pause.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Scroll position restoration even after deep
           navigation. Uses session storage to save feed state and scroll offset.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Instagram Feed</h3>
         <p>
@@ -529,17 +551,20 @@ export default function InfiniteScrollingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you implement infinite scroll?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you implement infinite scroll?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use Intersection Observer API to detect when sentinel
               element at bottom enters viewport. On trigger, fetch next page using cursor
               from previous response. Append new items to list, update cursor. Show loading
               spinner while fetching. Handle end-of-content with "no more items" message.
               Implement debounce to prevent multiple simultaneous requests. Use cursor-based
               pagination to avoid duplicates.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

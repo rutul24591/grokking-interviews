@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -80,22 +81,25 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Block Devices &amp; Volumes</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>The Block Device Model</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Block storage presents storage as a <strong>block device</strong>—an array of
           fixed-size blocks, each addressable by Logical Block Address (LBA). The OS reads/writes
           blocks directly: "read block 50000" returns 512 bytes (or 4KB) of data. There is no
           file system, no hierarchy—just raw blocks. The OS formats the volume with a file
           system (ext4, NTFS, XFS), which organizes blocks into files and directories.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This model differs fundamentally from object storage. Object storage stores discrete
           objects (files) with metadata, accessed via HTTP. Block storage stores raw blocks,
           accessed via block-level commands (SCSI, NVMe). Object storage is for files; block
           storage is for file systems.
-        </p>
+        </HighlightBlock>
 
         <h3>Volume Types</h3>
         <p>
@@ -142,23 +146,26 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Performance &amp; Durability</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Performance Characteristics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Block storage performance is measured in three metrics: <strong>IOPS</strong>
           (Input/Output Operations Per Second)—how many read/write operations per second.
           <strong>Throughput</strong> (MB/s)—how much data transferred per second.
           <strong>Latency</strong> (ms)—how long each operation takes. These metrics are
           interrelated: high IOPS with large block sizes = high throughput; low latency
           enables high IOPS.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           SSD volumes typically provide: 3,000-16,000 IOPS (burst to higher), 125-1,000 MB/s
           throughput, sub-millisecond latency. HDD volumes provide: 500-2,000 IOPS, 500 MB/s
           throughput, 5-10ms latency. Provisioned IOPS volumes provide: 10,000-256,000 IOPS
           (guaranteed), 1,000-4,000 MB/s throughput, sub-millisecond latency.
-        </p>
+        </HighlightBlock>
 
         <h3>Durability and Availability</h3>
         <p>
@@ -200,18 +207,21 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Block vs Object vs File</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Storage types occupy different niches. Understanding the trade-offs helps you choose
           the right storage for your workload.
-        </p>
+        </HighlightBlock>
 
         <h3>Block Storage Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Low latency</strong> is the primary advantage. Sub-millisecond latency enables
           database workloads, boot volumes, and any latency-sensitive application. Object
           storage (~100ms) and file storage (1-10ms) cannot match this.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Random read/write</strong> at block level enables databases to access data
@@ -275,19 +285,22 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Block Storage</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Choose the right volume type.</strong> SSD for databases and boot volumes,
           HDD for throughput-intensive sequential workloads, Provisioned IOPS for
           mission-critical databases. Don't over-provision (waste money) or under-provision
           (poor performance).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Enable encryption.</strong> Encrypt volumes at rest for security and
           compliance. Performance impact is negligible with modern hardware encryption. Use
           KMS-managed keys for key rotation and access control.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Use snapshots for backup.</strong> Schedule regular snapshots (daily for
@@ -317,19 +330,22 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Using HDD for databases.</strong> HDD volumes have high latency (5-10ms) and
           low IOPS (hundreds). Databases need sub-millisecond latency and thousands of IOPS.
           Solution: Use SSD or Provisioned IOPS for databases.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Not monitoring burst balance.</strong> gp2 volumes accumulate burst credits
           when idle, spend credits when busy. If burst balance depletes, performance drops to
           baseline (3 IOPS/GB). Solution: Monitor burst balance, use gp3 (no burst credits) or
           provisioned IOPS for consistent performance.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Ignoring single-AZ limitation.</strong> Volumes are AZ-specific. If AZ fails,
@@ -359,20 +375,23 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Database Storage (RDS, Self-Managed)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Databases are the primary use case for block storage. MySQL, PostgreSQL, MongoDB,
           and other databases store data files, transaction logs, and indexes on block volumes.
           SSD volumes provide the low latency and high IOPS databases need. Provisioned IOPS
           volumes guarantee performance for mission-critical databases.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This pattern works because databases need random read/write at low latency. Block
           storage provides block-level access with sub-millisecond latency—essential for
           database performance.
-        </p>
+        </HighlightBlock>
 
         <h3>Boot Volumes (EC2 Root Disks)</h3>
         <p>
@@ -416,14 +435,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: When would you choose block storage over object or file storage? Give a
               concrete example.
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Choose block storage for low-latency random access
               workloads. Example: MySQL database. Databases need to read/write data pages at
               random offsets with sub-millisecond latency. Block storage provides block-level
@@ -432,7 +454,7 @@ export default function ArticlePage() {
               adds file system overhead. Block storage is the only choice for databases.
               Choose object for: media, backups, archives. Choose file for: shared files,
               legacy apps. Choose block for: databases, boot volumes, file systems.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What if you need shared access to the database?
               Answer: Block storage doesn't support multi-instance attachment (typically).

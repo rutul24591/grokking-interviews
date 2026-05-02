@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -30,31 +31,37 @@ export default function ClientServerArchitectureConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Client-server architecture</strong> is a distributed model where a client initiates
           a request and a server provides a response. The client typically owns user interaction and
           presentation, while the server owns business logic, data access, coordination across
           dependencies, and policy enforcement.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The client-server split is fundamentally about <strong>boundaries</strong>: what is trusted
           vs untrusted, where state lives, which failures are tolerated, and what contract clients can
           rely on. These choices show up later as scaling decisions, deployment constraints, and
           incident playbooks.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Roles:</strong> clients initiate; servers respond. A component can play both roles
             (an API server is a client to a database).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Contracts:</strong> the API boundary defines request/response shapes, status codes,
             and error semantics.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>State placement:</strong> choosing where session and workflow state lives is a
             scaling decision.
@@ -72,18 +79,21 @@ export default function ClientServerArchitectureConciseArticle() {
 
       <section>
         <h2>Architecture Variants</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The basic model expands into tiers as systems grow. The key is not the number of tiers, but
           whether each boundary is explicit and operationally owned.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Two-tier:</strong> a client talks directly to a server that owns logic and data.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Three-tier:</strong> presentation (client), application tier (API), and data tier
             (database).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Gateway + services:</strong> an edge/API gateway applies cross-cutting policies;
             services own domain logic.
@@ -102,13 +112,16 @@ export default function ClientServerArchitectureConciseArticle() {
 
       <section>
         <h2>Request Lifecycle (Where Latency and Failure Hide)</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A "simple" client request is a pipeline with multiple stages. Understanding the pipeline
           helps you debug tail latency and reliability issues.
-        </p>
+        </HighlightBlock>
         <ol className="space-y-2">
-          <li>Client resolves DNS and opens a connection (TCP/TLS).</li>
-          <li>Client sends a request with auth context and headers.</li>
+          <HighlightBlock as="li" tier="important">Client resolves DNS and opens a connection (TCP/TLS).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Client sends a request with auth context and headers.</HighlightBlock>
           <li>Server authenticates, authorizes, and validates input.</li>
           <li>Server runs business logic and calls downstream dependencies.</li>
           <li>Server returns a response; client updates UI or triggers the next step.</li>
@@ -122,29 +135,35 @@ export default function ClientServerArchitectureConciseArticle() {
 
       <section>
         <h2>Stateless vs Stateful Servers</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Stateless servers</strong> do not keep per-user session state in memory. Each request
           carries the necessary context (tokens, IDs), and durable state is stored in shared systems
           (databases, caches). Statelessness enables horizontal scaling, fast instance replacement,
           and simpler load balancing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Stateful servers</strong> keep some session or workflow state in memory. This can be
           faster for specific workloads, but it creates operational coupling: sticky sessions, harder
           deployments, and failure recovery that depends on replication or session migration. Stateful
           designs also complicate multi-region routing and autoscaling.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Scaling Patterns</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Scaling is not only "add more servers." It is about protecting downstreams, reducing fan-out
           cost, and keeping p99 latency stable under bursty load.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Vertical scaling (scale up)</strong> improves a single node by adding more CPU, memory, or storage. This is simple but has hard limits (largest instance size) and creates a single point of failure. <strong>Horizontal scaling (scale out)</strong> distributes traffic across multiple nodes. This requires stateless services and load balancing but provides near-unlimited scalability and improved resilience.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Load balancing:</strong> distribute traffic across instances; keep health checks and
@@ -172,19 +191,22 @@ export default function ClientServerArchitectureConciseArticle() {
 
       <section>
         <h2>Failure Modes and Mitigations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Client-server systems fail partially. The most expensive failures are not crashes; they are
           slowdowns that propagate until the whole system becomes saturated.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Timeout mismatch:</strong> one layer times out earlier, triggering retries and
             amplifying load. Align timeouts and budgets.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Retry storms:</strong> transient issues cause coordinated retries. Use backoff with
             jitter and retry budgets.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Dependency fan-out:</strong> a single request calls many services, multiplying tail
             latency and partial failures. Add aggregation and caching.
@@ -198,70 +220,91 @@ export default function ClientServerArchitectureConciseArticle() {
 
       <section>
         <h2>Security Boundaries</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Client traffic is untrusted by default. Servers must authenticate and authorize every
           request at the boundary. Modern systems increasingly apply zero-trust principles internally
           too: service-to-service calls carry identity and policies are enforced consistently, not
           “because it’s inside the VPC.”
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Practical controls include strong auth tokens, scoped permissions, rate limits, input
           validation, and audit logs. If an edge layer applies authentication, services should still
           validate trust signals and avoid implicit assumptions about caller identity.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Latency Budgeting and Fan-Out</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           End-to-end performance is dominated by tail latency. A request that is “usually fast” but
           occasionally slow still feels slow. Budget time across stages (DNS/TLS, server compute,
           downstream calls) and cap worst-case behavior with deadlines and fallbacks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Fan-out is a common cause of p99 regressions. If a request depends on five downstream calls,
           the slowest dependency determines user experience. Techniques like request hedging, bulk
           fetches, and precomputation can reduce fan-out and stabilize latency.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Observability and SLOs</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A client-server design is only as good as your ability to debug it. Instrument request IDs
           end-to-end, propagate tracing headers, and segment metrics by endpoint and status code.
           Track client-perceived latency when possible, not only server-side timings.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SLOs (for example, p95 latency and error rate) turn architecture into operational reality.
           When you violate an SLO, your response should be clear: reduce load, shed non-critical work,
           protect the data tier, and validate recovery.
-        </p>
+        </HighlightBlock>
       </section>
 
-      <section>
-        <h2>Deployment and Compatibility</h2>
-        <p>
-          Client-server boundaries make backward compatibility a continuous requirement. Servers must
-          accept requests from older clients and respond with shapes they can parse. Prefer additive
-          changes, feature flags, and staged rollouts. For mobile clients, version lag is expected and
-          support windows must be longer than for web clients.
-        </p>
-      </section>
+	      <section>
+	        <h2>Deployment and Compatibility</h2>
+	        <HighlightBlock as="p" tier="crucial">
+	          Interview focus: highlight the decision-making, not just definitions.
+	        </HighlightBlock>
+	        <HighlightBlock as="p" tier="important">
+	          Client-server boundaries make backward compatibility a continuous requirement. Servers must
+	          accept requests from older clients and respond with shapes they can parse. Prefer additive
+	          changes, feature flags, and staged rollouts. For mobile clients, version lag is expected and
+	          support windows must be longer than for web clients.
+	        </HighlightBlock>
+	        <HighlightBlock as="p" tier="important">
+	          In interviews, call out concrete guardrails: contract tests (consumer-driven if you have many clients),
+	          explicit API versioning and deprecation timelines, and rollout controls (canaries, percentage flags,
+	          and quick rollback). Pair this with observability that segments errors by client version so you can
+	          stop a bad rollout without reverting the whole system.
+	        </HighlightBlock>
+	      </section>
 
       <section>
         <h2>Production Case Studies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-world client-server implementations demonstrate how theoretical patterns adapt to production constraints.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Netflix: Global Client-Server Architecture</h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Netflix serves 200+ million subscribers globally with a client-server architecture optimized
             for regional latency and resilience. Their approach includes regional API gateways,
             client-specific BFFs for TV/mobile/web, and graceful degradation when services fail.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
@@ -285,31 +328,34 @@ export default function ClientServerArchitectureConciseArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding performance characteristics helps set realistic SLOs and identify bottlenecks.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Typical Latency Budgets</h3>
           <table className="w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-theme">
-                <th className="p-2 text-left">Component</th>
+  <tr className="border-b border-theme">
+<th className="p-2 text-left">Component</th>
                 <th className="p-2 text-left">Target (p95)</th>
                 <th className="p-2 text-left">Acceptable (p99)</th>
-              </tr>
-            </thead>
+  </tr>
+</thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">DNS Resolution</td>
                 <td className="p-2">&lt;50ms</td>
                 <td className="p-2">&lt;100ms</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">TCP Handshake</td>
                 <td className="p-2">&lt;30ms</td>
                 <td className="p-2">&lt;60ms</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">TLS Handshake</td>
                 <td className="p-2">&lt;100ms</td>
@@ -332,21 +378,24 @@ export default function ClientServerArchitectureConciseArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Client-server architecture decisions directly impact infrastructure costs and operational overhead.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Cost Components</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Compute:</strong> Server instances typically represent 40-60% of infrastructure costs.
               Stateless designs enable better utilization through autoscaling.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Load Balancers:</strong> Application Load Balancers cost $16-22/month plus usage fees.
               At scale, this becomes significant.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Data Transfer:</strong> Cross-AZ and cross-region traffic incurs charges. Client-server
               chattiness directly impacts this cost.
@@ -361,31 +410,34 @@ export default function ClientServerArchitectureConciseArticle() {
 
       <section>
         <h2>Decision Framework: Architecture Selection</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Choose the right client-server pattern based on your specific requirements and constraints.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">When to Use Each Pattern</h3>
           <table className="w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-theme">
-                <th className="p-2 text-left">Pattern</th>
+  <tr className="border-b border-theme">
+<th className="p-2 text-left">Pattern</th>
                 <th className="p-2 text-left">Best For</th>
                 <th className="p-2 text-left">Avoid When</th>
-              </tr>
-            </thead>
+  </tr>
+</thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Two-Tier</td>
                 <td className="p-2">Small apps, internal tools, prototypes</td>
                 <td className="p-2">High scale, security-critical, multi-client</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Three-Tier</td>
                 <td className="p-2">Standard web apps, clear separation needs</td>
                 <td className="p-2">Microservices already in place</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">API Gateway + Services</td>
                 <td className="p-2">Microservices, cross-cutting concerns</td>
@@ -403,21 +455,24 @@ export default function ClientServerArchitectureConciseArticle() {
 
       <section>
         <h2>Security Deep Dive</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Security in client-server systems requires defense in depth across all layers.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Authentication Strategies</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>JWT Tokens:</strong> Stateless, scalable, but require careful key management and
               short expiration times.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Session-Based:</strong> Server-controlled, easier to revoke, but requires session
               storage and sticky sessions or shared session stores.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>OAuth 2.0 / OIDC:</strong> Standard for third-party integrations, supports
               delegated authorization, but adds complexity.
@@ -428,9 +483,12 @@ export default function ClientServerArchitectureConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>Embedding business logic in the client and duplicating it across platforms.</li>
-          <li>Letting APIs drift without a contract, tests, or deprecation policy.</li>
+          <HighlightBlock as="li" tier="important">Embedding business logic in the client and duplicating it across platforms.</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Letting APIs drift without a contract, tests, or deprecation policy.</HighlightBlock>
           <li>Building chatty clients that perform many round trips per screen.</li>
           <li>Ignoring tail latency and designing only for average throughput.</li>
           <li>Assuming the internal network is trusted and skipping authorization checks.</li>
@@ -440,9 +498,12 @@ export default function ClientServerArchitectureConciseArticle() {
 
       <section>
         <h2>Operational Checklist</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>Define stable API contracts and a deprecation process.</li>
-          <li>Align timeouts and retries across client, edge, and services.</li>
+          <HighlightBlock as="li" tier="important">Define stable API contracts and a deprecation process.</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Align timeouts and retries across client, edge, and services.</HighlightBlock>
           <li>Design for partial failure: fallbacks, caching, and safe degraded modes.</li>
           <li>Instrument request IDs, traces, and SLO dashboards.</li>
           <li>Keep state placement explicit (stateless when possible, shared stores when needed).</li>
@@ -454,14 +515,17 @@ export default function ClientServerArchitectureConciseArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why do teams prefer stateless services?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Why do teams prefer stateless services?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Stateless services scale and recover more easily. You can add/remove instances freely,
               route traffic without stickiness, and replace failed instances without losing session
               state.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: What causes tail latency in client-server systems?</p>
@@ -574,4 +638,3 @@ export default function ClientServerArchitectureConciseArticle() {
     </ArticleLayout>
   );
 }
-

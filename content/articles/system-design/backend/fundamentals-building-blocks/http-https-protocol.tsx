@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,12 +25,15 @@ export default function HttpHttpsProtocolArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>HTTP (Hypertext Transfer Protocol)</strong> is the application-layer protocol that powers the World Wide Web and most modern APIs. It defines a standardized request-response model where clients send requests (method, URL, headers, optional body) and servers respond with status codes, headers, and optional body content. HTTP&apos;s simplicity and extensibility have made it the universal interface for web, mobile, and service-to-service communication.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>HTTPS</strong> is HTTP over TLS (Transport Layer Security). TLS encrypts traffic in transit, authenticates the server (and optionally the client), and ensures message integrity. HTTPS protects against eavesdropping, man-in-the-middle attacks, and credential theft. Since 2018, HTTPS has become the default for all web traffic—browsers mark HTTP sites as &quot;Not Secure,&quot; and search engines rank HTTPS sites higher.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Why HTTP matters for backend engineers:</strong>
         </p>
@@ -68,16 +72,19 @@ export default function HttpHttpsProtocolArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">HTTP Methods and Semantics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           HTTP methods (verbs) communicate the client&apos;s intent. Each method has specific semantics regarding safety and idempotency:
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">Safety</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A <strong>safe</strong> method does not modify server state. Safe methods can be cached, prefetched, and retried without side effects.
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>GET:</strong> Retrieve a resource. Safe, idempotent, cacheable.</li>
           <li><strong>HEAD:</strong> Like GET but returns headers only. Safe, idempotent, cacheable.</li>
@@ -200,6 +207,9 @@ export default function HttpHttpsProtocolArticle() {
 
       <section>
         <h2>HTTP Version Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -275,18 +285,18 @@ export default function HttpHttpsProtocolArticle() {
         </table>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">HTTP/1.1: The Workhorse</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           HTTP/1.1 remains the most widely deployed version despite its age. Key features:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Persistent Connections:</strong> Keep-Alive allows multiple requests over one TCP connection (reduces handshake overhead).</li>
           <li><strong>Chunked Transfer:</strong> Stream response body in chunks (useful for large files).</li>
           <li><strong>Host Header:</strong> Enables virtual hosting (multiple domains on one IP).</li>
           <li><strong>Caching Headers:</strong> Comprehensive cache control (Cache-Control, ETag, Last-Modified).</li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Limitations:</strong>
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Head-of-Line Blocking:</strong> Only one request can be outstanding per connection at a time. Multiple connections (6-8 per browser) are needed for parallelism.</li>
           <li><strong>Text Protocol Overhead:</strong> Verbose headers repeated for each request.</li>
@@ -347,11 +357,14 @@ export default function HttpHttpsProtocolArticle() {
 
       <section>
         <h2>TLS and HTTPS</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">TLS Handshake</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           TLS establishes an encrypted channel between client and server. The handshake authenticates the server, negotiates cipher suites, and derives session keys:
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">TLS 1.2 Handshake (Legacy)</h4>
         <ol className="space-y-2">
@@ -360,7 +373,7 @@ export default function HttpHttpsProtocolArticle() {
           <li><strong>Key Exchange:</strong> Client verifies certificate, generates pre-master secret, encrypts with server&apos;s public key.</li>
           <li><strong>Finished:</strong> Both sides derive session keys, send Finished messages.</li>
         </ol>
-        <p><strong>Latency:</strong> 2 RTT minimum (TCP handshake + TLS handshake).</p>
+        <HighlightBlock as="p" tier="important"><strong>Latency:</strong> 2 RTT minimum (TCP handshake + TLS handshake).</HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">TLS 1.3 Handshake (Modern)</h4>
         <ol className="space-y-2">
@@ -405,11 +418,14 @@ export default function HttpHttpsProtocolArticle() {
 
       <section>
         <h2>Caching and Conditional Requests</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cache-Control Directives</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <code>Cache-Control</code> header controls caching behavior:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>max-age=N:</strong> Cache for N seconds.</li>
           <li><strong>no-store:</strong> Do not cache (sensitive data).</li>
@@ -422,9 +438,9 @@ export default function HttpHttpsProtocolArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Conditional Requests</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Conditional requests allow clients to validate cached content without downloading the full response:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>ETag / If-None-Match:</strong> Server sends ETag (hash of content). Client sends <code>If-None-Match: &quot;etag-value&quot;</code>. If content unchanged, server returns 304 Not Modified (no body).</li>
           <li><strong>Last-Modified / If-Modified-Since:</strong> Server sends last modification timestamp. Client sends <code>If-Modified-Since</code>. If unchanged, 304 returned.</li>
@@ -487,11 +503,14 @@ export default function HttpHttpsProtocolArticle() {
 
       <section>
         <h2>Connection Management</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Keep-Alive and Connection Pooling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           HTTP/1.1 introduced persistent connections (Keep-Alive), allowing multiple requests over one TCP connection. This reduces handshake overhead but requires careful management:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Client-Side Pooling:</strong> HTTP clients (curl, axios, HttpClient) maintain connection pools. Configure pool size, idle timeout, and max lifetime.</li>
           <li><strong>Server-Side Limits:</strong> Servers limit concurrent connections per client. Excessive connections may be rejected.</li>
@@ -499,9 +518,9 @@ export default function HttpHttpsProtocolArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Timeouts</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Timeouts must be configured at every layer to prevent hanging requests:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Connect Timeout:</strong> Time to establish TCP connection (5-10 seconds).</li>
           <li><strong>Read Timeout:</strong> Time to wait for response data (10-30 seconds).</li>
@@ -536,20 +555,23 @@ export default function HttpHttpsProtocolArticle() {
 
       <section>
         <h2>Intermediaries: Proxies, Load Balancers, CDNs</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Forwarded Headers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When traffic passes through proxies/load balancers, the original client information is preserved in headers:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>X-Forwarded-For:</strong> Original client IP (may be spoofed—trust only from known proxies).</li>
           <li><strong>X-Forwarded-Proto:</strong> Original protocol (http or https).</li>
           <li><strong>X-Forwarded-Host:</strong> Original Host header.</li>
           <li><strong>X-Real-IP:</strong> Single client IP (alternative to X-Forwarded-For).</li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Security:</strong> Never trust these headers from untrusted sources. Configure load balancers to strip incoming forwarded headers and set their own.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Caching</h3>
         <p>
@@ -583,6 +605,9 @@ export default function HttpHttpsProtocolArticle() {
 
       <section>
         <h2>Security Beyond TLS</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Authentication and Authorization</h3>
         <ul>
@@ -593,17 +618,17 @@ export default function HttpHttpsProtocolArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Rate Limiting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Protect APIs from abuse with rate limiting:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Token Bucket:</strong> Allow N requests per second, with burst capacity.</li>
           <li><strong>Leaky Bucket:</strong> Smooth out bursts, constant rate.</li>
           <li><strong>Sliding Window:</strong> Count requests in rolling time window.</li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Response:</strong> Return 429 Too Many Requests with <code>Retry-After</code> header.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Headers Checklist</h3>
         <ul>
@@ -618,14 +643,17 @@ export default function HttpHttpsProtocolArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">1. E-Commerce Website (HTTP/2 + CDN)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Requirements:</strong> Fast page loads, secure checkout, global audience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Architecture:</strong>
-        </p>
+        </HighlightBlock>
         <ul>
           <li>HTTP/2 for multiplexed resource loading (CSS, JS, images).</li>
           <li>CDN caching for static assets (Cache-Control: max-age=31536000).</li>
@@ -721,14 +749,17 @@ export default function HttpHttpsProtocolArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing Vary header:</strong> Caching authenticated responses without <code>Vary: Authorization</code> causes user A to see user B&apos;s data. <strong>Solution:</strong> Always include Vary for responses that vary by auth, language, or encoding.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Misaligned timeouts:</strong> Client timeout (5s) shorter than server timeout (30s) causes client retries while server is still processing—duplicate work. <strong>Solution:</strong> Align timeouts across layers; client timeout should be longest.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Retrying non-idempotent requests:</strong> Retrying POST without idempotency key creates duplicates. <strong>Solution:</strong> Use idempotency keys for POST, retry only safe/idempotent methods.
           </li>
@@ -758,13 +789,16 @@ export default function HttpHttpsProtocolArticle() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q1: Explain the difference between HTTP/1.1, HTTP/2, and HTTP/3. When would you choose each?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: Explain the difference between HTTP/1.1, HTTP/2, and HTTP/3. When would you choose each?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: HTTP/1.1 is text-based, sequential (one request per connection at a time), requiring multiple connections for parallelism. HTTP/2 is binary, multiplexed (multiple streams per connection), reducing connection overhead. HTTP/3 runs over QUIC/UDP, eliminating TCP head-of-line blocking—loss on one stream doesn&apos;t block others. Choose HTTP/1.1 for maximum compatibility (legacy clients). HTTP/2 for modern web apps (best balance of performance and compatibility). HTTP/3 for mobile/global audiences (better on lossy networks, faster handshakes). Many services support all three, negotiating the best available version.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

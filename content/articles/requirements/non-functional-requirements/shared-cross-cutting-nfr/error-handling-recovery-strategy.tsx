@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function ErrorHandlingRecoveryStrategyArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Error Handling &amp; Recovery Strategy</strong> encompasses the systematic approach to
           detecting, classifying, responding to, and recovering from failures across a distributed system.
           It is not just about catching exceptions—it is about designing systems that fail
           gracefully, recover automatically when possible, and provide clear paths for manual intervention
           when needed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In distributed systems, failures are inevitable. Networks partition, databases become unavailable,
           third-party APIs return errors, and hardware fails. A robust error handling strategy ensures
           these failures do not cascade into system-wide outages and that recovery is predictable and
           measurable. For staff and principal engineers, error handling is a critical architectural
           concern—the patterns you establish determine system resilience and operational burden.
-        </p>
+        </HighlightBlock>
         <p>
           The key principles guiding error handling design include failing fast to detect and report
           errors early rather than propagating corrupted state. Failing gracefully means degrading
@@ -66,7 +70,10 @@ export default function ErrorHandlingRecoveryStrategyArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Proper error classification determines the appropriate response. Treating all errors the same
           leads to either excessive retries that waste resources or missed recovery opportunities.
           Errors are classified by recoverability into three categories. Transient errors are temporary
@@ -80,8 +87,8 @@ export default function ErrorHandlingRecoveryStrategyArticle() {
           notified. Unknown errors are unclassified errors that should be treated cautiously, including
           unexpected exceptions, malformed responses, and protocol violations. These should be treated
           as transient initially but escalated if persistent, with extensive logging for investigation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Errors are also classified by scope, which determines the blast radius and response strategy.
           Request-level errors affect a single request, such as validation errors, request timeouts,
           or rate limiting for a specific user, and should be handled at the request level with retry
@@ -92,7 +99,7 @@ export default function ErrorHandlingRecoveryStrategyArticle() {
           or graceful degradation. System-level errors affect multiple services, such as network
           partitions, datacenter outages, or cloud provider region failures, and require disaster
           recovery procedures and region failover.
-        </p>
+        </HighlightBlock>
         <p>
           HTTP error categories provide a standardized classification for web-based systems. The 400
           series errors—Bad Request, Unauthorized, Forbidden, Not Found—should never be retried as
@@ -189,12 +196,15 @@ export default function ErrorHandlingRecoveryStrategyArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The architecture of a robust error handling system spans multiple interconnected patterns
           that work together to detect, respond to, and recover from failures. Understanding how these
           patterns flow together is essential for designing resilient distributed systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The error propagation flow begins at the service boundary where external errors are caught
           and classified. When a request enters a service, it passes through an error classification
           layer that wraps responses from dependencies into the service&apos;s own error types. This
@@ -204,7 +214,7 @@ export default function ErrorHandlingRecoveryStrategyArticle() {
           extensively and treated cautiously. The classified error then flows through the circuit
           breaker layer, which tracks failure rates per dependency and can short-circuit requests to
           failing services before they consume resources.
-        </p>
+        </HighlightBlock>
         <p>
           The retry pipeline with backoff and jitter implements a structured flow for handling
           transient failures. When a transient error is detected, the request enters the retry pipeline
@@ -273,11 +283,14 @@ export default function ErrorHandlingRecoveryStrategyArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing error handling and recovery systems involves fundamental trade-offs between
           different resilience patterns, each with distinct advantages and disadvantages that shape
           system behavior under failure conditions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <table className="w-full text-sm">
@@ -359,24 +372,27 @@ export default function ErrorHandlingRecoveryStrategyArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Circuit Breakers Protect Both Sides</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Circuit breakers protect the failing service by reducing load and the calling service by
             failing fast instead of timing out. They are essential for preventing cascade failures
             in microservices architectures.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Error handling best practices begin at the boundary where errors should be classified and
           wrapped in structured error types that include full context for debugging. Errors should
           never be swallowed silently—every error should be logged with appropriate severity levels
           and stack traces for investigation. The error context should include the request details,
           the dependency that failed, and any relevant state that aids debugging.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Retry configuration should always use exponential backoff with jitter to prevent thundering
           herd scenarios where all clients retry simultaneously. Maximum retry attempts should be set
           between three and five attempts, with a maximum delay cap of 30 to 60 seconds to prevent
@@ -384,7 +400,7 @@ export default function ErrorHandlingRecoveryStrategyArticle() {
           permanent errors like 400 or 401 responses. For write operations, idempotency must be
           ensured through idempotency keys to prevent duplicate side effects such as double charges
           or duplicate bookings.
-        </p>
+        </HighlightBlock>
         <p>
           Circuit breaker setup requires one circuit breaker per dependency to ensure that one service
           failing does not affect others. Thresholds should be configured appropriately based on the
@@ -414,21 +430,24 @@ export default function ErrorHandlingRecoveryStrategyArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Retrying everything—including permanent errors—wastes resources and adds unnecessary load
           to services that will never succeed. The fix requires proper error classification that
           distinguishes transient from permanent errors and only retries the former. Performing retries
           without backoff overwhelms already-struggling services, turning minor blips into major outages.
           Exponential backoff with jitter is the corrective approach.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Unlimited retries create infinite retry loops that consume resources indefinitely. Setting
           maximum retry attempts prevents this. Failing to ensure idempotency for write operations
           leads to duplicate charges and double bookings—idempotency keys are essential for any
           retried write operation. A circuit breaker that is too sensitive trips on normal error rates,
           causing unnecessary failures. Thresholds should be tuned based on actual error characteristics,
           using failure rate rather than absolute count.
-        </p>
+        </HighlightBlock>
         <p>
           Having no fallback behavior when a circuit opens means requests simply fail, providing no
           value to users. Defining fallback behavior—cached data, defaults, or graceful degradation—is
@@ -444,7 +463,10 @@ export default function ErrorHandlingRecoveryStrategyArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           AWS SDKs implement sophisticated retry logic with exponential backoff and jitter as a
           default behavior. The SDK tracks retry attempts per request, respects rate limiting headers,
           and implements configurable retry modes including standard retry with exponential backoff
@@ -452,8 +474,8 @@ export default function ErrorHandlingRecoveryStrategyArticle() {
           how foundational error handling should be baked into client libraries rather than left to
           individual application teams. AWS also implements retry budgets at the SDK level to prevent
           retry storms during service degradation events.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Netflix Hystrix pioneered the circuit breaker pattern in distributed systems at scale.
           Originally built to handle the complexity of Netflix&apos;s microservices architecture, Hystrix
           implemented circuit breakers with configurable thresholds, fallback mechanisms, bulkhead
@@ -462,7 +484,7 @@ export default function ErrorHandlingRecoveryStrategyArticle() {
           and Polly continue to implement. Netflix&apos; approach demonstrated that in a system with
           hundreds of microservices, failure isolation is not optional—it is a fundamental requirement
           for system stability.
-        </p>
+        </HighlightBlock>
         <p>
           Resilience4j at scale has become the successor to Hystrix for Java-based systems, offering
           a more lightweight and functional approach to resilience patterns. Companies like Spotify
@@ -486,16 +508,19 @@ export default function ErrorHandlingRecoveryStrategyArticle() {
 
       <section>
         <h2>Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: When should you retry a failed request?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: When should you retry a failed request?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Retry transient errors such as timeouts, 503 Service Unavailable, and 429 with
               Retry-After headers. Do not retry permanent errors like 400, 401, or 404. Use exponential
               backoff with jitter to prevent thundering herd. Limit retry attempts to three to five
               maximum. Ensure idempotency for write operations to prevent duplicate side effects.
               Monitor retry rates and alert when they exceed normal thresholds.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

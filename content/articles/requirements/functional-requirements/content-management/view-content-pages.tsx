@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function ViewContentPagesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>View Content Pages</strong> is the primary interface for consuming published
           content. It must provide optimal reading experience through proper typography, layout,
           and media rendering, engagement features enabling user interaction (comments, shares,
           reactions), and discovery of related content through recommendations. View pages are
           critical for user experience — poor reading experience causes high bounce rates, while
           well-designed view pages increase time on page, engagement, and return visits.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/view-content-layout.svg"
@@ -48,7 +52,7 @@ export default function ViewContentPagesArticle() {
           caption="View Content Layout — showing content body, metadata display, engagement features, related content sidebar, and table of contents"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing view pages requires deep understanding of
           content rendering including rich text rendering (HTML sanitization, XSS prevention),
           markdown rendering (markdown to HTML conversion, syntax highlighting for code), and
@@ -67,7 +71,7 @@ export default function ViewContentPagesArticle() {
           (title, description, Open Graph), canonical URLs, and performance optimization (Core Web
           Vitals). The implementation must balance content visibility with user engagement and
           discovery while maintaining performance and accessibility.
-        </p>
+        </HighlightBlock>
 
         <p>
           Modern view pages have evolved from simple article display to sophisticated reading
@@ -82,13 +86,16 @@ export default function ViewContentPagesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           View content pages are built on fundamental concepts that determine how content is
           rendered, engaged with, and discovered. Understanding these concepts is essential for
           designing effective reading experiences.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Content Rendering:</strong> Rich text rendering converts stored HTML to rendered
           output through sanitization (XSS prevention through DOMPurify), CSS styling (typography,
           spacing, responsive design), and media embedding (images, videos, embeds with lazy
@@ -96,7 +103,7 @@ export default function ViewContentPagesArticle() {
           (marked, markdown-it) with syntax highlighting for code blocks (highlight.js, Prism).
           Block-based rendering renders block tree structure through component mapping (paragraph
           block → Paragraph component, image block → Image component) enabling flexible layouts.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Pagination Strategies:</strong> Infinite scroll automatically loads more content
@@ -132,11 +139,14 @@ export default function ViewContentPagesArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           View content page architecture separates content rendering, engagement features, related
           content, and SEO optimization enabling modular implementation with clear boundaries. This
           architecture is critical for reading experience, engagement, and discoverability.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/view-content-layout.svg"
@@ -144,7 +154,7 @@ export default function ViewContentPagesArticle() {
           caption="View Content Layout — showing content body, metadata display, engagement features, related content sidebar, and table of contents"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           View page flow begins with URL routing matching content slug or ID. Backend fetches
           content from database or cache including content body, metadata (author, date, category,
           tags), and engagement data (comment count, reaction count). Content is rendered through
@@ -156,7 +166,7 @@ export default function ViewContentPagesArticle() {
           and displayed in sidebar or below content. Reading progress is tracked through scroll
           position updating progress bar. SEO metadata is rendered including title tag, meta
           description, Open Graph tags, and structured data.
-        </p>
+        </HighlightBlock>
 
         <p>
           Content rendering architecture includes sanitizer (XSS prevention through DOMPurify
@@ -186,13 +196,16 @@ export default function ViewContentPagesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing view content pages involves trade-offs between reading experience, engagement,
           performance, and complexity. Understanding these trade-offs is essential for making
           informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Infinite scroll versus numbered pages presents seamless browsing versus navigation
           trade-offs. Infinite scroll provides seamless content browsing without page reloads
           keeping users engaged through continuous content flow but complicates bookmarking (URL
@@ -202,7 +215,7 @@ export default function ViewContentPagesArticle() {
           or complex state management interrupting reading flow. The recommendation is infinite
           scroll for feeds and social media (engagement priority), numbered pages for articles and
           search results (navigation priority), and load more button for balanced approach.
-        </p>
+        </HighlightBlock>
 
         <p>
           Content-based versus collaborative filtering presents explainability versus serendipity
@@ -230,17 +243,20 @@ export default function ViewContentPagesArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing view content pages requires following established best practices to ensure
           reading experience, engagement, accessibility, and SEO.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Content rendering sanitizes HTML preventing XSS through DOMPurify. Applies typography
           best practices (readable font size 16-18px, line height 1.6-1.8, line length 50-75
           characters). Implements lazy loading for images and videos reducing initial page load.
           Applies syntax highlighting for code blocks improving readability.
-        </p>
+        </HighlightBlock>
 
         <p>
           Engagement features implements comments with threading (nested replies), moderation
@@ -280,16 +296,19 @@ export default function ViewContentPagesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing view content pages to ensure reading
           experience, engagement, accessibility, and SEO.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           No XSS sanitization allows malicious scripts in content. Fix by sanitizing all HTML
           through DOMPurify before rendering. Remove script tags, event handlers, and javascript:
           URLs. Validate and sanitize on server-side never trusting client-side.
-        </p>
+        </HighlightBlock>
 
         <p>
           Poor typography causes reading fatigue. Fix by using readable font size (16-18px for
@@ -345,19 +364,22 @@ export default function ViewContentPagesArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           View content pages are critical for content consumption across different domains. Here
           are real-world implementations from production systems demonstrating different approaches
           to viewing challenges.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Medium article viewing addresses long-form reading with engagement. The solution uses
           clean typography (optimized font, line height, line length), reading progress bar showing
           completion percentage, claps for reactions (multiple claps showing appreciation),
           highlights (user can highlight text), related articles through hybrid recommendation, and
           comments with threading. The result is optimized reading experience with high engagement.
-        </p>
+        </HighlightBlock>
 
         <p>
           Substack newsletter viewing addresses email-style reading with community. The solution
@@ -392,14 +414,17 @@ export default function ViewContentPagesArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of view content page design, implementation, and
           operational concerns for staff and principal engineer interviews.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you render content safely?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you render content safely?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Sanitize HTML through DOMPurify preventing XSS attacks. Remove script tags, event
               handlers, and javascript: URLs. Validate and sanitize on server-side never trusting

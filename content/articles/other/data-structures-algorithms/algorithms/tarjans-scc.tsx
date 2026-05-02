@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function TarjansSCCArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <em>strongly connected component</em> (SCC) of a directed graph
           is a maximal set of vertices such that every pair (u, v) has a
           directed path from u to v and from v to u. Every directed graph
@@ -46,8 +50,8 @@ export default function TarjansSCCArticle() {
           for any graph problem on directed graphs with cycles, because
           condensing to a DAG turns cyclic-graph problems into DAG problems
           you can topologically sort.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tarjan's 1972 paper "Depth-First Search and Linear Graph
           Algorithms" introduced an O(V + E) algorithm that finds all SCCs
           in a single DFS using two integer arrays — index (DFS pre-order
@@ -58,7 +62,7 @@ export default function TarjansSCCArticle() {
           bridges. The algorithm is one of the most elegant in the
           algorithm canon: a one-pass DFS that emits SCCs in reverse
           topological order with no graph reversal needed.
-        </p>
+        </HighlightBlock>
         <p>
           The two main alternatives are <em>Kosaraju's algorithm</em>{" "}
           (1978, sometimes attributed to Sharir's independent 1981
@@ -91,7 +95,10 @@ export default function TarjansSCCArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The algorithm performs DFS over the graph, assigning each vertex
           a pre-order index (a clock incremented at each entry) and
           maintaining a lowlink value that approximates "the smallest
@@ -100,14 +107,14 @@ export default function TarjansSCCArticle() {
           vertex u, if lowlink[u] equals index[u], u is the root of an SCC
           — pop the auxiliary stack down to and including u; the popped
           vertices form one SCC.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The auxiliary stack contains all vertices that have been entered
           by DFS and not yet assigned to an SCC. A separate boolean array
           on_stack[v] tracks membership in the auxiliary stack
           (distinguishing "currently in DFS recursion" from "DFS finished
           and popped to an SCC"). When DFS encounters an edge (u, v):
-        </p>
+        </HighlightBlock>
         <p>
           • If v is unvisited, recurse on v, then update{" "}
           <code>lowlink[u] = min(lowlink[u], lowlink[v])</code> after
@@ -161,19 +168,22 @@ export default function TarjansSCCArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The data structures are the adjacency list, an index array, a
           lowlink array, an on_stack boolean array, an auxiliary stack of
           vertex ids, an SCC-id array (assigning each vertex to its SCC),
           and a clock counter. Memory is O(V + E) for the graph plus O(V)
           for the per-vertex state.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/tarjans-scc-diagram-2.svg"
           alt="Tarjan vs Kosaraju vs Gabow comparison"
           caption="Comparison of the three linear-time SCC algorithms and how the condensation DAG enables downstream graph problems."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           For 2-SAT — the canonical Tarjan's-SCC application — build an
           implication graph: each clause (a ∨ b) becomes two implications,
           (¬a → b) and (¬b → a). Run Tarjan's SCC on this graph (2N
@@ -182,7 +192,7 @@ export default function TarjansSCCArticle() {
           Recovery: in reverse topological order of the condensation,
           assign x = true if SCC(x) is emitted after SCC(¬x). Total: O(V
           + E) — linear-time 2-SAT.
-        </p>
+        </HighlightBlock>
         <p>
           For compiler call-graph analysis, SCCs identify mutually
           recursive function groups. Inlining and inter-procedural
@@ -219,7 +229,10 @@ export default function TarjansSCCArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Tarjan vs Kosaraju.</strong> Tarjan: one DFS, two
           arrays, no graph reversal. Kosaraju: two DFS passes, the
           second on the transpose graph. Both are O(V + E). Tarjan has
@@ -227,15 +240,15 @@ export default function TarjansSCCArticle() {
           (which can be expensive on huge graphs); Kosaraju is simpler
           to understand and to derive from first principles. Production
           libraries prefer Tarjan.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Tarjan vs Gabow's path-based.</strong> Both single-pass.
           Gabow uses two stacks instead of low-link values; some find it
           conceptually clearer because the "an SCC root is the bottom
           of a path" intuition is direct. Performance is essentially
           identical. Tarjan has historical inertia and remains the
           textbook default.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>SCC vs cycle detection.</strong> Cycle detection in a
           directed graph is one bit (cycle exists or not) and runs in
@@ -271,18 +284,21 @@ export default function TarjansSCCArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use iterative implementation in production.</strong>
           Recursive Tarjan blows the stack on graphs with long chains.
           Worth the implementation complexity to avoid stack overflows
           on real input.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Track on_stack with a separate boolean array.</strong>
           Don't conflate "visited" with "on stack." A vertex can be
           visited (has an index) and not on stack (already in an emitted
           SCC). The lowlink update rule depends on this distinction.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Use the SCC-emission order for the condensation.</strong>
           Tarjan emits in reverse topological order of the condensation,
@@ -328,19 +344,22 @@ export default function TarjansSCCArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Stack overflow on recursive implementation.</strong>
           The default recursion limit in Python is 1000; in Java and JVM
           languages, the default thread stack is 512 KB. Either raises
           the limit (sys.setrecursionlimit, -Xss) or use iterative.
           Production code defaults to iterative.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Conflating visited and on_stack.</strong> A vertex that
           has been visited and assigned to an SCC is still "visited" but
           should not contribute to current lowlink updates. Use two
           separate flags.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Forgetting to update lowlink on cross edges.</strong>
           When DFS finds an already-visited vertex on the stack, you
@@ -376,12 +395,15 @@ export default function TarjansSCCArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/tarjans-scc-diagram-3.svg"
           alt="Tarjan SCC applications and 2-SAT detail"
           caption="Production applications — 2-SAT, compiler analysis, deadlock detection, module loading — and the 2-SAT reduction in detail."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2-SAT solving.</strong> The killer application. Boolean
           satisfiability with at most 2 literals per clause is NP-hard
           in general but linear-time when restricted to 2-CNF. The
@@ -389,14 +411,14 @@ export default function TarjansSCCArticle() {
           making 2-SAT one of the fastest non-trivial logical problems.
           Used in scheduling, layout problems, constraint satisfaction
           subroutines, and SAT-solver preprocessing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Compiler call-graph analysis.</strong> SCCs of the
           call graph are mutually recursive function groups. Compilers
           (LLVM, GCC) iterate inter-procedural analyses over the
           condensation in reverse topological order: callees before
           callers, with fixed-point iteration within each SCC.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Module / package loading.</strong> Circular imports in
           Python, JavaScript, Java, and similar languages form SCCs in
@@ -444,17 +466,20 @@ export default function TarjansSCCArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Find all strongly connected components.</strong> Direct
           implementation question. Tarjan or Kosaraju, both O(V + E).
           Strong answers explain the lowlink intuition or the
           two-DFS-on-transpose intuition clearly.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Detect cycles in a directed graph.</strong> Three-color
           DFS gives a yes/no in O(V + E). Tarjan's SCC gives more (the
           actual SCCs) but is overkill if you only need detection.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>2-SAT: assign truth values to satisfy a 2-CNF
           formula.</strong> Build the implication graph; run Tarjan; check

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 const BASE_PATH =
@@ -33,7 +34,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>load balancer</strong> is a network device or software
           component that distributes incoming network traffic across a pool of
           backend servers according to a defined algorithm. Its primary purpose
@@ -46,8 +50,8 @@ export default function ArticlePage() {
           Citrix/NetScaler) were proprietary hardware appliances that sat at the
           network edge and performed basic round-robin distribution across web
           servers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Today, load balancing is no longer a single appliance but a layered
           stack of software and managed services operating at multiple points in
           the traffic path. A request from a mobile client to a modern
@@ -61,7 +65,7 @@ export default function ArticlePage() {
           different OSI model layer, with different visibility into the traffic
           and different trade-offs between latency, intelligence, and
           operational complexity.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, understanding load balancing is not
           about configuring Nginx directives -- it is about making architectural
@@ -87,7 +91,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundational distinction in load balancing is between{" "}
           <strong>Layer 4 (transport layer)</strong> and{" "}
           <strong>Layer 7 (application layer)</strong> operation, corresponding
@@ -109,8 +116,8 @@ export default function ArticlePage() {
           on connection-level distribution rather than request content, and TLS
           pass-through scenarios where the balancer should not terminate
           encryption.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Layer 7 load balancers, by contrast, operate at the application layer
           and have full visibility into the content of the traffic. They
           terminate the client TCP connection, parse the HTTP protocol, and can
@@ -129,7 +136,7 @@ export default function ArticlePage() {
           overhead -- and higher resource consumption, since the balancer must
           maintain buffers for request and response bodies and track per-request
           state.
-        </p>
+        </HighlightBlock>
         <p>
           In production systems at scale, both layers are used together in a
           hierarchical pattern. The outer layer (managed by the cloud provider
@@ -235,7 +242,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The architecture of a production load balancing system spans multiple
           interconnected components that work together to distribute traffic,
           detect failures, manage sessions, and provide observability.
@@ -243,9 +253,9 @@ export default function ArticlePage() {
           single request from the moment it arrives at the load balancer to the
           moment the response is returned to the client, including all the
           decision points and failure modes along the way.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a client initiates a connection, the request first encounters the
           <strong>listener</strong> -- the component bound to an IP address and
           port that accepts incoming connections. The listener performs the
@@ -262,7 +272,7 @@ export default function ArticlePage() {
           load balancer as a bottleneck on the egress path and is used by
           high-throughput services such as video streaming and large file
           downloads.
-        </p>
+        </HighlightBlock>
 
         <p>
           Once the connection is established, the{" "}
@@ -373,7 +383,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The decision between L4 and L7 load balancing is not a binary choice
           but a layered architecture decision. L4 load balancers excel in raw
           throughput and low latency because they operate on packets without
@@ -391,7 +404,7 @@ export default function ArticlePage() {
           routing. The trade-off is higher per-request latency, greater resource
           consumption, and increased operational complexity in configuration and
           debugging.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -468,7 +481,7 @@ export default function ArticlePage() {
           </tbody>
         </table>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The routing algorithm choice involves its own set of trade-offs. Round
           robin is simple, stateless, and computationally free, but it assumes
           uniform request costs and uniform server capacity -- assumptions that
@@ -481,7 +494,7 @@ export default function ArticlePage() {
           implement correctly, requires careful tuning of virtual node counts,
           and can still produce uneven distribution if the hash function has
           poor dispersion properties for the specific key distribution.
-        </p>
+        </HighlightBlock>
 
         <p>
           The most robust production approach used at companies like Google,
@@ -505,8 +518,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Deploy Load Balancers in High-Availability Pairs with Active-Passive
               or Active-Active Failover
@@ -525,8 +541,8 @@ export default function ArticlePage() {
             different load balancer IPs so that DNS resolution provides natural
             failover -- if one LB becomes unreachable, DNS resolvers will
             eventually return only the healthy IP.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Configure Health Checks with Appropriate Intervals, Thresholds, and
               Meaningful Endpoints
@@ -547,7 +563,7 @@ export default function ArticlePage() {
             downstream services) can cause cascading ejections when a single
             dependency fails, even if the service has degradation modes that
             allow it to operate in a reduced-capacity state.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Use External Session Stores Instead of Sticky Sessions for
@@ -623,8 +639,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Health Checks That Always Succeed Regardless of Service State
             </strong>
@@ -641,8 +660,8 @@ export default function ArticlePage() {
             that resource utilization (memory, disk, file descriptors) is within
             acceptable bounds, and return detailed status information that can
             be logged and alerted on.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Sticky Sessions Masking State Management Problems
             </strong>
@@ -657,7 +676,7 @@ export default function ArticlePage() {
             session state to a distributed store such as Redis, which allows the
             load balancer to route freely based on current load rather than
             historical affinity.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Using Round Robin for Variable-Cost Workloads
@@ -727,8 +746,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Google Maglev: Network Load Balancer at Hyperscale
             </strong>
@@ -746,8 +768,8 @@ export default function ArticlePage() {
             failure and no coordination overhead. Maglev handles all of
             Google&apos;s external traffic, serving as the L4 layer beneath
             Google&apos;s L7 load balancing infrastructure (GFEs).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               AWS Elastic Load Balancing: Three Tiers for Different Use Cases
             </strong>
@@ -765,7 +787,7 @@ export default function ArticlePage() {
             architecture uses NLB at the edge for TLS termination and high
             throughput, ALB internally for content-aware routing to microservices,
             and Auto Scaling groups with health checks to manage backend capacity.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Netflix Zuul and Eureka: Service-Side Load Balancing in Microservices
@@ -831,6 +853,9 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg bg-panel-soft p-6">
@@ -839,7 +864,7 @@ export default function ArticlePage() {
               load balancing. When would you choose one over the other, and how
               does your choice affect TLS termination and observability?
             </h3>
-            <p>
+            <HighlightBlock as="p" tier="important">
               Layer 4 load balancers operate at the transport layer and make
               routing decisions based on IP addresses, ports, and protocol
               identifiers. They forward TCP or UDP packets without inspecting the
@@ -849,8 +874,8 @@ export default function ArticlePage() {
               protocol, and making routing decisions based on URL paths,
               headers, cookies, and request bodies. They provide content-aware
               routing at the cost of 2-10ms additional latency per request.
-            </p>
-            <p>
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               The choice affects TLS termination significantly. An L4 load
               balancer in pass-through mode forwards encrypted traffic directly
               to backends, which must handle their own TLS termination. This
@@ -863,7 +888,7 @@ export default function ArticlePage() {
               certificates and manage their rotation. For internal traffic
               between the L7 balancer and backends, you should use mTLS to
               maintain encryption within your network.
-            </p>
+            </HighlightBlock>
             <p>
               I would choose L4 load balancing for database clusters (where all
               backends serve identical data and protocol is not HTTP), for

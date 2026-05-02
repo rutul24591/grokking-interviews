@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,15 +37,15 @@ export default function RollbackStrategiesArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Rollback strategies</strong> are predefined plans for reverting a deployment to the previous stable version when the new version causes production issues. Rollback is the fastest way to mitigate production incidents — instead of deploying a hotfix (which requires code changes, testing, and deployment), rollback simply redeploys the previous version, which is known to be stable. Effective rollback strategies minimize mean time to recovery (MTTR) and reduce user impact during deployment failures.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, rollback strategy design is a critical aspect of deployment reliability. Rollback must be fast (seconds to minutes, not hours), reliable (rollback itself should not fail), and safe (rollback should not cause data loss or user impact). The rollback strategy depends on the deployment strategy used — blue-green deployment enables instant rollback (traffic switch back to the previous environment), canary releases enable partial rollback (reduce traffic to the new version, increase traffic to the old version), and rolling deployments require instance-by-instance rollback (slower but possible).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rollback strategies involve several technical considerations. Rollback trigger (what causes a rollback — automated metric alerts, manual approval, incident detection), rollback scope (full rollback to previous version, partial rollback to reduce exposure), database migration compatibility (rolling back the application while the database schema has been updated), state management (user sessions, cached data, local storage may be incompatible with the previous version), and user communication (notifying users of the rollback and any data impact).
-        </p>
+        </HighlightBlock>
         <p>
           The business case for rollback strategies is risk mitigation and incident response. Without a rollback strategy, deployment failures require hotfixes (rushed code changes that may introduce new issues) or extended incident response (debugging the issue, developing a fix, testing, deploying). With a rollback strategy, deployment failures are resolved by simply redeploying the previous version — fast, reliable, and safe. For organizations practicing continuous deployment (multiple deployments per day), rollback strategies are essential for maintaining deployment velocity while managing risk.
         </p>
@@ -57,15 +58,15 @@ export default function RollbackStrategiesArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Rollback Trigger:</strong> What causes a rollback. Automated triggers (metric-based — error rate spike, response time degradation, business metric decline) enable instant rollback without human intervention. Manual triggers (human decision — incident detection, user complaints, QA finding) require human judgment but are useful for issues that automated metrics may not catch (user experience issues, design problems). Hybrid triggers (automated alert with manual approval) combine both approaches — automated alert notifies the team, team manually approves rollback.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Rollback Scope:</strong> How much of the deployment is rolled back. Full rollback (redeploy the entire previous version) is the simplest and safest approach — the entire application returns to a known stable state. Partial rollback (reduce traffic to the new version, keep the rest) is used with canary releases — reduce canary percentage (e.g., from 10% to 1%), monitor, and decide whether to continue rollback or proceed with the canary. Feature flag rollback (disable the new feature flag) is the fastest rollback for features deployed behind flags — no redeploy needed, just disable the flag.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Database Migration Compatibility:</strong> Rolling back the application while the database schema has been updated. If the new version required database schema changes (new columns, new tables, modified constraints), rolling back the application may fail if the previous version is incompatible with the new schema. Solution: use backward-compatible schema changes (expand-contract pattern — add new columns without removing old ones, make new columns nullable, keep old columns until the previous version is decommissioned). This ensures that both old and new versions work with the schema during the transition.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>State Management:</strong> User sessions, cached data, and local storage may be incompatible with the previous version. If the new version changed the session format, cached data structure, or local storage schema, rolling back may cause user-facing issues (users are logged out, cached data is invalid, local storage is corrupted). Solution: use versioned state (include version identifiers in sessions, cached data, and local storage; the previous version can detect incompatible state and handle it gracefully — clear incompatible state, re-fetch from server).
           </li>
@@ -89,12 +90,12 @@ export default function RollbackStrategiesArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Rollback architecture consists of issue detection (monitoring systems detecting anomalies), rollback trigger (decision to rollback — automated or manual), rollback execution (reverting to the previous version), and verification (confirming that the rollback resolved the issue). The flow begins with monitoring systems detecting issues (error rate spike, response time degradation, business metric decline). An alert is triggered, and the rollback decision is made (automated based on metric thresholds, or manual based on human judgment). The rollback is executed (traffic switch, redeploy, flag disable), and verification confirms that the issue is resolved.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For frontend applications, rollback execution typically involves one of three approaches: traffic switch (blue-green deployment — switch traffic back to the previous environment, instant), redeploy (CI/CD pipeline deploys the previous version, takes minutes), or flag disable (feature flag — disable the new feature flag, instant). The choice depends on the deployment strategy used and the nature of the issue.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/build-deployment/rollback-types.svg"
@@ -105,9 +106,9 @@ export default function RollbackStrategiesArticle() {
         />
 
         <h3>Rollback Execution Methods</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Traffic Switch (Blue-Green):</strong> Switch traffic from the new environment back to the previous environment. This is instantaneous (DNS change, load balancer update, CDN origin change) and does not require redeploying the previous version (it is still running). This is the fastest rollback method — seconds, not minutes. Advantages: instant, reliable, safe. Limitations: requires maintaining two environments (double infrastructure cost). Best for: applications requiring instant rollback, high-traffic applications where user impact must be minimized.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Redeploy (CI/CD Pipeline):</strong> Trigger the CI/CD pipeline to deploy the previous version. The pipeline fetches the previous version from version control, builds it, tests it, and deploys it. This takes minutes (pipeline duration) but does not require maintaining two environments. Advantages: no double infrastructure cost, reliable (uses the same pipeline as the original deployment). Limitations: slower than traffic switch (pipeline takes minutes), previous version must be available in version control. Best for: applications where minutes of rollback time is acceptable, cost-sensitive deployments.
         </p>
@@ -127,17 +128,17 @@ export default function RollbackStrategiesArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Rollback strategies involve trade-offs between rollback speed, infrastructure cost, complexity, and scope. Understanding these trade-offs is essential for choosing the right rollback strategy for each deployment scenario.
-        </p>
+        </HighlightBlock>
 
         <h3>Instant Rollback vs. Fast Rollback</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Instant Rollback (Traffic Switch, Flag Disable):</strong> Seconds to complete. Advantages: minimal user impact (rollback completes before most users notice the issue), high reliability (simple operation — switch traffic or toggle flag), no rebuild needed (previous version is already running or flag state changes instantly). Limitations: requires additional infrastructure (two environments for traffic switch, flag management system for flag disable), higher cost. Best for: high-traffic applications, critical features, regulated industries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Fast Rollback (CI/CD Redeploy):</strong> Minutes to complete. Advantages: no additional infrastructure cost (same pipeline as original deployment), reliable (uses proven deployment process), works for any deployment type (not limited to blue-green or feature flags). Limitations: slower than instant rollback (pipeline takes minutes), users are impacted during rollback period, previous version must be available in version control. Best for: non-critical deployments, cost-sensitive applications, teams without dual infrastructure.
-        </p>
+        </HighlightBlock>
 
         <h3>Automated vs. Manual Rollback</h3>
         <p>
@@ -160,15 +161,15 @@ export default function RollbackStrategiesArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Automate Rollback Triggers:</strong> Configure automated rollback triggers based on metric thresholds (error rate increases by more than 10%, response time degrades by more than 20%, business metrics decline by more than 5%). Automated triggers enable instant rollback without human intervention, reducing user impact during incidents. Set up monitoring alerts for these metrics, and configure the deployment pipeline to automatically rollback when alerts fire.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Test Rollback Regularly:</strong> Include rollback testing in your deployment pipeline. After each deployment, test that rollback works by deploying the previous version and verifying that it functions correctly. Regular rollback testing ensures that rollback is reliable when needed most (during a real incident). Track rollback success rate as a deployment reliability metric — if rollback fails, investigate and fix the issue before the next deployment.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ensure Backward-Compatible Database Changes:</strong> Use the expand-contract pattern for database schema changes. Expand the schema to support both old and new versions (add new columns, keep old columns, make new columns nullable). Deploy the new version. After the new version is stable and the old version is decommissioned, contract the schema (remove old columns, make new columns required). This ensures that rollback does not break due to database schema incompatibility.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Version State for Rollback Compatibility:</strong> Include version identifiers in user sessions, cached data, and local storage. When rolling back, the previous version can detect incompatible state (different version identifier) and handle it gracefully (clear incompatible state, re-fetch from server). This prevents user-facing issues during rollback (users are not logged out unexpectedly, cached data is not corrupted).
           </li>
@@ -185,15 +186,15 @@ export default function RollbackStrategiesArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Database Incompatibility:</strong> Rolling back the application while the database schema has been updated in a non-backward-compatible way. The previous version may fail when interacting with the new schema (missing columns, changed constraints, removed tables). Always use backward-compatible schema changes (expand-contract pattern) to ensure that rollback does not break due to database incompatibility.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Untested Rollback Process:</strong> Assuming rollback works without testing it. Rollback processes that have not been tested may fail during a real incident (previous version artifacts are deleted, rollback scripts are broken, database migration is not reversible). Regularly test rollback (deploy previous version, verify it works) to ensure reliability.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Slow Rollback:</strong> Rollback taking hours instead of minutes or seconds. Slow rollback extends user impact and increases incident severity. Causes include manual rollback steps (human intervention at each step), slow CI/CD pipeline (build takes too long), and missing previous version artifacts (previous version must be rebuilt from source). Optimize rollback speed by automating rollback, caching build artifacts, and keeping previous version artifacts available.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>State Incompatibility:</strong> Rolling back without ensuring state compatibility (user sessions, cached data, local storage). The previous version may not understand the state format created by the new version, causing user-facing issues (users are logged out, cached data is invalid, local storage is corrupted). Use versioned state to detect and handle incompatible state during rollback.
           </li>
@@ -211,19 +212,19 @@ export default function RollbackStrategiesArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>E-Commerce Checkout Rollback</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           E-commerce platforms use instant rollback for checkout flow deployments. If the new checkout flow causes errors (payment failures, cart abandonment spike), traffic is instantly switched back to the previous checkout flow (blue-green deployment). The rollback completes in seconds, minimizing revenue impact. Database changes (new payment columns) are backward-compatible, ensuring the previous checkout flow works with the updated schema. CDN cache is purged to ensure the previous checkout flow is served immediately.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Feature Flag Rollback</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SaaS products use feature flag rollback for new feature deployments. If the new feature causes issues (UI bugs, performance degradation, user complaints), the feature flag is disabled instantly. The rollback completes in seconds (flag state change propagates to frontend SDKs). No redeploy or traffic switch is needed — only the flagged feature is disabled, the rest of the application continues normally. This is the fastest rollback method for feature-specific issues.
-        </p>
+        </HighlightBlock>
 
         <h3>Enterprise Application Manual Rollback</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Enterprise applications in regulated industries use manual rollback for compliance. When issues are detected, the incident response team evaluates the issue, determines whether it is deployment-related, and manually approves rollback. The rollback is executed through the CI/CD pipeline (redeploy previous version), taking minutes. Manual approval ensures compliance (rollback decision is documented, auditable). This pattern balances automation with regulatory oversight.
-        </p>
+        </HighlightBlock>
 
         <h3>Content Publishing Platform Rollback</h3>
         <p>
@@ -237,18 +238,18 @@ export default function RollbackStrategiesArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: What is the fastest way to rollback a frontend deployment?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: The fastest rollback methods are traffic switch (blue-green deployment — switch traffic back to the previous environment, instant) and feature flag disable (disable the new feature flag, instant). Traffic switch takes seconds (DNS change, load balancer update, CDN origin update) and does not require redeploying. Feature flag disable takes milliseconds to seconds (flag state change propagates to frontend SDKs). Both methods are faster than CI/CD redeploy (minutes) and are preferred for high-traffic applications where user impact must be minimized.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do you handle database migrations during rollback?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Use the expand-contract pattern for database schema changes. First, expand the schema to support both old and new versions (add new columns, keep old columns, make new columns nullable). Deploy the new version. If rollback is needed, the previous version works with the expanded schema (old columns are still present, new columns are nullable and ignored). After the new version is stable and the old version is decommissioned, contract the schema (remove old columns, make new columns required). This ensures that rollback does not break due to database schema incompatibility.
             </p>

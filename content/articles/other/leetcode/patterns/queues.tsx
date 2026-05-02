@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,21 +24,24 @@ export default function QueuesArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         A queue is a first-in, first-out container that exposes O(1) enqueue (push at back), dequeue (pop from
         front), and front peek. As an interview pattern, the queue is the substrate for breadth-first search,
         level-order tree traversal, topological sort, and a family of design problems that compose a queue with
         a hash map or a fixed-size buffer. The signal phrase is &quot;shortest path on an unweighted graph&quot;
         or &quot;level by level&quot;.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Three variants matter beyond the base. The <strong>deque</strong> (double-ended queue) supports push
         and pop at both ends in O(1) and is the substrate for sliding windows, palindrome checks, and the
         monotonic-queue pattern. The <strong>priority queue</strong> (heap) replaces insertion-order with
         priority order and powers Dijkstra, top-k, and median-finding. The <strong>circular buffer</strong>
         is a fixed-size ring used in design problems and OS-level streaming. Each shares the FIFO core but
         with different ordering semantics.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Recognition signals are precise. &quot;Shortest path&quot; or &quot;minimum number of steps&quot; on
         an unweighted graph or grid — BFS with a queue. &quot;Level order&quot;, &quot;by depth&quot;,
@@ -54,17 +58,20 @@ export default function QueuesArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>FIFO invariant.</strong> The element at the front is the oldest still in the queue. In BFS,
         this means the next node to expand is the one closest to the source — every BFS pop is at distance
         d before any node at distance d + 1 is popped. The proof is by induction on enqueue order.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>BFS gives shortest paths on unweighted graphs.</strong> When all edges have weight 1, BFS
         explores nodes in order of distance from the source. The first time a node is reached, that
         distance is optimal. Dijkstra reduces to BFS on unweighted graphs because the priority-queue order
         coincides with insertion order.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Visited set is mandatory.</strong> Without it, BFS revisits nodes through different paths
         and the queue grows unboundedly. Mark on enqueue (not on dequeue) to prevent the same node from
@@ -102,17 +109,20 @@ export default function QueuesArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>BFS template.</strong> Initialise queue with start node and visited set containing it.
         While queue non-empty: pop front, process. For each unvisited neighbour, mark visited and push.
         For shortest distance, store (node, distance) in the queue or maintain a distance map keyed by
         node.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Level-order template.</strong> Same skeleton, but at each iteration record level_size =
         queue.size() and process exactly level_size nodes before starting the next iteration. The inner
         loop builds the level&apos;s output; the outer loop advances levels.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Multi-source BFS template.</strong> Pre-load the queue with every source at distance 0
         before the loop. The expansion phase is unchanged. The first time a node is popped, its distance
@@ -146,18 +156,21 @@ export default function QueuesArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Queue vs. stack.</strong> Both manage frontier nodes. Queue (BFS) explores level by
         level; stack (DFS) explores depth-first. BFS gives shortest paths and processes by distance;
         DFS gives ordering, cycle detection, and lower memory on deep narrow graphs. Choose by what the
         problem rewards.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Queue vs. priority queue.</strong> Priority queue orders by user-defined key, not
         insertion. Use when edges have non-uniform weight (Dijkstra), when results are wanted in
         priority order (top-k), or when the next item to process depends on a value, not position.
         Priority queue is O(log n) per op vs. O(1) for plain queue — use only when needed.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Queue vs. deque.</strong> Plain queue suffices for BFS. Deque is needed for sliding
         window (push back, pop front) plus eviction from the back (monotonic queue), 0-1 BFS, and
@@ -184,17 +197,20 @@ export default function QueuesArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Mark visited on enqueue.</strong> Marking on dequeue allows the same node to be
         enqueued multiple times before any of them is processed, inflating queue size and triggering
         duplicate work. Marking on enqueue is the only correct discipline.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Use ArrayDeque / collections.deque, not LinkedList / list.</strong> In Java,
         java.util.LinkedList is O(1) per op but with allocation overhead per node. ArrayDeque has
         better cache behaviour and is the recommended queue. In Python, collections.deque is O(1) at
         both ends; plain list pop(0) is O(n).
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Snapshot level size before the inner loop.</strong> Capture queue.size() once at the
         top of each level, then iterate that many times. Re-checking size inside the loop merges
@@ -216,14 +232,17 @@ export default function QueuesArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Marking visited on dequeue.</strong> Same node enqueued multiple times before any
         pop; processing duplicates wastes time and may produce wrong distances. Mark on enqueue.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Using list.pop(0) in Python.</strong> O(n) per call. Use collections.deque, which
         is O(1) at both ends.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Forgetting to snapshot level size.</strong> Iterating &quot;while not empty&quot;
         without per-level boundaries merges levels and breaks right-view, zigzag, and per-level
@@ -251,13 +270,16 @@ export default function QueuesArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode Problems)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>102. Binary Tree Level Order Traversal.</strong> Base level-order template with size
         snapshotting per level.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>199. Binary Tree Right Side View.</strong> Level-order, take the last node per level.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>994. Rotting Oranges.</strong> Multi-source BFS — preload all rotten oranges at
         distance 0, expand simultaneously. The answer is the maximum distance reached, or −1 if any
@@ -299,13 +321,16 @@ export default function QueuesArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why does BFS give shortest paths?</strong> Because nodes are processed in order of
+        <HighlightBlock as="li" tier="important"><strong>Why does BFS give shortest paths?</strong> Because nodes are processed in order of
         distance. Once a node is popped, all earlier-popped nodes were at distance ≤ d − 1 and any
-        later-popped node is at distance ≥ d.</li>
-        <li><strong>Why mark visited on enqueue, not dequeue?</strong> To prevent the same node from
+        later-popped node is at distance ≥ d.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Why mark visited on enqueue, not dequeue?</strong> To prevent the same node from
         being enqueued multiple times before any of them is processed — that inflates queue size
-        and risks duplicate processing.</li>
+        and risks duplicate processing.</HighlightBlock>
         <li><strong>How do you detect cycles with Kahn?</strong> If after BFS the result count is less
         than n, the un-emitted nodes form (or are downstream of) a cycle.</li>
         <li><strong>How does multi-source BFS find the nearest source for every cell?</strong> Pre-loading

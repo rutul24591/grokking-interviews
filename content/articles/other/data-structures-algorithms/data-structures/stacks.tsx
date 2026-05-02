@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function StacksArticle() {
       {/* SECTION 1 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>stack</strong> is a collection whose only insertion and
           removal operations act on the most recently added element — a
           strict <em>last-in, first-out</em> (LIFO) discipline. The interface
@@ -46,8 +50,8 @@ export default function StacksArticle() {
           the structure&apos;s centrality to computing — every function call,
           every expression evaluation, every recursive descent, and every
           depth-first traversal runs on top of some stack somewhere.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Stacks predate the vocabulary we use to describe them. Turing
           machines implicitly stack return addresses; Dijkstra&apos;s
           shunting-yard algorithm (1961) used a stack to convert infix to
@@ -60,7 +64,7 @@ export default function StacksArticle() {
           per-thread stack), to languages (JavaScript&apos;s execution
           context stack), to frameworks (React&apos;s reconciliation fiber
           stack).
-        </p>
+        </HighlightBlock>
         <p>
           The practitioner-level decision is almost always an implementation
           one: array-backed (growable-vector style) vs linked-node. The
@@ -87,21 +91,24 @@ export default function StacksArticle() {
       {/* SECTION 2 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">LIFO discipline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The single defining property. Any sequence of N pushes and N pops
           retrieves elements in exactly the reverse order they were added,
           regardless of interleaving. This property maps directly to nested
           processing: function calls nest, bracket pairs nest, parser
           contexts nest. If the problem has nested structure, a stack is
           almost certainly an appropriate tool.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Array-backed implementation
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The dominant practical choice. A growable buffer plus a{" "}
           <code>top</code> index. <code>push</code> writes at{" "}
           <code>top</code> and increments; <code>pop</code> decrements and
@@ -111,7 +118,7 @@ export default function StacksArticle() {
           implementation used by virtually every language standard library
           (Java <code>ArrayDeque</code>, Python <code>list</code> as stack,
           Go <code>append</code>/slice off the end, Rust <code>Vec</code>).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Linked-node implementation
@@ -135,23 +142,26 @@ export default function StacksArticle() {
       {/* SECTION 3 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Push/pop mechanics
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In an array-backed stack, push is: bounds check, write{" "}
           <code>buf[top++]</code>, possibly resize. Pop is: bounds check,
           read <code>buf[--top]</code>. Both run in two or three instructions
           in hot paths. Modern JIT compilers fold bounds checks across tight
           loops, and when the top frame is hot in L1 the actual memory cost
           is essentially a register operation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           The hardware call stack
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every function invocation on x86-64 pushes a return address,
           frame pointer (if <code>-fno-omit-frame-pointer</code>), and local
           variables onto the per-thread call stack. The <code>CALL</code>{" "}
@@ -162,7 +172,7 @@ export default function StacksArticle() {
           sizes vary: 1 MB on Windows, 8 MB on Linux, 512 KB on Node worker
           threads. Any deeply-recursive algorithm must either convert to
           iteration or raise the thread&apos;s stack explicitly.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Monotonic stacks</h3>
         <p>
@@ -190,6 +200,9 @@ export default function StacksArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Operation complexity
@@ -214,7 +227,7 @@ export default function StacksArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Array-backed vs linked-node
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Array-backed wins almost universally: cache friendliness, compact
           memory, cheap cold iteration, trivial serialization. Linked-node
           wins only when worst-case latency matters (e.g., real-time
@@ -222,19 +235,19 @@ export default function StacksArticle() {
           a lock-free Treiber-stack design is required. Benchmark data
           from language standard libraries consistently shows array-backed
           stacks 3–10× faster for pure push-pop workloads.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Stack vs queue
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Both are restricted-access linear collections; the only
           distinction is ordering (LIFO vs FIFO). Problems with nested
           structure prefer stacks; problems with fairness or chronological
           processing prefer queues. Converting a stack to a queue (or vice
           versa) using two of the other is a classic interview exercise
           that illustrates amortized analysis.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Stack vs recursion
@@ -253,18 +266,21 @@ export default function StacksArticle() {
       {/* SECTION 5 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Prefer array-backed stacks in general-purpose code.</strong>
             {" "}Java&apos;s <code>ArrayDeque</code>, Python&apos;s{" "}
             <code>list</code>, Rust&apos;s <code>Vec</code> all give you
             stack semantics with excellent cache behavior.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Convert deep recursion to iteration using an explicit
             stack.</strong> Tree and graph traversals that might exceed
             thousands of frames belong in iterative form.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Pre-allocate when size is known.</strong> Passing a
             capacity hint avoids copy bursts for bounded-size workloads
@@ -292,19 +308,22 @@ export default function StacksArticle() {
       {/* SECTION 6 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Stack overflow from uncontrolled recursion.</strong>{" "}
             Tree traversals and recursive descent parsers crash at a few
             thousand levels on default thread stacks. Always convert to
             iteration or use a dedicated larger-stack thread.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Empty-stack pop.</strong> Failing to check underflow
             before pop either returns garbage (in low-level implementations)
             or throws (in managed ones). Always guard with size checks or
             use a typed <code>Option</code>/<code>Result</code>.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Confusing peek with pop.</strong> A peek that
             accidentally mutates, or a pop that is used as a peek, both
@@ -344,11 +363,14 @@ export default function StacksArticle() {
       {/* SECTION 7 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           JavaScript execution context stack
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every JavaScript function invocation pushes a new execution
           context onto the engine&apos;s stack. The context includes
           local variable environment, <code>this</code> binding, and
@@ -356,19 +378,19 @@ export default function StacksArticle() {
           control resumes at the caller. The &quot;Uncaught RangeError:
           Maximum call stack size exceeded&quot; error is the V8 stack
           limit hitting its typical 10,000–20,000-frame ceiling.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Parser and expression evaluator
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every infix expression parser uses two stacks — one for operators,
           one for operands — in the shunting-yard algorithm. The
           same pattern powers SQL planners, regex parsers, template
           engines (Handlebars, Mustache), and math renderers (MathJax,
           KaTeX). The nested nature of expressions maps directly to LIFO
           discipline.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           React reconciler fiber stack
@@ -404,12 +426,15 @@ export default function StacksArticle() {
       {/* SECTION 8 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: Design a stack with O(1) min and max queries.
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Two auxiliary stacks, one maintaining the running minimum
               and one the running maximum. On push, append to min-stack the
               smaller of the new value and its current top (and symmetric
@@ -418,7 +443,7 @@ export default function StacksArticle() {
               space. The alternative — tracking just the min in the main
               stack alongside each entry — is equivalent in asymptotic cost
               and slightly simpler.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -41,7 +42,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>cache stampede</strong> — also known as the{" "}
           <strong>thundering herd problem</strong> in caching contexts — occurs
           when a large number of concurrent requests simultaneously miss the
@@ -52,8 +56,8 @@ export default function ArticlePage() {
           traffic volume it was shielded from, often resulting in resource
           exhaustion, cascading failures, and prolonged outage windows that can
           last well beyond the initial trigger event.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The term &ldquo;thundering herd&rdquo; originates from operating
           system literature, where it described the scenario of multiple
           blocked processes waking up simultaneously when a lock becomes
@@ -63,7 +67,7 @@ export default function ArticlePage() {
           OS-level problem where only one process wins the lock, in caching the
           stampede can cause <em>all</em> contenders to hit the origin
           concurrently, multiplying the load by orders of magnitude.
-        </p>
+        </HighlightBlock>
         <p>
           The economic impact of cache stampedes is disproportionate to their
           apparent simplicity. A single hot key — such as a homepage
@@ -92,7 +96,10 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           To understand why stampedes form and how to prevent them, we must
           first decompose the caching lifecycle into its constituent phases and
           examine the failure modes at each transition point. The cache
@@ -101,8 +108,8 @@ export default function ArticlePage() {
           its TTL), and <strong>miss</strong> (the key does not exist). A
           stampede occurs at the transition from hit to miss when multiple
           requests observe the miss simultaneously.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>root cause</strong> is almost always synchronized
           expiration. When a hot key is written with a fixed TTL, every cache
           node in a distributed cluster will expire that key at approximately
@@ -114,7 +121,7 @@ export default function ArticlePage() {
           own database connection, executes the same expensive query, and
           attempts to write the result back to the cache — a classic waste of
           compute that can overwhelm the origin.
-        </p>
+        </HighlightBlock>
         <p>
           The concept of a <strong>hot key</strong> is central to stampede
           analysis. Not all keys carry equal risk: a key that serves ten
@@ -185,7 +192,10 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Mitigating cache stampedes requires architectural decisions at
           multiple layers of the caching stack. The most robust systems employ
           a defense-in-depth strategy where multiple mechanisms work in concert,
@@ -193,8 +203,8 @@ export default function ArticlePage() {
           protection. Understanding how these mechanisms compose — and where
           they conflict — is essential for designing systems that remain stable
           under pathological traffic patterns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the <strong>application layer</strong>, single-flight locking is
           the most precise control. When a request detects a cache miss, it
           first attempts to acquire a lock keyed by the cache key. If the lock
@@ -208,7 +218,7 @@ export default function ArticlePage() {
           as an in-memory mutex within a single application instance or as a
           distributed lock (using Redis SETNX, for example) for multi-instance
           coordination.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>cache layer</strong> provides its own stampede mitigation
           primitives. Redis, for instance, supports the stale-while-revalidate
@@ -281,15 +291,18 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Every stampede mitigation strategy carries distinct trade-offs that
           must be evaluated against the application&apos;s correctness
           requirements, latency budgets, and operational complexity tolerance.
           No single approach is universally optimal, and the most resilient
           systems combine multiple strategies based on the characteristics of
           each cached key.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Single-flight locking</strong> provides the strongest
           guarantee: at most one origin request per key at any time. The cost
           is increased tail latency for waiting requests. If the origin fetch
@@ -304,7 +317,7 @@ export default function ArticlePage() {
           multi-instance problem but add their own latency and failure modes — a
           distributed lock service that becomes unavailable can deadlock the
           entire regeneration pipeline.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Stale-while-revalidate</strong> offers the best user-facing
           latency profile — the user never waits for the origin fetch because
@@ -359,7 +372,10 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of robust stampede prevention is a systematic approach
           to hot key identification and protection. Every production caching
           system should maintain a continuous hot key registry — a data
@@ -370,8 +386,8 @@ export default function ArticlePage() {
           low-traffic keys use simpler TTL-based expiration. Manual
           configuration of individual keys does not scale as the number of
           cached resources grows into the thousands.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           TTL jitter should be applied as a default policy, not an exception.
           The jitter range should be proportional to the base TTL — a common
           rule of thumb is plus or minus twenty percent of the base value. For a
@@ -382,7 +398,7 @@ export default function ArticlePage() {
           short TTLs (under five seconds) benefit from a smaller jitter
           percentage to avoid excessive staleness, while keys with long TTLs
           (over ten minutes) can tolerate wider jitter ranges.
-        </p>
+        </HighlightBlock>
         <p>
           When implementing single-flight locks, the lock timeout must be
           calibrated to the p99 origin fetch latency, not the average. If the
@@ -433,7 +449,10 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most insidious pitfall is the <strong>lock timeout
           misconfiguration</strong>. When engineers implement single-flight
           locking, they often set the lock timeout based on average-case origin
@@ -445,8 +464,8 @@ export default function ArticlePage() {
           when stampedes are most likely to occur. The correct approach is to
           derive the lock timeout from production p99 or p999 latency
           measurements, with an additional safety buffer.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common failure mode is <strong>over-reliance on a single
           mechanism</strong>. Teams that implement jittered TTLs and assume
           their stampede problem is solved are vulnerable to bulk invalidation
@@ -457,7 +476,7 @@ export default function ArticlePage() {
           crashes or the origin becomes unreachable. Each mechanism has a
           specific domain of effectiveness, and the boundaries of that domain
           must be understood and tested.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Distributed lock contention</strong> is a subtle problem that
           emerges at scale. When a single distributed lock service protects
@@ -509,7 +528,10 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Social media feed caching</strong> presents one of the most
           demanding stampede scenarios. A celebrity&apos;s profile page or a
           viral post can generate millions of requests per minute, all reading
@@ -522,8 +544,8 @@ export default function ArticlePage() {
           see the stale version for a few seconds. The staleness is
           imperceptible for the vast majority of users and eliminates the
           stampede entirely.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>E-commerce product catalog caching</strong> faces a different
           variant of the problem. During flash sales or product launches,
           traffic to a single product page can spike by orders of magnitude
@@ -536,7 +558,7 @@ export default function ArticlePage() {
           and SWR for non-critical product metadata such as related products
           and reviews. The critical inventory count is never served stale and
           uses a separate caching strategy with strong consistency guarantees.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>News and content platforms</strong> deal with stampede risk
           during breaking news events. When a major story breaks, traffic to
@@ -583,11 +605,14 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q1: You have a Redis cache serving a hot key that receives 100,000 requests per second. The key has a 60-second TTL. Describe what happens when the key expires and how you would prevent a stampede.</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: You have a Redis cache serving a hot key that receives 100,000 requests per second. The key has a 60-second TTL. Describe what happens when the key expires and how you would prevent a stampede.</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               When the key expires, all requests arriving in the microseconds
               after expiration will observe a cache miss. Without protection,
               each of these requests will independently query the database,
@@ -596,7 +621,7 @@ export default function ArticlePage() {
             normally misses the cache. This can saturate database connection
             pools, increase query latency for all database clients, and trigger
             cascading failures across dependent services.
-          </p>
+          </HighlightBlock>
           <p className="mt-2 text-sm">
             The prevention strategy has multiple layers. First, implement
             single-flight locking so that only one request performs the

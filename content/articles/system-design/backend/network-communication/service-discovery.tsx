@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 const BASE_PATH = "/diagrams/system-design-concepts/backend/network-communication";
@@ -38,7 +39,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Service discovery is the mechanism by which services in a distributed
           system locate each other dynamically at runtime, without relying on
           hardcoded endpoints or static configuration files. In a monolithic
@@ -52,8 +56,8 @@ export default function ArticlePage() {
           discovery maintains a real-time registry of which service instances
           are running, where they are located (IP address and port), and whether
           they are healthy enough to receive traffic.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The problem that service discovery solves is the dynamic addressing
           problem in distributed systems. Without service discovery, service A
           would need to know the IP addresses and ports of all instances of
@@ -64,7 +68,7 @@ export default function ArticlePage() {
           nightmare that is error-prone, slow to update, and fragile under
           change. Service discovery automates this by maintaining a centralized
           registry that services update automatically as their topology changes.
-        </p>
+        </HighlightBlock>
         <p>
           Service discovery is not a standalone concern; it is tightly coupled
           with load balancing, health checking, and routing. The registry tells
@@ -82,7 +86,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The service registry is the central data store that maps service names
           to their running instances. Each instance registers itself with the
           registry when it starts, providing its service name, IP address, port,
@@ -93,8 +100,8 @@ export default function ArticlePage() {
           available and consistent enough to prevent routing traffic to dead
           instances, while being fast enough that lookups do not add significant
           latency to the request path.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Health checking is the mechanism by which the registry determines
           whether a registered instance is actually capable of serving traffic.
           Without health checking, the registry would only know which instances
@@ -110,7 +117,7 @@ export default function ArticlePage() {
           unhealthy. Active checks are more proactive but add load proportional
           to the number of instances; passive checks are zero-overhead but can
           only detect failures after they have already affected traffic.
-        </p>
+        </HighlightBlock>
         <p>
           The distinction between client-side and server-side service discovery
           is architectural and determines where the resolution logic lives. In
@@ -150,7 +157,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The service discovery architecture consists of four components: the
           registration agent (running on each service instance, responsible for
           registering and deregistering with the registry), the registry itself
@@ -160,7 +170,7 @@ export default function ArticlePage() {
           sidecar proxy, or a load balancer), and the health checker (the
           component that probes instances and updates their health status in the
           registry).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/consul-service-discovery-registration.svg`}
@@ -168,7 +178,7 @@ export default function ArticlePage() {
           caption="Service discovery flow — instances register with the catalog, health checks maintain status, and clients resolve service names to healthy instance lists"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The registration process follows one of two patterns: self-registration
           or third-party registration. In self-registration, the service instance
           registers itself with the registry upon startup, typically through a
@@ -183,7 +193,7 @@ export default function ArticlePage() {
           enables cleaner lifecycle management: when the orchestrator kills a
           container, it also deregisters the service. The downside is that it
           introduces an additional component that must be deployed and managed.
-        </p>
+        </HighlightBlock>
 
         <p>
           The choice of registry technology is driven by the consistency and
@@ -246,13 +256,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The selection of a service discovery technology and pattern is driven
           by the CAP theorem trade-offs, the operational complexity your team
           can sustain, and the convergence speed your system requires. There is
           no universally correct answer; each option optimizes for different
           failure modes.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -346,7 +359,7 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The client-side versus server-side discovery decision is similarly
           contextual. Client-side discovery is preferred in environments where
           the client is intelligent enough to implement load balancing and
@@ -360,12 +373,15 @@ export default function ArticlePage() {
           for easier management, and when the load balancer already provides
           additional capabilities (SSL termination, rate limiting, WAF) that
           would otherwise need to be implemented in each service.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Always deploy the service registry as a clustered, fault-tolerant
           system with an odd number of nodes (3 or 5 for Raft-based systems) to
           maintain quorum during node failures. The registry is a critical
@@ -376,8 +392,8 @@ export default function ArticlePage() {
           on the implementation. Plan your deployment topology so that a single
           failure domain (rack, availability zone) cannot take out a majority of
           the registry nodes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement both active and passive health checking with appropriate
           intervals and thresholds. Active health checks should run at intervals
           of 10-30 seconds, with a failure threshold of 2-3 consecutive failures
@@ -391,7 +407,7 @@ export default function ArticlePage() {
           processing) and that it validates the instance&apos;s critical
           dependencies (database connectivity, cache availability, downstream
           service reachability).
-        </p>
+        </HighlightBlock>
         <p>
           Use client-side caching of registry lookups with aggressive TTLs to
           reduce load on the registry and improve lookup latency. The client
@@ -432,7 +448,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Stale registry entries are the most common failure mode in service
           discovery systems. When an instance crashes without deregistering (a
           hard crash, a killed process, a terminated VM), the registry retains
@@ -444,8 +463,8 @@ export default function ArticlePage() {
           Nomad) that can deregister the instance immediately when it detects
           the container or VM has terminated, and to use short health check
           intervals with low failure thresholds to minimize the detection window.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The thundering herd problem occurs when a large number of clients
           simultaneously query the registry for the same service, either because
           they all started at the same time (such as after a cluster restart) or
@@ -455,7 +474,7 @@ export default function ArticlePage() {
           clients expire their caches at different times, and to use the watch
           mechanism to push registry changes to clients rather than having clients
           poll for updates.
-        </p>
+        </HighlightBlock>
         <p>
           Over-reliance on DNS-based discovery without understanding its
           limitations is a pitfall that catches many teams. DNS caching means
@@ -486,7 +505,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Netflix uses Eureka as its service discovery system within its AWS
           infrastructure. Eureka&apos;s AP design (prioritizing availability over
           consistency) aligns with Netflix&apos;s operational philosophy: it is
@@ -497,8 +519,8 @@ export default function ArticlePage() {
           available instances. Netflix also uses a layered approach where Eureka
           provides instance discovery and a separate system (Zuul) provides
           edge routing and load balancing for external traffic.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Airbnb uses Consul for service discovery across its microservice
           ecosystem, leveraging Consul&apos;s health checking, DNS interface, and
           key-value store. Airbnb&apos;s infrastructure team built a custom
@@ -507,7 +529,7 @@ export default function ArticlePage() {
           Consul&apos;s DNS interface or its HTTP API. The DNS interface allows
           legacy services that cannot use the Consul SDK to participate in the
           discovery system, providing a migration path for gradual adoption.
-        </p>
+        </HighlightBlock>
         <p>
           Kubernetes provides service discovery as a first-class primitive. When
           a Service resource is created in Kubernetes, the control plane assigns
@@ -534,13 +556,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg bg-panel-soft p-6">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: Explain the difference between client-side and server-side
               service discovery, and when you would choose each.
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: In client-side discovery, the client queries the service registry
               to get the list of healthy instances and then applies a load-balancing
               algorithm to select one. The client sends the request directly to
@@ -556,7 +581,7 @@ export default function ArticlePage() {
               when you want centralized routing control, or when the load balancer
               provides additional capabilities (SSL termination, rate limiting,
               WAF).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg bg-panel-soft p-6">

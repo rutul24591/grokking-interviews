@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,19 +25,22 @@ export default function BFSArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Breadth-first search (BFS)</span> is a graph
           traversal that visits vertices in increasing order of distance (number of edges)
           from a source. It uses a FIFO queue: enqueue the source, repeatedly dequeue a
           vertex and enqueue any unvisited neighbors. The traversal sweeps the graph in
           concentric "layers."
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           BFS dates to the 1950s — Edward F. Moore used it for maze-solving in 1959, and
           Charles Lee independently for circuit-routing the same year. It runs in O(V + E)
           time and O(V) space, and it's the canonical way to find shortest paths in
           unweighted graphs.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Interview ubiquity is enormous: BFS is the answer to "find shortest path,"
           "find connected components," "level-order traversal," "shortest sequence of
@@ -53,19 +57,22 @@ export default function BFSArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Queue-based traversal.</span> Initialize the
           queue with the source and a visited set containing it. While the queue is
           non-empty, dequeue u, iterate u's adjacency list, and enqueue any neighbor not
           yet visited (marking it visited as you enqueue, not as you dequeue — this
           prevents enqueueing the same vertex twice).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Shortest paths in unweighted graphs.</span>{" "}
           Because BFS explores in non-decreasing distance order, the first time it visits
           a vertex is along a shortest path. Track parent pointers to reconstruct the
           path. Each vertex's distance equals its layer number.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Edge classification.</span> In undirected BFS,
           every non-tree edge connects vertices in the same or adjacent layers
@@ -111,17 +118,20 @@ export default function BFSArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Adjacency list vs matrix.</span> For sparse
           graphs (E = O(V)), adjacency list gives O(V + E) BFS in clean linear time. For
           dense graphs (E = Θ(V²)), the adjacency matrix is fine but BFS is Θ(V²) per
           source.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Visited representation.</span> Boolean array
           for static V. Bitset for compact memory on huge graphs. Hash set for graphs
           with non-integer or sparsely-numbered vertices.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Direction-optimizing BFS.</span> Beamer's 2012
           insight: when frontier is small (early/late), top-down (push) is best; when
@@ -149,17 +159,20 @@ export default function BFSArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">BFS vs DFS.</span> BFS finds shortest paths;
           DFS doesn't. BFS frontier is wide (O(V) memory peak); DFS stack is depth (O(V)
           worst case). DFS is the right tool for topological sort, SCC, articulation
           points, and structure analysis. BFS for distance and layer-based questions.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">BFS vs Dijkstra.</span> BFS handles unweighted
           (or 0-1) edges in O(V+E); Dijkstra handles non-negative weights in O((V+E) log
           V). For unweighted graphs, BFS is the strict superior choice.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">BFS vs Bellman-Ford.</span> Bellman-Ford
           handles negative weights and detects negative cycles, at O(VE). BFS handles
@@ -180,16 +193,19 @@ export default function BFSArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Mark visited at enqueue, not dequeue.</span>{" "}
           Marking at dequeue allows the same vertex into the queue multiple times,
           increasing memory and breaking the O(V+E) bound.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Use deque, not list, in Python.</span>{" "}
           <code>list.pop(0)</code> is O(n); <code>collections.deque.popleft</code> is
           O(1). Same trap in any language without an O(1) front-pop list.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Track distance in a dict/array.</span> Don't
           recompute via BFS levels; store dist[v] = dist[u] + 1 when first enqueueing.
@@ -213,14 +229,17 @@ export default function BFSArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Marking visited at dequeue.</span> Causes
           duplicate enqueues, blows up memory and time.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Using a stack instead of queue.</span> That's
           DFS, not BFS — the algorithm appears to "work" but doesn't find shortest paths.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Forgetting to handle disconnected graphs.</span>{" "}
           Single BFS misses other components. Outer loop over unvisited vertices.
@@ -248,17 +267,20 @@ export default function BFSArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Web crawlers.</span> Googlebot, Bingbot
           enqueue URLs in BFS-ish order from seed pages, throttled by politeness rules
           and priority queues. Distance-from-seed correlates with crawl priority.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Social-graph features.</span> "People you may
           know," "friends of friends," group-recommendation rely on bounded-depth BFS.
           Facebook, LinkedIn, and Twitter all run distributed BFS on billion-edge social
           graphs daily.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Network routing.</span> Hop-count protocols
           (RIP) compute distance via BFS-like flooding. Shortest-path-first variants
@@ -289,14 +311,17 @@ export default function BFSArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Find shortest path in an unweighted
           graph."</span> Standard BFS with parent pointers. O(V + E).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Number of islands."</span> Outer loop over
           grid; on unvisited '1', BFS to mark connected component, increment count.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">"Rotting oranges."</span> Multi-source BFS
           starting from all initially rotten cells; layer count = total minutes.

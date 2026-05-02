@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -43,40 +44,40 @@ export default function AssetPreloadingArticle() {
       {/* 1. Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Asset preloading</strong> is the practice of instructing the browser to fetch, connect
           to, or prepare resources before the browser would naturally discover them. In a standard page
           load, the browser follows a strict sequence: download HTML, parse it, discover stylesheets and
           scripts in the markup, fetch those, parse them, discover further dependencies (fonts referenced
           in CSS, images referenced in JS), and fetch those. Each step in this chain adds latency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Preloading breaks these sequential dependency chains by giving the browser advance notice of
           resources it will need. This is achieved through <strong>resource hints</strong> (declarative{" "}
           <code>{"<link>"}</code> elements), the <strong>Priority Hints API</strong> (<code>fetchpriority</code>{" "}
           attribute), <strong>service worker precaching</strong>, and the newer{" "}
           <strong>Speculation Rules API</strong> for full-page navigation prefetch and prerender.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the staff/principal level, the key challenge is not knowing <em>that</em> preloading exists,
           but understanding <em>when to apply each technique</em>, how the browser&apos;s built-in preload
           scanner already works, and how to avoid the common pitfall of over-preloading which wastes
           bandwidth and actually degrades performance by creating contention for critical resources.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* 2. Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Resource Hints</strong> &mdash; Declarative <code>{"<link>"}</code> elements that
             instruct the browser to perform connection or fetch operations earlier than discovery would
             normally trigger. The five types are <code>dns-prefetch</code>, <code>preconnect</code>,{" "}
             <code>preload</code>, <code>prefetch</code>, and <code>modulepreload</code>. Each operates at
             a different level of the network stack and carries different cost/benefit trade-offs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Preload Scanner (Speculative Parser)</strong> &mdash; A secondary, lightweight HTML
             parser that runs ahead of the main parser. When the main parser is blocked (e.g., executing a
             synchronous script), the preload scanner continues scanning raw HTML bytes to discover
@@ -84,13 +85,13 @@ export default function AssetPreloadingArticle() {
             <code>{"<img>"}</code> tags and starts fetching them speculatively. Understanding this mechanism
             is critical because it means some resources are already being preloaded by the browser
             automatically.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Critical Request Chain</strong> &mdash; The sequence of dependent network requests
             that must complete before the browser can render meaningful content. Preloading&apos;s primary
             goal is to flatten this chain: turning a 4-deep waterfall into parallel fetches. Tools like
             Lighthouse visualize this chain and identify bottleneck resources.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>fetchpriority Attribute (Priority Hints)</strong> &mdash; An HTML attribute that lets
             developers signal relative importance of a resource to the browser&apos;s resource prioritizer.
@@ -122,10 +123,10 @@ export default function AssetPreloadingArticle() {
         <h2>Architecture &amp; Flow</h2>
 
         <h3 className="mt-4 font-semibold">Resource Hints Taxonomy</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The five resource hint types operate at different levels of the network stack. Understanding
           their cost and scope is essential for choosing the right hint for each situation.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/asset-preloading-diagram-1.svg"
           alt="Resource hints taxonomy showing preload, prefetch, preconnect, dns-prefetch, and modulepreload with use cases and cost levels"
@@ -133,20 +134,20 @@ export default function AssetPreloadingArticle() {
         />
 
         <h3 className="mt-6 font-semibold">Preload Scanner &amp; Critical Request Chain</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The browser&apos;s preload scanner is a speculative parser that runs in parallel with the main
           HTML parser. When the main parser is blocked by synchronous script execution or stylesheet
           evaluation, the preload scanner continues scanning ahead in the HTML to discover subresources
           and initiate their fetch. This is why moving <code>{"<script>"}</code> tags to the bottom of the
           body or using <code>defer</code> still results in early script discovery &mdash; the preload
           scanner found them while the main parser was busy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           However, the preload scanner can only discover resources explicitly referenced in HTML markup.
           It cannot discover resources referenced inside JavaScript (dynamic imports, programmatic image
           loads) or CSS (font-face declarations, background images). These &quot;late-discovered&quot;
           resources are prime candidates for <code>rel=&quot;preload&quot;</code> hints.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/asset-preloading-diagram-2.svg"
           alt="Preload scanner and critical request chain showing browser parsing, speculative preload, and waterfall reduction"
@@ -175,7 +176,7 @@ export default function AssetPreloadingArticle() {
         <h2>Preloading Strategies by Resource Type</h2>
 
         <h3 className="mt-4 font-semibold">Fonts</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Fonts are the classic preload candidate because they are late-discovered (referenced in CSS,
           not HTML) and render-blocking for text. Without preloading, the browser must: parse HTML,
           fetch CSS, parse CSS, discover <code>@font-face</code>, then fetch the font. Preload
@@ -185,10 +186,10 @@ export default function AssetPreloadingArticle() {
           <code>crossorigin</code> even for same-origin fonts. The crossorigin attribute is required
           because fonts use anonymous CORS mode by default; without it, the preloaded response won&apos;t
           match the font request and the font will be fetched twice.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 font-semibold">Scripts &amp; ES Modules</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For traditional scripts discovered late (e.g., loaded by another script), use{" "}
           <code>rel=&quot;preload&quot; as=&quot;script&quot;</code>. For ES modules, use{" "}
           <code>rel=&quot;modulepreload&quot;</code> which additionally parses and compiles the module into
@@ -196,10 +197,10 @@ export default function AssetPreloadingArticle() {
           modulepreload hints for production builds, outputting links like{" "}
           <code>&lt;link rel=&quot;modulepreload&quot; crossorigin href=&quot;/assets/index-a1b2c3d4.js&quot;&gt;</code>{" "}
           for each module in the dependency graph.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 font-semibold">Images (LCP Optimization)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The LCP image is often the single most impactful preload target. Combining{" "}
           <code>rel=&quot;preload&quot;</code> with <code>fetchpriority=&quot;high&quot;</code> and
           responsive <code>imagesrcset</code>/<code>imagesizes</code> is the gold standard for LCP
@@ -208,92 +209,108 @@ export default function AssetPreloadingArticle() {
           (400w, 800w, 1200w), and <code>imagesizes</code> matching the expected display size (e.g.,
           &quot;(max-width: 600px) 100vw, 50vw&quot;). For single images, a simpler preload with just{" "}
           <code>href</code> and <code>fetchpriority=&quot;high&quot;</code> suffices.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Route-Based Prefetching */}
       <section>
         <h2>Route-Based Prefetching</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Modern frameworks implement route-based prefetching to load the JavaScript and data for the
           next page before the user navigates. Next.js automatically prefetches <code>{"<Link>"}</code>{" "}
-          destinations that are visible in the viewport. This is a form of speculative loading that
-          dramatically improves perceived navigation speed. Manual implementations use a PrefetchLink
-          component that listens for mouseEnter or focus events, then dynamically creates a link element
-          with <code>rel=&quot;prefetch&quot;</code> for the route&apos;s JS chunk and prefetches the
-          route&apos;s data via fetch with low priority. Google&apos;s quicklink library automates this
-          pattern, prefetching visible links during idle time with a simple <code>listen()</code> call
-          configured with allowed origins.
-        </p>
+          destinations that are visible in the viewport.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          This is a form of speculative loading that dramatically improves perceived navigation speed.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Manual implementations use a PrefetchLink component that listens for mouseEnter or focus events,
+          then dynamically creates a link element with <code>rel=&quot;prefetch&quot;</code> for the
+          route&apos;s JS chunk and prefetches the route&apos;s data via fetch with low priority.
+          Google&apos;s quicklink library automates this pattern, prefetching visible links during idle
+          time with a simple <code>listen()</code> call configured with allowed origins.
+        </HighlightBlock>
       </section>
 
       {/* Service Worker Precaching */}
       <section>
         <h2>Service Worker Precaching</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Service worker precaching downloads and caches a set of URLs during the service worker{" "}
           <code>install</code> event, before any user interaction. This enables instant page loads for
-          subsequent visits and is the foundation of offline-first architectures. Workbox&apos;s{" "}
-          <code>precacheAndRoute</code> function automates this: the build tool replaces{" "}
+          subsequent visits and is the foundation of offline-first architectures.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Workbox&apos;s <code>precacheAndRoute</code> function automates this: the build tool replaces{" "}
           <code>self.__WB_MANIFEST</code> with the list of URLs to precache (including revision hashes).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Manual precaching patterns use the install event to call <code>cache.addAll()</code> with an
           array of URLs (/, /offline.html, /css/critical.css, /js/app.js, /fonts/inter-var.woff2).
           Runtime caching for dynamic content like images uses Workbox routing with strategies like{" "}
           <code>StaleWhileRevalidate</code> which serves cached responses while fetching fresh content
           in the background.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Speculation Rules API */}
       <section>
         <h2>Speculation Rules API</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>Speculation Rules API</strong> (Chrome 109+) replaces the deprecated{" "}
           <code>{"<link rel=\"prerender\">"}</code> with a more powerful, JSON-based approach. It supports
           both <code>prefetch</code> (fetch the page&apos;s resources) and <code>prerender</code>{" "}
           (fully render the page in a hidden context). Prerendered pages load in near-zero time when
-          the user navigates. The speculation rules are declared in a script tag with type{" "}
+          the user navigates.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The speculation rules are declared in a script tag with type{" "}
           <code>speculationrules</code> containing a JSON object. Prefetch rules specify a source
           (&quot;list&quot; or &quot;document&quot;), URLs to prefetch (e.g., /pricing, /docs), and
           eagerness level (&quot;moderate&quot; for hover-triggered prefetch). Prerender rules use
-          document source with conditional matching (e.g., prefetch all pages except /logout) and
-          eagerness levels ranging from &quot;conservative&quot; (mousedown) to &quot;eager&quot;
-          (immediate). The <code>eagerness</code> property controls how aggressively the browser
-          speculates. For high-confidence navigations (e.g., a multi-step checkout), use{" "}
+          document source with conditional matching (e.g., prefetch all pages except /logout).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Prerender rules use eagerness levels ranging from &quot;conservative&quot; (mousedown) to
+          &quot;eager&quot; (immediate). The <code>eagerness</code> property controls how aggressively
+          the browser speculates. For high-confidence navigations (e.g., a multi-step checkout), use{" "}
           <code>eager</code>. For general link prefetching, <code>moderate</code> is the sweet spot,
           triggering on hover which gives a ~200-400ms head start before the click completes.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* 4. Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="min-w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-theme">
+              <HighlightBlock as="tr" tier="important">
                 <th className="px-4 py-2 text-left font-semibold">Technique</th>
                 <th className="px-4 py-2 text-left font-semibold">Scope</th>
                 <th className="px-4 py-2 text-left font-semibold">Cost</th>
                 <th className="px-4 py-2 text-left font-semibold">Best For</th>
                 <th className="px-4 py-2 text-left font-semibold">Risk</th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody>
-              <tr className="border-b border-theme">
+              <HighlightBlock as="tr" tier="important">
                 <td className="px-4 py-2 font-medium">dns-prefetch</td>
                 <td className="px-4 py-2">DNS only</td>
                 <td className="px-4 py-2">Negligible (~1KB)</td>
                 <td className="px-4 py-2">Third-party domains</td>
                 <td className="px-4 py-2">Effectively none</td>
-              </tr>
-              <tr className="border-b border-theme">
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="px-4 py-2 font-medium">preconnect</td>
                 <td className="px-4 py-2">DNS + TCP + TLS</td>
                 <td className="px-4 py-2">Low (keeps socket open)</td>
                 <td className="px-4 py-2">Critical origins (2-4 max)</td>
                 <td className="px-4 py-2">Wasted sockets if unused</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme">
                 <td className="px-4 py-2 font-medium">preload</td>
                 <td className="px-4 py-2">Full resource fetch</td>
@@ -338,22 +355,22 @@ export default function AssetPreloadingArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>1. Preload only late-discovered resources.</strong> Do not preload resources that
             the browser&apos;s preload scanner will already discover in HTML. Fonts referenced in CSS
             and images loaded via JavaScript are ideal preload targets. Scripts and stylesheets already
             in the HTML <code>{"<head>"}</code> are not.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>2. Always specify the <code>as</code> attribute on preload.</strong> Without{" "}
             <code>as</code>, the browser fetches the resource with low priority and cannot apply the
             correct Content Security Policy. Omitting it also means the resource may be fetched twice.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>3. Limit preconnect to 2-4 origins.</strong> Each preconnect opens a socket and
             performs a TLS handshake. Opening too many connections wastes CPU and contends with actual
             resource fetches. Use <code>dns-prefetch</code> as a fallback for less critical origins.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>4. Use fetchpriority on LCP images.</strong> Adding{" "}
             <code>fetchpriority=&quot;high&quot;</code> to your LCP image is one of the highest-ROI
@@ -383,24 +400,24 @@ export default function AssetPreloadingArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Over-preloading.</strong> Every preloaded resource competes for bandwidth. Preloading
             10 resources means none of them get full bandwidth, and the critical ones may load slower
             than without preloading. Chrome logs console warnings for preloaded resources not used within
             3 seconds &mdash; if you see these, you are over-preloading.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing <code>crossorigin</code> on font preloads.</strong> Fonts use anonymous CORS
             mode. If you preload a font without <code>crossorigin</code>, the browser makes the preload
             request without CORS, then makes a second request with CORS when the font-face rule triggers.
             The preloaded response is discarded, and you have doubled your font download.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Preloading resources the scanner already finds.</strong> If your CSS file is in a{" "}
             <code>{"<link>"}</code> tag in the <code>{"<head>"}</code>, the preload scanner already
             discovers it. Adding a <code>rel=&quot;preload&quot;</code> for it adds zero value and wastes
             a parser cycle.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Prefetching on metered connections.</strong> Some browsers (Firefox) respect{" "}
             <code>Save-Data</code> headers and skip prefetching, but others do not. Use the Network
@@ -422,40 +439,45 @@ export default function AssetPreloadingArticle() {
       {/* Measuring Preload Effectiveness */}
       <section>
         <h2>Measuring Preload Effectiveness</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>Resource Timing API</strong> exposes detailed timing for every resource fetch. By
           analyzing the timing entries for preloaded resources, you can verify that your preloading
-          strategy is actually reducing latency. The <code>performance.getEntriesByType(&apos;resource&apos;)</code>{" "}
+          strategy is actually reducing latency.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The <code>performance.getEntriesByType(&apos;resource&apos;)</code>{" "}
           method returns timing entries for each resource, including DNS lookup time, connect time,
           TTFB (Time to First Byte), and total load time. For preloaded resources, connect time should
           be approximately zero if preconnect worked, and startTime should be very early indicating the
-          preload kicked in correctly. To detect wasted preloads (resources loaded but unused), a
-          PerformanceObserver can monitor resource entries and flag those with transferSize of zero
-          after the page load event.
-        </p>
+          preload kicked in correctly.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          To detect wasted preloads (resources loaded but unused), a PerformanceObserver can monitor
+          resource entries and flag those with transferSize of zero after the page load event.
+        </HighlightBlock>
       </section>
 
       {/* 7. Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Google Search</strong> &mdash; Uses Speculation Rules API to prerender the top search
             result. When you click the first result, it loads instantly because it was already rendered
             in a hidden tab. Google reported a 20% reduction in navigation time for prerendered pages.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Shopify Storefront</strong> &mdash; Preloads the primary product image with{" "}
             <code>fetchpriority=&quot;high&quot;</code> and preconnects to their CDN origin. They also
             use <code>103 Early Hints</code> to send preload headers before the server has finished
             generating the HTML response, effectively starting font and CSS downloads 100-200ms earlier.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Facebook / Meta</strong> &mdash; Implements aggressive route-based prefetching. When
             you hover over a link in the feed, React starts prefetching the data and code for that
             destination. Their relay framework prefetches GraphQL queries for likely navigation targets
             during idle time.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Next.js</strong> &mdash; Automatically adds <code>rel=&quot;prefetch&quot;</code>{" "}
             for every <code>{"<Link>"}</code> component visible in the viewport. In production, this
@@ -473,12 +495,15 @@ export default function AssetPreloadingArticle() {
       {/* 8. Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel p-4">
-            <p className="font-semibold text-theme">
+            <HighlightBlock as="p" tier="important">
               Q: What is the difference between preload and prefetch, and when would you use each?
-            </p>
-            <p className="mt-2 text-sm text-muted">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               <code>preload</code> fetches a resource needed for the <strong>current</strong> page load
               at high priority. It is mandatory &mdash; if you preload something, you must use it within
               3 seconds or Chrome logs a warning. Use it for late-discovered critical resources like fonts,
@@ -487,13 +512,13 @@ export default function AssetPreloadingArticle() {
               the user never navigates there, the fetch was wasted (but at low cost since it only runs
               during idle time). Use it for next-page JS bundles, route-based code splits, or likely
               navigation targets.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel p-4">
-            <p className="font-semibold text-theme">
+            <HighlightBlock as="p" tier="important">
               Q: How does the browser&apos;s preload scanner work, and what resources can it not discover?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               The preload scanner is a lightweight secondary parser that runs ahead of the main HTML parser.
               When the main parser is blocked (e.g., executing a synchronous script), the preload scanner

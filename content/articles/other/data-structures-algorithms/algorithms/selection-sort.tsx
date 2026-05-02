@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function SelectionSortArticle() {
       {/* SECTION 1 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Selection sort</strong> repeatedly scans the unsorted suffix
           to locate the minimum element and swaps it to the boundary between
           the sorted prefix and the unsorted suffix. After k iterations, the
@@ -45,8 +49,8 @@ export default function SelectionSortArticle() {
           worst — and performs exactly n−1 swaps, which is the minimum
           possible for any comparison sort. It is the canonical example of
           an algorithm that trades comparison cost for write cost.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The minimum-swap property is the one genuine reason to know
           selection sort well. Swap counts matter when writes are
           expensive: sorting arrays of large records (every swap moves a
@@ -58,7 +62,7 @@ export default function SelectionSortArticle() {
           why staff-level interviews sometimes probe &quot;what sort would
           you use if writes cost 100× more than reads?&quot; The answer,
           almost always, involves selection or a variant.
-        </p>
+        </HighlightBlock>
         <p>
           Selection sort is <strong>comparison-based</strong>,
           <strong> in-place</strong> (O(1) extra space), and
@@ -85,11 +89,14 @@ export default function SelectionSortArticle() {
       {/* SECTION 2 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           The select-and-swap invariant
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For each <code>i</code> from 0 to <code>n−2</code>, find the index{" "}
           <code>m</code> of the minimum element in the range{" "}
           <code>a[i..n−1]</code>, then swap <code>a[i]</code> with{" "}
@@ -99,12 +106,12 @@ export default function SelectionSortArticle() {
           monotonically strengthening — each iteration commits one more
           position to its final value — so termination is guaranteed after
           exactly n−1 outer iterations.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Comparison count — always quadratic
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The inner scan always traverses the full remaining suffix, so the
           total comparison count is (n−1) + (n−2) + ... + 1 = n(n−1)/2
           regardless of input distribution. There is no &quot;best case&quot;
@@ -112,7 +119,7 @@ export default function SelectionSortArticle() {
           inputs all require the same number of comparisons. This is the
           tell-tale property that distinguishes selection sort from bubble
           sort and insertion sort, both of which are adaptive.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Swap count — always n−1
@@ -152,11 +159,14 @@ export default function SelectionSortArticle() {
       {/* SECTION 3 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Standard min-selection
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Input <code>[64, 25, 12, 22, 11]</code>. Iteration 0 scans
           indices 0..4, finds min = 11 at index 4, swaps with index 0 →{" "}
           <code>[11, 25, 12, 22, 64]</code>. Iteration 1 scans 1..4, min =
@@ -165,12 +175,12 @@ export default function SelectionSortArticle() {
           <code>[11, 12, 22, 25, 64]</code>. Iteration 3 scans 3..4, min =
           25 at index 3 — no-op swap. Sorted in 4 iterations, 10
           comparisons, 4 swaps (3 effective).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Bidirectional (double-ended) selection sort
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A variant that selects both the min and max in the same pass and
           places them at both ends of the remaining unsorted range. The
           number of comparisons drops from n(n−1)/2 to roughly 3n²/8 — a
@@ -178,7 +188,7 @@ export default function SelectionSortArticle() {
           &quot;selection sort with two cursors,&quot; analogous to cocktail
           shaker&apos;s relationship to bubble sort. The minimum-swap
           property is preserved: exactly 2(n/2) = n swaps instead of n−1.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Heapsort — the O(n log n) descendant
@@ -222,6 +232,9 @@ export default function SelectionSortArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Complexity summary
@@ -254,7 +267,7 @@ export default function SelectionSortArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Selection vs bubble sort
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Both are Θ(n²) and in-place, but selection sort wins on swap
           count by a factor of Θ(n): bubble performs Θ(n²) swaps on random
           input, selection performs exactly n−1. On any workload where
@@ -265,12 +278,12 @@ export default function SelectionSortArticle() {
           deceptively fast on nearly-sorted inputs but pathologically slow
           on reverse-sorted ones — selection sort&apos;s cost is
           predictable.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Selection vs insertion sort
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Insertion sort dominates selection sort on nearly-sorted input
           (where insertion is O(n) best case vs selection&apos;s
           unconditional O(n²)), and insertion is stable. Selection wins on
@@ -281,7 +294,7 @@ export default function SelectionSortArticle() {
           but insertion sort is still faster in wall time because shifts
           are vectorized and swaps of small integers are cheap. Flip the
           data size to 1 KB records and selection sort wins.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Selection vs heapsort
@@ -318,19 +331,22 @@ export default function SelectionSortArticle() {
       {/* SECTION 5 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use selection sort when writes dominate.</strong> Large
             records, flash-endurance-limited storage, bandwidth-bound
             environments. The n−1 swap count is the lower bound for any
             comparison sort in the worst case.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Prefer heapsort for the general case.</strong> If you
             need in-place, worst-case O(n log n), and low write count,
             heapsort is the direct descendant of selection sort and wins
             on every metric except the inner-loop constant at tiny n.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Skip the swap when the minimum is already in
             place.</strong> The <code>if (m != i)</code> guard costs a
@@ -360,23 +376,26 @@ export default function SelectionSortArticle() {
       {/* SECTION 6 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Assuming selection sort is stable
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The default formulation is unstable because of the long-distance
           swap. This is a common misconception because the outer loop
           &quot;looks&quot; like it preserves order. A single counterexample{" "}
           <code>[2a, 2b, 1] → [1, 2b, 2a]</code> disproves stability.
           Candidates claiming selection sort is stable have not thought
           through a two-equal-keys case.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Skipping the no-op swap check
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On a pre-sorted input, each iteration finds the minimum already
           in position and performs <code>swap(a[i], a[i])</code>. This is a
           no-op in the logical sense but may still incur three
@@ -385,7 +404,7 @@ export default function SelectionSortArticle() {
           (branch predicts perfectly) and saves the redundant writes. For
           in-place selection sort on disk or flash, this guard is
           mandatory.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Forgetting selection sort&apos;s non-adaptiveness in benchmarks
@@ -430,23 +449,26 @@ export default function SelectionSortArticle() {
       {/* SECTION 7 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Flash memory and write-limited storage
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Sorting large datasets in place on flash where write endurance is
           a constraint. Selection sort performs n−1 writes — the minimum
           — compared to n log n for mergesort and Θ(n²) for bubble. On
           consumer flash with 10,000 write cycles per cell, reducing the
           write count by 10× effectively extends device lifetime by 10×.
           This is the dominant legitimate production use case.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Sorting pointers to large records
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When the cost of a swap scales with record size (e.g., 4 KB
           documents or large structs), selection sort&apos;s n−1 swaps
           beat other sorts&apos; asymptotic advantage at reasonable n. A
@@ -455,7 +477,7 @@ export default function SelectionSortArticle() {
           O(1) again and any sort becomes viable. Selection sort
           legitimately wins only when pointer indirection is not an option
           (e.g., contiguous layout is a requirement for downstream SIMD).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Tournament trees in external sorting
@@ -494,14 +516,17 @@ export default function SelectionSortArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Common Interview Questions
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q1. What is selection sort&apos;s swap count, and why does it
               matter?
-            </p>
-            <p className="mt-2">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2">
               Exactly n−1 swaps, regardless of input. This is the
               theoretical minimum for any comparison sort in the worst
               case. The property matters in write-limited environments —
@@ -511,7 +536,7 @@ export default function SelectionSortArticle() {
               between n−1 swaps (selection) and n log n swaps (heapsort or
               mergesort) is a factor of ~30 — and on flash with bounded
               write endurance, that translates directly to device lifetime.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

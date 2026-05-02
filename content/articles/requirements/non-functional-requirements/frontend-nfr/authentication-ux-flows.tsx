@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function AuthenticationUXFlowsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Authentication UX</strong> encompasses every touchpoint where
           users prove their identity and access protected resources within a web
           application. This includes login and registration flows, session
@@ -48,8 +52,8 @@ export default function AuthenticationUXFlowsArticle() {
           and user experience — every additional friction point reduces
           abandonment but also potentially increases security, and every
           convenience shortcut introduces a new attack vector.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The stakes are high. Poor authentication UX directly impacts
           conversion rates — studies show that 25% of users abandon a signup
           flow if it is too complex, while weak authentication leads to account
@@ -61,7 +65,7 @@ export default function AuthenticationUXFlowsArticle() {
           balance depends on the application&apos;s risk profile, user
           expectations, and regulatory requirements such as GDPR, SOC 2, or
           HIPAA.
-        </p>
+        </HighlightBlock>
         <p>
           Modern authentication has evolved significantly from simple
           username-and-password forms. Passwordless authentication via magic
@@ -86,7 +90,10 @@ export default function AuthenticationUXFlowsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authentication flows can be categorized into several patterns, each
           with distinct security and UX characteristics. The standard
           email-and-password flow remains the most common baseline, requiring
@@ -97,8 +104,8 @@ export default function AuthenticationUXFlowsArticle() {
           minimum 8 characters with no arbitrary complexity rules — and should
           display requirements before the user types, with real-time validation
           indicators.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Passwordless authentication eliminates the password entirely. Magic
           links send a one-time login URL via email, OTP codes deliver
           verification codes via SMS or email, and WebAuthn leverages platform
@@ -107,7 +114,7 @@ export default function AuthenticationUXFlowsArticle() {
           password fatigue, but introduce new UX considerations — users must
           switch contexts to check email, magic links expire and may not work
           across devices, and WebAuthn requires compatible hardware.
-        </p>
+        </HighlightBlock>
         <p>
           Multi-Factor Authentication adds a second verification layer beyond
           the password. The three factor categories are: something you know
@@ -153,7 +160,10 @@ export default function AuthenticationUXFlowsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Token-based authentication is the architectural foundation of modern
           web applications. Upon successful login, the server issues an access
           token (short-lived, typically 15-60 minutes) and a refresh token
@@ -163,8 +173,8 @@ export default function AuthenticationUXFlowsArticle() {
           strategy places the access token in JavaScript memory (cleared on page
           refresh) and the refresh token in an HttpOnly, Secure, SameSite cookie
           (inaccessible to JavaScript, protecting against XSS theft).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The token refresh architecture handles expiry transparently. When an
           API request returns a 401 Unauthorized response, an HTTP interceptor
           catches the error, calls the token refresh endpoint with the refresh
@@ -173,7 +183,7 @@ export default function AuthenticationUXFlowsArticle() {
           concurrent requests that all receive 401 simultaneously, a single
           refresh request is made and all other requests are queued until the
           refresh completes, preventing multiple concurrent refresh attempts.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/token-refresh-flow.svg"
@@ -220,7 +230,10 @@ export default function AuthenticationUXFlowsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Token storage decisions represent the most critical security-versus-UX
           trade-off in authentication architecture. Storing tokens in
           localStorage is simple and persists across page refreshes, but any
@@ -233,8 +246,8 @@ export default function AuthenticationUXFlowsArticle() {
           but adds complexity to the refresh logic. For staff engineer
           interviews, the correct answer is HttpOnly cookies for token storage,
           with an explanation of the XSS risk inherent in localStorage.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Session expiry policies present another tension. Absolute expiry
           (session ends after a fixed period regardless of activity) is the most
           secure but frustrates users who lose work. Idle expiry (session ends
@@ -245,7 +258,7 @@ export default function AuthenticationUXFlowsArticle() {
           with proactive warnings — notifying users 5 minutes before session
           end and offering a &quot;Stay logged in&quot; option — while
           auto-saving user work to prevent data loss.
-        </p>
+        </HighlightBlock>
         <p>
           MFA enforcement strategy depends on risk tolerance. Requiring MFA for
           all users maximizes security but increases signup friction and support
@@ -270,7 +283,10 @@ export default function AuthenticationUXFlowsArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design login forms with user-centric principles. Auto-focus the first
           input field so users can begin typing immediately. Enable the Enter
           key to submit the form. Provide a visible show/hide password toggle.
@@ -280,8 +296,8 @@ export default function AuthenticationUXFlowsArticle() {
           user enumeration attacks. Always provide a clearly visible &quot;Forgot
           password?&quot; link and social login alternatives for users who
           prefer them.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement password recovery flows that are secure and user-friendly.
           Send a time-limited (1 hour), single-use reset link via email — never
           display the reset form directly on the application. When the user
@@ -291,7 +307,7 @@ export default function AuthenticationUXFlowsArticle() {
           progressive delays (1 minute, 5 minutes, 15 minutes) rather than
           hard lockouts, and present a CAPTCHA before locking out to
           distinguish humans from automated attacks.
-        </p>
+        </HighlightBlock>
         <p>
           For the &quot;Remember Me&quot; feature, issue a long-lived refresh
           token (30 days) stored in an HttpOnly cookie while keeping the access
@@ -318,7 +334,10 @@ export default function AuthenticationUXFlowsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most dangerous pitfall is storing authentication tokens in
           localStorage without understanding the XSS implications. Any
           third-party script, compromised dependency, or injection vulnerability
@@ -328,8 +347,8 @@ export default function AuthenticationUXFlowsArticle() {
           impractical), implement additional defenses: short token expiry, token
           binding to device fingerprint, and anomaly detection for token usage
           patterns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common error is revealing whether an email address exists
           during login or password reset. Distinct error messages for
           &quot;email not found&quot; versus &quot;wrong password&quot; allow
@@ -339,7 +358,7 @@ export default function AuthenticationUXFlowsArticle() {
           monitoring). Similarly, during signup, avoid revealing that an email
           is already registered — instead, send an email offering to log in or
           reset the password.
-        </p>
+        </HighlightBlock>
         <p>
           Failing to handle concurrent token refresh is a subtle but common
           bug. When multiple API requests fire simultaneously after the access
@@ -365,7 +384,10 @@ export default function AuthenticationUXFlowsArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Financial services applications require the most stringent
           authentication flows. Banking apps typically mandate MFA with
           authenticator apps or hardware keys, enforce short session windows
@@ -374,8 +396,8 @@ export default function AuthenticationUXFlowsArticle() {
           The UX challenge is maintaining usability despite these constraints —
           banks invest heavily in mobile biometric authentication (fingerprint,
           face ID) to reduce friction while maintaining strong security.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms balance conversion optimization with account
           security. Guest checkout is essential — forcing account creation
           before purchase increases cart abandonment by up to 35%. Post-purchase
@@ -384,7 +406,7 @@ export default function AuthenticationUXFlowsArticle() {
           reduces signup friction dramatically. Session management is
           comparatively relaxed — 30-day persistent sessions with sliding expiry
           are common — but payment operations require re-authentication.
-        </p>
+        </HighlightBlock>
         <p>
           Enterprise SaaS applications increasingly adopt Single Sign-On (SSO)
           via SAML or OIDC, eliminating per-application passwords entirely.
@@ -410,12 +432,15 @@ export default function AuthenticationUXFlowsArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you handle token refresh in a React application?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Store the access token in JavaScript memory (React state or
               Zustand store) and the refresh token in an HttpOnly, Secure,
               SameSite cookie. Use an HTTP interceptor (axios interceptor or
@@ -427,7 +452,7 @@ export default function AuthenticationUXFlowsArticle() {
               requests, and all queued requests retry after the refresh
               completes. Use React Query&apos;s retry mechanism or a custom
               solution with a refresh mutex.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

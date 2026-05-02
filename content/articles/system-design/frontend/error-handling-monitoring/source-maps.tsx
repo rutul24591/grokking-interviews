@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,7 @@ export default function SourceMapsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2>Definition & Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           <strong>Source maps</strong> are JSON files that establish a precise mapping between
           transformed (minified, bundled, transpiled) production code and the original source files
           that developers wrote. When an error occurs at line 1, column 34782 of a minified bundle,
@@ -47,8 +48,8 @@ export default function SourceMapsArticle() {
           Source Map Revision 3, which was formalized through a collaborative effort between Google
           and Mozilla engineers and is now maintained as a TC39 proposal advancing toward formal
           standardization.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Modern production JavaScript is virtually unreadable to humans. The code a browser
           executes bears almost no resemblance to the code a developer wrote. Multiple
           transformation stages contribute to this gap: TypeScript or Flow transpilation removes
@@ -61,8 +62,8 @@ export default function SourceMapsArticle() {
           meaningful variable names, no comments, and no module boundaries. Without source maps,
           diagnosing a production error from a stack trace that references{" "}
           <code className="text-sm">chunk-3fa29c.js:1:34782</code> is effectively impossible.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Browsers discover source maps through a special comment appended to the end of a
           JavaScript or CSS file:{" "}
           <code className="text-sm">{`//# sourceMappingURL=app.js.map`}</code>. This comment is
@@ -74,7 +75,7 @@ export default function SourceMapsArticle() {
           files in the Sources panel as if the browser had loaded them directly. Developers can set
           breakpoints, inspect variables by their original names, and step through code in its
           pre-transformation form.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, source maps sit at the intersection of several
           architectural concerns: build pipeline design, production observability, security posture,
@@ -105,7 +106,7 @@ export default function SourceMapsArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Source Map Format and VLQ Encoding
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           A source map is a JSON object containing seven key fields. The{" "}
           <code className="text-sm">version</code> field is always <code className="text-sm">3</code>,
           identifying the specification revision. The <code className="text-sm">file</code> field
@@ -120,8 +121,8 @@ export default function SourceMapsArticle() {
           identifier (variable, function, class name) that was renamed during minification. Finally,
           the <code className="text-sm">mappings</code> field contains the actual positional data
           as a Base64 VLQ-encoded string.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <code className="text-sm">mappings</code> string is where the real engineering lies.
           It encodes a series of segments, with semicolons separating lines in the generated file
           and commas separating individual mapping segments within a line. Each segment contains
@@ -129,8 +130,8 @@ export default function SourceMapsArticle() {
           the original line, the original column, and optionally a name index. Every value is
           stored as a relative offset from the previous segment rather than an absolute position,
           which keeps the numbers small and dramatically reduces encoded size.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Variable Length Quantity (VLQ) encoding is a technique borrowed from MIDI and Protocol
           Buffers that represents arbitrary integers using a variable number of Base64 characters.
           Each Base64 character contributes 6 bits, of which 5 are data and 1 is a continuation
@@ -141,7 +142,7 @@ export default function SourceMapsArticle() {
           roughly 10-15 percent of what absolute line:column pairs would require, which matters
           enormously when a source map for a large application can exceed several megabytes even
           with VLQ encoding.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Generation Strategies</h3>
         <p className="mb-4">
@@ -266,10 +267,14 @@ export default function SourceMapsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2>Architecture & Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           The following diagrams illustrate the key stages and decisions in a production source map
           pipeline, from initial code transformation through deployment and runtime resolution.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The operational requirement: source maps must be available to your error pipeline (Sentry, etc.)
+          but not necessarily to the public internet. How you host and gate them is part of the security posture.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/source-maps-diagram-2.svg"
@@ -277,7 +282,7 @@ export default function SourceMapsArticle() {
           caption="Figure 2: Position mapping from minified code to original source"
         />
 
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Figure 2 demonstrates how a specific position in the minified output resolves to the
           original source. The process begins with a generated line and column number, which
           indexes into the <code className="text-sm">mappings</code> string. Decoding the
@@ -288,7 +293,7 @@ export default function SourceMapsArticle() {
           <code className="text-sm">names</code> arrays to provide the complete original context.
           This is the core algorithm that both browser DevTools and error reporting services
           implement to resolve stack traces.
-        </p>
+        </HighlightBlock>
 
       </section>
 
@@ -297,11 +302,11 @@ export default function SourceMapsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2>Trade-offs & Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Choosing the right source map mode is an architectural decision that affects build
           performance, debugging capability, security posture, and operational complexity. The
           following table compares the most commonly used modes across these dimensions.
-        </p>
+        </HighlightBlock>
 
         <div className="overflow-x-auto">
           <table className="min-w-full border-collapse text-sm">
@@ -389,15 +394,15 @@ export default function SourceMapsArticle() {
           </table>
         </div>
 
-        <p className="mt-4 mb-4">
+        <HighlightBlock as="p" tier="important">
           The dominant production pattern is <code className="text-sm">hidden-source-map</code>
           combined with error service upload. This provides the highest quality maps for incident
           resolution without any security exposure. Teams that need developer access to production
           source maps (for live debugging rare issues) typically layer the restricted-access
           endpoint approach on top, using the <code className="text-sm">X-SourceMap</code> header
           that points to an authenticated URL.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Build speed concerns are increasingly irrelevant for the choice between{" "}
           <code className="text-sm">source-map</code> and{" "}
           <code className="text-sm">hidden-source-map</code> — both generate identical maps and
@@ -406,7 +411,7 @@ export default function SourceMapsArticle() {
           error reporting should be an unequivocal yes. The 10-30 percent build time increase is
           a negligible cost compared to the hours or days saved when debugging production
           incidents.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -416,7 +421,7 @@ export default function SourceMapsArticle() {
         <h2>Best Practices</h2>
 
         <ol className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use hidden-source-map for all production builds.</strong>{" "}
             <span>
               This generates complete, high-fidelity source maps without embedding the{" "}
@@ -425,8 +430,8 @@ export default function SourceMapsArticle() {
               end users. This is the correct default for any application that handles user data or
               contains proprietary business logic — which is virtually every production application.
             </span>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Upload source maps to your error service during CI/CD, then delete them from the
               deployment artifact.
@@ -441,8 +446,8 @@ export default function SourceMapsArticle() {
               upload fails, the pipeline should fail — deploying without source maps is deploying
               without observability.
             </span>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Always include <code className="text-sm">sourcesContent</code> for self-contained
               maps.
@@ -455,7 +460,7 @@ export default function SourceMapsArticle() {
               complexity, latency, and potential security issues. Self-contained maps with embedded
               source content are more portable and reliable, even though they are larger.
             </span>
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Version and tag source maps with every release.
@@ -537,7 +542,7 @@ export default function SourceMapsArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Accidentally Deploying Source Maps Publicly
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           This is the most common and most consequential source map mistake. A team configures{" "}
           <code className="text-sm">source-map</code> instead of{" "}
           <code className="text-sm">hidden-source-map</code>, or the CI/CD pipeline fails to
@@ -549,12 +554,12 @@ export default function SourceMapsArticle() {
           verification step that confirms no <code className="text-sm">.map</code> files exist
           in the deployed artifact, and treat any source map file on a public server as a
           security incident.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Version Mismatch Between Maps and Deployed Code
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Source maps must correspond exactly to the running code. If the error service holds maps
           for version 2.4.1 but production is running 2.4.2, every stack trace will point to
           incorrect locations — potentially in entirely different files if code was reorganized.
@@ -563,12 +568,12 @@ export default function SourceMapsArticle() {
           different build from the one whose maps were uploaded. The mitigation is to use content
           hashes as release identifiers (since they change whenever the code changes) and to make
           the source map upload and deployment a transactional unit.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Chained Source Maps Breaking Silently
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           When multiple transformation stages produce intermediate source maps, any stage that
           drops or ignores the incoming map breaks the chain. The resulting map will point to an
           intermediate representation rather than the original source. This commonly occurs when
@@ -576,7 +581,7 @@ export default function SourceMapsArticle() {
           propagate source maps. The symptom is subtle: stack traces resolve to plausible but
           incorrect locations, often in the right file but the wrong line. This can go undetected
           for months if nobody validates source map accuracy.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Excessive Build Time from Source Map Generation
@@ -628,7 +633,7 @@ export default function SourceMapsArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Meta&apos;s Source Map Infrastructure at Scale
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Meta (formerly Facebook) operates one of the largest JavaScript codebases in the world,
           with thousands of engineers contributing to a monorepo that produces hundreds of
           application bundles. Their source map pipeline processes maps that individually exceed
@@ -641,12 +646,12 @@ export default function SourceMapsArticle() {
           error reporting system, which processes billions of frontend error events daily and
           must resolve each one to an original source position for meaningful aggregation and
           deduplication.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Vercel and Next.js Source Map Strategy
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Vercel&apos;s approach to source maps in Next.js illustrates a framework-level solution
           to the security versus debuggability tension. Next.js generates hidden source maps by
           default for production builds and integrates with Vercel&apos;s platform to upload them
@@ -660,12 +665,12 @@ export default function SourceMapsArticle() {
           <code className="text-sm">productionBrowserSourceMaps</code> configuration option, which
           defaults to <code className="text-sm">false</code> and, when enabled, generates public
           source maps — a deliberate opt-in for teams that understand the security implications.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Sentry&apos;s Source Map Processing Infrastructure
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Sentry is one of the largest consumers of source maps in the industry, processing
           uploaded maps from hundreds of thousands of organizations. Their infrastructure faces
           unique challenges: maps arrive in varying formats, with different levels of spec
@@ -684,7 +689,7 @@ export default function SourceMapsArticle() {
           Sentry&apos;s experience has driven several improvements to the source map ecosystem,
           including better error messages for common misconfiguration and a source map debugging
           tool that explains why resolution failed for a specific stack frame.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/source-maps-diagram-3.svg"
@@ -698,13 +703,16 @@ export default function SourceMapsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <h4 className="mb-2 font-semibold">
               Q: How do source maps work internally? Walk me through the format and encoding.
             </h4>
-            <p className="mb-4">
+            <HighlightBlock as="p" tier="crucial">
               A source map is a JSON file with seven key fields. The{" "}
               <code className="text-sm">sources</code> array lists all original files, the{" "}
               <code className="text-sm">names</code> array lists all original identifiers that were
@@ -717,26 +725,26 @@ export default function SourceMapsArticle() {
               index. All values are relative to the previous segment, keeping numbers small. VLQ
               encoding uses 6 bits per Base64 character (5 data bits plus 1 continuation bit), so
               small numbers are a single character and larger numbers chain multiple characters.
-            </p>
-            <p>
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               This encoding typically compresses to 10-15 percent of what absolute positions
               would require, which is essential since production source maps for large applications
               can exceed tens of megabytes.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <h4 className="mb-2 font-semibold">
               Q: What are the security implications of source maps in production?
             </h4>
-            <p className="mb-4">
+            <HighlightBlock as="p" tier="important">
               Public source maps expose your complete original source code to anyone with browser
               DevTools. This includes business logic, proprietary algorithms, internal API
               structures, comments containing architectural decisions, and potentially secrets that
               slipped through review. Competitors can reconstruct your architecture, and attackers
               gain detailed knowledge of your validation logic, state management, and API
               contracts.
-            </p>
+            </HighlightBlock>
             <p>
               The standard mitigation is hidden source maps: generate full maps during build,
               upload them to your error reporting service in CI/CD, then delete them before

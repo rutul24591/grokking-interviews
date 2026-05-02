@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -75,22 +76,25 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: The Three Pillars of BASE</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Basically Available: Always On</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Basically Available means the system remains available for reads and writes even during
           failures, network partitions, or high load. This doesn't mean every request succeeds—it
           means the system degrades gracefully rather than becoming completely unavailable. A
           basically available system might return stale data, queue writes for later processing, or
           reduce functionality, but it never returns an error saying "service unavailable."
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The availability guarantee comes from redundancy and partition tolerance. Data is replicated
           across multiple nodes, often across multiple data centers. When one node fails or becomes
           unreachable, other nodes continue serving requests. This is the "A" in CAP theorem—during
           a network partition, the system chooses availability over consistency.
-        </p>
+        </HighlightBlock>
 
         <p>
           Implementation patterns for basic availability include: multi-leader replication (writes
@@ -158,24 +162,27 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Replication Patterns in BASE Systems</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           BASE systems use three primary replication patterns, each with different availability
           and consistency characteristics. Single Leader replication designates one node as the
           write leader. All writes go to this leader, which then asynchronously replicates to
           followers. This is simple and provides strong ordering, but the leader is a write
           bottleneck and single point of failure. If the leader fails, a follower must be promoted
           (failover), during which writes are unavailable.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Multi-Leader replication allows writes at multiple nodes, each acting as a leader for
           some subset of requests. Leaders replicate changes to each other asynchronously. This
           improves availability (no single point of failure) and enables regional writes (users
           write to their nearest leader). However, it introduces write conflicts—two leaders might
           accept conflicting writes simultaneously, requiring conflict resolution.
-        </p>
+        </HighlightBlock>
 
         <p>
           Leaderless replication (pioneered by DynamoDB and used by Cassandra) allows writes to any
@@ -246,24 +253,27 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: BASE vs ACID</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>The Fundamental Trade-off</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           BASE and ACID represent opposite ends of the consistency-availability spectrum. ACID
           prioritizes correctness: every read sees the latest write, every transaction maintains
           invariants, and committed data never disappears. This comes at a cost—during network
           partitions, ACID systems must choose between blocking writes (maintaining consistency)
           or allowing divergence (violating consistency). Most ACID systems block, becoming
           unavailable.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           BASE prioritizes availability: the system always accepts requests, even during partitions.
           This comes at a cost—reads may return stale data, writes may conflict, and the application
           must handle inconsistency. BASE shifts complexity from the database to the application:
           instead of the database guaranteeing consistency, the application must tolerate or resolve
           inconsistencies.
-        </p>
+        </HighlightBlock>
 
         <p>
           The CAP theorem formalizes this trade-off: during a network partition, you must choose
@@ -327,20 +337,23 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for BASE Systems</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Design for idempotency.</strong> Since BASE systems may retry operations and
           deliver events out of order, operations should be idempotent—applying them multiple
           times has the same effect as applying once. Use unique operation IDs and track which
           operations have been processed.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement read-your-writes consistency.</strong> Users expect to see their own
           writes immediately. Route users to the same replica for a short window after writing,
           or read from the leader for recent writes. This provides perceived consistency without
           sacrificing overall availability.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Make staleness visible.</strong> Don't hide eventual consistency from users.
@@ -373,20 +386,23 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Assuming eventual means guaranteed.</strong> Eventual consistency only works
           if your system includes active repair mechanisms. Without read repair, anti-entropy,
           or conflict resolution, replicas may diverge permanently. "Eventually" doesn't mean
           "automatically"—you must build convergence into your architecture.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Ignoring conflict resolution until production.</strong> Conflicts are inevitable
           in multi-leader or leaderless systems. If you haven't designed conflict resolution
           (LWW, vector clocks, CRDTs, or application-specific merge), you will lose data in
           production. Test conflict scenarios before launch.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Using BASE for consistency-critical data.</strong> Don't choose BASE because
@@ -420,21 +436,24 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Social Media Feeds (Twitter, Facebook)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter is the poster child for BASE. During major events, tweet volume spikes
           dramatically. Twitter's feed generation uses eventual consistency—your followers might
           see your tweet a few seconds after you post it. This is acceptable because the
           alternative (blocking tweets during load spikes) would be catastrophic for a real-time
           platform. Twitter's architecture sacrifices consistency for availability and latency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Like counts and retweet counts are eventually consistent. Twitter doesn't block to
           ensure every user sees the exact same count at the exact same time. Instead, counts
           converge over time, and users tolerate the slight variance.
-        </p>
+        </HighlightBlock>
 
         <h3>Shopping Carts (Amazon, E-commerce)</h3>
         <p>
@@ -483,14 +502,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: Your social media app's like count is showing different values to different users.
               Is this a bug? How do you explain this to a non-technical stakeholder?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> This is expected behavior in an eventually consistent system,
               not a bug. When a user likes a post, the update propagates to replicas asynchronously.
               During the propagation window (typically milliseconds to seconds), different users see
@@ -500,7 +522,7 @@ export default function ArticlePage() {
               everyone compares notes. The count will be correct shortly." The trade-off is that
               the app never blocks—if we required exact counts, we'd need to lock during updates,
               making the app slow or unavailable during spikes.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> When would this become a bug? Answer: If counts never
               converge (divergence), if staleness exceeds SLA (e.g., minutes instead of seconds),

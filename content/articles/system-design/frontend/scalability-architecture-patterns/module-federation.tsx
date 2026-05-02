@@ -124,10 +124,10 @@ export default function ModuleFederationArticle() {
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Runtime Architecture</h3>
-          <HighlightBlock as="p" tier="important">
+          <p>
             The Module Federation runtime flow when a host loads a remote
             module:
-          </HighlightBlock>
+          </p>
           <ol className="mt-3 space-y-2">
             <li>
               <strong>1. Host Bootstrap:</strong> Host application loads and
@@ -803,8 +803,12 @@ export default function ModuleFederationArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: Module Federation is about runtime composition. Your strongest answers cover shared
+          dependency versioning, blast radius of remote failures, and performance governance.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://webpack.js.org/concepts/module-federation/"
               className="text-accent hover:underline"
@@ -813,8 +817,8 @@ export default function ModuleFederationArticle() {
             >
               webpack — Module Federation Documentation
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://module-federation.io/"
               className="text-accent hover:underline"
@@ -823,8 +827,8 @@ export default function ModuleFederationArticle() {
             >
               Module Federation Official Site — Module Federation 2.0
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.rspack.dev/guide/features/module-federation"
               className="text-accent hover:underline"
@@ -833,8 +837,8 @@ export default function ModuleFederationArticle() {
             >
               Rspack — Module Federation Support
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://github.com/module-federation/module-federation-examples"
               className="text-accent hover:underline"
@@ -843,7 +847,7 @@ export default function ModuleFederationArticle() {
             >
               Module Federation Examples Repository
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

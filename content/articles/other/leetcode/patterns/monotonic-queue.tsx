@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,20 +24,23 @@ export default function MonotonicQueueArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         A monotonic queue is a deque maintained in monotone order along its length — values strictly
         decreasing from front to back for window maximum, strictly increasing for window minimum. Two
         eviction rules preserve the invariant: on push at the back, evict back-elements that violate the
         order; on window slide, evict the front element if its index has fallen outside the window. Each
         element is enqueued once and dequeued once across the whole input, giving amortised O(n) total work.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The pattern is the linear-time answer to sliding-window max and min. Brute force scans the window
         for each position in O(k), giving O(nk) total. A heap gives O(n log k). The monotonic deque gives
         strict O(n), independent of k. The trick is recognising that if A[j] &lt; A[i] and j &lt; i, then
         A[j] can never be the max of any window containing both — i dominates j. The deque keeps only
         candidate dominators.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Recognition signals are concrete. &quot;Maximum / minimum in every sliding window of size k&quot;,
         &quot;longest subarray with max − min ≤ limit&quot;, &quot;shortest subarray with sum ≥ k&quot;,
@@ -52,19 +56,22 @@ export default function MonotonicQueueArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Two eviction rules.</strong> First: when pushing index i, evict back elements whose value
         is ≤ A[i] (for max) — they can no longer be the max of any future window because i is larger and
         more recent. Second: after pushing, if the front index has fallen outside the window (front ≤ i −
         k), evict the front. The two together preserve the &quot;front is always the current max&quot;
         invariant.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Push-once-pop-once amortisation.</strong> Each index is pushed exactly once and popped at
         most once (either from the back via the order rule, or from the front via the window rule). Total
         work across n indices is O(n). The k parameter never appears in the complexity — that is the win
         over a heap-based O(n log k) solution.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Strict vs. weak.</strong> Strict (&lt;) evicts on equality — the most recent equal value
         wins because it has a longer remaining lifespan. Weak (≤) keeps both — useful when the question
@@ -100,16 +107,19 @@ export default function MonotonicQueueArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Sliding-window max template.</strong> Empty deque of indices. For i from 0 to n − 1: while
         deque non-empty and A[deque.back()] ≤ A[i], pop back. Push i. If deque.front() ≤ i − k, pop front.
         If i ≥ k − 1, append A[deque.front()] to result. The four steps order matters — push before window
         check before result emission.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Sliding-window min template.</strong> Identical, with the order inequality reversed
         (A[deque.back()] ≥ A[i]). The structural skeleton is unchanged.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Variable-window monotonic deque.</strong> 1438 (Longest Subarray with Absolute Diff ≤
         Limit) uses two deques. Expand R as long as max − min ≤ limit. When violated, shrink L past the
@@ -141,18 +151,21 @@ export default function MonotonicQueueArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Monotonic deque vs. heap.</strong> Both solve sliding-window max / min. Heap is O(n log k)
         with lazy deletion; deque is O(n). For large k, deque wins by an order of magnitude. Heap is
         easier to extend to k-th order statistics and to weighted priorities; deque is strictly better
         for max / min only.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Monotonic deque vs. multiset / TreeMap.</strong> A sorted container gives O(log k) per
         operation and supports arbitrary order queries. Deque gives O(1) amortised but only for the
         running max / min. Use the multiset when you need k-th, median, or range queries inside the
         window; use the deque for the strict max / min.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Monotonic queue vs. monotonic stack.</strong> Stack handles &quot;nearest greater on a
         fixed array&quot;; queue handles &quot;max in a sliding window&quot;. Same eviction discipline at
@@ -177,15 +190,18 @@ export default function MonotonicQueueArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Store indices, not values.</strong> The window-aging check needs the index. Storing values
         alone forces a parallel deque of indices, doubling the bookkeeping.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Order the four steps consistently.</strong> Pop-back-on-order, push, pop-front-on-window,
         emit-result. Reordering — e.g., emitting before window eviction — produces a stale result for the
         first valid window.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Pick strict over weak unless ties matter.</strong> Strict (&lt;) drops dominated equals;
         weak (≤) keeps them. Strict produces a smaller deque and the same answer for max / min queries.
@@ -206,16 +222,19 @@ export default function MonotonicQueueArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Forgetting the window-aging eviction.</strong> Without front-eviction, an old index
         remains in the deque indefinitely and the &quot;max&quot; eventually points outside the window.
         The check must run after every push.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Wrong inequality direction.</strong> Decreasing deque uses A[back] ≤ A[i] for eviction
         (max queries). Reversing the inequality silently turns it into a min queue and produces wrong
         answers.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Emitting before the window is full.</strong> The first valid window ends at index k − 1.
         Emitting before then produces partial-window results.
@@ -239,13 +258,16 @@ export default function MonotonicQueueArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode Problems)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>239. Sliding Window Maximum.</strong> The flagship template — push, evict, age, emit.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>1438. Longest Subarray with Absolute Diff ≤ Limit.</strong> Two deques (max + min) plus a
         variable window. Shrink L when max − min &gt; limit, evicting deque fronts as needed.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>862. Shortest Subarray with Sum at Least K.</strong> Prefix sums plus a monotonic-
         increasing deque over P. Two evictions: pop front when (P[i] − P[front]) ≥ K (record candidate,
@@ -288,13 +310,16 @@ export default function MonotonicQueueArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why is monotonic deque O(n) regardless of k?</strong> Each index is pushed once and
+        <HighlightBlock as="li" tier="important"><strong>Why is monotonic deque O(n) regardless of k?</strong> Each index is pushed once and
         popped at most once across the whole loop. Total work is bounded by 2n — the k parameter never
-        appears.</li>
-        <li><strong>What is the difference between a monotonic stack and a monotonic queue?</strong> Stack
+        appears.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>What is the difference between a monotonic stack and a monotonic queue?</strong> Stack
         evicts only at the back (push side). Queue evicts at both ends — back for order violations,
-        front for window aging.</li>
+        front for window aging.</HighlightBlock>
         <li><strong>Why a deque rather than a regular queue?</strong> Because we need pop-back to evict
         order violators on push. Plain FIFO does not support pop-back.</li>
         <li><strong>How do you handle ties — strict or weak inequality?</strong> Default to strict —

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,13 +34,16 @@ export default function ContentSharingInterfaceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Content Sharing Interface</strong> enables users to share content across social
           platforms (Twitter, Facebook, LinkedIn, WhatsApp), via direct links (copy link, email,
           SMS), or through embed codes (iframe, widget). Sharing is critical for organic growth —
           every share amplifies content reach, drives referral traffic, and attracts new users.
           Without sharing, content remains siloed, limiting discoverability and growth potential.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/sharing-interface.svg"
@@ -47,7 +51,7 @@ export default function ContentSharingInterfaceArticle() {
           caption="Sharing Interface — showing social share buttons (Twitter, Facebook, LinkedIn, WhatsApp), copy link with one-click copy, embed code generator with customization options, and native share dialog"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing content sharing requires deep
           understanding of social sharing APIs (Twitter intent URLs, Facebook share dialog, LinkedIn
           share API, WhatsApp share URL), link generation (short links via URL shortener, UTM
@@ -60,7 +64,7 @@ export default function ContentSharingInterfaceArticle() {
           but not intrusive buttons, mobile-optimized, one-click copy with confirmation). The
           implementation must balance ease of sharing (frictionless) with tracking (attribution,
           analytics) and prevent abuse (rate limiting, spam detection).
-        </p>
+        </HighlightBlock>
         <p>
           Modern sharing systems have evolved from simple social buttons to sophisticated sharing
           platforms with analytics, attribution, and optimization. Platforms like Buffer, AddThis,
@@ -74,19 +78,22 @@ export default function ContentSharingInterfaceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content sharing is built on fundamental concepts that determine how content is shared,
           tracked, and optimized. Understanding these concepts is essential for designing effective
           sharing systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Social Sharing:</strong> Twitter share (intent URL with pre-filled text —
           https://twitter.com/intent/tweet?text=..., hashtags, via handle), Facebook share (share
           dialog with Open Graph preview — https://www.facebook.com/sharer/sharer.php?u=...),
           LinkedIn share (professional network — https://www.linkedin.com/sharing/share-offsite/?url=...),
           WhatsApp share (mobile messaging — https://wa.me/?text=... with URL). Each platform has
           specific URL format, character limits, preview behavior.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Link Generation:</strong> Short links (bit.ly, tinyurl, custom shortener —
           generate short, memorable URLs), UTM parameters (utm_source=twitter, utm_medium=social,
@@ -113,11 +120,14 @@ export default function ContentSharingInterfaceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Sharing architecture separates UI (share buttons, link copy, embed generator) from
           tracking (analytics, attribution), enabling frictionless sharing with comprehensive
           tracking. This architecture is critical for user experience and measurement.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/link-generation.svg"
@@ -125,7 +135,7 @@ export default function ContentSharingInterfaceArticle() {
           caption="Link Generation — showing URL shortening service, UTM parameter addition (utm_source, utm_medium, utm_campaign), deep linking (Universal Links for iOS, App Links for Android), and Open Graph preview"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Sharing flow: User clicks share button. Frontend opens share dialog (platform-specific
           URL — Twitter intent, Facebook share dialog, or native Web Share API). User confirms
           share (adds comment if desired). Platform publishes share (with Open Graph preview).
@@ -133,7 +143,7 @@ export default function ContentSharingInterfaceArticle() {
           If copy link: generate URL (add UTM parameters), copy to clipboard (navigator.clipboard.writeText),
           show confirmation toast ("Link copied!"). If embed: generate embed code (iframe or
           widget), show in modal, copy to clipboard.
-        </p>
+        </HighlightBlock>
         <p>
           Link generation architecture includes: URL shortener (generate short code — 6-8 chars,
           store mapping: short_code → original_url), UTM parameter addition (auto-add utm_source,
@@ -164,25 +174,28 @@ export default function ContentSharingInterfaceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing sharing involves trade-offs between friction, tracking, and privacy.
           Understanding these trade-offs is essential for making informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Native Share Dialog vs Custom Share Buttons</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Native Share (Web Share API):</strong> OS-level sharing (share to any app
               installed), clean UX (no button clutter), mobile-optimized. Limitation: desktop
               support limited (Safari, Chrome on macOS only), can't pre-fill text, no share count
               tracking.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Custom Share Buttons:</strong> Full control (pre-fill text, track shares,
               show counts), desktop support. Limitation: button clutter, maintenance (API changes),
               platform-dependent (buttons break if platform changes API).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Hybrid — native share for mobile (detect Web Share
               API support), custom buttons for desktop. Best of both — clean mobile UX with
@@ -233,20 +246,23 @@ export default function ContentSharingInterfaceArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing content sharing requires following established best practices to ensure
           usability, tracking, and platform compatibility.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Design</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Make sharing prominent but not intrusive (sticky sidebar on desktop, bottom bar on
           mobile, inline after content). Support multiple sharing options (social buttons, copy
           link, embed, native share). Pre-fill share text appropriately (include title, URL,
           @handle for Twitter — but don't be spammy). Optimize for mobile sharing (touch-friendly
           buttons, native share dialog, fast loading). Test on multiple platforms (iOS, Android,
           desktop — ensure buttons work).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Link Generation</h3>
         <p>
@@ -277,21 +293,24 @@ export default function ContentSharingInterfaceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing content sharing to ensure usability,
           tracking, and platform compatibility.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No tracking:</strong> Can't measure sharing effectiveness, don't know which
             platforms drive traffic. <strong>Fix:</strong> Add UTM parameters to all shared links.
             Track share events (platform, content_id, user_id).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Poor Open Graph:</strong> Broken link previews (no image, generic title),
             reduced click-through. <strong>Fix:</strong> Optimize og:title, og:description,
             og:image. Test with Facebook Debugger, Twitter Card Validator.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Too many buttons:</strong> Overwhelming share options (8+ buttons), button
             clutter, slow loading. <strong>Fix:</strong> Show top 3-4 platforms (based on
@@ -337,16 +356,19 @@ export default function ContentSharingInterfaceArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content sharing is critical for organic growth. Here are real-world implementations from
           production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">News Website (NYTimes)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Articles must be easily shareable. Drive referral traffic
           from social platforms. Track which articles go viral.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Prominent share buttons (Twitter, Facebook, LinkedIn, WhatsApp,
           email). Copy link button (shortened URL with UTM). Open Graph optimization (compelling
@@ -443,14 +465,17 @@ export default function ContentSharingInterfaceArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of content sharing design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you track sharing analytics?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you track sharing analytics?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Multiple tracking layers. UTM parameters (utm_source={"{{platform}}"}, utm_medium=social,
               utm_campaign={"{{content_id}}"} — track in Google Analytics). Share event tracking (send

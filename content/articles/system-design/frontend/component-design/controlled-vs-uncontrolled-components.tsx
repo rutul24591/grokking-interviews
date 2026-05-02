@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Controlled and Uncontrolled Components</strong> represent two approaches to managing component state, particularly for form inputs. <strong>Controlled components</strong> have their state managed by React state in a parent component. The input value is set via props, and changes are handled through callbacks. <strong>Uncontrolled components</strong> manage their own state internally. The input maintains its own value, and the parent reads the value when needed via refs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This distinction addresses a fundamental question in component design: who owns the state? Should the component manage its own state, or should a parent component manage it? The answer affects how data flows through the application, how validation works, and how the component integrates with the rest of the system.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, understanding controlled versus uncontrolled is essential for form architecture, component API design, and performance optimization. The choice affects validation strategies, integration with state management, and the ability to programmatically manipulate values.
         </p>
@@ -45,6 +49,9 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/component-design/controlled-vs-uncontrolled.svg"
@@ -53,12 +60,12 @@ export default function ArticlePage() {
         />
 
         <h3>Controlled Components</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Controlled components have their value set by React state. The component receives value as a prop and notifies the parent of changes through an onChange callback. The parent updates state, which flows back down as the new value. This creates a unidirectional data flow where React state is the single source of truth.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Controlled components enable immediate access to the value in React state. This enables real-time validation, conditional rendering based on values, and integration with other state. The value is always available in state, not just when the form submits.
-        </p>
+        </HighlightBlock>
         <p>
           The trade-off is that every keystroke triggers a state update and re-render. For simple forms, this is negligible. For large forms with many inputs, this can impact performance. Each input change causes the parent to re-render.
         </p>
@@ -104,14 +111,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing controlled and uncontrolled patterns requires careful state management and ref handling.
-        </p>
+        </HighlightBlock>
 
         <h3>Controlled Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For controlled components, state lives in the parent. The parent passes value as a prop to the input. The parent provides an onChange handler that updates state. The input value always reflects the parent's state.
-        </p>
+        </HighlightBlock>
         <p>
           This pattern ensures the input is always in sync with React state. Any change to state immediately updates the input. Any input change immediately updates state. This enables real-time validation and conditional UI.
         </p>
@@ -155,9 +165,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Controlled and uncontrolled components involve trade-offs between functionality, performance, and complexity.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -192,16 +205,19 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that controlled is the default choice for most scenarios. The performance cost is usually negligible, and the benefits of having state in React are significant. Choose uncontrolled when you have a specific performance need or integration requirement.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Default to controlled components for most form scenarios. The benefits of having state in React outweigh the performance cost for typical forms. Use uncontrolled when you have a specific reason like large forms or non-React integration.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/component-design/controlled-use-cases.svg"
@@ -209,9 +225,9 @@ export default function ArticlePage() {
           caption="Use cases — default to controlled for most cases. Use uncontrolled for large forms, non-React integration, or when value only needed on submit"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For controlled components, memoize onChange handlers with useCallback. This prevents unnecessary re-renders from new function references. For uncontrolled components, use refs consistently. Don't mix refs and state for the same input.
-        </p>
+        </HighlightBlock>
         <p>
           Support both modes for reusable input components. Accept an optional value prop for controlled mode. Use internal state or refs for uncontrolled mode. Warn if switching between modes. Document the behavior clearly.
         </p>
@@ -225,12 +241,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Switching between controlled and uncontrolled causes issues. If an input starts with a value prop (controlled) and then the value becomes undefined, React warns about switching to uncontrolled. This can lose user input and cause bugs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not memoizing controlled component handlers causes unnecessary re-renders. Every render creates a new onChange function, which can cause the input to re-render even when the value hasn't changed. Use useCallback for handlers.
-        </p>
+        </HighlightBlock>
         <p>
           Using state and refs for the same input creates synchronization issues. Don't try to keep React state in sync with DOM value manually. Choose controlled (state) or uncontrolled (ref), not both.
         </p>
@@ -244,14 +263,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Enterprise Form: Real-Time Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An enterprise application needed forms with real-time validation. Fields validated on every change, showing errors immediately. Some fields affected other fields conditionally. The solution was controlled components with validation on every change.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Results included immediate feedback for users, conditional field display based on values, and integration with global form state. The controlled pattern enabled all validation requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Survey Platform: Large Form Performance</h3>
         <p>
@@ -280,14 +302,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between controlled and uncontrolled components?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Controlled components have their state managed by React state in a parent. The value is set via props, changes via onChange callback. Uncontrolled components manage their own state internally. The value is read via refs when needed.
-            </p>
+            </HighlightBlock>
             <p>
               Controlled provides single source of truth, real-time validation, and integration with global state. Uncontrolled provides better performance for large forms and simpler non-React integration.
             </p>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function AccountRecoveryUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Account Recovery UI</strong> provides a pathway for users to regain access to
           their account when standard authentication methods fail (forgotten password, lost MFA
           device, compromised email). It is a critical security feature that must balance
           accessibility (legitimate users recover accounts) with security (prevent account
           takeover). Account recovery is often the most stressful user experience — users are
           locked out, frustrated, and vulnerable to phishing attacks.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/account-recovery-flow.svg"
@@ -48,7 +52,7 @@ export default function AccountRecoveryUIArticle() {
           caption="Account Recovery Flow — showing identity verification, recovery options, waiting period, and account restoration"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing account recovery requires deep
           understanding of identity verification (multi-factor proof of ownership), recovery
           methods (backup codes, recovery email/phone, security questions), manual review processes
@@ -56,7 +60,7 @@ export default function AccountRecoveryUIArticle() {
           takeover prevention), and abuse prevention (rate limiting, waiting periods, audit
           logging). The implementation must provide clear guidance while preventing social
           engineering attacks and unauthorized access.
-        </p>
+        </HighlightBlock>
         <p>
           Modern account recovery has evolved from simple security questions to multi-factor
           recovery (backup codes + recovery email + phone), trusted contacts (Facebook model), and
@@ -68,18 +72,21 @@ export default function AccountRecoveryUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Account recovery is built on fundamental concepts that determine how users prove identity
           and regain access. Understanding these concepts is essential for designing effective
           recovery systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Self-Service Recovery:</strong> Backup Email (send recovery code to secondary
           email configured during signup), Backup Phone (SMS code to registered phone number),
           Backup Codes (one-time codes generated during MFA setup — store securely offline),
           Trusted Contacts (designated contacts can vouch for identity — Facebook model). These
           methods allow users to recover without support intervention.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Manual Recovery:</strong> Support ticket with identity verification (government
           ID, payment history, account details), phone verification (call support, answer security
@@ -103,11 +110,14 @@ export default function AccountRecoveryUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Account recovery architecture separates self-service recovery from manual review,
           enabling scalable recovery with security oversight. This architecture is critical for
           handling diverse recovery scenarios while preventing abuse.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/account-recovery-options.svg"
@@ -115,14 +125,14 @@ export default function AccountRecoveryUIArticle() {
           caption="Account Recovery Options — comparing backup codes, recovery email, recovery phone, trusted contacts, and manual review"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Recovery flow: User navigates to account recovery page, enters email/username. Backend
           checks if account exists (don't reveal if doesn't exist — prevent enumeration). Show
           available recovery options (backup email, phone, backup codes). User selects method,
           completes verification (enter code from email/SMS/backup codes). If successful: allow
           password reset, notify user of recovery, invalidate old sessions. If failed: offer
           alternative methods, escalate to manual review.
-        </p>
+        </HighlightBlock>
         <p>
           Security architecture includes: rate limiting (prevent brute force — 3 attempts/hour),
           waiting periods (24-72 hours for high-security accounts), notification emails (alert user
@@ -148,23 +158,26 @@ export default function AccountRecoveryUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing account recovery involves trade-offs between security, accessibility, and
           operational complexity. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Self-Service vs Manual Recovery</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Self-Service:</strong> Instant recovery, no support cost, scalable.
               Limitation: requires user to set up recovery options proactively.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Manual:</strong> Works for all users (even without recovery options).
               Limitation: slow (24-72 hours), high support cost, not scalable.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Self-service as primary (backup codes, recovery
               email/phone). Manual as fallback (for users without recovery options). Encourage
@@ -213,19 +226,22 @@ export default function AccountRecoveryUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing account recovery requires following established best practices to ensure
           security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Require multi-factor proof of ownership — combine backup codes + recovery email + phone.
           Implement waiting periods (24-72 hours) for high-security accounts — time to detect
           unauthorized recovery. Send notification emails — alert user of recovery attempt, provide
           cancel link. Rate limit recovery attempts — 3/hour, prevent brute force. Log all recovery
           attempts — detect abuse patterns.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
         <p>
@@ -254,20 +270,23 @@ export default function AccountRecoveryUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing account recovery to ensure secure, usable,
           and maintainable recovery systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No backup codes:</strong> Users locked out if they lose MFA device.{" "}
             <strong>Fix:</strong> Force backup code download during MFA setup. Store hashes
             securely.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Single recovery method:</strong> No fallback if method unavailable.{" "}
             <strong>Fix:</strong> Offer multiple recovery options (backup codes + email + phone).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No waiting period:</strong> Immediate recovery enables account takeover.{" "}
             <strong>Fix:</strong> Implement 24-72 hour waiting period for high-security accounts.
@@ -309,16 +328,19 @@ export default function AccountRecoveryUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Account recovery is critical for user retention. Here are real-world implementations from
           production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer App (Google)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Billions of users, diverse recovery scenarios. Need to
           balance security (prevent takeover) with accessibility (legitimate users recover).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Multi-factor recovery (backup codes, recovery email, recovery
           phone). Trusted contacts (designated contacts can vouch). Waiting period for suspicious
@@ -410,14 +432,17 @@ export default function AccountRecoveryUIArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of account recovery design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What recovery methods do you support and why?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What recovery methods do you support and why?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Support multiple methods for accessibility: (1) Backup codes — most secure, works
               offline, generated during MFA setup. (2) Recovery email — secondary email configured

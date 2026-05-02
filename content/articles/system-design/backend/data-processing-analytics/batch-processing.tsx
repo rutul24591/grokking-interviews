@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,15 +25,18 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Batch processing</strong> is the computation model where data is processed in discrete, scheduled
           chunks &mdash; typically hourly, daily, or weekly &mdash; rather than continuously as events arrive. Each batch run
           processes a complete slice of data (for example, all events from the previous day) from ingestion through
           transformation to output, producing results that are deterministic and reproducible given the same input and
           code. Batch processing is the oldest and most mature data processing paradigm, forming the backbone of data
           warehousing, ETL pipelines, financial reporting, compliance auditing, and machine learning training pipelines.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The defining characteristic of batch processing is reproducibility: running the same batch job on the same
           input data with the same code produces the same output, regardless of when or where the job runs. This
           property is essential for debugging, auditing, and compliance &mdash; if a batch job produces incorrect results,
@@ -40,7 +44,7 @@ export default function ArticlePage() {
           comparing the new output against the expected output. Reproducibility also enables backfills: when a bug is
           discovered in the batch logic, the fix can be applied and the job rerun on the affected date range,
           correcting the historical data without requiring a complex migration.
-        </p>
+        </HighlightBlock>
         <p>
           Batch processing contrasts with stream processing, which processes events continuously as they arrive,
           trading reproducibility and simplicity for lower latency. The choice between batch and stream is not
@@ -80,15 +84,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data partitioning is the foundation of efficient batch processing. Input data is organized into partitions
           &mdash; typically by date, hour, or another time-based dimension &mdash; so that each batch run can read only the
           partitions it needs rather than scanning the entire dataset. Partitioning enables two critical optimizations:
           partition pruning, where the compute engine skips partitions that are not needed for the current batch run,
           and parallelism, where multiple workers can read and process different partitions simultaneously without
           coordination.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice of partition key and granularity affects both query efficiency and operational cost. Partitioning
           by day is the most common choice for daily batch jobs because it aligns the partition layout with the batch
           schedule &mdash; each run reads exactly one day&apos;s partition. However, for very large daily volumes, partitioning
@@ -96,7 +103,7 @@ export default function ArticlePage() {
           volume per partition and increase parallelism. Over-partitioning &mdash; creating too many small partitions &mdash;
           increases metadata overhead and file system costs, while under-partitioning &mdash; creating too few large
           partitions &mdash; reduces parallelism and increases the blast radius of partition-level failures.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/batch-processing-diagram-1.svg"
           alt="Batch processing pipeline architecture showing ingest, transform, aggregate, and output stages with schedule trigger and validation gate"
@@ -139,15 +146,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A batch processing pipeline follows a consistent flow: ingest, transform, aggregate, validate, and publish.
           The ingest stage reads data from source systems &mdash; object storage (S3, GCS, ADLS), databases (via CDC or
           export), message queues (Kafka), or APIs &mdash; and writes it to the pipeline&apos;s working storage in a
           consistent, partitioned format (typically Parquet or ORC). The ingest stage performs schema validation,
           deduplication, and initial data quality checks, rejecting or quarantining records that do not meet the
           expected standards.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The transform stage applies business logic to the ingested data: filtering out invalid records, normalizing
           formats, enriching with reference data from dimension tables, joining across multiple sources, and deriving
           new columns from existing ones. The transform stage is where most of the business logic lives, and it is
@@ -155,7 +165,7 @@ export default function ArticlePage() {
           key design principle for the transform stage is composability: each transformation should be a discrete,
           testable unit that takes a well-defined input and produces a well-defined output, enabling unit testing and
           incremental debugging.
-        </p>
+        </HighlightBlock>
         <p>
           The aggregate stage computes summary statistics, rollups, and derived metrics from the transformed data.
           This stage typically involves group-by operations, window functions, and joins that produce aggregated tables
@@ -212,7 +222,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice of batch interval &mdash; how frequently the pipeline runs &mdash; is a fundamental trade-off between data
           freshness and cost. A daily batch is the most cost-efficient because it processes the largest data slice per
           run, amortizing fixed costs (cluster startup, metadata loading) over more data. However, daily batch means
@@ -221,15 +234,15 @@ export default function ArticlePage() {
           the risk of runs overlapping if a single run takes longer than an hour. The recommended approach is to match
           the batch interval to the consumer&apos;s freshness requirement: daily for reporting and analytics, hourly for
           operational dashboards, and streaming for alerting and real-time decision-making.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Batch versus stream processing is not a binary choice but a spectrum. Batch processing excels at correctness,
           reproducibility, and cost efficiency for large data volumes. Stream processing excels at low latency and
           incremental processing. Most production data platforms use both: stream processing for real-time operational
           visibility and alerting, batch processing for authoritative, accurate data that powers reporting, billing,
           and compliance. The two layers are reconciled periodically &mdash; the batch pipeline corrects any inaccuracies in
           the streaming layer&apos;s output &mdash; ensuring that consumers have both fast signals and accurate data.
-        </p>
+        </HighlightBlock>
         <p>
           The compute engine choice &mdash; Spark versus cloud data warehouse (BigQuery, Snowflake, Redshift) versus
           serverless compute (AWS Glue, GCP Dataflow) &mdash; is a trade-off between control, cost, and operational burden.
@@ -253,20 +266,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design every batch pipeline to be idempotent from the start. Write output to a temporary location, validate
           it, and atomically swap it into the production location. This pattern ensures that rerunning the pipeline &mdash;
           whether due to a failure, a bug fix, or a backfill &mdash; does not duplicate or corrupt data. Idempotency should
           be tested explicitly: run the pipeline twice on the same input and verify that the output is identical,
           including file contents, metadata, and partition layout.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Partition input data by the batch interval &mdash; daily partitions for daily batches, hourly for hourly &mdash; and
           use partition pruning to read only the partitions needed for the current run. This minimizes I/O cost and
           ensures that the pipeline processes a predictable, bounded amount of data per run. For very large partitions,
           add a secondary partition dimension (such as region or event type) to increase parallelism and reduce the
           blast radius of partition-level failures.
-        </p>
+        </HighlightBlock>
         <p>
           Validate output quality before publishing. Define a suite of data quality checks &mdash; row count within expected
           range, no null values in required columns, aggregate totals matching source, partition completeness &mdash; and run
@@ -299,22 +315,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Schema drift at the source causing silent data corruption is the most common batch pipeline failure. When a
           source system adds, removes, renames, or changes the type of a column without notifying the pipeline, the
           pipeline may process the data incorrectly &mdash; reading the wrong column, interpreting data with the wrong type,
           or silently dropping new columns. The fix is schema validation at ingestion: check that the input schema
           matches the expected schema before processing begins, and fail the pipeline with a clear error message if it
           does not. This catches schema drift early, before it produces incorrect output.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Non-idempotent writes causing data corruption on rerun is a design failure that is difficult to recover from.
           If a pipeline writes output directly to the production location without using a temporary location and atomic
           swap, a rerun after a partial failure may produce a mix of old and new records, or duplicate records if the
           pipeline appends rather than overwrites. The fix is to redesign the pipeline to use temporary output and
           atomic publication, and to test idempotency by running the pipeline multiple times on the same input and
           verifying identical output.
-        </p>
+        </HighlightBlock>
         <p>
           Missing validation checks allowing incorrect data to propagate downstream is a quality failure that erodes
           trust in the data platform. Without validation, a pipeline can produce output that is technically correct &mdash;
@@ -345,7 +364,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A global retail company runs a daily batch pipeline that processes all sales, inventory, and customer
           transactions from the previous day to produce the company&apos;s authoritative financial and operational reports.
           The pipeline ingests approximately 500 GB of data from 20 source systems, applies 150 transformation steps
@@ -355,8 +377,8 @@ export default function ArticlePage() {
           Apache Iceberg, schema validation at ingestion for all 20 sources, and a 50-check validation suite that
           verifies output correctness before publication. The pipeline has a 99.9 percent success rate over two years,
           with failures typically caused by source system outages rather than pipeline bugs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company runs an hourly batch pipeline that processes trading activity, market data, and
           risk metrics to produce compliance reports required by regulatory authorities. The pipeline must be
           reproducible and auditable &mdash; every output must be traceable to the specific input data, code version, and
@@ -365,7 +387,7 @@ export default function ArticlePage() {
           a versioned code repository with the pipeline logic and schema definitions. The hourly schedule ensures that
           compliance reports are no more than one hour stale, meeting regulatory requirements while keeping compute
           costs manageable.
-        </p>
+        </HighlightBlock>
         <p>
           A technology company runs a daily batch pipeline that processes application logs, infrastructure metrics, and
           security events to produce operational dashboards and anomaly detection models. The pipeline ingests
@@ -389,26 +411,29 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: What makes a batch pipeline idempotent, and why is idempotency essential for backfills?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             A batch pipeline is idempotent when running it multiple times on the same input produces the same output
             as running it once, without duplication, corruption, or side effects. Idempotency is achieved through two
             mechanisms: atomic publication (writing output to a temporary location and swapping it atomically into the
             production location) and deterministic processing (the same input and code always produce the same output,
             with no dependence on external state such as current time, random numbers, or mutable shared resources).
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Idempotency is essential for backfills because backfills are reruns of the pipeline on historical data to
             correct a bug or incorporate corrected source data. Without idempotency, a backfill would either duplicate
             data (if the pipeline appends to existing output) or corrupt data (if the pipeline partially overwrites
             existing output). With idempotency, the backfill produces the same output as the original run would have
             if the bug had not existed, and the atomic swap replaces the incorrect output with the corrected output
             without any window of inconsistency.
-          </p>
+          </HighlightBlock>
           <p>
             Testing idempotency is straightforward: run the pipeline twice on the same input and compare the outputs
             byte-for-byte. If they differ, the pipeline is not idempotent and the cause &mdash; typically non-deterministic

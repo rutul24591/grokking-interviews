@@ -715,8 +715,12 @@ export default function MonorepoVsPolyrepoArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: repo strategy is about coordination cost. Strong answers connect the choice to build
+          graph correctness, dependency boundaries, release cadence, and CI throughput.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://nx.dev/"
               className="text-accent hover:underline"
@@ -725,8 +729,8 @@ export default function MonorepoVsPolyrepoArticle() {
             >
               Nx — Smart Monorepo Tooling
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://turbo.build/"
               className="text-accent hover:underline"
@@ -735,8 +739,8 @@ export default function MonorepoVsPolyrepoArticle() {
             >
               Turborepo — High-Performance Build System for Monorepos
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://monorepo.tools/"
               className="text-accent hover:underline"
@@ -745,8 +749,8 @@ export default function MonorepoVsPolyrepoArticle() {
             >
               monorepo.tools — Monorepo Tooling Comparison
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://pnpm.io/workspaces"
               className="text-accent hover:underline"
@@ -755,7 +759,7 @@ export default function MonorepoVsPolyrepoArticle() {
             >
               pnpm — Workspaces Documentation
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

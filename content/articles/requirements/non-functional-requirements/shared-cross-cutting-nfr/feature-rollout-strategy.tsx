@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,19 +25,22 @@ export default function FeatureRolloutStrategyArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Feature Rollout Strategy</strong> encompasses the systematic approach to releasing new
           functionality to users in a controlled, measurable, and reversible manner. It separates deployment
           (code running in production) from release (users can access the feature), enabling teams to test
           in production with minimal risk.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A well-designed rollout strategy reduces the blast radius of issues, enables data-driven decisions
           about feature success, and provides clear rollback paths when problems occur. For staff and
           principal engineers, rollout strategy is a critical architectural concern—the decisions you make
           about feature flags, canary releases, and kill switches directly impact system reliability and
           team velocity.
-        </p>
+        </HighlightBlock>
         <p>
           Modern deployment practices recognize that testing in staging is insufficient. Production has
           unique characteristics: real user behavior, production data volumes, complex distributed system
@@ -62,9 +66,12 @@ export default function FeatureRolloutStrategyArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Percentage-Based Rollout</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Gradually increasing the percentage of users who see a feature is the most common approach for
           consumer-facing functionality. The typical progression starts at 1% as a canary stage to catch
           critical issues with minimal user impact, then expands to 5% for broader testing while still
@@ -75,10 +82,10 @@ export default function FeatureRolloutStrategyArticle() {
           never advance stages automatically without verifying system health first. This approach works best
           for consumer-facing features with broad audiences, features where impact scales with user count,
           and scenarios requiring statistical significance for A/B testing.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Segment-Based Rollout</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Targeting specific user segments rather than random percentages allows controlled exposure to
           users who are more tolerant of issues or whose feedback is most valuable. Common segments include
           internal employees as first exposure who can report issues quickly, beta users and power users
@@ -88,7 +95,7 @@ export default function FeatureRolloutStrategyArticle() {
           technical sophistication. Segment-based rollout is particularly effective for complex features
           requiring user feedback, features with different impact on different user types, and situations
           where feedback from specific user personas is prioritized.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Canary Release</h3>
         <p>
@@ -178,9 +185,12 @@ export default function FeatureRolloutStrategyArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Flag Evaluation Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Feature flag evaluation follows a critical path that directly impacts application performance.
           When a request arrives, the application SDK intercepts it and evaluates applicable flags against
           targeting rules. Server-side evaluation provides consistency across requests, prevents user
@@ -196,7 +206,7 @@ export default function FeatureRolloutStrategyArticle() {
           remain under 10 milliseconds for server-side and under 5 milliseconds for edge evaluation,
           achieved through local caching with periodic sync, in-memory flag snapshots, and fallback to
           default values if the flag service is unreachable.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/shared-cross-cutting-nfr/feature-flag-management.svg"
@@ -205,7 +215,7 @@ export default function FeatureRolloutStrategyArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Targeting Rule Engine</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Targeting rules determine which users see a feature and can combine multiple conditions. User
           attributes include user ID, email, account age, tier, and role. Geographic conditions cover
           country, region, city, and datacenter. Device conditions include platform, OS version, browser,
@@ -217,7 +227,7 @@ export default function FeatureRolloutStrategyArticle() {
           The rule engine evaluates conditions in priority order, with more specific rules taking precedence
           over general percentage-based rules, and returns a deterministic result based on a hash of the
           user identifier combined with the flag key.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Configuration Distribution Pipeline</h3>
         <p>
@@ -284,9 +294,12 @@ export default function FeatureRolloutStrategyArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Client-Side vs Server-Side Flag Evaluation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing where to evaluate feature flags involves trade-offs across latency, security, complexity,
           and use case suitability. Client-side evaluation loads flag configuration into the client
           application at startup, enabling instant evaluation with zero additional latency and supporting
@@ -298,10 +311,10 @@ export default function FeatureRolloutStrategyArticle() {
           typically adding 5 to 20 milliseconds of latency per request unless cached locally. Edge
           evaluation at the CDN layer provides a middle ground with low latency and server-side security,
           but requires CDN-specific configuration and may not support all targeting rule complexity.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Gradual Rollout vs A/B Testing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           While both use feature flags, gradual rollout and A/B testing serve different purposes and have
           distinct statistical requirements. Gradual rollout progressively exposes a feature to more users,
           primarily validating stability and performance. The goal is risk mitigation, and statistical
@@ -314,7 +327,7 @@ export default function FeatureRolloutStrategyArticle() {
           segmented by user cohort to detect heterogeneous treatment effects. Organizations often conflate
           these two approaches, which leads to insufficient statistical rigor in experiments or overly
           cautious rollout where a simple stability check would suffice.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">In-House vs Commercial Flag Platforms</h3>
         <p>
@@ -468,6 +481,9 @@ export default function FeatureRolloutStrategyArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/shared-cross-cutting-nfr/feature-flag-best-practices.svg"
@@ -476,7 +492,7 @@ export default function FeatureRolloutStrategyArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Pre-Rollout Preparation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Before beginning any rollout, define success metrics and their pass-fail thresholds so that
           decisions at each stage are objective rather than subjective. Test feature flags in staging
           across all states including on, off, and all targeting rule variations to ensure the flag
@@ -488,10 +504,10 @@ export default function FeatureRolloutStrategyArticle() {
           leadership so that everyone is prepared for potential user inquiries and can coordinate their
           activities accordingly. Document the expected feature behavior and its anticipated impact to
           provide a reference point for investigating any anomalies that arise during rollout.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">During Rollout Execution</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Always start with the smallest possible exposure, either 1% or internal users only, to catch
           the most severe issues with minimal blast radius. Monitor continuously during the first hours
           after each stage advancement, as this is when most issues surface. Never advance stages
@@ -500,7 +516,7 @@ export default function FeatureRolloutStrategyArticle() {
           issues arise, and document any issues encountered along with their resolution for future
           reference. Keep stakeholders informed of progress throughout the rollout so that there are no
           surprises and the organization can respond appropriately to any user-facing impacts.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Post-Rollout and Flag Hygiene</h3>
         <p>
@@ -528,7 +544,10 @@ export default function FeatureRolloutStrategyArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rolling out without a clear rollback procedure is among the most dangerous mistakes, since it
           leaves the team helpless when issues arise. The fix is to always have a kill switch ready and
           tested before any exposure begins. Similarly, undefined success metrics make it impossible to
@@ -544,18 +563,28 @@ export default function FeatureRolloutStrategyArticle() {
           impossible to debug when issues arise, so rules should be kept simple and thoroughly documented.
           Flag evaluation latency can degrade user experience if flags add significant latency, which is
           mitigated by caching flag values and using edge evaluation where appropriate. Inconsistent
-          evaluation where users receive different variants across requests erodes trust and invalidates
-          experiment data, requiring sticky assignments and consistent hashing. Finally, insufficient
-          stakeholder communication leaves the support team unaware of rollouts and unprepared for user
-          inquiries, so the rollout plan must be communicated to all stakeholders in advance.
-        </p>
-      </section>
+	          evaluation where users receive different variants across requests erodes trust and invalidates
+	          experiment data, requiring sticky assignments and consistent hashing. Finally, insufficient
+	          stakeholder communication leaves the support team unaware of rollouts and unprepared for user
+	          inquiries, so the rollout plan must be communicated to all stakeholders in advance.
+	        </HighlightBlock>
+	        <HighlightBlock as="p" tier="important">
+	          Another common failure mode is separating rollout mechanics from data and dependency readiness.
+	          Rollouts break when schema changes, caches, background jobs, or downstream services are not compatible
+	          with partial exposure. In interviews, call out pre-flight checks (dependency health, migration/backfill
+	          state), guardrails (rate limits, circuit breakers, fallbacks), and rollback that considers data
+	          safety (dual writes, backward-compatible reads) rather than only a UI kill switch.
+	        </HighlightBlock>
+	      </section>
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">LaunchDarkly at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           LaunchDarkly, as both a commercial platform and a user of its own product, demonstrates feature
           flag best practices at massive scale. Their own infrastructure evaluates over 200 billion flag
           requests per month with sub-100-millisecond latency and 99.99% availability. They use gradual
@@ -565,10 +594,10 @@ export default function FeatureRolloutStrategyArticle() {
           polling overhead and ensuring near-instantaneous flag propagation. They also employ shadow
           traffic for backend service rewrites, running old and new services in parallel and comparing
           outputs before switching user traffic.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Facebook Feature Gating</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook uses a sophisticated feature gating system called Gatekeeper to control feature
           exposure across its billions of users. Every new feature ships behind a gate, and rollout
           decisions are data-driven based on extensive internal metrics. Facebook&apos;s gating system
@@ -579,7 +608,7 @@ export default function FeatureRolloutStrategyArticle() {
           key metrics before full rollout. They also use dark launch extensively for backend changes,
           routing production traffic through new code paths and comparing outputs with the existing system
           before exposing features to users.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Etsy Deployment and Feature Flags</h3>
         <p>
@@ -623,17 +652,20 @@ export default function FeatureRolloutStrategyArticle() {
 
       <section>
         <h2>Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is the difference between deployment and release?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What is the difference between deployment and release?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Deployment is code running in production. Release is users can access the feature. Feature
               flags decouple these—you can deploy without releasing, enabling testing in production and
               controlled rollouts. This separation is fundamental to modern deployment practices. A feature
               can be deployed to production infrastructure but remain hidden behind a flag for days or
               weeks while the team validates stability through canary analysis and shadow traffic comparison
               before deciding to release it to users.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

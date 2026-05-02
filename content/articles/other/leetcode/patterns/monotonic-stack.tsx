@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,20 +24,23 @@ export default function MonotonicStackArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         A monotonic stack is a stack maintained in non-increasing or non-decreasing order along the depth axis.
         On each push, top elements that violate the order are popped before the new value is added. The
         invariant — &quot;values are sorted top to bottom in the chosen direction&quot; — is preserved by
         construction. Each element is pushed exactly once and popped at most once across the whole algorithm,
         giving amortised O(n) total work despite the inner pop loop.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The pattern is the linear-time answer to a specific family of queries: <strong>nearest greater</strong>
         / <strong>nearest smaller</strong>, on the left or on the right, by value or by distance. Brute force
         scans backward from each index in O(n) per query — O(n²) total. The monotonic stack collapses this to
         O(n) by exploiting the observation that if A[j] is popped on behalf of A[i], then A[j] can never be the
         nearest-greater of any later index past i — i blocks the view.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Recognition signals are textbook. &quot;Next greater element&quot;, &quot;previous smaller&quot;,
         &quot;number of days until warmer&quot;, &quot;stock span&quot;, &quot;largest rectangle in histogram&quot;,
@@ -53,19 +57,22 @@ export default function MonotonicStackArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Order direction.</strong> A &quot;decreasing&quot; monotonic stack has values that decrease from
         bottom to top — the bottom holds the largest, the top holds the smallest. It answers &quot;next greater&quot;:
         when the incoming value exceeds the top, the top has found its next greater. An &quot;increasing&quot;
         stack mirrors this for &quot;next smaller&quot;. Choose the direction by what the question asks for.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Strict vs. weak monotonicity.</strong> Strict (&lt; or &gt;) treats equal values as violations —
         the top is popped on equality. Weak (≤ or ≥) keeps equals. The choice depends on whether equal-value
         ties should be resolved as &quot;same span&quot; (weak) or &quot;new span starts&quot; (strict). Largest
         rectangle in histogram allows either with care; daily temperatures uses strict because a tie does not
         count as warmer.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Push-once-pop-once amortisation.</strong> The inner while loop looks like O(n) per outer step,
         but the total pop count across all iterations is bounded by the total push count, which is n. So the
@@ -102,15 +109,18 @@ export default function MonotonicStackArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Next-greater-element template.</strong> Initialise empty stack and answer array of size n
         filled with −1. For i from 0 to n − 1: while stack non-empty and A[stack.top()] &lt; A[i], answer[stack.pop()]
         = A[i]. Push i. After the loop, indices remaining on the stack keep their −1 sentinel. Total O(n).
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Daily Temperatures variant (739).</strong> Identical structure, but answer[stack.pop()] = i −
         stack.pop() (the distance, not the value). The change is one expression — the pattern is unchanged.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Circular array variant (503).</strong> Simulate two passes by iterating i from 0 to 2n − 1 and
         indexing A[i mod n]. Pushes only happen on the first pass; pops can happen on either pass. Each
@@ -146,18 +156,21 @@ export default function MonotonicStackArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Monotonic stack vs. brute-force scan.</strong> Brute force is O(n²); monotonic stack is O(n).
         For Leetcode constraints (n ≤ 10⁵), the brute force times out and the stack is the only viable
         solution. The constant factor is small — well-tuned monotonic-stack code runs in under 50 ms for n =
         10⁶.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Monotonic stack vs. two-pointer.</strong> Trapping rain water has both: the two-pointer
         version is O(n) time and O(1) space; the stack version is O(n) time and O(n) space but generalises to
         the layer-by-layer accounting the stack provides. Default to two-pointer when O(1) space is wanted;
         use the stack when extracting per-bar contributions matters.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Monotonic stack vs. monotonic queue.</strong> Stack answers static nearest-greater queries on
         a fixed array; queue answers sliding-window-max over a moving window. The data discipline is similar
@@ -184,15 +197,18 @@ export default function MonotonicStackArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Push the index, store the value lookup.</strong> Almost every monotonic-stack problem needs
         the index for distances or boundaries. Push i, look up A[i] when comparing. Pushing the value alone
         works for some problems but generalises poorly.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Pre-fill the answer array.</strong> Initialise to the &quot;not found&quot; sentinel so that
         indices never popped retain a meaningful default. Don&apos;t branch in the cleanup code.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Use a sentinel to flush.</strong> Append a value that violates the order (0 for histograms, +∞
         for next-greater) to the input or its iteration so the inner while-loop drains the stack at the end.
@@ -214,15 +230,18 @@ export default function MonotonicStackArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Wrong inequality direction.</strong> Decreasing stack with A[stack.top()] &gt; A[i] means
         &quot;pop while top is bigger&quot; — that gives next-smaller, not next-greater. Get the direction by
         asking: when an incoming value triggers a pop, what does the popped element learn about itself?
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Strict vs. weak confusion.</strong> Using ≤ instead of &lt; in next-greater silently changes
         the answer for tied inputs. Always re-read the problem to confirm the equality case.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Forgetting to flush.</strong> Indices left on the stack at end-of-input have no
         next-greater. Either pre-fill the answer with a sentinel or use a flush sentinel value to drain the
@@ -249,14 +268,17 @@ export default function MonotonicStackArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode Problems)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>496. Next Greater Element I.</strong> The pure template, with a wrapper that maps query
         indices through a hash map.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>503. Next Greater Element II.</strong> Circular extension — iterate twice with i mod n; only
         push on the first pass.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>739. Daily Temperatures.</strong> Distance form — answer[stack.pop()] = i − stack.top(). Same
         skeleton.
@@ -296,13 +318,16 @@ export default function MonotonicStackArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why is monotonic stack O(n) despite the inner loop?</strong> Each element is pushed once and
+        <HighlightBlock as="li" tier="important"><strong>Why is monotonic stack O(n) despite the inner loop?</strong> Each element is pushed once and
         popped at most once. Total work across the whole algorithm is bounded by 2n — amortised O(1) per
-        element.</li>
-        <li><strong>How do you choose increasing vs. decreasing?</strong> Ask: when an incoming element evicts the
+        element.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>How do you choose increasing vs. decreasing?</strong> Ask: when an incoming element evicts the
         top, what does the top learn about itself? If the answer is &quot;I just found my next-greater&quot;,
-        the stack was decreasing. For next-smaller, increasing.</li>
+        the stack was decreasing. For next-smaller, increasing.</HighlightBlock>
         <li><strong>Why does histogram use the post-pop top for the width?</strong> The post-pop top is the
         previous-smaller boundary of the popped bar; the current index is the next-smaller boundary. The bar
         spans (post-pop top, current index) exclusive — width is (i − stack.top() − 1).</li>

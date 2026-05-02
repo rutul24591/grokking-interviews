@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -80,23 +81,26 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Consistency Levels</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Linearizable Consistency (Strongest)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Linearizable consistency</strong> (strongest): operations appear to execute
           atomically at some instant between invocation and response. All clients see same
           order of operations (real-time guarantee). Example: Client A writes
           <code className="inline-code">x = 5</code>, Client B reads <code className="inline-code">
           x</code>. If B's read starts after A's write completes, B must read 5 (not old value).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Benefits: <strong>Simplest to reason about</strong> (looks like single system),
           <strong>No stale reads</strong> (always see latest), <strong>Real-time guarantee</strong>
           (writes visible immediately). Trade-offs: <strong>High latency</strong> (wait for all
           nodes), <strong>Low availability</strong> (fail if node unreachable),
           <strong>Doesn't scale</strong> (coordination overhead).
-        </p>
+        </HighlightBlock>
 
         <p>
           Use for: Financial transactions (can't allow overdrafts), distributed locks (must be
@@ -174,21 +178,24 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: CAP Theorem &amp; Trade-offs</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>CAP Theorem</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>CAP theorem</strong>: distributed system can't simultaneously provide more
           than two of: <strong>Consistency</strong> (all nodes see same data at same time),
           <strong>Availability</strong> (every request gets response), <strong>Partition
           tolerance</strong> (system works despite network failures).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           During network partition (nodes can't communicate): <strong>Choose Consistency</strong>
           (CP): return error (don't return stale data). Example: banking (reject transaction
           if can't verify balance). <strong>Choose Availability</strong> (AP): return response
           (may be stale). Example: social media (show cached feed, may be stale).
-        </p>
+        </HighlightBlock>
 
         <p>
           Note: Partition tolerance is mandatory (networks fail). Real choice: Consistency vs
@@ -244,17 +251,20 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Choosing Consistency Level</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Different consistency levels have trade-offs. Understanding them helps you choose
           the right level for each use case.
-        </p>
+        </HighlightBlock>
 
         <h3>Linearizable Consistency</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Strengths</strong>: Simplest to reason about (looks like single system), no
           stale reads (always see latest), real-time guarantee (writes visible immediately).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Limitations</strong>: High latency (wait for all nodes), low availability
@@ -336,18 +346,21 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Consistency Models</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Choose per operation.</strong> Not one-size-fits-all. Strong for critical
           (payment, inventory), eventual for non-critical (likes, views). Benefits: appropriate
           consistency per use case.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Document consistency level.</strong> Document which consistency level for
           which operation, why chosen, guarantees provided. Benefits: team understanding
           (consistent implementation), easier debugging (know expected behavior).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Test consistency guarantees.</strong> Simulate network partitions, verify
@@ -383,19 +396,22 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Strong consistency for everything.</strong> Using strong consistency for
           non-critical data (likes, views). Causes: poor performance (high latency), low
           availability (fail on network issues). Solution: use eventual consistency for
           non-critical data.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Eventual consistency for critical data.</strong> Using eventual consistency
           for critical data (financial transactions, inventory). Causes: data corruption
           (overdrafts, overselling). Solution: use strong consistency for critical data.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Ignoring CAP theorem.</strong> Assuming can have consistency, availability,
@@ -432,23 +448,26 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Financial Systems (Strong Consistency)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Banking uses strong consistency (linearizable). Transfer: debit account A, credit
           account B. All clients see updated balances immediately. Benefits: no overdrafts
           (can't spend money not there), no double-spending (can't spend same money twice).
           Trade-offs: higher latency (wait for confirmation), lower availability (reject if
           can't verify).
-        </p>
+        </HighlightBlock>
 
         <h3>Social Media (Causal/Eventual Consistency)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook uses causal consistency for posts/replies (reply after post), eventual
           consistency for likes (99 vs 100 OK temporarily). Benefits: conversations make
           sense (causal), high availability (eventual for likes). Trade-offs: may see
           stale like count (acceptable).
-        </p>
+        </HighlightBlock>
 
         <h3>DNS (Eventual Consistency)</h3>
         <p>
@@ -470,14 +489,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: What are the common consistency models? Compare linearizable, causal, and
               eventual.
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Linearizable (strongest): operations appear atomic at
               some instant, all clients see same order (real-time guarantee). No stale reads,
               but high latency, low availability. Causal: causally related operations in
@@ -486,7 +508,7 @@ export default function ArticlePage() {
               return same value. No timing guarantee, but lowest latency, highest availability.
               Choose: linearizable for critical (financial), causal for social (conversations),
               eventual for scale (likes, views).
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What is sequential consistency? Answer: Operations
               appear in some sequential order, same for all clients. Per-client order

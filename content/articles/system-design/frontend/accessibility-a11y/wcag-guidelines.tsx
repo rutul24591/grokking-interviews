@@ -107,19 +107,19 @@ export default function WCAGGuidelinesArticle() {
         <h2>Core Concepts</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">The POUR Principles</h3>
-        <HighlightBlock as="p" tier="important">
+        <p>
           Every WCAG success criterion maps back to one of four foundational principles, commonly
           referred to by the acronym POUR:
-        </HighlightBlock>
+        </p>
         <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Perceivable:</strong> Information and user interface components must be
             presentable to users in ways they can perceive. This covers text alternatives for
             non-text content, captions and audio descriptions for multimedia, adaptable layouts that
             work across assistive technologies, and sufficient color contrast. A user who is blind
             must be able to perceive an image through its alt text; a user who is deaf must perceive
             audio content through captions.
-          </HighlightBlock>
+          </li>
           <li>
             <strong>Operable:</strong> User interface components and navigation must be operable.
             All functionality must be available via keyboard, users must have enough time to read and
@@ -234,10 +234,10 @@ export default function WCAGGuidelinesArticle() {
             <strong>3.2.6 Consistent Help [A]:</strong> If help mechanisms exist, they appear in a
             consistent location across pages.
           </li>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>3.3.7 Redundant Entry [A]:</strong> Information already provided in a process is
             auto-populated or selectable.
-          </HighlightBlock>
+          </li>
           <HighlightBlock as="li" tier="important">
             <strong>3.3.8 Accessible Authentication (Minimum) [AA]:</strong> Cognitive function
             tests (like transcribing text CAPTCHAs) are not required for login, unless alternatives

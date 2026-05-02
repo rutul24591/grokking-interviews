@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function SessionManagementArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Session Management</strong> is the backend system responsible for creating,
           storing, validating, and terminating user sessions. It tracks authenticated users across
           requests, enforces session policies (timeout, concurrent limits), and provides the
           foundation for authorization decisions. Session management is critical for security —
           poor session management leads to session hijacking, fixation attacks, and unauthorized
           access.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/session-management-flow.svg"
@@ -48,7 +52,7 @@ export default function SessionManagementArticle() {
           caption="Session Management Flow — showing session creation, validation, timeout, and revocation across distributed services"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing session management requires deep
           understanding of storage options (Redis, database, hybrid), timeout strategies (sliding,
           absolute, hybrid), distributed session handling (Redis Cluster, cross-region
@@ -56,7 +60,7 @@ export default function SessionManagementArticle() {
           and scaling patterns (stateless application servers, session sharding). The
           implementation must provide sub-5ms session lookup while maintaining security and
           consistency.
-        </p>
+        </HighlightBlock>
         <p>
           Modern session management has evolved from simple server-side sessions to sophisticated
           distributed systems with Redis Cluster for sub-1ms lookups, cross-region replication for
@@ -69,18 +73,21 @@ export default function SessionManagementArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Session management is built on fundamental concepts that determine how sessions are
           stored, validated, and terminated. Understanding these concepts is essential for
           designing effective session systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Session Storage:</strong> Redis (recommended — sub-1ms latency, native TTL
           support, horizontal scaling via Redis Cluster), Database (durable, queryable, slower
           5-50ms), Hybrid (Redis for active sessions, database for audit/durability). Redis is
           preferred for high-frequency session lookups — most production systems use Redis as
           primary session store with database for audit.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Session Lifecycle:</strong> Creation (on successful authentication — generate
           cryptographically random session ID, store metadata), Validation (on each request —
@@ -105,11 +112,14 @@ export default function SessionManagementArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Session management architecture separates session storage from application logic,
           enabling stateless application servers with centralized session management. This
           architecture is critical for horizontal scaling.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/session-lifecycle.svg"
@@ -117,14 +127,14 @@ export default function SessionManagementArticle() {
           caption="Session Lifecycle — showing Create → Active (sliding timeout) → Idle → Expired/Revoked with timeout strategies"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Session flow: User authenticates successfully. Backend generates session ID
           (crypto.randomBytes(32)), stores session in Redis with metadata (user_id, device_info,
           ip_address, user_agent, created_at, last_activity, expires_at), sets TTL (timeout
           policy), returns session ID to client (in HttpOnly cookie). On each request: extract
           session ID from cookie, lookup session in Redis, check expiry (TTL handles this), update
           last_activity (sliding timeout), return user_id for authorization.
-        </p>
+        </HighlightBlock>
         <p>
           Timeout architecture: Sliding timeout (update TTL on each request — session extends with
           activity), Absolute timeout (store created_at + max_duration, check on each request —
@@ -150,23 +160,26 @@ export default function SessionManagementArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing session management involves trade-offs between performance, durability, and
           operational complexity. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Redis vs Database vs Hybrid</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Redis:</strong> Sub-1ms latency, native TTL, horizontal scaling. Limitation:
               data loss on failure (mitigate with persistence), cost at scale.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Database:</strong> Durable, queryable, cost-effective. Limitation: slower
               (5-50ms), requires connection pooling, cleanup job for expired sessions.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Hybrid:</strong> Redis for active sessions (fast), database for audit
               (durable). Best of both — used by most production systems.
@@ -213,19 +226,22 @@ export default function SessionManagementArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing session management requires following established best practices to ensure
           security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Session Storage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use Redis Cluster for sub-1ms session lookups — horizontal scaling, native TTL. Implement
           native TTL for automatic session expiry — no cleanup job needed. Store session metadata
           (device, IP, created_at, last_activity) — for security monitoring, session management UI.
           Use hybrid approach for durability (Redis + database) — async write to database,
           cache-aside for reads.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Timeout Policies</h3>
         <p>
@@ -257,21 +273,24 @@ export default function SessionManagementArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing session management to ensure secure,
           usable, and maintainable session systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Session fixation:</strong> Not regenerating session ID after login allows
             attackers to hijack sessions. <strong>Fix:</strong> Always generate new session ID
             after successful authentication. Delete old session.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No session timeout:</strong> Sessions live forever, increasing exposure window.{" "}
             <strong>Fix:</strong> Implement hybrid timeout (sliding with absolute maximum). Default
             30 days max for consumer.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Storing sessions in database only:</strong> Too slow for high-frequency
             lookups. <strong>Fix:</strong> Use Redis for active sessions. Database for
@@ -313,16 +332,19 @@ export default function SessionManagementArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Session management is critical for platform security. Here are real-world implementations
           from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer Platform (Google)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Billions of users, multiple devices per user. Need to track
           sessions across devices. Session security critical.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Redis Cluster for session storage. Hybrid timeout (sliding
           30-day max). Device-aware sessions (show all devices in account settings). Session
@@ -408,14 +430,17 @@ export default function SessionManagementArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of session management design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Redis vs database for session storage?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Redis vs database for session storage?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Redis for performance (sub-1ms), native TTL, high throughput. Database for
               durability, complex queries. Hybrid: Redis for active sessions (hot), database for

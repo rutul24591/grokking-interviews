@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,7 +28,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Request hedging is a latency-reduction technique in which a client
           sends two or more identical requests to separate backend replicas and
           accepts whichever response arrives first. The slower in-flight
@@ -37,8 +41,8 @@ export default function ArticlePage() {
           times that disproportionately affect user experience and system
           reliability — rather than average latency, which is often already
           acceptable in well-provisioned systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The technique emerged from empirical observations in large-scale
           distributed systems. In any fleet of hundreds or thousands of service
           instances, a small fraction will inevitably run slower than the rest
@@ -50,7 +54,7 @@ export default function ArticlePage() {
           tail of the latency distribution becomes dominated by these straggler
           events rather than by the intrinsic processing time of the service.
           Hedging addresses this directly by not waiting for the straggler.
-        </p>
+        </HighlightBlock>
         <p>
           The concept is closely related to speculative execution in distributed
           computing frameworks like MapReduce, where slow tasks are re-dispatched
@@ -72,15 +76,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of request hedging rests on three interconnected
           concepts: the hedge delay, the hedged request budget, and idempotency
           safety. Understanding each of these and how they interact is essential
           for designing a hedging strategy that reduces tail latency without
           introducing load amplification that degrades overall system
           throughput.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The hedge delay determines how long the client waits before issuing a
           hedged request. If the delay is too short, the client will
           unnecessarily duplicate requests that would have completed quickly on
@@ -96,7 +103,7 @@ export default function ArticlePage() {
           percentiles and dynamically adjusting the hedge delay as the service
           evolves, rather than hard-coding a fixed value that becomes stale as
           traffic patterns change.
-        </p>
+        </HighlightBlock>
         <p>
           The hedged request budget is a control mechanism that limits the
           fraction of total traffic that can be hedged. Without a budget, during
@@ -137,15 +144,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production hedging architecture consists of several components
           working together: the hedging client, the backend replica pool, the
           cancellation mechanism, the response-selection logic, and the
           observability pipeline that feeds back into hedge-delay calibration.
           Each component must be designed to handle failure gracefully and to
           provide clear signals when the system is under stress.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The hedging client is the component that initiates the primary request
           and, after the configured delay, initiates one or more hedged requests
           to different backend replicas. The client must be careful about how it
@@ -159,7 +169,7 @@ export default function ArticlePage() {
           selection among a pool of replicas is effective because the probability
           of picking two stragglers is much lower than the probability of
           picking one.
-        </p>
+        </HighlightBlock>
         <p>
           The cancellation mechanism is what prevents wasted work on the
           backend. When the first response arrives, the client should signal to
@@ -211,7 +221,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Request hedging is not a universally superior technique; it exists
           within a trade-off space that must be carefully navigated. The
           primary trade-off is between tail-latency improvement and resource
@@ -224,8 +237,8 @@ export default function ArticlePage() {
           where more requests are hedged because the backend is slower, which
           makes the backend even slower. This is why the hedged request budget
           is non-negotiable in production systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compared to retry mechanisms, hedging addresses a fundamentally
           different problem. Retries recover from failures; hedges recover from
           slowness. A retry fires after a request has failed or timed out, which
@@ -240,7 +253,7 @@ export default function ArticlePage() {
           and retries for failures, with careful coordination to ensure that a
           hedged request does not trigger a retry storm on an overloaded
           backend.
-        </p>
+        </HighlightBlock>
         <p>
           Compared to over-provisioning — the alternative approach to tail
           latency — hedging is dramatically more cost-efficient. To reduce p99
@@ -271,7 +284,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Derive the hedge delay from measured latency percentiles rather than
           from arbitrary values. Continuously monitor the p95 and p99 latency of
           the target service and set the hedge delay at a point that captures
@@ -282,8 +298,8 @@ export default function ArticlePage() {
           requests win the race, the delay is too high. If more than ninety
           percent win, the delay is too low and the system is likely
           over-hedging.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enforce strict hedged request budgets at all times. The budget should
           be expressed as a percentage of total traffic and should be enforced
           with a sliding-window counter that resets continuously. When the
@@ -294,7 +310,7 @@ export default function ArticlePage() {
           response: when a backend is known to be degraded, operators should be
           able to reduce the hedge budget to zero through a feature flag,
           eliminating all hedged traffic and allowing the backend to recover.
-        </p>
+        </HighlightBlock>
         <p>
           Restrict hedging to idempotent operations unless the backend provides
           explicit deduplication guarantees. For read operations, this is
@@ -330,7 +346,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most dangerous pitfall is applying hedging to non-idempotent write
           operations without deduplication logic. When a hedged request causes a
           duplicate write — a double charge, a duplicate order, a duplicated
@@ -339,8 +358,8 @@ export default function ArticlePage() {
           operations as idempotent or non-idempotent before enabling hedging,
           and implement idempotency keys for any write operation that must be
           hedged.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A second common pitfall is setting the hedge delay too aggressively,
           which leads to over-hedging. When the hedge delay is set below the
           natural variance of the service&apos;s latency distribution, a large
@@ -351,7 +370,7 @@ export default function ArticlePage() {
           remedy is to start conservatively with a high hedge delay and a low
           budget, then gradually tighten both as the impact on tail latency and
           backend load becomes clear.
-        </p>
+        </HighlightBlock>
         <p>
           A third pitfall is failing to coordinate hedging with retry mechanisms.
           If a client hedges a request and the backend is genuinely failing (not
@@ -379,7 +398,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Large-scale search engines use hedging extensively for index-lookup
           operations. When a user submits a query, the search service sends the
           query to multiple index shards, each of which maintains a partition of
@@ -391,8 +413,8 @@ export default function ArticlePage() {
           user engagement metrics. Google has published extensively on this
           technique, noting that even a small reduction in tail latency yields
           measurable improvements in user satisfaction and revenue.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Financial trading platforms use hedging for market-data lookups where
           latency directly translates to profit or loss. When a trading system
           needs the current price of a security, it may query multiple pricing
@@ -402,7 +424,7 @@ export default function ArticlePage() {
           delay is often set to near zero — meaning all requests are sent
           simultaneously — because the value of the fastest response outweighs
           the cost of duplicate work.
-        </p>
+        </HighlightBlock>
         <p>
           Content delivery networks use a form of hedging when resolving origin
           fetches. When an edge server does not have a cached copy of a resource
@@ -431,13 +453,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="rounded-lg bg-panel-soft p-6">
           <h3 className="mb-2 text-lg font-semibold">
             Q1: What is the difference between request hedging and request
             retries, and when would you use each?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Request hedging sends a duplicate request while the original is
             still in flight, with the goal of reducing tail latency caused by
             transient stragglers. It is proactive: the hedge fires before the
@@ -452,7 +477,7 @@ export default function ArticlePage() {
             temporary unavailability. In practice, a production system uses both:
             hedging to shave the tail and retries to recover from failures, with
             coordination to ensure they do not amplify each other&apos;s load.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="rounded-lg bg-panel-soft p-6">
@@ -460,7 +485,7 @@ export default function ArticlePage() {
             Q2: How do you determine the optimal hedge delay for a given
             service?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The optimal hedge delay is derived from the service&apos;s observed
             latency distribution under normal operating conditions. A practical
             approach is to set the delay at the p95 or p99 latency — the point
@@ -475,7 +500,7 @@ export default function ArticlePage() {
             well-calibrated delay. Additionally, the delay should be reduced to
             zero during known backend degradation and increased during
             high-utilization periods to prevent over-hedging.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="rounded-lg bg-panel-soft p-6">

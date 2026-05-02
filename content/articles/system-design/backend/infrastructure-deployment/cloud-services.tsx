@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,12 +38,15 @@ export default function CloudServicesArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cloud services</strong> are computing resources (compute, storage, networking, databases, analytics, machine learning) provided as on-demand services over the internet by cloud providers (AWS, Google Cloud, Microsoft Azure). Instead of purchasing and maintaining physical hardware, organizations rent computing resources from cloud providers, paying only for what they use (pay-as-you-go pricing). Cloud services enable organizations to scale infrastructure up or down based on demand, deploy globally in minutes, and leverage managed services (databases, message queues, machine learning APIs) without managing the underlying infrastructure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, cloud services represent a fundamental shift from infrastructure ownership to infrastructure rental. Before cloud, organizations purchased hardware, built data centers, and managed physical infrastructure (high capital expenditure, slow provisioning, limited scalability). Cloud services provide on-demand resources (instant provisioning, elastic scaling, global distribution), managed services (databases, message queues, machine learning APIs — managed by the cloud provider, no operational overhead), and pay-as-you-go pricing (no upfront capital expenditure, only pay for what you use). This shift enables organizations to focus on building applications, not managing infrastructure.
-        </p>
+        </HighlightBlock>
         <p>
           Cloud services involve several technical considerations. Cloud provider selection (AWS — largest market share, most services; GCP — strongest in data/ML; Azure — strongest in enterprise integration). Managed vs. self-hosted services (managed — cloud provider manages infrastructure, databases, message queues; self-hosted — you manage everything). Cloud-native patterns (serverless, containers, microservices, event-driven architecture — patterns designed for cloud environments, not on-premises). Multi-cloud strategies (using multiple cloud providers to avoid vendor lock-in, leverage cloud-specific strengths, meet regulatory requirements). Cost management (cloud costs can spiral — monitoring, optimization, reserved instances, spot instances are essential for cost control).
         </p>
@@ -54,12 +58,15 @@ export default function CloudServicesArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Infrastructure as a Service (IaaS)</strong> provides raw computing resources — virtual machines, storage, and networking — where you manage the operating system, middleware, runtime, and applications. IaaS delivers maximum flexibility because you control the entire software stack, but it requires the most management overhead including OS patching, security configuration, middleware maintenance, and runtime updates. Examples include AWS EC2, Google Compute Engine, and Azure Virtual Machines. This model is best suited for applications requiring full control over the software stack and legacy applications being migrated to cloud environments.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Platform as a Service (PaaS)</strong> provides the platform layer including the operating system, middleware, and runtime, leaving you to manage only the application and data. PaaS significantly reduces management overhead because the cloud provider handles OS updates, middleware patches, and runtime configuration, but it reduces flexibility since you cannot customize the underlying OS or middleware. Examples include AWS Elastic Beanstalk, Google App Engine, and Azure App Service. This model is ideal for applications that do not require OS-level customization and teams prioritizing rapid deployment without infrastructure management.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Software as a Service (SaaS)</strong> delivers complete applications accessed through a web browser or API, where you manage only your data and configuration settings. SaaS eliminates all management overhead since the cloud provider manages everything — infrastructure, platform, and application — but provides the least flexibility because you cannot customize the application itself. Examples include Gmail, Salesforce, Slack, and Dropbox. This model is best for organizations wanting zero management overhead and applications that do not require customization.
         </p>
@@ -85,12 +92,15 @@ export default function CloudServicesArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cloud architecture consists of the compute layer (virtual machines, containers, serverless functions), the storage layer (object storage, block storage, file storage), the networking layer (VPC, load balancers, CDN, DNS), and the managed services layer (databases, message queues, caching, machine learning). The flow begins with users accessing the application through the CDN (caching static content, routing to the nearest edge), the load balancer (distributing traffic across instances), the application servers (running the application code), the managed services (databases, caches, message queues), and the storage layer (storing files, backups, logs).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For production deployments, cloud architecture is designed for high availability (multi-AZ deployment — instances distributed across availability zones, automatic failover if one AZ fails), scalability (auto-scaling groups — instances scale based on demand, load balancer distributes traffic across instances), and disaster recovery (multi-region replication — data replicated across regions, failover to secondary region if primary region fails). Cloud-native patterns (serverless, containers, microservices, event-driven architecture) are designed to leverage cloud services&apos; elasticity, managed infrastructure, and global distribution.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/cloud-architecture.svg"
@@ -123,14 +133,17 @@ export default function CloudServicesArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cloud services involve trade-offs between managed and self-hosted services, single-cloud and multi-cloud strategies, and cloud and on-premises infrastructure. Understanding these trade-offs is essential for designing effective cloud strategies.
-        </p>
+        </HighlightBlock>
 
         <h3>Managed vs. Self-Hosted Services</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Managed Services:</strong> Cloud provider manages the infrastructure and software. Advantages: reduced operational overhead (cloud provider manages patching, backups, scaling, high availability), faster time to production (no infrastructure to set up), built-in features (monitoring, alerting, automatic failover). Limitations: higher cost (managed services are more expensive than self-hosted alternatives), less control (cannot customize configuration beyond what the cloud provider allows), vendor lock-in (managed services are cloud-specific — migrating to another cloud provider requires re-architecting). Best for: organizations wanting to reduce operational overhead, teams without database/admin expertise.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Self-Hosted Services:</strong> You manage the infrastructure and software. Advantages: lower cost (self-hosted services are cheaper than managed alternatives), full control (customize configuration as needed), no vendor lock-in (can migrate to any cloud provider or on-premises). Limitations: high operational overhead (you manage patching, backups, scaling, high availability), slower time to production (infrastructure must be set up and maintained), requires expertise (database administration, infrastructure management). Best for: organizations with dedicated operations teams, cost-sensitive applications, multi-cloud strategies.
         </p>
@@ -155,12 +168,15 @@ export default function CloudServicesArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use Infrastructure as Code for all provisioning.</strong> Provision all cloud resources through infrastructure as code tools such as Terraform, CloudFormation, or CDK. IaC enables version control for tracking infrastructure changes, code review for examining infrastructure changes before applying them, reproducibility for applying the same configuration across multiple environments, and rollback for reverting to previous configurations if changes cause issues. Never provision cloud resources through the cloud console UI because manual provisioning is not tracked, not reviewable, and not reproducible. Infrastructure as code is the foundation of reliable, auditable cloud operations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement multi-AZ deployment for high availability.</strong> Deploy applications across multiple availability zones within a region to ensure that if one AZ fails due to data center failure or network failure, traffic is automatically routed to other AZs where instances continue serving traffic. Multi-AZ deployment is essential for production applications because single-AZ deployment creates a single point of failure. Use cloud provider features such as auto-scaling groups with multi-AZ configuration and managed databases with multi-AZ replication to achieve this resilience automatically.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Monitor cloud costs continuously.</strong> Track cloud costs regularly using cloud provider cost monitoring tools such as AWS Cost Explorer, GCP Billing Reports, and Azure Cost Management. Cloud costs can spiral quickly when teams provision resources without monitoring usage, instances run unused for months, and storage volumes accumulate from snapshots, backups, and unused data. Set up cost alerts to notify the team when costs exceed thresholds, identify and remove unused resources including idle instances and orphaned storage volumes, and rightsize instances by downsizing over-provisioned resources and upsizing under-provisioned ones.
         </p>
@@ -178,12 +194,15 @@ export default function CloudServicesArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cloud cost spiraling</strong> occurs when cloud costs increase unexpectedly due to unused resources, over-provisioned instances, cross-cloud data transfer charges, or lack of cost monitoring. Cloud costs can spiral quickly when teams provision resources without monitoring usage, instances run unused for months, and storage volumes accumulate from snapshots, backups, and unused data. To prevent this, monitor cloud costs regularly, set up cost alerts to notify teams when spending exceeds thresholds, identify and remove unused resources proactively, and rightsize instances based on actual utilization metrics rather than estimated requirements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Vendor lock-in</strong> happens when organizations use cloud-specific managed services that cannot be migrated to another cloud provider, such as AWS-specific services, GCP-specific services, or Azure-specific services. Vendor lock-in makes it difficult and expensive to migrate to another cloud provider because it requires re-architecting applications, migrating data, and retraining teams. To avoid vendor lock-in, use cloud-agnostic tools such as Terraform and Kubernetes, and design applications to be portable through containerized workloads and cloud-agnostic database choices rather than cloud-specific database services.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Single-AZ deployment</strong> means deploying applications to a single availability zone, creating a single point of failure. If the AZ experiences a data center failure or network failure, the entire application goes down. Always deploy to multiple availability zones using auto-scaling groups with multi-AZ configuration, managed databases with multi-AZ replication, and load balancers with multi-AZ backends. Multi-AZ deployment is essential for production applications — single-AZ deployment should never be used for production workloads.
         </p>
@@ -201,16 +220,19 @@ export default function CloudServicesArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Startup Rapid Iteration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Startups use cloud services to rapidly iterate on product development without infrastructure investment. Cloud services provide on-demand resources (provision instances, databases, storage in minutes), managed services (databases, message queues, machine learning APIs — managed by the cloud provider, no operational overhead), and pay-as-you-go pricing (no upfront capital expenditure). This pattern enables startups to focus on building applications, not managing infrastructure. Startups like Airbnb, Uber, and Slack built their initial products on cloud infrastructure, scaling to millions of users without building data centers.
-        </p>
+        </HighlightBlock>
 
         <h3>Enterprise Digital Transformation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Enterprises use cloud services for digital transformation — migrating legacy applications to cloud, building new cloud-native applications, and leveraging cloud services for innovation (machine learning, analytics, IoT). Cloud services enable enterprises to modernize applications without data center construction, scale applications elastically based on demand, and leverage managed services (databases, machine learning, analytics) without operational overhead. This pattern is used by enterprises like Capital One, GE, and BMW to transform their technology infrastructure.
-        </p>
+        </HighlightBlock>
 
         <h3>Global Application Deployment</h3>
         <p>
@@ -226,15 +248,18 @@ export default function CloudServicesArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What are the differences between IaaS, PaaS, and SaaS?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: IaaS (Infrastructure as a Service) provides raw computing resources (VMs, storage, networking) — you manage the OS, middleware, runtime, and applications. PaaS (Platform as a Service) provides the platform (OS, middleware, runtime) — you manage only the application and data. SaaS (Software as a Service) provides the complete application — you manage only your data and configuration. IaaS provides maximum flexibility but requires the most management. PaaS reduces management but reduces flexibility. SaaS eliminates management but provides the least flexibility. Examples: IaaS (AWS EC2), PaaS (Google App Engine), SaaS (Gmail, Salesforce).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

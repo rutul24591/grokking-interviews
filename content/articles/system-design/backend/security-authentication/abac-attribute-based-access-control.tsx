@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,21 +28,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>ABAC (Attribute-Based Access Control)</strong> is an authorization model that grants access based
           on attributes of the user, resource, action, and environment — rather than static roles. In ABAC, access
           decisions are made by evaluating policies against attributes: &quot;Allow managers to access documents in their
           department during business hours from corporate network.&quot; This is far more expressive than RBAC, which
           can only evaluate &quot;Is the user assigned to the Manager role?&quot;
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           ABAC is essential for organizations that need fine-grained, context-aware access control — cloud
           infrastructure (access based on device, network, MFA status), healthcare (access based on
           patient-doctor relationships, emergency status), financial services (access based on transaction
           amount, dual approval requirements), and multi-tenant SaaS (access based on tenant isolation,
           subscription tier). ABAC is recommended by NIST (SP 800-162) and is supported by modern policy
           engines (OPA, AWS Cedar, XACML).
-        </p>
+        </HighlightBlock>
         <p>
           ABAC addresses a fundamental limitation of RBAC — role explosion. In RBAC, fine-grained access
           requirements lead to creating many roles (e.g., &quot;manager-europe-readonly&quot;, &quot;manager-asia-write&quot;),
@@ -79,15 +83,18 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Policy evaluation is the core of ABAC — the policy engine receives the request attributes (user,
           resource, action, environment), evaluates them against the policy rules, and returns an allow/deny
           decision. Policies are written in a declarative language (Rego, Cedar, XACML) that defines the
           conditions under which access is allowed. For example, in Rego: <code>{`allow { input.user.department == input.resource.owner; input.action == "read"; input.time >= "09:00"; input.time <= "18:00" }`}</code>.
           All conditions must be true for the decision to be &quot;allow&quot; — if any condition is false, the decision
           is &quot;deny&quot; (default deny).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Attribute management is essential for ABAC — attributes must be accurate, up-to-date, and available
           during policy evaluation. User attributes (role, department, clearance) are typically sourced from
           the identity provider (Okta, Azure AD, Active Directory). Resource attributes (type, classification,
@@ -95,7 +102,7 @@ export default function ArticlePage() {
           attributes (time, IP, network, device status) are sourced from the request context (HTTP headers,
           network metadata, device management system). Attribute accuracy is critical — if attributes are
           incorrect, policy decisions will be incorrect.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/abac-attribute-based-access-control-diagram-1.svg"
           alt="ABAC decision flow showing user attributes, resource attributes, action, and environment attributes feeding into policy engine"
@@ -143,22 +150,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The ABAC architecture consists of the policy engine (which evaluates policies against request
           attributes), the attribute store (which provides user, resource, and environment attributes), the
           policy store (which stores policy rules), and the decision logger (which logs all policy decisions).
           The policy engine is the core component — it receives the request attributes, retrieves the
           applicable policies from the policy store, evaluates the policies against the attributes, and returns
           the allow/deny decision.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The ABAC decision flow begins with the client sending a request to the application. The application
           extracts the request attributes (user identity, requested resource, action, environment context) and
           sends them to the policy engine. The policy engine retrieves the applicable policies from the policy
           store, evaluates the policies against the attributes, and returns the allow/deny decision. If the
           decision is &quot;allow,&quot; the application processes the request. If the decision is &quot;deny,&quot; the application
           returns a 403 Forbidden response.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/abac-attribute-based-access-control-diagram-3.svg"
           alt="ABAC use cases showing fine-grained access control for cloud infrastructure, healthcare, multi-tenant SaaS, and financial services"
@@ -200,7 +210,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           ABAC versus RBAC is the primary trade-off in access control model selection. ABAC is more expressive
           — it can express context-aware rules (time-based, location-based, device-based access control) that
           RBAC cannot express. However, ABAC is more complex to design, implement, and audit — policies are
@@ -210,8 +223,8 @@ export default function ArticlePage() {
           recommended approach for most organizations is RBAC for standard access control (role-based
           permissions) with ABAC extensions for context-aware rules (time-based, location-based, device-based
           access control).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Centralized policy engine versus decentralized policy engine is a trade-off between consistency and
           resilience. Centralized policy engines provide consistent policy evaluation across all applications —
           all applications use the same policies, making auditing and compliance straightforward. However,
@@ -221,7 +234,7 @@ export default function ArticlePage() {
           The recommended approach is centralized policy management (policies are defined and stored centrally)
           with decentralized policy evaluation (each application runs its own policy engine with the latest
           policy version).
-        </p>
+        </HighlightBlock>
         <p>
           Rego versus Cedar versus XACML is a trade-off between expressiveness and simplicity. Rego (OPA) is
           the most expressive — it supports complex logic (conditionals, loops, aggregations) and is designed
@@ -250,18 +263,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use default deny — if no policy rule explicitly allows the request, the decision should be &quot;deny.&quot;
           Default deny ensures that new resources, actions, or users are denied access by default until a policy
           rule explicitly grants access. This is essential for security — it prevents accidental access grants
           when policies are incomplete or attributes are missing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Keep policies simple — avoid complex conditions, loops, and aggregations in policies. Complex policies
           are difficult to understand, test, and audit. If a policy is complex, consider breaking it into
           multiple simpler policies (each policy handles a specific aspect of the access decision). Simple
           policies are easier to test, easier to audit, and faster to evaluate.
-        </p>
+        </HighlightBlock>
         <p>
           Cache attributes to reduce policy evaluation latency — user attributes (role, department) and resource
           attributes (type, classification) do not change frequently, so they can be cached in memory or Redis.
@@ -298,22 +314,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Overly complex policies are a common ABAC pitfall — policies with complex conditions, loops, and
           aggregations are difficult to understand, test, and audit. Complex policies are also slow to evaluate,
           degrading application performance. The fix is to keep policies simple — break complex policies into
           multiple simpler policies, each handling a specific aspect of the access decision. If a policy cannot
           be simplified, consider using RBAC for the standard access control and ABAC only for context-aware
           rules.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Inaccurate attributes are a common ABAC pitfall — if user attributes (role, department) or resource
           attributes (type, classification) are incorrect, policy decisions will be incorrect. For example, if
           a user&apos;s department is not updated when they change jobs, they may retain access to resources they
           should no longer access. The fix is to automate attribute updates — integrate with the HR system to
           detect job changes and update user attributes automatically. Additionally, audit attributes regularly
           to ensure they are accurate.
-        </p>
+        </HighlightBlock>
         <p>
           Not testing policies before deployment is a common ABAC pitfall — policy changes can inadvertently
           grant or deny access, and without testing, these errors are not detected until they affect users. The
@@ -343,7 +362,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses ABAC for its cloud infrastructure access control — policies are
           defined in Rego (OPA) and evaluated against user, resource, action, and environment attributes.
           Policies include: &quot;Allow engineers to access production only from corporate network with MFA&quot;
@@ -352,8 +374,8 @@ export default function ArticlePage() {
           deployed as a sidecar alongside each application. The platform logs all policy decisions and monitors
           for anomalous patterns (denied access attempts, unusual access patterns). The platform has achieved
           SOC 2 compliance in part due to its ABAC controls.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A healthcare organization uses ABAC for its patient data access control — policies are defined in
           Cedar (AWS) and evaluated against user, resource, action, and environment attributes. Policies
           include: &quot;Allow doctors to access patient records only for their assigned patients&quot; (user.role ==
@@ -362,7 +384,7 @@ export default function ArticlePage() {
           organization uses AWS IAM with Cedar policies for cloud infrastructure access and a custom policy
           engine for patient data access. The organization logs all policy decisions and audits them monthly.
           The organization achieves HIPAA compliance in part due to its ABAC controls.
-        </p>
+        </HighlightBlock>
         <p>
           A financial services company uses ABAC for its transaction approval system — policies are defined in
           Rego (OPA) and evaluated against user, resource, action, and environment attributes. Policies
@@ -390,14 +412,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between RBAC and ABAC, and when would you use ABAC over RBAC?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               RBAC grants permissions based on the user&apos;s role — if the user is assigned to the Manager role, they receive all permissions granted to the Manager role. ABAC grants permissions based on attributes of the user, resource, action, and environment — access is granted if the attributes satisfy the policy rules, regardless of the user&apos;s role.
-            </p>
+            </HighlightBlock>
             <p>
               Use ABAC over RBAC when you need context-aware access control — for example, &quot;allow access only during business hours&quot; or &quot;allow access only from the corporate network&quot; or &quot;allow access only to resources owned by the user&apos;s department.&quot; RBAC cannot express these context-aware rules — it can only evaluate the user&apos;s role. Use RBAC for standard access control (role-based permissions) and ABAC for context-aware rules.
             </p>

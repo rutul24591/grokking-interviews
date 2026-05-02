@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,10 @@ export default function ReadReceiptsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Read receipts show message delivery and read status, providing senders
           visibility into message consumption while respecting recipient privacy
           preferences. The system typically shows multiple states: sent (message
@@ -47,8 +51,8 @@ export default function ReadReceiptsArticle() {
           read (recipient opened the message). These status indicators reduce
           communication uncertainty—senders know if their message was received
           and seen, enabling follow-up decisions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The social dynamics of read receipts are complex. Senders value the
           certainty of knowing messages were seen. Recipients may feel pressure
           to respond immediately upon being marked as "read". Some users disable
@@ -56,7 +60,7 @@ export default function ReadReceiptsArticle() {
           asymmetric information—senders know when recipients read, but
           recipients may not want this visibility. This tension between
           transparency and privacy requires careful design with user controls.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, read receipt implementation
           involves technical and social challenges. The system must track
@@ -71,21 +75,24 @@ export default function ReadReceiptsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Message Status States</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Sent status indicates message reached the server. Client receives
           acknowledgment from server after successful upload. Displayed as
           single checkmark or "Sent" label. Does not guarantee delivery to
           recipient—server may have message but recipient's device is offline.
           Timestamp reflects server receive time.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Delivered status indicates message reached recipient's device. Server
           receives acknowledgment from recipient's client. Displayed as double
           checkmark (gray) or "Delivered" label. Recipient may not have seen the
           message yet—notification may be unread, app may not be open. Timestamp
           reflects device receive time.
-        </p>
+        </HighlightBlock>
         <p>
           Read status indicates recipient opened the conversation and message
           was visible. Triggered when conversation view scrolls message into
@@ -208,13 +215,16 @@ export default function ReadReceiptsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Read receipt architecture spans client detection, status tracking,
           real-time sync, and privacy evaluation. Client detects when messages
           are read based on triggers. Status service tracks per-message state.
           WebSocket broadcasts status changes. Privacy service evaluates
           visibility per recipient.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/read-receipts/read-receipts-architecture.svg"
@@ -225,12 +235,12 @@ export default function ReadReceiptsArticle() {
         />
 
         <h3>Client Detection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Read detection uses viewport observation. Intersection Observer API
           tracks when message element enters viewport. Threshold set to 50%
           visibility—message half-visible counts as read. Debounce prevents
           rapid state changes during scroll. Read event fires once per message.
-        </p>
+        </HighlightBlock>
         <p>
           Dwell time tracking measures how long message visible. Timer starts
           when message enters viewport. If visible for 2+ seconds, mark read.
@@ -347,20 +357,23 @@ export default function ReadReceiptsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Read receipt design involves trade-offs between transparency, privacy,
           social pressure, and user control. Understanding these trade-offs
           enables informed decisions aligned with product values and user
           expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Default On vs Default Off</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Default on: read receipts enabled by default. Pros: Maximum
           transparency, senders informed, social norm. Cons: Privacy concerns,
           response pressure, users must opt-out. Best for: Social apps,
           close-communication focus (WhatsApp, iMessage).
-        </p>
+        </HighlightBlock>
         <p>
           Default off: read receipts disabled by default. Pros: Privacy-first,
           no pressure, users opt-in. Cons: Senders uninformed, may seem
@@ -438,17 +451,20 @@ export default function ReadReceiptsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use scroll-into-view detection:</strong> Intersection
             Observer API for accurate read detection. 50% visibility threshold.
             More accurate than conversation-open trigger. Prevents false reads.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement dwell time:</strong> 2-5 second threshold before
             marking read. Prevents accidental reads from quick scroll. Combines
             with scroll-into-view for accuracy. Tunable per message length.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Respect privacy settings:</strong> Check both sender and
             recipient preferences. Don't send read event if either disabled.
@@ -496,17 +512,20 @@ export default function ReadReceiptsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Conversation-open trigger:</strong> Marks all read when
             conversation opens, even unseen messages. Solution: Use
             scroll-into-view + dwell time for accuracy.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No privacy controls:</strong> Forced read receipts frustrate
             users. Solution: Global toggle + per-conversation override.
             Reciprocal enforcement.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No offline handling:</strong> Read events lost when offline.
             Solution: Queue events locally, send on reconnect with original
@@ -548,21 +567,24 @@ export default function ReadReceiptsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>WhatsApp Read Receipts</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WhatsApp shows single gray check (sent), double gray checks
           (delivered), double blue checks (read). Default on, can disable in
           settings. Reciprocal—if you disable, you can't see others'. Group
           chats show read status per member with tap to expand.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">iMessage Read Receipts</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           iMessage shows "Delivered" under message, then "Read" with timestamp.
           Default on per Apple ID. Can disable per conversation or globally.
           Reciprocal enforcement. Multi-device sync across iPhone, iPad, Mac.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Telegram Read Receipts</h3>
         <p>
@@ -591,12 +613,15 @@ export default function ReadReceiptsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you detect when a message is read?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use Intersection Observer API to track when
               message element enters viewport with 50% visibility threshold.
               Combine with dwell time—message must be visible for 2-5 seconds
@@ -604,7 +629,7 @@ export default function ReadReceiptsArticle() {
               background notification preview). Check privacy settings before
               sending read event—if user or recipient disabled receipts, don't
               send.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function StoredProceduresFunctionsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Stored procedures</strong> and <strong>functions</strong> are database objects that contain procedural logic executed on the database server. Stored procedures perform operations (INSERT, UPDATE, DELETE) and can return result sets. Functions compute and return values, usable within SQL queries. Both encapsulate business logic close to data, reducing network round-trips and centralizing data access rules. Major databases support stored logic: PostgreSQL (PL/pgSQL), Oracle (PL/SQL), SQL Server (T-SQL), MySQL (SQL procedures).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The distinction matters for system design: stored procedures excel at batch operations (update thousands of rows atomically), complex calculations (financial computations), and data validation (enforce business rules at database level). Application logic excels at complex business workflows, external API integration, and scenarios requiring version control and testing frameworks. Stored procedures trade portability and testability for performance and data locality.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, understanding stored procedure trade-offs is essential for architecture decisions. Key considerations include: coupling (database logic tightly couples application to database schema), testing (stored procedures harder to test than application code), deployment (database changes require careful migration), and security (procedures can enforce access control). Modern trends favor application logic for flexibility, but stored procedures remain valuable for specific use cases (batch processing, data integrity, performance-critical operations).
         </p>
@@ -42,13 +46,16 @@ export default function StoredProceduresFunctionsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Stored Procedures:</strong> Procedures are named blocks of SQL and procedural code stored in database. They accept parameters, execute operations, and can return result sets. Example: transfer_funds(from_account, to_account, amount) debits one account, credits another, logs transaction—all atomically. Procedures reduce network round-trips (one call vs multiple queries) and centralize logic (single source of truth). Procedures can contain complex logic including loops, conditionals, exception handling, and multiple SQL statements. They execute as a single unit of work with transaction semantics.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Functions:</strong> Functions compute and return values, usable within SQL queries. Scalar functions return single values (calculate_tax(amount)). Table functions return result sets (get_recent_orders(user_id, limit)). Functions enable computed columns, complex filtering, and reusable calculations. Unlike procedures, functions cannot modify database state (in most databases). Functions are deterministic (same input = same output) and can be used in SELECT, WHERE, and JOIN clauses. User-defined functions extend SQL with custom logic.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Procedural Languages:</strong> Databases support procedural extensions to SQL. PL/pgSQL (PostgreSQL) adds loops, conditionals, exception handling. PL/SQL (Oracle) is mature with extensive libraries. T-SQL (SQL Server) integrates with .NET. SQL/PSM (MySQL) provides basic procedural features. Language choice affects portability—procedures written for Oracle won't run on PostgreSQL without modification. Each language has different syntax for variables, loops, error handling, and cursor management.
           </li>
@@ -72,17 +79,20 @@ export default function StoredProceduresFunctionsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Aspect</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Aspect</th>
               <th className="p-3 text-left">Stored Procedures</th>
               <th className="p-3 text-left">Application Logic</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3">
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3">
                 <strong>Performance</strong>
               </td>
               <td className="p-3">
@@ -99,8 +109,8 @@ export default function StoredProceduresFunctionsArticle() {
                 <br />
                 • Query optimization per call
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Maintainability</strong>
               </td>
@@ -118,8 +128,8 @@ export default function StoredProceduresFunctionsArticle() {
                 <br />
                 • Rich debugging tools
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Portability</strong>
               </td>
@@ -137,7 +147,7 @@ export default function StoredProceduresFunctionsArticle() {
                 <br />
                 • Easier database switch
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Use Cases</strong>
@@ -169,13 +179,16 @@ export default function StoredProceduresFunctionsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use for Batch Operations:</strong> Stored procedures excel at batch operations that would require multiple round-trips from application. Example: end-of-day processing (update balances, calculate interest, generate statements) in single procedure call. Reduces network overhead, ensures atomicity, improves performance. Keep procedures focused—single responsibility, not monolithic business logic. Batch operations should be idempotent (safe to retry) and have clear success/failure semantics.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Document Thoroughly:</strong> Stored procedures are hidden logic—document purpose, parameters, return values, side effects, and error handling. Use consistent naming conventions (verb_noun: calculate_interest, transfer_funds). Include usage examples in comments. Maintain procedure catalog accessible to development team. Undocumented procedures cause bugs when developers don't understand side effects. Document dependencies (which tables, which other procedures). Document performance characteristics (expected execution time, resource usage).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Version Control Database Code:</strong> Treat stored procedures as code—store in version control (Git), review changes (pull requests), track history. Use migration tools (Flyway, Liquibase) for deployment. Tag releases with application versions. Enable rollback to previous versions. Database code deserves same rigor as application code. Use branching strategies (feature branches for procedure changes). Automate deployment with CI/CD pipelines.
           </li>
@@ -193,13 +206,16 @@ export default function StoredProceduresFunctionsArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ul className="space-y-4">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Banking Fund Transfers:</strong> Banks use stored procedures for fund transfers—debit source account, credit destination account, log transaction, check limits, validate accounts. All operations atomic—either all succeed or all fail. Procedure executes with elevated permissions (access all accounts), callers granted only execute permission. Reduces network round-trips, ensures data integrity, enforces business rules at database level. Transaction isolation prevents race conditions (two transfers from same account simultaneously).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>E-commerce Order Processing:</strong> E-commerce platforms use stored procedures for order processing—create order, reserve inventory, calculate totals, apply discounts, update statistics. Single procedure call ensures atomicity (order not created if inventory unavailable). Complex calculations (tax, shipping, discounts) executed close to data. Reduces application complexity, ensures consistent order processing. Procedures handle edge cases (out of stock, invalid address, payment failure) with clear error codes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Data Warehouse ETL:</strong> Data warehouses use stored procedures for ETL (Extract, Transform, Load)—transform source data, validate quality, load into warehouse tables, update metadata. Procedures handle millions of rows efficiently (set-based operations). Scheduled execution (nightly batch). Centralizes ETL logic, enables monitoring, provides audit trail. Procedures track progress (rows processed, errors encountered) for operational visibility.
           </li>
@@ -220,15 +236,18 @@ export default function StoredProceduresFunctionsArticle() {
 
       <section>
         <h2>Security Considerations</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Access Control</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Principle of Least Privilege:</strong> Grant execute permission on procedures, not direct table access. Procedures run with definer's rights—can access tables caller cannot. Limits exposure if caller credentials compromised. Review permissions regularly, revoke unused grants. Use database roles for permission management (analyst_role, admin_role).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Parameter Validation:</strong> Validate all parameters inside procedures. Never concatenate parameters into dynamic SQL (SQL injection risk). Use parameterized queries. Validate data types, ranges, formats. Reject invalid input with clear error messages. Whitelist allowed values where possible (enum validation).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Dynamic SQL Security:</strong> Avoid dynamic SQL—use static SQL with parameters. If dynamic SQL is necessary (dynamic table names, dynamic filters), validate and sanitize inputs. Use QUOTENAME (SQL Server) or format (PostgreSQL) to safely quote identifiers. Never include user input directly in dynamic SQL strings.
             </li>
@@ -265,15 +284,18 @@ export default function StoredProceduresFunctionsArticle() {
 
       <section>
         <h2>Performance Optimization</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Query Optimization</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Use Set-Based Operations:</strong> Procedures should use set-based SQL (UPDATE table SET...) not row-by-row loops. Set-based operations are orders of magnitude faster. Loops in procedural code should be last resort. Let database optimizer handle bulk operations. Rewrite cursor-based logic as set-based operations where possible.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Avoid Unnecessary Cursors:</strong> Cursors process rows one at a time—slow and resource-intensive. Use set-based alternatives where possible. If cursor needed, use FORWARD_ONLY, READ_ONLY for best performance. Close cursors promptly to release resources. Use cursor variables for reusable cursor logic.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Parameter Sniffing:</strong> Database optimizers use parameter values to create execution plans. Bad parameter values can create suboptimal plans. Use OPTION (RECOMPILE) in SQL Server, use local variables in PostgreSQL to avoid parameter sniffing issues. Test procedures with various parameter values to identify sniffing problems.
             </li>
@@ -313,15 +335,18 @@ export default function StoredProceduresFunctionsArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Developer Skills:</strong> Stored procedures require database-specific skills (PL/SQL, T-SQL, PL/pgSQL). Developers proficient in application languages may not know database languages. Training costs, hiring challenges. Consider skill availability when choosing approach. Budget for ongoing training (database versions change, new features).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Testing Infrastructure:</strong> Testing procedures requires database instances, test data, testing frameworks. More complex than application unit tests. CI/CD pipeline needs database provisioning. Estimate infrastructure costs for testing. Use containerized databases for test environments (Docker, Kubernetes).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Documentation Overhead:</strong> Procedures require thorough documentation (purpose, parameters, examples). Documentation takes time to create and maintain. Use automated documentation tools (SQLDoc, Redgate SQL Doc). Include documentation in code review process.
             </li>
@@ -358,12 +383,15 @@ export default function StoredProceduresFunctionsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: When are stored procedures useful?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: When are stored procedures useful?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Stored procedures are useful for: batch operations (update thousands of rows atomically), complex calculations (financial computations close to data), data validation (enforce business rules at database level), reducing network round-trips (single call vs multiple queries), centralizing data access (single source of truth for data operations). Examples: fund transfers in banking, order processing in e-commerce, ETL in data warehouses, interest calculations in financial systems. Stored procedures reduce latency (execute close to data), ensure atomicity (all operations succeed or fail together), and enforce consistency (same logic for all callers). Trade-off: procedures increase database coupling and reduce portability.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

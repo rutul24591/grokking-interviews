@@ -55,20 +55,20 @@ export default function OptimisticUpdatesConciseArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           Understanding optimistic updates requires grasping several interconnected concepts that govern how state flows
           between the client and server during mutations.
-        </HighlightBlock>
+        </p>
 
         <h3>Optimistic vs Pessimistic Updates</h3>
-        <HighlightBlock as="p" tier="important">
+        <p>
           <strong>Pessimistic updates</strong> follow a request-then-update pattern: the user triggers an action, the
           client sends a request, waits for the server response, and only then updates the UI. This approach guarantees
           data consistency but introduces latency into every interaction. <strong>Optimistic updates</strong> invert this
           by following an update-then-confirm pattern: the UI changes immediately, the request fires in the background,
           and the client reconciles once the server responds. The trade-off is added complexity in exchange for a
           dramatically better user experience.
-        </HighlightBlock>
+        </p>
 
         <h3>Snapshot-and-Rollback Pattern</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -130,12 +130,12 @@ export default function OptimisticUpdatesConciseArticle() {
           values, normalized data) that the client could not predict. Reconciliation replaces the optimistic snapshot
           with the actual server data.
         </p>
-        <HighlightBlock as="p" tier="important">
+        <p>
           Idempotency is a critical requirement for optimistic update patterns. If a network hiccup causes a retry,
           the server must handle duplicate requests gracefully. This is typically achieved through client-generated
           idempotency keys (UUIDs sent with the request) or server-side deduplication windows. Without idempotency,
           retrying a failed "add to cart" operation could add the item twice.
-        </HighlightBlock>
+        </p>
 
         <h3>Retry Strategies</h3>
         <HighlightBlock as="p" tier="important">
@@ -359,16 +359,16 @@ export default function OptimisticUpdatesConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           Optimistic updates are ubiquitous in modern web applications:
-        </HighlightBlock>
+        </p>
         <ul className="space-y-3">
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Like/Reaction Buttons:</strong> Twitter, Instagram, and Facebook update the like count and icon
             state instantly on tap. The count increments immediately, and a heart animation plays. If the server
             rejects (rate limit, deleted post), the count silently decrements. This is the canonical optimistic
             update use case because the operation is idempotent, low-risk, and high-frequency.
-          </HighlightBlock>
+          </li>
           <li>
             <strong>Todo Lists and Task Management:</strong> Apps like Todoist and Linear toggle task completion,
             reorder items, and update labels optimistically. Dragging a task to a different column in a Kanban board
@@ -471,22 +471,26 @@ export default function OptimisticUpdatesConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: optimistic UI requires rollback safety and correctness under retries/concurrency. Use these
+          to ground answers in mutation lifecycles (snapshot/rollback/invalidate), idempotency, and UX latency limits.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               TanStack Query - Optimistic Updates Guide
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.apollographql.com/docs/react/performance/optimistic-ui/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Apollo Client - Optimistic UI Documentation
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.nngroup.com/articles/response-times-3-important-limits/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Nielsen Norman Group - Response Time Limits
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://web.dev/articles/rail" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev - RAIL Performance Model

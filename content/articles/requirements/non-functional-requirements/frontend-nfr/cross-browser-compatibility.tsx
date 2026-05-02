@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,7 +35,10 @@ export default function CrossBrowserCompatibilityArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cross-Browser Compatibility</strong> ensures that web
           applications function correctly and render consistently across
           different browsers (Chrome, Firefox, Safari, Edge) and their various
@@ -46,8 +50,8 @@ export default function CrossBrowserCompatibilityArticle() {
           unsupported browser represents a segment of users who cannot access
           your product, and every browser-specific bug represents engineering
           time spent on workarounds rather than feature development.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The challenge has evolved significantly over the past decade. In the
           2010s, Internet Explorer 6-11 compatibility was the dominant concern,
           requiring extensive polyfills and CSS workarounds. The rise of
@@ -59,7 +63,7 @@ export default function CrossBrowserCompatibilityArticle() {
           historically lags behind Chrome and Firefox in adopting new features.
           For this reason, Safari is often called the &quot;new IE&quot; in
           frontend engineering circles.
-        </p>
+        </HighlightBlock>
         <p>
           Cross-browser compatibility decisions balance user reach against
           development cost. Supporting older browsers requires polyfills,
@@ -76,7 +80,10 @@ export default function CrossBrowserCompatibilityArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature detection is the cornerstone of cross-browser compatibility.
           Rather than detecting which browser the user is running (browser
           detection) and serving different code based on the user agent string,
@@ -92,8 +99,8 @@ export default function CrossBrowserCompatibilityArticle() {
           are supported (like <code>flexbox</code>, <code>cssgrid</code>) and
           which are not (like <code>no-webp</code>), enabling CSS styling based
           on feature support.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Polyfills add missing features to browsers that do not support them
           natively. A polyfill is a piece of code that provides the
           functionality of a modern API on older browsers — for example, a
@@ -105,7 +112,7 @@ export default function CrossBrowserCompatibilityArticle() {
           equivalent ES5 code. The combination of polyfills (for missing APIs)
           and transpilation (for missing syntax) enables developers to write
           modern code while maintaining compatibility with older browsers.
-        </p>
+        </HighlightBlock>
         <p>
           CSS compatibility requires a different approach than JavaScript
           compatibility. The <code>@supports</code> rule (CSS Feature Queries)
@@ -138,7 +145,10 @@ export default function CrossBrowserCompatibilityArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The cross-browser compatibility pipeline processes source code through
           several stages before delivering browser-compatible output. During
           development, the build tool reads the browserslist configuration (from
@@ -152,8 +162,8 @@ export default function CrossBrowserCompatibilityArticle() {
           request&apos;s User-Agent header and serve only the polyfills that
           the specific browser needs, minimizing bundle size for modern browsers
           while providing compatibility for older ones.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The runtime feature detection layer handles cases where static
           analysis cannot determine browser support. Dynamic imports load
           polyfills on demand when a feature is detected as missing — for
@@ -165,7 +175,7 @@ export default function CrossBrowserCompatibilityArticle() {
           functions with reduced capabilities rather than breaking completely —
           for example, falling back from CSS Grid to Flexbox, from WebP images
           to JPEG, or from the Web Animations API to CSS transitions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/polyfills-transpilation.svg"
@@ -176,7 +186,10 @@ export default function CrossBrowserCompatibilityArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Browser support scope decisions directly impact development velocity
           and bundle size. Supporting IE 11 requires transpiling all modern
           JavaScript to ES5 (increasing bundle size by 20-40%), loading
@@ -190,8 +203,8 @@ export default function CrossBrowserCompatibilityArticle() {
           investment in compatibility is justified. Most organizations have
           dropped IE 11 support as of 2024-2025, following Microsoft&apos;s own
           end-of-life announcement.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Polyfill delivery strategy affects both performance and compatibility.
           Bundling all polyfills into the main JavaScript bundle guarantees
           compatibility but penalizes modern browsers with unnecessary code
@@ -205,7 +218,7 @@ export default function CrossBrowserCompatibilityArticle() {
           — provides an excellent middle ground: modern browsers get the smaller,
           faster modern bundle, while older browsers receive the compatible
           legacy bundle.
-        </p>
+        </HighlightBlock>
         <p>
           CSS compatibility strategies range from comprehensive (Autoprefixer +
           PostCSS preset-env + manual fallbacks) to minimal (Autoprefixer only).
@@ -222,7 +235,10 @@ export default function CrossBrowserCompatibilityArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Establish and document a browser support policy based on actual user
           analytics. Define the minimum supported version for each browser
           (Chrome last 2 versions, Firefox last 2 versions, Safari last 2
@@ -232,8 +248,8 @@ export default function CrossBrowserCompatibilityArticle() {
           determine what transformations are needed. Review and update the
           policy quarterly as user analytics change and older browser versions
           naturally lose users.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use feature detection instead of browser detection universally. Check
           for API availability before using it, provide fallbacks for missing
           features, and use Modernizr for CSS feature detection where
@@ -243,7 +259,7 @@ export default function CrossBrowserCompatibilityArticle() {
           <code>@supports</code> blocks. Let Autoprefixer handle vendor prefixes
           automatically based on your browserslist configuration — do not write
           prefixed CSS manually.
-        </p>
+        </HighlightBlock>
         <p>
           Test on actual devices and browsers, not just DevTools device
           simulation. DevTools is useful for quick iteration but cannot replicate
@@ -258,7 +274,10 @@ export default function CrossBrowserCompatibilityArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Browser detection via User-Agent string parsing is one of the most
           fragile patterns in frontend development. User-Agent strings are
           frequently updated, can be spoofed, and new browser versions
@@ -270,8 +289,8 @@ export default function CrossBrowserCompatibilityArticle() {
           use the User-Agent Client Hints API (a modern, privacy-preserving
           replacement for User-Agent strings) rather than parsing the
           User-Agent string directly.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The iOS Safari 100vh problem is a well-known cross-browser quirk where
           <code>height: 100vh</code> includes the area behind the browser&apos;s
           address bar, causing content to be hidden behind the UI on mobile
@@ -282,7 +301,7 @@ export default function CrossBrowserCompatibilityArticle() {
           positioning (elements shift when the virtual keyboard appears on
           Android) and overscroll behavior (pull-to-refresh conflicts with
           in-page scrolling).
-        </p>
+        </HighlightBlock>
         <p>
           Over-polyfilling is a common performance mistake. Including polyfills
           for features that all your target browsers already support natively
@@ -297,7 +316,10 @@ export default function CrossBrowserCompatibilityArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Government and public-sector websites face the strictest browser
           compatibility requirements because they must serve all citizens
           regardless of their browser choice or technical sophistication. The
@@ -308,8 +330,8 @@ export default function CrossBrowserCompatibilityArticle() {
           without modern layout features. The trade-off is accepted because
           excluding citizens from accessing government services based on their
           browser choice is not acceptable for public services.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enterprise B2B applications often have relaxed browser requirements
           because the organization controls the employee environment. Companies
           can mandate Chrome or Edge as the approved browser, eliminating the
@@ -318,7 +340,7 @@ export default function CrossBrowserCompatibilityArticle() {
           transpilation or polyfills, significantly improving development
           velocity and reducing bundle size. The browser support policy is
           enforced through IT policy rather than engineering workarounds.
-        </p>
+        </HighlightBlock>
         <p>
           Consumer e-commerce sites must balance broad compatibility with
           performance optimization. They typically support the last 2 versions
@@ -334,12 +356,15 @@ export default function CrossBrowserCompatibilityArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you decide which browsers to support?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Base the decision on actual user analytics from your
               application, not assumptions. Check your analytics for browser
               market share among your users. Consider the business context —
@@ -348,7 +373,7 @@ export default function CrossBrowserCompatibilityArticle() {
               supporting each browser. Document the browser support policy with
               specific minimum versions and have stakeholders approve it. Review
               and update quarterly as analytics change.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

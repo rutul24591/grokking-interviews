@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Privacy-compliant tracking</strong> is analytics implementation that respects user privacy rights and complies with regulations like GDPR (EU), CCPA (California), LGPD (Brazil), and emerging privacy laws worldwide. It balances business need for user behavior data with individual rights to privacy, consent, and data control.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Privacy compliance is not optional—violations carry severe penalties. GDPR fines can reach 20 million euros or 4% of global annual revenue, whichever is higher. CCPA allows statutory damages of 100 to 750 dollars per consumer per incident. Beyond fines, privacy violations damage brand trust and user relationships.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, privacy-compliant tracking requires balancing four competing concerns. <strong>Compliance</strong> means meeting all regulatory requirements for consent, data rights, and retention. <strong>Data Quality</strong> means maintaining analytics quality despite consent restrictions and data minimization. <strong>User Experience</strong> means respecting privacy without degrading experience for consenting users. <strong>Business Value</strong> means extracting actionable insights while respecting privacy boundaries.
         </p>
@@ -48,14 +52,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Key Privacy Regulations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Major privacy regulations affect tracking differently. <strong>GDPR (General Data Protection Regulation - EU)</strong> applies to any organization processing EU residents' data. It requires explicit opt-in consent before tracking, which must be freely given, specific, informed, and unambiguous. It provides data rights including right to access, rectify, erase, port, and object to processing. Penalties reach up to 20 million euros or 4% of global annual revenue.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>CCPA (California Consumer Privacy Act)</strong> applies to businesses collecting California residents' data. It requires an opt-out mechanism ("Do Not Sell My Personal Information"). It provides data rights including right to know, delete, and opt-out of sale. Penalties are 100 to 750 dollars per consumer per incident in statutory damages.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>LGPD (Lei Geral de Proteção de Dados - Brazil)</strong> applies to organizations processing Brazilian residents' data. It requires explicit opt-in consent similar to GDPR. Penalties reach up to 2% of Brazilian revenue, capped at 50 million reais.
         </p>
@@ -115,14 +122,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A privacy-compliant tracking architecture treats privacy as a first-class requirement with proper consent management, data governance, and user rights handling.
-        </p>
+        </HighlightBlock>
 
         <h3>Consent Management Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement consent management by displaying a consent banner on the first visit that explains what data is collected and why. Allow granular choices with separate consent for analytics, marketing, and functional. Store consent choices with timestamp and version. Share consent status with all tracking systems. Allow easy consent withdrawal and stop tracking immediately.
-        </p>
+        </HighlightBlock>
         <p>
           Implementation: Use a Consent Management Platform (CMP) like OneTrust, Cookiebot, or build custom.
         </p>
@@ -178,12 +188,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Privacy-compliant tracking involves trade-offs between privacy, data quality, and implementation complexity. Full consent plus tracking provides good privacy with consent but the best data quality and medium complexity. This is best for most organizations. Privacy-first analytics provides the best privacy and good aggregated data quality with low complexity. This is best for privacy-focused sites. Cookieless tracking provides fair privacy and fair data quality with low complexity. This is best for simple analytics needs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that consent-based tracking with privacy safeguards works best for most organizations. Get consent, but minimize data, anonymize where possible, and respect user rights.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -191,12 +204,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement consent management by using a CMP or building a custom consent banner with granular choices. Gate tracking on consent by never tracking before consent and queueing events until consent is given. Minimize data collection by collecting only data necessary for stated purposes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Anonymize where possible by using aggregated data instead of individual-level when sufficient. Set retention policies by defining and enforcing data retention periods. Enable user rights by providing mechanisms for access, deletion, and portability. Document processing by maintaining records of processing activities (GDPR requirement). Conduct regular audits of tracking implementation for compliance annually.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -204,12 +220,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tracking before consent by firing tracking scripts before the user consents violates GDPR. Pre-ticked boxes are invalid consent under GDPR—consent must be opt-in, not opt-out. Bundled consent by combining analytics consent with terms of service is invalid.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Ignoring user rights by not providing access or deletion mechanisms violates regulations. Indefinite retention by keeping data forever violates the data minimization principle. Cookie IDs as anonymous is wrong—cookie IDs are personal data under GDPR, so consent is required. No audit trail means you can't prove compliance without documentation.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -217,16 +236,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>News Site: GDPR Compliance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A news site had EU traffic but no GDPR-compliant tracking. The solution was implementing a consent banner with granular choices, gating all tracking on consent, setting 13-month retention for consent records, and enabling user data deletion. The site achieved GDPR compliance with a 65% consent rate and zero compliance incidents.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce: Privacy-First Analytics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce site wanted to avoid GDPR complexity. The solution was switching to privacy-first analytics (Plausible) with no cookies, no personal data, and aggregated only. No consent banner was needed. This simplified compliance while maintaining essential analytics and improving site trust.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS: User Rights Portal</h3>
         <p>
@@ -244,14 +266,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What are the key requirements for GDPR-compliant tracking?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Consent requires explicit opt-in before tracking, which must be freely given, specific, informed, and unambiguous. Data minimization means collecting only data necessary for stated purposes. User rights include enabling access, rectification, erasure, portability, and objection. Retention means deleting data when no longer needed and defining retention periods. Documentation requires maintaining records of processing activities.
-            </p>
+            </HighlightBlock>
             <p>
               Non-compliance can result in fines up to 20 million euros or 4% of global annual revenue.
             </p>

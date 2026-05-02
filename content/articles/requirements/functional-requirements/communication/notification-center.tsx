@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function NotificationCenterArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Notification center aggregates and displays all user notifications in one place, enabling users to stay informed about activity relevant to them. Notifications include messages, mentions, likes, comments, system alerts, and reminders. A well-designed notification center reduces notification fatigue through smart grouping, filtering, and preferences while ensuring users never miss important updates.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The challenge of notification centers is balancing awareness with overload. Users receive notifications from multiple sources—direct messages, group mentions, social interactions, system announcements. Without aggregation, users face notification fatigue and disengage. With smart aggregation, users stay informed without feeling overwhelmed. The center must support real-time updates, cross-device sync, and granular preferences.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, notification center implementation involves real-time synchronization, preference management, and scaling challenges. Notifications must appear instantly across all devices. Preferences must sync so muting on phone mutes on web. The system must handle notification storms (hundreds of notifications after being offline for days). Read/unread state must sync across devices. The architecture must scale to billions of notifications while maintaining sub-second query performance.
         </p>
@@ -46,13 +50,16 @@ export default function NotificationCenterArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Notification Types</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Direct notifications target specific user: direct messages, @mentions, replies to your comments. High priority—always deliver, bypass mute settings (unless user explicitly mutes sender). Display prominently with sender info and preview.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Social notifications from network activity: likes on your content, comments on your posts, new followers. Medium priority—deliver based on preferences. Group by content ("John and 49 others liked your post").
-        </p>
+        </HighlightBlock>
         <p>
           System notifications from platform: announcements, policy updates, security alerts, reminders. Variable priority—security alerts are high, announcements are low. Respect do-not-disturb except for critical security alerts.
         </p>
@@ -107,9 +114,12 @@ export default function NotificationCenterArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Notification center architecture spans client UI, real-time sync, preference management, and backend aggregation. Client renders notification list with filtering and grouping. WebSocket delivers new notifications in real-time. Preferences stored locally and synced to server. Backend aggregates notifications, applies preferences, routes to appropriate channels.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/notification-center/notification-center-architecture.svg"
@@ -120,9 +130,9 @@ export default function NotificationCenterArticle() {
         />
 
         <h3>Client Component Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Notification list component renders notifications with virtualization for large lists. Groups notifications by time (Today, Yesterday, This Week) or type. Each notification shows icon, title, message, timestamp, action buttons (reply, dismiss, mark read). Swipe actions on mobile (swipe to mark read, swipe to dismiss).
-        </p>
+        </HighlightBlock>
         <p>
           Unread badge component displays count. Listens to notification store, updates when count changes. Badge on app icon (via push API), nav item, bell icon. Count animation on new notification (pulse or bounce). Badge clears when all read.
         </p>
@@ -182,14 +192,17 @@ export default function NotificationCenterArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Notification center design involves trade-offs between awareness, fatigue, privacy, and performance. Understanding these trade-offs enables informed decisions aligned with user experience goals.
-        </p>
+        </HighlightBlock>
 
         <h3>Aggregation Level</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           No aggregation shows every notification individually. Pros: Maximum detail, no information loss. Cons: Notification fatigue, overwhelming for active users. Best for: Low-volume notifications, enterprise/professional tools.
-        </p>
+        </HighlightBlock>
         <p>
           Fine aggregation groups within short window (5-10 minutes). Pros: Reduces volume while preserving detail. Cons: Slight delay for grouping. Best for: Most consumer apps, social platforms.
         </p>
@@ -230,13 +243,16 @@ export default function NotificationCenterArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Aggregate notifications intelligently:</strong> Group by time window (5-10 min), content, and type. Show "John and 4 others" instead of 5 separate notifications. Allow expand to see individuals.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement real-time updates:</strong> WebSocket push for new notifications. Increment unread count instantly. Animate new notification arrival. Fallback to polling if WebSocket unavailable.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Sync read state across devices:</strong> Mark read on one device marks read on all. Publish read event, all devices subscribe and update. Sync latency &lt;1 second.
           </li>
@@ -266,13 +282,16 @@ export default function NotificationCenterArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No aggregation:</strong> Every notification shown individually overwhelms users. Solution: Time-based and content-based aggregation, group by type.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No read sync:</strong> Notification shows unread on tablet after reading on phone. Solution: Cross-device sync via WebSocket, publish read events.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No preferences:</strong> Users can't control notification volume. Solution: Per-type toggles, per-sender mute, quiet hours.
           </li>
@@ -302,16 +321,19 @@ export default function NotificationCenterArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Facebook Notifications</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook aggregates notifications by type (likes, comments, friends) and content. "John and 49 others liked your post" groups 50 likes. Filter tabs (All, Unread, Mentions). Real-time updates via WebSocket. Preferences per notification type with email/push toggles.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Twitter Notifications</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter shows notifications in reverse chronological order with aggregation. "Liked by John, Sarah, and 12 others" groups likes. Verified badge highlights. Filter: All, Mentions, Verified. Real-time updates with animation. Mute words filter unwanted notifications.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">LinkedIn Notifications</h3>
         <p>
@@ -331,12 +353,15 @@ export default function NotificationCenterArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you aggregate notifications?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you aggregate notifications?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Time-based aggregation groups notifications within 5-10 minute window. Content-based groups by source (all likes on post A). Type-based groups by notification type. Store parent notification with child count and sample IDs ("John and 4 others"). Expand on tap to show individuals.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

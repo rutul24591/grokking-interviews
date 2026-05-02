@@ -389,9 +389,9 @@ export default function StateSynchronizationConciseArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When NOT to Synchronize Across Tabs</h3>
-          <HighlightBlock as="p" tier="crucial">
+          <p className="text-base">
             Avoid cross-tab sync for:
-          </HighlightBlock>
+          </p>
           <ul className="mt-2 space-y-2">
             <li>• <strong>Form input state:</strong> Users may intentionally have different form states in different tabs (e.g., composing two different emails)</li>
             <li>• <strong>Scroll position and UI viewport:</strong> These are inherently per-tab and syncing them creates a confusing experience</li>
@@ -456,22 +456,26 @@ export default function StateSynchronizationConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: cross-tab sync is a correctness and security problem. Use these to ground answers in the
+          primitives (BroadcastChannel, Web Locks, SharedWorker) and the trade-offs between simplicity and reliability.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN Web Docs - BroadcastChannel API
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Locks_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN Web Docs - Web Locks API
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/API/SharedWorker" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN Web Docs - SharedWorker
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://web.dev/articles/broadcastchannel" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev - BroadcastChannel API Guide

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function APIVersioningArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>API versioning</strong> is the practice of managing changes to an API over time while
           maintaining compatibility with existing consumers. Every API evolves — new fields are added,
           existing fields are renamed or removed, response structures change, and business logic updates
           alter behavior. Without a versioning strategy, changes break existing consumers. With a versioning
           strategy, changes are introduced gradually, giving consumers time to migrate at their own pace.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           API versioning is a non-functional requirement that directly impacts developer experience,
           deployment velocity, and system reliability. A poor versioning strategy forces all consumers to
           upgrade simultaneously (breaking changes), causing deployment coordination nightmares and outages.
           A good versioning strategy allows the API to evolve independently of its consumers — new versions
           are deployed alongside old versions, and consumers migrate when ready.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, API versioning architecture demonstrates maturity in
           managing distributed system evolution. Interviewers expect you to articulate versioning strategies
@@ -71,18 +75,21 @@ export default function APIVersioningArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding API versioning requires grasping several foundational concepts about how APIs
           evolve and how consumers integrate with them.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Semantic Versioning for APIs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Semantic versioning (SemVer) uses MAJOR.MINOR.PATCH numbering. For APIs, a MAJOR version bump
           indicates breaking changes — consumers must update their integration code. A MINOR version bump
           indicates non-breaking additions — new endpoints, new optional fields — that consumers can adopt
           at their discretion. A PATCH version bump indicates bug fixes that do not change the API contract.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Strategies</h3>
         <p>
@@ -106,11 +113,14 @@ export default function APIVersioningArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           API versioning architecture spans version detection, routing, response transformation, and
           deprecation management. The architecture must support multiple versions simultaneously while
           minimizing code duplication and operational overhead.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/api-versioning-strategies.svg"
@@ -119,13 +129,13 @@ export default function APIVersioningArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Version Routing Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a request arrives at the API gateway, the version is extracted from the URL path, header, or
           Accept header. The router maps the version to the appropriate service implementation. For URL
           versioning, the router strips the version prefix and routes to the versioned service instance.
           For header versioning, the router reads the header and routes accordingly. For content negotiation,
           the router parses the Accept header and selects the appropriate response formatter.
-        </p>
+        </HighlightBlock>
         <p>
           The service implementation should be version-agnostic where possible — the core business logic
           remains the same across versions, with version-specific adapters handling request parsing and
@@ -158,25 +168,28 @@ export default function APIVersioningArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Strategy</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Strategy</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>URL Versioning</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>URL Versioning</strong></td>
               <td className="p-3">
                 Simple and discoverable. Easy to test in browser. Works with all HTTP clients. CDN-friendly.
               </td>
               <td className="p-3">
                 Pollutes URL namespace. Version baked into resource identity. Hard to switch versions dynamically.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Header Versioning</strong></td>
               <td className="p-3">
                 Clean URLs. Version decoupled from resource identity. Easy to switch versions per request.
@@ -184,8 +197,8 @@ export default function APIVersioningArticle() {
               <td className="p-3">
                 Harder to test in browser. Requires custom client configuration. CDN caching complications.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Content Negotiation</strong></td>
               <td className="p-3">
                 Standards-based (HTTP Accept header). Semantically correct. Supports multiple content types.
@@ -193,7 +206,7 @@ export default function APIVersioningArticle() {
               <td className="p-3">
                 Complex to implement. Limited tooling support. Confusing for API consumers unfamiliar with content negotiation.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Canonical Model + Transformers</strong></td>
               <td className="p-3">
@@ -210,22 +223,25 @@ export default function APIVersioningArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Prefer Additive Changes Over Breaking Changes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The best versioning strategy is the one you do not need. Design APIs to evolve additively — add
           new fields rather than renaming them, add new endpoints rather than changing existing ones, and
           make new fields optional with sensible defaults. This allows the API to evolve without forcing
           consumers to migrate, reducing operational complexity and maintaining consumer trust.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Implement Tolerance Readers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tolerance readers are response parsers that ignore unknown fields rather than failing. When a
           consumer built against v1 receives a v2 response with new fields, the tolerance reader discards
           the unknown fields and processes the known ones. This enables forward compatibility — consumers
           work correctly against newer API versions without any changes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Provide Migration Tooling</h3>
         <p>
@@ -250,24 +266,27 @@ export default function APIVersioningArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Version Proliferation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Supporting too many API versions simultaneously creates operational overhead — each version needs
           testing, monitoring, documentation, and security patching. Set a maximum limit on concurrent
           versions (typically 2-3) and enforce a deprecation schedule that retires old versions on a
           predictable cadence. Communicate retirement dates well in advance (12+ months) and provide
           automated migration paths.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Breaking Changes Disguised as Non-Breaking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most destructive pitfall is deploying a breaking change without a version bump. Renaming a
           field from user_name to username, changing a field type from string to number, or tightening
           validation rules all break consumers that depend on the old behavior. These changes must go
           through the versioning process — deploy as a new version, run both versions in parallel, and
           migrate consumers gradually.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Inadequate Deprecation Communication</h3>
         <p>
@@ -291,9 +310,12 @@ export default function APIVersioningArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Stripe — Date-Based Versioning</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe uses date-based API versioning (2024-01-01, 2023-10-01) rather than numbered versions.
           Each version represents a point-in-time snapshot of the API&apos;s behavior. Consumers pin to a
           specific version and receive consistent behavior regardless of when Stripe deploys new changes.
@@ -301,10 +323,10 @@ export default function APIVersioningArticle() {
           pinned version, with before-and-after examples for each change. Their compatibility layer allows
           consumers to test against newer versions by passing a Stripe-Version header, enabling safe
           migration testing in production.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">GitHub — URL Versioning with Transformer Pipeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           GitHub&apos;s REST API uses URL versioning (/api/v3, /api/v4) with a canonical model and
           transformation pipeline. The core service produces the latest version&apos;s response, and
           version-specific transformers convert it to the requested version by removing new fields,
@@ -312,7 +334,7 @@ export default function APIVersioningArticle() {
           in the canonical model immediately while maintaining backward compatibility with older API
           versions. Their deprecation policy provides 12 months notice before retiring a version, with
           automated migration guides and codemods for common changes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Twilio — Header Versioning with Forward Compatibility</h3>
         <p>
@@ -339,19 +361,22 @@ export default function APIVersioningArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           API versioning introduces security risks that must be addressed to prevent exploitation during version transitions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Version-Related Vulnerabilities</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Deprecated Version Exploits:</strong> Old API versions may have known security vulnerabilities that are patched in newer versions but not backported. Mitigation: enforce deprecation timelines, apply security patches to all active versions, retire versions with unfixable vulnerabilities immediately with consumer notification.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Version Downgrade Attacks:</strong> Attackers may force requests to older, less-secure API versions to exploit known vulnerabilities. Mitigation: require minimum API version, reject requests to retired versions, monitor version usage patterns for anomalies, implement version-specific rate limiting.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Transformation Layer Injection:</strong> Response transformers that process version-specific data may be vulnerable to injection attacks if they process untrusted input. Mitigation: sanitize data before transformation, use safe serialization libraries, validate transformer outputs against version schemas.
             </li>
@@ -386,19 +411,22 @@ export default function APIVersioningArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           API versioning must be validated through systematic testing — version-specific behavior, transformation correctness, and migration paths must all be verified.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Version-Specific Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Per-Version Contract Tests:</strong> Test each API version against its own schema. Verify that v1 responses conform to the v1 schema, v2 responses conform to the v2 schema, and so on. Tools: OpenAPI validation, JSON Schema validation, Pact contract testing.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Cross-Version Compatibility Tests:</strong> Verify that a consumer built against v1 works correctly against v2 (forward compatibility). Test that tolerance readers handle unknown fields, that default values are sensible, and that deprecated fields still function.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Transformation Pipeline Tests:</strong> Test the response transformers that convert canonical responses to version-specific formats. Verify that field renames, removals, and restructuring are correct for each target version. Test with edge cases (empty responses, large payloads, nested structures).
             </li>

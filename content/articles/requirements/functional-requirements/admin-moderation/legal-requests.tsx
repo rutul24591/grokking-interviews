@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function LegalRequestsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Legal requests handling handles legal requests including subpoenas, DMCA takedowns, law enforcement requests, and government requests. The legal requests system is the primary tool for legal teams, compliance teams, and operations teams to handle legal requests, comply with legal obligations, and protect user rights. For staff and principal engineers, legal requests involve subpoena handling (handle subpoenas), DMCA handling (handle DMCA takedowns), law enforcement handling (handle law enforcement requests), government handling (handle government requests), legal compliance (comply with legal obligations), and user notification (notify users of legal requests).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of legal requests extends beyond simple request handling. Subpoena handling must handle subpoenas (handle subpoenas). DMCA handling must handle DMCA takedowns (handle DMCA takedowns). Law enforcement handling must handle law enforcement requests (handle law enforcement requests). Government handling must handle government requests (handle government requests). Legal compliance must comply with legal obligations (comply with legal obligations). User notification must notify users of legal requests (notify users of legal requests).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, legal requests architecture involves subpoena handling (handle subpoenas), DMCA handling (handle DMCA takedowns), law enforcement handling (handle law enforcement requests), government handling (handle government requests), legal compliance (comply with legal obligations), and user notification (notify users of legal requests). The system must support multiple request types (subpoenas, DMCA, law enforcement, government), multiple handling types (expedited, standard, emergency), and multiple response types (comply, challenge, notify). Performance is important—legal requests must be handled promptly.
         </p>
@@ -47,13 +51,16 @@ export default function LegalRequestsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Legal Request Types</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Subpoenas are court-ordered data requests. Subpoenas (court-ordered data requests). Subpoena handling (handle subpoenas). Subpoena compliance (comply with subpoenas). Subpoena notification (notify users of subpoenas).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           DMCA takedowns are copyright takedown notices. DMCA takedowns (copyright takedown notices). DMCA handling (handle DMCA takedowns). DMCA compliance (comply with DMCA). DMCA notification (notify users of DMCA).
-        </p>
+        </HighlightBlock>
         <p>
           Law enforcement requests are emergency data requests. Law enforcement requests (emergency data requests). Law enforcement handling (handle law enforcement requests). Law enforcement compliance (comply with law enforcement). Law enforcement notification (notify users of law enforcement).
         </p>
@@ -108,9 +115,12 @@ export default function LegalRequestsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Legal requests architecture spans subpoena handling, DMCA handling, law enforcement handling, and government handling. Subpoena handling handles subpoenas. DMCA handling handles DMCA takedowns. Law enforcement handling handles law enforcement requests. Government handling handles government requests.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/admin-moderation/legal-requests/legal-requests-architecture.svg"
@@ -121,9 +131,9 @@ export default function LegalRequestsArticle() {
         />
 
         <h3>Subpoena Handling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Subpoena handling handles subpoenas. Subpoena handling (handle subpoenas). Subpoena enforcement (enforce subpoenas). Subpoena verification (verify subpoenas). Subpoena reporting (report on subpoenas).
-        </p>
+        </HighlightBlock>
         <p>
           Subpoena enforcement enforces subpoenas. Subpoena enforcement (enforce subpoenas). Subpoena verification (verify subpoenas). Subpoena reporting (report on subpoenas). Subpoena audit (audit subpoenas).
         </p>
@@ -183,14 +193,17 @@ export default function LegalRequestsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Legal requests design involves trade-offs between comprehensiveness and complexity, enforcement and verification, and compliance and improvement. Understanding these trade-offs enables informed decisions aligned with legal needs and platform constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Handling: Comprehensive vs. Simple</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comprehensive handling (comprehensive handling). Pros: Comprehensive (comprehensive handling), effective (effective handling). Cons: Complex (complex handling), expensive (expensive to implement). Best for: Legal-intensive (high-risk platforms).
-        </p>
+        </HighlightBlock>
         <p>
           Simple handling (simple handling). Pros: Simple (simple handling), cheap (cheap to implement). Cons: Not comprehensive (not comprehensive handling), ineffective (ineffective handling). Best for: Non-legal (low-risk platforms).
         </p>
@@ -242,13 +255,16 @@ export default function LegalRequestsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement comprehensive handling:</strong> Subpoena handling, DMCA handling, law enforcement handling, government handling. Comprehensive handling.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement strict enforcement:</strong> Subpoena enforcement, DMCA enforcement, law enforcement enforcement, government enforcement. Strict enforcement.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement comprehensive verification:</strong> Subpoena verification, DMCA verification, law enforcement verification, government verification. Comprehensive verification.
           </li>
@@ -278,13 +294,16 @@ export default function LegalRequestsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Incomplete handling:</strong> Don&apos;t handle all legal requests. Solution: Comprehensive handling (subpoena, DMCA, law enforcement, government).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No strict enforcement:</strong> Don&apos;t enforce legal requests. Solution: Strict enforcement (subpoena, DMCA, law enforcement, government).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No comprehensive verification:</strong> Don&apos;t verify legal requests. Solution: Comprehensive verification (subpoena, DMCA, law enforcement, government).
           </li>
@@ -314,16 +333,19 @@ export default function LegalRequestsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Subpoena Handling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Subpoena handling for subpoena handling. Subpoena handling (handle subpoenas). Subpoena enforcement (enforce subpoenas). Subpoena verification (verify subpoenas). Subpoena reporting (report on subpoenas).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">DMCA Handling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           DMCA handling for DMCA handling. DMCA handling (handle DMCA takedowns). DMCA enforcement (enforce DMCA takedowns). DMCA verification (verify DMCA takedowns). DMCA reporting (report on DMCA takedowns).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Law Enforcement Handling</h3>
         <p>
@@ -343,12 +365,15 @@ export default function LegalRequestsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle subpoenas and other legal data requests while protecting user privacy?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle subpoenas and other legal data requests while protecting user privacy?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement structured legal request workflow. First, verify subpoena validity—check issuing authority, proper service, jurisdiction, and scope. Many subpoenas are defective or overbroad. Legal team reviews each request before any data is produced. Implement data minimization—produce only what&apos;s legally required, not everything requested. Notify users of legal requests when legally permitted (some subpoenas include gag orders)—this is both ethical and often legally required. Track all legal requests with complete audit trail (request details, legal review, data produced, user notification). The critical balance: comply with valid legal obligations while protecting user privacy and free expression. Implement legal hold for responsive data—prevent deletion during legal proceedings. For international requests: evaluate under mutual legal assistance treaties (MLAT), consider foreign blocking statutes (GDPR limits EU data transfers), consult local counsel.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

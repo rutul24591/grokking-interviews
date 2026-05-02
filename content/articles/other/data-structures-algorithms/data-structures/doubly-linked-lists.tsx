@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,10 @@ export default function DoublyLinkedListsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>doubly linked list</strong> is a linear collection whose
           nodes carry pointers to both successor and predecessor. Structurally
           it is a singly linked list paid a second 8-byte pointer per node for
@@ -46,8 +50,8 @@ export default function DoublyLinkedListsArticle() {
           small increase in per-node overhead unlocks a qualitatively
           different set of algorithms — most notably, O(1) removal of a node
           given only a direct reference to it.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Doubly linked lists sit at the heart of one of the most commonly
           requested interview designs: the LRU cache. The pattern is
           canonical — a hash map keyed on the logical cache key, storing as
@@ -56,7 +60,7 @@ export default function DoublyLinkedListsArticle() {
           recency list is O(1) because the back-pointer lets the node splice
           itself out without a predecessor scan. This is precisely the
           operation a singly linked list cannot offer without paying O(n).
-        </p>
+        </HighlightBlock>
         <p>
           Beyond LRU, doubly linked lists show up in DOM node sibling
           traversal (browsers expose <code>nextSibling</code> and{" "}
@@ -86,11 +90,14 @@ export default function DoublyLinkedListsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Node topology with prev pointer
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each node carries three fields: value, next, and prev. The head&apos;s
           prev and the tail&apos;s next are null (or point to sentinel
           boundary nodes). Memory per node is therefore two pointers plus the
@@ -100,19 +107,19 @@ export default function DoublyLinkedListsArticle() {
           costs 8 + 8 + 4 = 20 bytes of content plus 16 bytes of allocator
           header, for roughly 36 bytes — nine times the 4-byte array
           equivalent.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           O(1) deletion given a node reference
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The defining capability. Given a direct pointer to node X, you can
           splice X out of the list in four pointer updates without a scan:
           <code> X.prev.next = X.next</code>, <code>X.next.prev = X.prev</code>,
           then null X&apos;s pointers for hygiene. Sentinel head/tail nodes
           eliminate the null checks on X.prev and X.next, making the routine
           a four-instruction sequence in compiled languages.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Sentinel head and tail
@@ -140,23 +147,26 @@ export default function DoublyLinkedListsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Insertion between two known nodes
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Splicing a new node N between P and S is four pointer updates:
           <code> N.prev = P</code>, <code>N.next = S</code>,{" "}
           <code>P.next = N</code>, <code>S.prev = N</code>. Order matters in
           concurrent contexts but not single-threaded. The symmetric case at
           the head or tail reduces to the same four updates against the
           sentinels if they are used.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Deletion of an arbitrary node
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The canonical O(1) deletion: <code>node.prev.next = node.next</code>,
           {" "}<code>node.next.prev = node.prev</code>. Given a list of a
           million elements, deleting any arbitrary node costs the same four
@@ -164,7 +174,7 @@ export default function DoublyLinkedListsArticle() {
           in between. This is the property that makes doubly linked lists the
           backbone of LRU caches and task queues where entries can be
           canceled or reordered from anywhere in the list.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Circular doubly linked lists
@@ -194,6 +204,9 @@ export default function DoublyLinkedListsArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Operation complexity
@@ -223,7 +236,7 @@ export default function DoublyLinkedListsArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Doubly vs singly linked
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The singly linked version saves one pointer per node — 12.5%
           memory for large pointer-heavy payloads, more for small ones — at
           the cost of O(n) predecessor lookup. Pick singly linked when the
@@ -231,12 +244,12 @@ export default function DoublyLinkedListsArticle() {
           lock-free variants matter. Pick doubly linked when arbitrary
           deletions from known references are frequent (LRU caches, priority
           queues with cancellation, DOM mutation, scheduler queues).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Doubly linked vs deque (VecDeque / ArrayDeque)
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Many workloads that historically used doubly linked lists — queues
           with both-end operations, history buffers, undo stacks — are
           better served by array-backed deques (ring buffers). They give
@@ -244,7 +257,7 @@ export default function DoublyLinkedListsArticle() {
           memory density. A doubly linked list wins only when the workload
           also needs O(1) mid-list deletion by node reference; otherwise the
           deque is almost always the correct choice.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Concurrency cost
@@ -266,18 +279,21 @@ export default function DoublyLinkedListsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Always use head and tail sentinels.</strong> The 16 extra
             bytes buy structural uniformity — no endpoint null checks in any
             operation, fewer bugs, less branching.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Compose with a hash map for LRU.</strong> The
             hash-map-plus-doubly-linked-list pattern is idiomatic for any
             cache with recency-based eviction; implement it once, reuse
             extensively.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Prefer intrusive lists in kernels and allocators.</strong>
             {" "}Embedding prev/next pointers inside the payload structure
@@ -312,19 +328,22 @@ export default function DoublyLinkedListsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Half-updated pointers on deletion.</strong> Updating
             <code> X.prev.next</code> but forgetting <code>X.next.prev</code>
             {" "}leaves the list with a corrupt back-pointer chain. The next
             reverse traversal will find the wrong predecessor.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Double removal.</strong> Removing the same node twice in
             quick succession (typical when multiple code paths race) rewrites
             neighbor pointers to the wrong values. Guard with a{" "}
             <code>node.prev === null</code> check or a removed flag.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Aliased prev/next on single-node lists.</strong> With
             sentinels, a single-element list has head.next pointing to the
@@ -365,11 +384,14 @@ export default function DoublyLinkedListsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           LRU cache (hash map + doubly linked list)
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The canonical design: the hash map maps keys to node references;
           the doubly linked list orders entries by recency with most-recently-
           used at the head. On hit, the node is spliced out (O(1) thanks to
@@ -378,12 +400,12 @@ export default function DoublyLinkedListsArticle() {
           production in-memory cache — Redis&apos; LRU eviction, Caffeine,
           Guava Cache, Memcached&apos;s slab-level LRU — uses this exact
           pattern.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           DOM node siblings
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Browser DOM expose <code>nextSibling</code>,{" "}
           <code>previousSibling</code>, <code>firstChild</code>, and{" "}
           <code>lastChild</code> — the exact interface of a doubly linked
@@ -392,7 +414,7 @@ export default function DoublyLinkedListsArticle() {
           underlying linked structure. Inserting or removing a node anywhere
           in the tree is O(1) relative to the tree operation itself because
           the DOM stores siblings this way.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Linux kernel list_head
@@ -431,12 +453,15 @@ export default function DoublyLinkedListsArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: Design an LRU cache with O(1) get and put.
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Combine a hash map (key → node) with a doubly linked list
               ordered by recency. On get: look up the node in the hash map
               (O(1)), splice it out of its current position, and move it to
@@ -447,7 +472,7 @@ export default function DoublyLinkedListsArticle() {
               doubly linked list is essential because promoting a hit to
               head requires removing it from its current position, which
               needs the prev pointer.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function SubscriptionBillingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Subscription billing manages recurring charges for subscription-based businesses (SaaS, streaming, memberships, boxes). Unlike one-time purchases, subscriptions require automated recurring charges, proration for plan changes, dunning management for failed payments, and subscription lifecycle management (trial → active → past_due → cancelled → expired). For staff and principal engineers, subscription billing involves payment gateway integration (recurring charges, card updater), state machine design (subscription states and transitions), and revenue recognition (ASC 606 compliance for accrual accounting).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of subscription billing extends beyond simple recurring charges. Proration handles plan changes mid-cycle (upgrade/downgrade with credit for unused time). Dunning management handles failed payments (retry logic, customer notification, grace periods, suspension, cancellation). Subscription metrics (MRR, ARR, churn rate, expansion revenue) require accurate billing data. Tax compliance (sales tax, VAT, GST) varies by jurisdiction and subscription type. The system must handle high volume (millions of subscriptions), provide self-service management (plan changes, payment method updates), and integrate with accounting systems (revenue recognition, invoicing).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, subscription billing architecture involves distributed systems patterns. Event-driven architecture enables loose coupling (subscription created → invoice generated → payment charged → receipt sent). Idempotency prevents duplicate charges (network retry doesn&apos;t charge twice). Saga pattern coordinates distributed transactions (charge payment → activate subscription → send welcome email, with compensating transactions on failure). The system must support multiple billing models (per-seat, usage-based, tiered, flat-rate), billing frequencies (weekly, monthly, annual), and trial types (free trial, freemium, money-back guarantee).
         </p>
@@ -47,13 +51,16 @@ export default function SubscriptionBillingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Subscription Lifecycle States</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Subscription states represent distinct phases in subscription lifecycle. Trial: subscription active, no charges (free trial period). Active: subscription active, recurring charges succeeding. Past_due: subscription active, payment failed (grace period for retry). Suspended: subscription paused (no access, retry continues). Cancelled: user-initiated cancellation (access until period end). Expired: subscription ended (payment failed after retries or period end). Each state has specific access rights and billing behavior.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           State transitions are triggered by events. Trial → Active: trial ends, first charge succeeds. Active → Past_due: payment fails (card expired, insufficient funds). Past_due → Active: payment succeeds (retry or customer updates card). Past_due → Suspended: max retries exceeded, grace period ends. Suspended → Active: payment succeeds. Any state → Cancelled: user cancels (voluntary churn). Cancelled → Expired: period ends, subscription terminates.
-        </p>
+        </HighlightBlock>
         <p>
           State metadata enriches subscription information. Current period start/end (billing cycle dates). Trial start/end (trial period dates). Cancelled at (timestamp), cancelled by (user/system), cancellation reason (too expensive, not using, switched competitor). Past_due since (when payment first failed). Retry count (how many payment attempts). Metadata enables analytics (churn reasons, retry success rate) and customer communication (&quot;your subscription ends in 3 days&quot;).
         </p>
@@ -105,9 +112,12 @@ export default function SubscriptionBillingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Subscription billing architecture spans subscription management, billing engine, payment integration, and dunning service. Subscription management handles lifecycle (create, update, cancel, reactivate). Billing engine generates invoices, calculates proration, applies discounts/taxes. Payment integration charges payment methods, handles retries, updates subscription state. Dunning service manages failed payment recovery (retry logic, notifications, suspension).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/subscription-billing/subscription-billing-architecture.svg"
@@ -118,9 +128,9 @@ export default function SubscriptionBillingArticle() {
         />
 
         <h3>Subscription Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Subscription data model stores subscription details. Subscription ID, customer ID, plan ID, status (trial, active, past_due, suspended, cancelled, expired). Current period start/end, trial start/end, cancelled at, cancellation reason. Payment method ID (tokenized). Quantity (seats, units). Billing frequency (weekly, monthly, annual). Next billing date. Metadata (source, campaign, sales rep).
-        </p>
+        </HighlightBlock>
         <p>
           Subscription lifecycle API handles state changes. Create subscription: validate plan, set trial (if applicable), schedule first billing. Update subscription: plan change (proration), quantity change (seat add/remove), billing frequency change. Cancel subscription: immediate (refund prorated) or end of period (no refund). Reactivate subscription: restore cancelled subscription (if within window, same plan available).
         </p>
@@ -180,14 +190,17 @@ export default function SubscriptionBillingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Subscription billing design involves trade-offs between recovery rate, customer experience, cash flow, and operational complexity. Understanding these trade-offs enables informed decisions aligned with business model and customer expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Grace Period: With vs. Without</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Grace period (subscription active during dunning). Pros: Higher recovery rate (customer retains access, motivated to update), better customer experience (no service interruption). Cons: Revenue risk (customer uses without paying), delayed churn recognition (subscription still active, not really). Best for: B2B SaaS (high LTV, trust relationship), established customers (long history, low risk).
-        </p>
+        </HighlightBlock>
         <p>
           No grace period (subscription suspends on failure). Pros: No revenue risk (no free usage), clear churn signal (subscription inactive). Cons: Lower recovery rate (customer loses access, less motivated), worse customer experience (service interruption). Best for: B2C (low LTV, high volume), new customers (no history, higher risk), digital goods (easy to restrict access).
         </p>
@@ -239,13 +252,16 @@ export default function SubscriptionBillingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement dunning with grace period:</strong> Grace period for good customers (7-14 days). Retry schedule: day 1, 3, 7, 14, 21. Email notifications at each stage. Suspend after max retries. Recovery rate target: 30-50%.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use card updater services:</strong> Visa VAU, Mastercard ABU, Amex SafeKey. Automatic card update on reissue. Reduces involuntary churn (card expired, not cancelled). Enrollment automatic, opt-out available.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Offer annual billing with discount:</strong> Annual option (10-20% off monthly). Improves cash flow (upfront payment). Reduces churn (committed for year). Show monthly equivalent (&quot;$10/month billed annually&quot;).
           </li>
@@ -275,13 +291,16 @@ export default function SubscriptionBillingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No dunning management:</strong> Failed payments not retried, silent churn. Solution: Implement dunning workflow, retry schedule, customer notifications.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No grace period:</strong> Immediate suspension on failure, lost recovery opportunity. Solution: Grace period for good customers (7-14 days), immediate for new/high-risk.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No card updater:</strong> Card expires, subscription cancels (involuntary churn). Solution: Enroll in VAU/ABU/SafeKey, automatic card updates.
           </li>
@@ -311,16 +330,19 @@ export default function SubscriptionBillingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Netflix Subscription Billing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix billing: monthly recurring charges, multiple plans (basic, standard, premium). Proration for plan changes (immediate, credit for unused). Dunning: payment failure → retry → suspend (no grace period, immediate). Card updater for expired cards. Self-service: plan changes, payment update, cancellation. No annual option (monthly only).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Salesforce B2B SaaS Billing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Salesforce billing: per-seat pricing, annual contracts. Proration for seat changes (immediate, credit/charge). Invoice before charge (B2B requirement). Payment terms (net 30, net 60). Dunning: payment failure → notify → escalate (account manager). Self-service: seat changes, payment update. Cancellation: contract terms, early termination fee.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Spotify Freemium to Premium</h3>
         <p>
@@ -340,12 +362,15 @@ export default function SubscriptionBillingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle failed subscription payments?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle failed subscription payments?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Dunning workflow: payment failure → retry schedule (day 1, 3, 7, 14, 21) → notifications (email/SMS at each stage) → suspend after max retries. Grace period for good customers (7-14 days, retain access). Card updater for expired cards. Recovery rate target: 30-50%. Track failure reasons (expired, insufficient funds, fraud) for optimization.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

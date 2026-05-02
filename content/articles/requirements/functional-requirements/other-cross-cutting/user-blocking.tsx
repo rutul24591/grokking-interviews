@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function UserBlockingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User blocking enables users to prevent unwanted interactions from other users by blocking specific accounts. The blocking system is a critical user safety mechanism that empowers users to control their experience, prevent harassment, and protect their mental health. For staff and principal engineers, user blocking implementation involves block/unblock workflows (easy blocking, reversible unblocking), block list management (view, edit, export blocked users), blocked user experience (what blocked users see, notification policies), block evasion prevention (detecting blocked users creating new accounts), and integration with moderation systems (blocks inform abuse patterns, escalate repeat blockers).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of user blocking extends beyond simple &quot;block user&quot; buttons. Block enforcement must be comprehensive across all interaction types (messages, comments, mentions, follows, tags, reactions). Blocked user experience must balance transparency (blocked users should know they&apos;re blocked to prevent continued harassment attempts) with reporter safety (not revealing who blocked them in sensitive situations). Block evasion prevention must detect when blocked users create new accounts to continue harassment (device fingerprinting, behavior patterns, network analysis). The system must handle edge cases (mutual connections, group conversations, public replies) while maintaining block effectiveness.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, user blocking architecture involves user-facing components (block dialogs, block list management), backend enforcement (block checking at all interaction points), notification systems (block/unblock events, blocked user notifications), and safety integration (block patterns inform abuse detection, escalate repeat offenders). The system must handle high scale (popular platforms have billions of block relationships), provide instant enforcement (blocks must work immediately), and maintain user trust (blocks must be reliable, comprehensive, and respected across the platform). Privacy is critical—block lists are sensitive data requiring protection.
         </p>
@@ -46,13 +50,16 @@ export default function UserBlockingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Block/Unblock Workflows</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Block entry points provide multiple ways to block users. Profile blocking (block from user profile page). Content blocking (block user from their post/comment). Message blocking (block user from conversation). Search blocking (block user from search results). Each entry point should be accessible (1-2 clicks maximum), clear (confirm block action), and reversible (easy to unblock if mistake). Block confirmation dialogs prevent accidental blocks while not creating too much friction.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Block confirmation ensures users understand consequences. Confirmation dialogs explain what blocking does (user can&apos;t contact you, see your content, follow you) and doesn&apos;t do (doesn&apos;t delete past conversations, doesn&apos;t notify blocked user immediately). Reversible option (unblock within 24 hours without confirmation) for accidental blocks. Permanent block option (requires confirmation to unblock) for intentional harassment cases.
-        </p>
+        </HighlightBlock>
         <p>
           Unblock workflows enable reversing blocks. Unblock from block list (view all blocked users, unblock individually). Confirm unblock (ensure user wants to unblock, explain consequences). Cool-down periods (wait 24 hours before re-blocking same user to prevent block/unblock harassment). Unblock history (track when users were blocked/unblocked for abuse pattern detection).
         </p>
@@ -104,9 +111,12 @@ export default function UserBlockingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User blocking architecture spans block management, block enforcement, evasion prevention, and moderation integration. Block management provides user-facing interfaces for blocking. Block enforcement ensures blocks are respected across all interaction points. Evasion prevention detects and prevents block circumvention. Moderation integration connects blocking with broader safety systems.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/user-blocking/user-blocking-architecture.svg"
@@ -117,9 +127,9 @@ export default function UserBlockingArticle() {
         />
 
         <h3>Block Management Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Block management layer provides user-facing interfaces. Block dialogs embedded in profiles, content, conversations. Block list management UI for viewing and editing blocked users. Block settings for configuring block behavior (notification preferences, edge case handling). Block import/export for backup and transfer. Management layer should be intuitive, accessible, and provide clear feedback about block status.
-        </p>
+        </HighlightBlock>
         <p>
           Block storage persists block relationships. Block database stores blocker ID, blocked user ID, block date, block reason, block category. Index optimization for fast block lookups (critical for enforcement). Privacy protection (block lists encrypted, limited access). Retention policies (how long blocks persist, block expiration options). Storage must be reliable—lost blocks mean failed user protection.
         </p>
@@ -179,14 +189,17 @@ export default function UserBlockingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User blocking design involves trade-offs between comprehensiveness and usability, transparency and safety, and strictness and flexibility. Understanding these trade-offs enables informed decisions aligned with platform values and safety requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Block Notification: Silent vs. Explicit</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Silent blocking (blocked user not notified). Pros: Protects blocker safety (no escalation risk), prevents harassment continuation, essential for domestic violence situations. Cons: Blocked user doesn&apos;t know why interactions failing, may continue attempts, can&apos;t adjust behavior. Best for: Safety-critical situations, harassment cases, platforms prioritizing blocker safety.
-        </p>
+        </HighlightBlock>
         <p>
           Explicit notification (blocked user told they&apos;re blocked). Pros: Clear communication (blocked user knows status), prevents continued attempts, enables behavior adjustment. Cons: Safety risk (may escalate harassment), reveals blocker identity, may enable retaliation. Best for: Low-risk situations, professional networks, platforms prioritizing transparency.
         </p>
@@ -238,13 +251,16 @@ export default function UserBlockingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Make blocking easy and accessible:</strong> Block buttons on profiles, content, conversations. 1-2 clicks maximum. Clear confirmation without excessive friction. Accessible from all surfaces.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enforce blocks comprehensively:</strong> Block all interaction types (messages, comments, mentions, follows). Check blocks at API layer for complete coverage. Real-time enforcement with fast lookups.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Provide clear block list management:</strong> View all blocked users. Search and sort block list. Bulk unblock capability. Import/export for backup. Easy access from settings.
           </li>
@@ -274,13 +290,16 @@ export default function UserBlockingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Incomplete block enforcement:</strong> Blocks work for messages but not comments. Solution: Audit all interaction points, enforce at API layer, comprehensive testing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Slow block propagation:</strong> Blocks take minutes to apply across platforms. Solution: Optimize sync latency, cache blocks for fast lookups, monitor sync health.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No evasion prevention:</strong> Blocked users create new accounts to continue harassment. Solution: Device fingerprinting, behavior analysis, automatic blocking of evasion accounts.
           </li>
@@ -310,16 +329,19 @@ export default function UserBlockingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter User Blocking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter blocking for harassment prevention. Block from profile, tweet, conversation. Comprehensive blocking (can&apos;t follow, mention, message, see tweets). Silent blocking option (blocked user not notified). Block list management from privacy settings. Block evasion detection (new accounts from same device). Integration with abuse reporting (blocked users who evade reported).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Facebook User Blocking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook blocking for comprehensive safety. Block users, pages, apps. Blocking prevents all interaction (messages, tags, invites, game requests). Block list management with categories. Messenger blocking separate from main blocking. Block evasion prevention. Integration with harassment reporting. Enhanced protection for domestic violence situations.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Instagram User Blocking</h3>
         <p>
@@ -339,12 +361,15 @@ export default function UserBlockingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you ensure blocks are enforced comprehensively across all interaction points?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you ensure blocks are enforced comprehensively across all interaction points?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement block enforcement at API layer, not just UI, because UI enforcement can be bypassed but API enforcement catches all access patterns. Every interaction endpoint must check block status before allowing action—messages endpoint checks &quot;is sender blocked by recipient?&quot;, comments endpoint checks &quot;is commenter blocked by content owner?&quot;, mentions endpoint checks &quot;is mentioning user blocked by mentioned user?&quot;, follows endpoint checks &quot;is follower blocked by followee?&quot;. Build block cache for fast lookups—avoid database query on every interaction by caching user&apos;s block list with TTL (5-15 minutes), check cache first before database. Implement cache invalidation when blocks change—when user blocks or unblocks someone, invalidate cache immediately so changes take effect within seconds, not minutes. Conduct comprehensive audit of all interaction points—map every API endpoint that enables user-to-user interaction, ensure each has block check, test each endpoint with blocked users to verify enforcement. The key insight: blocks must be enforced at the lowest common layer—if you enforce only in UI, API calls bypass blocks; if you enforce only in some API endpoints, others bypass blocks. Defense in depth ensures blocks work regardless of how interaction is attempted.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

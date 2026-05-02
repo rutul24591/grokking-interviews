@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function BackpressureHandlingArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Backpressure</strong> is a flow control mechanism that allows a slow downstream component
           to signal an upstream component to reduce its production rate. Without backpressure, a fast
           producer can overwhelm a slow consumer, causing memory exhaustion, increased latency, and
           eventual system failure. Backpressure is the system&apos;s natural defense against overload — it
           propagates congestion signals backward through the processing chain until the source reduces
           its output rate.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Backpressure handling is critical in event-driven architectures, streaming data pipelines,
           microservice communication, and any system where components operate at different speeds. In
           distributed systems, backpressure manifests at multiple levels: network buffers (TCP window
           sizing), message queues (queue depth limits), service-to-service communication (rate limiting,
           circuit breaking), and user-facing APIs (request queuing, load shedding).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, backpressure architecture demonstrates understanding
           of system dynamics under load, the ability to design self-regulating systems, and the maturity to
@@ -73,19 +77,22 @@ export default function BackpressureHandlingArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding backpressure requires grasping several foundational concepts about flow control,
           queue dynamics, and adaptive systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Pull-Based vs Push-Based Flow Control</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In push-based systems, producers send data to consumers at their own pace, relying on the consumer
           to buffer or drop excess data. This is simple but risks consumer overload. In pull-based systems,
           consumers request data from producers at their own pace, ensuring that consumers never receive more
           data than they can handle. Pull-based systems naturally implement backpressure — the consumer
           controls the flow rate.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Queue Depth and Buffer Management</h3>
         <p>
@@ -109,10 +116,13 @@ export default function BackpressureHandlingArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Backpressure architecture spans buffer management, flow control protocols, adaptive concurrency,
           and load shedding mechanisms at every layer of the system.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/backpressure-architecture.svg"
@@ -121,7 +131,7 @@ export default function BackpressureHandlingArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Backpressure Propagation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a downstream component becomes overloaded (e.g., a database slow to process queries), it
           signals backpressure to its upstream caller (e.g., the application service) by increasing response
           latency, returning error responses (503 Service Unavailable), or explicitly signaling congestion
@@ -129,7 +139,7 @@ export default function BackpressureHandlingArticle() {
           output rate — queuing requests, rejecting new requests, or slowing its own processing. This
           backpressure signal propagates backward through the entire processing chain until it reaches the
           system entrance.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Adaptive Concurrency Control</h3>
         <p>
@@ -157,25 +167,28 @@ export default function BackpressureHandlingArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Mechanism</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Mechanism</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Bounded Buffers</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>Bounded Buffers</strong></td>
               <td className="p-3">
                 Simple to implement. Natural backpressure signal. Predictable memory usage.
               </td>
               <td className="p-3">
                 Requests rejected when buffer full. Requires tuning buffer size. Latency spike at capacity.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Adaptive Concurrency</strong></td>
               <td className="p-3">
                 Self-tuning. Finds optimal concurrency automatically. Responds to changing conditions.
@@ -183,8 +196,8 @@ export default function BackpressureHandlingArticle() {
               <td className="p-3">
                 Oscillation during adaptation. Slow response to sudden load changes. Requires monitoring overhead.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Load Shedding</strong></td>
               <td className="p-3">
                 Prevents total failure. Protects critical operations. Graceful degradation.
@@ -192,7 +205,7 @@ export default function BackpressureHandlingArticle() {
               <td className="p-3">
                 Requests intentionally dropped. Complex priority classification. User-visible impact.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Circuit Breakers</strong></td>
               <td className="p-3">
@@ -209,25 +222,28 @@ export default function BackpressureHandlingArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Use Bounded Buffers Everywhere</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every queue, every connection pool, every thread pool should have a bounded size. Unbounded
           queues are the most common cause of cascading failures — they absorb excess load temporarily,
           giving the illusion of stability, then exhaust memory and crash the system. Bounded queues
           fail fast when full, propagating backpressure to the caller and preventing memory exhaustion.
           Set buffer sizes based on memory constraints and acceptable latency — a queue depth of 1000
           requests at 10ms per request adds 10 seconds of queuing latency.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Implement Priority-Based Load Shedding</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When the system is overloaded, drop the lowest-priority requests first. Classify requests by
           criticality: write operations are higher priority than read operations, authenticated user
           requests are higher priority than anonymous requests, and real-time operations are higher
           priority than batch operations. Implement a priority queue at the system entrance — when the
           queue is full, reject the lowest-priority request rather than the most recent one.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Monitor Queue Depth and Latency</h3>
         <p>
@@ -251,24 +267,27 @@ export default function BackpressureHandlingArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Unbounded Queues</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most dangerous pitfall is using unbounded queues between system components. An unbounded queue
           absorbs excess load indefinitely, masking the overload problem until memory is exhausted and the
           system crashes. By the time the crash occurs, the queue may contain minutes or hours of backlog,
           causing a prolonged recovery period. Always use bounded queues with explicit rejection policies
           (reject new requests, reject oldest requests, or reject lowest-priority requests).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Retry Storms</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a system rejects requests due to backpressure, clients typically retry immediately. If
           thousands of clients retry simultaneously, the retry traffic can exceed the original load,
           preventing the system from recovering. Implement retry backoff with jitter — clients should wait
           a random delay (exponential backoff with jitter) before retrying. Additionally, return a
           Retry-After header in 503 responses to inform clients when to retry.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Ignoring Backpressure at the Edge</h3>
         <p>
@@ -292,9 +311,12 @@ export default function BackpressureHandlingArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Netflix — Adaptive Concurrency Limits</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix uses adaptive concurrency limits in its service mesh to prevent cascading failures.
           Each service maintains a concurrency limit that is automatically adjusted based on observed
           latency. When a downstream service slows down, the upstream service reduces its concurrency
@@ -302,17 +324,17 @@ export default function BackpressureHandlingArticle() {
           uses Little&apos;s Law to calculate the optimal concurrency level — if throughput is 1000
           requests/second and latency is 10ms, the optimal concurrency is 10. If latency increases to
           50ms, the concurrency limit drops to 10 to prevent queue buildup.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Kafka — Bounded Partition Buffers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Apache Kafka implements backpressure through bounded partition buffers. Each topic partition has
           a configurable maximum size (log.retention.bytes). When a partition reaches its limit, producers
           receive a NotLeaderForPartition or RecordTooLargeException, signaling that they must reduce their
           production rate. Kafka consumers also implement backpressure — if a consumer falls behind (its
           lag exceeds a threshold), the consumer group coordinator can rebalance partitions to faster
           consumers, distributing the load more evenly.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">AWS API Gateway — Request Queuing and Throttling</h3>
         <p>
@@ -337,19 +359,22 @@ export default function BackpressureHandlingArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Backpressure mechanisms can be exploited by attackers to cause denial-of-service or manipulate system behavior.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Backpressure-Related Attack Vectors</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Queue Exhaustion Attacks:</strong> Attackers flood the system with requests to fill bounded queues, causing legitimate requests to be rejected. Mitigation: implement per-client queue limits, rate limit before queue admission, prioritize authenticated users in queue admission.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Slow Client Attacks:</strong> Attackers open connections and read data very slowly, causing the server to buffer data for extended periods. Mitigation: implement minimum read rate requirements, timeout slow connections, use streaming responses that do not require server-side buffering.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Priority Manipulation:</strong> Attackers forge request priority levels to gain preferential treatment during load shedding. Mitigation: validate priority claims server-side, assign priorities based on authenticated identity rather than client-supplied values, use cryptographic priority tokens.
             </li>
@@ -372,19 +397,22 @@ export default function BackpressureHandlingArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Backpressure mechanisms must be validated through systematic testing — the system must correctly propagate backpressure signals, shed load gracefully, and recover when the overload subsides.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Backpressure Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Queue Depth Tests:</strong> Fill bounded queues to capacity and verify that new requests are rejected (not queued). Verify that rejected requests return appropriate error responses (503 with Retry-After). Verify that queue depth metrics are accurately reported.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Backpressure Propagation Tests:</strong> Slow down the downstream component (simulate slow database queries) and verify that backpressure propagates upstream — the upstream component reduces its output rate, queues fill, and eventually the system entrance sheds load.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recovery Tests:</strong> After inducing overload, restore normal downstream capacity and verify that the system recovers — queues drain, concurrency limits increase, and normal request processing resumes. Measure recovery time and verify no residual degradation.
             </li>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,10 @@ export default function InternationalizationLocalizationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Internationalization (i18n)</strong> is the practice of
           designing and developing applications so they can be adapted to
           various languages and regions without engineering changes.{" "}
@@ -47,8 +51,8 @@ export default function InternationalizationLocalizationArticle() {
           application is built is significantly more expensive than building it
           from the start, because string concatenation, hardcoded dates, and
           left-to-right layout assumptions are deeply embedded in the codebase.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The business case for internationalization is compelling.
           Approximately 75% of internet users do not speak English as their
           first language. Studies show that users are three times more likely to
@@ -58,7 +62,7 @@ export default function InternationalizationLocalizationArticle() {
           new geographic markets is a primary growth lever, and i18n is the
           technical enabler. In some regions (Quebec, EU member states), local
           language support is a legal requirement for digital services.
-        </p>
+        </HighlightBlock>
         <p>
           Internationalization touches every layer of the frontend architecture.
           The UI layer must support text expansion (German text is typically 30%
@@ -76,7 +80,10 @@ export default function InternationalizationLocalizationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Translation file organization is foundational to i18n architecture.
           Translations should be organized by feature or domain namespace
           (common, navigation, forms, errors, products) rather than by page,
@@ -91,8 +98,8 @@ export default function InternationalizationLocalizationArticle() {
           (<code>Hello &#123;name&#125;, you have &#123;count&#125; messages</code>)
           because word order varies by language and concatenated fragments
           produce grammatically incorrect translations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Pluralization is one of the most complex i18n challenges because
           languages have dramatically different plural rules. English has two
           forms: one (1 message) and other (2 messages, 0 messages). Arabic has
@@ -102,7 +109,7 @@ export default function InternationalizationLocalizationArticle() {
           providing locale-aware plural rules — the translation file includes
           all plural variants, and the library selects the correct one based on
           the count value and the current locale.
-        </p>
+        </HighlightBlock>
         <p>
           Right-to-left (RTL) support requires more than translation — it
           requires layout mirroring for languages that read from right to left.
@@ -127,7 +134,10 @@ export default function InternationalizationLocalizationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The i18n rendering pipeline transforms translation keys into
           localized output through several stages. The application determines
           the current locale at initialization through a detection pipeline:
@@ -139,8 +149,8 @@ export default function InternationalizationLocalizationArticle() {
           resort. Once the locale is determined, the i18n library loads the
           corresponding translation files — lazy-loaded by namespace to avoid
           downloading translations for features the user has not accessed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The rendering layer uses the i18n library&apos;s translation function
           to look up keys and interpolate values. For React applications,{" "}
           <code>react-i18next</code> provides the <code>useTranslation</code>{" "}
@@ -154,7 +164,7 @@ export default function InternationalizationLocalizationArticle() {
           <code>Intl.DateTimeFormat</code>, numbers via{" "}
           <code>Intl.NumberFormat</code>, and relative times via{" "}
           <code>Intl.RelativeTimeFormat</code>.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/rtl-layout-flip.svg"
@@ -186,7 +196,10 @@ export default function InternationalizationLocalizationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           i18n library selection involves trade-offs between features, bundle
           size, and ecosystem integration. react-i18next is the most popular
           React i18n library with comprehensive features (interpolation,
@@ -199,8 +212,8 @@ export default function InternationalizationLocalizationArticle() {
           and clean syntax, but has a smaller ecosystem. For Next.js
           applications, next-intl provides the best framework integration with
           SSR/SSG support, routing integration, and type-safe translations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           URL structure for locales affects both SEO and user experience. Path
           based URLs (<code>example.com/en/products</code>,{" "}
           <code>example.com/de/produkte</code>) are recommended — they are
@@ -214,7 +227,7 @@ export default function InternationalizationLocalizationArticle() {
           variants separately. Separate domains (<code>example.de</code>,{" "}
           <code>example.fr</code>) are appropriate for major markets with
           distinct branding but require managing multiple deployments.
-        </p>
+        </HighlightBlock>
         <p>
           Translation management system choice depends on team size, budget,
           and workflow complexity. Lokalise offers the best developer experience
@@ -233,7 +246,10 @@ export default function InternationalizationLocalizationArticle() {
 
       <section>
         <h2>ICU Message Format Deep Dive</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The ICU Message Format is the industry standard for representing
           localized strings with variables, pluralization, selection, and
           formatting. Developed as part of the International Components for
@@ -247,8 +263,8 @@ export default function InternationalizationLocalizationArticle() {
           format uses curly braces to delimit message arguments within a
           translation string, and each argument can be a simple variable
           replacement or a complex type with locale-specific formatting rules.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Pluralization within ICU Message Format is where the format truly
           distinguishes itself from simpler templating approaches. The plural
           argument type takes a numeric value and selects the appropriate plural
@@ -269,7 +285,7 @@ export default function InternationalizationLocalizationArticle() {
           contexts. ICU Message Format handles all of these distinctions through
           its CLDR-backed plural rules without requiring developers to understand
           the linguistic details of each target language.
-        </p>
+        </HighlightBlock>
         <p>
           The select and selectordinal argument types handle gender-based and
           ordinal-based message selection respectively. The select type chooses
@@ -310,7 +326,10 @@ export default function InternationalizationLocalizationArticle() {
 
       <section>
         <h2>RTL Layout Mirroring Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing right-to-left layout mirroring requires a systematic
           approach that goes far beyond adding <code>dir=&quot;rtl&quot;</code>{" "}
           to the HTML element. CSS logical properties form the foundation of
@@ -326,8 +345,8 @@ export default function InternationalizationLocalizationArticle() {
           complex layouts with absolute positioning, transforms, and
           calc()-based positioning often require manual review to ensure correct
           behavior in both LTR and RTL modes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Directional iconography presents a subtle but critical challenge in
           RTL layouts. Icons that convey spatial relationships — left and right
           arrows, chevrons indicating navigation direction, back and forward
@@ -343,7 +362,7 @@ export default function InternationalizationLocalizationArticle() {
           the temporal directionality of media is independent of text reading
           direction. This distinction requires careful design review and explicit
           documentation in the component library&apos;s icon usage guidelines.
-        </p>
+        </HighlightBlock>
         <p>
           Bidirectional (bidi) text handling adds another layer of complexity
           when RTL content contains embedded LTR text such as English technical
@@ -382,7 +401,10 @@ export default function InternationalizationLocalizationArticle() {
 
       <section>
         <h2>Locale Negotiation Algorithms</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Locale negotiation is the process by which the application and the
           user&apos;s browser determine the most appropriate language for the
           session. The HTTP Accept-Language header carries the user&apos;s
@@ -398,8 +420,8 @@ export default function InternationalizationLocalizationArticle() {
           back to <code>en-GB</code> rather than <code>en</code> or the default
           locale, because the regional variant is closer to the user&apos;s
           preference than the generic language.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The negotiation algorithm operates as a multi-stage matching process.
           First, it attempts exact locale match — <code>en-US</code> against
           <code>en-US</code> — which succeeds if the application supports that
@@ -417,7 +439,7 @@ export default function InternationalizationLocalizationArticle() {
           <code>en-CA</code>, even though en-CA matches the region, because the
           language match takes priority over the region match in the BCP 47
           language tag hierarchy.
-        </p>
+        </HighlightBlock>
         <p>
           Content negotiation extends beyond language to include regional
           formatting preferences, currency selection, and legal compliance
@@ -437,7 +459,10 @@ export default function InternationalizationLocalizationArticle() {
 
       <section>
         <h2>Translation QA Workflows &amp; Pseudolocalization</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Translation quality assurance is a multi-layered process that spans
           automated checks, peer review by professional translators, and
           engineering validation of the localized product. The workflow begins
@@ -451,8 +476,8 @@ export default function InternationalizationLocalizationArticle() {
           production. The extracted keys are then uploaded to the Translation
           Management System (TMS) where they enter the translator&apos;s
           workflow.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Professional translators work within the TMS interface, which provides
           crucial context that raw translation keys lack. Screenshots, component
           descriptions, character limits, and usage notes help translators
@@ -466,7 +491,7 @@ export default function InternationalizationLocalizationArticle() {
           accuracy, tone, cultural appropriateness, and adherence to the
           glossary. Only after review and approval are translations marked as
           production-ready.
-        </p>
+        </HighlightBlock>
         <p>
           Pseudolocalization is an engineering-driven QA technique that detects
           i18n bugs before actual translations are available. The technique
@@ -504,7 +529,10 @@ export default function InternationalizationLocalizationArticle() {
 
       <section>
         <h2>Cultural Adaptation Beyond Translation</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cultural adaptation in internationalization extends far beyond text
           translation to encompass visual design, color semantics, iconography,
           imagery, and interaction patterns that vary significantly across
@@ -518,8 +546,8 @@ export default function InternationalizationLocalizationArticle() {
           in each target market, and in some cases, provide locale-specific color
           variations for brand elements, success/error states, and decorative
           accents.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Iconography and imagery require similar cultural sensitivity. A mailbox
           icon in the US looks like a blue metal box on a post, but mailbox
           designs vary across Europe and Asia. A house icon in a navigation
@@ -535,7 +563,7 @@ export default function InternationalizationLocalizationArticle() {
           floppy disk save, telephone handset) may not resonate with younger
           audiences or users in regions where these objects look different or do
           not exist.
-        </p>
+        </HighlightBlock>
         <p>
           Numerical and date formatting edge cases extend beyond the basic
           locale-aware formatting provided by the Intl API. Indian number
@@ -574,7 +602,10 @@ export default function InternationalizationLocalizationArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Build internationalization into the application architecture from day
           one. Wrap all user-facing strings with the translation function —
           never hardcode text in components, even for the default language. Use
@@ -586,8 +617,8 @@ export default function InternationalizationLocalizationArticle() {
           translation team. Set up automated key extraction in the build process
           so that new translation keys are detected and added to translation
           files without manual intervention.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design layouts with text expansion in mind. German translations are
           typically 30% longer than English, and French is 15-20% longer.
           Buttons, labels, and navigation items must accommodate longer text
@@ -597,7 +628,7 @@ export default function InternationalizationLocalizationArticle() {
           translations you expect to support — a common practice is to test
           with &quot;pseudo-localized&quot; strings that are artificially
           expanded to simulate the longest expected translation.
-        </p>
+        </HighlightBlock>
         <p>
           Use the JavaScript Intl API for all locale-specific formatting rather
           than implementing formatting logic manually.{" "}
@@ -615,7 +646,10 @@ export default function InternationalizationLocalizationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           String concatenation for translated text is one of the most common
           i18n mistakes. Building sentences by concatenating translated
           fragments (<code>t(&apos;hello&apos;) + name + t(&apos;welcome&apos;)</code>)
@@ -626,8 +660,8 @@ export default function InternationalizationLocalizationArticle() {
           with complete sentences: <code>t(&apos;welcome&apos;, name variable)</code> where the translation string is{" "}
           <code>&quot;Welcome, name&quot;</code> in English and its
           grammatically correct equivalent in each target language.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Ignoring RTL layout requirements makes the application unusable for
           Arabic, Hebrew, Persian, and Urdu speakers. Simply translating text
           to Arabic is insufficient — the entire layout must mirror: navigation
@@ -639,7 +673,7 @@ export default function InternationalizationLocalizationArticle() {
           <code>margin-right</code>) and replacing them with logical
           properties. The fix is to use CSS logical properties from the start
           and test with RTL content during development.
-        </p>
+        </HighlightBlock>
         <p>
           Hardcoding date and number formats instead of using the Intl API
           produces incorrect formatting for most locales. Displaying dates as
@@ -655,7 +689,10 @@ export default function InternationalizationLocalizationArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Global e-commerce platforms face the most complex i18n challenges
           because they must handle multiple languages, currencies, date formats,
           address formats, and legal requirements simultaneously. Amazon
@@ -667,8 +704,8 @@ export default function InternationalizationLocalizationArticle() {
           parameters (date pattern, number separators, currency symbol, address
           template) for each supported locale, and the UI components consume
           this service for all formatting decisions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SaaS companies expanding into international markets use i18n to enter
           new regions with minimal engineering effort per locale. Slack, Notion,
           and Figma support multiple languages by building i18n into their
@@ -678,7 +715,7 @@ export default function InternationalizationLocalizationArticle() {
           requires providing translations (handled by the localization team) and
           verifying that no layout breaks with the new text length — typically a
           few days of QA work, not weeks of engineering.
-        </p>
+        </HighlightBlock>
         <p>
           Government and public-service websites have strict i18n requirements
           driven by legal mandates. In Canada, federal websites must be fully
@@ -694,12 +731,15 @@ export default function InternationalizationLocalizationArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you structure translations for a large application?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Namespace translations by feature or domain (common, forms,
               products, errors), not by page, because components are reused
               across pages. Use hierarchical keys (forms.login.emailLabel) for
@@ -710,7 +750,7 @@ export default function InternationalizationLocalizationArticle() {
               word order varies by language. Use ICU plural rules for
               pluralization. Provide a fallback locale so missing translations
               display default text rather than breaking the UI.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

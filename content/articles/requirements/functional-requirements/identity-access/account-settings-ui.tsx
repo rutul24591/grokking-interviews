@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,13 +34,16 @@ export default function AccountSettingsUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Account Settings UI</strong> allows users to manage critical account information
           including email, phone number, account deletion, and data export. Unlike profile settings
           (public-facing), account settings control the underlying account identity and have
           significant security implications. Account settings is where users make changes that
           affect account security and data ownership.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/account-settings-flow.svg"
@@ -47,14 +51,14 @@ export default function AccountSettingsUIArticle() {
           caption="Account Settings Flow — showing email change, phone change, account deletion, and data export flows"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing account settings requires deep
           understanding of security verification flows (password/MFA confirmation), email/phone
           change processes (dual verification), account deletion (GDPR right to erasure), data
           export (GDPR right to access/portability), and audit logging. The implementation must
           provide clear UX while preventing unauthorized changes and complying with privacy
           regulations.
-        </p>
+        </HighlightBlock>
         <p>
           Modern account settings has evolved from simple forms to comprehensive privacy dashboards
           with GDPR compliance, data portability, and granular privacy controls. Organizations like
@@ -66,19 +70,22 @@ export default function AccountSettingsUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Account settings is built on fundamental concepts that determine how account changes are
           made securely. Understanding these concepts is essential for designing effective account
           settings UI.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Email Change Flow:</strong> Current email verification (require password or MFA
           before changing — prevents unauthorized changes), new email input (validate format, check
           not already registered), verification to both (send confirmation to old email as security
           notice, send verification link to new email), pending state (email change pending until
           new email verified — show in UI), rollback (allow canceling pending change from old email
           link).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Phone Number Change:</strong> Similar to email change — verify current phone (SMS
           code), enter new phone, send verification code to new phone, confirm code, update phone.
@@ -101,11 +108,14 @@ export default function AccountSettingsUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Account settings architecture separates settings UI from backend verification, enabling
           secure changes with clear UX. This architecture is critical for preventing unauthorized
           account changes.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/account-settings-gdpr.svg"
@@ -113,7 +123,7 @@ export default function AccountSettingsUIArticle() {
           caption="GDPR Compliance — showing data access, portability, right to erasure, and consent management"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Email change flow: User navigates to account settings, clicks "Change Email". Frontend
           shows current email verification (require password or MFA). User verifies. Frontend shows
           new email input. User enters new email. Frontend validates format, checks availability.
@@ -121,7 +131,7 @@ export default function AccountSettingsUIArticle() {
           verification link to new email. Email change status shows "Pending" until new email
           verified. User clicks verification link in new email. Backend completes email change,
           notifies user. Old email can cancel pending change via link in security notice.
-        </p>
+        </HighlightBlock>
         <p>
           Account deletion flow: User navigates to account settings, clicks "Delete Account".
           Frontend shows warning (data loss, irreversible after grace period). User confirms.
@@ -149,23 +159,26 @@ export default function AccountSettingsUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing account settings involves trade-offs between security, usability, and
           compliance. Understanding these trade-offs is essential for making informed architecture
           decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Single vs Dual Verification for Email Change</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Single (verify new only):</strong> Simpler UX, faster change. Limitation:
               attacker who gains access can change email, lock out legitimate user.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Dual (verify old + new):</strong> More secure (old email gets notice, can
               cancel). Limitation: more steps, user must access both emails.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Dual verification for email changes — security
               outweighs convenience. Old email must be able to cancel pending change.
@@ -215,19 +228,22 @@ export default function AccountSettingsUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing account settings requires following established best practices to ensure
           security, usability, and compliance.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Email Change</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Require current email verification — password or MFA before changing. Send security
           notice to old email — include cancellation link. Send verification link to new email —
           must confirm ownership. Show pending state clearly — "Email change pending, check your
           new email". Allow cancellation from old email — security measure. Expire pending change
           after 7 days — prevent stale pending changes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Phone Change</h3>
         <p>
@@ -256,21 +272,24 @@ export default function AccountSettingsUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing account settings to ensure secure, usable,
           and compliant account management.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No verification for email change:</strong> Attacker can change email, lock out
             user. <strong>Fix:</strong> Require password/MFA verification. Send notice to old email
             with cancellation link.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Immediate account deletion:</strong> No recovery from accidental or malicious
             deletion. <strong>Fix:</strong> Implement grace period (14-30 days). Send confirmation
             with cancellation link.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No data export:</strong> GDPR violation, users can't access their data.{" "}
             <strong>Fix:</strong> Implement data export (JSON, CSV, PDF). Asynchronous generation
@@ -313,16 +332,19 @@ export default function AccountSettingsUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Account settings is critical for user control and compliance. Here are real-world
           implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer Platform (Google)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Billions of users with varying technical knowledge. Need to
           make account management accessible. GDPR compliance critical.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Comprehensive account dashboard. Email change with dual
           verification. Data export (Google Takeout). Account deletion with grace period. Security
@@ -410,14 +432,17 @@ export default function AccountSettingsUIArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of account settings UI design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle email change securely?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle email change securely?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Require current email verification (password or MFA). Send security notice to old
               email with cancellation link. Send verification link to new email. Show pending state

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function TransactionHistoryUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Transaction history UI provides users visibility into their financial transactions, enabling tracking, reconciliation, and record-keeping. Customers need to see: what they paid, when, for what, and current status (completed, pending, refunded). A well-designed transaction history reduces support tickets (customers find answers themselves), enables expense tracking (business customers), and builds trust (transparent financial records). For staff and principal engineers, transaction history involves data aggregation (multiple payment methods, orders, subscriptions), performance optimization (large datasets, fast search), and compliance (data retention, export for accounting).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of transaction history extends beyond simple list display. Transactions come from multiple sources (orders, subscriptions, refunds, credits), each with different data structures. Filtering must handle date ranges (custom, presets), transaction types (purchase, refund, credit), status (completed, pending, failed), and amounts (min/max). Search must be fast (indexed, cached) and flexible (description, amount, order number). Export must support multiple formats (CSV for accounting, PDF for records), date ranges, and filters. The UI must handle edge cases (very old transactions, deleted orders, chargebacks) gracefully with clear messaging.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, transaction history architecture involves backend integration (payment API, order API, subscription API), data aggregation (unify multiple sources), and performance optimization (pagination, lazy loading, search indexes). Analytics track usage (search terms, filter usage, export frequency), performance (query time, page load), and errors (failed searches, export failures). The system must support multiple user types (individual consumers, business customers with multiple users, accountants with read-only access), multiple date ranges (last 30 days, custom, all-time), and multiple export formats (CSV, PDF, QBO for QuickBooks).
         </p>
@@ -47,13 +51,16 @@ export default function TransactionHistoryUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Transaction List Display</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Transaction table shows financial transactions. Columns: date (transaction date), description (what was purchased), amount (charged/refunded), status (completed, pending, failed, refunded), payment method (Visa •••• 1234, PayPal), receipt (download link). Sorting: by date (newest first default), amount (highest first), description (alphabetical). Grouping: by month (Dec 2024, Nov 2024), by type (purchases, refunds, credits). Display: table (desktop), cards (mobile), infinite scroll (load more) or pagination (page 1 of 10).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Transaction details expand on click/tap. Details: order number, items purchased, billing address, shipping address, payment method, transaction ID, receipt link, refund link (if eligible). Actions: download receipt, request refund (if eligible), dispute transaction (if issue), report issue (contact support). Display: modal (desktop), new page (mobile), accordion expand (inline details).
-        </p>
+        </HighlightBlock>
         <p>
           Status indicators show transaction state. Completed: green checkmark, &quot;Completed&quot; (funds transferred). Pending: yellow spinner, &quot;Processing&quot; (funds authorized, not captured). Failed: red X, &quot;Failed&quot; (payment declined, insufficient funds). Refunded: blue arrow, &quot;Refunded&quot; (funds returned). Display: color-coded badges, tooltip on hover (explain status), clickable (filter by status).
         </p>
@@ -105,9 +112,12 @@ export default function TransactionHistoryUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Transaction history UI architecture spans data aggregation, list display, filtering/search, and export. Data aggregation fetches transactions from multiple sources (orders, subscriptions, refunds). List display shows transactions (table, cards, pagination). Filtering/search filters and finds transactions. Export generates downloadable files (CSV, PDF, QBO).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/transaction-history-ui/transaction-history-architecture.svg"
@@ -118,9 +128,9 @@ export default function TransactionHistoryUIArticle() {
         />
 
         <h3>Data Aggregation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Transaction sources aggregate multiple data sources. Orders: e-commerce purchases (physical goods, digital goods). Subscriptions: recurring charges (SaaS, memberships). Refunds: returned items, cancelled subscriptions. Credits: store credit, promotional credit, loyalty points. Display: unified list (all sources), source indicator (order icon, subscription icon).
-        </p>
+        </HighlightBlock>
         <p>
           Data normalization unifies different data structures. Order format: order number, items, total, date. Subscription format: subscription ID, plan, amount, billing date. Refund format: refund ID, original order, amount, date. Normalized format: transaction ID, description, amount, date, type, status, source. Benefits: single query (unified list), consistent filtering (all sources), simplified frontend (one data structure).
         </p>
@@ -180,14 +190,17 @@ export default function TransactionHistoryUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Transaction history design involves trade-offs between performance, functionality, complexity, and user experience. Understanding these trade-offs enables informed decisions aligned with business requirements and customer expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Pagination: Page-Based vs. Infinite Scroll</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Page-based pagination (page 1 of 10). Pros: Clear progress (know how many pages), jump to page (go to page 5), bookmarkable (page 3 URL). Cons: Discontinuous scroll (click to load more), page reload (unless AJAX), arbitrary page size (20 vs. 50). Best for: Desktop (mouse navigation), known dataset size (know total), export (export page X).
-        </p>
+        </HighlightBlock>
         <p>
           Infinite scroll (load more on scroll). Pros: Continuous scroll (seamless), no page selection (just scroll), mobile-friendly (thumb scroll). Cons: No progress (don&apos;t know how many), can&apos;t jump (must scroll), footer issues (infinite content). Best for: Mobile (touch navigation), unknown dataset size (don&apos;t know total), browsing (not searching).
         </p>
@@ -239,13 +252,16 @@ export default function TransactionHistoryUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide multiple views:</strong> Table (desktop), cards (mobile), grouped (by month). Let users choose (view toggle). Default: table (desktop), cards (mobile), grouped (by month).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement fast search:</strong> Server-side search (indexed), debounced input (300ms), highlight matches (bold text). Advanced search: multiple fields, date range, amount range.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Support multiple exports:</strong> CSV (accounting), PDF (records), QBO (QuickBooks). Date range (last 30 days, custom). Filter application (export filtered results). Email large exports (don&apos;t wait).
           </li>
@@ -275,13 +291,16 @@ export default function TransactionHistoryUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Slow search:</strong> Client-side search on large dataset. Solution: Server-side search, search index, debounced input.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No export:</strong> Can&apos;t export for accounting. Solution: CSV export (accounting), PDF export (records), QBO export (QuickBooks).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Poor mobile support:</strong> Table doesn&apos;t fit mobile. Solution: Card view (mobile), horizontal scroll (table), hide columns (show key info).
           </li>
@@ -311,16 +330,19 @@ export default function TransactionHistoryUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>PayPal Transaction History</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           PayPal transaction history: comprehensive financial records. Features: table view (all transactions), filters (date, type, status), search (by name, email, transaction ID). Export: CSV (accounting), PDF (records), custom date range. Receipts: individual download, bulk download. Disputes: per-transaction dispute, status tracking, evidence upload.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Stripe Dashboard Transaction History</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe dashboard: payment transaction history. Features: table view (payments, refunds, disputes), filters (date, status, payment method), search (customer, charge ID). Export: CSV (accounting), custom date range, filtered export. Receipts: payment receipt (email, download), invoice (PDF). Disputes: dispute management, evidence upload, status tracking.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Amazon Order History</h3>
         <p>
@@ -340,12 +362,15 @@ export default function TransactionHistoryUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle large transaction histories?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle large transaction histories?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Pagination (20-50 per page), lazy loading (load on scroll), server-side search (indexed), caching (repeat queries), archiving (old transactions to cold storage). Export: stream large exports (don&apos;t load all in memory), background generation (notify when ready), email large exports (don&apos;t wait for download).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>AI cost management</strong> is the practice of monitoring,
           optimizing, and controlling the costs associated with AI system
           operations. Unlike traditional software where compute costs are
@@ -32,8 +36,8 @@ export default function ArticlePage() {
           are driven by token consumption — the number of tokens in each input
           and output — which varies widely based on prompt design, model
           selection, response length, and usage patterns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The token-based pricing model of LLM APIs creates unique cost
           dynamics. A single request can cost $0.001 (simple classification
           with a small model) or $0.50 (complex analysis with a large model and
@@ -42,7 +46,7 @@ export default function ArticlePage() {
           regression that doubles context length doubles costs, a model update
           that changes tokenization can increase token counts by 20-30%, and a
           popular feature can generate thousands of expensive requests per hour.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, cost management is not an optimization — it
           is a first-class architectural requirement. The difference between a
@@ -56,7 +60,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Token economics</strong> is the foundation of AI cost
           management. LLM providers price their APIs per million tokens, with
           different rates for input and output tokens (output tokens are
@@ -67,8 +74,8 @@ export default function ArticlePage() {
           reducing input tokens (prompt compression, context optimization),
           reducing output tokens (response length limits, structured output),
           or reducing the price per token (model selection, volume discounts).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Model routing</strong> is the most impactful cost optimization
           strategy. Instead of using the most capable (and expensive) model for
           every request, route requests to the smallest model that can handle
@@ -78,7 +85,7 @@ export default function ArticlePage() {
           challenging tasks use frontier models (GPT-4, Claude Opus, $0.05+ per
           request). This tiered approach can reduce costs by 60-80% compared to
           using the most capable model for everything.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/token-cost-optimization-strategies.svg"
@@ -125,7 +132,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production cost management architecture consists of several layers.
           The <strong>cost tracking layer</strong> instruments every LLM call
           to log input tokens, output tokens, model used, and calculated cost.
@@ -135,7 +145,7 @@ export default function ArticlePage() {
           constraints: per-request budgets, per-user limits, and system-wide
           caps. The <strong>monitoring layer</strong> tracks cost metrics in
           real-time and alerts on anomalies.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/cost-management-architecture.svg"
@@ -143,7 +153,7 @@ export default function ArticlePage() {
           caption="Cost management — tracking, optimization, budget enforcement, and monitoring working together to control AI costs"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>model routing layer</strong> classifies each request by
           complexity and routes it to the appropriate model tier. The
           classification can be rule-based (keyword matching, input length
@@ -152,7 +162,7 @@ export default function ArticlePage() {
           types to model tiers and can dynamically adjust routing based on
           quality feedback (if a small model consistently produces low-quality
           outputs for a task type, escalate to a larger model).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Cache management</strong> involves deciding what to cache,
           how long to cache it, and when to invalidate cached responses. Exact
@@ -168,7 +178,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cost versus quality</strong> is the fundamental trade-off in
           AI cost management. Smaller models, shorter prompts, and aggressive
           caching reduce costs but may degrade output quality. The optimization
@@ -176,15 +189,15 @@ export default function ArticlePage() {
           minimum cost that achieves the required quality level. This requires
           measuring quality alongside cost and understanding the relationship
           between them for each task type.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Caching aggressiveness</strong> involves a cost-versus-freshness
           trade-off. Longer cache TTLs reduce costs (more cache hits) but risk
           stale responses. Shorter TTLs ensure freshness but reduce cache
           effectiveness. The optimal TTL depends on how frequently the
           underlying knowledge changes and how sensitive the application is to
           outdated information.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/model-routing-cost-optimization.svg"
@@ -195,20 +208,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement per-request cost tracking from day one</strong> —
           every LLM call should log input tokens, output tokens, model, and
           calculated cost. Aggregate these metrics by feature, user, and time
           period. Without per-request cost tracking, you cannot identify
           optimization opportunities or detect cost anomalies.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Set budget guardrails before deployment</strong> — implement
           per-request token budgets, per-user rate limits, and system-wide
           monthly cost caps. Configure alerts for cost anomalies (sudden spikes,
           unexpected trends). Budget guardrails are cheaper to implement before
           deployment than to retrofit after a cost overrun.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Optimize prompt token count aggressively</strong> — review
           every prompt for unnecessary tokens: redundant whitespace, verbose
@@ -229,21 +245,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>not tracking costs until it is too
           late</strong>. Teams deploy AI features without cost monitoring,
           discover unexpectedly high bills weeks later, and then scramble to
           implement cost controls. Implement cost tracking before deployment,
           set budget alerts, and review cost metrics regularly as part of your
           operational routine.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Over-caching dynamic content</strong> — caching responses
           for prompts that include time-sensitive or user-specific information
           can return incorrect or inappropriate responses. Always include
           dynamic context (user ID, timestamp, current state) in the cache key,
           or use a short TTL for time-sensitive content.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Optimizing for cost at the expense of quality</strong> —
           aggressive prompt compression, overly aggressive caching, or routing
@@ -264,22 +283,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Customer support cost optimization</strong> — implementing
           model routing (simple queries to small models, complex queries to
           large models), caching (frequently asked questions served from cache),
           and output length limits (concise responses instead of verbose
           explanations). These optimizations typically reduce per-ticket cost
           by 60-70% while maintaining or improving resolution quality.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Code assistant cost management</strong> — using exact caching
           for repeated code suggestions (the same function signature produces
           the same suggestion), prompt compression for large codebase context,
           and model routing (syntax suggestions from small models, architectural
           analysis from large models). These strategies keep the code assistant
           cost-effective even at high developer usage volumes.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Content generation pipeline optimization</strong> — marketing
           and documentation teams generating thousands of product descriptions,
@@ -296,12 +318,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: How do you implement model routing for cost optimization?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Model routing classifies each request by complexity and routes it
             to the smallest model capable of handling it. The classification
             can be rule-based (input length, keyword matching, task type) or
@@ -311,14 +336,14 @@ export default function ArticlePage() {
             medium models (70B) for analysis and summarization, and frontier
             models (GPT-4, Claude Opus) for complex reasoning and creative
             tasks.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             The router should include an escalation mechanism: if a small model
             produces low-quality output (detected through output validation or
             user feedback), the request is escalated to a larger model. Over
             time, the router learns which task types require which model tiers
             and adjusts its routing map accordingly.
-          </p>
+          </HighlightBlock>
           <p>
             The cost savings from model routing are substantial: a typical
             application routes 60% of requests to small models ($0.0001 each),

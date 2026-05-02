@@ -623,8 +623,12 @@ export default function ModulePatternArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: “modules” are an architecture tool. Your best answers tie module boundaries to build
+          outputs (tree-shaking), dependency direction, and runtime initialization order.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules"
               className="text-accent hover:underline"
@@ -633,8 +637,8 @@ export default function ModulePatternArticle() {
             >
               MDN Web Docs — JavaScript Modules Guide
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://nodejs.org/api/esm.html"
               className="text-accent hover:underline"
@@ -643,7 +647,7 @@ export default function ModulePatternArticle() {
             >
               Node.js Documentation — ECMAScript Modules
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://exploringjs.com/es6/ch_modules.html"
@@ -654,7 +658,7 @@ export default function ModulePatternArticle() {
               Exploring ES6 — Modules by Dr. Axel Rauschmayer
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://webpack.js.org/guides/tree-shaking/"
               className="text-accent hover:underline"
@@ -663,8 +667,8 @@ export default function ModulePatternArticle() {
             >
               webpack — Tree Shaking Guide
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.patterns.dev/vanilla/module-pattern"
               className="text-accent hover:underline"
@@ -673,7 +677,7 @@ export default function ModulePatternArticle() {
             >
               patterns.dev — Module Pattern
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

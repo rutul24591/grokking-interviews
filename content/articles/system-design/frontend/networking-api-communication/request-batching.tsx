@@ -1037,8 +1037,12 @@ export default function RequestBatchingConciseArticle() {
 
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview anchor: batching is a latency vs. freshness vs. failure-domain trade. You should justify when to
+          batch (N+1, chatty clients) and when not to (tail latency, partial failure, cacheability).
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://github.com/graphql/dataloader"
               className="text-accent hover:underline"
@@ -1047,7 +1051,7 @@ export default function RequestBatchingConciseArticle() {
             >
               GraphQL DataLoader - Official Repository
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://www.apollographql.com/docs/react/api/link/apollo-link-batch-http/"
@@ -1058,7 +1062,7 @@ export default function RequestBatchingConciseArticle() {
               Apollo BatchHttpLink - Apollo GraphQL Documentation
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://relay.dev/docs/guides/network-layer/"
               className="text-accent hover:underline"
@@ -1067,8 +1071,8 @@ export default function RequestBatchingConciseArticle() {
             >
               Relay Network Layer - Relay Documentation
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://cloud.google.com/storage/docs/batch"
               className="text-accent hover:underline"
@@ -1077,8 +1081,8 @@ export default function RequestBatchingConciseArticle() {
             >
               Google Cloud Batch API - Batching Requests
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://web.dev/performance/resource-loading/"
               className="text-accent hover:underline"
@@ -1087,7 +1091,7 @@ export default function RequestBatchingConciseArticle() {
             >
               web.dev - Resource Loading Optimization
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

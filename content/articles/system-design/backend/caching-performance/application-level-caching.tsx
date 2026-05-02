@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -95,9 +96,12 @@ export default function ArticlePage() {
       {/* Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>In-Process Caching Fundamentals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An in-process cache is a data structure that lives in the application
           heap, keyed by some identifier, and maps to cached values. The
           simplest implementation is a concurrent hash map with a maximum size
@@ -107,9 +111,9 @@ export default function ArticlePage() {
           provide asynchronous loading to prevent cache stampedes, expose
           detailed metrics (hit rate, eviction counts, load times), and
           guarantee thread safety without coarse-grained locking.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The primary design decision for an in-process cache is its eviction
           policy. The policy determines which entries are removed when the cache
           reaches capacity, and it directly impacts the cache hit rate. Caffeine
@@ -123,7 +127,7 @@ export default function ArticlePage() {
           access ordering. Caffeine consistently outperforms Guava in both hit
           rate and throughput benchmarks, which is why Caffeine is the
           recommended choice for new Java applications.
-        </p>
+        </HighlightBlock>
 
         <p>
           Beyond eviction, in-process caches must handle expiration. Time-to-live
@@ -225,18 +229,21 @@ export default function ArticlePage() {
       {/* Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Caffeine Cache Internals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Caffeine is the highest-performance JVM caching library available
           today, and it is the recommended in-process cache for production
           Java applications. Understanding its internals is essential for
           staff-level engineers who must tune cache configurations, diagnose
           performance issues, and make architecture decisions based on library
           capabilities.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Caffeine uses Window TinyLFU (W-TinyLFU) as its eviction policy,
           which is a significant improvement over the LRU used by Guava Cache.
           W-TinyLFU divides the cache into two regions: a small admission
@@ -251,7 +258,7 @@ export default function ArticlePage() {
           candidate victim entry; otherwise, it is discarded. This admission
           filter prevents one-time accesses (scan pollution) from entering the
           main space and evicting genuinely hot entries.
-        </p>
+        </HighlightBlock>
 
         <p>
           The TinyLFU frequency sketch is a probabilistic data structure based
@@ -370,17 +377,20 @@ export default function ArticlePage() {
       {/* Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Application-level caching is not a universally superior alternative
           to distributed caching. It occupies a specific point in the design
           space, trading memory efficiency and cross-instance consistency for
           ultra-low latency. Understanding the trade-offs is essential for
           making the right architecture decision for a given workload.
-        </p>
+        </HighlightBlock>
 
         <h3>In-Process vs Distributed Cache</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In-process caches offer the lowest possible latency, completing
           lookups in nanoseconds to low microseconds. They avoid network
           round-trips, serialization overhead, and connection-pool contention.
@@ -390,7 +400,7 @@ export default function ArticlePage() {
           Redis cluster is shared across all instances, consuming exactly 1 GB
           of infrastructure memory. This memory multiplication factor is the
           primary economic constraint on in-process caching at scale.
-        </p>
+        </HighlightBlock>
 
         <p>
           Consistency is the second major trade-off. In-process caches are
@@ -477,8 +487,11 @@ export default function ArticlePage() {
       {/* Best Practices */}
       <section>
         <h2>Best Practices for Production Application Caching</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Size in-process caches conservatively and monitor heap pressure
           continuously. A widely cited rule of thumb is to limit in-process
           caches to 5 to 10 percent of the process heap, leaving sufficient
@@ -489,9 +502,9 @@ export default function ArticlePage() {
           maximum entry count. This is significantly more memory-predictable
           than entry counting when values have variable sizes. Use the weigher
           for caches where entry sizes vary by more than a factor of two.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Always configure both TTL and an eviction policy. TTL provides a
           safety net against indefinite staleness, while the eviction policy
           manages memory when the cache is full. The TTL should be set based
@@ -502,7 +515,7 @@ export default function ArticlePage() {
           longer TTL (5 to 30 minutes). The eviction policy should be W-TinyLFU
           (Caffeine default) for general workloads, as it provides the best
           balance of hit rate, scan resistance, and memory efficiency.
-        </p>
+        </HighlightBlock>
 
         <p>
           Implement cache stampede prevention for any cache entry that is both
@@ -558,8 +571,11 @@ export default function ArticlePage() {
       {/* Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Unbounded cache growth is the most common operational failure in
           application-level caching. Without explicit size limits, in-process
           caches accumulate entries until the heap is exhausted, triggering
@@ -569,9 +585,9 @@ export default function ArticlePage() {
           incident. Always configure a maximum size (entry count or weight) and
           an eviction policy. Monitor the cache size as a time-series metric
           and alert on sustained growth approaching the configured limit.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cache key collisions caused by incomplete key construction lead to
           data leakage and authorization bypasses. When a cache key omits the
           user identity or permission context, the cache may return a result
@@ -582,7 +598,7 @@ export default function ArticlePage() {
           all context fields to be explicitly provided, and by writing
           comprehensive tests that verify cache key uniqueness across user
           contexts.
-        </p>
+        </HighlightBlock>
 
         <p>
           Cold cache after deployment causes latency spikes and increased
@@ -634,9 +650,12 @@ export default function ArticlePage() {
       {/* Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Product Detail Pages</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Product detail pages are among the most heavily trafficked endpoints
           on an e-commerce platform. Loading a product page requires assembling
           data from multiple sources: product metadata from the catalog service,
@@ -645,9 +664,9 @@ export default function ArticlePage() {
           recommendation engine. Without caching, each page view triggers dozens
           of downstream calls, resulting in high latency and significant load
           on downstream services.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The standard architecture uses L1/L2 caching with Caffeine as L1 and
           Redis as L2. The hottest products (top 1 percent by traffic) are
           cached in L1 with a 30-second TTL, covering 60 to 80 percent of
@@ -659,7 +678,7 @@ export default function ArticlePage() {
           architecture reduces the p99 page load latency from 200 milliseconds
           (no cache) to 15 milliseconds (L1 hit) or 30 milliseconds (L2 hit),
           and reduces downstream service load by 70 to 80 percent.
-        </p>
+        </HighlightBlock>
 
         <h3>Feature Flag and Configuration Caching</h3>
         <p>
@@ -734,11 +753,14 @@ export default function ArticlePage() {
       {/* Interview Questions */}
       <section>
         <h2>Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q1: You have a service with 50 instances, each with a 512 MB Caffeine L1 cache backed by a 4 GB Redis L2 cache. After a rolling deployment, the average response latency spikes from 15ms to 80ms for 10 minutes before recovering. What is happening, and how do you mitigate it?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: You have a service with 50 instances, each with a 512 MB Caffeine L1 cache backed by a 4 GB Redis L2 cache. After a rolling deployment, the average response latency spikes from 15ms to 80ms for 10 minutes before recovering. What is happening, and how do you mitigate it?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               The latency spike is caused by cold L1 caches after deployment. When
               each instance is restarted during the rolling deployment, its Caffeine
             cache starts empty. Requests that would have been served from L1
@@ -747,7 +769,7 @@ export default function ArticlePage() {
             instances restarting over 10 minutes, a significant fraction of the
             fleet has cold caches at any given time, causing a sustained latency
             increase.
-          </p>
+          </HighlightBlock>
           <p className="mt-2 text-sm">
             The mitigation is multi-fold. First, implement proactive warm-up: at
             application startup, preload the hottest entries (top 1 to 5 percent

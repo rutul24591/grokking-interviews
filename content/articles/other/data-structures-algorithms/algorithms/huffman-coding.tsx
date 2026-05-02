@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function HuffmanCodingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Huffman coding</span> (David Huffman, 1952) is a
           greedy algorithm that produces an optimal prefix code for a given set of symbol
           frequencies. A prefix code assigns each symbol a binary string such that no code is
           a prefix of another — decoding is then unambiguous. &ldquo;Optimal&rdquo; means the
           resulting encoded message has minimum total length across all possible prefix codes.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Huffman&rsquo;s algorithm is the textbook greedy success story: it runs in O(n log n)
           for an alphabet of size n using a min-heap, has a clean exchange-argument proof of
           optimality, and is still the entropy-coding stage in ubiquitous real-world formats
           — DEFLATE (gzip, zlib, PNG), JPEG, HTTP&rsquo;s HPACK header compression, MP3&rsquo;s
           bit-allocation tables, and many more.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Despite its age, Huffman coding remains the default when (a) alphabet statistics are
           known or streamable, (b) integer code lengths are acceptable, and (c) simple and
@@ -50,18 +54,21 @@ export default function HuffmanCodingArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Prefix code = binary tree.</span> Every prefix code
           corresponds to a binary tree whose leaves are symbols; each left branch is a 0, each
           right branch is a 1. Code length of a symbol = depth of its leaf. Message length =
           Σ freq(c) · depth(c).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Greedy rule.</span> Put every symbol in a min-heap
           keyed by frequency. Repeatedly extract the two lowest-frequency nodes, create a new
           internal node with them as children and combined frequency, push it back. After n −
           1 merges one node remains — the root of the optimal prefix-code tree.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Why merging the two smallest is safe.</span> In any
           optimal tree, the two least-frequent symbols must be siblings at maximum depth (if
@@ -90,17 +97,20 @@ export default function HuffmanCodingArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Build phase.</span> Initialize a min-heap with one
           node per distinct symbol. While the heap has more than one node, pop two mins, push
           a new internal node whose frequency is their sum and whose children are the popped
           nodes. Final pop is the root.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Code assignment phase.</span> DFS the tree. Track
           the current path (0-bits for left, 1-bits for right). On reaching a leaf, record the
           path as that symbol&rsquo;s codeword. Typical output: a table symbol → bitstring.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Canonical Huffman.</span> Once code lengths are
           known, the actual bit patterns can be reconstructed by a simple rule: assign codes
@@ -139,20 +149,23 @@ export default function HuffmanCodingArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Huffman vs arithmetic coding.</span> Arithmetic
           coding achieves expected length within 1 bit of the entire message (not per
           symbol), so it&rsquo;s essentially optimal. Huffman is per-symbol, losing up to 1
           bit per symbol. Arithmetic is slower and historically patent-encumbered; Huffman is
           free and faster.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Huffman vs rANS / tANS.</span> Asymmetric numeral
           systems (Duda, ~2009) match arithmetic-coding compression at Huffman-level decode
           speeds. Used by Zstandard and LZFSE. The modern replacement when both speed and
           compression matter; used only behind Huffman in formats old enough to predate it
           (DEFLATE, JPEG).
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Static vs dynamic vs adaptive.</span> Static
           Huffman (fixed universal table) is tiny but suboptimal for atypical inputs. Dynamic
@@ -179,16 +192,19 @@ export default function HuffmanCodingArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Store canonical Huffman, not explicit trees.</span>
           Every production format does this; it saves bytes and makes decoder tables reusable
           across implementations.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Use length-limited Huffman for fixed-size decode
           tables.</span> Common limits: DEFLATE 15, JPEG 16. Package-merge is the right
           algorithm; don&rsquo;t hack the standard Huffman.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Use a table-based decoder.</span> Bit-by-bit tree
           walk is correct but slow. Build an n-bit lookup table (typically 8 or 11 bits) that
@@ -213,17 +229,20 @@ export default function HuffmanCodingArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Non-deterministic tie-breaking.</span> Equal-priority
           nodes in the heap are popped in implementation-dependent order. Two valid Huffman
           trees for the same input can differ in code assignment. When interoperating across
           implementations, use canonical Huffman.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Zero-frequency symbols.</span> Symbols with zero
           count should usually be excluded; if included, they get codes but never appear
           encoded. Some decoders choke on zero-length codes for impossible symbols.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Single-symbol alphabet.</span> The Huffman tree
           degenerates to a single leaf with code length 0 — which isn&rsquo;t decodable. Emit a
@@ -249,16 +268,19 @@ export default function HuffmanCodingArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">DEFLATE (gzip / zlib / PNG).</span> The single most-
           deployed compression algorithm on earth. Every HTTP response labeled Content-
           Encoding: gzip runs Huffman after LZ77 back-reference substitution.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">JPEG entropy stage.</span> After DCT + quantization,
           coefficients are Huffman-coded. Separate tables for luminance vs chrominance, DC
           vs AC. The spec includes standard tables; most encoders use them.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">HPACK and QPACK (HTTP/2, HTTP/3).</span> Header
           compression uses a static Huffman table optimized over a corpus of real HTTP
@@ -295,15 +317,18 @@ export default function HuffmanCodingArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Implement Huffman encoding.</span> Given a string or
           frequency table, build the tree and output codes. Expected: min-heap of (freq,
           node), merge loop, DFS for codes.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Prove Huffman optimal.</span> Exchange-argument
           proof: two-deepest-leaves lemma, induction on alphabet size. Know the outline.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Decode a Huffman-encoded bit stream.</span> Given
           tree or codes, decode a bit string. Expected: tree walk, or table lookup.

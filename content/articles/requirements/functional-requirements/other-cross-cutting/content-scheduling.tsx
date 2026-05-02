@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ContentSchedulingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content Scheduling enables users to schedule content for future publishing at specific times. Users can set publish time (when content should publish), manage schedule queue (view and manage scheduled content), handle timezone considerations (publish at correct time for audience), set up recurring schedules (repeat publishing), and resolve schedule conflicts (handle overlapping schedules). Content scheduling is fundamental to content strategy (publish at optimal times), operational efficiency (prepare content in advance), and audience engagement (publish when audience is active). For platforms with content publishing (social media, blogs, marketing, e-commerce), effective content scheduling is essential for strategic publishing, workflow efficiency, and audience engagement.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, content scheduling architecture involves scheduling service (manage scheduled content), queue management (manage publishing queue), timezone handling (handle timezone complexities), recurring schedules (manage repeat schedules), conflict resolution (handle schedule conflicts), and publishing automation (automate publishing at scheduled time). The implementation must balance flexibility (users can schedule anytime) with reliability (content publishes on time) and operational constraints (publishing capacity, rate limits). Poor content scheduling leads to missed publish times, audience disengagement, and operational issues.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of content scheduling extends beyond simple timer-based publishing. Timezone handling (schedule in one timezone, publish in another). Recurring schedules (complex recurrence patterns). Conflict resolution (multiple content scheduled for same time). Publishing capacity (can&apos;t publish everything at once). Rate limiting (respect platform rate limits). For staff engineers, content scheduling is a content operations infrastructure decision affecting publishing reliability, audience engagement, and operational efficiency.
         </p>
@@ -46,13 +50,16 @@ export default function ContentSchedulingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Scheduled Publishing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Schedule setting enables users to set publish time. Date/time picker (select publish date and time). Timezone selection (select timezone for scheduling). Quick schedule (schedule for common times like &quot;tomorrow 9 AM&quot;). Schedule setting is the primary scheduling mechanism. Benefits include strategic publishing (publish at optimal times), workflow efficiency (prepare in advance). Drawbacks includes complexity (timezone handling), scheduling conflicts.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Schedule modification enables changing scheduled time. Reschedule (change publish time). Cancel schedule (cancel scheduled publishing). Publish now (publish immediately instead of scheduled). Schedule modification enables adjusting plans. Benefits include flexibility (adjust to changing needs), error correction (fix scheduling mistakes). Drawbacks includes complexity (manage schedule changes), downstream impact (may affect other scheduled content).
-        </p>
+        </HighlightBlock>
         <p>
           Schedule status tracks scheduled content status. Scheduled (content is scheduled). Queued (content is in publishing queue). Publishing (content is being published). Published (content was published). Failed (publishing failed). Schedule status provides visibility into publishing process. Benefits include transparency (know status), issue detection (detect failures). Drawbacks includes complexity (track status), notification overhead (notify on status changes).
         </p>
@@ -115,9 +122,12 @@ export default function ContentSchedulingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content scheduling architecture spans scheduling service, queue management, timezone service, and publishing automation. Scheduling service manages scheduled content. Queue management manages publishing queue. Timezone service handles timezone complexities. Publishing automation publishes content at scheduled time. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/content-scheduling/scheduling-architecture.svg"
@@ -128,9 +138,9 @@ export default function ContentSchedulingArticle() {
         />
 
         <h3>Scheduling Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Scheduling service manages scheduled content. Schedule storage (store scheduled content). Schedule retrieval (retrieve scheduled content). Schedule modification (modify scheduled content). Schedule cancellation (cancel scheduled content). Scheduling service is the core of content scheduling. Benefits include centralization (one place for scheduling), consistency (same scheduling everywhere). Drawbacks includes complexity (manage scheduling), coupling (services depend on scheduling service).
-        </p>
+        </HighlightBlock>
         <p>
           Schedule validation validates scheduled content. Time validation (validate publish time is valid). Capacity validation (validate capacity available). Content validation (validate content is ready). Schedule validation prevents invalid scheduling. Benefits include issue prevention (prevent invalid schedules), user guidance (guide to valid scheduling). Drawbacks includes complexity (validate schedules), may limit scheduling.
         </p>
@@ -170,14 +180,17 @@ export default function ContentSchedulingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content scheduling design involves trade-offs between flexibility and reliability, simple and complex scheduling, and automated and manual publishing. Understanding these trade-offs enables informed decisions aligned with user needs and operational requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Scheduling: Flexible vs. Constrained</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Flexible scheduling (schedule anytime, any frequency). Pros: Maximum flexibility (schedule whenever needed), supports all use cases, user control. Cons: Complexity (many edge cases), potential conflicts (scheduling conflicts), operational burden (unpredictable publishing load). Best for: Mature platforms, power users, diverse publishing needs.
-        </p>
+        </HighlightBlock>
         <p>
           Constrained scheduling (limited times, frequency caps). Pros: Simpler (fewer edge cases), prevents conflicts (no scheduling conflicts), predictable load (controlled publishing). Cons: Less flexible (can&apos;t schedule some times), user frustration (limits), may not support all use cases. Best for: New platforms, preventing conflicts, operational simplicity.
         </p>
@@ -218,13 +231,16 @@ export default function ContentSchedulingArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide flexible scheduling:</strong> Schedule anytime. Timezone selection. Quick schedule options. Recurring schedules.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Manage publishing queue:</strong> Queue visualization. Queue management. Priority queue. Rate limiting.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle timezones correctly:</strong> Store in UTC. Convert for display. Handle DST. Let user select timezone.
           </li>
@@ -254,13 +270,16 @@ export default function ContentSchedulingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No timezone handling:</strong> Publishes at wrong time. <strong>Solution:</strong> Store in UTC, convert for display and publishing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No DST handling:</strong> Misses publishes during DST transitions. <strong>Solution:</strong> DST-aware scheduling, handle transitions.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No conflict detection:</strong> Schedule conflicts cause issues. <strong>Solution:</strong> Detect conflicts, provide resolution.
           </li>
@@ -290,16 +309,19 @@ export default function ContentSchedulingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Social Media Scheduling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms provide post scheduling. Schedule posts (schedule for future time). Queue management (see scheduled posts). Timezone handling (schedule for audience timezone). Recurring posts (schedule repeating posts). Social media managers can prepare content in advance and publish at optimal times.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Blog Post Scheduling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Blog platforms provide post scheduling. Schedule posts (schedule for future publish). Editorial calendar (see all scheduled posts). Recurring schedules (schedule series). Schedule conflicts (resolve conflicts). Bloggers can write in advance and publish on schedule.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Marketing Campaign Scheduling</h3>
         <p>
@@ -319,12 +341,15 @@ export default function ContentSchedulingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle timezone complexities in content scheduling?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle timezone complexities in content scheduling?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Store all scheduled times in UTC because UTC is the only unambiguous time representation—no DST issues, no timezone confusion. Convert to user&apos;s timezone for display: user sees &quot;Publish at 9 AM EST&quot; in their local time, schedule UI shows times in user&apos;s timezone. Convert to publishing timezone for publishing: if publishing to audience in specific timezone, convert UTC to that timezone for actual publish time. Handle DST transitions explicitly: spring forward (March) skips hour—schedule during skipped hour doesn&apos;t exist, reschedule to next valid time; fall back (November) repeats hour—schedule during repeated hour ambiguous, clarify which occurrence. Let user select timezone for scheduling: user chooses &quot;Publish at 9 AM Pacific&quot;—system stores as UTC, converts correctly regardless of where user travels. Edge cases: user travels after scheduling (schedule stays in original timezone unless user changes), audience in multiple timezones (schedule for each timezone separately or pick primary). The timezone insight: UTC is the only unambiguous time representation—always store in UTC, convert for display and publishing, handle DST explicitly, and let users schedule in their preferred timezone.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

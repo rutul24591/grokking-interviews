@@ -81,11 +81,11 @@ export default function StorageQuotasAndEvictionConciseArticle() {
         <h2>Core Concepts</h2>
 
         <h3 className="mt-6 mb-3 font-semibold">StorageManager API</h3>
-        <HighlightBlock as="p" tier="important">
+        <p>
           The <code>StorageManager</code> interface, accessed via{" "}
           <code>navigator.storage</code>, provides two essential methods for
           quota management:
-        </HighlightBlock>
+        </p>
         <ul>
           <HighlightBlock as="li" tier="important">
             <strong>navigator.storage.estimate():</strong> Returns a Promise
@@ -100,7 +100,7 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             property (Chrome-specific, non-standard) breaks down usage by
             storage system (indexedDB, caches, serviceWorkerRegistrations).
           </HighlightBlock>
-          <HighlightBlock as="li" tier="crucial">
+          <HighlightBlock as="li" tier="important">
             <strong>navigator.storage.persist():</strong> Requests that the
             browser grant persistent storage to this origin. Returns a Promise
             resolving to a boolean indicating whether persistent storage was
@@ -126,17 +126,17 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           check current persistence status with{" "}
           <code>navigator.storage.persisted()</code>, which returns a boolean.
         </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
+        <p>
           The distinction is critical for application architecture.
           User-generated content (documents, drafts, photos) should be in
           persistent storage. Cached API responses and precached assets can
           remain best-effort since they can be re-fetched from the network.
-        </HighlightBlock>
+        </p>
 
         <h3 className="mt-6 mb-3 font-semibold">
           Per-Origin and Global Limits
         </h3>
-        <HighlightBlock as="p" tier="important">
+        <p>
           Browser quotas operate at two levels. The{" "}
           <strong>global limit</strong> caps the total disk space all origins
           can use collectively (Chrome: ~60% of disk, Firefox: ~50%). The{" "}
@@ -147,10 +147,10 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           mode, raised to 10 GB for persistent origins. These numbers shift with
           browser versions and should be queried dynamically via{" "}
           <code>estimate()</code>.
-        </HighlightBlock>
+        </p>
 
         <h3 className="mt-6 mb-3 font-semibold">LRU Eviction Order</h3>
-        <HighlightBlock as="p" tier="crucial">
+        <HighlightBlock as="p" tier="important">
           When eviction is triggered, browsers sort best-effort origins by{" "}
           <strong>least recently used</strong> (LRU). The origin that has gone
           the longest without user interaction is evicted first. Eviction is{" "}
@@ -166,7 +166,7 @@ export default function StorageQuotasAndEvictionConciseArticle() {
         <h3 className="mt-6 mb-3 font-semibold">
           localStorage's Separate Limit
         </h3>
-        <HighlightBlock as="p" tier="important">
+        <p>
           The <code>localStorage</code> API has a fixed per-origin limit of
           approximately 5 MB in most browsers (10 MB in some). This is entirely
           separate from the shared quota pool. localStorage stores strings only,
@@ -175,10 +175,10 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           LRU eviction process (except in Safari, which may clear it under
           certain conditions like 7-day inactivity in private browsing or ITP
           enforcement).
-        </HighlightBlock>
+        </p>
 
         <h3 className="mt-6 mb-3 font-semibold">Opaque Response Padding</h3>
-        <HighlightBlock as="p" tier="crucial">
+        <p>
           When the Cache API stores an opaque response (a cross-origin response
           fetched without CORS), browsers add <strong>padding</strong> to the
           reported size. This prevents attackers from using storage quotas as an
@@ -189,12 +189,12 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           unexpected
           <code>QuotaExceededError</code> in applications that cache third-party
           assets.
-        </HighlightBlock>
+        </p>
 
         <h3 className="mt-6 mb-3 font-semibold">
           Storage Buckets API (Emerging)
         </h3>
-        <HighlightBlock as="p" tier="important">
+        <p>
           The <strong>Storage Buckets API</strong> is a proposal (Chrome 122+
           behind a flag) that allows origins to create named buckets with
           individual persistence and quota policies. Instead of a single
@@ -207,16 +207,22 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           instances. This would replace the current all-or-nothing eviction
           model with fine-grained control, but as of early 2026, it is not yet
           widely available.
-        </HighlightBlock>
+        </p>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-        <HighlightBlock as="p" tier="important">
+        <p>
           Understanding how disk space flows from the hardware level down to
           individual storage APIs is essential for designing applications that
           respect browser limits. The following diagram illustrates how the
           browser carves out its storage pool and allocates it per origin.
+        </p>
+
+        <HighlightBlock as="p" tier="important">
+          Interview framing: treat client storage as a <strong>multi-tenant cache</strong> you do not fully control.
+          The key is to design explicit “rehydration paths” (server fetch, background sync, recomputation) rather
+          than assuming local data is durable.
         </HighlightBlock>
 
         <ArticleImage
@@ -238,7 +244,6 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/data-storage/eviction-policy.svg"
           alt="Browser Storage Eviction Policy"
           caption="Eviction flow: storage pressure triggers LRU sorting, persistent origins are skipped, best-effort origins are evicted atomically (all storage for that origin deleted together)."
-          captionTier="crucial"
         />
 
         <HighlightBlock as="p" tier="crucial">
@@ -684,8 +689,12 @@ export default function StorageQuotasAndEvictionConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          If you want one “staff-level” sound bite: quota and eviction are browser policy, not an API contract.
+          Design for <strong>loss</strong> and prove your recovery path with `StorageManager` + telemetry.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://web.dev/articles/storage-for-the-web"
               className="text-accent hover:underline"
@@ -694,8 +703,8 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             >
               Storage for the Web - web.dev
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/StorageManager"
               className="text-accent hover:underline"
@@ -704,8 +713,8 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             >
               StorageManager API - MDN Web Docs
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria"
               className="text-accent hover:underline"
@@ -714,8 +723,8 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             >
               Storage Quotas and Eviction Criteria - MDN Web Docs
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.chrome.com/docs/web-platform/storage-buckets"
               className="text-accent hover:underline"
@@ -724,7 +733,7 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             >
               Storage Buckets API - Chrome Developers
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/"

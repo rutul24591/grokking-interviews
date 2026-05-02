@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,22 +25,25 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>MapReduce</strong> is a distributed computation model for processing large datasets in parallel
           across a cluster of commodity machines. It was introduced by Google in 2004 as a programming model that
           abstracts the complexity of distributed computing — parallelization, fault tolerance, data distribution, and
           load balancing — behind two user-defined functions: Map and Reduce. The Map function processes input records
           and emits intermediate key-value pairs. The Reduce function aggregates all values for each key and produces
           the final output.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           MapReduce&apos;s key insight is that many large-scale computations can be expressed as a sequence of Map and
           Reduce operations, where the Map phase transforms input records into intermediate key-value pairs, and the
           Reduce phase aggregates values for each key. The framework handles the complex logistics of distributing
           the computation across the cluster, shuffling intermediate data between Map and Reduce tasks, and recovering
           from task failures. This abstraction made large-scale data processing accessible to developers who did not
           have expertise in distributed systems.
-        </p>
+        </HighlightBlock>
         <p>
           The most famous MapReduce example is word count: the Map function reads each document, splits it into words,
           and emits (word, 1) for each word. The framework groups all values by word (the shuffle phase), so that each
@@ -82,20 +86,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Map function is a user-defined function that takes a single input record (key, value) and emits zero or
           more intermediate key-value pairs. The Map function is applied independently to each input record, so Map
           tasks can run in parallel without coordination. The Map function is typically used to transform, filter, or
           extract data from the input records — for example, parsing a log line to extract the URL and emitting
           (URL, 1) for each access.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Reduce function is a user-defined function that takes a key and a list of values (all values emitted by
           Map tasks for that key) and emits zero or more output records. The Reduce function is applied independently
           to each key, so Reduce tasks can run in parallel without coordination. The Reduce function is typically used
           to aggregate, summarize, or combine the values for each key — for example, summing the counts for each URL
           to produce the total access count.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/mapreduce-diagram-1.svg"
           alt="MapReduce execution flow showing input splits, map phase with parallel workers, shuffle and sort phase, and reduce phase with parallel workers"
@@ -142,20 +149,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The MapReduce architecture consists of a JobTracker (or ResourceManager in YARN) that schedules and
           monitors jobs, TaskTrackers (or NodeManagers in YARN) that execute tasks on worker nodes, and HDFS that
           stores input and output data. The JobTracker receives a job submission, splits the input into chunks,
           schedules Map tasks on the nodes where the input data is stored, schedules Reduce tasks after all Map tasks
           complete, and monitors task progress.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The job submission flow begins when the client submits a MapReduce job to the JobTracker. The JobTracker
           reads the input split metadata from HDFS, determines the number of Map tasks (one per split) and the number
           of Reduce tasks (configured by the user), and schedules the Map tasks on the nodes where the input data is
           stored. The Map tasks read their input splits from HDFS, apply the Map function, and write intermediate
           output to local disk.
-        </p>
+        </HighlightBlock>
         <p>
           After all Map tasks complete, the JobTracker schedules the Reduce tasks. Each Reduce task fetches its
           partition from all Map tasks over the network, merges the partitions, sorts the merged data by key, and
@@ -195,7 +205,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           MapReduce versus Spark is the primary trade-off. MapReduce writes intermediate data to disk after each
           stage, which is fault-tolerant (if a task fails, the data can be re-read from disk) but slow (disk I/O is
           expensive). Spark keeps intermediate data in memory between stages, which is fast (memory access is 10-100x
@@ -203,15 +216,15 @@ export default function ArticlePage() {
           recomputed from the lineage rather than re-read from disk). For batch-only workloads where disk I/O is not
           a bottleneck, MapReduce is sufficient. For iterative workloads (machine learning, graph processing) or
           interactive workloads (ad-hoc queries), Spark is significantly faster.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           MapReduce versus SQL engines (Hive, Presto, Spark SQL) is a trade-off between flexibility and ease of use.
           MapReduce requires writing custom Map and Reduce functions in Java, which is flexible but complex. SQL
           engines allow users to express computations in SQL, which is easier to write and understand but less
           flexible for complex computations. For standard analytical queries (aggregations, joins, filters), SQL
           engines are preferred. For complex computations that cannot be expressed in SQL (iterative algorithms, custom
           data structures), MapReduce or Spark is necessary.
-        </p>
+        </HighlightBlock>
         <p>
           MapReduce versus cloud-managed services (AWS EMR, GCP Dataproc) is a trade-off between control and
           operational burden. Self-managed MapReduce (on-premise Hadoop cluster) provides full control over
@@ -225,18 +238,21 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use Combiners to reduce shuffle volume whenever the Reduce function is associative and commutative. The
           Combiner aggregates values for each key locally on the Map task, so the Map task sends only the aggregated
           result to the Reduce task instead of all individual values. This can reduce the shuffle volume by an order
           of magnitude for aggregations (word count, sum, count), significantly reducing job execution time.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tune the number of Reduce tasks based on the cluster capacity and the intermediate data volume. The
           recommended number of Reduce tasks is 0.95 to 1.75 times the number of Reduce slots in the cluster. Too
           few Reduce tasks underutilize the cluster and increase job execution time. Too many Reduce tasks increase
           scheduling overhead and shuffle complexity.
-        </p>
+        </HighlightBlock>
         <p>
           Monitor straggler tasks and enable speculative execution. Straggler tasks — tasks that run significantly
           slower than expected — delay the entire job because the next phase cannot start until all tasks in the
@@ -261,21 +277,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Shuffle volume becoming the dominant bottleneck is the most common MapReduce performance failure. When the
           Map function emits large amounts of intermediate data (for example, in joins where each record is emitted
           multiple times), the Shuffle phase — which transfers all intermediate data over the network — can dominate
           the job execution time. The fix is to use Combiners to reduce the intermediate data volume, to filter
           unnecessary data in the Map function, or to use a join optimization (map-side join, bloom filter join) that
           reduces the shuffle volume.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Too few Map tasks causing underutilization of the cluster occurs when the input data is stored in too few
           large files. MapReduce creates one Map task per input split (typically one per HDFS block, 64 MB to 256
           MB), so if the input data is stored in a few large files, the number of Map tasks is small and the cluster
           is underutilized. The fix is to split the input data into smaller files or to increase the HDFS block size
           so that each file is split into multiple blocks.
-        </p>
+        </HighlightBlock>
         <p>
           Skewed keys causing straggler Reduce tasks occurs when one key has significantly more values than other
           keys. The Reduce task that processes the skewed key takes much longer than other Reduce tasks, delaying the
@@ -293,22 +312,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large search engine uses MapReduce for its index building pipeline, where web pages are crawled, parsed,
           and indexed to produce the search index. The Map function parses each web page, extracts the words and their
           positions, and emits (word, document_id, position) for each word. The Shuffle phase groups all occurrences
           of each word together, and the Reduce function aggregates the document IDs and positions to produce the
           inverted index for each word. The index is written to HDFS and distributed to the search servers for
           query processing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A social media platform uses MapReduce for its analytics pipeline, where user activity events (likes,
           shares, comments) are processed to produce daily engagement metrics. The Map function parses each event,
           extracts the user ID and event type, and emits (user_id, event_type, 1) for each event. The Shuffle phase
           groups all events by user ID, and the Reduce function aggregates the event counts to produce the daily
           engagement metrics for each user. The metrics are written to HDFS and loaded into the analytics database for
           querying.
-        </p>
+        </HighlightBlock>
         <p>
           A financial services company uses MapReduce for its risk modeling pipeline, where transaction data is
           processed to produce risk scores for each customer. The Map function parses each transaction, extracts the
@@ -321,23 +343,26 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How does MapReduce achieve fault tolerance, and what happens when a task fails?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             MapReduce achieves fault tolerance through task re-execution. If a Map or Reduce task fails (due to a
             node crash, network partition, or software bug), the framework re-executes the task on another node. The
             task&apos;s input is re-read from HDFS, which is replicated for fault tolerance (typically with a replication
             factor of 3), so the task can be re-executed without data loss.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             For Map tasks, the intermediate output is re-computed from the input data. For Reduce tasks, the output
             is re-computed from the intermediate data (which is re-fetched from the Map tasks). The framework monitors
             task progress and detects failures through heartbeats — if a TaskTracker does not respond within a
             timeout, the JobTracker marks its tasks as failed and re-schedules them on other nodes.
-          </p>
+          </HighlightBlock>
           <p>
             Speculative execution is an additional fault tolerance mechanism that addresses straggler tasks — tasks
             that run significantly slower than expected. The framework re-executes straggler tasks on other nodes, so

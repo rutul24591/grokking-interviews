@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function DependencyManagementArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Dependency Management</strong> encompasses the practices and tools for managing external
           libraries, packages, frameworks, and services that your system depends on. Modern applications
           have hundreds or thousands of dependencies—a typical npm project has over 1,000 transitive
           dependencies. Managing these dependencies securely and reliably is critical for system stability,
           security, and maintainability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Dependency risks include security vulnerabilities like log4j and event-stream, breaking changes
           from upstream updates, abandoned packages with no maintainers, supply chain attacks where
           malicious code is injected into legitimate packages, license compliance issues, and dependency
           bloat that increases attack surface and build times. A robust dependency management strategy
           addresses all these risks while enabling rapid development.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, dependency management is a strategic concern. The decisions
           you make about which dependencies to adopt, how to version them, and how to secure them have
@@ -56,7 +60,10 @@ export default function DependencyManagementArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Version pinning determines how strictly you lock dependency versions, balancing stability
           through reproducible builds with the ability to quickly patch vulnerabilities. Exact pinning
           specifies the precise version number, ensuring complete reproducibility but requiring manual
@@ -67,9 +74,9 @@ export default function DependencyManagementArticle() {
           well-maintained packages that follow semantic versioning strictly. Tilde ranges allow patch
           updates only—~1.2.3 means greater than or equal to 1.2.3 and less than 1.3.0—offering a more
           conservative approach suitable for production when you want bug fixes but not new features.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Lock files ensure reproducible builds across environments by pinning exact versions of all
           dependencies including transitive ones. Without lock files, every install can pull different
           versions, causing &quot;works on my machine&quot; issues, making debugging impossible, and
@@ -78,7 +85,7 @@ export default function DependencyManagementArticle() {
           Gemfile.lock for Bundler, Cargo.lock for Rust, and go.sum for Go. The best practice is to always
           commit lock files to version control for applications, though libraries typically should not
           commit lock files since they should work with a range of dependency versions.
-        </p>
+        </HighlightBlock>
 
         <p>
           Semantic versioning uses the MAJOR.MINOR.PATCH format where MAJOR indicates breaking changes
@@ -149,14 +156,17 @@ export default function DependencyManagementArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Dependency management architecture spans the entire software development lifecycle, from initial
           dependency evaluation through build pipeline integration to continuous monitoring and incident
           response. Understanding how dependencies flow through your system and where control points exist
           is essential for building a robust management strategy.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The dependency resolution flow begins when a developer declares a dependency in the project
           manifest. The package manager resolves the declared version constraint against the package
           registry, building a dependency tree that includes all transitive dependencies. The resolver
@@ -166,7 +176,7 @@ export default function DependencyManagementArticle() {
           dependency tree is written to the lock file, which pins exact versions for every node in the
           tree. During installation, packages are downloaded from the registry and placed in the project&apos;s
           dependency directory (node_modules, site-packages, etc.).
-        </p>
+        </HighlightBlock>
 
         <p>
           The build pipeline integrates dependency management at multiple checkpoints. The CI pipeline
@@ -222,11 +232,14 @@ export default function DependencyManagementArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Dependency management decisions involve explicit trade-offs between reproducibility, security,
           maintenance overhead, and development velocity. Understanding these trade-offs enables informed
           decisions that match organizational risk tolerance and operational capacity.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Exact Pinning vs Version Ranges</h3>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
@@ -388,7 +401,7 @@ export default function DependencyManagementArticle() {
           </table>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The optimal approach combines strategies: use exact pinning with lock files for production
           reproducibility, leverage automated tools for update discovery but review each PR carefully,
           implement a private registry for organizations with strict security requirements, and vendor
@@ -396,12 +409,15 @@ export default function DependencyManagementArticle() {
           single mitigation is sufficient, so layer defenses through private registries, package
           signatures, continuous SBOM maintenance, scanning, version pinning, and incident response
           readiness.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Version management should pin exact versions in production and always commit lock files to
           version control. Automated tools like Dependabot and Renovate should generate update PRs on a
           regular cadence—weekly review and merging of these PRs keeps dependencies current without
@@ -410,16 +426,16 @@ export default function DependencyManagementArticle() {
           CI/CD pipeline, maintaining an up-to-date SBOM that is regenerated on every build, using a
           private registry for caching and control, enabling package signatures where available, and
           having a documented incident response plan for critical vulnerabilities.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Evaluation practices require justification for every new dependency—what problem does it solve
           that we cannot solve ourselves or with existing dependencies? Package health should be assessed
           before adoption, considering maintenance activity, adoption metrics, security history, test
           coverage, and documentation quality. Transitive dependencies should be reviewed because a
           package with few direct dependencies may pull in dozens of transitive ones. License
           compatibility must be verified to avoid legal issues downstream.
-        </p>
+        </HighlightBlock>
 
         <p>
           Maintenance practices include quarterly dependency audits that inventory all dependencies, check
@@ -434,7 +450,10 @@ export default function DependencyManagementArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not committing lock files causes inconsistent environments across development, CI, and
           production, leading to &quot;works on my machine&quot; issues that are extremely difficult to
           debug. Using the &quot;latest&quot; tag breaks reproducibility and can silently pull breaking
@@ -442,16 +461,16 @@ export default function DependencyManagementArticle() {
           because most vulnerabilities are transitive, not direct—maintaining a full SBOM and running
           regular scans catches these. Having no vulnerability scanning means vulnerabilities go unnoticed
           until they are exploited; automated scanning in CI/CD is the minimum baseline.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Adding dependencies without review leads to bloated, risky dependency trees. Requiring
           justification and assessing package health before adoption prevents this. Not removing unused
           dependencies accumulates risk without any benefit—regular audits with automated detection tools
           keep the dependency tree lean. Ignoring license compliance creates legal risk; automated license
           checking in the CI pipeline with legal review for questionable licenses prevents inadvertent
           violations.
-        </p>
+        </HighlightBlock>
 
         <p>
           Letting dependencies drift for months or years makes upgrades increasingly risky as the version
@@ -466,7 +485,10 @@ export default function DependencyManagementArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The log4j vulnerability (CVE-2021-44228, &quot;Log4Shell&quot;) in December 2021 demonstrated
           the critical importance of dependency visibility. Log4j is a Java logging library used directly
           or transitively by millions of applications worldwide. Organizations with comprehensive SBOMs
@@ -477,9 +499,9 @@ export default function DependencyManagementArticle() {
           scanning in their CI/CD pipelines detected the issue immediately upon disclosure, while those
           relying on manual processes lagged significantly. The incident led to widespread adoption of
           SBOM requirements in enterprise software procurement.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The event-stream incident in 2018 was a supply chain attack where a malicious actor gained
           maintainer access to the popular event-stream npm package (with over 1.5 million weekly
           downloads) and injected code that targeted cryptocurrency wallets. The attacker had contributed
@@ -488,7 +510,7 @@ export default function DependencyManagementArticle() {
           risk of trusting package maintainers and led to increased scrutiny of maintainer changes in
           popular packages. Organizations that pinned exact versions and reviewed dependency changes were
           protected, while those using version ranges automatically pulled in the compromised version.
-        </p>
+        </HighlightBlock>
 
         <p>
           The left-pad incident in 2016 demonstrated the fragility of dependency ecosystems. When the
@@ -516,10 +538,13 @@ export default function DependencyManagementArticle() {
 
       <section>
         <h2>Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you manage dependency updates in a production environment?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you manage dependency updates in a production environment?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: I use automated tools like Dependabot or Renovate to generate PRs for minor and patch
               updates on a regular schedule, with weekly review and merging to keep dependencies current.
               Major version upgrades are handled manually with thorough testing since they may include
@@ -528,7 +553,7 @@ export default function DependencyManagementArticle() {
               attention outside the normal cadence. Each update PR runs through the full CI test suite
               before merging, and updates are deployed through the standard deployment pipeline with
               monitoring for any regressions.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

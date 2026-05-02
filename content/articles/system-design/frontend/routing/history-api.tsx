@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,27 +25,27 @@ export default function HistoryApiArticle() {
     <ArticleLayout metadata={metadata}>
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           The History API is a browser interface that allows JavaScript to manipulate the session
           history stack — adding entries, replacing the current entry, and reading state associated
           with entries — all without triggering a page reload. Introduced in HTML5, the key methods
           are <code>history.pushState()</code> and <code>history.replaceState()</code>, which
           update the URL in the address bar and the history stack without making a server request.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Before the History API, client-side routing was limited to hash fragments. The History
           API solved this by enabling &quot;clean&quot; URLs — <code>/users/42</code> instead of{" "}
           <code>/#/users/42</code> — while maintaining full client-side control over navigation.
           Every modern client-side router (React Router&apos;s BrowserRouter, Vue Router in history
           mode, Angular Router) is built on top of this API.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The History API also introduced the concept of associated state objects. Each history
           entry can carry arbitrary serializable data via the <code>state</code> parameter of{" "}
           <code>pushState</code>. This state persists across back/forward navigation and page
           reloads, making it useful for preserving scroll positions, form data, or UI state without
           encoding everything in the URL.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -57,24 +58,24 @@ export default function HistoryApiArticle() {
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">pushState and replaceState</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           <code>history.pushState(state, title, url)</code> adds a new entry to the session history
           stack. The URL in the address bar changes immediately, but no HTTP request is made. The{" "}
           <code>state</code> object (up to ~640KB when serialized) is associated with the new entry
           and can be retrieved later via <code>history.state</code> or the <code>popstate</code>{" "}
           event. The <code>title</code> parameter is currently ignored by all browsers but should
           be passed as an empty string for forward compatibility.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <code>history.replaceState(state, title, url)</code> modifies the current history entry
           instead of creating a new one. The URL changes but the history stack length stays the
           same. Use cases include: correcting a URL after a redirect, updating query parameters
           without creating a history entry (e.g., search-as-you-type), or storing updated state on
           the current entry (like scroll position before navigating away).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">The popstate Event</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           The <code>popstate</code> event fires when the user navigates the session history via
           back/forward buttons or programmatic calls to <code>history.back()</code>,{" "}
           <code>history.forward()</code>, or <code>history.go()</code>. Critically,{" "}
@@ -82,7 +83,7 @@ export default function HistoryApiArticle() {
           <code>replaceState</code> is called — only when traversing existing entries. This
           asymmetry is important: routers must handle both programmatic navigation (pushState) and
           user-initiated traversal (popstate) as separate code paths.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           The event object&apos;s <code>state</code> property contains the state object associated
           with the history entry being navigated to. If the entry was created by{" "}
@@ -112,16 +113,16 @@ export default function HistoryApiArticle() {
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">URL Constraints</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           <code>pushState</code> and <code>replaceState</code> can only change the URL to one with
           the same origin (protocol + host + port). Attempting to push a cross-origin URL throws a{" "}
           <code>SecurityError</code>. Within the same origin, you can change the path, query
           string, and fragment freely. This means client-side routing is limited to the current
           domain — you cannot use pushState to navigate to a different site.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Server-Side Requirements</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           When a user navigates to <code>/users/42</code> via pushState, the URL bar shows this
           path but no request was made. However, if they reload the page or share the URL, the
           browser sends a GET request for <code>/users/42</code>. The server must return the SPA
@@ -129,10 +130,10 @@ export default function HistoryApiArticle() {
           rule: return <code>index.html</code> for any path that doesn&apos;t match a static asset.
           Nginx uses <code>try_files $uri $uri/ /index.html</code>; Express uses a wildcard route;
           Vercel and Netlify support <code>rewrites</code> in their config files.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">State Serialization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The state object passed to <code>pushState</code> is serialized using the structured
           clone algorithm (same as <code>postMessage</code>). This supports objects, arrays, dates,
           RegExp, Map, Set, ArrayBuffer, and more — but not functions, DOM nodes, or class
@@ -140,7 +141,7 @@ export default function HistoryApiArticle() {
           on the engine, but practically, keep state under 640KB). For large state, store it in{" "}
           <code>sessionStorage</code> keyed by a unique history entry ID and only put the ID in
           the pushState state object.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -151,18 +152,21 @@ export default function HistoryApiArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
         <div className="my-6 overflow-x-auto rounded-lg border border-theme">
           <table className="min-w-full text-sm">
             <thead className="bg-panel-soft">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <th className="px-4 py-3 text-left font-semibold">Feature</th>
                 <th className="px-4 py-3 text-left font-semibold">History API</th>
                 <th className="px-4 py-3 text-left font-semibold">Navigation API</th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr><td className="px-4 py-3 font-medium">Event model</td><td className="px-4 py-3">Fragmented (popstate only fires on traversal)</td><td className="px-4 py-3">Unified (navigate fires for all navigation types)</td></tr>
-              <tr><td className="px-4 py-3 font-medium">Interception</td><td className="px-4 py-3">Manual (listen for clicks, prevent default)</td><td className="px-4 py-3">Built-in (intercept() in navigate handler)</td></tr>
+              <HighlightBlock as="tr" tier="important"><td className="px-4 py-3 font-medium">Event model</td><td className="px-4 py-3">Fragmented (popstate only fires on traversal)</td><td className="px-4 py-3">Unified (navigate fires for all navigation types)</td></HighlightBlock>
+              <HighlightBlock as="tr" tier="important"><td className="px-4 py-3 font-medium">Interception</td><td className="px-4 py-3">Manual (listen for clicks, prevent default)</td><td className="px-4 py-3">Built-in (intercept() in navigate handler)</td></HighlightBlock>
               <tr><td className="px-4 py-3 font-medium">Abort support</td><td className="px-4 py-3">None</td><td className="px-4 py-3">AbortSignal for cancelled navigations</td></tr>
               <tr><td className="px-4 py-3 font-medium">Transition tracking</td><td className="px-4 py-3">Manual state management</td><td className="px-4 py-3">navigation.transition with finished promise</td></tr>
               <tr><td className="px-4 py-3 font-medium">Browser support</td><td className="px-4 py-3">Universal</td><td className="px-4 py-3">Chromium (2024+), partial elsewhere</td></tr>
@@ -174,9 +178,9 @@ export default function HistoryApiArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>Use <code>pushState</code> for navigation that should create a history entry (page transitions); use <code>replaceState</code> for state updates that shouldn&apos;t (filter changes, scroll position saves)</li>
-          <li>Always configure the server with a catch-all fallback to index.html for all non-asset routes</li>
-          <li>Keep pushState state objects small — store large data in sessionStorage keyed by a history entry ID</li>
+          <HighlightBlock as="li" tier="crucial">Use <code>pushState</code> for navigation that should create a history entry (page transitions); use <code>replaceState</code> for state updates that shouldn&apos;t (filter changes, scroll position saves)</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Always configure the server with a catch-all fallback to index.html for all non-asset routes</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Keep pushState state objects small — store large data in sessionStorage keyed by a history entry ID</HighlightBlock>
           <li>Listen for <code>popstate</code> to handle back/forward navigation, and update your router state accordingly</li>
           <li>Update <code>document.title</code> after every pushState call — the History API does not do this automatically</li>
           <li>Use <code>replaceState</code> to save scroll position on the current entry before navigating away, then restore it on popstate</li>
@@ -187,9 +191,9 @@ export default function HistoryApiArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li><strong>404 on refresh:</strong> The most common issue — server doesn&apos;t have a catch-all rule, so direct access to <code>/users/42</code> returns a server 404</li>
-          <li><strong>Expecting popstate on pushState:</strong> pushState does not fire popstate. Code that depends on popstate for all URL changes will miss programmatic navigations</li>
-          <li><strong>Cross-origin pushState:</strong> Attempting to pushState to a different origin throws a SecurityError that can crash unguarded router code</li>
+          <HighlightBlock as="li" tier="crucial"><strong>404 on refresh:</strong> The most common issue — server doesn&apos;t have a catch-all rule, so direct access to <code>/users/42</code> returns a server 404</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Expecting popstate on pushState:</strong> pushState does not fire popstate. Code that depends on popstate for all URL changes will miss programmatic navigations</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Cross-origin pushState:</strong> Attempting to pushState to a different origin throws a SecurityError that can crash unguarded router code</HighlightBlock>
           <li><strong>State size limits:</strong> Pushing large objects (images, raw data) into pushState silently fails or throws in some browsers</li>
           <li><strong>Title parameter ignored:</strong> Passing a meaningful title to pushState has no effect — you must set <code>document.title</code> separately</li>
           <li><strong>Initial state is null:</strong> On the first page load, <code>history.state</code> is <code>null</code> even if the URL was created by pushState in a previous session (state doesn&apos;t persist across browser restarts in all browsers)</li>
@@ -200,42 +204,50 @@ export default function HistoryApiArticle() {
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">React Router BrowserRouter</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             React Router&apos;s <code>BrowserRouter</code> wraps the History API in a React context.
             <code>{"<Link to=\"/users/42\">"}</code> calls <code>history.pushState()</code> and
             updates the router context, triggering a re-render of matched route components. The
             <code>useNavigate()</code> hook provides programmatic access. React Router v6+ adds
             data loaders that run before the pushState commit, enabling loading states during
             transition.
-          </p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
+            For staff/principal discussions, connect this to observability and correctness: you
+            need consistent URL state, scroll restoration, and transition tracking so routing
+            changes are measurable (navigation timing) and debuggable (breadcrumbs, replayable URLs).
+          </HighlightBlock>
         </div>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Next.js Soft Navigation</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Next.js App Router uses <code>pushState</code> for soft navigations between routes.
             When a user clicks a <code>{"<Link>"}</code>, Next.js fetches the React Server Component
             payload for the target route, applies it to the component tree, and pushes the new URL.
             On back navigation, the popstate handler retrieves the cached RSC payload from an
             in-memory cache, enabling instant back/forward transitions without a server request.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is the difference between pushState and replaceState?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important">Q: What is the difference between pushState and replaceState?</HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: pushState adds a new entry to the history stack — the user can navigate back to the
               previous URL. replaceState modifies the current entry — the previous URL is gone from
               the stack. Use pushState for actual page navigations and replaceState for URL updates
               that shouldn&apos;t create a back-button step (query parameter updates, corrective
               redirects, state persistence).
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why does the page 404 when I refresh a client-side routed SPA?</p>
+            <HighlightBlock as="p" tier="important">Q: Why does the page 404 when I refresh a client-side routed SPA?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: On refresh, the browser sends a real HTTP request for the current URL path (e.g.,
               GET /users/42). If the server only serves static files and doesn&apos;t have a catch-all

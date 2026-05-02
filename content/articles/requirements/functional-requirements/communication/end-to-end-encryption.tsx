@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function EndToEndEncryptionArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           End-to-end encryption (E2EE) ensures only communicating users can read messages, not even the service provider. Messages are encrypted on the sender's device and decrypted only on the recipient's device. The server relays encrypted messages without access to decryption keys. This provides maximum privacy for sensitive communications, protecting against server breaches, insider threats, and government subpoenas.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of E2EE stems from key management challenges. Users need to exchange encryption keys securely without a trusted third party. Keys must be verified to prevent man-in-the-middle attacks. Group conversations require efficient multi-party encryption. Key rotation maintains forward secrecy—if a key is compromised, past messages remain secure. Device synchronization ensures messages decrypt across a user's multiple devices.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, E2EE implementation involves cryptography and distributed systems challenges. The Signal Protocol is the industry standard, providing double ratchet encryption with forward secrecy. Key exchange uses X3DH (Extended Triple Diffie-Hellman) for asynchronous key agreement. Implementation requires careful attention to cryptographic details—incorrect implementation compromises security. The architecture must balance security with usability—key verification should be simple enough for non-technical users.
         </p>
@@ -47,13 +51,16 @@ export default function EndToEndEncryptionArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Encryption Fundamentals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Symmetric encryption uses the same key for encryption and decryption. Fast and efficient for bulk data encryption. AES-256 is the standard—256-bit key, widely vetted, hardware-accelerated on modern CPUs. Challenge: how to share the symmetric key securely between parties.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Asymmetric encryption uses key pairs: public key (shared) and private key (secret). Data encrypted with public key can only be decrypted with private key. RSA and Elliptic Curve (ECDH) are common. Slower than symmetric encryption. Used for key exchange, not bulk encryption.
-        </p>
+        </HighlightBlock>
         <p>
           Hybrid encryption combines both. Asymmetric encryption securely exchanges a symmetric key. Symmetric encryption encrypts the actual message. This provides both security (asymmetric key exchange) and efficiency (symmetric message encryption). Used by TLS, Signal Protocol, PGP.
         </p>
@@ -105,9 +112,12 @@ export default function EndToEndEncryptionArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E2EE architecture spans key generation, key exchange, message encryption, and decryption. Clients generate key pairs, upload public keys to server. Key exchange establishes shared secrets. Messages encrypted client-side, server relays ciphertext. Recipients decrypt client-side. Server never sees plaintext.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/end-to-end-encryption/e2ee-architecture.svg"
@@ -118,9 +128,9 @@ export default function EndToEndEncryptionArticle() {
         />
 
         <h3>Key Generation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Identity keys are long-term key pairs. Generated on app install, stored securely on device. Public key uploaded to server, private key never leaves device. Used for identity verification and key exchange. Rotate only when reinstalling app.
-        </p>
+        </HighlightBlock>
         <p>
           Signed pre-keys are medium-term key pairs. Signed by identity key to prove ownership. Uploaded to server, rotated weekly. Used for key exchange. Compromise of signed pre-key doesn't compromise identity.
         </p>
@@ -180,14 +190,17 @@ export default function EndToEndEncryptionArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E2EE design involves trade-offs between security, usability, and functionality. Understanding these trade-offs enables informed decisions aligned with privacy requirements and user experience goals.
-        </p>
+        </HighlightBlock>
 
         <h3>E2EE vs Server-Side Encryption</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E2EE: only endpoints can decrypt. Pros: Maximum privacy, server breach doesn't expose messages, legal resistance (can't decrypt even if compelled). Cons: No server-side features (search, backup), key management burden on users. Best for: Privacy-focused apps, sensitive communications.
-        </p>
+        </HighlightBlock>
         <p>
           Server-side encryption: server holds keys. Pros: Server-side features (search, backup), easier key recovery. Cons: Server breach exposes messages, legal compulsion possible. Best for: Enterprise apps, compliance requirements.
         </p>
@@ -239,13 +252,16 @@ export default function EndToEndEncryptionArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use established protocols:</strong> Signal Protocol for messaging, TLS for transport. Don't roll your own crypto. Use vetted libraries (libsignal, libsodium). Regular security audits.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement forward secrecy:</strong> Double ratchet for message keys. Rotate keys frequently. Compromised key doesn't expose past messages. Essential for long-term security.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Verify keys out-of-band:</strong> Encourage users to verify safety numbers. QR code scanning for ease. Warn on key changes. Detect man-in-the-middle attacks.
           </li>
@@ -275,13 +291,16 @@ export default function EndToEndEncryptionArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Rolling your own crypto:</strong> Custom encryption algorithms are insecure. Solution: Use established protocols (Signal Protocol), vetted libraries.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Poor key storage:</strong> Storing keys in plaintext, accessible to other apps. Solution: Use secure enclave/keystore, encrypt with device passcode.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No key verification:</strong> Users can't detect MITM attacks. Solution: Implement safety numbers, QR verification, key change warnings.
           </li>
@@ -311,16 +330,19 @@ export default function EndToEndEncryptionArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>WhatsApp E2EE</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WhatsApp uses Signal Protocol for all messages. Identity keys generated on app install. X3DH key exchange for sessions. Double ratchet for message encryption. Group chats use sender keys. Safety numbers for key verification. Encrypted backup with user password.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Signal Protocol</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Signal pioneered modern E2EE. Double ratchet algorithm, X3DH key exchange, sealed sender (hides sender from server). Open source, widely audited. Used by WhatsApp, Skype (secret conversations), Google (Allo discontinued). Gold standard for messaging E2EE.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">iMessage Encryption</h3>
         <p>
@@ -340,12 +362,15 @@ export default function EndToEndEncryptionArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How does the Signal Protocol work?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How does the Signal Protocol work?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Signal Protocol uses X3DH for key exchange and Double Ratchet for message encryption. X3DH: users pre-publish identity keys, signed pre-keys, one-time pre-keys. Sender fetches recipient's keys, computes shared secret via three Diffie-Hellman outputs. Double Ratchet: each message uses new key derived from previous. Provides forward secrecy (compromised key doesn't expose past) and post-compromise security (security restored after key exchange).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>service mesh</strong> is a dedicated infrastructure layer that standardizes how microservices communicate with each other. Instead of every service implementing its own client-side networking logic—timeouts, retries, mutual TLS, load balancing, telemetry—the mesh provides these capabilities through a shared <strong>data plane</strong> composed of lightweight proxies and a <strong>control plane</strong> that distributes policy and configuration. The data plane handles the actual traffic, while the control plane manages routing rules, security policies, and observability configuration across all proxies.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The service mesh is most valuable in large microservice environments where consistency is otherwise hard to maintain: many programming languages, many teams, many dependency paths, and a need for uniform security and traffic behavior. The mesh acts like a &quot;network runtime&quot; for the platform, decoupling networking concerns from application logic. This separation means application developers focus on business logic while platform engineers manage service-to-service communication as infrastructure.
-        </p>
+        </HighlightBlock>
         <p>
           The fundamental distinction every staff engineer must understand is between the <strong>data plane</strong> and the <strong>control plane</strong>. The data plane consists of proxies deployed alongside each service instance—typically as sidecar containers in the same pod. Every inbound and outbound request passes through the sidecar proxy, which applies policies for routing, security, and observability. The control plane is a centralized management component that generates configuration for all proxies, distributes certificates, and provides the API through which operators define traffic rules. Critically, the data plane must remain functional even when the control plane is unavailable—proxies should cache their last-known configuration and continue serving traffic safely.
         </p>
@@ -58,14 +62,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Sidecar Proxy Pattern</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>sidecar proxy pattern</strong> is the foundational deployment model for most service meshes. A lightweight proxy container runs alongside each application container within the same pod, sharing the same network namespace. The application is unaware of the proxy—it sends and receives traffic on localhost, and iptables rules transparently redirect all traffic through the proxy. This transparency is both the pattern&apos;s greatest strength and its greatest risk. Strength because no application code changes are required; risk because the proxy becomes an invisible dependency that can silently break communication.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Popular sidecar proxies include Envoy, which is the most widely adopted mesh data plane and serves as the foundation for Istio, Linkerd&apos;s own purpose-built proxy optimized for low resource consumption, and Cilium which uses eBPF instead of sidecars entirely—a fundamentally different architectural approach. The proxy handles connection management, load balancing, circuit breaking, health checking, and protocol translation. Each proxy hop adds latency, typically in the range of 1-5 milliseconds, which compounds across service chains. In a call path traversing five services, the cumulative proxy overhead can reach 20-25 milliseconds, which must be accounted for in SLO budgets.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/service-mesh-pattern-diagram-2.svg"
@@ -109,12 +116,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production service mesh architecture spans multiple interconnected components that must operate in harmony. The data plane proxies form the foundation, deployed as sidecars alongside every service instance. Each proxy intercepts all traffic, applies routing and security policies, emits telemetry, and forwards traffic to its destination. The control plane continuously computes configuration from declarative rules, distributes it to all proxies, manages certificate issuance and rotation, and provides the management API for operators. The observability pipeline collects metrics from all proxies, aggregates them into dashboards, and generates alerts based on SLO thresholds.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The request flow through a meshed service follows a specific path. When service A calls service B, the request originates from service A&apos;s application code and is intercepted by A&apos;s outbound sidecar proxy. The outbound proxy performs load balancing across available instances of service B, applies retry and timeout policies, injects tracing headers, and establishes an mTLS connection. The request traverses the network encrypted with mTLS and arrives at B&apos;s inbound sidecar proxy. The inbound proxy terminates the mTLS connection, validates the client certificate against the trusted CA, applies authorization policies to verify that service A is permitted to call service B, records the access log entry, and forwards the decrypted request to service B&apos;s application code. The response follows the reverse path through the same proxies.
-        </p>
+        </HighlightBlock>
         <p>
           In multi-cluster deployments, the architecture extends across Kubernetes clusters or data centers. Cross-cluster communication requires shared identity trust—both clusters must recognize the same root CA or establish cross-cluster trust relationships. Routing must be aware of cluster boundaries and network latency, with preferences for intra-cluster communication when possible. Failover between clusters is managed through the control plane by updating routing rules to redirect traffic to the healthy cluster. The complexity of multi-cluster mesh networking is significantly higher than single-cluster, particularly around certificate management, network connectivity, and configuration synchronization.
         </p>
@@ -130,12 +140,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The decision to adopt a service mesh is fundamentally a trade-off analysis between consistency and complexity. A mesh delivers uniform security, traffic management, and observability across all services regardless of language or framework. This consistency is invaluable in large organizations with dozens of teams and hundreds of services. However, the mesh introduces significant operational complexity: proxy resource overhead typically consuming 10-15% additional CPU and memory per pod, increased tail latency from the additional proxy hop, a new configuration surface that becomes a critical deployment dependency, and an expanded incident response surface where mesh misconfigurations manifest as application outages.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The comparison with alternatives is instructive. <strong>Shared client libraries</strong> provide networking capabilities through language-specific SDKs. They are simpler to adopt because they require no infrastructure changes, but they produce inconsistent behavior across languages, require updates in every service when policies change, and couple networking logic to application code. Shared libraries work well for organizations standardized on one or two languages but become unmanageable in polyglot environments. <strong>API gateways</strong> handle north-south traffic at the network edge, providing authentication, rate limiting, and routing for external requests. They do not address east-west traffic between internal services, which is where the mesh operates. An API gateway and a service mesh are complementary, not competing. <strong>eBPF-based approaches</strong> like Cilium represent a fundamentally different architecture that performs traffic interception and policy enforcement in the Linux kernel rather than through sidecar proxies. This eliminates the per-pod proxy overhead, removes the additional network hop and its latency penalty, and simplifies operations by eliminating sidecar lifecycle management. However, eBPF requires recent kernel versions, ties deployment to Linux, and has a smaller ecosystem of traffic management features compared to mature sidecar meshes.
-        </p>
+        </HighlightBlock>
         <p>
           The staff-level insight is recognizing when a mesh is <strong>overkill</strong>. If your organization has fewer than twenty services, operates primarily in one or two languages, and has no regulatory requirement for mTLS, a service mesh is likely premature optimization. The operational overhead of running and debugging the mesh will exceed the benefits of centralized policy management. Conversely, if your organization has hundreds of services across multiple languages, requires zero-trust security for compliance, and needs sophisticated traffic management for continuous deployment, the mesh is not optional—it is the only way to achieve consistency at scale.
         </p>
@@ -146,12 +159,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Adopt a mesh incrementally, starting with a small subset of non-critical services. Inject sidecar proxies into a handful of services, measure the latency overhead and resource consumption, and validate that observability data flows correctly. Expand the mesh service by service, verifying behavior at each step. Do not attempt a big-bang mesh adoption across all services simultaneously—the blast radius of a misconfiguration is too large.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design for control plane failure as a first-class concern. Proxies must cache their last-known configuration and continue serving traffic safely when the control plane is unavailable. Test this failure mode explicitly by taking the control plane offline and verifying that service-to-service communication continues uninterrupted. The control plane should never be in the critical path of request processing.
-        </p>
+        </HighlightBlock>
         <p>
           Configure retry and timeout policies carefully to avoid amplification during incidents. Use explicit retry budgets that limit the total number of retries across a request chain. Set timeouts based on measured service latency percentiles, not arbitrary values. A timeout set too high delays failure detection; a timeout set too aggressively triggers unnecessary retries. Monitor retry rates as a leading indicator of upstream degradation—rising retries often precede service outages.
         </p>
@@ -168,12 +184,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common mesh incidents stem from policy misconfiguration rather than software bugs. Overly restrictive authorization policies block legitimate traffic, causing &quot;service A cannot talk to service B&quot; outages that are difficult to diagnose because the application logs show no errors—the request never reaches the application. Incorrect routing rules send traffic to wrong versions or stale endpoints, particularly during deployment transitions. The safest approach is to start with permissive policies and gradually tighten them, validating connectivity at each step.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Certificate and identity failures are the second most common source of mesh-wide incidents. Rotation failures occur when the control plane cannot issue certificates before existing ones expire, causing widespread mTLS handshake errors. Trust mismatches happen when services in different clusters or namespaces do not recognize each other&apos;s certificate authorities. The operational discipline is to monitor certificate expiration dates proactively, test rotation in staging environments, and maintain a rapid rollback path for certificate authority changes.
-        </p>
+        </HighlightBlock>
         <p>
           Control plane instability is a subtle but dangerous pitfall. When the control plane generates configuration faster than proxies can consume it, proxies experience configuration churn where they are constantly updating rules without reaching a steady state. This manifests as intermittent routing errors and elevated latency. The root cause is often overly granular policy changes or a control plane that is under-resourced for the number of managed services. The solution is to batch configuration changes, size the control plane appropriately, and monitor configuration propagation latency.
         </p>
@@ -190,16 +209,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Adobe: Multi-Cloud Service Mesh at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Adobe deployed a service mesh across multiple cloud providers to manage communication between hundreds of microservices serving Creative Cloud and Experience Cloud products. The primary driver was consistent mTLS enforcement across heterogeneous services written in Java, Node.js, Python, and Go. Before the mesh, each team implemented TLS differently, creating security gaps and audit failures. The mesh provided uniform identity management and certificate rotation across all services regardless of language. Adobe also leveraged the mesh for traffic management during migration from monolithic services to microservices, using weighted routing to gradually shift traffic from legacy to new implementations. The operational challenge was managing mesh configuration across multiple cloud environments with different networking models, which required a federated control plane architecture with shared identity trust.
-        </p>
+        </HighlightBlock>
 
         <h3>Yahoo: Service Mesh for Legacy Modernization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Yahoo adopted a service mesh to manage the gradual modernization of legacy services that lacked modern networking capabilities. Many legacy services had no built-in retry logic, no circuit breakers, and inconsistent health checking. Rather than rewriting each service, Yahoo injected sidecar proxies that provided these capabilities transparently. The mesh enabled incremental improvement of service reliability without code changes, which was essential given the scale of Yahoo&apos;s service portfolio and the limited engineering bandwidth for rewrites. The mesh also provided standardized observability across legacy and modern services, enabling platform teams to identify reliability bottlenecks that were previously invisible.
-        </p>
+        </HighlightBlock>
 
         <h3>Pinterest: Observability and Traffic Management</h3>
         <p>
@@ -217,14 +239,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between the data plane and the control plane in a service mesh?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               The data plane consists of lightweight proxies deployed alongside each service instance, typically as sidecar containers. The data plane handles the actual traffic—applying routing rules, enforcing security policies, performing load balancing, managing retries and timeouts, and emitting telemetry. Every request between services passes through the data plane proxies, which means the data plane is in the critical path of every service-to-service call.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               The control plane is a centralized management component that generates configuration from declarative rules and distributes it to all data plane proxies. The control plane manages certificate issuance and rotation, provides the API through which operators define traffic policies, and computes routing rules based on service discovery information. The control plane is not in the request path—proxies cache their configuration and continue operating even when the control plane is unavailable.
             </p>

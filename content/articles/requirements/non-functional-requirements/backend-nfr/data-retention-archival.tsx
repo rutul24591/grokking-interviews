@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,21 +25,24 @@ export default function DataRetentionArchivalArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Data retention</strong> defines how long data is kept in active storage before it is
           archived or deleted. <strong>Data archival</strong> is the process of moving data that is no
           longer actively used to a separate storage tier with lower cost and slower access. Together,
           retention and archival manage the data lifecycle — from creation through active use, archival,
           and eventual deletion — balancing cost, performance, compliance, and user experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Without retention and archival policies, data accumulates indefinitely, causing storage costs
           to grow linearly with time, database performance to degrade as tables grow, and backup windows
           to extend beyond acceptable limits. Conversely, overly aggressive retention policies risk
           deleting data that is still needed for business operations, compliance investigations, or user
           requests. The challenge is finding the right balance — keeping data as long as it provides
           value, then archiving or deleting it to control costs.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, data retention architecture demonstrates
           understanding of regulatory requirements, storage economics, and the ability to design
@@ -73,13 +77,16 @@ export default function DataRetentionArchivalArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding data retention and archival requires grasping several foundational concepts
           about storage tiers, retention policies, compliance requirements, and lifecycle automation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Storage Tiering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Storage tiering classifies data by access frequency and moves it to the most cost-effective
           storage class. Hot storage (SSD, NVMe) provides sub-millisecond access latency but costs
           5-10× more than cold storage. Warm storage (HDD) provides millisecond access latency at
@@ -87,7 +94,7 @@ export default function DataRetentionArchivalArticle() {
           at the lowest cost. The key insight is that most data is accessed infrequently — 80% of data
           is accessed within the first 30 days, 15% within 90 days, and only 5% after 90 days. Tiering
           data based on this pattern reduces storage costs by 50-80% without impacting user experience.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Retention Policies</h3>
         <p>
@@ -115,10 +122,13 @@ export default function DataRetentionArchivalArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data retention and archival architecture spans data classification, tiered storage, lifecycle
           automation, compliance management, and archival retrieval.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/data-retention-archival.svg"
@@ -127,7 +137,7 @@ export default function DataRetentionArchivalArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Data Lifecycle Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Data is created in hot storage (SSD) where it is actively accessed and modified. After a
           configurable period of inactivity (e.g., 30 days), the data is transitioned to warm storage
           (HDD) — the data is still accessible but with slightly higher latency. After a longer period
@@ -135,7 +145,7 @@ export default function DataRetentionArchivalArticle() {
           is retained for compliance and user requests but retrieval takes minutes to hours. After the
           retention period expires (e.g., 1 year for logs, 6 years for audit records, indefinite for
           user data until erasure request), the data is permanently deleted.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Compliance-Driven Retention</h3>
         <p>
@@ -163,34 +173,37 @@ export default function DataRetentionArchivalArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Storage Tier</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Storage Tier</th>
               <th className="p-3 text-left">Access Latency</th>
               <th className="p-3 text-left">Cost (per TB/month)</th>
               <th className="p-3 text-left">Best For</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Hot (SSD/NVMe)</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>Hot (SSD/NVMe)</strong></td>
               <td className="p-3">Sub-millisecond</td>
               <td className="p-3">$100-200</td>
               <td className="p-3">Active data, frequently accessed</td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Warm (HDD)</strong></td>
               <td className="p-3">Milliseconds</td>
               <td className="p-3">$20-50</td>
               <td className="p-3">Infrequently accessed, still needed</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Cold (Archive)</strong></td>
               <td className="p-3">Minutes to hours</td>
               <td className="p-3">$4-10</td>
               <td className="p-3">Compliance retention, rare access</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Deep Archive (Tape)</strong></td>
               <td className="p-3">Hours</td>
@@ -204,9 +217,12 @@ export default function DataRetentionArchivalArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Classify Data by Access Pattern</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Effective retention starts with data classification — categorizing data by access frequency,
           business value, and compliance requirements. Classify data at creation time (tag with
           classification metadata) so that lifecycle policies can apply the appropriate retention and
@@ -214,10 +230,10 @@ export default function DataRetentionArchivalArticle() {
           in hot storage), operational data (accessed daily, transition to warm after 30 days),
           historical data (accessed monthly, transition to cold after 90 days), and compliance data
           (accessed rarely, retain for regulatory period then delete).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Automate Lifecycle Transitions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Manual data management does not scale — as data volume grows, it becomes impossible to
           manually track which data should be archived or deleted. Implement automated lifecycle
           policies that transition data between storage tiers based on age and access patterns. Cloud
@@ -225,7 +241,7 @@ export default function DataRetentionArchivalArticle() {
           Lifecycle) that handles transitions automatically. Configure lifecycle policies to align
           with business and compliance requirements, and monitor transition progress to ensure policies
           are executing correctly.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Test Archival Retrieval Regularly</h3>
         <p>
@@ -253,19 +269,22 @@ export default function DataRetentionArchivalArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Ignoring Backup Retention</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Retention policies that apply to production data but not to backups create compliance gaps —
           personal data deleted from production may still exist in backups for months or years, violating
           GDPR erasure requirements. Extend retention policies to backups — either delete backup copies
           when the production data is deleted, or implement cryptographic erasure for backup data. Test
           that erasure requests propagate to all backup copies, and document the backup erasure process
           for compliance audits.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Over-Retaining Data &quot;Just in Case&quot;</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The safest retention policy from a business perspective is &quot;keep everything forever&quot; —
           but this is the most expensive and risky approach. Over-retained data increases storage costs,
           expands the attack surface (more data to protect), and increases compliance liability (more
@@ -273,7 +292,7 @@ export default function DataRetentionArchivalArticle() {
           on actual business value and regulatory requirements, and delete data when the retention
           period expires. If there is uncertainty about whether data is still needed, transition it
           to cold storage rather than keeping it in hot storage.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Not Testing Deletion Completeness</h3>
         <p>
@@ -300,9 +319,12 @@ export default function DataRetentionArchivalArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Facebook — Photo Storage Tiering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook stores trillions of photos and must manage storage costs while keeping photos
           accessible. Facebook implements automated storage tiering — recently uploaded or viewed photos
           are stored in hot storage (SSD) for fast access. Photos that have not been viewed for 90 days
@@ -311,10 +333,10 @@ export default function DataRetentionArchivalArticle() {
           photo, it is automatically restored to warm storage. Facebook&apos;s tiering reduces storage
           costs by 60% compared to keeping all photos in hot storage, while maintaining the user
           experience that photos are always accessible (restoration takes seconds to minutes).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Capital One — Compliance-Driven Retention</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Capital One, as a financial institution, must comply with multiple regulatory retention
           requirements — banking records (5 years), transaction logs (7 years), audit records (6 years),
           and customer communications (3 years). Capital One implements compliance-driven retention
@@ -323,7 +345,7 @@ export default function DataRetentionArchivalArticle() {
           (to minimize liability). Lifecycle policies automatically transition data between storage
           tiers based on age and regulatory requirements, and deletion is automated with cascading
           propagation to all downstream systems and backup copies.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Dropbox — Cryptographic Erasure for GDPR</h3>
         <p>
@@ -353,19 +375,22 @@ export default function DataRetentionArchivalArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data retention and archival involve security risks — archived data may be less protected than active data, and deletion failures may leave sensitive data exposed.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Archival Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Archived Data Protection:</strong> Archived data may have weaker security controls than active data (less monitoring, fewer access restrictions). Mitigation: apply the same security controls to archived data as active data (encryption at rest, access controls, audit logging), monitor archived data for unauthorized access, restrict archival retrieval to authorized personnel.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Backup Security:</strong> Backups contain copies of all data and are often less secured than production systems. Mitigation: encrypt backups at rest, restrict backup access, monitor backup access patterns, include backups in security audits.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Deletion Verification:</strong> Incomplete deletion leaves sensitive data exposed in downstream systems. Mitigation: implement cascading deletion to all downstream systems, verify deletion completeness by querying all systems after deletion, maintain deletion audit logs for compliance verification.
             </li>
@@ -388,19 +413,22 @@ export default function DataRetentionArchivalArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data retention and archival must be validated through systematic testing — lifecycle automation, archival retrieval, deletion completeness, and compliance adherence must all be verified.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Lifecycle Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Automated Transition Testing:</strong> Create test data with known creation dates, wait for the lifecycle transition trigger (or simulate the trigger), and verify that data is moved to the correct storage tier. Test transitions for all tier combinations (hot → warm, warm → cold, cold → deletion).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Archival Retrieval Testing:</strong> Retrieve archived data from each storage tier and verify that retrieval latency meets expectations, data integrity is maintained (checksums match), and the retrieved data is complete and usable. Test retrieval of data from different archival ages (30 days, 90 days, 1 year).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Deletion Completeness Testing:</strong> Create test data in the primary system and downstream systems (caches, search indexes, analytics, backups), execute deletion, and verify that all copies are deleted. Test with different data types and downstream systems to ensure comprehensive deletion coverage.
             </li>

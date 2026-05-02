@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Canvas and SVG</strong> are the two primary technologies for rendering graphics and data visualizations in the browser. Canvas provides a raster-based, immediate-mode rendering context where you draw pixels directly. SVG provides a vector-based, retained-mode rendering system where you declare shapes as DOM elements. The choice between Canvas and SVG fundamentally affects performance, accessibility, interactivity, and scalability of data visualizations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This decision is critical for staff/principal engineers because it affects the entire visualization architecture. Choosing wrong can lead to performance bottlenecks, accessibility failures, or inability to scale to required data volumes. The choice depends on data volume, interaction requirements, accessibility needs, and visual complexity.
-        </p>
+        </HighlightBlock>
         <p>
           Canvas excels at rendering large volumes of data points (thousands to millions) where individual element access isn't needed. It's ideal for heatmaps, particle systems, and real-time data streams. However, Canvas requires manual implementation of interaction handling, accessibility, and scaling.
         </p>
@@ -45,6 +49,9 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/canvas-vs-svg-comparison.svg"
@@ -53,12 +60,12 @@ export default function ArticlePage() {
         />
 
         <h3>Canvas: Raster-Based Rendering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Canvas provides a bitmap rendering context accessed via JavaScript. You draw directly to a pixel buffer using drawing commands like fillRect, arc, and lineTo. The canvas element has a fixed resolution determined by its width and height attributes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Canvas uses <strong>immediate mode</strong> rendering. Drawing commands execute immediately and the canvas doesn't retain any knowledge of what was drawn. To modify something, you must clear and redraw the entire canvas or affected regions. This makes Canvas efficient for rendering but requires more code for interaction and animation.
-        </p>
+        </HighlightBlock>
         <p>
           Canvas performance characteristics include constant rendering cost regardless of element count (you're just drawing pixels), no DOM overhead, efficient for large data volumes, and GPU acceleration via WebGL. However, Canvas requires manual implementation of hit testing for interactions, manual accessibility implementation, and manual handling of scaling and resolution.
         </p>
@@ -110,9 +117,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing Canvas or SVG visualizations requires architectural decisions about rendering pipelines, state management, and update patterns.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/canvas-rendering-pipeline.svg"
@@ -121,9 +131,9 @@ export default function ArticlePage() {
         />
 
         <h3>Canvas Rendering Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Canvas rendering follows an immediate mode pattern. Maintain a data model separate from the visual representation. On each render cycle, clear the canvas and redraw based on current data. Use requestAnimationFrame for smooth animation.
-        </p>
+        </HighlightBlock>
         <p>
           Optimize Canvas rendering by dirty rect tracking (only redraw changed regions), layer separation (static background on one canvas, dynamic elements on another), and offscreen canvases for complex elements that can be cached.
         </p>
@@ -167,9 +177,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Canvas vs SVG involves fundamental trade-offs between performance, accessibility, and implementation complexity.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/performance-comparison.svg"
@@ -219,16 +232,19 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that the choice isn't binary. Hybrid approaches often provide the best balance. Use SVG for structure and interaction, Canvas for dense data. Or use SVG for small datasets and switch to Canvas when data volume grows.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Choose based on data volume. For under 1000 elements with interaction needs, use SVG. For over 5000 elements, use Canvas. For 1000-5000 elements, evaluate based on interaction and accessibility requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-visualization/accessibility-patterns.svg"
@@ -236,9 +252,9 @@ export default function ArticlePage() {
           caption="Accessibility — use position over color, provide ARIA labels, enable keyboard navigation, use colorblind-safe palettes, write alt text descriptions"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For Canvas, implement proper cleanup. Cancel animation frames on unmount, release WebGL contexts, and remove event listeners. Canvas can leak resources if not properly cleaned up.
-        </p>
+        </HighlightBlock>
         <p>
           For SVG, limit DOM element count. Use grouping (g elements) to reduce element count. Use CSS for styling instead of inline attributes. Use transforms instead of recalculating coordinates.
         </p>
@@ -255,12 +271,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using SVG for large datasets causes performance degradation. DOM overhead becomes significant above 1000-5000 elements. Symptoms include slow rendering, janky animation, and high memory usage. Solution: switch to Canvas or implement virtualization.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using Canvas without accessibility implementation excludes users with disabilities. Canvas is invisible to screen readers by default. Solution: implement parallel DOM structure, ARIA live regions, or provide text alternatives.
-        </p>
+        </HighlightBlock>
         <p>
           Not handling canvas resolution properly causes blurry rendering on high-DPI displays. Canvas defaults to 1:1 pixel mapping. Solution: scale canvas dimensions by devicePixelRatio and adjust drawing context.
         </p>
@@ -277,14 +296,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Financial Dashboard: Real-Time Stock Ticker</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A financial dashboard needed to display real-time stock prices for 500+ stocks with updating charts. Each stock had a mini sparkline chart showing price history.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong> Used Canvas for sparklines (500+ charts updating every second) with SVG for axes and labels. Canvas handled the heavy rendering while SVG provided accessible structure.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Results:</strong> Smooth 60fps updates even with 500+ charts. Accessibility maintained via SVG structure. Memory usage stable at 50MB vs 200MB+ with pure SVG.
         </p>
@@ -325,14 +347,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: When would you choose Canvas over SVG for data visualization?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Choose Canvas when rendering 1000+ elements, especially for real-time updates or complex animations. Canvas is ideal for heatmaps, particle systems, and large scatter plots. Choose Canvas when performance is critical and accessibility can be implemented separately.
-            </p>
+            </HighlightBlock>
             <p>
               Specific scenarios: real-time data streams with frequent updates, visualizations with 10,000+ data points, complex animations at 60fps, pixel-level manipulation requirements.
             </p>

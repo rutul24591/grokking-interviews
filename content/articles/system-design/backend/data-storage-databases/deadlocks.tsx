@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -80,17 +81,20 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Deadlock Conditions &amp; Detection</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Coffman Conditions (All Required for Deadlock)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Four conditions must all be present for deadlock (Coffman conditions):
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Mutual exclusion</strong>: Resource can be held by only one transaction at
           a time. Database locks are exclusive (one holder). Can't eliminate (fundamental to
           locking).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Hold and wait</strong>: Transaction holds one resource, waits for another.
@@ -164,24 +168,27 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Prevention &amp; Handling</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Prevention Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Lock ordering</strong>: Always acquire locks in same order. Example: always
           lock Account 1 before Account 2 (by account ID). Transaction A: lock Account 1,
           then Account 2. Transaction B: lock Account 1, then Account 2 (same order). No
           circular wait possible (both try to lock Account 1 first - one succeeds, other
           waits). Benefits: prevents deadlocks (breaks circular wait). Trade-offs: requires
           coordination (all code paths must use same order).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Short transactions</strong>: Hold locks for shortest time possible. Acquire
           locks late (just before use), release early (immediately after use). Benefits:
           reduces deadlock window (less time holding locks), reduces contention (locks held
           briefly). Trade-offs: may require restructuring code (can't hold lock across
           user interaction, network calls).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Lock timeout</strong>: Abort transaction if lock wait exceeds timeout.
@@ -260,17 +267,20 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Prevention Approaches</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Different deadlock prevention approaches have trade-offs. Understanding them helps
           you choose the right strategy.
-        </p>
+        </HighlightBlock>
 
         <h3>Lock Ordering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Strengths</strong>: Prevents deadlocks (breaks circular wait), no runtime
           overhead (no detection needed), deterministic (same order always works).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Limitations</strong>: Requires coordination (all code paths must use same
@@ -370,20 +380,23 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Deadlock Prevention</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use consistent lock ordering.</strong> Always acquire locks in same order
           (by ID, by name, by type). Document ordering convention (team follows same order).
           Benefits: prevents deadlocks (breaks circular wait).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Keep transactions short.</strong> Acquire locks late (just before use),
           release early (immediately after use). Don't hold locks across: user interaction
           (waiting for input), network calls (API calls, file I/O), complex calculations
           (do calculation before/after transaction). Benefits: reduces deadlock window,
           improves throughput.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Implement retry logic.</strong> Catch deadlock exceptions, retry
@@ -427,19 +440,22 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Inconsistent lock ordering.</strong> Different code paths lock resources
           in different order. Transaction A: lock Account 1, then Account 2. Transaction B:
           lock Account 2, then Account 1. Deadlock! Solution: document and enforce lock
           ordering (always lock by account ID).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Long transactions.</strong> Holding locks for long time (seconds/minutes).
           Increases deadlock window (more time for conflicts). Solution: keep transactions
           short (milliseconds), don't hold locks across user interaction/network calls.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>No retry logic.</strong> Application fails on first deadlock (user sees
@@ -477,24 +493,27 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Financial Transfers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Banking transfer: debit Account A, credit Account B. High deadlock risk (two
           accounts, concurrent transfers). Prevention: lock ordering (always lock lower
           account ID first), short transactions (lock just for update), retry logic (catch
           deadlock, retry). Benefits: prevents deadlocks (consistent ordering), handles
           gracefully (retry).
-        </p>
+        </HighlightBlock>
 
         <h3>Inventory Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce inventory: concurrent orders updating same product stock. Deadlock risk
           (multiple orders, same products). Prevention: lock ordering (order products by ID
           before update), short transactions (update stock, release lock), retry logic
           (retry on deadlock). Benefits: prevents deadlocks (consistent ordering), handles
           gracefully (retry).
-        </p>
+        </HighlightBlock>
 
         <h3>Booking/Reservation Systems</h3>
         <p>
@@ -517,13 +536,16 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: What is a deadlock? What are the four conditions required for deadlock?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Deadlock: two or more transactions waiting for each
               other to release locks (circular dependency). Neither can proceed without
               intervention. Four conditions (Coffman conditions): (1) Mutual exclusion
@@ -531,7 +553,7 @@ export default function ArticlePage() {
               for another), (3) No preemption (can't forcibly take resource), (4) Circular
               wait (circular chain of waiting). All four must be present for deadlock.
               Prevention: break any condition (usually circular wait via lock ordering).
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> How does database detect deadlocks? Answer:
               Wait-for graph (nodes = transactions, edges = waits for). Periodically

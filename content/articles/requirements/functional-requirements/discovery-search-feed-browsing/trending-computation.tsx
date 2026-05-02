@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,22 +34,25 @@ export default function TrendingComputationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Trending Computation</strong> identifies content gaining rapid engagement
           right now, enabling real-time discovery of what's popular. Unlike "popular"
           (all-time most engaged), trending captures momentum—content that is suddenly
           resonating with users. Twitter Trends, Reddit Rising, YouTube Trending, and
           TikTok For You all rely on trending computation to surface breaking news, viral
           content, and emerging topics.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Trending is fundamentally about velocity, not just volume. A post with 1000
           engagements in 1 hour is more "trending" than a post with 10000 engagements
           over 1 month. The challenge is computing velocity in real-time across millions
           of content items, with proper time decay (old trends fade), geographic
           segmentation (trends vary by location), and manipulation prevention (bot
           detection, anti-gaming).
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, trending computation involves stream processing
           (Flink, Spark Streaming, Kafka Streams), sliding window aggregations,
@@ -60,10 +64,13 @@ export default function TrendingComputationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Trending Score Formula</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The core of trending computation is the scoring formula. Common approaches:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Reddit Hot Formula:</strong> (log₁₀ volume) + (time_since_epoch /
@@ -85,9 +92,9 @@ export default function TrendingComputationArticle() {
         </ul>
 
         <h3 className="mt-6">Time Windows</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Trending is computed over specific time windows:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Short Window (1-6 hours):</strong> Captures breaking news, viral
@@ -184,10 +191,13 @@ export default function TrendingComputationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production trending computation involves stream processing for real-time
           velocity calculation.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery-search-feed-browsing/trending-computation/trending-architecture.svg"
@@ -226,9 +236,9 @@ export default function TrendingComputationArticle() {
         </ul>
 
         <h3 className="mt-6">Sliding Window Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Efficient sliding window computation:
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -318,10 +328,13 @@ export default function TrendingComputationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Trending computation involves balancing freshness, stability, and manipulation
           resistance.
-        </p>
+        </HighlightBlock>
 
         <h3>Trending Formula Comparison</h3>
         <div className="overflow-x-auto">
@@ -372,11 +385,11 @@ export default function TrendingComputationArticle() {
         />
 
         <h3 className="mt-6">Update Frequency Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>High Frequency (1-5 min):</strong> Very fresh trends, captures breaking
           news. High compute cost, volatile trends (items jump in/out rapidly). Best for:
           Twitter, breaking news.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Medium Frequency (10-15 min):</strong> Balanced freshness and stability.
           Reasonable compute cost. Most production systems use this. Best for: Reddit,
@@ -405,15 +418,18 @@ export default function TrendingComputationArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Log Scale for Volume:</strong> Prevents runaway trends (1000 vs
             10000 engagements should not be 10x difference). Log₁₀ or log₂ both work.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Tune Decay for Content Type:</strong> News: fast decay (30 min
             half-life). Videos: medium decay (6 hours). Articles: slow decay (24 hours).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Weight by User Quality:</strong> Verified users, old accounts, high
             engagement users count more. Prevents bot manipulation.
@@ -443,15 +459,18 @@ export default function TrendingComputationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No Time Decay:</strong> Old content stays trending forever. Solution:
             Apply exponential or step decay based on content type.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Volume-only Ranking:</strong> Most engaged ever, not trending now.
             Solution: Use velocity, not just volume.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring Manipulation:</strong> Bot farms game trending. Solution:
             User quality weighting, anomaly detection, human review.
@@ -473,17 +492,20 @@ export default function TrendingComputationArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter Trends</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter Trends shows topics gaining rapid engagement. Updates every 5 minutes,
           segmented by country and metro area. Uses velocity-based scoring with novelty
           boost (new topics prioritized). Human review for top trends.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Real-time spike detection—trends appear within
           minutes of breaking news.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Reddit Hot/Rising</h3>
         <p>
@@ -521,16 +543,19 @@ export default function TrendingComputationArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you compute trends in real-time?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you compute trends in real-time?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use stream processing (Flink, Spark Streaming, Kafka
               Streams). Ingest engagement events into Kafka. Use sliding window
               aggregations (1h, 6h, 24h windows). Compute velocity (engagements/hour)
               and trending score every 5-15 minutes. Store top-K per category/location
               in Redis sorted sets. Update cache, serve from cache for low latency.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

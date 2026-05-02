@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,10 @@ export default function MediaUploadArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Media Upload</strong> enables users to attach images, videos,
           and documents to their content providing rich media capabilities
           beyond text. It must handle large files efficiently, provide clear
@@ -41,7 +45,7 @@ export default function MediaUploadArticle() {
           delivery. Media upload is critical for user experience — slow or
           unreliable upload causes frustration and abandonment, while fast and
           reliable upload with clear progress encourages content creation.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/media-upload-flow.svg"
@@ -49,7 +53,7 @@ export default function MediaUploadArticle() {
           caption="Media Upload Flow — showing file selection, client-side validation, multipart upload with progress, server-side processing, and completion notification"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing media upload requires
           deep understanding of drag-drop interfaces with visual feedback on
           drag over and drop zones, progress indicators showing per-file
@@ -67,7 +71,7 @@ export default function MediaUploadArticle() {
           control ensuring authorized uploads, and rate limiting preventing
           abuse. The implementation must balance user experience with security
           and performance.
-        </p>
+        </HighlightBlock>
 
         <p>
           Modern media upload has evolved from simple form submission to
@@ -84,13 +88,16 @@ export default function MediaUploadArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Media upload is built on fundamental concepts that determine how files
           are selected, validated, uploaded, and secured. Understanding these
           concepts is essential for designing effective upload experiences.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>File Selection:</strong> Drag-drop provides intuitive file
           selection by dragging files to upload area with visual feedback on
           drag over highlighting the drop zone and drop initiating upload. File
@@ -100,7 +107,7 @@ export default function MediaUploadArticle() {
           per-file progress tracking and batch operations. Paste from clipboard
           enables pasting images directly from clipboard (screenshot,
           copy-paste) with automatic file creation and upload initiation.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Client-Side Validation:</strong> File type validation checks
@@ -142,12 +149,15 @@ export default function MediaUploadArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Media upload architecture separates file selection, validation,
           upload, and processing enabling modular implementation with clear
           security boundaries. This architecture is critical for user
           experience, security, and scalability.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/media-upload-flow.svg"
@@ -155,7 +165,7 @@ export default function MediaUploadArticle() {
           caption="Media Upload Flow — showing file selection, client-side validation, multipart upload with progress, server-side processing, and completion notification"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Upload flow begins with user selecting files through drag-drop or file
           picker. Frontend performs client-side validation checking file type by
           magic bytes, size within limits, and image dimensions appropriate. For
@@ -170,7 +180,7 @@ export default function MediaUploadArticle() {
           pipeline triggers asynchronously generating variants (thumbnails,
           different formats). User receives notification on completion with file
           URLs.
-        </p>
+        </HighlightBlock>
 
         <p>
           Client-side optimization architecture includes canvas-based resize
@@ -207,13 +217,16 @@ export default function MediaUploadArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing media upload involves trade-offs between user experience,
           security, performance, and complexity. Understanding these trade-offs
           is essential for making informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Client-side versus server-side validation presents immediacy versus
           security trade-offs. Client-side validation provides immediate
           feedback rejecting invalid files before upload saving bandwidth and
@@ -225,7 +238,7 @@ export default function MediaUploadArticle() {
           validation for user experience with immediate feedback and server-side
           validation for security as authoritative check never trusting client
           validation.
-        </p>
+        </HighlightBlock>
 
         <p>
           Client-side optimization versus upload original presents bandwidth
@@ -259,19 +272,22 @@ export default function MediaUploadArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing media upload requires following established best
           practices to ensure user experience, security, and performance.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           File selection provides intuitive drag-drop with visual feedback
           highlighting drop zone on drag over and clear drop target. Support
           file picker as fallback for all browsers. Enable multiple file
           selection with per-file progress and batch operations. Support paste
           from clipboard for images enabling screenshot and copy-paste workflow.
           Show file preview thumbnail before upload enabling user confirmation.
-        </p>
+        </HighlightBlock>
 
         <p>
           Client-side validation checks file type by magic bytes not extension
@@ -311,18 +327,21 @@ export default function MediaUploadArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing media upload to ensure
           user experience, security, and performance.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Validating file type by extension only allows extension spoofing
           attacks. Fix by validating file type by magic bytes (file signature)
           not extension. Block dangerous file types by signature (.exe, .bat,
           .scr) regardless of extension. Revalidate on server-side never
           trusting client validation.
-        </p>
+        </HighlightBlock>
 
         <p>
           No file size limits enables storage abuse through large file uploads.
@@ -391,13 +410,16 @@ export default function MediaUploadArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Media upload is critical for content creation across different
           domains. Here are real-world implementations from production systems
           demonstrating different approaches to upload challenges.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Dropbox upload addresses seamless file sync with chunked upload and
           resume. The solution uses drag-drop upload with background sync,
           splits files into chunks (typically 4MB) enabling resumable upload,
@@ -406,7 +428,7 @@ export default function MediaUploadArticle() {
           sync locally, and provides bandwidth throttling preventing network
           saturation. The result is seamless file sync with efficient storage
           and bandwidth usage.
-        </p>
+        </HighlightBlock>
 
         <p>
           Instagram upload addresses mobile image optimization with consistent
@@ -452,17 +474,20 @@ export default function MediaUploadArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of media upload design,
           implementation, and security concerns for staff and principal engineer
           interviews.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you implement drag-drop upload?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Add dragover, dragleave, drop event listeners to drop zone.
               Prevent default browser behavior (open file). Highlight drop zone

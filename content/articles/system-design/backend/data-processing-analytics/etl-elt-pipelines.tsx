@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>ETL (Extract-Transform-Load)</strong> and <strong>ELT (Extract-Load-Transform)</strong> are two
           architectural patterns for moving and transforming data from source systems to analytical destinations. The
           difference is not in what they do — both extract data from sources, apply transformations, and load the
@@ -32,8 +36,8 @@ export default function ArticlePage() {
           in a dedicated processing engine (Spark, a custom ETL tool, or a streaming processor) before it is loaded
           into the destination. In ELT, raw data is loaded directly into the destination (typically a cloud data
           warehouse), and transformations are applied within the destination using SQL.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This distinction has profound implications for cost, complexity, flexibility, and governance. ETL requires
           managing a separate processing engine, writing transformation logic in the engine&apos;s language (Scala for
           Spark, Python for Airflow operators), and ensuring that the transformed data is correct before it reaches
@@ -41,7 +45,7 @@ export default function ArticlePage() {
           transformation — and allows analysts to write transformations in SQL, which is more familiar and auditable
           than pipeline code. However, ELT shifts the compute cost to the warehouse, where transformation queries are
           billed at the warehouse&apos;s compute rate, which can be expensive for large or frequent transformations.
-        </p>
+        </HighlightBlock>
         <p>
           The choice between ETL and ELT has evolved significantly with the rise of cloud data warehouses. In the
           on-premise era, ETL was the dominant pattern because warehouse compute was expensive and limited —
@@ -81,21 +85,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The ETL pipeline follows a three-stage flow: extract reads data from source systems (databases, APIs,
           files), transform applies business logic (cleaning, joining, aggregating, deriving new columns) in a
           dedicated processing engine, and load writes the transformed data to the destination warehouse. The
           transformation stage is the most complex and critical part of the ETL pipeline — it is where data quality
           issues are resolved, business rules are applied, and the raw source data is converted into the analytical
           models that downstream consumers depend on.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The ELT pipeline follows a different flow: extract reads data from source systems, load writes the raw
           data directly to the warehouse (typically into a staging schema), and transform applies SQL transformations
           within the warehouse to convert raw data into analytical models. The transformation stage is managed by a
           tool like dbt, which orchestrates the execution of SQL models, enforces dependencies between models, runs
           data quality tests, and documents the transformation logic.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/etl-elt-pipelines-diagram-1.svg"
           alt="Side-by-side comparison of ETL (extract, transform in engine, load transformed) vs ELT (extract, load raw, transform in warehouse) pipelines"
@@ -146,7 +153,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The ETL architecture consists of three components: the ingestion layer (extractors that read from source
           systems), the transformation engine (Spark, Airflow operators, or a custom ETL tool that applies business
           logic), and the output loader (writes transformed data to the warehouse). The ingestion layer handles
@@ -156,8 +166,8 @@ export default function ArticlePage() {
           The output loader writes the transformed data to the warehouse using atomic publication (writing to a
           temporary table and swapping it into the production table) to ensure that consumers never see partial or
           corrupt output.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The ELT architecture consists of three components: the ingestion layer (Fivetran, Airbyte, or custom CDC
           connectors that load raw data to the warehouse), the transformation layer (dbt models that run SQL
           transformations within the warehouse), and the output layer (materialized views or tables that serve
@@ -166,7 +176,7 @@ export default function ArticlePage() {
           and incremental extraction. The transformation layer runs SQL models that read from the staging schema,
           apply transformations, and write to the analytical schema. The output layer provides the transformed data
           to BI tools, data science notebooks, and internal APIs.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/data-processing-analytics/etl-elt-pipelines-diagram-3.svg"
           alt="Modern data stack architecture: source systems → Fivetran ingestion → Snowflake storage → dbt transformations → BI, data science, reverse ETL consumers"
@@ -201,15 +211,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           ETL versus ELT is fundamentally a trade-off between control and flexibility. ETL provides full control
           over the transformation logic — engineers can write complex transformations in a general-purpose language
           (Python, Scala) that is not limited by SQL&apos;s expressiveness. ELT provides flexibility — analysts can write
           and iterate on SQL transformations without engineering involvement, and the raw data is available for
           reprocessing if the transformation logic changes. The choice depends on the organization&apos;s structure, the
           complexity of the transformations, and the cost constraints.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cost trade-offs differ significantly between the two patterns. ETL shifts compute cost to the ETL engine
           (Spark cluster, Airflow workers) and minimizes storage cost by loading only transformed data into the
           warehouse. ELT shifts compute cost to the warehouse (dbt transformations run as SQL queries billed at the
@@ -217,7 +230,7 @@ export default function ArticlePage() {
           organizations with limited warehouse budgets, ETL may be more cost-effective because it reduces the amount
           of data stored and processed in the warehouse. For organizations with generous warehouse budgets, ELT may
           be more cost-effective because it eliminates the need to manage a separate ETL engine.
-        </p>
+        </HighlightBlock>
         <p>
           Compliance and privacy considerations often favor ETL. When data must be anonymized, masked, or aggregated
           before it reaches the warehouse (for example, to comply with GDPR or HIPAA), ETL is the safer choice
@@ -238,18 +251,21 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For ELT pipelines, use dbt with version control, testing, and code review. All SQL transformations should
           be version-controlled in Git, tested automatically with dbt tests (checking for nulls, uniqueness,
           referential integrity), and reviewed by another team member before deployment. This ensures that
           transformation changes are tracked, tested, and validated before they affect production data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For ETL pipelines, make transformations idempotent and support backfills. Write transformed output to a
           temporary table and swap it into the production table atomically. Ensure that the pipeline can be rerun on
           any historical date range without affecting other date ranges. Test idempotency by running the pipeline
           twice on the same input and verifying identical output.
-        </p>
+        </HighlightBlock>
         <p>
           Monitor transformation performance and cost. In ELT, monitor the compute cost of each dbt model and alert
           when a model&apos;s cost exceeds a defined threshold. In ETL, monitor the duration and resource usage of each
@@ -271,19 +287,22 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Uncontrolled ELT transformation costs is the most common ELT pitfall. When analysts write SQL
           transformations without monitoring their compute cost, warehouse costs can grow unexpectedly — especially
           for large transformations that scan terabytes of data. The fix is to monitor the compute cost of each dbt
           model, set budget alerts, and optimize expensive models (by adding partition filters, reducing the scan
           volume, or pre-aggregating data).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           ETL transformations that are not idempotent cause data corruption on rerun. If an ETL pipeline writes
           output directly to the production table without using a temporary table and atomic swap, a rerun after a
           partial failure may produce a mix of old and new records, or duplicate records. The fix is to use atomic
           publication — write to a temporary table, validate, and swap into production.
-        </p>
+        </HighlightBlock>
         <p>
           ELT without raw data retention makes reprocessing impossible. If the raw data is not preserved (either in
           the warehouse&apos;s staging schema or in a data lake), and a transformation bug is discovered, the only option
@@ -301,7 +320,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large retail company uses ETL for its financial reporting pipeline, where data from 20 source systems
           (POS, inventory, CRM, e-commerce) is extracted, transformed in a Spark cluster with complex business logic
           (currency conversion, tax calculation, inter-company eliminations), and loaded into a data warehouse for
@@ -309,8 +331,8 @@ export default function ArticlePage() {
           (requiring custom algorithms for tax calculation and inter-company eliminations), and the data must be
           validated and cleaned before it reaches the warehouse for compliance reasons. The pipeline runs daily,
           completing in 3 hours, and produces the company&apos;s authoritative financial reports.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A technology company uses ELT with dbt for its product analytics pipeline, where raw event data from Kafka
           is loaded into Snowflake and transformed through a series of dbt models into analytical tables (daily
           active users, feature adoption rates, funnel conversion rates). The ELT approach is chosen because the
@@ -318,7 +340,7 @@ export default function ArticlePage() {
           analytics team benefits from being able to iterate on SQL transformations without engineering involvement.
           The dbt models are version-controlled in Git, tested automatically, and reviewed by the data engineering
           team before deployment.
-        </p>
+        </HighlightBlock>
         <p>
           A healthcare organization uses a hybrid approach for its patient data pipeline: ETL for anonymization and
           ELT for analytical transformations. The ETL stage extracts patient data from the EHR system, anonymizes it
@@ -339,27 +361,30 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: When would you choose ETL over ELT, and vice versa?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Choose ETL when the transformations are complex (requiring custom algorithms, machine learning, or
             iterative computation that SQL cannot express), when data must be cleaned or anonymized before reaching
             the warehouse (for compliance or privacy), or when the warehouse compute cost of transforming raw data
             would exceed the cost of a dedicated ETL engine. ETL is also appropriate when the data engineering team
             has the expertise to manage the ETL engine and the transformations are stable enough that analyst-driven
             iteration is not needed.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Choose ELT when the transformations are analytical (joins, aggregations, window functions) that can be
             expressed in SQL, when analysts benefit from being able to iterate on transformations independently, or
             when the raw data must be preserved for reprocessing (because the transformation logic may need to be
             updated or because historical data needs to be reprocessed with new logic). ELT is also appropriate when
             the organization uses a cloud data warehouse with elastic compute, making the warehouse&apos;s transformation
             cost manageable.
-          </p>
+          </HighlightBlock>
           <p>
             In practice, most organizations use a hybrid approach: ETL for compliance-critical and complex
             transformations, and ELT for analytical transformations that benefit from analyst-driven iteration. The

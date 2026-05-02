@@ -457,27 +457,31 @@ export default function StateNormalizationConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: normalization is about scalable updates and avoiding duplicate sources of truth. Use these
+          to understand entity adapters, normalized caches, and the consistency implications of graph-shaped data.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://redux.js.org/usage/structuring-reducers/normalizing-state-shape" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Redux Documentation - Normalizing State Shape
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://redux-toolkit.js.org/api/createEntityAdapter" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Redux Toolkit - createEntityAdapter API Reference
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://github.com/paularmstrong/normalizr" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               normalizr - Normalize nested JSON according to a schema
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.apollographql.com/docs/react/caching/overview/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Apollo Client - Caching and Normalization Overview
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://kentcdodds.com/blog/application-state-management-with-react" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Kent C. Dodds - Application State Management with React

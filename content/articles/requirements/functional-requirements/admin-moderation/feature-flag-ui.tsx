@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function FeatureFlagUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature flag UI enables teams to control feature rollouts, run experiments, and quickly disable problematic features without deployment. The interface is the primary tool for product managers, engineers, and operations teams to manage feature releases, conduct A/B tests, and respond to issues. For staff and principal engineers, feature flag UI involves flag management (create, edit, delete flags), targeting rules (who sees the feature), gradual rollouts (percentage-based rollout), A/B testing (experiment configuration), kill switches (quickly disable features), and analytics (track flag usage, experiment results).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of feature flag UI extends beyond simple on/off toggles. Targeting rules must enable complex targeting (by user ID, segment, percentage, geography). Gradual rollouts must support percentage-based rollout (1% → 10% → 50% → 100%) with monitoring. A/B testing must support experiment configuration (control vs. variant, success metrics, statistical significance). Kill switches must enable quick disable (one-click disable, automatic rollback). Analytics must track flag usage (who sees flag, what action taken) and experiment results (conversion rates, statistical significance).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, feature flag UI architecture involves flag storage (store flag definitions, targeting rules), evaluation engine (evaluate flags for users), rollout management (manage gradual rollouts), experiment tracking (track experiment results), and integration (SDK integration, API integration). The system must support multiple flag types (boolean, multivariate, rollout), multiple targeting methods (user ID, segment, percentage), and multiple environments (development, staging, production). Performance is critical—flag evaluation must be fast (&lt;10ms) to avoid impacting application performance.
         </p>
@@ -47,13 +51,16 @@ export default function FeatureFlagUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Flag Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Flag creation creates new feature flags. Flag name (unique identifier). Flag type (boolean, multivariate, rollout). Description (what flag does). Environments (which environments flag is active in). Default value (default value when flag is off). Owner (who owns flag).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Flag editing modifies existing flags. Edit targeting rules (change who sees feature). Edit rollout percentage (change rollout percentage). Edit variants (for multivariate flags). Enable/disable flag (turn flag on/off). Archive flag (archive when no longer needed).
-        </p>
+        </HighlightBlock>
         <p>
           Flag deletion removes flags. Soft delete (archive flag, keep history). Hard delete (permanently delete flag). Cleanup (remove flag from code). Audit trail (track who deleted flag, when).
         </p>
@@ -105,9 +112,12 @@ export default function FeatureFlagUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature flag UI architecture spans flag management, evaluation engine, rollout management, and experiment tracking. Flag management enables flag CRUD (create, read, update, delete). Evaluation engine evaluates flags for users. Rollout management manages gradual rollouts. Experiment tracking tracks experiment results.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/admin-moderation/feature-flag-ui/feature-flag-architecture.svg"
@@ -118,9 +128,9 @@ export default function FeatureFlagUIArticle() {
         />
 
         <h3>Flag Management Interface</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Flag list displays all flags. Flag table (list of all flags). Filter flags (filter by status, environment, owner). Search flags (search by name, description). Sort flags (sort by name, created date, status).
-        </p>
+        </HighlightBlock>
         <p>
           Flag detail shows flag details. Flag configuration (name, type, description). Targeting rules (who sees flag). Rollout configuration (rollout percentage, schedule). Experiment configuration (for A/B tests). Usage analytics (flag usage, experiment results).
         </p>
@@ -180,14 +190,17 @@ export default function FeatureFlagUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature flag UI design involves trade-offs between flexibility and simplicity, power and usability, and control and automation. Understanding these trade-offs enables informed decisions aligned with team needs and technical constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Flag Types: Boolean vs. Multivariate</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Boolean flags (on/off flags). Pros: Simple (easy to understand), fast evaluation. Cons: Limited (only on/off). Best for: Simple feature toggles, kill switches.
-        </p>
+        </HighlightBlock>
         <p>
           Multivariate flags (multiple variants). Pros: Flexible (multiple variants), A/B testing. Cons: Complex (more configuration), slower evaluation. Best for: A/B testing, gradual rollouts.
         </p>
@@ -239,13 +252,16 @@ export default function FeatureFlagUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Design intuitive flag management:</strong> Flag list, flag detail, creation wizard. Easy to create, edit, delete flags.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Support flexible targeting:</strong> User ID, segment, percentage, geo targeting. Complex rules for advanced targeting.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Enable gradual rollouts:</strong> Percentage-based rollout. Scheduled rollout. Monitoring during rollout. Automatic rollback.
           </li>
@@ -275,13 +291,16 @@ export default function FeatureFlagUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Complex flag management:</strong> Too difficult to manage flags. Solution: Intuitive interface, creation wizard, flag list.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Limited targeting:</strong> Can&apos;t target precisely. Solution: Flexible targeting (user ID, segment, percentage, geo).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No gradual rollouts:</strong> All-or-nothing rollouts. Solution: Percentage-based rollout, scheduled rollout.
           </li>
@@ -311,16 +330,19 @@ export default function FeatureFlagUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>LaunchDarkly</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           LaunchDarkly for feature management. Flag management (create, edit, delete flags). Targeting rules (user ID, segment, percentage). Gradual rollouts (percentage-based rollout). A/B testing (experiment configuration, results). Kill switches (quick disable). Analytics (flag usage, experiment results).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Split.io</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Split.io for feature delivery. Flag management (feature flags, kill switches). Targeting (user ID, segment, geo). Rollouts (gradual rollouts, scheduled rollouts). Experiments (A/B testing, results). Analytics (flag usage, impact).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Flagsmith</h3>
         <p>
@@ -340,12 +362,15 @@ export default function FeatureFlagUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design flag evaluation for sub-10ms performance at global scale?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design flag evaluation for sub-10ms performance at global scale?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement multi-layer caching strategy. Cache evaluation results at the edge (CDN, edge functions) for user-specific flags. Pre-compute flag evaluations for known user segments. Batch evaluate multiple flags in single call to reduce network round trips. Use in-memory evaluation with optimized data structures (hash maps, bloom filters) for O(1) lookups. The key architecture decision: evaluate flags client-side (fastest, but rules exposed) vs. server-side (secure, but network latency). For global scale, distribute flag configurations to edge locations via CDN. Target &lt;10ms evaluation time—measure p99 latency, not just average. Implement circuit breaker for flag service dependencies. Critical: cache invalidation strategy when flags change—use versioned configurations and push updates to edge locations.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

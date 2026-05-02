@@ -109,7 +109,7 @@ export default function ProgressiveWebAppsConciseArticle() {
             access the DOM directly, and communicates via postMessage. It is the
             cornerstone that makes offline-first possible.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>App Shell Architecture:</strong> The app shell is the
             minimal HTML, CSS, and JavaScript required to render the UI
             skeleton. This shell is cached by the Service Worker on first visit
@@ -117,7 +117,7 @@ export default function ProgressiveWebAppsConciseArticle() {
             conditions. Dynamic content is then fetched and injected into the
             shell. This pattern ensures that the structural UI appears in under
             200ms on repeat visits, while data can load progressively.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Installability Criteria:</strong> For Chrome to show an
             install prompt, the site must: serve over HTTPS, have a valid Web
@@ -150,12 +150,22 @@ export default function ProgressiveWebAppsConciseArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: PWAs are a bundle of <strong>capabilities</strong> (offline, install, background work),
+          not a single feature. Your architecture must cover cache strategy, update/rollback, and “data truth” when
+          offline.
+        </HighlightBlock>
         <p>
           The PWA architecture centers on the App Shell model with a Service
           Worker acting as the network intermediary. Understanding these layers
           and their interactions is essential for building robust,
           offline-capable applications.
         </p>
+
+        <HighlightBlock as="p" tier="important">
+          A production PWA must explicitly handle: service worker updates (waiting/activate), cache invalidation,
+          and user-visible “new version available” flows to avoid serving a broken mixed-version app shell.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">App Shell Loading Flow</h3>
@@ -205,6 +215,12 @@ export default function ProgressiveWebAppsConciseArticle() {
           caption="PWA Architecture - The Service Worker sits between the browser and network, serving cached app shell assets and proxying API requests with configurable caching strategies"
           captionTier="crucial"
         />
+
+        <HighlightBlock as="p" tier="important">
+          Architecture decisions to call out in interviews: which requests are cache-first vs network-first, what
+          you store durably (IndexedDB) vs best-effort (Cache Storage), and how you detect and recover from cache
+          eviction.
+        </HighlightBlock>
 
         <p>
           The installation flow is a separate but equally important aspect. When
@@ -258,12 +274,22 @@ export default function ProgressiveWebAppsConciseArticle() {
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The key trade-off is control: PWAs reuse the web platform’s deployment velocity, but you inherit browser
+          constraints (background limits, storage eviction, iOS gaps). You must design for these constraints up
+          front.
+        </HighlightBlock>
         <p>
           Understanding the trade-offs between PWAs, native apps, and hybrid
           approaches is critical for architectural decisions. The right choice
           depends on the target audience, required capabilities, development
           budget, and distribution strategy.
         </p>
+
+        <HighlightBlock as="p" tier="important">
+          A strong system-design answer names which “native” requirements you need (background location, BLE,
+          heavy compute) and evaluates whether PWA capabilities and platform support are sufficient.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -273,6 +299,17 @@ export default function ProgressiveWebAppsConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
+            <HighlightBlock as="tr" tier="important">
+              <td className="p-3">
+                <strong>Offline &amp; Resilience</strong>
+              </td>
+              <td className="p-3">
+                Service worker caching enables offline and instant repeat loads for app shell journeys.
+              </td>
+              <td className="p-3">
+                Requires explicit cache invalidation, update UX, and recovery paths when storage is evicted.
+              </td>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Performance</strong>
@@ -438,12 +475,16 @@ export default function ProgressiveWebAppsConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The biggest production risk is serving inconsistent versions: a new service worker with old cached assets
+          (or vice versa). Always design an explicit update UX and cache versioning strategy.
+        </HighlightBlock>
         <p>
           These are the mistakes that catch even experienced engineers when
           building PWAs:
         </p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring iOS PWA Limitations:</strong> Safari on iOS did not
             support push notifications for PWAs until iOS 16.4 (March 2023).
             Even now, iOS imposes a ~50MB storage quota for PWA caches (vs.
@@ -453,15 +494,15 @@ export default function ProgressiveWebAppsConciseArticle() {
             manually use &quot;Add to Home Screen&quot; from the share sheet).
             Architecting a PWA without accounting for these differences leads to
             a broken iOS experience.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Mishandling Service Worker Update Cycles:</strong> Calling
             skipWaiting() unconditionally in the new Service Worker causes it to
             take over mid-session, potentially breaking in-flight requests or
             causing UI inconsistencies when cached assets change. The correct
             pattern is to notify the user, wait for their acknowledgment, then
             post a message to the waiting SW to call skipWaiting().
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Breaking the Back Button in Standalone Mode:</strong> In
             standalone display mode, there is no browser chrome or URL bar. If
@@ -512,12 +553,17 @@ export default function ProgressiveWebAppsConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview framing: use cases that win with PWAs are those where <strong>latency and offline</strong>
+          matter more than deep native integrations. Your justification should cite distribution speed and cacheable
+          user journeys.
+        </HighlightBlock>
         <p>
           PWAs have been successfully deployed by major companies across diverse
           use cases:
         </p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Twitter Lite (x.com):</strong> One of the most cited PWA
             success stories. Twitter rebuilt their mobile web experience as a
             PWA with an app shell architecture, achieving a 65% increase in
@@ -525,8 +571,8 @@ export default function ProgressiveWebAppsConciseArticle() {
             bounce rate. The PWA is under 1MB compared to 23MB for the native
             Android app, making it viable on low-end devices and slow networks
             in emerging markets.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Starbucks:</strong> Built a PWA for their ordering
             experience that works offline, allowing users to browse the menu,
             customize orders, and add items to cart without connectivity. The
@@ -534,7 +580,7 @@ export default function ProgressiveWebAppsConciseArticle() {
             users. It demonstrates that PWAs excel when the core value
             proposition (browsing and ordering) can be delivered without a
             constant connection.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Pinterest:</strong> Replaced their mobile web experience
             with a PWA and saw 60% increase in core engagement, 44% increase in
@@ -601,12 +647,16 @@ export default function ProgressiveWebAppsConciseArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Staff-level expectation: you can describe the <strong>service worker update lifecycle</strong> (install,
+          waiting, activate) and a user-safe rollout plan (prompt, reload, cache versioning).
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: What makes a web app a PWA? What are the minimum requirements?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: A PWA requires three things: HTTPS (secure context), a valid
               Web App Manifest (with name, icons, start_url, and display mode),
               and a registered Service Worker with a fetch event handler. These
@@ -619,7 +669,7 @@ export default function ProgressiveWebAppsConciseArticle() {
               beforeinstallprompt; users must manually add the app from
               Safari&apos;s share sheet, so the manifest and SW are still
               required but the install flow differs entirely.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -649,7 +699,7 @@ export default function ProgressiveWebAppsConciseArticle() {
               Q: How would you handle PWA updates without disrupting the user
               experience?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The key is to never call skipWaiting() automatically. When the
               browser detects a new Service Worker (byte-different script), the
               new SW installs and enters a &quot;waiting&quot; state while the
@@ -666,15 +716,19 @@ export default function ProgressiveWebAppsConciseArticle() {
               activate event can clean up old caches. Use Workbox&apos;s
               workbox-window module which abstracts this entire update flow with
               an &quot;externalwaiting&quot; event.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>
 
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Strong interview answers cite the platform contracts: manifest + service worker lifecycle, and where the
+          browser limits background execution. These references are the canonical sources.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://web.dev/progressive-web-apps/"
               className="text-accent hover:underline"
@@ -683,8 +737,8 @@ export default function ProgressiveWebAppsConciseArticle() {
             >
               web.dev - Progressive Web Apps
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps"
               className="text-accent hover:underline"
@@ -693,7 +747,7 @@ export default function ProgressiveWebAppsConciseArticle() {
             >
               MDN Web Docs - Progressive Web Apps
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://fugu-tracker.web.app/"
@@ -704,7 +758,7 @@ export default function ProgressiveWebAppsConciseArticle() {
               Project Fugu API Tracker
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.chrome.com/docs/workbox/"
               className="text-accent hover:underline"
@@ -713,8 +767,8 @@ export default function ProgressiveWebAppsConciseArticle() {
             >
               Workbox - Production-Ready Service Worker Libraries
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.patterns.dev/posts/progressive-web-apps"
               className="text-accent hover:underline"
@@ -723,7 +777,7 @@ export default function ProgressiveWebAppsConciseArticle() {
             >
               patterns.dev - Progressive Web Apps
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

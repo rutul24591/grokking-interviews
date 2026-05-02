@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Database per service</strong> is a foundational microservices architectural pattern in which each service has exclusive ownership of its persistence layer. No other service is permitted to read from or write to that database directly. All cross-service data interactions must flow through explicit, versioned interfaces—typically REST or gRPC APIs for synchronous communication, and domain events for asynchronous communication. The pattern's primary objective is to preserve service autonomy: each service can evolve its schema, choose its storage technology, and scale its data layer independently without requiring coordination with every downstream consumer.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This pattern emerged as a direct response to the shared database anti-pattern that plagued early service-oriented architectures. When multiple services share tables as their integration contract, independent deployment becomes an illusion. A schema change in one table can break every service that depends on it, creating tight coupling that negates the purported benefits of service decomposition. Database per service makes the integration contract explicit, versionable, and enforceable through API boundaries rather than implicit through shared table schemas.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/database-per-service-diagram-1.svg"
           alt="Multiple services each owning their own database and integrating via APIs and events"
@@ -58,14 +62,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Data Ownership Boundaries</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The foundational concept of database per service is data ownership. Each service is the sole authority for a specific domain of data, defined by its bounded context. The orders service owns order data, the inventory service owns stock levels, the payments service owns transaction records. These boundaries are not arbitrary—they reflect the domain model and the organizational structure of the teams that build and maintain them.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data ownership means more than just having a separate database. It means the service team controls the schema, the migration strategy, the backup and recovery procedures, and the access policies. Other teams cannot bypass these controls by connecting directly to the database, even for read-only queries. This enforcement is critical because once direct database access becomes normalized, the system inevitably drifts back toward shared-schema coupling, eroding the autonomy that the pattern was designed to achieve.
-        </p>
+        </HighlightBlock>
         <p>
           The practical implementation of data ownership requires both technical and organizational discipline. Technically, network policies and database authentication must prevent unauthorized access. Organizationally, engineering leadership must establish and enforce the rule that services interact only through published interfaces. Teams accustomed to the convenience of shared database joins often resist this constraint, so the transition requires clear communication about the long-term benefits of explicit contracts over implicit coupling.
         </p>
@@ -121,14 +128,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Building Blocks for Reliable Cross-Service Workflows</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Database per service becomes a viable architecture only when paired with a set of complementary patterns that address the consistency and observability challenges introduced by data isolation. The recurring theme across these patterns is to treat cross-service data as a first-class product: versioned, owned, observable, and rebuildable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Events and subscriptions</strong> form the backbone of asynchronous data propagation. Services publish domain events when their state changes, and interested consumers subscribe to these events to build local read models or trigger downstream workflows. Events must be published reliably—typically using a durable message broker like Apache Kafka, Amazon Kinesis, or Google Cloud Pub/Sub. The event schema must be versioned, and consumers must be able to handle both backward-compatible and breaking changes through schema evolution strategies.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Transactional outbox</strong> solves the dual-write problem: how to ensure that a database update and the corresponding event publication are either both committed or both rolled back. The outbox pattern writes the event to an outbox table within the same database transaction as the business data update. A separate process (the outbox relay) then reads the outbox table and publishes events to the message broker. Because the event is written within the same transaction, it is guaranteed to reflect committed state. The relay can retry safely if publishing fails, because the outbox table serves as a persistent record of pending events.
         </p>
@@ -164,12 +174,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The decision to adopt database per service is fundamentally a trade-off between autonomy and complexity. In a shared database architecture, consistency is handled by the database engine through ACID transactions, queries are satisfied through joins, and the operational model is relatively simple. In a database-per-service architecture, consistency becomes an application-level concern, queries require composition or materialized views, and the operational model is significantly more complex. The question is not whether one approach is superior—it is which set of trade-offs aligns with the organization's scale, maturity, and requirements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For small teams building products with fewer than ten services and moderate traffic, the shared database approach may be perfectly adequate. The simplicity of a single database outweighs the coupling costs when the number of dependent services is small and the team can coordinate schema changes informally. However, as the system grows beyond a certain threshold—typically around twenty to thirty services with multiple independent teams—the coupling costs of a shared database become prohibitive. Schema changes require cross-team coordination, deployments become synchronized, and the database becomes a performance bottleneck that cannot be scaled independently. At this scale, database per service becomes not just beneficial but necessary for continued productivity.
-        </p>
+        </HighlightBlock>
         <p>
           The staff-level insight is recognizing that the trade-off is not static. Many successful systems start with a shared database and transition to database per service as they scale. This transition requires careful planning: services must be decomposed along domain boundaries, data must be migrated without downtime, and integration patterns must be established before the shared database is fully decommissioned. The transition itself is a significant engineering effort that should be treated as a strategic initiative, not an incremental refactor.
         </p>
@@ -186,12 +199,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enforce data ownership boundaries rigorously. No service should be permitted to read from or write to another service's database, even for read-only access during incident response. If direct access is absolutely necessary for debugging, it must be explicitly approved, audited, time-limited, and documented. The moment direct database access becomes a common practice, the system begins drifting back toward shared-schema coupling, and the autonomy benefits of the pattern erode.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design APIs and event contracts with versioning from day one. Treat these contracts as the service's public interface, subject to the same governance as any other API. Use additive changes whenever possible—adding optional fields, introducing new event types—to maintain backward compatibility. When breaking changes are unavoidable, provide a clear deprecation timeline and support both the old and new versions during the migration window. Schema registries like Confluent Schema Registry or AWS Glue Schema Registry can enforce compatibility rules automatically.
-        </p>
+        </HighlightBlock>
         <p>
           Implement the transactional outbox pattern for any service that publishes events based on database state changes. The outbox pattern is the most reliable way to ensure that events accurately reflect committed state and can be safely retried. Without the outbox pattern, services risk publishing events for transactions that are subsequently rolled back, leading to data inconsistency across the system.
         </p>
@@ -214,12 +230,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is incomplete data isolation, where services technically have separate databases but other teams still depend on them through direct read access. This half-measure provides the operational complexity of multiple databases without the autonomy benefits. Services cannot evolve their schemas freely because they must maintain compatibility with undocumented direct consumers. The system ends up with the worst of both worlds: distributed operational overhead and implicit coupling through shadow read access.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another frequent mistake is underestimating the complexity of distributed transactions. Teams adopt database per service and assume that sagas are straightforward to implement. In reality, designing correct compensations is difficult. A compensation must undo not just the database change but also any side effects the original transaction triggered—external API calls, email notifications, file uploads, and cache invalidations. Each side effect requires its own compensation logic, and the interactions between compensations can create complex failure modes that are difficult to test and debug.
-        </p>
+        </HighlightBlock>
         <p>
           Not implementing idempotency is a critical oversight that leads to data corruption in production. When events are delivered more than once—a common occurrence in distributed systems—non-idempotent consumers will apply the same operation multiple times, resulting in duplicate records, incorrect balances, and inconsistent state. Idempotency is not optional in a database-per-service architecture; it is a fundamental requirement for correctness.
         </p>
@@ -239,16 +258,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce: Orders, Inventory, and Payments</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform decomposed its monolithic application into separate services for orders, inventory, payments, and shipping. Each service owned its database: the orders service used PostgreSQL for order records, the inventory service used Redis for real-time stock levels, and the payments service used a financial-grade database with strong consistency guarantees. The platform implemented sagas for the order placement workflow, with compensations to release inventory reservations and refund payments if any step failed. Materialized views built from domain events powered the order details page, providing low-latency reads without querying multiple services. Reconciliation jobs ran every five minutes to detect and flag discrepancies between orders and inventory reservations. This architecture enabled the platform to scale each service independently—during peak sales events, the inventory service was scaled horizontally to handle the surge in stock-check queries while the payments service maintained its baseline capacity.
-        </p>
+        </HighlightBlock>
 
         <h3>Streaming Platform: Content Metadata and User Preferences</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A video streaming service separated its content metadata service from its user preferences service. The content service managed a document database of video metadata, tags, categories, and recommendations. The user preferences service managed a key-value store of user watch history, ratings, and personalized settings. Cross-service queries—such as "show recommended videos based on user preferences"—were satisfied through a CQRS-based recommendation service that consumed events from both services and maintained a denormalized view in Elasticsearch. This separation allowed the content team to iterate on metadata schemas and recommendation algorithms independently of the user preferences team, which was optimizing for low-latency personalization reads.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Services: Accounts and Transactions</h3>
         <p>
@@ -266,14 +288,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What does database per service enable, and what problems does it solve?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Database per service enables independent evolution and ownership of data. Each service team controls its schema, migration strategy, storage technology, scaling policies, and access controls without requiring coordination with other teams. This solves the shared database anti-pattern where schema changes become cross-team negotiations, deployments must be synchronized, and the database becomes a performance bottleneck that cannot be scaled independently.
-            </p>
+            </HighlightBlock>
             <p>
               The pattern also provides performance isolation—workloads in one service do not contend with workloads in another service on a shared database. It improves security by enforcing least privilege through API boundaries rather than shared database credentials. And it supports heterogeneous storage, allowing each service to choose the database technology best suited to its workload—relational for transactions, document for flexible schemas, key-value for low-latency reads, and graph for relationship-heavy data.
             </p>

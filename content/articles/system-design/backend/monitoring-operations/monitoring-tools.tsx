@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Monitoring tools are the platforms that collect, store, query, and
           route telemetry data across an organization&apos;s infrastructure. They
           encompass metric time-series databases, log aggregation indexes,
@@ -51,8 +55,8 @@ export default function ArticlePage() {
           path, and its design directly shapes mean time to detection, mean time
           to resolution, and ultimately the reliability posture of every service
           that depends on it.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The landscape of monitoring tools spans hosted SaaS platforms such as
           Datadog, New Relic, and Dynatrace; self-managed open-source stacks
           built on Prometheus, Grafana, Loki, Tempo, and the ELK/OpenSearch
@@ -63,7 +67,7 @@ export default function ArticlePage() {
           decision is not a procurement exercise but an architectural commitment
           with multi-year consequences for how teams debug, alert, and reason
           about system behavior at scale.
-        </p>
+        </HighlightBlock>
         <p>
           What separates a mature monitoring strategy from a naive one is not
           the number of tools deployed but the quality of the integration
@@ -84,7 +88,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At its foundation, a monitoring stack consists of five functional
           layers. The collection layer comprises agents running on hosts,
           sidecars in service meshes, SDKs embedded in application code, and
@@ -95,8 +102,8 @@ export default function ArticlePage() {
           OpenTelemetry has emerged as the de facto standard for vendor-neutral
           instrumentation, allowing organizations to swap backends without
           rewriting instrumentation code.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The storage layer is where architectural decisions have the most
           durable impact. Metric stores must handle high-cardinality time-series
           data with efficient compression and fast range queries. Log stores
@@ -107,7 +114,7 @@ export default function ArticlePage() {
           access patterns, and organizations that attempt to unify them into a
           single database typically compromise on query performance across all
           three signals.
-        </p>
+        </HighlightBlock>
         <p>
           The query and visualization layer provides the interface through which
           engineers interact with telemetry. Dashboards serve as pre-composed
@@ -145,7 +152,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The architecture of a monitoring stack is best understood as a
           pipeline: telemetry originates at instrumented services, flows through
           collection agents, enters ingestion endpoints, is processed and
@@ -154,7 +164,7 @@ export default function ArticlePage() {
           insight is that each stage in this pipeline must be designed for the
           load patterns it will encounter during incidents, not just during
           steady-state operation.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/monitoring-tools-diagram-1.svg"
@@ -162,7 +172,7 @@ export default function ArticlePage() {
           caption="Selection criteria: correlation, query performance, cost predictability, governance, and operational ergonomics form the five pillars of monitoring tool evaluation."
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Correlation is the architectural property that allows an engineer to
           start from a spike in an error-rate metric, pivot to the
           corresponding log entries filtered by the same time window and service
@@ -176,7 +186,7 @@ export default function ArticlePage() {
           automatic; it requires deliberate instrumentation standards, consistent
           attribute naming across teams, and backend systems that maintain the
           join paths between signal stores.
-        </p>
+        </HighlightBlock>
         <p>
           Query performance under load is the second critical architectural
           property. During a major incident, dozens of engineers may
@@ -223,25 +233,28 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The monitoring tool landscape presents several fundamental trade-offs
           that staff engineers must navigate. These are not abstract debates;
           they determine whether the organization can diagnose incidents
           efficiently, whether costs remain manageable as the system scales, and
           whether teams retain the flexibility to evolve their tooling as
           requirements change.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Aspect</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Aspect</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>SaaS vs. Self-Managed</strong>
               </td>
@@ -266,8 +279,8 @@ export default function ArticlePage() {
                 capacity planning, and upgrade management. The hidden cost of
                 engineering time often exceeds SaaS subscription fees.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>All-in-One vs. Best-of-Breed</strong>
               </td>
@@ -290,7 +303,7 @@ export default function ArticlePage() {
                 layer yourself. The integration burden grows with each
                 additional tool.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Pull-Based vs. Push-Based Collection</strong>
@@ -349,8 +362,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Adopt OpenTelemetry as the Instrumentation Standard:</strong>{" "}
             Instrumentation tied to a vendor-specific SDK creates migration
             friction that locks the organization into that vendor regardless of
@@ -361,8 +377,8 @@ export default function ArticlePage() {
             lock-in entirely, as query languages and dashboard formats remain
             vendor-specific, but it ensures that the most expensive part of a
             migration, re-instrumenting every service, is not required.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Design Incident Dashboards Separately:</strong> During an
             incident, responders need a small set of dashboards that load
             reliably in under three seconds and display the RED metrics (Rate,
@@ -373,7 +389,7 @@ export default function ArticlePage() {
             that engineers use during normal operations. The incident dashboard
             set should be tested regularly in game-day exercises to verify
             performance under simulated load.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement Cardinality Guardrails Proactively:</strong>{" "}
             Cardinality grows silently until it becomes a cost and performance
@@ -422,13 +438,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Organizations consistently encounter the same failure patterns when
           building and operating monitoring stacks. These pitfalls are not
           technical mysteries; they are the result of treating monitoring as an
           afterthought rather than a designed system.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is uncoordinated tool adoption. Individual
           teams select monitoring tools based on their immediate needs without
           considering the organization-wide impact. One team adopts Datadog for
@@ -439,7 +458,7 @@ export default function ArticlePage() {
           becomes a collection of disconnected silos, and the correlation that
           makes monitoring valuable is lost. This is the tool sprawl problem,
           and it is fundamentally an organizational failure, not a technical one.
-        </p>
+        </HighlightBlock>
         <p>
           Cardinality explosion is the second most destructive pitfall. Teams
           add labels or tags to metrics without considering the combinatorial
@@ -493,15 +512,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Large-scale organizations face monitoring challenges that cannot be
           solved by simply purchasing a more expensive SaaS tier. At companies
           like Netflix, Uber, and Airbnb, monitoring stacks handle petabytes of
           telemetry daily across thousands of microservices deployed in multiple
           cloud regions. These organizations have converged on similar
           architectural patterns despite their different business models.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Netflix operates a custom monitoring stack built around Atlas for
           metrics, EVCache for fast lookups, and a proprietary tracing system
           integrated with their service mesh. Their approach emphasizes
@@ -510,7 +532,7 @@ export default function ArticlePage() {
           to trigger scaling and failover actions without human intervention.
           The monitoring stack is not just a diagnostic tool but a control-plane
           input for their automated reliability systems.
-        </p>
+        </HighlightBlock>
         <p>
           Uber transitioned from a monolithic monitoring approach to a
           federated model where each domain team operates its own monitoring
@@ -548,7 +570,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Governance: Preventing Tool Sprawl</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Governance is the organizational mechanism that keeps the monitoring
           ecosystem coherent. Without it, tool sprawl is inevitable because
           every team has legitimate reasons to adopt tools that solve their
@@ -556,7 +581,7 @@ export default function ArticlePage() {
           A frontend team needs real user monitoring. A platform team needs
           infrastructure metrics. Each of these needs is valid, and each one, if
           addressed with a separate tool, fragments the monitoring landscape.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/monitoring-tools-diagram-3.svg"
@@ -564,14 +589,14 @@ export default function ArticlePage() {
           caption="Governance model: paved paths, shared standards, budgets, and review processes reduce tool sprawl and maintain correlation integrity."
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Effective governance operates at four levels. Paved paths provide a
           default monitoring stack that is pre-configured, pre-integrated, and
           ready for any new service to use on day one. The paved path includes
           auto-provisioned collectors, standard dashboards, alerting templates,
           and runbook scaffolding. The goal is that using the paved path is the
           easiest option, so teams adopt it by default rather than by mandate.
-        </p>
+        </HighlightBlock>
         <p>
           Shared standards define the naming conventions for metrics and log
           fields, the required attributes that every service must include in its
@@ -605,13 +630,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How do you evaluate a monitoring stack beyond a feature
             checklist?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Feature checklists are the weakest evaluation criterion because every
             major monitoring platform can check the same boxes: metrics, logs,
             traces, dashboards, alerting. The differentiators appear under
@@ -632,7 +660,7 @@ export default function ArticlePage() {
             incident workflows? These five dimensions determine whether a
             monitoring stack is an operational asset or an operational liability
             during an incident.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
@@ -640,7 +668,7 @@ export default function ArticlePage() {
             Question 2: How do you keep telemetry costs predictable as teams
             and traffic grow?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Cost predictability requires active management across three
             dimensions: volume, cardinality, and compute. For volume, I
             implement per-team ingestion quotas with automated sampling
@@ -659,7 +687,7 @@ export default function ArticlePage() {
             provide cost attribution dashboards so every team lead can see their
             monitoring spend and make informed decisions about what telemetry to
             keep and what to reduce.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

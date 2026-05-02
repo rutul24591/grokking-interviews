@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function ComplianceToolsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compliance tools enable organizations to meet regulatory requirements including GDPR (General Data Protection Regulation), CCPA (California Consumer Privacy Act), HIPAA (Health Insurance Portability and Accountability Act), SOX (Sarbanes-Oxley), and industry-specific regulations. The compliance system is the primary tool for compliance officers, legal teams, and operations teams to manage compliance requirements, track compliance status, and generate compliance reports. For staff and principal engineers, compliance tools involve data retention policies (how long to keep data), consent management (track user consent), data subject rights (right to access, right to erasure, right to portability), regulatory reporting (generate compliance reports), and compliance automation (automate compliance tasks).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of compliance tools extends beyond simple policy management. Regulations vary by region (GDPR for EU, CCPA for California, HIPAA for healthcare, SOX for financial). Data retention must balance compliance (keep long enough for compliance) with cost (storage cost). Consent management must track consent (who consented, when, for what), enable consent withdrawal (withdraw consent), and maintain consent history (consent audit trail). Data subject rights must enable rights exercise (right to access, right to erasure, right to portability). Regulatory reporting must generate compliance reports (compliance status, compliance issues). Compliance automation must automate compliance tasks (automated retention, automated reporting).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, compliance tools architecture involves policy management (define compliance policies), retention management (manage data retention), consent management (track user consent), rights management (manage data subject rights), reporting (generate compliance reports), and automation (automate compliance tasks). The system must support multiple regulations (GDPR, CCPA, HIPAA, SOX), multiple data types (personal data, financial data, healthcare data), and multiple compliance tasks (retention, consent, rights, reporting). Performance is important—compliance tasks must not impact application performance.
         </p>
@@ -47,13 +51,16 @@ export default function ComplianceToolsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Regulatory Compliance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           GDPR (General Data Protection Regulation) requires EU data protection. Data access (users can access their data). Right to erasure (users can delete their data). Right to portability (users can export their data). Consent management (track user consent). Data protection (protect personal data). Retention (keep as long as needed, then delete). Applies to EU citizens&apos; data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CCPA (California Consumer Privacy Act) requires California data protection. Data access (users can access their data). Right to deletion (users can delete their data). Right to opt-out (users can opt-out of data sale). Consent management (track user consent). Data protection (protect personal data). Applies to California residents&apos; data.
-        </p>
+        </HighlightBlock>
         <p>
           HIPAA (Health Insurance Portability and Accountability Act) requires healthcare data protection. PHI protection (protect protected health information). Data access (patients can access their PHI). Data modification (track PHI modifications). Data retention (keep PHI for 6+ years). Applies to healthcare data.
         </p>
@@ -108,9 +115,12 @@ export default function ComplianceToolsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compliance tools architecture spans policy management, retention management, consent management, rights management, and reporting. Policy management defines compliance policies. Retention management manages data retention. Consent management tracks user consent. Rights management manages data subject rights. Reporting generates compliance reports.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/admin-moderation/compliance-tools/compliance-architecture.svg"
@@ -121,9 +131,9 @@ export default function ComplianceToolsArticle() {
         />
 
         <h3>Policy Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Policy definition defines compliance policies. Compliance policies (define compliance requirements). Retention policies (define retention requirements). Consent policies (define consent requirements). Rights policies (define rights requirements).
-        </p>
+        </HighlightBlock>
         <p>
           Policy enforcement enforces compliance policies. Policy enforcement (enforce policies). Policy verification (verify policy compliance). Policy reporting (report policy compliance).
         </p>
@@ -183,14 +193,17 @@ export default function ComplianceToolsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compliance tools design involves trade-offs between comprehensiveness and complexity, automation and manual control, and retention and cost. Understanding these trade-offs enables informed decisions aligned with compliance needs and business constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Policy Management: Comprehensive vs. Simple</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comprehensive policy management (comprehensive policies). Pros: Comprehensive (cover all requirements), compliant (compliant with all regulations). Cons: Complex (complex policy management), expensive (expensive to implement). Best for: Compliance-intensive (highly regulated industries).
-        </p>
+        </HighlightBlock>
         <p>
           Simple policy management (simple policies). Pros: Simple (simple policy management), cheap (cheap to implement). Cons: Not comprehensive (don&apos;t cover all requirements), non-compliant (not compliant with all regulations). Best for: Non-compliance (lightly regulated industries).
         </p>
@@ -242,13 +255,16 @@ export default function ComplianceToolsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Define comprehensive policies:</strong> Compliance policies, retention policies, consent policies, rights policies. Comprehensive policy management.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement automated retention:</strong> Automated deletion, compliance verification, retention reporting, retention audit. Automated data retention.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement consent management:</strong> Consent collection, consent update, consent withdrawal, consent verification, consent reporting. Comprehensive consent management.
           </li>
@@ -278,13 +294,16 @@ export default function ComplianceToolsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Incomplete policies:</strong> Don&apos;t define all policies. Solution: Comprehensive policies (compliance, retention, consent, rights).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Manual retention:</strong> Manual data retention. Solution: Automated retention (automated deletion, verification, reporting).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No consent management:</strong> Don&apos;t track consent. Solution: Consent management (collection, update, withdrawal, verification, reporting).
           </li>
@@ -314,16 +333,19 @@ export default function ComplianceToolsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>GDPR Compliance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           GDPR compliance for EU companies. Data access (users can access their data). Right to erasure (users can delete their data). Right to portability (users can export their data). Consent management (track user consent). Data protection (protect personal data). Retention (keep as long as needed, then delete).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">CCPA Compliance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CCPA compliance for California companies. Data access (users can access their data). Right to deletion (users can delete their data). Right to opt-out (users can opt-out of data sale). Consent management (track user consent). Data protection (protect personal data).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">HIPAA Compliance</h3>
         <p>
@@ -343,12 +365,15 @@ export default function ComplianceToolsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle data deletion requests (GDPR right to erasure) while maintaining compliance with other regulations?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle data deletion requests (GDPR right to erasure) while maintaining compliance with other regulations?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement comprehensive deletion workflow. First, verify user identity rigorously—deletion requests are high-risk for account takeover attacks. Delete from all systems: primary databases, backups, caches, analytics systems, third-party integrations. The critical challenge: balancing GDPR&apos;s right to erasure with other regulations requiring retention (SOX requires 7 years for financial data, HIPAA requires 6 years for healthcare). Solution: implement data categorization—delete personal data but retain anonymized audit trails where legally required. Generate deletion report confirming completion. Implement legal hold exceptions—data under litigation hold cannot be deleted. The key insight: deletion isn&apos;t always immediate; some systems (backups) may retain data until natural rotation, but mark as &quot;do not restore.&quot;
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

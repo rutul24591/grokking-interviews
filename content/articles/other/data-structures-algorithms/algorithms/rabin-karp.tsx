@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function RabinKarpArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Rabin-Karp algorithm finds occurrences of a pattern P of length
           m in a text T of length n by comparing hashes instead of strings.
           It computes a hash of P once, then slides a window over T and
@@ -45,8 +49,8 @@ export default function RabinKarpArticle() {
           <em> rolling hash</em>: the hash of the window starting at i+1 can
           be computed from the hash at i in O(1) time, giving expected
           O(n + m) total.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Michael Rabin and Richard Karp introduced the algorithm in their
           1987 paper "Efficient Randomized Pattern-Matching Algorithms." The
           key innovation was applying randomized hashing to string matching:
@@ -54,7 +58,7 @@ export default function RabinKarpArticle() {
           performance is linear, and the algorithm extends naturally to
           multi-pattern and 2D matching where deterministic alternatives
           struggle.
-        </p>
+        </HighlightBlock>
         <p>
           Rabin-Karp's profile is unusual among string algorithms. For
           single-pattern matching it loses to KMP (worst-case linear) and to
@@ -88,22 +92,25 @@ export default function RabinKarpArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The standard hash is a polynomial:{" "}
           <code>hash(s) = (s[0]·b^(m-1) + s[1]·b^(m-2) + ... + s[m-1]) mod p</code>.
           The base b is typically a small integer ≥ alphabet size (commonly
           31, 53, 257, or a random prime); the modulus p is a large prime,
           often 2^61 - 1 (Mersenne prime, fast modular reduction). The
           choice of b and p determines collision behavior.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <em>rolling update</em> is the win:{" "}
           <code>hash(T[i+1..i+m]) = (hash(T[i..i+m-1]) - T[i]·b^(m-1)) · b + T[i+m]</code>{" "}
           all mod p. Subtract the contribution of the leaving character,
           multiply by b to shift the remaining characters left one
           power, add the entering character. Three multiplications, two
           additions, one mod — O(1) per slide. Precompute b^(m-1) once.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>The verify-on-hit pattern.</strong> Hash matches don't
           guarantee string matches — different strings can share a hash
@@ -166,19 +173,22 @@ export default function RabinKarpArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rabin-Karp's per-step work is tiny: read one new character, do
           three multiplications and a mod. The hot loop fits in registers
           and runs at near-memory-bandwidth speeds. For a single pattern
           this is roughly tied with KMP; the win shows up in multi-pattern
           and 2D, where the rolling hash amortizes across many checks.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/rabin-karp-diagram-2.svg"
           alt="Rabin-Karp wins and collision strategy"
           caption="Where Rabin-Karp wins — multi-pattern, 2D matching, fingerprinting — and the production strategy for hash collisions."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           For rsync, the architecture has two layers. The receiver
           divides its local file into fixed-size blocks and computes both
           a weak rolling checksum (adler-32 family) and a strong hash
@@ -187,7 +197,7 @@ export default function RabinKarpArticle() {
           on strong-hash match, the block is reused. The weak checksum
           is rolling for cheap O(1) updates; the strong hash is
           collision-resistant for correctness.
-        </p>
+        </HighlightBlock>
         <p>
           For content-defined chunking, the architecture is simpler:
           slide a rolling hash, declare a boundary on hash-property
@@ -226,19 +236,22 @@ export default function RabinKarpArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Rabin-Karp vs KMP (single pattern).</strong> KMP is O(n
           + m) worst case; Rabin-Karp is O(n + m) expected with O(n·m)
           worst case. For untrusted single-pattern inputs, KMP is safer.
           For multi-pattern or fingerprinting, Rabin-Karp wins.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Rabin-Karp vs Boyer-Moore.</strong> Boyer-Moore is
           O(n/m) average case for natural text — sublinear, faster than
           Rabin-Karp's linear expected case. Rabin-Karp wins on
           multi-pattern; Boyer-Moore wins on single-pattern in natural
           text.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Rabin-Karp vs Aho-Corasick (multi-pattern).</strong>
           Aho-Corasick handles patterns of mixed lengths in a single
@@ -276,18 +289,21 @@ export default function RabinKarpArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Always verify on hash hit.</strong> A hash match is a
           candidate, not a confirmation. Compare the strings directly
           before reporting a match. Without this, you accept all
           collisions as matches — silently wrong.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use a Mersenne prime modulus.</strong> 2^61 - 1 enables
           fast bit-trick mod on 64-bit hardware. Combined with 64-bit
           multiplication, you can compute hash updates without
           overflow concerns when bases are small.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Randomize b and p at startup for adversarial
           inputs.</strong> If patterns or texts come from untrusted
@@ -328,17 +344,20 @@ export default function RabinKarpArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Forgetting to verify.</strong> Returning a "match" on
           hash equality alone produces silently wrong results.
           Always direct-compare on hash hit.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Using a fixed small modulus.</strong> p = 10⁹ + 7 is
           common in competitive programming but has 1/p ≈ 10⁻⁹
           collision rate, frequently triggered on n = 10⁵ inputs.
           Larger primes (2^61 - 1) push the rate to 10⁻¹⁸.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Negative numbers in subtraction.</strong> The roll
           formula subtracts <code>T[i] · b^(m-1)</code>. In modular
@@ -376,27 +395,30 @@ export default function RabinKarpArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/rabin-karp-diagram-3.svg"
           alt="Rabin-Karp applications and content-defined chunking"
           caption="Production systems built on rolling hashes — rsync, dedup storage, plagiarism detection — and the content-defined chunking pattern."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>rsync.</strong> The original killer application for
           rolling hashes. Rsync sliding-window comparison uses adler-32
           (rolling) plus MD5 (verifying) to compute file deltas over a
           network with bandwidth proportional to the changed bytes.
           Tridgell's 1996 paper "The rsync algorithm" remains the
           canonical reference.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Content-defined chunking.</strong> Restic, BorgBackup,
           Bup, attic, Dropbox sync, NetApp ASIS, Data Domain, and the
           ZFS dedup feature all use rolling hashes to find chunk
           boundaries that survive insertions and deletions. FastCDC and
           Gear hashing are modern refinements with better boundary
           statistics.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Plagiarism detection.</strong> Stanford's MOSS, JPlag,
           and similar systems use winnowed rolling hashes (k-gram
@@ -440,18 +462,21 @@ export default function RabinKarpArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement strStr / indexOf.</strong> Either KMP or
           Rabin-Karp works. Strong candidates discuss the tradeoff:
           KMP for worst-case linearity, Rabin-Karp for simplicity and
           extensibility to multi-pattern.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Repeated DNA Sequences (LeetCode 187).</strong> Find
           all 10-letter sequences that appear more than once in a DNA
           string. A perfect Rabin-Karp problem: roll a hash, store
           counts in a hash map, output keys with count &gt; 1.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Longest Duplicate Substring (LeetCode 1044).</strong>
           Binary search over substring length k; for each k, use

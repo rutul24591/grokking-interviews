@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +30,10 @@ export default function CacheWarmingArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cache warming</strong> is the deliberate act of pre-populating
           a cache with data before real user traffic arrives, so that the first
           request to any given key finds a cache hit rather than suffering the
@@ -39,8 +43,8 @@ export default function CacheWarmingArticlePage() {
           restart, a deployment, a scale-out event, or a regional failover — it
           provides zero benefit and can actively harm the system by sending a
           sudden flood of cache misses to the origin.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The cold-start problem is not merely an academic concern. In
           production, a distributed cache layer running on Redis or Memcached
           can hold millions of keys representing computed results, rendered
@@ -52,7 +56,7 @@ export default function CacheWarmingArticlePage() {
           must be served from the origin, and if the origin is a database or a
           compute-heavy service, the resulting load spike can cascade into a
           partial or complete outage.
-        </p>
+        </HighlightBlock>
         <p>
           Cache warming is distinct from cache population strategies like
           cache-aside (lazy loading) or read-through (synchronous loading on
@@ -69,7 +73,10 @@ export default function CacheWarmingArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At its foundation, cache warming is a prediction problem. The warmer
           must guess which keys will be accessed in the near future and
           pre-load those keys into the cache before the accesses occur. The
@@ -79,8 +86,8 @@ export default function CacheWarmingArticlePage() {
           — warming keys that are never accessed — wastes compute, network
           bandwidth, and cache memory, and can evict entries that would
           otherwise have been hits.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The prediction is informed by several signals. The most common and
           reliable signal is historical access patterns: keys that were hot
           yesterday are likely to be hot today. This follows Zipf&apos;s law,
@@ -93,7 +100,7 @@ export default function CacheWarmingArticlePage() {
           frequency over the past hour is likely to continue growing), and
           semantic knowledge (product catalog items featured on the homepage
           are guaranteed to receive traffic regardless of historical patterns).
-        </p>
+        </HighlightBlock>
         <p>
           The warming process itself involves three phases: key selection, data
           retrieval, and cache population. Key selection identifies which keys
@@ -141,7 +148,10 @@ export default function CacheWarmingArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production cache warming system is architected as an independent
           service or module that runs alongside the application, triggered by
           specific lifecycle events: deployment completion, cache node startup,
@@ -150,7 +160,7 @@ export default function CacheWarmingArticlePage() {
           duplicate the work of the reactive cache population and waste
           resources. Instead, it is event-driven, activating only when the
           cache is known to be cold or partially cold.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/caching-performance/cache-warming-strategies.svg"
@@ -158,7 +168,7 @@ export default function CacheWarmingArticlePage() {
           caption="Four warming strategies compared — log-replay, scheduled background, predictive ML, and blue-green deployment — showing latency stabilization curves and origin load profiles during warmup"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The key selection component is the intelligence layer. The simplest
           approach uses access logs: replay the most frequently accessed keys
           from a recent time window (typically the last 1–24 hours). This
@@ -168,7 +178,7 @@ export default function CacheWarmingArticlePage() {
           origin capacity and desired warmup duration), and issues requests to
           the origin for each key. The results are written to the cache before
           real traffic is shifted to the warmed nodes.
-        </p>
+        </HighlightBlock>
         <p>
           A more sophisticated approach uses predictive warming. Instead of
           replaying historical access patterns, the warmer uses a model to
@@ -262,7 +272,10 @@ export default function CacheWarmingArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Warming is not free, and it introduces operational complexity that
           must be justified against the cost of the cold-start problem it
           solves. The primary trade-off is between warmup speed and origin load.
@@ -272,7 +285,7 @@ export default function CacheWarmingArticlePage() {
           degrading user experience. The optimal point on this spectrum depends
           on the origin&apos;s capacity, the size of the working set, and the
           user experience impact of cold misses.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -347,7 +360,7 @@ export default function CacheWarmingArticlePage() {
           </tbody>
         </table>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           An alternative to explicit warming is refresh-ahead (or
           prefetching), where hot keys are proactively refreshed before they
           expire, keeping the cache warm continuously. This approach eliminates
@@ -358,7 +371,7 @@ export default function CacheWarmingArticlePage() {
           from scratch. In practice, the two strategies are often combined:
           refresh-ahead maintains warmth during steady-state operation, and
           explicit warming handles restart events.
-        </p>
+        </HighlightBlock>
         <p>
           The decision to warm or not to warm also depends on the cost of a
           cache miss. If the origin is a fast key-value store that can handle
@@ -375,7 +388,10 @@ export default function CacheWarmingArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The single most important practice is to warm only the keys that
           matter. Use access logs or traffic analytics to identify the top
           1–5% of keys that generate the majority of traffic, and focus the
@@ -384,8 +400,8 @@ export default function CacheWarmingArticlePage() {
           does not justify the origin load and cache memory consumed. The
           Pareto principle applies strongly to cache access patterns, and
           warming strategies should exploit this.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rate limiting the warmer is non-negotiable in production. The warmer
           must respect the origin&apos;s capacity and should never send more
           requests than the origin can handle while simultaneously serving real
@@ -395,7 +411,7 @@ export default function CacheWarmingArticlePage() {
           should be dynamic, not static — it should adjust based on real-time
           origin health signals rather than a fixed number set during
           configuration.
-        </p>
+        </HighlightBlock>
         <p>
           Warming should be integrated into the deployment pipeline as a
           first-class step. After a new cache node is provisioned, the warming
@@ -449,7 +465,10 @@ export default function CacheWarmingArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most frequent mistake is over-warming: loading too many keys into
           the cache, which consumes excessive origin capacity and cache memory.
           An aggressive warmer that tries to warm the entire working set in a
@@ -460,8 +479,8 @@ export default function CacheWarmingArticlePage() {
           can exceed total capacity. The fix is disciplined rate limiting and
           staged warming — warm the most critical keys first, at a pace the
           origin can sustain.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common pitfall is warming based on stale or inaccurate access
           logs. If the log data is hours or days old, the traffic pattern may
           have shifted significantly, and the warmer will populate the cache
@@ -471,7 +490,7 @@ export default function CacheWarmingArticlePage() {
           real-time or near-real-time) and to incorporate multiple signals
           beyond just access frequency, such as recency of access, traffic
           trends, and business context.
-        </p>
+        </HighlightBlock>
         <p>
           A subtler pitfall is the interaction between warming and cache
           eviction. When the warmer inserts a large number of keys, it can
@@ -510,7 +529,10 @@ export default function CacheWarmingArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Global content delivery networks rely heavily on cache warming. When
           CDN edge nodes are added or recycled, the cache on those nodes is
           cold. CDNs warm their caches by replaying the most-requested objects
@@ -520,8 +542,8 @@ export default function CacheWarmingArticlePage() {
           loads until the edge cache naturally fills from traffic. For a CDN
           serving billions of requests per day, even a few minutes of cold-cache
           operation translates to millions of degraded user experiences.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms use cache warming extensively during deployment
           events and before anticipated traffic spikes. Before a flash sale or
           a major shopping event like Black Friday, these platforms run
@@ -532,7 +554,7 @@ export default function CacheWarmingArticlePage() {
           the traffic spike arrives. The alternative — relying on lazy
           population during the spike — would overwhelm the origin database and
           cause the site to degrade or fail.
-        </p>
+        </HighlightBlock>
         <p>
           Social media platforms and news sites use cache warming for their
           feed and timeline services. These services compute personalized feeds
@@ -572,15 +594,18 @@ export default function CacheWarmingArticlePage() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: You deploy a new version of your service and the cache goes
               cold. Users see a 10x latency increase for the first 30 minutes.
               How would you design a cache warming strategy to eliminate this
               cold-start penalty?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The solution requires a multi-part warming system. First,
               identify the working set — the top 1–5% of cache keys that
               generate 80–90% of traffic — using access logs from the previous
@@ -597,7 +622,7 @@ export default function CacheWarmingArticlePage() {
               from the old environment&apos;s access logs, and traffic is shifted
               incrementally (canary, then full) only after warmup validation
               passes. This eliminates the cold-start window entirely.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

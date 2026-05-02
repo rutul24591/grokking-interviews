@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,21 +34,24 @@ export default function RelatedContentArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Related Content</strong> (also called "related articles", "you may also like",
           or "similar content") displays content similar to what the user is currently viewing.
           It is one of the highest-ROI features for increasing engagement and session duration—
           users who click related content have 40% longer sessions and 2x return rate. Related
           content appears on content pages (article end, video watch page, product detail) and
           drives 20-30% of total pageviews on content platforms.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Related content differs from general recommendations: it is context-aware (based on
           current content), immediate (user is engaged now), and specific (similar to current
           item). YouTube's "Up Next" sidebar drives billions of views, Amazon's "Related
           Products" drives 15% of revenue, and news sites see 25% of clicks from related
           articles.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, related content involves similarity computation (content-based,
           collaborative filtering, hybrid), pre-computation strategies (offline batch jobs),
@@ -58,10 +62,13 @@ export default function RelatedContentArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Similarity Signals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           How to determine content is "related":
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Tags/Categories:</strong> Same tags, categories, topics. Simple but
@@ -94,9 +101,9 @@ export default function RelatedContentArticle() {
         </ul>
 
         <h3 className="mt-6">Similarity Computation Approaches</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Different approaches for computing related content:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Content-based:</strong> Compare item features (tags, embeddings, metadata).
@@ -164,10 +171,13 @@ export default function RelatedContentArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production related content system involves multiple components for similarity
           computation, storage, and retrieval.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery-search-feed-browsing/related-content/related-content-architecture.svg"
@@ -203,9 +213,9 @@ export default function RelatedContentArticle() {
         </ul>
 
         <h3 className="mt-6">Co-engagement Computation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Computing "users who viewed X also viewed Y":
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -295,10 +305,13 @@ export default function RelatedContentArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Related content design involves balancing relevance, freshness, diversity, and
           performance.
-        </p>
+        </HighlightBlock>
 
         <h3>Similarity Signal Comparison</h3>
         <div className="overflow-x-auto">
@@ -354,11 +367,11 @@ export default function RelatedContentArticle() {
         />
 
         <h3 className="mt-6">Pre-computation vs Real-time</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Pre-computed:</strong> Batch compute all related content offline. Store
           in cache. Pros: Fast retrieval, can use complex algorithms. Cons: Stale (hours
           delay), storage cost. Best for: Large catalogs, stable content.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Real-time:</strong> Compute on-demand. Pros: Fresh, no storage. Cons:
           Latency, limited algorithm complexity. Best for: Breaking news, trending content.
@@ -386,16 +399,19 @@ export default function RelatedContentArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Hybrid Approach:</strong> Combine content-based and collaborative
             filtering. Weight by confidence (collaborative if &gt;100 engagements, else
             content-based).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Pre-compute for Performance:</strong> Batch compute related content
             hourly/daily. Cache results. Target &lt;50ms API latency.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Diversity in Results:</strong> Don't show all from same author/topic.
             Limit 30% from single source. Improves discovery.
@@ -425,15 +441,18 @@ export default function RelatedContentArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Stale Related Content:</strong> Related content not updated for months.
             Solution: Incremental updates, freshness boost, decay old content.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No Diversity:</strong> All related from same author. Solution: Enforce
             diversity constraints (max 30% from one source).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cold Start Ignored:</strong> New content has no related items. Solution:
             Fallback to content-based similarity, show trending as fallback.
@@ -455,17 +474,20 @@ export default function RelatedContentArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>YouTube Up Next</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           YouTube's sidebar shows related videos. Uses hybrid approach: co-watch patterns
           (users who watched X also watched Y), video embeddings, channel affinity. Updates
           in real-time based on trending. Drives 70% of watch time.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Session-based ranking—orders by likelihood to
           continue session, not just relevance.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Amazon Related Products</h3>
         <p>
@@ -500,16 +522,19 @@ export default function RelatedContentArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you compute related content?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you compute related content?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Hybrid approach: (1) Content-based similarity using tags,
               embeddings, metadata. (2) Collaborative filtering from co-engagement logs
               (users who viewed X also viewed Y). (3) Combine with weighted average.
               Pre-compute offline in batch jobs (hourly/daily). Cache results in Redis.
               Update incrementally for high-engagement content. Target &lt;50ms API latency.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

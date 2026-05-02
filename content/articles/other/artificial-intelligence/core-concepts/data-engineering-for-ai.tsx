@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Data engineering for AI</strong> encompasses the practices,
           pipelines, and infrastructure for collecting, cleaning, curating, and
           managing the data that powers AI systems — both for training/fine-tuning
@@ -32,8 +36,8 @@ export default function ArticlePage() {
           bases). The quality of an AI system is fundamentally bounded by the
           quality of its data: no amount of model architecture innovation or
           prompt engineering can overcome poor data quality.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data engineering for AI differs from traditional data engineering in
           several ways. The data formats are unstructured (text, images, audio)
           rather than tabular. The quality criteria are subjective (does this
@@ -44,7 +48,7 @@ export default function ArticlePage() {
           stages like deduplication at semantic level (not just exact string
           matching), quality filtering by language model scoring, and synthetic
           data generation using existing models.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, data engineering for AI is a first-class
           concern that often receives less attention than model selection and
@@ -80,7 +84,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Data pipelines for AI training</strong> follow a multi-stage
           process. <strong>Collection</strong> gathers raw data from diverse
           sources — web crawls, books, code repositories, conversation logs,
@@ -95,8 +102,8 @@ export default function ArticlePage() {
           <strong>Tokenization</strong> converts text to tokens using the
           target model&apos;s tokenizer, enabling accurate token counting and
           cost estimation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Data scaling laws for AI training</strong> dictate how training
           data quantity and quality directly affect model performance. The
           Chinchilla scaling laws, established by DeepMind researchers,
@@ -115,7 +122,7 @@ export default function ArticlePage() {
           engineering teams invest heavily in data curation pipelines: the
           marginal return on additional clean, diverse data is far higher than
           the marginal return on simply scaling up raw data volume.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Semantic deduplication methodology</strong> goes beyond exact
           string matching to find and remove near-duplicate documents that would
@@ -211,7 +218,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production data engineering architecture for AI consists of several
           layers. The <strong>data ingestion layer</strong> collects raw data
           from diverse sources (web crawlers, API integrations, file uploads,
@@ -223,7 +233,7 @@ export default function ArticlePage() {
           label versioning. The <strong>storage layer</strong> stores processed
           datasets in formats optimized for AI training (Parquet, JSONL) and
           retrieval (vector indexes for RAG).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/data-labeling-strategies.svg"
@@ -231,7 +241,7 @@ export default function ArticlePage() {
           caption="Labeling strategies — expert labeling, crowdsourced labeling, LLM-assisted labeling, and synthetic data generation"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>synthetic data generation pipeline</strong> uses an
           existing LLM to generate training examples from topic specifications.
           The pipeline specifies the topic, format, difficulty level, and
@@ -240,7 +250,7 @@ export default function ArticlePage() {
           automated checks (format validation, factual consistency) and human
           review (quality scoring, correctness verification) before being added
           to the training dataset.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Data governance</strong> for AI includes compliance with data
           privacy regulations (GDPR, CCPA), managing data usage rights and
@@ -287,7 +297,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Expert versus LLM-assisted labeling</strong> involves a
           quality-versus-cost trade-off. Expert labeling produces the highest
           quality labels but is slow and expensive ($50-200 per hour).
@@ -296,8 +309,8 @@ export default function ArticlePage() {
           pragmatic approach is LLM-assisted labeling for the bulk of the data
           (with automated quality checks) and expert review for a representative
           sample to calibrate and validate the automated labels.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Real versus synthetic training data</strong> presents a
           quality-versus-availability trade-off. Real data captures the true
           distribution of production inputs but may be scarce, sensitive, or
@@ -306,7 +319,7 @@ export default function ArticlePage() {
           real-world inputs. The recommended approach is to use real data as the
           primary training source and synthetic data for edge cases and
           scenarios where real data is scarce.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/synthetic-data-generation-pipeline.svg"
@@ -358,21 +371,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Invest in data quality before model quality</strong> — a
           model trained on 10K high-quality examples outperforms a model trained
           on 100K low-quality examples. Deduplicate aggressively, filter for
           quality, and ensure diverse coverage of the input distribution before
           training. Data quality investment has the highest ROI of any AI
           system improvement.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Version every dataset</strong> — track the data sources,
           cleaning rules, filtering criteria, and quality metrics for every
           dataset version. When a model is trained, record the dataset version
           alongside the model version. This enables tracing model behavior back
           to the training data and reproducing training runs exactly.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Implement automated data quality checks</strong> — validate
           every dataset against quality criteria: schema compliance, value
@@ -449,7 +465,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>training on test data</strong> —
           accidentally including evaluation examples in the training dataset,
           producing inflated quality scores that do not generalize to
@@ -459,15 +478,15 @@ export default function ArticlePage() {
           (near-duplicates appearing in both sets). Implement strict separation
           between training and evaluation data with automated deduplication
           across the boundary.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Ignoring data provenance</strong> — using data without
           tracking its source, licensing, and usage rights can lead to legal
           risks (copyright infringement, privacy violations) and quality issues
           (unknown data quality, biased sources). Track the provenance of every
           document in the training dataset, including source URL, collection
           date, license type, and any transformations applied.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Over-relying on synthetic data</strong> — synthetic data
           generated by LLMs inherits the biases and limitations of the
@@ -535,22 +554,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Fine-tuning data pipeline</strong> — collecting domain-specific
           conversations, cleaning and anonymizing them, labeling response
           quality with expert reviewers, and producing a training dataset for
           fine-tuning a customer support model. The pipeline processes 10K
           conversations per week, with automated quality filtering and manual
           review of a 10% sample.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>RAG knowledge base curation</strong> — collecting internal
           documents (policies, procedures, FAQs), cleaning and structuring them,
           chunking and embedding them for retrieval, and maintaining the
           knowledge base as documents are updated. The pipeline ensures that
           retrieved documents are current, accurate, and appropriately
           access-controlled.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Large-scale pre-training data pipeline for a foundation
           model</strong> — an AI lab building a 70-billion-parameter language
@@ -601,12 +623,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: How do you ensure training data quality for fine-tuning?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Training data quality requires multiple layers of validation. First,
             source validation — ensure data comes from trusted, licensed sources
             with clear provenance. Second, content cleaning — remove spam,
@@ -618,15 +643,15 @@ export default function ArticlePage() {
             its quality. Fifth, diversity analysis — ensure the dataset covers
             the full input distribution with balanced representation across
             categories, difficulty levels, and edge cases.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             Additionally, implement automated data quality checks that run on
             every dataset before it is used for training: schema validation
             (required fields present, correct types), value validation (ranges,
             formats), distribution analysis (label balance, feature
             distributions), and duplicate detection (exact and near-duplicate
             removal).
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function StructuredDataSchemaMarkupArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Structured data</strong> is a standardized format for
           providing explicit information about a page&apos;s content to search
           engines, enabling them to understand not just what text appears on a
@@ -46,8 +47,8 @@ export default function StructuredDataSchemaMarkupArticle() {
           Google, Microsoft, Yahoo, and Yandex — developers annotate HTML with
           machine-readable metadata that describes entities (products, articles,
           events, organizations, people) and their relationships.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The practical impact of structured data is visible in Search Engine
           Results Pages (SERPs) as <strong>rich results</strong> — enhanced
           listings that display star ratings, product prices, FAQ accordions,
@@ -57,8 +58,8 @@ export default function StructuredDataSchemaMarkupArticle() {
           standard blue-link results. For e-commerce sites, product rich results
           showing price, availability, and rating can increase organic click
           volume by 30% or more.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the staff/principal engineer level, structured data is an
           architectural concern that intersects with data modeling, rendering
           pipelines, and content management systems. The challenge is not adding
@@ -70,14 +71,14 @@ export default function StructuredDataSchemaMarkupArticle() {
           schema block or missing required property can cause Google to silently
           drop rich results for an entire page type, with no warning until
           traffic drops are noticed weeks later.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Schema.org Vocabulary:</strong> An open-source ontology of
             entity types and properties maintained collaboratively by major
             search engines. The vocabulary defines a type hierarchy (Thing →
@@ -85,8 +86,8 @@ export default function StructuredDataSchemaMarkupArticle() {
             hundreds of types and thousands of properties. Not all types trigger
             rich results — Google supports a specific subset documented in their
             Search Gallery.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               JSON-LD (JavaScript Object Notation for Linked Data):
             </strong>{" "}
@@ -99,15 +100,15 @@ export default function StructuredDataSchemaMarkupArticle() {
             programmatically. The <code>@context</code> property links to the
             Schema.org vocabulary, and <code>@type</code> specifies the entity
             type.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Microdata:</strong> An older format that embeds structured
             data directly into HTML elements using <code>itemscope</code>,{" "}
             <code>itemtype</code>, and <code>itemprop</code> attributes. While
             still supported, Microdata tightly couples structured data to HTML
             structure, making it fragile when markup changes and difficult to
             manage at scale.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               RDFa (Resource Description Framework in Attributes):
@@ -155,16 +156,16 @@ export default function StructuredDataSchemaMarkupArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Implementing structured data at scale requires understanding both the
           Schema.org type hierarchy and the pipeline through which markup flows
           from your CMS to Google&apos;s SERP enhancements.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/structured-data-schema-markup-diagram-1.svg"
           alt="Schema.org type hierarchy showing Thing as the root type branching into CreativeWork, Product, Event, Organization, and other entity types"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Schema.org hierarchy is rooted at the <code>Thing</code> type. All
           entities inherit properties from their parent types — a{" "}
           <code>Product</code> inherits <code>name</code>,{" "}
@@ -173,12 +174,12 @@ export default function StructuredDataSchemaMarkupArticle() {
           <code>offers</code>, <code>brand</code>, and{" "}
           <code>aggregateRating</code>. Understanding this hierarchy is
           essential for choosing the most specific applicable type.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/structured-data-schema-markup-diagram-2.svg"
           alt="Rich result rendering pipeline showing how structured data flows from page markup through Google parsing and validation to SERP enrichment"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The rich result pipeline begins when Googlebot crawls a page and
           extracts JSON-LD blocks. The structured data is parsed, validated
           against Schema.org type definitions, and checked for Google&apos;s
@@ -187,7 +188,7 @@ export default function StructuredDataSchemaMarkupArticle() {
           optional). If validation passes, the data enters a candidacy pipeline
           where Google determines whether to display a rich result based on page
           quality, schema accuracy, and competitive factors.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/structured-data-schema-markup-diagram-3.svg"
           alt="Implementation formats comparison showing JSON-LD as a separate script block versus Microdata and RDFa embedded inline in HTML elements"
@@ -206,16 +207,19 @@ export default function StructuredDataSchemaMarkupArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="important">
               <th className="p-3 text-left">Format</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
+            </HighlightBlock>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">JSON-LD</td>
               <td className="p-3">
                 Google&apos;s recommended format; decoupled from HTML; easy to
@@ -226,8 +230,8 @@ export default function StructuredDataSchemaMarkupArticle() {
                 Data may diverge from visible content (penalized if misleading);
                 adds payload size; cannot reference specific DOM elements
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">Microdata</td>
               <td className="p-3">
                 Directly tied to visible content ensuring accuracy; supported by
@@ -237,7 +241,7 @@ export default function StructuredDataSchemaMarkupArticle() {
                 Tightly coupled to HTML — refactoring breaks structured data;
                 verbose syntax; difficult to maintain at scale
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3 font-medium">RDFa</td>
               <td className="p-3">
@@ -268,26 +272,26 @@ export default function StructuredDataSchemaMarkupArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use JSON-LD as the Primary Format:</strong> Generate JSON-LD
             from your data models at build or render time, treating it as a data
             serialization concern rather than a template concern. This cleanly
             separates structured data from HTML presentation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use the Most Specific Type Available:</strong> Rather than
             marking a product page as <code>Thing</code>, use{" "}
             <code>Product</code>. Rather than <code>CreativeWork</code>, use{" "}
             <code>NewsArticle</code> or <code>BlogPosting</code>. More specific
             types unlock more rich result features.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Validate with Google&apos;s Rich Results Test:</strong> Run
             validation as part of CI/CD to catch regressions before deployment.
             Google&apos;s requirements are stricter than Schema.org validation
             alone — a schema valid per Schema.org may still fail Google&apos;s
             rich result requirements.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ensure Structured Data Matches Visible Content:</strong>{" "}
             Google penalizes markup that contradicts page content. Product
@@ -320,25 +324,25 @@ export default function StructuredDataSchemaMarkupArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Marking Up Invisible Content:</strong> Adding structured
             data for content not visible on the page violates Google guidelines
             and can result in manual actions (penalties). Structured data must
             accurately represent the main content.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Using Deprecated Schema Types:</strong> Schema.org evolves
             regularly. Using deprecated schemas triggers warnings and eventually
             loses rich result eligibility. Audit schemas annually against the
             latest Schema.org releases.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing Required Properties:</strong> A Product without{" "}
             <code>offers</code> or a Recipe without <code>image</code>{" "}
             won&apos;t generate rich results even though these are optional in
             Schema.org. Always reference Google&apos;s Search Gallery
             documentation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Self-Serving Review Markup:</strong> Adding Review or
             AggregateRating for your own products (rather than third-party
@@ -362,23 +366,23 @@ export default function StructuredDataSchemaMarkupArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Amazon:</strong> Uses Product structured data with nested
             Offers (price, availability, seller), AggregateRating, and Review
             entities. Product rich results with star ratings and prices drive
             significantly higher CTR than competitors without rich results.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Allrecipes:</strong> Implements Recipe structured data
             including cookTime, prepTime, nutrition, and AggregateRating. Recipe
             rich results display cooking time, calories, and ratings directly in
             search results — one of the highest-CTR result types in Google.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Stack Overflow:</strong> Uses QAPage and Answer structured
             data to display accepted answers directly in SERPs as FAQ rich
             results, driving massive traffic by showing answer snippets.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Eventbrite:</strong> Implements Event structured data across
             millions of pages including startDate, location, offers, and
@@ -391,12 +395,15 @@ export default function StructuredDataSchemaMarkupArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: Why does Google recommend JSON-LD over Microdata?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: JSON-LD is decoupled from HTML structure, meaning structured
               data doesn&apos;t break when developers refactor templates. It can
               be generated programmatically from data models without touching
@@ -404,13 +411,13 @@ export default function StructuredDataSchemaMarkupArticle() {
               page, is easier to validate and debug as a self-contained JSON
               object, and allows multiple entity types without complex DOM
               nesting.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How would you implement automated structured data for a large
               e-commerce platform?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Build a schema generation layer mapping data models to
               Schema.org types — Product from catalog data, Offer from pricing
@@ -473,7 +480,7 @@ export default function StructuredDataSchemaMarkupArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://schema.org/"
               target="_blank"
@@ -482,8 +489,8 @@ export default function StructuredDataSchemaMarkupArticle() {
             >
               Schema.org — Official Vocabulary Documentation
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data"
               target="_blank"
@@ -492,8 +499,8 @@ export default function StructuredDataSchemaMarkupArticle() {
             >
               Google Search Central — Structured Data Overview
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://search.google.com/test/rich-results"
               target="_blank"
@@ -502,7 +509,7 @@ export default function StructuredDataSchemaMarkupArticle() {
             >
               Google Rich Results Test Tool
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://json-ld.org/"

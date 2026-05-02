@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,10 @@ export default function DeviceResponsivenessArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Device Responsiveness</strong> ensures that web applications
           adapt seamlessly to different screen sizes, orientations, input
           methods, and device capabilities. This encompasses phones (320px to
@@ -45,8 +49,8 @@ export default function DeviceResponsivenessArticle() {
           mobile-first indexing for search ranking, and poor mobile experience
           directly impacts conversion rates, user engagement, and brand
           perception.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Responsive design extends beyond layout adaptation to encompass input
           method differences (touch targets versus mouse precision), pixel
           density variations (1x to 4x+ Retina displays requiring higher
@@ -56,7 +60,7 @@ export default function DeviceResponsivenessArticle() {
           viewport width. A layout that looks perfect on a desktop browser may
           be unusable on a phone where the user has large fingers, limited
           bandwidth, and is viewing the screen in bright sunlight.
-        </p>
+        </HighlightBlock>
         <p>
           The mobile-first design philosophy — designing for the smallest screen
           first and progressively enhancing for larger screens — has become the
@@ -73,7 +77,10 @@ export default function DeviceResponsivenessArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The mobile-first approach organizes CSS from smallest to largest
           viewport. Base styles — written without media queries — target mobile
           devices. Min-width media queries add enhancements for progressively
@@ -83,8 +90,8 @@ export default function DeviceResponsivenessArticle() {
           breakpoint adds new capabilities rather than overriding existing ones,
           reducing CSS specificity conflicts and making the stylesheet easier to
           reason about.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Breakpoint strategy determines where layouts change between screen
           sizes. The best practice is to use content-driven breakpoints rather
           than device-specific ones — let the content dictate when the layout
@@ -96,7 +103,7 @@ export default function DeviceResponsivenessArticle() {
           typically cover the full range of devices. Name breakpoints
           semantically (sm, md, lg, xl) rather than by device (phone, tablet,
           desktop) because device dimensions change with every product cycle.
-        </p>
+        </HighlightBlock>
         <p>
           Fluid layouts use relative units (percentages, rem, em, viewport
           units) instead of fixed pixel values, allowing content to scale
@@ -121,7 +128,10 @@ export default function DeviceResponsivenessArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Responsive design architecture organizes styles into three layers:
           base styles for the smallest viewport, breakpoint-specific
           enhancements for larger viewports, and component-level responsiveness
@@ -132,8 +142,8 @@ export default function DeviceResponsivenessArticle() {
           adding columns to the layout at the tablet breakpoint, expanding
           navigation to a horizontal menu at the desktop breakpoint, and
           increasing font sizes and spacing for readability on larger screens.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Touch interaction architecture requires different design considerations
           than mouse-based interaction. Touch targets must meet minimum size
           requirements — 44×44px per Apple&apos;s Human Interface Guidelines or
@@ -146,7 +156,7 @@ export default function DeviceResponsivenessArticle() {
           without hover. Touch gestures (swipe, pinch, long press) provide
           additional interaction channels but must have visible alternatives
           because not all users discover gesture-based interactions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/breakpoint-strategy.svg"
@@ -180,7 +190,10 @@ export default function DeviceResponsivenessArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Breakpoint count and granularity involve a trade-off between design
           precision and CSS complexity. More breakpoints allow pixel-perfect
           layouts at specific device sizes but increase CSS file size,
@@ -193,8 +206,8 @@ export default function DeviceResponsivenessArticle() {
           The pragmatic approach is to use fluid layouts for continuous
           adaptation supplemented by a minimal set of breakpoints (3-5) for
           structural layout changes that fluid techniques cannot achieve.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Container Queries versus media queries represent a fundamental
           architectural choice in component design. Media queries respond to
           viewport size, meaning a component&apos;s appearance depends on the
@@ -206,7 +219,7 @@ export default function DeviceResponsivenessArticle() {
           browser support as of 2024 but are not supported in older browsers.
           The trade-off is modern, modular component design versus broader
           browser compatibility.
-        </p>
+        </HighlightBlock>
         <p>
           Testing strategy breadth versus depth is a practical consideration.
           Testing every possible device and browser combination is impossible —
@@ -224,7 +237,10 @@ export default function DeviceResponsivenessArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Write CSS with a mobile-first architecture from the start of the
           project. Define your breakpoint tokens in a design token system and
           use them consistently across all components. Write base styles for
@@ -234,8 +250,8 @@ export default function DeviceResponsivenessArticle() {
           to content areas on desktop to prevent lines of text from becoming too
           long to read comfortably (optimal reading width is 50-75 characters
           per line).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design touch interactions with accessibility and ergonomics in mind.
           Ensure all interactive elements meet minimum touch target sizes with
           adequate spacing. Place frequent actions in the thumb zone for
@@ -246,7 +262,7 @@ export default function DeviceResponsivenessArticle() {
           interactions on actual devices, not just DevTools simulation, because
           DevTools cannot replicate finger size, touch accuracy, or the physical
           ergonomics of one-handed use.
-        </p>
+        </HighlightBlock>
         <p>
           Implement responsive image delivery as a default practice, not an
           optimization added later. Use <code>srcset</code> with width
@@ -263,7 +279,10 @@ export default function DeviceResponsivenessArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The iOS Safari viewport height problem is the most well-known
           cross-device pitfall. Setting <code>height: 100vh</code> on iOS
           Safari includes the area behind the browser&apos;s address and
@@ -276,8 +295,8 @@ export default function DeviceResponsivenessArticle() {
           the keyboard on some Android browsers. Use{" "}
           <code>position: sticky</code> or JavaScript-based positioning as a
           workaround.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Horizontal scroll overflow is a common layout bug that breaks the
           mobile experience. It occurs when an element exceeds the viewport
           width — typically caused by images without max-width constraints,
@@ -288,7 +307,7 @@ export default function DeviceResponsivenessArticle() {
           on all images and media, using <code>overflow-x: hidden</code> on the
           body as a safety net (though this masks the underlying issue), and
           testing at every breakpoint during development.
-        </p>
+        </HighlightBlock>
         <p>
           Designing hover-dependent interactions is a pitfall that makes
           applications unusable on touch devices. Tooltips that only appear on
@@ -304,7 +323,10 @@ export default function DeviceResponsivenessArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           News and media websites serve content to the broadest possible device
           range and are heavily impacted by Google&apos;s mobile-first indexing.
           The New York Times, The Guardian, and BBC News all use mobile-first
@@ -315,8 +337,8 @@ export default function DeviceResponsivenessArticle() {
           for below-the-fold content. The business impact is direct — mobile
           traffic accounts for 60-70% of news site visits, and Google&apos;s
           search ranking algorithm prioritizes mobile-friendly sites.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms face unique responsive design challenges because
           product browsing, comparison, and checkout have different requirements
           across devices. Users browse on mobile during commutes but often
@@ -327,7 +349,7 @@ export default function DeviceResponsivenessArticle() {
           mobile (fewer fields, auto-fill, digital wallets like Apple Pay and
           Google Pay) while providing full payment options on desktop. Amazon
           and Shopify-powered stores exemplify this approach.
-        </p>
+        </HighlightBlock>
         <p>
           Data-heavy dashboards present the most challenging responsive design
           scenario. Complex data tables, charts, and multi-panel layouts that
@@ -345,12 +367,15 @@ export default function DeviceResponsivenessArticle() {
 
       <section>
         <h2>Advanced Responsive Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Container queries implementation represents a paradigm shift from viewport-based responsive design to component-based responsiveness. Unlike media queries, which style components based on the viewport size (meaning a component looks different in a sidebar versus the main content area because the viewport is the same but the available space differs), container queries style components based on their container&apos;s actual dimensions. The implementation requires two steps: first, declaring a containment context on the parent element using container-type: inline-size (which establishes the container as a sizing reference for its descendants), and second, writing container queries on the child components using @container with a minimum width condition. The container query evaluates the width of the nearest ancestor with a containment context, not the viewport, enabling truly modular responsive components that adapt regardless of where they are placed in the layout. This is particularly powerful for design systems and component libraries — a card component can define its own responsive breakpoints (switching from horizontal to vertical layout at 400px container width) that work correctly whether the card is in a narrow sidebar (300px container) or a wide main content area (800px container). Container queries have 90%+ browser support as of 2024 (Chrome 105+, Firefox 110+, Safari 16+) but are not supported in older browsers. The fallback strategy is to use media queries as the baseline styling and container queries as a progressive enhancement — older browsers get viewport-based responsiveness, while modern browsers get the more precise container-based responsiveness.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Foldable device support addresses the emerging category of devices with flexible displays that can be folded, unfolded, or partially folded, creating dynamic screen geometries that traditional responsive design does not account for. The Surface Duo (dual-screen), Samsung Galaxy Fold (single folding screen), and other foldable devices present unique challenges — when folded, the device has a single small screen (typically 5-6 inches); when unfolded, it has a large continuous screen (7-8 inches); and when partially folded (tabletop mode, book mode), it has two separate screens with a hinge between them. The CSS Viewport Segments API (currently experimental, supported in Chrome on Surface Duo) provides media features that detect the foldable device&apos;s state — env(fold-top), env(fold-left), env(fold-width), and env(fold-height) define the rectangle of the hinge area, allowing the layout to avoid placing interactive elements in the fold zone. The implementation uses CSS environment variables within media queries — a media query with a spanning condition detects a vertical fold and allows the layout to place content on either side of the fold. For foldable devices that do not support the Viewport Segments API, the responsive design should rely on the actual viewport dimensions — when the device is unfolded, the viewport width is the full unfolded width, and the layout should adapt accordingly using standard media queries or container queries. The key principle is content continuity — when the user unfolds the device, the content should flow seamlessly across the expanded viewport without losing context, scroll position, or interaction state.
-        </p>
+        </HighlightBlock>
         <p>
           Responsive typography systems ensure that text remains readable and aesthetically pleasing across all screen sizes, from small phones to large desktop monitors. The foundation is fluid typography — using CSS clamp() to define a font size range that scales smoothly between a minimum and maximum value based on the viewport width. For example, font-size: clamp(1rem, 2vw + 0.5rem, 1.5rem) sets the font size to a minimum of 1rem (on small screens), a maximum of 1.5rem (on large screens), and scales fluidly between them based on 2% of the viewport width plus a base offset. This approach eliminates the jarring font size jumps that occur when typography changes only at breakpoints, providing a continuous typographic rhythm. The type scale — the ratio between heading levels, body text, and caption text — should be maintained across all viewport sizes using consistent mathematical ratios (typically 1.125 to 1.333, based on musical harmony ratios). Line length is a critical readability factor — the optimal reading width is 50-75 characters per line, and on large desktop screens, unconstrained text can exceed 150 characters per line, making it difficult for the reader&apos;s eye to track from the end of one line to the beginning of the next. The solution is to set max-width constraints on text containers (max-width: 65ch for body text, where &quot;ch&quot; is the width of the &quot;0&quot; character) and center the content within the available space. Responsive line height adjusts based on font size — smaller text needs more line height for readability (line-height: 1.6-1.8 for body text), while larger text (headings) can use tighter line height (line-height: 1.1-1.3).
         </p>
@@ -370,12 +395,15 @@ export default function DeviceResponsivenessArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is mobile-first design and why use it?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Mobile-first means designing for the smallest screen first,
               then progressively enhancing for larger screens using min-width
               media queries. Benefits include better performance (start with
@@ -384,7 +412,7 @@ export default function DeviceResponsivenessArticle() {
               cost efficiency (easier to add complexity than remove it). Write
               base styles for mobile without media queries, add enhancements
               with min-width queries for each breakpoint.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you choose breakpoints?</p>

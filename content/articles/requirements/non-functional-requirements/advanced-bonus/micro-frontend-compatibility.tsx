@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function MicroFrontendCompatibilityArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Micro-Frontends</strong> extend the microservices architecture pattern to the frontend
           layer. Instead of building a monolithic frontend application, the user interface is decomposed
           into smaller, independently developable and deployable units called micro-frontends. Each
           micro-frontend is owned by a cross-functional team and can be built, tested, and deployed
           independently without coordinating with other teams or triggering full application rebuilds.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The micro-frontend architecture emerged around 2016 to 2017 as organizations struggled with the
           limitations of monolithic frontends. Slow build times that stretched to tens of minutes, difficult
           coordination across teams sharing a single codebase, technology lock-in that prevented incremental
           upgrades, and the inability to refactor large codebases without massive risk all drove the search
           for a more modular approach to frontend architecture.
-        </p>
+        </HighlightBlock>
         <p>
           Micro-frontends align frontend architecture with organizational structure, reflecting Conway&apos;s
           Law in practice. Instead of having a single frontend team working on a monolithic application,
@@ -61,7 +65,10 @@ export default function MicroFrontendCompatibilityArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           There are several patterns for integrating micro-frontends, each with different trade-offs in
           complexity, performance, and team autonomy. <strong>Build-time integration</strong> treats
           micro-frontends as NPM packages that are imported by a host application at build time. Each team
@@ -73,8 +80,8 @@ export default function MicroFrontendCompatibilityArticle() {
           rebuilding the entire application, version coordination is needed for the host to update package
           versions, and bundle size grows as all micro-frontends are included regardless of whether the
           user needs them.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Run-time integration using iframes</strong> runs each micro-frontend in a separate
           iframe, completely isolated from the host and other micro-frontends. The host application defines
           iframe containers in the layout, each micro-frontend is a standalone application served from its
@@ -85,7 +92,7 @@ export default function MicroFrontendCompatibilityArticle() {
           iframes have inherent limitations with scrolling, responsive design, and SEO, postMessage
           communication is asynchronous and verbose, each iframe has its own JavaScript engine instance
           increasing memory usage, and focus management across iframes creates accessibility challenges.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Run-time integration using Web Components</strong> packages micro-frontends as Custom
           Elements that are loaded dynamically by the host. Each micro-frontend exports a Web Component
@@ -123,15 +130,18 @@ export default function MicroFrontendCompatibilityArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Module Federation introduces two primary roles in its architecture. The host, also called the
           consumer, is the application that consumes remote modules and typically serves as the shell or
           container application. The remote, also called the provider, is the application that exposes
           modules for consumption and typically represents a micro-frontend. An application can be both
           a host and a remote simultaneously, enabling complex dependency graphs where micro-frontends
           share components with each other.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Configuration of Module Federation happens in the webpack configuration file. Remote
           configuration defines the unique identifier for the remote used by hosts to reference it, the
           output file for the remote entry such as remoteEntry.js, a map of local paths to exposed
@@ -142,7 +152,7 @@ export default function MicroFrontendCompatibilityArticle() {
           range mode where acceptable version ranges are specified and incompatible versions are loaded
           separately, and eager mode where the shared dependency is loaded immediately rather than
           lazily.
-        </p>
+        </HighlightBlock>
         <p>
           Module Federation supports loading remotes dynamically at runtime. Static remotes are configured
           at build time with fixed remote URLs. Dynamic remotes determine the remote URL at runtime from
@@ -184,7 +194,10 @@ export default function MicroFrontendCompatibilityArticle() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The decision to adopt micro-frontends involves weighing team autonomy against integration
           complexity. Build-time integration with NPM packages offers the simplest migration path from
           a monolith but sacrifices the independent deployment benefit that motivates micro-frontends in
@@ -194,8 +207,8 @@ export default function MicroFrontendCompatibilityArticle() {
           shared dependency versions. iframe integration provides the strongest isolation and security
           boundaries but degrades user experience with scrolling limitations, responsive design
           challenges, and SEO problems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Communication pattern selection involves coupling trade-offs. Custom events provide the loosest
           coupling but the weakest type safety and debugging support. Shared state stores provide strong
           type safety and debugging but create tight coupling between micro-frontends through a shared
@@ -204,7 +217,7 @@ export default function MicroFrontendCompatibilityArticle() {
           the specific communication need: use custom events for cross-cutting concerns like user
           authentication state changes, shared state stores for tightly-coupled workflows within a domain,
           and URL parameters for navigation state that should be bookmarkable and shareable.
-        </p>
+        </HighlightBlock>
         <p>
           Styling consistency across micro-frontends presents another trade-off space. Shared design
           systems published as NPM packages ensure visual consistency but create coupling through version
@@ -235,7 +248,10 @@ export default function MicroFrontendCompatibilityArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Maintaining visual consistency across micro-frontends while preserving team autonomy requires
           investment in a shared design system. The design system should be published as an NPM package
           with semantic versioning or exposed via Module Federation for runtime sharing. Migration guides
@@ -244,8 +260,8 @@ export default function MicroFrontendCompatibilityArticle() {
           ensure all micro-frontends meet minimum accessibility standards. CSS isolation should use CSS
           Modules or CSS-in-JS to prevent style collisions, with CSS custom properties defining design
           tokens for consistent theming across micro-frontends.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Testing micro-frontends requires a multi-layered approach. Isolated testing covers unit tests
           for components, utilities, and business logic within the micro-frontend, component tests for
           UI components with mocked dependencies, and contract tests to verify the micro-frontend adheres
@@ -256,7 +272,7 @@ export default function MicroFrontendCompatibilityArticle() {
           the assembled application, visual regression testing uses Percy or Chromatic to catch visual
           inconsistencies, and performance testing measures load times, bundle sizes, and runtime
           performance.
-        </p>
+        </HighlightBlock>
         <p>
           Organizational structure is as important as technical architecture for micro-frontend success.
           Teams should be aligned with business domains rather than technical layers, with each team
@@ -283,15 +299,18 @@ export default function MicroFrontendCompatibilityArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Premature optimization is the most common pitfall with micro-frontends. Organizations adopt
           micro-frontends because they are trendy without having a clear need that justifies the
           complexity. The recommended approach is to start with a modular monolith using clear internal
           boundaries and extract micro-frontends only when team coordination becomes a measurable
           bottleneck to delivery velocity. If a single team can develop and deploy the monolith
           efficiently, micro-frontends add overhead without benefit.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Over-sharing dependencies creates tight coupling that undermines the autonomy benefits of
           micro-frontends. When teams share too many dependencies, they create implicit coordination
           requirements because updating a shared dependency requires all teams to test and validate
@@ -299,7 +318,7 @@ export default function MicroFrontendCompatibilityArticle() {
           utilities, letting teams choose their own libraries for non-critical functionality. Even
           shared frameworks should be shared as singletons to avoid loading multiple copies, with
           version ranges used only when minor version differences matter.
-        </p>
+        </HighlightBlock>
         <p>
           Ignoring performance during micro-frontend implementation leads to applications that are
           significantly slower than their monolithic counterparts. Each micro-frontend adds its own
@@ -330,7 +349,10 @@ export default function MicroFrontendCompatibilityArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms are one of the most common adopters of micro-frontends. A large retailer
           decomposed their frontend into micro-frontends for product catalog, search, shopping cart,
           checkout, and user account management. Each micro-frontend was owned by the corresponding
@@ -340,8 +362,8 @@ export default function MicroFrontendCompatibilityArticle() {
           integration with a shared design system exposed as a remote. The result was a significant
           reduction in deployment coordination overhead and the ability for teams to iterate at
           different velocities based on their domain&apos;s needs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enterprise SaaS applications use micro-frontends to manage complex product surfaces with
           multiple feature areas owned by different teams. A project management platform decomposed
           their application into micro-frontends for dashboard, project views, task management, reporting,
@@ -350,7 +372,7 @@ export default function MicroFrontendCompatibilityArticle() {
           between micro-frontends used custom events for cross-cutting concerns like user authentication
           and URL parameters for navigation state. The platform team maintained the Module Federation
           infrastructure and the shared design system.
-        </p>
+        </HighlightBlock>
         <p>
           Legacy migration is another compelling use case. A financial services company needed to
           migrate their legacy monolithic frontend built with an outdated framework to a modern React
@@ -375,10 +397,13 @@ export default function MicroFrontendCompatibilityArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: When would you choose micro-frontends over a monolithic frontend, and when would you avoid them?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: When would you choose micro-frontends over a monolithic frontend, and when would you avoid them?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Choose micro-frontends when multiple teams need to work independently on different parts
               of the application and deployment coordination has become a bottleneck to delivery velocity.
               They are also appropriate when you need to incrementally migrate a legacy frontend, as they
@@ -389,7 +414,7 @@ export default function MicroFrontendCompatibilityArticle() {
               and a modular monolith with clear internal boundaries provides sufficient organization.
               Start with a modular monolith and extract micro-frontends only when team coordination costs
               become a measurable bottleneck.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

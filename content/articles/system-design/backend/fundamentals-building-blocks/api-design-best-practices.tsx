@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,12 +25,15 @@ export default function ApiDesignBestPracticesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>API design best practices</strong> are principles and patterns that make interfaces predictable, maintainable, secure, and performant at scale. Well-designed APIs reduce client complexity, minimize breaking changes, enable self-service integration, and operate reliably under load. Poorly designed APIs create friction for consumers, increase support burden, and become technical debt that slows product development.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           API design is not just about technical correctness—it&apos;s about <strong>developer experience</strong>. Every API decision affects how quickly developers can integrate, how easily they can debug issues, and how much trust they have in your platform. At companies like Stripe, Twilio, and GitHub, API design is a core product differentiator.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Key goals of API design:</strong>
         </p>
@@ -67,14 +71,17 @@ export default function ApiDesignBestPracticesArticle() {
 
       <section>
         <h2>Resource Modeling and Naming</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Use Nouns, Not Verbs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           RESTful APIs model resources (nouns), not actions (verbs). Resources are things your API manages: users, orders, invoices, products.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Good:</strong>
-        </p>
+        </HighlightBlock>
         <ul>
           <li><code>GET /users</code> — List users</li>
           <li><code>POST /users</code> — Create a user</li>
@@ -153,20 +160,23 @@ export default function ApiDesignBestPracticesArticle() {
 
       <section>
         <h2>Pagination Strategies</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Why Pagination Matters</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Unpaginated endpoints are a production risk:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Memory exhaustion:</strong> Loading 100,000 records into memory crashes servers.</li>
           <li><strong>Slow responses:</strong> Large queries take seconds, violating SLOs.</li>
           <li><strong>Network saturation:</strong> Multi-MB responses consume bandwidth.</li>
           <li><strong>DoS vulnerability:</strong> Malicious clients can request all data.</li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Rule:</strong> All collection endpoints MUST be paginated.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Offset Pagination (Simple but Flawed)</h3>
         <p>
@@ -242,14 +252,17 @@ export default function ApiDesignBestPracticesArticle() {
 
       <section>
         <h2>Filtering, Sorting, and Field Selection</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Filtering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Support filtering with query parameters. Clients can filter by status, role, date ranges, price ranges, and other relevant fields.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Best practices:</strong>
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Use consistent operators:</strong> Use gte, lte, min, max, contains for range and pattern matching.</li>
           <li><strong>Support multiple filters:</strong> Combine with AND logic by default.</li>
@@ -310,11 +323,14 @@ export default function ApiDesignBestPracticesArticle() {
 
       <section>
         <h2>Error Handling</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Use Appropriate Status Codes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Status codes communicate the outcome and guide client behavior:
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -399,9 +415,9 @@ export default function ApiDesignBestPracticesArticle() {
         </table>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consistent Error Response Format</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           All errors should follow a consistent schema with a nested error object containing machine-readable codes, human-readable messages, and debugging information.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Fields:</strong>
         </p>
@@ -447,11 +463,14 @@ export default function ApiDesignBestPracticesArticle() {
 
       <section>
         <h2>Versioning and Backward Compatibility</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Prefer Additive Changes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The safest API change is additive—adding new fields or endpoints without modifying existing behavior:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Safe:</strong> Adding a new field to a response.</li>
           <li><strong>Safe:</strong> Adding a new optional query parameter.</li>
@@ -460,9 +479,9 @@ export default function ApiDesignBestPracticesArticle() {
           <li><strong>Breaking:</strong> Changing a field&apos;s type.</li>
           <li><strong>Breaking:</strong> Changing default behavior.</li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Rule:</strong> Clients should ignore unknown fields. This enables additive evolution without versioning.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">When Versioning Is Necessary</h3>
         <p>
@@ -531,6 +550,9 @@ export default function ApiDesignBestPracticesArticle() {
 
       <section>
         <h2>Rate Limiting and Quotas</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Why Rate Limiting Matters</h3>
         <ul>
@@ -543,12 +565,12 @@ export default function ApiDesignBestPracticesArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">Rate Limiting Algorithms</h3>
 
         <h4 className="mt-4 mb-2 font-semibold">Token Bucket</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tokens are added at a fixed rate. Each request consumes a token. If no tokens available, request is rejected.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Advantages:</strong> Allows bursting (up to bucket size), smooths traffic over time.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Use when:</strong> You want to allow occasional bursts while maintaining average rate.
         </p>
@@ -614,11 +636,14 @@ export default function ApiDesignBestPracticesArticle() {
 
       <section>
         <h2>Idempotency and Safe Retries</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Why Idempotency Matters</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Network timeouts are common. Clients retry timed-out requests. Without idempotency, retries cause duplicates:
-        </p>
+        </HighlightBlock>
         <ul>
           <li>Double charges (payment APIs).</li>
           <li>Duplicate orders (e-commerce).</li>
@@ -626,9 +651,9 @@ export default function ApiDesignBestPracticesArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Idempotency Keys</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Clients generate a unique key (UUID) and include it in the request header. The server uses this key to detect and deduplicate retries, returning the same response without re-executing the operation.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Implementation:</strong>
         </p>
@@ -657,20 +682,23 @@ export default function ApiDesignBestPracticesArticle() {
 
       <section>
         <h2>Observability and Debugging</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Request IDs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every request should have a unique ID for tracing:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Generate:</strong> Server generates request ID (or client provides one).</li>
           <li><strong>Return:</strong> Include in response header <code>X-Request-ID: req_abc123</code>.</li>
           <li><strong>Log:</strong> Include in all log entries for the request.</li>
           <li><strong>Propagate:</strong> Pass to downstream services.</li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why:</strong> When a client reports an issue, the request ID lets you find all logs, traces, and errors for that request.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Response Headers for Debugging</h3>
         <p>
@@ -697,6 +725,9 @@ export default function ApiDesignBestPracticesArticle() {
 
       <section>
         <h2>Documentation and Developer Experience</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">API Documentation Essentials</h3>
         <ul>
@@ -709,9 +740,9 @@ export default function ApiDesignBestPracticesArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">OpenAPI/Swagger</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use OpenAPI (Swagger) for machine-readable API specs:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Auto-generated docs:</strong> Tools like Swagger UI render interactive docs.</li>
           <li><strong>Code generation:</strong> Generate client SDKs in multiple languages.</li>
@@ -720,9 +751,9 @@ export default function ApiDesignBestPracticesArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Interactive Documentation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Provide &quot;try it out&quot; functionality:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Stripe-style docs:</strong> Show code examples in multiple languages (curl, Python, JavaScript, etc.).</li>
           <li><strong>Live testing:</strong> Allow developers to test API calls directly in docs.</li>
@@ -732,14 +763,17 @@ export default function ApiDesignBestPracticesArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">1. Stripe Payment API (Idempotency Done Right)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Payment APIs must prevent duplicate charges from network retries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong>
-        </p>
+        </HighlightBlock>
         <ul>
           <li>Idempotency keys for all POST requests.</li>
           <li>Keys retained for 24 hours.</li>
@@ -838,14 +872,17 @@ export default function ApiDesignBestPracticesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Inconsistent naming:</strong> Some endpoints use <code>/users</code>, others use <code>/getUsers</code>. <strong>Solution:</strong> API style guide with linting in CI.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Unpaginated endpoints:</strong> <code>GET /all-users</code> returns 100,000 rows. <strong>Solution:</strong> All collection endpoints MUST paginate. Enforce in code review.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>200 for errors:</strong> Returning HTTP 200 with <code>{`{ "success": false }`}</code>. <strong>Solution:</strong> Use appropriate status codes (400, 401, 403, 404, etc.).
           </li>
@@ -875,13 +912,16 @@ export default function ApiDesignBestPracticesArticle() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q1: What&apos;s the difference between offset and cursor pagination? When would you use each?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: What&apos;s the difference between offset and cursor pagination? When would you use each?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Offset pagination uses <code>OFFSET N LIMIT M</code>—simple but performance degrades with depth (scans N+M rows). Results can shift under concurrent writes. Cursor pagination uses an opaque cursor pointing to a position—consistent performance (uses index), stable results under writes, but no random access. Use offset for small datasets (&lt;10K rows) or when random page access is needed. Use cursor for large datasets, frequently-updated data, or performance-critical APIs.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

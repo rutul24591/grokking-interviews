@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function RetryMechanismsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Retry Mechanisms enable systems to automatically retry failed operations. Systems can configure retry strategies (configure how to retry), set retry limits (set maximum retries), implement backoff (implement backoff strategies), and manage retries (manage retry process). Retry mechanisms are fundamental to fault tolerance (tolerate failures), system reliability (maintain system reliability), and user experience (maintain user experience). For distributed systems, effective retry mechanisms are essential for fault tolerance, system reliability, and user experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, retry mechanisms architecture involves retry strategies (define retry strategies), exponential backoff (implement exponential backoff), retry limits (set retry limits), retry policies (define retry policies), and retry management (manage retry process). The implementation must balance reliability (retry to succeed) with performance (don&apos;t overload system) and user experience (maintain user experience). Poor retry mechanisms lead to system failures, performance issues, and user frustration.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of retry mechanisms extends beyond simple retry. Retry strategies (define retry strategies). Exponential backoff (implement exponential backoff). Retry limits (set retry limits). Retry policies (define retry policies). Retry management (manage retry process). For staff engineers, retry mechanisms are a fault tolerance infrastructure decision affecting system reliability, performance, and user experience.
         </p>
@@ -46,13 +50,16 @@ export default function RetryMechanismsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Retry Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Immediate retry retries immediately. No delay (no delay between retries). Immediate retry (retry immediately). Immediate success (succeed immediately). Immediate retry enables immediate retry. Benefits include fast recovery (fast recovery), user experience (good user experience). Drawbacks includes system load (system load), may fail again (may fail again).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Fixed delay retry retries with fixed delay. Fixed delay (fixed delay between retries). Consistent retry (consistent retry timing). Predictable retry (predictable retry timing). Fixed delay retry enables fixed delay retry. Benefits include predictability (predictable retry), system protection (protect system). Drawbacks includes delay (delay), may not be optimal (may not be optimal).
-        </p>
+        </HighlightBlock>
         <p>
           Exponential backoff retry retries with exponential backoff. Exponential delay (exponential delay between retries). Backoff retry (backoff retry timing). Optimal retry (optimal retry timing). Exponential backoff retry enables exponential backoff retry. Benefits include system protection (protect system), optimal retry (optimal retry). Drawbacks includes delay (delay), complexity (complexity).
         </p>
@@ -104,9 +111,12 @@ export default function RetryMechanismsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Retry mechanisms architecture spans retry service, backoff service, limit service, and policy service. Retry service manages retries. Backoff service manages backoff. Limit service manages limits. Policy service manages policies. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/retry-mechanisms/retry-architecture.svg"
@@ -117,9 +127,9 @@ export default function RetryMechanismsArticle() {
         />
 
         <h3>Retry Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Retry service manages retries. Retry storage (store retries). Retry retrieval (retrieve retries). Retry update (update retries). Retry service is the core of retry mechanisms. Benefits include centralization (one place for retries), consistency (same retries everywhere). Drawbacks includes complexity (manage retries), coupling (services depend on retry service).
-        </p>
+        </HighlightBlock>
         <p>
           Retry policies define retry rules. Default retries (default retries). Retry validation (validate retries). Retry sync (sync retries). Retry policies automate retry management. Benefits include automation (automatic management), consistency (same rules for all). Drawbacks includes complexity (define policies), may not fit all cases.
         </p>
@@ -159,14 +169,17 @@ export default function RetryMechanismsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Retry mechanisms design involves trade-offs between immediate and delayed retry, aggressive and conservative retry, and automatic and manual retry. Understanding these trade-offs enables informed decisions aligned with user needs and business requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Retry: Immediate vs. Delayed</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Immediate retry (retry immediately). Pros: Fast recovery (fast recovery), user experience (good user experience), simplicity (simplicity). Cons: System load (system load), may fail again (may fail again), thundering herd (thundering herd). Best for: Fast recovery, user experience.
-        </p>
+        </HighlightBlock>
         <p>
           Delayed retry (retry with delay). Pros: System protection (protect system), optimal retry (optimal retry), thundering herd prevention (prevent thundering herd). Cons: Delay (delay), user frustration (user frustration), complexity (complexity). Best for: System protection, optimal retry.
         </p>
@@ -207,13 +220,16 @@ export default function RetryMechanismsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide retry strategies:</strong> Immediate retry. Fixed delay retry. Exponential backoff retry. Let users choose.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement exponential backoff:</strong> Basic backoff. Jitter backoff. Adaptive backoff.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Set retry limits:</strong> Maximum retries. Timeout limit. Budget limit.
           </li>
@@ -243,13 +259,16 @@ export default function RetryMechanismsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No retry strategies:</strong> Can&apos;t retry. <strong>Solution:</strong> Provide retry strategies.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No exponential backoff:</strong> No backoff. <strong>Solution:</strong> Implement exponential backoff.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No retry limits:</strong> No limits. <strong>Solution:</strong> Set retry limits.
           </li>
@@ -279,16 +298,19 @@ export default function RetryMechanismsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>API Retry</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           API platforms provide retry. Request retry (retry requests). Response retry (retry responses). Error retry (retry errors). Users control API retry.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Database Retry</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Database platforms provide retry. Query retry (retry queries). Transaction retry (retry transactions). Connection retry (retry connections). Users control database retry.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Network Retry</h3>
         <p>
@@ -308,12 +330,15 @@ export default function RetryMechanismsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design retry mechanisms that balances reliability with performance?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design retry mechanisms that balances reliability with performance?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement retry with performance because users want reliability (operations succeed despite transient failures) but want performance (not waste resources on doomed retries). Retry operations: retry operations (transient failures, network issues, temporary unavailability)—improve success rate, handle transient issues. Limit retries: limit retries (maximum retries, timeout limits, budget limits)—prevent resource waste, avoid infinite loops. Monitor performance: monitor performance (retry success rate, retry cost, performance impact)—identify optimization opportunities, balance reliability with cost. The performance insight: users want reliability but want performance—provide retry (transient, network, temporary) with limits (maximum, timeout, budget), monitoring (success, cost, impact), and balance reliability with resource efficiency.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

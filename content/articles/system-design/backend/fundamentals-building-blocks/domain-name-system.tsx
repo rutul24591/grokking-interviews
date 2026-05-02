@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,12 +25,15 @@ export default function DomainNameSystemArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>DNS (Domain Name System)</strong> is the distributed, hierarchical directory service of the internet. It translates human-readable domain names (example.com) into machine-readable IP addresses (93.184.216.34) and provides critical routing information for email, services, and infrastructure. Without DNS, users would need to memorize IP addresses for every website and service they use.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           DNS is one of the most critical yet overlooked components of modern infrastructure. Every HTTP request, email delivery, API call, and cloud service depends on DNS resolution. A DNS outage can take down your entire digital presence—even if your servers are healthy, users can&apos;t reach you without DNS.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Why DNS matters for backend engineers:</strong>
         </p>
@@ -67,11 +71,14 @@ export default function DomainNameSystemArticle() {
 
       <section>
         <h2>DNS Hierarchy and Resolution</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">The DNS Hierarchy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           DNS is organized as a tree structure, with delegation at each level:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-2">
           <li>
             <strong>Root Servers (.</strong>): 13 logical root server clusters (A-M), operated by organizations like ICANN, NASA, and universities. They know where to find TLD servers.
@@ -83,9 +90,9 @@ export default function DomainNameSystemArticle() {
             <strong>Authoritative Name Servers</strong>: The final authority for a domain. They hold the actual DNS records (A, AAAA, CNAME, MX, etc.).
           </li>
         </ol>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Example: Resolving www.example.com:</strong>
-        </p>
+        </HighlightBlock>
         <ol className="space-y-2">
           <li>Resolver asks root: &quot;Where is www.example.com?&quot;</li>
           <li>Root responds: &quot;Ask .com TLD servers at [IPs]&quot;</li>
@@ -134,6 +141,9 @@ export default function DomainNameSystemArticle() {
 
       <section>
         <h2>DNS Record Types</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -209,12 +219,12 @@ export default function DomainNameSystemArticle() {
         </table>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">A vs AAAA Records</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>A records</strong> map domains to IPv4 addresses (32-bit, e.g., 192.0.2.1). <strong>AAAA records</strong> map domains to IPv6 addresses (128-bit, e.g., 2001:db8::1).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Best practice:</strong> Publish both A and AAAA records (dual-stack). Clients prefer IPv6 if available, fall back to IPv4.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">CNAME Records and Limitations</h3>
         <p>
@@ -249,11 +259,14 @@ export default function DomainNameSystemArticle() {
 
       <section>
         <h2>TTL and Caching</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Understanding TTL</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>TTL (Time To Live)</strong> is the number of seconds a DNS record can be cached before it must be refreshed. TTL is set per record in seconds:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>60:</strong> 1 minute (very aggressive, high query volume)</li>
           <li><strong>300:</strong> 5 minutes (fast failover)</li>
@@ -295,9 +308,9 @@ export default function DomainNameSystemArticle() {
         </table>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">TTL Strategy for Migrations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When planning DNS changes (migrations, failover setup):
-        </p>
+        </HighlightBlock>
         <ol className="space-y-2">
           <li><strong>7 days before:</strong> Lower TTL to 300s (5 minutes). Wait for old TTL to expire.</li>
           <li><strong>Make change:</strong> Update DNS record.</li>
@@ -322,11 +335,14 @@ export default function DomainNameSystemArticle() {
 
       <section>
         <h2>DNS Load Balancing and Failover</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">DNS Round-Robin</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Simple DNS load balancing publishes multiple A records for the same name. Resolvers rotate through the IPs in round-robin fashion. This approach is simple but has significant limitations.
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>No health checking:</strong> DNS doesn&apos;t know if a server is down. Clients may get a dead IP.</li>
           <li><strong>Uneven distribution:</strong> Client-side caching causes imbalance. Some clients stick to one IP.</li>
@@ -334,9 +350,9 @@ export default function DomainNameSystemArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Managed DNS Load Balancing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Managed DNS providers (Route53, Cloudflare, NS1) offer advanced features:
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">Health Checks</h4>
         <p>
@@ -402,14 +418,17 @@ export default function DomainNameSystemArticle() {
 
       <section>
         <h2>DNS Security</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">DNS Spoofing and Cache Poisoning</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>DNS spoofing:</strong> Attacker sends fake DNS responses, poisoning resolver cache. Users are redirected to malicious IPs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Famous attack:</strong> 2008 Kaminsky attack exploited DNS transaction ID predictability. Modern DNS uses random transaction IDs and port randomization to mitigate.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">DNSSEC (DNS Security Extensions)</h3>
         <p>
@@ -489,18 +508,21 @@ export default function DomainNameSystemArticle() {
 
       <section>
         <h2>Advanced DNS Topics</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Split-Horizon DNS</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Split-horizon (split-view) DNS returns different answers based on the requester&apos;s network:
-        </p>
+        </HighlightBlock>
         <ul>
           <li><strong>Internal network:</strong> example.com → 10.0.0.1 (private IP)</li>
           <li><strong>External network:</strong> example.com → 93.184.216.34 (public IP)</li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use cases:</strong>
-        </p>
+        </HighlightBlock>
         <ul>
           <li>Internal services accessible only from corporate network.</li>
           <li>Split-brain deployments (different environments for internal/external).</li>
@@ -552,14 +574,17 @@ export default function DomainNameSystemArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">1. Global E-Commerce Site (Geolocation Routing)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Serve customers worldwide with low latency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution:</strong>
-        </p>
+        </HighlightBlock>
         <ul>
           <li>Route53 geolocation routing: US → us-east-1, EU → eu-west-1, Asia → ap-southeast-1.</li>
           <li>Health checks with automatic failover.</li>
@@ -653,14 +678,17 @@ export default function DomainNameSystemArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>CNAME at zone apex:</strong> Putting CNAME at example.com (root) breaks DNS. <strong>Solution:</strong> Use ALIAS/ANAME records (provider-specific) or A records.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Long TTL during migrations:</strong> TTL 86400s means 24-hour propagation delay. <strong>Solution:</strong> Lower TTL 7 days before migration.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Long CNAME chains:</strong> A → B → C → D → E increases latency and failure points. <strong>Solution:</strong> Flatten chains (max 2-3 hops).
           </li>
@@ -690,13 +718,16 @@ export default function DomainNameSystemArticle() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q1: Explain the DNS resolution process. What happens when you type example.com in a browser?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: Explain the DNS resolution process. What happens when you type example.com in a browser?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Browser checks its cache → OS resolver cache → recursive resolver (ISP/8.8.8.8). If resolver cache misses, it queries root servers (where is .com?) → TLD servers (where is example.com?) → authoritative servers (what is the A record for example.com?). Response is cached at each level and returned to client. Total latency: 1-10ms for warm cache, 50-200ms for cold cache.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

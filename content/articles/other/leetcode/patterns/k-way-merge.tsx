@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,21 +24,24 @@ export default function KWayMergeArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         K-way merge is the problem of producing a single sorted output, or answering an
         order-statistic query, from k sorted input streams. Each stream is internally sorted, but
         the streams have no order relative to each other; the goal is to interleave them
         correctly. The pattern generalises the two-way merge step at the heart of merge sort —
         when k = 2 the heap collapses to a simple pointer pair, but for k larger than 2 the heap
         is the right data structure.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The recognition signal is the phrase &quot;k sorted&quot; — k sorted lists, k sorted
         arrays, k sorted matrix rows, k generators of sorted values. Even when the streams are
         virtual (each row of a multiplication table, each pair (i, j) in a sum-grid), the heap
         treats them uniformly: push the head of every stream, pop the smallest, push the
         successor from the same stream.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         The complexity is O(N log k) time and O(k) heap space, where N is the total number of
         elements across all streams. The log k factor is what distinguishes this pattern from
@@ -54,18 +58,21 @@ export default function KWayMergeArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Frontier.</strong> The heap holds at most one element per stream — the next
         unconsumed value. We call this the frontier. The heap top is the global minimum across
         all frontiers. After popping, we replace the popped frontier with its successor from the
         same stream (or shrink the heap if the stream is exhausted).
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Back-pointer.</strong> Each heap entry must remember which stream it came from.
         For linked lists, the entry can be the node itself (its next field is the back-pointer).
         For arrays or matrices, push (value, stream-id, index) tuples. Without a back-pointer you
         cannot advance the right stream after a pop.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Tuple ordering for ties.</strong> If two frontiers tie on value, the heap must
         still produce a total order to compare entries. Including the stream-id in the tuple
@@ -100,18 +107,21 @@ export default function KWayMergeArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/k-way-merge-diagram-1.svg" alt="K-way merge pattern overview" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The plain merge template (Leetcode 23) is the canonical reference. Initialise an empty
         min-heap. For each non-empty input list, push (head.val, list-id, head). Repeat: pop the
         smallest, append the popped node to the output, and if the popped node has a next node,
         push (next.val, list-id, next). Terminate when the heap is empty. The output is a single
         sorted list of all N elements in O(N log k) time.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         For 88 (merge two sorted arrays in place), the heap is overkill — k = 2. Use two
         pointers from the back of each array, writing the larger into the destination. This is
         the textbook two-way merge with the in-place trick of writing from the right.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         For 378 (k-th smallest in sorted matrix), treat each row as a sorted stream. Push the
         first element of every row. Pop k times, expanding right-neighbours within the same
@@ -141,19 +151,22 @@ export default function KWayMergeArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>K-way merge vs. pairwise merge.</strong> Pairwise: merge list 1 and list 2 into
         a list of size 2N/k; merge that with list 3, etc. Total work is O(N k) because each
         element is copied k times. K-way merge with a heap is O(N log k). For k = 100, the heap
         is 15× faster on the same input.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>K-way merge vs. divide-and-conquer pairwise merge.</strong> A balanced
         pairwise-merge tree (merge in pairs, then merge pairs of pairs, log k levels) achieves
         O(N log k), the same asymptotic as the heap. The heap is simpler and uses O(k) space;
         the divide-and-conquer needs O(N) recursion stack and is harder to implement on streams.
         In external sort, the heap-based merge is the standard choice.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Heap vs. tournament tree.</strong> A tournament tree (loser tree) is a fixed-size
         binary tree where each leaf is a stream and internal nodes hold the loser of the
@@ -185,15 +198,18 @@ export default function KWayMergeArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/k-way-merge-diagram-2.svg" alt="K-way merge templates" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Heapify, do not push k times.</strong> When the initial heap fill is k items,
         use heapify for O(k). It is a habit; even when k is small, do not regress to k pushes.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Push the back-pointer with every entry.</strong> Forgetting it means you cannot
         advance the right stream and you produce a wrong answer. Always include the stream-id
         and index.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Make the comparator total.</strong> Tuple ordering with stream-id as the
         secondary key avoids ambiguous comparisons when values tie. Java&apos;s default
@@ -219,15 +235,18 @@ export default function KWayMergeArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Forgetting the back-pointer.</strong> Without it, you advance an arbitrary
         stream after each pop, breaking the merge invariant.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Pushing the entire matrix.</strong> Pushing every cell of an n-by-n matrix into
         the heap gives O(n² log n²) — strictly worse than sorting the flattened array. Push
         only the first column.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Wrong comparator on tuples.</strong> Comparing on value alone fails on ties.
         Java throws if the comparator is partial; Python silently compares the next field. If
@@ -255,14 +274,17 @@ export default function KWayMergeArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>23. Merge k Sorted Lists.</strong> The textbook problem. Heap of head pointers,
         pop and advance. O(N log k).
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>21. Merge Two Sorted Lists.</strong> The k = 2 base case. Two pointers, no
         heap. The interviewer often uses this as a warm-up before asking 23.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>88. Merge Sorted Array.</strong> In-place merge of two sorted arrays where one
         has trailing slack. Two pointers from the back; no heap. Tests in-place writing.
@@ -303,11 +325,14 @@ export default function KWayMergeArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/k-way-merge-diagram-3.svg" alt="Canonical k-way merge Leetcode problems" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why O(N log k) and not O(N log N)?</strong> The heap holds at most k frontiers,
-        so each push and pop is O(log k). Each of N elements is pushed and popped exactly once.</li>
-        <li><strong>Why not pairwise merge?</strong> Pairwise is O(N k) because each element is
-        copied through the merge tree at every level. The heap saves a factor of k / log k.</li>
+        <HighlightBlock as="li" tier="important"><strong>Why O(N log k) and not O(N log N)?</strong> The heap holds at most k frontiers,
+        so each push and pop is O(log k). Each of N elements is pushed and popped exactly once.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Why not pairwise merge?</strong> Pairwise is O(N k) because each element is
+        copied through the merge tree at every level. The heap saves a factor of k / log k.</HighlightBlock>
         <li><strong>How does this scale to external sort?</strong> Each input stream becomes a
         sorted run on disk; the heap merges k of them at a time, writing the output as a
         bigger run. Multiple passes if k is too small to merge all runs in one pass.</li>

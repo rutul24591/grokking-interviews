@@ -274,6 +274,10 @@ export default function RestApiDesignConciseArticle() {
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
+        <HighlightBlock as="p" tier="important">
+          Interview framing: REST is “constraints over HTTP”. The trade-offs show up in caching semantics,
+          evolvability (versioning), and how much client flexibility you need (vs. GraphQL).
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -462,9 +466,7 @@ export default function RestApiDesignConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <HighlightBlock as="p" tier="important">
-          Mistakes that reveal inexperience with REST API consumption at scale:
-        </HighlightBlock>
+        <p>Mistakes that reveal inexperience with REST API consumption at scale:</p>
         <ul className="space-y-3">
           <HighlightBlock as="li" tier="crucial">
             <strong>Using POST for Everything:</strong> Treating REST as RPC by
@@ -533,9 +535,7 @@ export default function RestApiDesignConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <HighlightBlock as="p" tier="important">
-          Exemplary REST APIs and the design lessons they teach:
-        </HighlightBlock>
+        <p>Exemplary REST APIs and the design lessons they teach:</p>
         <ul className="space-y-3">
           <HighlightBlock as="li" tier="important">
             <strong>GitHub API:</strong> One of the most well-designed public
@@ -953,8 +953,12 @@ export default function RestApiDesignConciseArticle() {
 
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Staff-level expectation: you can define resource boundaries, error semantics (RFC 7807), idempotency, and
+          versioning, and you can connect those choices to caching, observability, and backward compatibility.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm"
               className="text-accent hover:underline"
@@ -964,8 +968,8 @@ export default function RestApiDesignConciseArticle() {
               Roy Fielding - Architectural Styles and the Design of
               Network-based Software Architectures (Chapter 5)
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://martinfowler.com/articles/richardsonMaturityModel.html"
               className="text-accent hover:underline"
@@ -974,7 +978,7 @@ export default function RestApiDesignConciseArticle() {
             >
               Martin Fowler - Richardson Maturity Model
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://docs.github.com/en/rest"
@@ -985,7 +989,7 @@ export default function RestApiDesignConciseArticle() {
               GitHub REST API Documentation - Exemplary REST Design
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://stripe.com/docs/api/versioning"
               className="text-accent hover:underline"
@@ -994,8 +998,8 @@ export default function RestApiDesignConciseArticle() {
             >
               Stripe API Versioning - Date-Based Version Management
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.rfc-editor.org/rfc/rfc7807"
               className="text-accent hover:underline"
@@ -1004,7 +1008,7 @@ export default function RestApiDesignConciseArticle() {
             >
               RFC 7807 - Problem Details for HTTP APIs
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

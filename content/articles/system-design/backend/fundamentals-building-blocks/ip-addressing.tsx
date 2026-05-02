@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function IpAddressingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>IP (Internet Protocol) addressing</strong> provides unique identifiers for devices on a network, enabling routing, communication, and security policies across distributed systems. IPv4 uses 32-bit addresses (approximately 4.3 billion unique addresses), while IPv6 uses 128-bit addresses (approximately 3.4 × 10³⁸ addresses) to address global growth and improve routing efficiency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For backend engineers, IP addressing is foundational to: <strong>routing</strong> (directing traffic between services), <strong>security policies</strong> (firewall rules, security groups, network ACLs), <strong>service discovery</strong> (locating services within a network), and <strong>capacity planning</strong> (ensuring sufficient address space for growth). CIDR (Classless Inter-Domain Routing) and subnetting are fundamental for cloud networking and VPC design.
-        </p>
+        </HighlightBlock>
         <p>
           The exhaustion of IPv4 addresses (officially depleted by IANA in 2011) has made IPv6 adoption critical for new services, while NAT (Network Address Translation) has become ubiquitous for extending IPv4 address space. Understanding both protocols and their operational implications is essential for building scalable, future-proof infrastructure.
         </p>
@@ -36,16 +40,19 @@ export default function IpAddressingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           IP addressing encompasses several interconnected concepts that govern how networks are structured and how traffic flows between them.
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>IPv4 Format:</strong> 32-bit addresses expressed in dotted-decimal notation (e.g., 192.168.1.1). Each octet represents 8 bits, ranging from 0-255. IPv4 supports approximately 4.3 billion unique addresses, which proved insufficient for global internet growth.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>IPv6 Format:</strong> 128-bit addresses expressed in hexadecimal notation with colons (e.g., 2001:0db8:85a3:0000:0000:8a2e:0370:7334). Leading zeros can be omitted, and consecutive zero groups can be compressed with :: (e.g., 2001:db8:85a3::8a2e:370:7334). IPv6 provides essentially unlimited addresses for foreseeable future growth.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>CIDR Notation:</strong> Expresses network ranges as a prefix length (e.g., 192.168.1.0/24). The /24 means the first 24 bits represent the network prefix, leaving 8 bits for host addresses (256 total addresses, 254 usable after reserving network and broadcast addresses).
           </li>
@@ -81,9 +88,12 @@ export default function IpAddressingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           IP addressing architecture in cloud environments follows a hierarchical design that balances isolation, scalability, and operational simplicity.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Cloud Network Hierarchy</h3>
@@ -106,9 +116,9 @@ export default function IpAddressingArticle() {
           </ol>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Routing and Prefix Matching:</strong> Routers choose routes using longest-prefix match. More specific routes override broader ones, which is why /24 beats /16 even if both match. Understanding this helps debug connectivity issues where traffic takes unexpected paths.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Anycast and Global Routing:</strong> Anycast advertises the same IP prefix from multiple geographic locations. Traffic is routed to the nearest endpoint based on BGP policies. This is widely used by CDNs (Cloudflare, Akamai) and DNS providers (Route 53, Cloud DNS) to reduce latency and improve availability.
@@ -117,6 +127,9 @@ export default function IpAddressingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -126,7 +139,7 @@ export default function IpAddressingArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Address Space</strong>
               </td>
@@ -140,8 +153,8 @@ export default function IpAddressingArticle() {
                 <br />
                 Essentially unlimited
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Notation</strong>
               </td>
@@ -155,7 +168,7 @@ export default function IpAddressingArticle() {
                 <br />
                 2001:db8:85a3::8a2e:370:7334
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>NAT Requirement</strong>
@@ -221,12 +234,12 @@ export default function IpAddressingArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">IPv4 vs IPv6: When to Use Each</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <strong>Use IPv4 when:</strong> you need universal compatibility, your client base has limited IPv6 adoption, or you're integrating with legacy systems that don't support IPv6.
-          </p>
-          <p className="mt-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-3">
             <strong>Use IPv6 when:</strong> building new services (future-proofing), serving mobile users (IPv6 required for 5G), operating in regions with high IPv6 adoption (India ~70%, Germany ~60%), or when you need end-to-end connectivity without NAT.
-          </p>
+          </HighlightBlock>
           <p className="mt-3">
             <strong>Best practice:</strong> Implement dual-stack (both IPv4 and IPv6) during transition, with IPv6 preferred for new connections. Monitor client IPv6 adoption and gradually shift traffic as adoption increases.
           </p>
@@ -235,16 +248,19 @@ export default function IpAddressingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production IP addressing requires careful planning and operational discipline to avoid costly readdressing later.
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Reserve CIDR Space for Growth:</strong> Allocate /16 or /20 blocks for VPCs, even if you only need /24 initially. Readdressing a running system is painful and risky. Reserve larger blocks for dynamic workloads (auto-scaling app tiers) and smaller blocks for stable services (databases, internal tools).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ensure Non-Overlapping CIDR Blocks:</strong> Overlapping CIDRs prevent VPC peering and complicate multi-region architectures. Use IPAM (IP Address Management) tools to track allocations across environments and accounts. Document all CIDR assignments in a central registry.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Plan IPv6 Adoption Early:</strong> Even if traffic is mostly IPv4 today, design systems with IPv6 compatibility in mind. Ensure firewalls, load balancers, and observability tools are IPv6-aware to avoid blind spots. Track client IPv6 adoption metrics to inform migration timing.
           </li>
@@ -265,16 +281,19 @@ export default function IpAddressingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           IP addressing mistakes often surface months or years after deployment, making them expensive to fix.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Overlapping CIDR Blocks During VPC Peering:</strong> The most common multi-region mistake. VPC-A uses 10.0.0.0/16, VPC-B also uses 10.0.0.0/16. Peering fails because routes conflict. Prevention: centralize CIDR allocation, use IPAM tools, document all assignments.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Using Public IPs for Internal Traffic:</strong> Routing internal service-to-service traffic over public IPs increases latency, incurs data transfer costs, and exposes services to the internet. Use private subnets and VPC endpoints instead.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring IPv6 Compatibility:</strong> Building new services without IPv6 support creates technical debt. Mobile networks increasingly require IPv6. Dual-stack implementation during initial development is cheaper than retrofitting later.
           </li>
@@ -292,15 +311,18 @@ export default function IpAddressingArticle() {
 
       <section>
         <h2>Production Case Studies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-world IP addressing implementations demonstrate how theoretical patterns adapt to production constraints.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Netflix: Multi-Region VPC Design</h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Netflix operates across multiple AWS regions with non-overlapping CIDR blocks for each region. Their approach includes:
-          </p>
+          </HighlightBlock>
           <ul className="space-y-2">
             <li>
               <strong>Regional CIDR Allocation:</strong> Each region receives a unique /16 block (e.g., us-east-1: 10.0.0.0/16, us-west-2: 10.1.0.0/16), preventing overlap during disaster recovery failover.
@@ -353,9 +375,12 @@ export default function IpAddressingArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding IP addressing performance characteristics helps optimize network design.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">NAT Gateway Performance</h3>
@@ -368,16 +393,16 @@ export default function IpAddressingArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Max Connections</td>
                 <td className="p-2">~55,000 ports</td>
                 <td className="p-2">N × 55,000 ports</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Throughput</td>
                 <td className="p-2">Up to 10 Gbps</td>
                 <td className="p-2">N × 10 Gbps</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Latency Impact</td>
                 <td className="p-2">+1-5ms</td>
@@ -395,12 +420,12 @@ export default function IpAddressingArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">IPv6 vs IPv4 Latency</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Direct Comparison:</strong> IPv6 often has slightly lower latency (1-3ms) due to simpler routing tables and no NAT traversal.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Mobile Networks:</strong> IPv6 can be significantly faster (10-50ms) on mobile networks where IPv4 requires carrier-grade NAT.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Dual-Stack Overhead:</strong> Running both protocols adds minimal overhead (~1% CPU) but provides compatibility during transition.
             </li>
@@ -410,19 +435,22 @@ export default function IpAddressingArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           IP addressing decisions directly impact infrastructure costs.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Cost Components</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Public IP Addresses:</strong> AWS charges ~$3.60/month per unused Elastic IP. Unused public IPs accumulate costs if not properly managed.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>NAT Gateways:</strong> ~$32/month per gateway plus $0.045/GB for data processing. Large-scale egress through NAT can cost thousands monthly.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Data Transfer:</strong> Cross-AZ traffic costs $0.01/GB. Cross-region costs $0.02-0.05/GB. IP addressing that minimizes cross-AZ traffic reduces costs.
             </li>
@@ -453,19 +481,22 @@ export default function IpAddressingArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           IP addressing intersects with security at multiple layers.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">IP-Based Access Controls</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Security Groups:</strong> Stateful firewalls at the instance level. Allow rules automatically permit return traffic.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Network ACLs:</strong> Stateless firewalls at the subnet level. Require explicit rules for both inbound and outbound traffic.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>WAF IP Rules:</strong> Web Application Firewalls can allowlist or blocklist IP ranges at the edge.
             </li>
@@ -493,34 +524,37 @@ export default function IpAddressingArticle() {
 
       <section>
         <h2>Decision Framework: Subnet Sizing</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Choose appropriate subnet sizes based on workload characteristics.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Subnet Sizing Guide</h3>
           <table className="w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-theme">
-                <th className="p-2 text-left">CIDR</th>
+  <tr className="border-b border-theme">
+<th className="p-2 text-left">CIDR</th>
                 <th className="p-2 text-left">Total IPs</th>
                 <th className="p-2 text-left">Usable IPs</th>
                 <th className="p-2 text-left">Use Case</th>
-              </tr>
-            </thead>
+  </tr>
+</thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">/28</td>
                 <td className="p-2">16</td>
                 <td className="p-2">11</td>
                 <td className="p-2">Static services, bastion hosts</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">/27</td>
                 <td className="p-2">32</td>
                 <td className="p-2">27</td>
                 <td className="p-2">Small services, dev environments</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">/26</td>
                 <td className="p-2">64</td>
@@ -552,12 +586,15 @@ export default function IpAddressingArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why do we need IPv6?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Why do we need IPv6?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: IPv4 addresses are exhausted (~4.3 billion total). IPv6 provides a vastly larger address space (3.4 × 10³⁸ addresses), better routing aggregation, eliminates NAT requirements, and includes built-in security features. Mobile networks and IoT devices increasingly require IPv6.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

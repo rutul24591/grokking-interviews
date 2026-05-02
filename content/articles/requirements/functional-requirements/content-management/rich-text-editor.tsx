@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,10 @@ export default function RichTextEditorArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Rich Text Editor</strong> provides WYSIWYG (What You See Is What You Get) or
           markdown-based content creation with formatting, embedding, and collaboration
           capabilities. It is the core component of content creation interfaces enabling users to
@@ -41,7 +45,7 @@ export default function RichTextEditorArticle() {
           critical for user experience — a poor editor frustrates users causing content quality
           issues and abandonment, while a well-designed editor empowers users to create high-quality
           formatted content efficiently.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/editor-types.svg"
@@ -49,7 +53,7 @@ export default function RichTextEditorArticle() {
           caption="Editor Types — comparing WYSIWYG, Markdown, and Block-based editors with features and use cases"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing rich text editor requires deep
           understanding of editor types including WYSIWYG editors like TinyMCE and CKEditor
           providing visual editing with immediate formatting feedback ideal for non-technical users,
@@ -68,7 +72,7 @@ export default function RichTextEditorArticle() {
           screen reader support, focus management, and ARIA labels. Paste handling includes clean
           paste stripping formatting, paste from Word preserving structure, and paste image
           uploading. The implementation must balance features with performance and accessibility.
-        </p>
+        </HighlightBlock>
 
         <p>
           Modern rich text editors have evolved from simple textarea replacements to sophisticated
@@ -84,13 +88,16 @@ export default function RichTextEditorArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rich text editor is built on fundamental concepts that determine how content is created,
           formatted, and managed. Understanding these concepts is essential for designing effective
           editing experiences.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Editor Types:</strong> WYSIWYG editors like TinyMCE, CKEditor, and Quill provide
           visual editing with toolbar buttons for formatting showing content as it will appear
           published ideal for non-technical users creating articles, emails, and documents. Markdown
@@ -100,7 +107,7 @@ export default function RichTextEditorArticle() {
           Gutenberg (WordPress), Notion, and Craft treat content as modular blocks (paragraph,
           heading, image, embed) that can be rearranged dragged and transformed enabling flexible
           layout creation without coding.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Editor Selection:</strong> Framework compatibility ensures editor works with your
@@ -137,11 +144,14 @@ export default function RichTextEditorArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rich text editor architecture separates content model, editing interface, formatting
           engine, and output rendering enabling modular implementation with clear boundaries. This
           architecture is critical for extensibility, performance, and accessibility.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/editor-types.svg"
@@ -149,7 +159,7 @@ export default function RichTextEditorArticle() {
           caption="Editor Types — comparing WYSIWYG, Markdown, and Block-based editors with features and use cases"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Editor flow begins with user typing or pasting content into editable area. Content model
           represents content as structured data (HTML DOM, markdown AST, or block tree) enabling
           programmatic manipulation. Formatting engine applies formatting through toolbar buttons or
@@ -158,7 +168,7 @@ export default function RichTextEditorArticle() {
           or through live preview. For block-based, changes update block structure with drag-drop
           reordering. Output rendering converts content model to output format (HTML for web,
           markdown for storage, JSON for API) with sanitization preventing XSS attacks.
-        </p>
+        </HighlightBlock>
 
         <p>
           Content model architecture includes HTML DOM for WYSIWYG editors representing content as
@@ -187,13 +197,16 @@ export default function RichTextEditorArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing rich text editor involves trade-offs between ease of use, flexibility,
           performance, and maintenance. Understanding these trade-offs is essential for making
           informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           WYSIWYG versus Markdown presents ease-of-use versus control trade-offs. WYSIWYG provides
           visual editing with immediate formatting feedback requiring no syntax knowledge ideal for
           non-technical users but produces HTML output with potential vendor lock-in, larger output
@@ -202,7 +215,7 @@ export default function RichTextEditorArticle() {
           output, smaller file size, version-control friendly diff, and no vendor lock-in. The
           recommendation is WYSIWYG for non-technical users creating rich content, Markdown for
           technical users developers and writers valuing portability and version control.
-        </p>
+        </HighlightBlock>
 
         <p>
           Heavyweight versus lightweight editors presents features versus performance trade-offs.
@@ -230,18 +243,21 @@ export default function RichTextEditorArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing rich text editor requires following established best practices to ensure
           usability, accessibility, security, and performance.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Editor selection matches editor capabilities to requirements evaluating framework
           compatibility, feature requirements, collaboration needs, accessibility compliance, and
           maintenance considerations. Test editors with real content and use cases before selection.
           Consider total cost of ownership including licensing for commercial editors and
           maintenance effort for open source.
-        </p>
+        </HighlightBlock>
 
         <p>
           Formatting features provide essential formatting (bold, italic, headings, lists, links)
@@ -277,17 +293,20 @@ export default function RichTextEditorArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing rich text editor to ensure usability,
           accessibility, security, and performance.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           No XSS sanitization allows malicious scripts through editor content. Fix by sanitizing
           all output removing script tags, event handlers, and javascript: URLs. Use libraries like
           DOMPurify for HTML sanitization. Validate and sanitize on server-side never trusting
           client-side sanitization.
-        </p>
+        </HighlightBlock>
 
         <p>
           Poor keyboard navigation prevents keyboard-only users from using editor. Fix by
@@ -350,19 +369,22 @@ export default function RichTextEditorArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rich text editor is critical for content creation across different domains. Here are
           real-world implementations from production systems demonstrating different approaches to
           editing challenges.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Docs editing addresses real-time collaboration with multiple users. The solution
           uses WYSIWYG editor with operational transforms for real-time co-editing, comments and
           suggestions for feedback, version history with named versions, voice typing for dictation,
           and offline editing with sync. The result is seamless collaboration with multiple users
           editing simultaneously with conflict-free merging.
-        </p>
+        </HighlightBlock>
 
         <p>
           Stack Overflow editing addresses technical content with code formatting. The solution uses
@@ -397,14 +419,17 @@ export default function RichTextEditorArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of rich text editor design, implementation, and
           operational concerns for staff and principal engineer interviews.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you select rich text editor?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you select rich text editor?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Evaluate framework compatibility (React, Vue, Angular). Match feature requirements
               (formatting, media, collaboration). Consider accessibility compliance (WCAG 2.1).

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,10 @@ export default function ConflictResolutionUXArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Conflict Resolution UX</strong> addresses how applications
           handle situations where the same data has been modified in multiple
           places — different browser tabs, different devices, or by different
@@ -44,8 +48,8 @@ export default function ConflictResolutionUXArticle() {
           changes made on a phone and a tablet diverge, and in queue replay
           scenarios where queued mutations conflict with current server state
           after reconnection.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff engineers, conflict resolution is both a technical and user
           experience challenge. Technically, you need detection mechanisms
           (version vectors, timestamps, field-level tracking) and resolution
@@ -57,7 +61,7 @@ export default function ConflictResolutionUXArticle() {
           right approach depends on the application domain — a collaborative
           document editor requires automatic convergence (CRDTs), while a
           financial transaction system requires manual review of every conflict.
-        </p>
+        </HighlightBlock>
         <p>
           The cost of poor conflict resolution is severe. Silent data loss
           destroys user trust and generates support tickets. Overly aggressive
@@ -72,7 +76,10 @@ export default function ConflictResolutionUXArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Conflict detection is the foundation of any resolution strategy.
           Version vectors track a version number per node (device, user, or
           tab), incrementing the local version on each change. When syncing,
@@ -83,8 +90,8 @@ export default function ConflictResolutionUXArticle() {
           conflict exists. This approach is used in distributed databases like
           DynamoDB and Riak and provides precise conflict detection without
           relying on clock accuracy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Timestamps offer a simpler detection mechanism but introduce clock
           skew challenges. Last-write-wins based on timestamp is straightforward
           to implement but silently loses data when concurrent modifications
@@ -96,7 +103,7 @@ export default function ConflictResolutionUXArticle() {
           kept automatically, and a conflict is only raised when the same field
           is modified by both parties. This is the approach used by Google Docs
           and Firebase.
-        </p>
+        </HighlightBlock>
         <p>
           Operation logs record each mutation as an operation (not just the
           resulting state), enabling conflict detection at the operation level.
@@ -117,7 +124,10 @@ export default function ConflictResolutionUXArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The conflict resolution architecture flows through detection,
           classification, resolution, and notification stages. When a sync event
           occurs (coming back online, tab synchronization, or periodic pull),
@@ -129,8 +139,8 @@ export default function ConflictResolutionUXArticle() {
           conflicts in non-critical data may be auto-resolved with last-write
           wins, while conflicts in critical data (financial records, legal
           documents) require manual user review.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The resolution strategy determines how conflicts are handled.
           Last-write-wins is the simplest approach — the most recent timestamp
           wins and the older change is discarded. This is appropriate for
@@ -143,7 +153,7 @@ export default function ConflictResolutionUXArticle() {
           example, if User A inserts text at position 5 and User B inserts text
           at position 3, OT adjusts User A&apos;s insertion position to
           account for User B&apos;s insertion.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/conflict-resolution-strategies.svg"
@@ -175,7 +185,10 @@ export default function ConflictResolutionUXArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Resolution strategy selection involves balancing complexity, data
           safety, and user experience. Last-write-wins is trivially simple to
           implement and works well for low-conflict scenarios (settings
@@ -185,8 +198,8 @@ export default function ConflictResolutionUXArticle() {
           merging adds implementation complexity but automatically resolves the
           majority of conflicts while preserving all non-conflicting changes. It
           is the sweet spot for most applications with multi-device sync.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Operational Transformation enables real-time collaboration with
           sub-second latency but requires a central coordination server, making
           it unsuitable for peer-to-peer or fully offline scenarios. Google Docs
@@ -198,7 +211,7 @@ export default function ConflictResolutionUXArticle() {
           automatically regardless of operation order. The trade-off is higher
           memory usage (CRDTs store metadata for each operation) and more
           complex data structures.
-        </p>
+        </HighlightBlock>
         <p>
           The UX approach to conflict presentation also involves trade-offs.
           Showing a conflict dialog with side-by-side comparison gives users
@@ -216,7 +229,10 @@ export default function ConflictResolutionUXArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design conflict detection to be as granular as possible. Field-level
           tracking is significantly better than document-level tracking because
           it automatically merges non-conflicting changes and only raises
@@ -226,8 +242,8 @@ export default function ConflictResolutionUXArticle() {
           simultaneously without any conflict. The granularity of detection
           directly impacts the frequency of user-facing conflicts — finer
           granularity means fewer conflicts requiring manual resolution.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           When manual resolution is required, provide a clear, intuitive
           comparison interface. Show both versions side by side with differences
           highlighted using color coding (green for additions, red for
@@ -237,7 +253,7 @@ export default function ConflictResolutionUXArticle() {
           than forcing an all-or-nothing choice. Provide a preview of the merged
           result before confirming. Google Docs&apos;s version history and
           Git&apos;s merge conflict interface are exemplary models.
-        </p>
+        </HighlightBlock>
         <p>
           Never silently lose user data. When in doubt, preserve both versions
           and let the user decide later. Create a &quot;conflicted copy&quot;
@@ -252,7 +268,10 @@ export default function ConflictResolutionUXArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most dangerous pitfall is relying on wall-clock timestamps for
           conflict detection without accounting for clock skew. Different
           devices have different clock times, and even a few seconds of skew can
@@ -263,8 +282,8 @@ export default function ConflictResolutionUXArticle() {
           change. The solution is to use server timestamps (the time the server
           receives the change) rather than client timestamps, or to use version
           vectors that do not depend on clock accuracy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common error is failing to prevent infinite rebroadcast loops
           in multi-tab synchronization. When Tab A receives a change from Tab
           B, it must not rebroadcast that change back to Tab B, which would then
@@ -272,7 +291,7 @@ export default function ConflictResolutionUXArticle() {
           track the source of received messages and avoid echoing them back.
           Include a source tab ID or message sequence number in the broadcast
           protocol to detect and discard duplicate messages.
-        </p>
+        </HighlightBlock>
         <p>
           Implementing CRDTs without understanding their memory overhead is a
           frequent mistake. CRDTs store metadata for every operation to enable
@@ -290,7 +309,10 @@ export default function ConflictResolutionUXArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Collaborative document editing is the canonical conflict resolution
           use case. Google Docs uses Operational Transformation with a central
           server that receives every keystroke, transforms it against concurrent
@@ -302,8 +324,8 @@ export default function ConflictResolutionUXArticle() {
           enabling offline editing with automatic convergence when connectivity
           returns. The key insight is that for real-time collaboration, the
           conflict resolution must be automatic and invisible to users.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Mobile-first note-taking applications face different conflict
           challenges. Users frequently edit notes on their phone while offline,
           then sync when connectivity returns — potentially after making
@@ -314,7 +336,7 @@ export default function ConflictResolutionUXArticle() {
           conflict UI shows both versions side by side with highlighted
           differences and allows the user to choose one version or create a
           hybrid.
-        </p>
+        </HighlightBlock>
         <p>
           Distributed version control systems like Git handle conflicts at the
           file level during merge operations. When two branches modify the same
@@ -332,12 +354,15 @@ export default function ConflictResolutionUXArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you detect conflicts in offline-first applications?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Version vectors track a version number per device — if neither
               vector dominates the other, the changes are concurrent and a
               conflict exists. Timestamps provide simpler detection but suffer
@@ -348,7 +373,7 @@ export default function ConflictResolutionUXArticle() {
               approach based on complexity needs — timestamps for simple apps,
               version vectors for distributed systems, CRDTs for real-time
               collaboration.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

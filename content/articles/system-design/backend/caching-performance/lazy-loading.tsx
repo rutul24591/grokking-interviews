@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -41,7 +42,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Lazy loading</strong> is a resource acquisition strategy in
           which data, objects, or computational work are deferred until the
           exact moment they are first accessed, rather than being eagerly
@@ -52,8 +56,8 @@ export default function ArticlePage() {
           to <strong>eager loading</strong>, where all anticipated dependencies
           are resolved upfront regardless of whether every piece will ultimately
           be consumed by the caller.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental tension that lazy loading addresses is one of resource
           economics. Eager loading guarantees that once a response begins, all
           constituent data is already available, eliminating mid-request latency
@@ -67,7 +71,7 @@ export default function ArticlePage() {
           but a deliberate architectural decision that shapes the entire
           request-response contract, cache strategy, error-handling boundaries,
           and observability posture of a service.
-        </p>
+        </HighlightBlock>
         <p>
           Lazy loading is tightly coupled with the <strong>cache-aside</strong>{" "}
           pattern. When a lazy load is triggered, the system first checks
@@ -98,7 +102,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At its core, lazy loading is governed by three interrelated concepts:
           the <strong>trigger mechanism</strong> that determines when deferred
           work is initiated, the <strong>loading boundary</strong> that defines
@@ -112,8 +119,8 @@ export default function ArticlePage() {
           because they make the loading behavior observable and predictable,
           whereas implicit triggers can create hidden query patterns that are
           difficult to detect, reason about, and optimize.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The loading boundary is perhaps the most consequential design
           decision. A narrow loading boundary fetches only the single datum
           that was requested, minimizing per-request cost but potentially
@@ -127,7 +134,7 @@ export default function ArticlePage() {
           consumed. Production systems often employ adaptive boundaries that
           start narrow and widen based on observed access patterns, using
           telemetry to decide when to batch related loads together.
-        </p>
+        </HighlightBlock>
         <p>
           The caching strategy determines whether a lazy load is a one-time
           cost or a recurring expense. When lazy-loaded data is cached with an
@@ -223,7 +230,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production-grade lazy loading architecture operates as a multi-layer
           system where each layer contributes to resource efficiency, latency
           predictability, and fault tolerance. The architecture begins at the
@@ -234,8 +244,8 @@ export default function ArticlePage() {
           depth indicators. The service layer then constructs a loading plan
           that identifies which data can be served from cache and which requires
           a lazy fetch from the authoritative store.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The loading plan is executed in phases. The first phase resolves all
           eagerly loaded data that is marked as critical for the response
           envelope. This typically includes the primary entity being requested,
@@ -250,7 +260,7 @@ export default function ArticlePage() {
           possible, respecting connection pool limits and per-source rate limits.
           Each lazy load result is written to the cache before being merged
           into the response envelope.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${DIAGRAM_BASE}/lazy-loading-waterfall.svg`}
@@ -348,7 +358,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The decision between lazy loading and eager loading is not a binary
           choice but a spectrum that must be calibrated for each data domain,
           each consumer contract, and each point in the request lifecycle.
@@ -363,8 +376,8 @@ export default function ArticlePage() {
           lazy loading appropriate for large, sparse data envelopes where the
           consumer accesses a small and unpredictable subset of the available
           data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The hybrid approach, often called <strong>selective eager loading</strong>
           or <strong>strategic loading</strong>, combines both strategies by
           eagerly loading a carefully chosen subset of data that is known to be
@@ -378,7 +391,7 @@ export default function ArticlePage() {
           first optimization pass shifts toward pure lazy loading to reduce
           resource costs, and the mature implementation settles into a hybrid
           that is continuously tuned based on production access patterns.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -489,7 +502,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of any effective lazy loading strategy is a rigorous
           approach to batching and deduplication. Every lazy loading path in
           the system should be instrumented with a batching layer that collects
@@ -504,8 +520,8 @@ export default function ArticlePage() {
           and the result is fanned out to all requesters. This is particularly
           important in GraphQL resolvers, where the same nested entity may be
           referenced from multiple parent entities in the same query.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cache integration is non-negotiable for lazy loading at scale. Every
           lazy load must follow the cache-aside pattern: check the cache first,
           fetch from the authoritative store on a miss, populate the cache with
@@ -518,7 +534,7 @@ export default function ArticlePage() {
           can have a long TTL. Cache write failures should be logged but should
           not cause the lazy load to fail, because the authoritative store
           remains the source of truth.
-        </p>
+        </HighlightBlock>
         <p>
           Pagination implementation should default to cursor-based pagination
           for any dataset that can grow beyond a few thousand rows. Offset-based
@@ -583,7 +599,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most pervasive pitfall in lazy loading is the unmitigated N+1
           query problem, which consistently ranks as the top cause of database
           performance degradation in production systems that adopt lazy loading.
@@ -599,8 +618,8 @@ export default function ArticlePage() {
           paths, enforce this mandate through automated query-count checks in
           the CI/CD pipeline, and monitor N+1 query counts in production with
           alerting on threshold violations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common pitfall is the <strong>cache stampede</strong> that
           occurs when a popular lazy-loaded cache entry expires and thousands
           of concurrent requests simultaneously detect the cache miss and each
@@ -614,7 +633,7 @@ export default function ArticlePage() {
           be employed, where the expired cache entry is served immediately while
           a background refresh is triggered, ensuring that only one refresh
           occurs regardless of the number of concurrent requests.
-        </p>
+        </HighlightBlock>
         <p>
           A subtler pitfall is the <strong>latency tail problem</strong> that
           emerges when lazy loading shifts latency from the initial request to
@@ -671,7 +690,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>E-commerce product detail pages</strong> represent one of the
           most canonical lazy loading use cases at scale. When a user navigates
           to a product page, the core product information (name, price, primary
@@ -687,8 +709,8 @@ export default function ArticlePage() {
           from cache. Pagination for reviews uses cursor-based pagination to
           handle products with tens of thousands of reviews without performance
           degradation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Social media feeds</strong> employ lazy loading as their
           fundamental data access pattern. The feed is initially populated with
           a small number of posts (e.g., 10-20), and additional posts are
@@ -702,7 +724,7 @@ export default function ArticlePage() {
           employs cursor-based pagination with snapshot isolation to ensure that
           the feed remains consistent as the user scrolls, even as new posts are
           published and existing posts are edited or deleted.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Enterprise admin dashboards</strong> are perhaps the most
           extreme example of lazy loading necessity. An admin dashboard may
@@ -755,14 +777,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q1: What is the N+1 query problem, and how do you prevent it in a
               lazy loading system?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               The N+1 query problem occurs when a system issues one initial query
               to retrieve a list of N entities, and then issues N additional
               queries to load related data for each entity individually through
@@ -771,7 +796,7 @@ export default function ArticlePage() {
               round trips. This is devastating for performance because each round
               trip carries network latency, connection acquisition overhead, and
               query planning cost.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               Prevention requires a batching layer. The most common approach is
               the DataLoader pattern: within the scope of a single request, all

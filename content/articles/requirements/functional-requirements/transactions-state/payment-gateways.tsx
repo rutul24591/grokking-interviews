@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function PaymentGatewaysArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Payment gateways are the infrastructure that processes credit card and digital payments: Stripe, PayPal, Braintree, Adyen, Square. Gateway selection impacts conversion (supported payment methods), cost (processing fees), reliability (uptime, failover), and compliance (PCI DSS, regional regulations). For staff and principal engineers, payment gateway architecture involves multi-gateway routing (optimize for cost, success rate), failover strategies (gateway downtime), and compliance requirements (PCI DSS, PSD2, regional regulations).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of payment gateway integration extends beyond simple API calls. Different gateways have different APIs (REST, GraphQL, SDK), different features (3D Secure, tokenization, recurring billing), different fees (interchange++, flat rate), and different geographic coverage (US, EU, Asia). Multi-gateway routing optimizes for cost (route to cheapest gateway), success rate (route to highest auth rate), and geography (route to local gateway). Failover strategies handle gateway downtime (automatic failover, retry logic). Compliance requirements vary by region (PCI DSS globally, PSD2 in Europe, local regulations in Asia).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, payment gateway architecture involves abstraction layers (unified gateway interface), routing logic (cost, success rate, geography), and monitoring (success rates, latency, costs). The system must support multiple gateways (Stripe, PayPal, Adyen), multiple payment methods (cards, wallets, bank transfer), and multiple regions (US, EU, Asia). Analytics track gateway performance (auth rate, latency, cost), routing effectiveness (cost savings, success rate improvement), and compliance (PCI DSS audits, regional compliance).
         </p>
@@ -47,13 +51,16 @@ export default function PaymentGatewaysArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Gateway Selection Criteria</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Processing fees impact profitability. Fee structures: flat rate (2.9% + $0.30), interchange++ (interchange + markup), tiered (different rates for different cards). Volume discounts: high volume (&gt;$1M/month) negotiates lower rates. Hidden fees: chargeback fees ($15-25), international fees (+1%), currency conversion (+1%). Display: fee calculator (estimate costs), comparison (gateway vs. gateway), optimization (route to cheapest).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Authorization rates impact revenue. Factors: gateway fraud filters (stricter = lower auth), card network relationships (better relationships = higher auth), regional optimization (local gateway = higher auth). Monitoring: auth rate per gateway, per card type, per region. Optimization: route to highest auth rate, A/B test gateways, negotiate with gateways (improve auth rate).
-        </p>
+        </HighlightBlock>
         <p>
           Geographic coverage impacts international sales. Coverage: domestic (US only), regional (US + EU), global (worldwide). Local payment methods: cards (US, EU), wallets (Alipay in China, Paytm in India), bank transfer (SEPA in EU, iDEAL in Netherlands). Compliance: regional regulations (PSD2 in EU, local regulations in Asia), data residency (data stored in region).
         </p>
@@ -105,9 +112,12 @@ export default function PaymentGatewaysArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Payment gateway architecture spans gateway abstraction, routing logic, failover handling, and compliance. Gateway abstraction provides unified interface (charge, refund, void). Routing logic routes to optimal gateway (cost, success rate, geography). Failover handling handles gateway downtime (automatic failover, retry). Compliance ensures regulatory compliance (PCI DSS, PSD2, regional).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/payment-gateways/gateway-architecture.svg"
@@ -118,9 +128,9 @@ export default function PaymentGatewaysArticle() {
         />
 
         <h3>Gateway Abstraction Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Unified gateway interface defines common operations. Operations: charge (authorize + capture), capture (capture authorized charge), refund (refund charge), void (void authorized charge), verify (verify card without charge). Request: amount, currency, card/payment_method, metadata (order_id, customer_id). Response: success/failure, transaction_id, error_code, error_message.
-        </p>
+        </HighlightBlock>
         <p>
           Gateway adapters implement unified interface. Adapters: StripeAdapter (Stripe API), PayPalAdapter (PayPal API), AdyenAdapter (Adyen API). Implementation: translate unified request to gateway-specific request, translate gateway-specific response to unified response, handle gateway-specific errors (map to unified errors). Benefits: swap gateways (change adapter), test gateways (mock adapter), multi-gateway (route to different adapters).
         </p>
@@ -180,14 +190,17 @@ export default function PaymentGatewaysArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Payment gateway design involves trade-offs between cost, reliability, complexity, and compliance. Understanding these trade-offs enables informed decisions aligned with business requirements and operational capabilities.
-        </p>
+        </HighlightBlock>
 
         <h3>Single vs. Multi-Gateway</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Single gateway (one gateway for all transactions). Pros: Simple integration (one API), simple compliance (one gateway to comply), simple operations (one dashboard). Cons: Single point of failure (gateway down = no payments), no optimization (can&apos;t route for cost/success), gateway lock-in (hard to switch). Best for: Small businesses (&lt;$1M/year), simple businesses (one region, one currency).
-        </p>
+        </HighlightBlock>
         <p>
           Multi-gateway (multiple gateways for routing). Pros: Redundancy (gateway down = failover), optimization (route for cost/success), negotiation leverage (can switch gateways). Cons: Complex integration (multiple APIs), complex compliance (multiple gateways to comply), complex operations (multiple dashboards). Best for: Large businesses (&gt;$1M/year), international businesses (multiple regions), high-availability requirements.
         </p>
@@ -239,13 +252,16 @@ export default function PaymentGatewaysArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use gateway abstraction:</strong> Unified interface (charge, refund, void), adapters per gateway (StripeAdapter, PayPalAdapter), easy to swap (change adapter). Benefits: swap gateways, test gateways, multi-gateway routing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement multi-gateway routing:</strong> Route by cost (cheapest gateway), success rate (highest auth), geography (local gateway). Benefits: cost savings (0.5-1%), auth improvement (1-2%), geographic optimization (local payment methods).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement automatic failover:</strong> Health monitoring (latency, errors, auth rate), automatic failover (switch on failure), retry logic (retry on backup). Benefits: high availability (gateway down = failover), reduced downtime (automatic recovery).
           </li>
@@ -275,13 +291,16 @@ export default function PaymentGatewaysArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Single gateway dependency:</strong> Gateway down = no payments. Solution: Multi-gateway (primary + backup), automatic failover, retry logic.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No routing optimization:</strong> Paying more than needed. Solution: Cost-based routing, success rate routing, geographic routing.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No health monitoring:</strong> Gateway issues undetected. Solution: Health checks (latency, errors, auth rate), alerts (threshold breaches), dashboard (real-time status).
           </li>
@@ -311,16 +330,19 @@ export default function PaymentGatewaysArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Stripe Multi-Gateway Setup</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe as primary gateway: full features (cards, wallets, recurring), high auth rate (good relationships), global coverage (135+ currencies). Backup gateway: PayPal (alternative payment method), Adyen (enterprise features). Routing: Stripe primary (main traffic), PayPal backup (if Stripe down), Adyen for enterprise (high-value transactions). Failover: automatic (Stripe down = PayPal), retry logic (retry on backup), health monitoring (latency, errors, auth rate).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Adyen Global Gateway</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Adyen as single global gateway: global coverage (worldwide), local payment methods (Alipay, iDEAL, SEPA), single platform (one integration). Benefits: simplified integration (one API), local optimization (local gateways), compliance (regional compliance). Use cases: international businesses (multiple regions), local payment methods required, compliance required (data residency).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">PayPal + Stripe Combination</h3>
         <p>
@@ -340,12 +362,15 @@ export default function PaymentGatewaysArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you select payment gateways?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you select payment gateways?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Criteria: processing fees (flat rate vs. interchange++), authorization rates (gateway auth rate), geographic coverage (regions, payment methods), features (3D Secure, tokenization, recurring), compliance (PCI DSS, PSD2, regional). Evaluation: trial period (test gateway), negotiation (volume discounts), comparison (gateway vs. gateway). Decision: primary gateway (main traffic), backup gateway (failover), regional gateways (local optimization).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

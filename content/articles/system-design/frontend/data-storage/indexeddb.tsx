@@ -67,7 +67,7 @@ export default function IndexedDBConciseArticle() {
           the browser. Understanding these primitives and their interactions is critical for correct usage.
         </HighlightBlock>
         <ul className="space-y-3">
-          <HighlightBlock as="li" tier="crucial">
+          <HighlightBlock as="li" tier="important">
             <strong>Databases and Versioning:</strong> A database is opened by name and integer version number via
             <code>indexedDB.open(name, version)</code>. If the specified version is higher than what exists (or the
             database does not exist), the <code>onupgradeneeded</code> event fires within a special
@@ -85,14 +85,14 @@ export default function IndexedDBConciseArticle() {
             and persist across sessions. You can have multiple object stores per database, each serving a different
             entity type.
           </li>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Indexes:</strong> Secondary access paths on object stores. Creating an index on a property
             (e.g., <code>store.createIndex("email", "email", {"{"} unique: true {"}"})</code>) builds a B-tree
             that maps that property's values to primary keys. Indexes enable efficient lookups without full-store
             scans. They can be <code>unique</code> (enforcing no duplicate values) or <code>multiEntry</code>
             (indexing each element of an array-valued field individually). Each index adds write overhead since its
             B-tree must be updated on every insert, update, or delete.
-          </HighlightBlock>
+          </li>
           <HighlightBlock as="li" tier="crucial">
             <strong>Transactions:</strong> All data access in IndexedDB occurs within transactions. Three modes
             exist: <code>readonly</code> (shared lock, multiple concurrent readers allowed),
@@ -124,14 +124,14 @@ export default function IndexedDBConciseArticle() {
             proceed. If connections are not closed, the upgrading tab receives a <code>blocked</code> event. This
             is a critical coordination problem in multi-tab applications.
           </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Dexie.js and idb Wrappers:</strong> <strong>Dexie.js</strong> is the most widely used wrapper,
             providing a fluent, Promise-based API with built-in support for live queries (reactive data binding),
             declarative schema versioning with automatic migrations, compound indexes, and bulk operations.
             <strong>idb</strong> (by Jake Archibald) is a thinner wrapper that simply promisifies the native API
             without adding abstractions. For production applications, Dexie.js is strongly recommended for its
             developer ergonomics and handling of edge cases around transaction lifecycles.
-          </HighlightBlock>
+          </li>
           <li>
             <strong>Key Ranges (IDBKeyRange):</strong> The <code>IDBKeyRange</code> API enables range-based queries
             on keys and indexes: <code>IDBKeyRange.bound(lower, upper, lowerOpen, upperOpen)</code> for ranges,
@@ -140,13 +140,13 @@ export default function IndexedDBConciseArticle() {
             ranges work with both cursors and <code>getAll()</code> to efficiently retrieve subsets of data
             leveraging the B-tree index structure.
           </li>
-          <HighlightBlock as="li" tier="important">
+          <li>
             <strong>Cursors:</strong> For iterating over large result sets without loading everything into memory.
             <code>store.openCursor(keyRange, direction)</code> returns an <code>IDBCursorWithValue</code> that
             you advance with <code>cursor.continue()</code>. Direction can be <code>"next"</code>,
             <code>"prev"</code>, <code>"nextunique"</code>, or <code>"prevunique"</code>. Cursors are essential
             for pagination patterns and for processing datasets that exceed available memory.
-          </HighlightBlock>
+          </li>
         </ul>
       </section>
 
@@ -311,13 +311,13 @@ export default function IndexedDBConciseArticle() {
           Building reliable IndexedDB-backed storage requires deliberate attention to transaction management, schema design, and cross-browser behavior:
         </HighlightBlock>
         <ol className="space-y-3">
-          <HighlightBlock as="li" tier="crucial">
+          <li>
             <strong>Use Dexie.js for Production Applications:</strong> The raw IndexedDB API is verbose, error-prone,
             and requires careful manual transaction management. Dexie.js provides Promise-based queries, declarative
             versioned schemas with automatic migrations, live queries for reactive UI integration, and bulk operations.
             It handles the microtask-level transaction lifecycle correctly, eliminating the most common class of
             IndexedDB bugs. Reserve raw API usage for libraries and performance-critical paths.
-          </HighlightBlock>
+          </li>
           <HighlightBlock as="li" tier="crucial">
             <strong>Keep Transactions Short and Focused:</strong> Transactions hold locks. A long-running readwrite
             transaction blocks other readwrite transactions on the same stores. Never perform network requests, heavy
@@ -457,9 +457,7 @@ export default function IndexedDBConciseArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When NOT to Use IndexedDB</h3>
-          <HighlightBlock as="p" tier="crucial">
-            IndexedDB is not the right tool for every client-side storage need:
-          </HighlightBlock>
+          <p>IndexedDB is not the right tool for every client-side storage need:</p>
           <ul className="mt-2 space-y-2">
             <li>
               • <strong>Small key-value config:</strong> For a theme preference, locale setting, or feature flag,
@@ -569,22 +567,26 @@ export default function IndexedDBConciseArticle() {
           ============================================================ */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          IndexedDB details that matter in senior interviews: transaction lifecycle (auto-commit), multi-tab upgrade
+          coordination (<code>versionchange</code>/<code>blocked</code>), and when to use wrappers like Dexie.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.w3.org/TR/IndexedDB-3/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               W3C - Indexed Database API 3.0 Specification
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN Web Docs - IndexedDB API
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://dexie.org/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Dexie.js - A Minimalistic Wrapper for IndexedDB
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://web.dev/articles/indexeddb-best-practices" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev - IndexedDB Best Practices

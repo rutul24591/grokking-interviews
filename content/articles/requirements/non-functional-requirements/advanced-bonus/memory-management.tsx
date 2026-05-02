@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function MemoryManagementArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Memory Management</strong> in frontend development refers to the allocation, usage, and
           deallocation of memory resources by JavaScript applications. While JavaScript has automatic garbage
           collection, memory leaks still occur when references are unintentionally held, preventing the garbage
           collector from reclaiming memory that is no longer needed by the application.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Memory leaks are insidious because they accumulate over time. A single leak of a few kilobytes may
           seem insignificant, but over a user session lasting hours, with repeated component mounts and
           unmounts, the accumulation can reach hundreds of megabytes. This causes sluggish performance, UI
           freezes, and eventually browser tab crashes. In modern Single Page Applications, memory management
           is critical because users keep tabs open for hours or days, unlike traditional multi-page
           applications where navigation triggers full page reloads that clear memory automatically.
-        </p>
+        </HighlightBlock>
         <p>
           The fundamental insight for understanding JavaScript memory leaks is that they are not about
           allocating memory without freeing it, since the garbage collector handles that automatically.
@@ -57,15 +61,18 @@ export default function MemoryManagementArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding how JavaScript manages memory requires examining the memory lifecycle and garbage
           collection mechanisms. JavaScript memory follows a four-stage lifecycle beginning with allocation,
           where memory is allocated when variables are created, objects are instantiated, or functions are
           defined. JavaScript automatically allocates memory during variable declaration without requiring
           explicit allocation calls. The usage stage follows, where the application reads and writes to the
           allocated memory during execution.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The reachability analysis stage is where the garbage collector determines which objects are still
           reachable from root references. Roots include the global object, which is the window object in
           browsers or the global object in Node.js, local variables in currently executing functions on the
@@ -73,7 +80,7 @@ export default function MemoryManagementArticle() {
           closure scope that remain reachable as long as the closure exists. Anything not reachable from
           these roots is considered garbage. The deallocation stage follows, where unreachable objects are
           garbage collected and memory is reclaimed.
-        </p>
+        </HighlightBlock>
         <p>
           Modern JavaScript engines use sophisticated garbage collection strategies. The <strong>mark-and-sweep</strong>
           algorithm is the classic approach where the collector marks all objects reachable from roots, then
@@ -111,7 +118,10 @@ export default function MemoryManagementArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Memory leaks in JavaScript applications follow predictable patterns that stem from the way
           references are maintained throughout the application lifecycle. Understanding these patterns is
           essential for both prevention and detection. The most common source of memory leaks is forgotten
@@ -119,8 +129,8 @@ export default function MemoryManagementArticle() {
           useEffect hook but does not return a cleanup function, a new listener is added each time the
           component mounts. The old listeners persist, each holding references to component state and props,
           because event listeners create strong references to their callback functions and closure variables.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Detached DOM trees occur when DOM nodes are removed from the document but JavaScript still holds
           references to them. This happens when a component stores a reference to a DOM element via useRef
           or direct query, the component unmounts removing the element from the DOM, but the reference
@@ -128,7 +138,7 @@ export default function MemoryManagementArticle() {
           be garbage collected because the JavaScript reference keeps it reachable. Chrome DevTools Heap
           Snapshots reveal these as detached HTMLDivElement objects, which are DOM nodes with no parent
           but still referenced by JavaScript.
-        </p>
+        </HighlightBlock>
         <p>
           Closures holding large objects present another common leak pattern. Closures capture variables
           from their enclosing scope, and if a closure outlives its intended lifetime, it brings along all
@@ -160,7 +170,10 @@ export default function MemoryManagementArticle() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Memory management decisions involve fundamental trade-offs between performance, developer
           experience, and application reliability. The choice of cache eviction strategy illustrates this
           clearly. LRU eviction provides good hit rates for access patterns with temporal locality but
@@ -169,15 +182,15 @@ export default function MemoryManagementArticle() {
           but may retain rarely-accessed entries that consume memory while evicting frequently-accessed
           entries that happen to be older. Size-based eviction provides strict memory bounds but requires
           tracking the size of each entry, which is non-trivial for complex objects.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           WeakMap provides automatic garbage collection of cache entries when keys are no longer referenced
           elsewhere, eliminating the need for explicit eviction logic. However, WeakMap cannot be enumerated,
           meaning you cannot iterate over keys or determine the cache size. This makes debugging and
           monitoring more difficult. WeakMap is ideal for metadata storage about DOM elements or instance
           tracking where entries should auto-cleanup, but unsuitable for caches where you need to enumerate
           or count entries.
-        </p>
+        </HighlightBlock>
         <p>
           Virtualization for large lists trades implementation complexity for dramatic memory savings.
           Instead of rendering ten thousand rows each with multiple DOM nodes, virtualization renders
@@ -209,7 +222,10 @@ export default function MemoryManagementArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Prevention is significantly more effective than detection, so building memory-safe patterns into
           the development workflow is essential. Every component should follow a strict cleanup protocol
           where setup operations are paired with corresponding cleanup operations. In React, this means
@@ -220,14 +236,14 @@ export default function MemoryManagementArticle() {
           with unsubscribe, setInterval pairs with clearInterval, setTimeout pairs with clearTimeout,
           requestAnimationFrame pairs with cancelAnimationFrame, and DOM references should be nullified
           in cleanup.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           AbortController should be used for asynchronous operations to cancel pending fetch requests and
           other async operations when components unmount. This prevents state updates on unmounted
           components, releases resources held by pending requests, and avoids memory leaks from
           closure-captured variables. The pattern involves creating an AbortController in the component,
           passing its signal to fetch calls, and calling abort in the cleanup function.
-        </p>
+        </HighlightBlock>
         <p>
           Bounded caching with proper eviction policies prevents the slow memory growth that unbounded
           caches cause. Libraries like lru-cache provide well-tested implementations, and React
@@ -256,7 +272,10 @@ export default function MemoryManagementArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           One of the most subtle pitfalls is the interaction between third-party libraries and memory
           management. Chart libraries, map libraries, and rich text editors often maintain their own
           internal state and DOM structures that are separate from the framework&apos;s virtual DOM.
@@ -264,15 +283,15 @@ export default function MemoryManagementArticle() {
           The library&apos;s destroy or dispose method must be called explicitly in the component cleanup
           function. Failing to do so leaves the library&apos;s internal data structures in memory even
           though the component is gone.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common pitfall is the assumption that React&apos;s automatic cleanup of refs and state
           on unmount means no manual cleanup is needed. While React does clean up its internal references,
           external references from event listeners, subscriptions, or closures are invisible to React and
           will keep objects alive. The useEffect cleanup function is specifically designed to handle these
           external references, and omitting it is one of the most common causes of memory leaks in React
           applications.
-        </p>
+        </HighlightBlock>
         <p>
           Development mode behavior can mask memory leaks that manifest in production. React Strict Mode
           in development mounts and unmounts components twice, which can surface some leak patterns but
@@ -306,7 +325,10 @@ export default function MemoryManagementArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Social media feed applications face significant memory challenges due to infinite scrolling
           patterns. A social media application experienced tab crashes after users scrolled through
           approximately five hundred posts. Heap snapshot analysis revealed that detached DOM trees from
@@ -316,8 +338,8 @@ export default function MemoryManagementArticle() {
           image unloading for offscreen posts, and properly disconnecting IntersectionObserver instances
           on unmount. Memory usage dropped from eight hundred megabytes to eighty megabytes after
           scrolling through one thousand posts.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Analytics dashboard applications present a different memory challenge due to long-lived
           sessions with continuously updating data. An analytics dashboard became sluggish after two to
           three hours of use. Allocation timeline analysis showed that chart instances were accumulating
@@ -328,7 +350,7 @@ export default function MemoryManagementArticle() {
           subscriptions to use a single handler with proper cleanup, and adding a cleanup function to
           clear the interval on unmount. Memory remained stable at approximately one hundred twenty
           megabytes over eight-hour sessions.
-        </p>
+        </HighlightBlock>
         <p>
           Real-time collaboration tools like document editors and whiteboard applications must manage
           memory for operational transformation data, presence information, and undo history. These
@@ -349,10 +371,13 @@ export default function MemoryManagementArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How does JavaScript garbage collection work in modern engines?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How does JavaScript garbage collection work in modern engines?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: JavaScript uses automatic garbage collection primarily based on the mark-and-sweep
               algorithm. The collector marks all objects reachable from root references including the
               global object, call stack variables, and closure-captured variables, then sweeps through
@@ -363,7 +388,7 @@ export default function MemoryManagementArticle() {
               incremental garbage collection to spread work across multiple cycles, concurrent marking
               on background threads, and parallel sweeping using multiple threads to reduce pause times
               and minimize visible jank.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Capacity planning</strong> is the systematic practice of ensuring a distributed system has sufficient
           compute, memory, storage, and network headroom to meet defined latency and availability objectives — at an
           acceptable cost — as demand changes over time, traffic patterns shift, and failures occur. It is not a synonym
@@ -33,8 +37,8 @@ export default function ArticlePage() {
           objectives intact. Capacity planning operates at the intersection of engineering, finance, and risk management.
           Every decision involves a trade-off between the cost of idle resources and the cost of an outage when those
           resources prove insufficient.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The consequences of getting capacity planning wrong are asymmetric. Under-provisioning manifests as tail latency
           spikes, request queuing, connection pool exhaustion, and eventually cascading failures that can take down
           entire service meshes. These failures tend to occur during the worst possible moments — product launches,
@@ -43,7 +47,7 @@ export default function ArticlePage() {
           inefficiencies that later become painful at larger scale, and creates a false sense of security that erodes
           engineering discipline. The goal of capacity planning is not to eliminate risk entirely — that would be
           prohibitively expensive — but to make risk explicit, measurable, and governable.
-        </p>
+        </HighlightBlock>
         <p>
           Three numbers must remain conceptually distinct throughout any capacity discussion. <strong>Demand</strong> is
           how much work arrives at the system, measured in requests per second, bytes ingested, jobs per hour, or
@@ -68,7 +72,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most important mental model in capacity planning is that <strong>latency is nonlinear with respect to
           utilization</strong>. As a resource approaches saturation — whether that resource is CPU cycles, database
           connections, thread pool slots, or disk IOPS — queueing theory dictates that wait times grow
@@ -79,13 +86,13 @@ export default function ArticlePage() {
           moved. This phenomenon occurs because requests begin queueing behind each other, and the variance in service
           times amplifies at the tail. Capacity planning that focuses only on average utilization or average latency
           systematically misses the failure mode that users actually experience.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/capacity-planning-diagram-2.svg"
           alt="Utilization versus latency curve showing nonlinear tail latency growth near saturation"
           caption="Tail latency grows sharply near the saturation knee. Headroom keeps the system operating in the flat region of the curve."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The mathematical foundation for this behavior comes from queueing theory, specifically the M/M/1 and M/M/k
           queue models. In an M/M/1 queue — a single server with Poisson arrivals and exponential service times — the
           average wait time in the queue equals rho divided by one minus rho, multiplied by the average service time,
@@ -95,7 +102,7 @@ export default function ArticlePage() {
           roughly seventy to eighty percent enters a region where latency becomes extremely sensitive to small demand
           changes. This is why capacity planning targets explicit headroom percentages rather than running systems at
           &quot;as high as possible&quot; utilization.
-        </p>
+        </HighlightBlock>
         <p>
           Little&apos;s Law provides another essential relationship: the average number of items in a system equals the
           average arrival rate multiplied by the average time each item spends in the system. In capacity terms, this
@@ -142,17 +149,20 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Capacity planning is not a point-in-time analysis — it is a continuous loop that runs throughout the lifecycle
           of a service. The loop has six phases that build on each other, and the output of the final phase feeds
           directly back into the first, creating a closed feedback system that adapts to changing conditions.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/monitoring-operations/capacity-planning-diagram-1.svg"
           alt="Capacity planning loop showing forecast, model, measure, test, decide, and verify phases"
           caption="The capacity planning loop runs continuously, feeding verified production data back into updated forecasts."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>forecast</strong> phase estimates future demand based on historical patterns, growth trends,
           product roadmap changes, and known events. Historical analysis should examine not just the average growth
           rate but the variance: daily peak-to-trough ratios, weekly cycles, seasonal patterns, and the impact of past
@@ -163,7 +173,7 @@ export default function ArticlePage() {
           unexpected viral traffic. The forecast should also account for changes in traffic mix — a new feature might
           increase read-to-write ratio, change payload sizes, or alter cacheability patterns in ways that shift which
           resources become constrained.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>model</strong> phase translates the demand forecast into resource requirements by identifying
           constraints and building capacity models. This involves mapping each component in the architecture to its
@@ -229,7 +239,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Capacity planning is fundamentally a trade-off between cost and resiliency. Every unit of headroom represents
           resources that are paid for but not actively serving user requests under normal conditions. Running a system
           at thirty percent utilization provides substantial headroom for spikes and failures but means seventy percent
@@ -239,8 +252,8 @@ export default function ArticlePage() {
           infrastructure. For a payment processing system where an outage costs millions per hour, the economics favor
           significant headroom. For a batch analytics pipeline with a four-hour SLA, running closer to saturation is
           economically rational because brief latency increases do not breach the objective.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>autoscaling versus pre-provisioning</strong> trade-off is one of the most debated decisions in
           capacity planning. Autoscaling promises to match capacity to demand dynamically, adding instances when load
           rises and removing them when it falls. In practice, autoscaling has limitations that capacity planners must
@@ -253,7 +266,7 @@ export default function ArticlePage() {
           already-saturated database. Pre-provisioning avoids the warm-up delay but incurs continuous cost. The most
           robust approach combines both: pre-provision enough capacity to handle typical peaks with healthy headroom,
           and use autoscaling as an additional buffer for unexpected spikes beyond the forecasted maximum.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Multi-region versus single-region</strong> capacity introduces another dimension of trade-off. A
           single-region deployment concentrates all capacity in one location, minimizing cross-region latency and
@@ -292,7 +305,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Establish explicit service-level objectives before capacity planning begins. Capacity targets derived from
           &quot;make it fast&quot; are meaningless because they lack a measurable boundary. A capacity plan built against
           &quot;p95 latency under two hundred milliseconds and p99 under five hundred milliseconds at peak load of ten
@@ -301,8 +317,8 @@ export default function ArticlePage() {
           does not linearly map to user-perceived performance. A system at ninety percent CPU utilization might still
           meet latency objectives if the workload is well-parallelized, while a system at fifty percent utilization
           might breach objectives if a single-threaded bottleneck exists in the critical path.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Maintain a bottleneck inventory with supporting saturation signals for every tier in your architecture. This
           inventory should document, for each component, the resource that limits throughput, the metric that indicates
           saturation, the utilization level at which tail latency becomes unacceptable, and the mitigation to apply
@@ -311,7 +327,7 @@ export default function ArticlePage() {
           eviction rate, and network egress bandwidth. The inventory should be reviewed quarterly and updated after
           every incident that involved capacity constraints. Over time, this becomes a living document that accelerates
           incident response and capacity decision-making.
-        </p>
+        </HighlightBlock>
         <p>
           Plan capacity for failure scenarios, not just steady-state operation. The question &quot;can we handle peak
           load?&quot; is incomplete without the follow-up &quot;can we handle peak load while one availability zone is
@@ -356,7 +372,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most pervasive pitfall is <strong>planning for averages instead of tails</strong>. Teams that size
           capacity based on average request rate and average latency systematically under-provision because capacity
           failures occur at the tail. The p99 latency might be ten times the p50 under high load, and users who
@@ -365,8 +384,8 @@ export default function ArticlePage() {
           queueing effects amplify and where users feel the pain of insufficient headroom. This means setting headroom
           targets based on the utilization level at which p99 latency breaches the objective, not the level at which
           average CPU reaches eighty percent.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common failure mode is <strong>ignoring the warm-up cost of scaling</strong>. When a system scales
           out, new instances are not immediately productive. They must initialize, establish connections to downstream
           services, populate local caches, and complete health checks before receiving production traffic. During this
@@ -377,7 +396,7 @@ export default function ArticlePage() {
           depend on local caches with multi-gigabyte working sets. Capacity plans must account for warm-up time by
           either maintaining additional permanent headroom or implementing gradual traffic shifting that allows new
           instances to warm under partial load.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Cold cache amplification</strong> after scaling events or failovers is a capacity killer that teams
           frequently underestimate. When a cache instance is cold, all requests that would have been served from cache
@@ -425,7 +444,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>E-commerce flash sales</strong> represent one of the most demanding capacity planning scenarios. A
           major retailer running a limited-quantity product launch might experience traffic spikes of fifty to one
           hundred times normal levels, concentrated in a window of minutes. The capacity plan for such an event must
@@ -438,8 +460,8 @@ export default function ArticlePage() {
           rate limiting to prevent bot traffic from consuming capacity intended for real customers. After the event,
           capacity is scaled back down, but the database storage permanently retains the order records, so storage growth
           planning must account for these periodic surges.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Social media viral events</strong> present a different capacity challenge characterized by extreme
           read-to-write skew and hot-key concentration. When a post goes viral, a single piece of content can generate
           millions of reads within minutes, concentrated on the specific database partition or cache key that holds that
@@ -451,7 +473,7 @@ export default function ArticlePage() {
           social media systems includes cache entry jitter to prevent synchronized expiration, stale-while-revalidate
           patterns that serve expired content during refresh, and circuit breakers that limit the rate of origin
           requests for any single key.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Financial trading platforms</strong> operate with capacity requirements driven by latency objectives
           that are measured in microseconds rather than milliseconds. The capacity plan for a trading platform is less
@@ -492,13 +514,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How do you determine the right amount of headroom for a production service, and what factors
             influence this decision?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The right amount of headroom is determined by the intersection of three factors: the shape of the
             utilization-latency curve for your specific workload, the acceptable probability of breaching latency
             objectives during a spike or failure, and the economic cost of maintaining idle capacity. The starting point
@@ -506,15 +531,15 @@ export default function ArticlePage() {
             objective through stress testing. If your service breaches p99 objectives at eighty percent utilization, and
             your current peak load puts you at fifty percent utilization, you have thirty percentage points of headroom
             under normal conditions. The question is whether that thirty points is sufficient.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             To evaluate sufficiency, you must model the failure scenarios that would consume headroom. If you run across
             three availability zones and lose one, the remaining two zones must absorb one-third more load. If your
             steady-state utilization is fifty percent across three zones, losing one zone pushes the remaining zones to
             seventy-five percent — still below the eighty percent breach point, but uncomfortably close given that
             traffic might also spike during the failure. Adding a safety margin, you might target sixty-five to seventy
             percent headroom for a service where failure during peak is plausible.
-          </p>
+          </HighlightBlock>
           <p>
             The economic calculation completes the decision. If maintaining thirty percent additional capacity costs ten
             thousand dollars per month, and a capacity-related outage costs an estimated two hundred thousand dollars in

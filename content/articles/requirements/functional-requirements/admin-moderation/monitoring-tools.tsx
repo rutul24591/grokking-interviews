@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function MonitoringToolsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Monitoring tools enable administrative system monitoring through programmatic interfaces. The monitoring tools system is the primary tool for administrators, operations teams, and automated systems to monitor systems, collect metrics, perform monitoring analysis, and ensure platform reliability. For staff and principal engineers, monitoring tools involve system monitoring (monitor systems), application monitoring (monitor applications), infrastructure monitoring (monitor infrastructure), metrics collection (collect metrics), monitoring dashboards (display monitoring dashboards), and monitoring service security (secure monitoring services).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of monitoring tools extends beyond simple system monitoring. System monitoring must monitor systems (monitor systems). Application monitoring must monitor applications (monitor applications). Infrastructure monitoring must monitor infrastructure (monitor infrastructure). Metrics collection must collect metrics (collect metrics). Monitoring dashboards must display monitoring dashboards (display monitoring dashboards). Monitoring service security must secure monitoring services (secure monitoring services).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, monitoring tools architecture involves system monitoring (monitor systems), application monitoring (monitor applications), infrastructure monitoring (monitor infrastructure), metrics collection (collect metrics), monitoring dashboards (display monitoring dashboards), and monitoring service security (secure monitoring services). The system must support multiple monitoring types (real-time monitoring, historical monitoring, predictive monitoring), multiple metrics types (system metrics, application metrics, infrastructure metrics), and multiple dashboard types (real-time dashboards, historical dashboards, custom dashboards). Performance is important—monitoring tools must be fast and reliable.
         </p>
@@ -47,13 +51,16 @@ export default function MonitoringToolsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>System Monitoring</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           System health monitoring monitors system health. System health monitoring (monitor system health). System health monitoring validation (validate system health monitoring). System health monitoring enforcement (enforce system health monitoring). System health monitoring reporting (report on system health monitoring).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           System performance monitoring monitors system performance. System performance monitoring (monitor system performance). System performance monitoring validation (validate system performance monitoring). System performance monitoring enforcement (enforce system performance monitoring). System performance monitoring reporting (report on system performance monitoring).
-        </p>
+        </HighlightBlock>
         <p>
           System availability monitoring monitors system availability. System availability monitoring (monitor system availability). System availability monitoring validation (validate system availability monitoring). System availability monitoring enforcement (enforce system availability monitoring). System availability monitoring reporting (report on system availability monitoring).
         </p>
@@ -116,9 +123,12 @@ export default function MonitoringToolsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Monitoring tools architecture spans system monitoring, application monitoring, infrastructure monitoring, and metrics collection. System monitoring monitors systems. Application monitoring monitors applications. Infrastructure monitoring monitors infrastructure. Metrics collection collects metrics.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/admin-moderation/monitoring-tools/monitoring-tools-architecture.svg"
@@ -129,9 +139,9 @@ export default function MonitoringToolsArticle() {
         />
 
         <h3>System Monitoring</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           System monitoring monitors systems. System health monitoring (monitor system health). System performance monitoring (monitor system performance). System availability monitoring (monitor system availability).
-        </p>
+        </HighlightBlock>
         <p>
           System health monitoring validation validates system health monitoring. System health monitoring validation (validate system health monitoring). System health monitoring validation enforcement (enforce system health monitoring validation). System health monitoring validation verification (verify system health monitoring validation). System health monitoring validation reporting (report on system health monitoring validation).
         </p>
@@ -191,14 +201,17 @@ export default function MonitoringToolsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Monitoring tools design involves trade-offs between comprehensiveness and complexity, real-time and historical monitoring, and metrics and performance. Understanding these trade-offs enables informed decisions aligned with monitoring needs and platform constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Monitoring: Comprehensive vs. Minimal</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comprehensive monitoring (comprehensive monitoring). Pros: Comprehensive (comprehensive monitoring), effective monitoring. Cons: Complex (complex monitoring), expensive. Best for: Monitoring-intensive platforms, critical platforms.
-        </p>
+        </HighlightBlock>
         <p>
           Minimal monitoring (minimal monitoring). Pros: Simple (simple monitoring), cheap. Cons: Not comprehensive (not comprehensive monitoring), not effective. Best for: Non-monitoring-intensive platforms, non-critical platforms.
         </p>
@@ -250,13 +263,16 @@ export default function MonitoringToolsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement system monitoring:</strong> System health monitoring, system performance monitoring, system availability monitoring. System monitoring management. System monitoring enforcement.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement application monitoring:</strong> Application performance monitoring, application error monitoring, application usage monitoring. Application monitoring management. Application monitoring enforcement.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement infrastructure monitoring:</strong> Server monitoring, network monitoring, database monitoring. Infrastructure monitoring management. Infrastructure monitoring enforcement.
           </li>
@@ -286,13 +302,16 @@ export default function MonitoringToolsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No system monitoring:</strong> Don&apos;t monitor systems. Solution: System monitoring (health, performance, availability).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No application monitoring:</strong> Don&apos;t monitor applications. Solution: Application monitoring (performance, error, usage).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No infrastructure monitoring:</strong> Don&apos;t monitor infrastructure. Solution: Infrastructure monitoring (server, network, database).
           </li>
@@ -322,16 +341,19 @@ export default function MonitoringToolsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>System Monitoring</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           System monitoring for system monitoring. System health monitoring (monitor system health). System performance monitoring (monitor system performance). System availability monitoring (monitor system availability). System monitoring management (manage system monitoring).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Application Monitoring</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Application monitoring for application monitoring. Application performance monitoring (monitor application performance). Application error monitoring (monitor application errors). Application usage monitoring (monitor application usage). Application monitoring management (manage application monitoring).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Infrastructure Monitoring</h3>
         <p>
@@ -351,12 +373,15 @@ export default function MonitoringToolsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design monitoring that provides actionable insights rather than just data overload?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design monitoring that provides actionable insights rather than just data overload?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement layered monitoring strategy focused on actionability. System health monitoring: binary health checks (healthy/unhealthy) with clear remediation steps—on-call should know what to do when alert fires. Performance monitoring: track latency percentiles (p50, p95, p99), throughput, error rates with baselines and anomaly detection—not just raw numbers. Availability monitoring: track uptime, error budgets, SLA compliance. The critical insight: more metrics ≠ better monitoring. Focus on golden signals (latency, traffic, errors, saturation) that indicate system health. Implement metric correlation—when latency spikes, automatically show related metrics (CPU, memory, recent deploys). The operational challenge: alert fatigue from too many metrics. Implement alert prioritization (critical alerts page, warnings go to ticket queue), alert aggregation (group related alerts), alert suppression (don&apos;t alert on known issues). Design dashboards for specific use cases (on-call dashboard for incident response, executive dashboard for business metrics, engineering dashboard for deep debugging).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

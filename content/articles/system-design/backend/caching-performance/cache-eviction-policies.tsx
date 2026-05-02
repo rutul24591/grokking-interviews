@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -81,23 +82,26 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: How Eviction Policies Work</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>LRU (Least Recently Used)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           LRU evicts the item that was accessed least recently. It maintains a doubly-linked list
           ordered by access time: when an item is accessed, it moves to the front of the list;
           when the cache is full, the item at the back of the list (least recently used) is
           evicted. This policy assumes that recently accessed data is likely to be accessed again
           soon (temporal locality), which holds for most web workloads.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           LRU is implemented with a hash map (for O(1) lookups) and a doubly-linked list (for
           O(1) reordering). When an item is accessed, it is removed from its current position in
           the list and inserted at the front. When eviction is needed, the last item in the list
           is removed. This provides O(1) time complexity for both get and put operations, making
           LRU efficient for large caches.
-        </p>
+        </HighlightBlock>
 
         <p>
           LRU is the default eviction policy in Redis, Memcached, and most application-level
@@ -182,23 +186,26 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>LRU Implementation Details</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           LRU is implemented using a hash map and a doubly-linked list. The hash map maps keys to
           nodes in the linked list, providing O(1) lookups. The doubly-linked list maintains the
           access order: the most recently accessed item is at the front, and the least recently
           accessed item is at the back.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           On a get(key) operation, the hash map is consulted to find the node. If the key exists,
           the node is moved to the front of the list (O(1) with a doubly-linked list) and the
           value is returned. If the key doesn't exist, null is returned. On a put(key, value)
           operation, if the key exists, the value is updated and the node is moved to the front.
           If the key doesn't exist and the cache is full, the last node (LRU) is evicted from both
           the list and the hash map, and the new key-value pair is inserted at the front.
-        </p>
+        </HighlightBlock>
 
         <p>
           Redis implements LRU using an approximation: instead of maintaining a full doubly-linked
@@ -258,22 +265,25 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing an eviction policy involves trade-offs between hit rate, computational overhead,
           memory overhead, and scan resistance. No single policy is best for all workloads—the
           right choice depends on the access pattern, cache size, and performance requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Hit Rate Comparison</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On general web workloads, LRU achieves a hit rate of 70-90% with sufficient cache size.
           LFU achieves a slightly higher hit rate (75-95%) for workloads with stable hot data
           (e.g., product catalogs, user profiles), but performs worse on dynamic workloads where
           the hot set changes frequently. ARC consistently outperforms both LRU and LFU (5-15%
           improvement) by adapting to the workload automatically, at the cost of higher memory
           overhead.
-        </p>
+        </HighlightBlock>
 
         <h3>Computational Overhead</h3>
         <p>
@@ -304,22 +314,25 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Eviction Policy Selection</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use LRU as the default.</strong> LRU works well for most workloads, has O(1)
           time complexity, and is simple to implement. It is the default policy in Redis,
           Memcached, and most application-level caches. Only consider alternatives if your
           workload has specific patterns that LRU handles poorly (e.g., scan-heavy workloads,
           stable hot data with infrequent access).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use LFU for stable hot data.</strong> If your workload has a stable set of hot
           items that are accessed frequently but not necessarily recently (e.g., popular products
           that aren't accessed every hour but are accessed thousands of times per day), LFU keeps
           these items in the cache even during periods of inactivity. This is particularly useful
           for product catalogs, user profiles, and configuration data.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Use TinyLFU for modern high-performance caches.</strong> TinyLFU combines the
@@ -349,22 +362,25 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Scan pollution.</strong> When a workload scans through a large dataset, each
           scanned item becomes "recently used" and pushes hot items out of the cache. This is
           particularly problematic for LRU. Fix: Use a scan-resistant policy (TinyLFU, ARC) that
           filters out one-time accesses based on frequency. Alternatively, increase the cache size
           to accommodate both the hot set and the scan set.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Frequency aging (LFU recency bias).</strong> In pure LFU, items with high
           historical frequency are kept even if their access pattern has changed. New items
           struggle to build up enough frequency to survive eviction. Fix: Implement frequency
           decay (periodically halve all frequency counters), as TinyLFU does. This ensures that
           recent access patterns compete fairly with historical patterns.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>LRU approximation inaccuracy.</strong> Redis's approximated LRU (sampling N
@@ -394,23 +410,26 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Redis: Approximated LRU</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Redis uses an approximated LRU policy (sampling 5 keys by default) to balance hit rate
           accuracy with memory overhead. True LRU requires a doubly-linked list node per entry,
           which adds significant memory overhead for large caches. Redis's approximation evicts
           the least recently used among 5 randomly sampled keys, providing a good approximation
           of true LRU with minimal memory overhead.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This works well for most Redis use cases (sessions, caching, leaderboards) where the
           access pattern has temporal locality. For workloads with scan patterns, Redis offers
           alternative policies: volatile-lru (LRU for keys with TTL), allkeys-lfu (LFU for all
           keys), and volatile-ttl (evict keys with nearest TTL). The policy is configurable via
           maxmemory-policy.
-        </p>
+        </HighlightBlock>
 
         <h3>Caffeine: TinyLFU (Window TinyLFU)</h3>
         <p>
@@ -455,13 +474,16 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q1: Explain how LRU works and its time complexity. What are its weaknesses?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> LRU (Least Recently Used) maintains a doubly-linked list
               ordered by access time and a hash map mapping keys to list nodes. On get(key), the
               hash map is consulted (O(1)), and if found, the node is moved to the front of the
@@ -469,7 +491,7 @@ export default function ArticlePage() {
               value is updated and the node is moved to the front. If the cache is full, the last
               node (LRU) is evicted, and the new key-value pair is inserted at the front. Both
               get and put are O(1) time complexity.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               LRU's weaknesses: (1) Scan pollution—scanning through a large dataset pushes hot
               items out of the cache. (2) No frequency awareness—an item accessed once is treated

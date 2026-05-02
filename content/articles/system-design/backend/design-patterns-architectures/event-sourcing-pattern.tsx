@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,12 +28,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Event sourcing</strong> is an architectural pattern that stores a sequence of immutable events as the authoritative record of what happened in a system. Rather than persisting only the current state of an entity—such as an account balance, an order status, or an inventory count—event sourcing persists every state transition as a discrete, append-only event. The current state is then derived by replaying those events from the beginning, or by reading a maintained projection that has already processed them.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This approach stands in sharp contrast to the traditional CRUD (Create, Read, Update, Delete) model that dominates most application architectures. In a CRUD system, an update overwrites the previous state. The history of what changed, who changed it, and why is either lost entirely or maintained through expensive, bolt-on audit tables that drift out of sync with the primary data. Event sourcing makes history explicit and first-class. Every state change is a named event with context, timestamp, and metadata. The question &quot;how did we get here?&quot; is answered by design, not by forensic reconstruction.
-        </p>
+        </HighlightBlock>
         <p>
           The appeal of event sourcing centers on two capabilities that are extraordinarily difficult to retrofit into CRUD systems: full auditability and rebuildable state. Auditability means every change is traceable to its origin, which is essential for regulatory compliance, financial systems, and any domain where accountability matters. Rebuildable state means that when business logic changes or bugs are discovered, you can replay the entire event history through new logic to produce corrected projections. You do not need to guess what the state should be; you recompute it from facts that already exist.
         </p>
@@ -54,14 +58,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Commands, Events, and Aggregates</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event sourcing is typically paired with a domain-driven design model that enforces business invariants through aggregates. A <strong>command</strong> represents an intent to change state—for example, &quot;withdraw $500 from account 12345&quot; or &quot;ship order ORD-789&quot;. The command is dispatched to an <strong>aggregate</strong>, which is a consistency boundary that owns a specific entity or cluster of related entities. The aggregate loads its current state by replaying past events, validates the command against invariants, and if valid, emits one or more <strong>events</strong> that represent the accepted change.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An <strong>event</strong> is an immutable fact that something happened at a specific point in time. Events are named in the past tense—<code>MoneyWithdrawn</code>, <code>OrderShipped</code>, <code>InventoryReserved</code>—because they describe completed actions, not intentions. Each event carries a payload with relevant data, a timestamp, and metadata such as correlation IDs, causation IDs, and user context. Events are appended to an event store, which serves as the system of record.
-        </p>
+        </HighlightBlock>
         <p>
           The aggregate is the natural unit of ordering and concurrency control. Events within a single aggregate stream are totally ordered, which means invariants can be enforced consistently. This is also why aggregate boundary design and partition key selection matter enormously: they define where ordering guarantees exist, where concurrency boundaries are drawn, and how the system scales. If two pieces of business logic need to be consistent with each other, they must belong to the same aggregate. If they can be eventually consistent, they can belong to separate aggregates and communicate through events.
         </p>
@@ -96,14 +103,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Event Sourcing vs CRUD: A Fundamental Divergence</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding the architectural divergence between event sourcing and CRUD is essential for making informed decisions. In a CRUD system, the database holds the current state. An update replaces the previous value. The history may be captured in audit tables, triggers, or application logs, but these are secondary artifacts that are not the basis of application behavior. If audit tables are inconsistent or incomplete, the application continues to function normally.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In an event-sourced system, the events are primary and the current state is derivative. There is no &quot;update&quot; operation—only the appending of new events that describe what changed. If projections are lost or corrupted, they can be rebuilt from events. If the projection logic changes, the entire history can be reprocessed. The system&apos;s behavior is anchored to an immutable log, not to mutable tables.
-        </p>
+        </HighlightBlock>
         <p>
           This divergence has profound implications. CRUD systems are simpler to build, easier to reason about initially, and well-supported by existing frameworks and ORMs. Event-sourced systems are more complex upfront but provide capabilities that are extremely expensive or impossible to achieve with CRUD: temporal queries (what was the state at time T?), complete audit trails without additional instrumentation, and the ability to create new read models from historical data at any point in the future.
         </p>
@@ -146,14 +156,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>Event Sourcing vs CRUD: When to Choose Which</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The decision between event sourcing and CRUD is not about which is technically superior—it is about which aligns with the domain requirements and organizational capacity. Event sourcing is the right choice when auditability is a core requirement rather than a nice-to-have, when the ability to rebuild state from history provides genuine business value, when temporal queries are a regular need, and when the organization has the engineering maturity to manage the operational complexity. CRUD is the right choice when only the current state matters, when audit requirements are satisfied by simple audit logs, when development speed is prioritized over historical reasoning, and when the team lacks the operational discipline to manage projections, replays, and schema evolution.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A pragmatic middle ground is CRUD with append-only audit logs. This approach stores current state in traditional tables while appending every change to a separate audit table. It provides reasonable auditability without the full complexity of event sourcing. The trade-off is that audit logs are secondary artifacts—they cannot be used to rebuild state, they may drift out of sync, and temporal queries are expensive. But for many applications, this is sufficient.
-        </p>
+        </HighlightBlock>
 
         <h3>Performance Trade-offs</h3>
         <p>
@@ -180,16 +193,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Design Aggregate Boundaries Carefully</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Aggregate boundaries determine where ordering and consistency guarantees exist. Two business rules that must be evaluated together must belong to the same aggregate. If they can be eventually consistent, they can belong to separate aggregates and communicate through events. Overly large aggregates create concurrency bottlenecks because all changes to the aggregate are serialized. Overly small aggregates make it impossible to enforce invariants that span multiple entities. The right granularity comes from understanding the domain, not from applying mechanical rules.
-        </p>
+        </HighlightBlock>
 
         <h3>Version Events Explicitly</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Events are long-lived facts that will be replayed for years. They need explicit versioning from the start. Include a version number or schema identifier in every event. When an event shape changes—adding a field, renaming a field, or changing semantics—the version must increment. Projection handlers must be able to process multiple versions of the same event type during transition periods. This is not optional: in any system with event sourcing, old events will coexist with new events indefinitely, and the system must handle both correctly.
-        </p>
+        </HighlightBlock>
 
         <h3>Build Replay as a First-Class Capability</h3>
         <p>
@@ -217,16 +233,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Event Schema Breakage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common and most damaging pitfall in event sourcing is changing event schemas in a way that breaks replay of historical events. This happens when a team renames a field, removes a field, or changes the semantics of a field without providing a migration path for old events. The result is that old events can no longer be processed correctly, projections produce wrong results, and the system loses its ability to rebuild state from history. This is catastrophic because the event log—the system of record—is no longer trustworthy. The mitigation is explicit event versioning, backward-compatible schema changes, and thorough replay testing against historical data before deploying schema changes.
-        </p>
+        </HighlightBlock>
 
         <h3>Snapshot as Truth</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A subtle but dangerous anti-pattern is treating snapshots as the primary source of truth rather than as rebuildable caches. When teams start to rely on snapshots as authoritative, they stop validating them against the event log. Over time, snapshots drift from what replaying events would produce, and the system becomes inconsistent. The mitigation is clear: events are always authoritative. Snapshots are always caches. Validate snapshots periodically and rebuild them from events on a regular schedule.
-        </p>
+        </HighlightBlock>
 
         <h3>Replay as Emergency Procedure</h3>
         <p>
@@ -254,14 +273,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Banking Ledgers and Financial Systems</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Banking ledgers are perhaps the most natural fit for event sourcing. Every financial transaction—deposits, withdrawals, transfers, fees, interest accruals—is an immutable event that affects account balances. Storing only the current balance makes it impossible to answer regulatory questions about transaction history, balance at a specific point in time, or the sequence of events that led to an overdraft. Event sourcing stores every transaction as an event and derives balances through replay.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           When a bug is discovered in how fees were calculated, the bank can rebuild balance projections from the corrected logic without losing any historical data. Auditors can trace every balance change to a specific event with a timestamp, origin, and context. Temporal queries answer what the balance was on any given date. This is not a theoretical benefit—banking regulations like SOX, Basel III, and various national frameworks require exactly this level of auditability and traceability. Event sourcing provides it natively.
-        </p>
+        </HighlightBlock>
 
         <h3>Supply Chain and Provenance Tracking</h3>
         <p>
@@ -293,14 +315,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What does event sourcing buy you over storing current state with CRUD?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Event sourcing provides a durable, immutable history of every state change, which enables full auditability without bolt-on mechanisms. Every change is traceable to its origin with timestamp, context, and actor. This is essential for regulatory compliance, financial systems, and any domain where accountability matters.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               It also provides rebuildable state. When business logic changes or bugs are discovered, you can replay the entire event history through new logic to produce corrected projections. You do not need to guess what the state should be—you recompute it from facts that already exist. This capability is extraordinarily difficult to achieve with CRUD systems.
             </p>

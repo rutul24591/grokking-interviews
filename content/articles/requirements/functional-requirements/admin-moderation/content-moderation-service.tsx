@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function ContentModerationServiceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content moderation service enforces content policies through automated detection and human review, protecting users from harmful content. The content moderation system is the primary tool for trust and safety teams, moderators, and operations teams to moderate content, enforce policies, and maintain platform safety. For staff and principal engineers, content moderation involves automated moderation (automate content moderation), human review (enable human review), policy enforcement (enforce content policies), ML-based detection (detect harmful content), appeal processes (enable appeals), and content safety (ensure content safety).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of content moderation extends beyond simple rule-based moderation. Automated moderation must automate moderation (automate content moderation). Human review must enable human review (enable human review). Policy enforcement must enforce policies (enforce content policies). ML-based detection must detect harmful content (detect harmful content). Appeal processes must enable appeals (enable appeals). Content safety must ensure content safety (ensure content safety).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, content moderation architecture involves automated moderation (automate content moderation), human review (enable human review), policy enforcement (enforce content policies), ML-based detection (detect harmful content), appeal processes (enable appeals), and content safety (ensure content safety). The system must support multiple moderation types (pre-moderation, post-moderation, reactive), multiple review types (automated, human, hybrid), and multiple enforcement types (approve, reject, escalate). Performance is important—content moderation must not impact platform performance.
         </p>
@@ -47,13 +51,16 @@ export default function ContentModerationServiceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Moderation Pipeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pre-moderation reviews content before publishing. Pre-moderation (review before publishing). Pre-moderation enforcement (enforce pre-moderation). Pre-moderation appeals (appeal pre-moderation). Pre-moderation prevention (prevent pre-moderation abuse).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Post-moderation reviews content after publishing. Post-moderation (review after publishing). Post-moderation enforcement (enforce post-moderation). Post-moderation appeals (appeal post-moderation). Post-moderation prevention (prevent post-moderation abuse).
-        </p>
+        </HighlightBlock>
         <p>
           Reactive moderation reviews content when reported. Reactive moderation (review when reported). Reactive moderation enforcement (enforce reactive moderation). Reactive moderation appeals (appeal reactive moderation). Reactive moderation prevention (prevent reactive moderation abuse).
         </p>
@@ -105,9 +112,12 @@ export default function ContentModerationServiceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content moderation architecture spans automated moderation, human review, policy enforcement, and appeal management. Automated moderation automates content moderation. Human review enables human review. Policy enforcement enforces content policies. Appeal management manages appeals.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/admin-moderation/content-moderation-service/moderation-architecture.svg"
@@ -118,9 +128,9 @@ export default function ContentModerationServiceArticle() {
         />
 
         <h3>Automated Moderation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Automated moderation automates content moderation. Automated moderation (automate moderation). Automated enforcement (enforce automation). Automated appeals (appeal automation). Automated prevention (prevent automation abuse).
-        </p>
+        </HighlightBlock>
         <p>
           ML-based detection detects harmful content. Hate speech detection (detect hate speech). Nudity detection (detect nudity). Violence detection (detect violence). Spam detection (detect spam).
         </p>
@@ -180,14 +190,17 @@ export default function ContentModerationServiceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content moderation design involves trade-offs between comprehensiveness and complexity, automation and manual control, and enforcement and prevention. Understanding these trade-offs enables informed decisions aligned with safety needs and platform constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Moderation: Comprehensive vs. Simple</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comprehensive moderation (comprehensive moderation). Pros: Comprehensive (comprehensive moderation), effective (effective moderation). Cons: Complex (complex moderation), expensive (expensive to implement). Best for: Safety-intensive (high-risk platforms).
-        </p>
+        </HighlightBlock>
         <p>
           Simple moderation (simple moderation). Pros: Simple (simple moderation), cheap (cheap to implement). Cons: Not comprehensive (not comprehensive moderation), ineffective (ineffective moderation). Best for: Non-safety (low-risk platforms).
         </p>
@@ -239,13 +252,16 @@ export default function ContentModerationServiceArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement comprehensive moderation:</strong> Automated moderation, human review, policy enforcement, ML-based detection. Comprehensive moderation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement human review:</strong> Human review workflow, human review investigation, human review decision, human review enforcement. Human review.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement policy enforcement:</strong> Policy enforcement, policy verification, policy reporting, policy audit. Policy enforcement.
           </li>
@@ -275,13 +291,16 @@ export default function ContentModerationServiceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Incomplete moderation:</strong> Don&apos;t moderate all content. Solution: Comprehensive moderation (automated, human, policy, ML).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No human review:</strong> Don&apos;t enable human review. Solution: Human review (workflow, investigation, decision, enforcement).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No policy enforcement:</strong> Don&apos;t enforce policies. Solution: Policy enforcement (enforcement, verification, reporting, audit).
           </li>
@@ -311,16 +330,19 @@ export default function ContentModerationServiceArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Automated Moderation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Automated moderation for content moderation. Automated moderation (automate moderation). Automated enforcement (enforce moderation). Automated appeals (appeal moderation). Automated prevention (prevent moderation abuse).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Human Review</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Human review for content review. Human review (review content). Human review enforcement (enforce review). Human review appeals (appeal review). Human review prevention (prevent review abuse).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Policy Enforcement</h3>
         <p>
@@ -340,12 +362,15 @@ export default function ContentModerationServiceArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle content moderation at scale (millions of pieces of content daily) while maintaining quality?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle content moderation at scale (millions of pieces of content daily) while maintaining quality?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement tiered moderation architecture. Automated moderation handles 90%+ of content using ML models (hate speech, nudity, violence, spam detection) with high-confidence auto-actions. Human moderators review edge cases (low-confidence ML detections, appeals, high-impact content from VIP users). Queue prioritization routes urgent content (live streams, viral content, high report counts) to top of queue. The key insight: don&apos;t treat all content equally—risk-based prioritization ensures limited human moderator time focuses on highest-risk content. Implement moderator tools for efficiency (keyboard shortcuts, bulk actions, decision templates, context panels showing user history). Track moderator throughput (items/hour) but balance against quality metrics (accuracy, consistency). At extreme scale, consider specialized moderator teams (different teams for different content types or regions). Critical: implement moderator wellness programs—reviewing harmful content causes psychological harm, implement rotation, limits on daily exposure, and mental health support.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,13 +35,16 @@ export default function TokenGenerationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Token Generation</strong> is the process of creating cryptographic tokens (JWT,
           opaque tokens) that represent authenticated user sessions. Tokens enable stateless
           authentication, API authorization, and secure session management across distributed
           systems. Token generation is the foundation of modern authentication — without secure
           tokens, sessions can be hijacked, identities forged, and APIs compromised.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/token-generation-flow.svg"
@@ -48,14 +52,14 @@ export default function TokenGenerationArticle() {
           caption="Token Generation Flow — showing JWT creation, signing, claims, and delivery to client"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing token generation requires deep
           understanding of JWT structure (header, payload, signature), signing algorithms (RS256,
           HS256, ES256), token lifecycle management (generation, validation, refresh, revocation),
           refresh token rotation, security best practices (short expiry, minimal claims, secure
           storage), and scaling token validation across services. The implementation must balance
           security (short expiry, rotation) with usability (seamless refresh, long sessions).
-        </p>
+        </HighlightBlock>
         <p>
           Modern token generation has evolved from simple session IDs to sophisticated JWT-based
           systems with refresh token rotation, token binding, and key rotation. Organizations like
@@ -67,18 +71,21 @@ export default function TokenGenerationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Token generation is built on fundamental concepts that determine how tokens are created,
           validated, and managed. Understanding these concepts is essential for designing effective
           token systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Access Tokens (JWT):</strong> Short-lived token (15-60 minutes) for API
           authorization. JWT format with header (alg, typ, kid), payload (claims: sub, exp, iat,
           aud, iss, roles), signature (RS256 signed). Carries user identity and permissions. Stored
           in client memory (not localStorage), sent via Authorization: Bearer header. Stateless
           validation — any service can validate without database lookup.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Refresh Tokens:</strong> Long-lived token (7-30 days) for obtaining new access
           tokens. Opaque format (random 256-bit value), stored server-side (hash in database).
@@ -101,11 +108,14 @@ export default function TokenGenerationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Token generation architecture separates token creation from validation, enabling
           distributed validation with centralized key management. This architecture is critical for
           scaling authentication across microservices.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/jwt-structure.svg"
@@ -113,14 +123,14 @@ export default function TokenGenerationArticle() {
           caption="JWT Structure — showing header (alg, typ, kid), payload (claims), signature with RS256 signing"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Token generation flow: User authenticates successfully (password, MFA). Backend generates
           JWT access token — create header (alg: RS256, typ: JWT, kid: key-id), create payload (sub:
           user-id, exp: now+15min, iat: now, aud: api-audience, iss: auth-service, roles:
           ["user"]), sign with private key (RS256). Generate refresh token — random 256-bit value,
           store hash in database with user_id, expiry, device metadata. Return tokens to client —
           access token in response body, refresh token in HttpOnly cookie.
-        </p>
+        </HighlightBlock>
         <p>
           Token validation flow: Client sends request with Authorization: Bearer {'{'}token{'}'}. Service
           extracts token, validates signature (using cached public key from JWKS), checks expiry
@@ -146,25 +156,28 @@ export default function TokenGenerationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing token generation involves trade-offs between security, performance, and
           operational complexity. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">RS256 vs HS256 vs ES256</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>RS256:</strong> Asymmetric (public/private key pair), distributed validation
               (any service can validate), easy key rotation. Limitation: more complex key
               management, slower than symmetric.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>HS256:</strong> Symmetric (shared secret), simpler, faster. Limitation:
               secret must be shared with all validators, harder to rotate, single point of
               compromise.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>ES256:</strong> Elliptic curve, smaller signatures, faster than RSA.
               Limitation: less widely supported, more complex implementation.
@@ -211,19 +224,22 @@ export default function TokenGenerationArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing token generation requires following established best practices to ensure
           security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use RS256 for distributed systems — asymmetric keys, easy rotation. Keep access token
           expiry short (15-60 minutes) — limit exposure window. Implement refresh token rotation —
           issue new on each use, invalidate old, detect reuse attacks. Rotate signing keys
           periodically (90 days) — JWKS with multiple keys. Store private keys in HSM/vault —
           never in code or config files.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Token Design</h3>
         <p>
@@ -252,21 +268,24 @@ export default function TokenGenerationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing token generation to ensure secure, usable,
           and maintainable token systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Long access token expiry:</strong> Stolen tokens valid for too long, extended
             exposure. <strong>Fix:</strong> Short expiry (15-60 min), use refresh tokens for
             session extension.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No token rotation:</strong> Refresh tokens valid indefinitely, stolen tokens
             usable forever. <strong>Fix:</strong> Rotate refresh tokens on each use. Invalidate
             old. Detect reuse attacks.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Sensitive data in JWT:</strong> PII exposed if token intercepted, JWT is
             encoded not encrypted. <strong>Fix:</strong> Minimal claims, no sensitive data. Use
@@ -310,16 +329,19 @@ export default function TokenGenerationArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Token generation is critical for platform security. Here are real-world implementations
           from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer Platform (Google)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Billions of users, diverse services. Need stateless
           validation across services. Key rotation without downtime.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> JWT access tokens (1 hour expiry), opaque refresh tokens
           (rotated). JWKS for public key distribution. Automated key rotation (90 days). Token
@@ -405,14 +427,17 @@ export default function TokenGenerationArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of token generation design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What claims should you include in JWT?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What claims should you include in JWT?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Minimum: sub (user ID), exp (expiry), iat (issued at), iss (issuer), aud
               (audience). Optional: roles, permissions (for simple apps). Avoid: sensitive data

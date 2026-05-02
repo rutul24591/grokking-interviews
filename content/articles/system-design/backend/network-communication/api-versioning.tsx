@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -89,9 +90,12 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Versioning Strategies</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>URI Path Versioning</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           URI path versioning is the most common and widely understood versioning strategy. The
           version identifier is embedded in the URL path:
           <code className="inline-code">/v1/users</code>,
@@ -100,9 +104,9 @@ export default function ArticlePage() {
           browsers treat <code className="inline-code">/v1/users</code> and
           <code className="inline-code">/v2/users</code> as separate resources, so each version
           can be cached independently.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           However, URI path versioning has drawbacks. It violates the REST principle that URLs
           should identify resources, not versions of resources. It also creates a coupling between
           the URL structure and the API version: if a client is hardcoded to use
@@ -110,7 +114,7 @@ export default function ArticlePage() {
           <code className="inline-code">/v2/users</code> when migrating. This is not inherently
           bad—explicit version migration is often desirable—but it means that the version is
           visible and mutable by clients, which can lead to version pinning and delayed migrations.
-        </p>
+        </HighlightBlock>
 
         <h3>Query Parameter Versioning</h3>
         <p>
@@ -180,24 +184,27 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Backward Compatibility Principles</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The foundation of effective API versioning is backward compatibility: changes to an
           existing version should not break existing clients. This means that additive changes
           (adding optional fields, adding new endpoints, adding new enum values) are always safe,
           while breaking changes (removing fields, renaming fields, changing field types, removing
           endpoints) require a new version.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The key principle is to make every change additive whenever possible. Instead of removing
           a field, mark it as deprecated and continue to return it alongside the new field. Instead
           of changing a field type, introduce a new field with the new type and deprecate the old
           field. Instead of removing an endpoint, return a deprecation warning in the response
           headers and document the replacement endpoint. This approach allows clients to migrate
           at their own pace while the API continues to evolve.
-        </p>
+        </HighlightBlock>
 
         <h3>Version Routing at the Gateway</h3>
         <p>
@@ -269,43 +276,49 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing a versioning strategy involves trade-offs between discoverability, cacheability,
           RESTful purity, and implementation complexity. URI path versioning is the most discoverable
           and cacheable but least RESTful. Content negotiation is the most RESTful but least
           discoverable and most complex. Query parameter versioning and header-based versioning
           fall in between.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The choice should be driven by the API&apos;s audience and usage patterns. For public
           APIs consumed by external developers, discoverability and cacheability are paramount:
           URI path versioning is the pragmatic choice. For internal APIs consumed by services
           within the organization, RESTful purity and URL cleanliness may take priority:
           header-based or content negotiation versioning is more appropriate.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for API Versioning</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Prefer additive changes over breaking changes.</strong> Whenever possible, make
           changes that are backward compatible: add optional fields, add new endpoints, add new
           enum values, widen numeric ranges. Avoid removing fields, renaming fields, changing
           field types, or removing endpoints. If a breaking change is unavoidable, introduce a
           new version and maintain the old version during the deprecation window.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Set clear deprecation timelines.</strong> When releasing a new version, immediately
           announce the deprecation date for the previous version (typically 12-24 months in the
           future). This gives clients a clear migration deadline and prevents indefinite version
           sprawl. Communicate the deprecation timeline prominently in documentation, response
           headers, and developer communications.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Return deprecation metadata in responses.</strong> Include
@@ -338,24 +351,27 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Version explosion.</strong> Supporting too many versions simultaneously creates
           operational overhead: each version requires its own backend, test suite, documentation,
           and bug fix backporting. The fix is to enforce strict deprecation timelines (12-24 months)
           and actively manage version consolidation. Run migration campaigns to move clients off
           deprecated versions before the sunset date. Monitor version usage metrics and prioritize
           migration support for high-volume clients.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Tight coupling between versions.</strong> When version-specific implementations
           share code through conditional branches (if version == v1, do X; else do Y), the codebase
           becomes increasingly complex with each new version. The fix is to maintain separate
           codebases or modules for each major version, with shared libraries for common logic.
           This allows each version to evolve independently without introducing version-specific
           conditionals throughout the codebase.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Documentation drift.</strong> As API versions evolve, documentation for older
@@ -387,9 +403,12 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Stripe: URI Path Versioning with Date-Based Versions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe uses date-based versioning in the URI path:
           <code className="inline-code">/v1/charges</code> with a
           <code className="inline-code">Stripe-Version</code> header specifying the API version
@@ -399,10 +418,10 @@ export default function ArticlePage() {
           release date rather than a sequential version number. This allows Stripe to communicate
           exactly which changes are included in each version and allows clients to pin to a specific
           date.
-        </p>
+        </HighlightBlock>
 
         <h3>GitHub: URI Path Versioning with Preview Headers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           GitHub API v3 uses URI path versioning for the stable API
           (<code className="inline-code">/api/v3</code>), while preview features are exposed
           through custom Accept headers
@@ -410,7 +429,7 @@ export default function ArticlePage() {
           This allows GitHub to release new features as previews before they are promoted to the
           stable API. Preview features can change based on feedback without requiring a new version
           number, and once stabilized, they are incorporated into the next stable API release.
-        </p>
+        </HighlightBlock>
 
         <h3>Twitter: Content Negotiation for API Evolution</h3>
         <p>
@@ -428,11 +447,14 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg bg-panel-soft p-6">
-            <p className="font-semibold">Q1: What are the different API versioning strategies, and when would you use each?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: What are the different API versioning strategies, and when would you use each?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> The main API versioning strategies are: URI path versioning
               (/v1/resource) — most discoverable and cacheable, best for public APIs consumed by
               external developers. Query parameter versioning (/resource?version=1) — flexible but
@@ -442,7 +464,7 @@ export default function ArticlePage() {
               complex, best for organizations prioritizing RESTful design. The choice depends on
               the API&apos;s audience: public APIs favor discoverability (URI path), while internal
               APIs favor clean URLs (header-based or content negotiation).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg bg-panel-soft p-6">

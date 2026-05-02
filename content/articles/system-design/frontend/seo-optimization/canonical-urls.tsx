@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -32,7 +33,7 @@ export default function CanonicalUrlsArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A <strong>canonical URL</strong> is the URL that a search engine
           considers the authoritative, preferred version of a page when multiple
           URLs serve identical or substantially similar content. The{" "}
@@ -40,8 +41,8 @@ export default function CanonicalUrlsArticle() {
           Google, Microsoft, and Yahoo in 2009, provides a declarative mechanism
           for webmasters to specify which URL should receive ranking credit and
           appear in search results.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Duplicate content is an inevitable reality of modern web architecture.
           A single product page might be accessible via its category path
           (/shoes/running/nike-air), a search result URL
@@ -52,8 +53,8 @@ export default function CanonicalUrlsArticle() {
           canonical signals, search engines must independently determine which
           version to index, potentially splitting ranking signals across
           multiple URLs and indexing the wrong version.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the staff/principal engineer level, canonical URL strategy is a
           systems design problem that intersects with URL architecture, routing,
           content management, and SEO infrastructure. Incorrect canonicalization
@@ -63,14 +64,14 @@ export default function CanonicalUrlsArticle() {
           search results. The canonical tag is a hint, not a directive — Google
           may override it based on other signals, making monitoring and
           validation essential.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>rel=canonical Link Tag:</strong> An HTML element placed in
             the <code>&lt;head&gt;</code> section that specifies the preferred
             URL for the current page. It must use an absolute URL (not
@@ -79,7 +80,7 @@ export default function CanonicalUrlsArticle() {
             canonicals (pointing to the current page&apos;s own URL) are a best
             practice that explicitly confirms the page is its own canonical
             version.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>HTTP Link Header:</strong> An alternative to the HTML
             canonical tag, using the HTTP response header{" "}
@@ -95,7 +96,7 @@ export default function CanonicalUrlsArticle() {
             is the weakest of the canonical signals but still contributes to
             Google&apos;s canonical selection algorithm.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>301 Redirect vs Canonical:</strong> A 301 redirect
             physically moves users and crawlers to the destination URL —
             it&apos;s a stronger signal than a canonical tag. Use 301 redirects
@@ -103,7 +104,7 @@ export default function CanonicalUrlsArticle() {
             canonical tags when both URLs must remain accessible (e.g., a
             filtered product view that has its own UI but shouldn&apos;t be
             indexed separately).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Google&apos;s Canonical Selection Algorithm:</strong> Google
             considers multiple signals when choosing a canonical: the
@@ -113,7 +114,7 @@ export default function CanonicalUrlsArticle() {
             preferred), and redirect chains. The declared canonical can be
             overridden if Google determines another URL is more appropriate.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Cross-Domain Canonical:</strong> A canonical tag can point
             to a URL on a different domain, useful for content syndication. If
             site-B republishes an article from site-A, site-B can set a
@@ -121,7 +122,7 @@ export default function CanonicalUrlsArticle() {
             consolidating ranking signals to the original publisher. This
             requires trust — it tells Google that site-B&apos;s version should
             not be indexed.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>URL Parameters and Canonicalization:</strong> Tracking
             parameters (UTM codes), session IDs, sort orders, and filter
@@ -144,39 +145,42 @@ export default function CanonicalUrlsArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Canonical URL architecture involves multiple layers of URL resolution
           that determine which URL search engines ultimately index and rank.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/canonical-urls-diagram-1.svg"
           alt="Duplicate content problem showing multiple URLs resolving to the same content and canonical resolution consolidating ranking signals"
+          captionTier="important"
         />
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The diagram above illustrates the duplicate content problem. A single
           piece of content accessible via multiple URLs fragments ranking
           signals — link equity, engagement metrics, and crawl budget are split
           across variants. Canonical resolution consolidates these signals to a
           single authoritative URL, ensuring all ranking power flows to one
           destination.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/canonical-urls-diagram-2.svg"
           alt="Canonical URL implementation strategies showing rel=canonical tag, HTTP Link header, and sitemap-based canonical signals"
+          captionTier="important"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           Three primary mechanisms declare canonical URLs, each with different
           signal strengths. The rel=canonical HTML tag is the most explicit and
           commonly used. The HTTP Link header serves non-HTML resources. Sitemap
           inclusion provides a supplementary signal. In practice, all three
           should align — conflicting signals cause Google to make its own
           determination, which may not match your intent.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/canonical-urls-diagram-3.svg"
           alt="Cross-domain canonical and content syndication architecture showing how original publisher and syndication partners coordinate canonical signals"
+          captionTier="important"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cross-domain canonicalization is essential for content syndication
           partnerships. When content is republished across partner sites, each
           syndicated version includes a cross-domain canonical pointing to the
@@ -184,7 +188,7 @@ export default function CanonicalUrlsArticle() {
           ranking credit while partners can still display the content. Without
           cross-domain canonicals, Google might index the syndicated version and
           attribute authorship to the wrong domain.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: Trade-offs & Comparisons */}
@@ -199,7 +203,7 @@ export default function CanonicalUrlsArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">rel=canonical Tag</td>
               <td className="p-3">
                 Both URLs remain accessible; clear declarative signal; widely
@@ -210,8 +214,8 @@ export default function CanonicalUrlsArticle() {
                 consistent implementation across templates; can be accidentally
                 overwritten by CMS plugins
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3 font-medium">301 Redirect</td>
               <td className="p-3">
                 Strongest canonical signal; physically eliminates duplicate
@@ -222,8 +226,8 @@ export default function CanonicalUrlsArticle() {
                 redirect chains degrade performance; cannot be used when both
                 URLs must remain functional
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">URL Parameter Handling</td>
               <td className="p-3">
                 Addresses the root cause by preventing parameter-based
@@ -233,7 +237,7 @@ export default function CanonicalUrlsArticle() {
                 Google deprecated the URL Parameters tool; requires server-side
                 URL normalization; some parameters legitimately change content
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3 font-medium">Sitemap-Only Canonical</td>
               <td className="p-3">
@@ -253,28 +257,28 @@ export default function CanonicalUrlsArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use Self-Referencing Canonicals on Every Page:</strong>{" "}
             Every page should include a canonical tag pointing to its own clean
             URL. This prevents accidental duplicate indexing from URL
             parameters, session IDs, or tracking codes appended by external
             systems. Even if a page has no known duplicates today, a
             self-referencing canonical protects against future duplication.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Always Use Absolute URLs:</strong> Canonical tags must
             contain absolute URLs with protocol and domain
             (https://example.com/page). Relative URLs (/page) may not be
             resolved correctly by all crawlers and can cause canonicalization
             failures.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Align All Canonical Signals:</strong> Ensure the
             rel=canonical tag, internal links, sitemap entries, and hreflang
             annotations all reference the same canonical URL. Conflicting
             signals force Google to arbitrate, often choosing an unintended
             version.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Canonical to Indexable Pages Only:</strong> Never set a
             canonical that points to a noindexed page, a 404, a redirect, or a
@@ -310,26 +314,26 @@ export default function CanonicalUrlsArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Canonicalizing All Pages to the Homepage:</strong> A
             template bug that sets the canonical to &quot;/&quot; across all
             pages is one of the most catastrophic SEO errors — it tells Google
             that every page is a duplicate of the homepage, potentially
             de-indexing the entire site except for the homepage.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Paginated Pages Canonical to Page 1:</strong> Setting
             canonical tags on pages 2, 3, etc. to point to page 1 tells Google
             that pages 2+ are duplicates and should not be indexed. Content on
             subsequent pages becomes invisible to search. Each paginated page
             should have a self-referencing canonical.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Canonical Chains:</strong> Page A canonicalizes to Page B,
             which canonicalizes to Page C. Google may follow these chains but
             the signal weakens with each hop. Direct canonical relationships (A
             → C) are more reliable than chains.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>HTTP/HTTPS Canonical Mismatch:</strong> Declaring an HTTP
             canonical on an HTTPS page (or vice versa) creates a conflict
@@ -357,27 +361,27 @@ export default function CanonicalUrlsArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>E-Commerce Product Variants:</strong> A shoe available in 12
             colors and 8 sizes creates 96 potential URLs. Each variant page uses
             a canonical pointing to the main product page (or the default
             variant), consolidating ranking signals while keeping variant pages
             accessible for users who arrive via direct links.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Content Syndication Networks:</strong> Medium, Forbes
             contributor network, and news aggregators use cross-domain
             canonicals. When The Verge syndicates an article to Apple News or
             Google News, the syndicated versions include cross-domain canonicals
             pointing back to the original theverge.com URL.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Multi-Region Sites:</strong> Sites serving identical English
             content across .com, .co.uk, and .com.au domains use hreflang
             annotations alongside canonical tags. Each regional version
             self-canonicalizes while hreflang declares the language/region
             relationships.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>SaaS Documentation:</strong> Documentation platforms like
             Stripe or Twilio have versioned docs (/v1/docs, /v2/docs). The
@@ -392,13 +396,16 @@ export default function CanonicalUrlsArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: What is the difference between a canonical tag and a 301
               redirect?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: A 301 redirect physically moves both users and crawlers to the
               destination URL — the original URL becomes inaccessible. A
               canonical tag keeps both URLs accessible while telling search
@@ -406,12 +413,12 @@ export default function CanonicalUrlsArticle() {
               should no longer exist (domain migrations, URL restructuring). Use
               canonical tags when both URLs must remain functional (parameter
               variations, syndicated content, variant pages).
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: Can Google ignore a canonical tag? Under what circumstances?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Yes — the canonical tag is explicitly a hint, not a directive.
               Google may override it when the canonical points to a
@@ -496,7 +503,7 @@ export default function CanonicalUrlsArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls"
               target="_blank"
@@ -505,8 +512,8 @@ export default function CanonicalUrlsArticle() {
             >
               Google Search Central — Consolidate Duplicate URLs
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://datatracker.ietf.org/doc/html/rfc6596"
               target="_blank"
@@ -515,8 +522,8 @@ export default function CanonicalUrlsArticle() {
             >
               RFC 6596 — The Canonical Link Relation
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developers.google.com/search/docs/crawling-indexing/canonicalization"
               target="_blank"
@@ -525,7 +532,7 @@ export default function CanonicalUrlsArticle() {
             >
               Google — How Google Selects Canonical URLs
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://ahrefs.com/blog/canonical-tags/"

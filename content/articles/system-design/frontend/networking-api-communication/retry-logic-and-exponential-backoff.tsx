@@ -838,8 +838,12 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
 
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Staff-level answer: retries are a distributed-systems load multiplier. You need idempotency keys, jitter,
+          and a retry budget (and you must stop retrying on non-retriable classes of errors).
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/"
               className="text-accent hover:underline"
@@ -848,7 +852,7 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
             >
               Exponential Backoff and Jitter - AWS Architecture Blog
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://sre.google/sre-book/handling-overload/"
@@ -859,7 +863,7 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
               Handling Overload (Retry Budgets) - Google SRE Book
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://stripe.com/docs/api/idempotent_requests"
               className="text-accent hover:underline"
@@ -868,8 +872,8 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
             >
               Idempotent Requests - Stripe API Documentation
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://cloud.google.com/apis/design/errors#retrying_errors"
               className="text-accent hover:underline"
@@ -878,8 +882,8 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
             >
               Retrying Errors - Google Cloud API Design Guide
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://docs.microsoft.com/en-us/azure/architecture/patterns/retry"
               className="text-accent hover:underline"
@@ -888,7 +892,7 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
             >
               Retry Pattern - Microsoft Azure Architecture Patterns
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

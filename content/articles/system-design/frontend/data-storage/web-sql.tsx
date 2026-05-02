@@ -495,27 +495,31 @@ export default function WebSQLConciseArticle() {
           ============================================================ */}
       <section>
         <h2>References</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Web SQL is interview-relevant mostly as a deprecation story: explain why “it worked” (SQLite + SQL),
+          why it was abandoned (standardization + portability concerns), and how you migrate safely to IndexedDB.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.w3.org/TR/webdatabase/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               W3C Web SQL Database Specification (Discontinued)
             </a> — The original specification document, now marked as no longer maintained.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://chromestatus.com/feature/5641526022119424" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               Chrome Platform Status: Web SQL Removal
             </a> — Chrome's deprecation and removal timeline.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_SQL_API" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               MDN Web Docs: Web SQL Database
             </a> — Mozilla's documentation with deprecated status and migration guides.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://dexie.org/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               Dexie.js Documentation
             </a> — The most widely used IndexedDB wrapper library.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://www.tencent.com/en-us/blog/1563" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               SQLite in Browsers: Security Implications (Magellan Vulnerabilities)

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function OfflineMessageQueueArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Offline message queue stores messages for offline users and delivers them when the user reconnects, ensuring no messages are lost during disconnection. Mobile users frequently go offline—entering tunnels, switching to airplane mode, or simply closing the app. The offline queue guarantees message durability across these disconnections, providing a reliable messaging experience even with intermittent connectivity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The challenge of offline messaging is balancing durability, latency, and resource efficiency. Messages must persist reliably (durability) without slowing down the sender (latency) while not consuming excessive storage for users offline long-term (efficiency). The queue must handle edge cases: users offline for days, messages expiring, storage limits, and reconnection after app reinstall. Push notifications can wake devices for urgent messages, but rely on platform-specific infrastructure (APNs, FCM) with their own constraints.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, offline queue implementation involves distributed systems challenges. Queue storage must scale to billions of pending messages. Sync on reconnect must handle large backlogs without overwhelming the client. Conflict resolution handles messages sent from multiple devices while offline. TTL-based expiration cleans up stale messages. Monitoring tracks queue depth, delivery latency, and failed deliveries. The architecture must handle reconnect storms when many users reconnect simultaneously after a widespread outage.
         </p>
@@ -47,13 +51,16 @@ export default function OfflineMessageQueueArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Queue Storage Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Database queue stores messages in a dedicated table with recipient_id, message_id, content, timestamp, delivery_status, ttl. Indexes on recipient_id (fetch pending messages) and timestamp (order by arrival, expire old messages). Pros: Durable, queryable, transactional. Cons: Database load for high-volume queues. Best for: Most production systems, reliable delivery.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Message queue (Kafka, RabbitMQ) buffers messages for offline users. Consumer delivers when user reconnects. Pros: High throughput, built-in persistence, replay capability. Cons: More complex, messages may expire based on retention policy. Best for: High-volume systems, async processing.
-        </p>
+        </HighlightBlock>
         <p>
           Cache-based queue (Redis) stores pending messages with TTL. Fast access, automatic expiration. Pros: Low latency, automatic cleanup. Cons: Volatile (memory-based), cost for large queues. Best for: Short-term offline (minutes to hours), combined with database for durability.
         </p>
@@ -105,9 +112,12 @@ export default function OfflineMessageQueueArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Offline message queue architecture spans queue storage, push integration, sync service, and expiration management. Messages for offline users route to queue storage. Push service sends wake-up notification. On reconnect, sync service delivers queued messages. Expiration job cleans up old messages. Monitoring tracks queue health and delivery success.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/communication/offline-message-queue/offline-queue-architecture.svg"
@@ -118,9 +128,9 @@ export default function OfflineMessageQueueArticle() {
         />
 
         <h3>Queue Storage Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Queue table schema: id (UUID), recipient_id, sender_id, conversation_id, content (encrypted), timestamp, delivery_status (pending/delivered/failed/expired), ttl, created_at. Indexes: (recipient_id, timestamp) for fetch pending, (timestamp) for expiration.
-        </p>
+        </HighlightBlock>
         <p>
           Write path: message arrives for offline user, insert into queue table, trigger push notification, return success to sender. Write is async—sender doesn't wait for recipient to receive. Queue write is durable before ack to sender.
         </p>
@@ -180,14 +190,17 @@ export default function OfflineMessageQueueArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Offline queue design involves trade-offs between delivery guarantee, storage cost, notification frequency, and sync latency. Understanding these trade-offs enables informed decisions aligned with reliability requirements and operational constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Storage: Database vs Queue vs Cache</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Database storage (MySQL, PostgreSQL, Cassandra). Pros: Durable, queryable, transactional, no message loss. Cons: Database load scales with queue depth, expensive for billions of messages. Best for: Production messaging, reliable delivery required.
-        </p>
+        </HighlightBlock>
         <p>
           Message queue (Kafka, RabbitMQ). Pros: High throughput, built-in retention, replay capability. Cons: Messages expire based on retention (7-30 days typical), more complex ops. Best for: High-volume systems, can tolerate retention-based expiration.
         </p>
@@ -239,13 +252,16 @@ export default function OfflineMessageQueueArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use database for durable queue storage:</strong> Store pending messages in database with TTL. Combine with Redis cache for fast access. Ensure durability before ack to sender.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement incremental sync:</strong> Client sends last_message_id, server returns messages since then. Paginate large backlogs. Mark delivered after client ack.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Throttle push notifications:</strong> First message full push, subsequent batched into digest. Respect platform rate limits (APNs, FCM). Track push count per user per hour.
           </li>
@@ -275,13 +291,16 @@ export default function OfflineMessageQueueArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No TTL/expiry:</strong> Queue grows unbounded for users who never reconnect. Solution: Set TTL (30-90 days), run expiration job, monitor queue depth.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Full sync every reconnect:</strong> Inefficient, redundant data transfer. Solution: Incremental sync with last_message_id, paginate large backlogs.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Push spam:</strong> Sending push for every message annoys users. Solution: Throttle pushes, batch into digest, respect rate limits.
           </li>
@@ -311,16 +330,19 @@ export default function OfflineMessageQueueArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>WhatsApp Offline Delivery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WhatsApp stores undelivered messages on server for 30 days. Push notification sent for new messages. On reconnect, messages sync in order. End-to-end encrypted messages stored encrypted on server. Expired messages deleted without delivery.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Telegram Cloud Storage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Telegram stores all messages in cloud indefinitely (infinite TTL for most users). Messages accessible from any device, even years later. Sync on reconnect delivers full history. Premium users get faster sync, larger file retention.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Slack Message History</h3>
         <p>
@@ -340,12 +362,15 @@ export default function OfflineMessageQueueArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you store offline messages?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you store offline messages?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Database table with recipient_id, message_id, content (encrypted), timestamp, delivery_status, ttl. Indexes on (recipient_id, timestamp) for fetch, (timestamp) for expiration. Write is async—sender doesn't wait for recipient. Combine with Redis cache for fast access, but database is source of truth for durability.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

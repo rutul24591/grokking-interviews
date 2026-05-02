@@ -702,8 +702,12 @@ export default function MultipartUploadArticle() {
 
       <section>
         <h2>References &amp; Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Staff-level focus: resumability and correctness. You should be able to explain chunk sizing trade-offs,
+          idempotency of part uploads, and how you reconcile client progress with server-side state.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html"
               className="text-accent hover:underline"
@@ -712,8 +716,8 @@ export default function MultipartUploadArticle() {
             >
               AWS S3 Multipart Upload Documentation 
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://cloud.google.com/storage/docs/resumable-uploads"
               className="text-accent hover:underline"
@@ -722,7 +726,7 @@ export default function MultipartUploadArticle() {
             >
               Google Cloud Storage Resumable Uploads 
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block"
@@ -733,7 +737,7 @@ export default function MultipartUploadArticle() {
               Azure Block Blob Upload 
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             MDN Web Docs: <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/File_API"
               className="text-accent hover:underline"
@@ -742,7 +746,7 @@ export default function MultipartUploadArticle() {
             >
               File API 
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             MDN Web Docs: <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/Blob/slice"
@@ -753,7 +757,7 @@ export default function MultipartUploadArticle() {
               Blob.slice() 
             </a>
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.w3.org/TR/XMLHttpRequest2/#the-progress-event"
               className="text-accent hover:underline"
@@ -762,7 +766,7 @@ export default function MultipartUploadArticle() {
             >
               XMLHttpRequest Level 2 Progress Events 
             </a>
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

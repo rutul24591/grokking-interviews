@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function ModerationServicesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Moderation services enable administrative content moderation through programmatic interfaces. The moderation service system is the primary tool for moderators, trust and safety teams, and automated systems to moderate content, manage moderation queues, perform escalations, and ensure platform safety. For staff and principal engineers, moderation services involve content moderation workflows (moderate content), queue management (manage moderation queues), escalation workflows (escalate content), moderator assignment (assign moderators), quality assurance (ensure moderation quality), and moderation service security (secure moderation services).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of moderation services extends beyond simple content moderation. Content moderation workflows must moderate content (moderate content). Queue management must manage moderation queues (manage moderation queues). Escalation workflows must escalate content (escalate content). Moderator assignment must assign moderators (assign moderators). Quality assurance must ensure moderation quality (ensure moderation quality). Moderation service security must secure moderation services (secure moderation services).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, moderation services architecture involves content moderation workflows (moderate content), queue management (manage moderation queues), escalation workflows (escalate content), moderator assignment (assign moderators), quality assurance (ensure moderation quality), and moderation service security (secure moderation services). The system must support multiple moderation types (pre-moderation, post-moderation, reactive), multiple queue types (priority queues, standard queues, escalation queues), and multiple escalation types (auto-escalation, manual escalation, priority escalation). Performance is important—moderation services must be fast and reliable.
         </p>
@@ -47,13 +51,16 @@ export default function ModerationServicesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Content Moderation Workflows</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pre-moderation moderates content before publishing. Pre-moderation (moderate content before publishing). Pre-moderation validation (validate pre-moderation). Pre-moderation enforcement (enforce pre-moderation). Pre-moderation reporting (report on pre-moderation).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Post-moderation moderates content after publishing. Post-moderation (moderate content after publishing). Post-moderation validation (validate post-moderation). Post-moderation enforcement (enforce post-moderation). Post-moderation reporting (report on post-moderation).
-        </p>
+        </HighlightBlock>
         <p>
           Reactive moderation moderates content when reported. Reactive moderation (moderate content when reported). Reactive moderation validation (validate reactive moderation). Reactive moderation enforcement (enforce reactive moderation). Reactive moderation reporting (report on reactive moderation).
         </p>
@@ -116,9 +123,12 @@ export default function ModerationServicesArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Moderation services architecture spans content moderation workflows, queue management, escalation workflows, and moderator assignment. Content moderation workflows moderate content. Queue management manages moderation queues. Escalation workflows escalate content. Moderator assignment assigns moderators.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/admin-moderation/moderation-services/moderation-services-architecture.svg"
@@ -129,9 +139,9 @@ export default function ModerationServicesArticle() {
         />
 
         <h3>Content Moderation Workflows</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Content moderation workflows moderate content. Pre-moderation (moderate content before publishing). Post-moderation (moderate content after publishing). Reactive moderation (moderate content when reported).
-        </p>
+        </HighlightBlock>
         <p>
           Pre-moderation validation validates pre-moderation. Pre-moderation validation (validate pre-moderation). Pre-moderation validation enforcement (enforce pre-moderation validation). Pre-moderation validation verification (verify pre-moderation validation). Pre-moderation validation reporting (report on pre-moderation validation).
         </p>
@@ -191,14 +201,17 @@ export default function ModerationServicesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Moderation services design involves trade-offs between automation and manual control, queue priority and fairness, and escalation speed and accuracy. Understanding these trade-offs enables informed decisions aligned with moderation needs and platform constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Moderation: Automated vs. Manual</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Automated moderation (automate moderation). Pros: Efficient (automate moderation), fast. Cons: Complex (complex moderation), expensive. Best for: High-volume (high moderation volume).
-        </p>
+        </HighlightBlock>
         <p>
           Manual moderation (manual moderation). Pros: Simple (simple moderation), cheap. Cons: Inefficient (manual moderation), slow. Best for: Low-volume (low moderation volume).
         </p>
@@ -250,13 +263,16 @@ export default function ModerationServicesArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement content moderation workflows:</strong> Pre-moderation, post-moderation, reactive moderation. Content moderation workflows management. Content moderation workflows enforcement.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement queue management:</strong> Priority queue management, standard queue management, escalation queue management. Queue management management. Queue management enforcement.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement escalation workflows:</strong> Auto-escalation, manual escalation, priority escalation. Escalation workflows management. Escalation workflows enforcement.
           </li>
@@ -286,13 +302,16 @@ export default function ModerationServicesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No content moderation workflows:</strong> Don&apos;t moderate content. Solution: Content moderation workflows (pre-moderation, post-moderation, reactive moderation).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No queue management:</strong> Don&apos;t manage moderation queues. Solution: Queue management (priority, standard, escalation).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No escalation workflows:</strong> Don&apos;t escalate content. Solution: Escalation workflows (auto-escalation, manual escalation, priority escalation).
           </li>
@@ -322,16 +341,19 @@ export default function ModerationServicesArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Content Moderation Workflows</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Content moderation workflows for content moderation. Pre-moderation (moderate content before publishing). Post-moderation (moderate content after publishing). Reactive moderation (moderate content when reported). Content moderation workflows management (manage content moderation workflows).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Queue Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Queue management for queue management. Priority queue management (manage priority queues). Standard queue management (manage standard queues). Escalation queue management (manage escalation queues). Queue management management (manage queue management).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Escalation Workflows</h3>
         <p>
@@ -351,12 +373,15 @@ export default function ModerationServicesArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design content moderation workflows that balance speed, accuracy, and moderator well-being?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design content moderation workflows that balance speed, accuracy, and moderator well-being?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement tiered moderation workflow. Pre-moderation for high-risk content (new users, previously violating users, sensitive topics)—content reviewed before publishing. Post-moderation for established users—content published immediately, reviewed within SLA. Reactive moderation for user-reported content—prioritized by report count and reporter trust. The key insight: don&apos;t moderate everything the same way—risk-based triage optimizes limited moderator resources. Implement moderator well-being protections: rotation between content types (don&apos;t review harmful content all day), exposure limits (max hours reviewing disturbing content), mental health support, regular breaks. Track moderator metrics (throughput, accuracy, consistency) but balance against well-being—burned out moderators make mistakes. Implement escalation paths for edge cases—moderators should be able to escalate uncertain decisions to senior reviewers.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

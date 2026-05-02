@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,14 +39,17 @@ export default function FeedDisplayArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Feed Display</strong> is the frontend interface that presents
           content in a continuous, scrollable stream optimized for discovery and
           engagement. It is the primary interaction point for users on social
           platforms (Twitter, Facebook, Instagram), news aggregators (Reddit,
           Hacker News), and content platforms (YouTube, TikTok).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feed display involves complex frontend engineering challenges:
           rendering hundreds or thousands of items efficiently (virtualization),
           maintaining scroll position during navigation, handling real-time
@@ -53,7 +57,7 @@ export default function FeedDisplayArticle() {
           infinite scrolling, and supporting multiple feed types (chronological,
           ranked, hybrid). Performance is critical—janky scrolling or slow
           render times directly impact user engagement and session duration.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, feed display architecture requires
           balancing visual fidelity with performance, implementing robust state
@@ -65,10 +69,13 @@ export default function FeedDisplayArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Feed Types</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Different feed types serve different user needs and platform goals:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Chronological Feed:</strong> Items sorted by creation time
@@ -94,7 +101,7 @@ export default function FeedDisplayArticle() {
         </ul>
 
         <h3 className="mt-6">Feed Sections/Tabs</h3>
-        <p>Most platforms offer multiple feed views:</p>
+        <HighlightBlock as="p" tier="important">Most platforms offer multiple feed views:</HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>For You:</strong> Personalized recommendations based on
@@ -167,10 +174,13 @@ export default function FeedDisplayArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production feed display system involves multiple components managing
           rendering, state, and data fetching.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery/feed-display/feed-display-architecture.svg"
@@ -253,9 +263,9 @@ export default function FeedDisplayArticle() {
         />
 
         <h3 className="mt-6">Scroll Position Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Maintaining scroll position across navigation is critical for good UX:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Save Before Navigation:</strong> On link click, save current
@@ -308,10 +318,13 @@ export default function FeedDisplayArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feed display involves balancing performance, user experience, and
           implementation complexity.
-        </p>
+        </HighlightBlock>
 
         <h3>Virtualization Libraries Comparison</h3>
         <div className="overflow-x-auto">
@@ -369,11 +382,11 @@ export default function FeedDisplayArticle() {
         />
 
         <h3 className="mt-6">Infinite Scroll vs Pagination Decision</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Choose Infinite Scroll When:</strong> Content is exploratory
           (social feeds, discovery), mobile-first design, engagement is primary
           goal, content is ephemeral (news, tweets).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Choose Pagination When:</strong> Users need to find specific
           content (search results, comments), bookmarking is important, SEO is
@@ -405,17 +418,20 @@ export default function FeedDisplayArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Virtualization:</strong> Never render entire feed. Use
             React Window or tanstack/virtual for efficient rendering. Target
             60fps scroll performance.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Skeleton Screens:</strong> Show skeleton
             placeholders during initial load and while loading more. Reduces
             perceived latency.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Debounce Scroll Events:</strong> Scroll event fires
             frequently. Use requestAnimationFrame or lodash.debounce to limit
@@ -460,17 +476,20 @@ export default function FeedDisplayArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No Virtualization:</strong> Rendering 100+ items causes
             janky scroll, high memory usage. Solution: Implement virtualization
             from start.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Scroll Position Lost:</strong> Navigation resets scroll to
             top. Solution: Save/restore scroll position, use Next.js scroll
             restoration.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Duplicate Items:</strong> Loading more appends duplicates.
             Solution: Use cursor-based pagination, deduplicate on client before
@@ -506,19 +525,22 @@ export default function FeedDisplayArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter Feed</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter uses virtualized feed with "X new Tweets" banner for real-time
           updates. Implements hybrid infinite scroll (pauses near bottom for
           footer). Two tabs: "For You" (ranked) and "Following" (chronological).
           Pull-to-refresh on mobile.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Optimistic posting—tweet appears
           immediately in feed, then confirms with server. Handles failures
           gracefully with retry.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Instagram Feed</h3>
         <p>
@@ -560,12 +582,15 @@ export default function FeedDisplayArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you implement infinite scroll?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use Intersection Observer or scroll event
               listener to detect when user approaches bottom (within 200-500px
               threshold). Trigger fetch for next page using cursor from previous
@@ -573,7 +598,7 @@ export default function FeedDisplayArticle() {
               while fetching. Handle end-of-feed with "You're all caught up"
               message. Debounce scroll events to prevent multiple simultaneous
               fetches.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function PermutationsAndCombinationsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Permutations and combinations</span> are the
           two core combinatorial enumeration primitives. A permutation is an ordering of
           items; a combination is an unordered selection. Subsets generalize combinations
           to all sizes. Each maps to a backtracking skeleton — three patterns that, once
           memorized, cover ~30% of LeetCode hards and a large share of real combinatorial
           enumeration code.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The counts are the canonical numbers of combinatorics: P(n, k) = n!/(n−k)! for
           k-permutations, C(n, k) = n!/(k!(n−k)!) for k-combinations, 2ⁿ for all subsets.
           Permutation counts grow factorially — n=15 is already 1.3 trillion — making
           enumeration feasible only for small n unless heavy pruning applies.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Interview frequency is enormous because these skeletons compose with every
           domain: subsets for power-set, permutations for ordered arrangements,
@@ -54,16 +58,19 @@ export default function PermutationsAndCombinationsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Subsets via include/exclude.</span> At each
           index i, two branches: include a[i] or exclude. At i = n, emit the path. 2ⁿ
           leaves, total work O(n · 2ⁿ).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Subsets via bitmask iteration.</span> Iterate
           mask from 0 to 2ⁿ − 1; for each mask, the subset is {"{ a[i] : bit i set }"}.
           Trivially parallelizable, no recursion, but requires n ≤ 64.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Permutations via swap-and-recurse.</span> Walk
           index <code>start</code> from 0 to n. For each i ≥ start, swap a[start] and
@@ -115,18 +122,21 @@ export default function PermutationsAndCombinationsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Recursive vs iterative.</span> Recursion mirrors
           the conceptual structure cleanly. Iterative generators (next_permutation,
           bitmask subsets) save stack frames and integrate with C++/Java iterators that
           consume permutations one at a time without materializing all of them.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Lazy generation.</span> For large n, you rarely
           want all outputs in memory. Use generators (Python <code>yield</code>, Java
           Iterator, C++ ranges) to produce one output at a time. Critical for streams or
           interactive use.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Memory layout.</span> A single mutable path
           shared across all recursive calls is most cache-friendly; copy on emission.
@@ -154,17 +164,20 @@ export default function PermutationsAndCombinationsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Recursive vs bitmask iteration.</span> For
           subsets up to n=20, bitmask wins on speed and simplicity. Beyond n=20, neither
           approach generates output you can practically consume.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Swap-based vs used-array permutation.</span>{" "}
           Swap-based is more memory-efficient (in-place) but mutates input ordering.
           Used-array is cleaner for adding per-element constraints but allocates a boolean
           array.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Heap's Algorithm vs std::next_permutation.</span>{" "}
           Heap is faster (one swap per output) but doesn't produce lex order. STL is
@@ -184,14 +197,17 @@ export default function PermutationsAndCombinationsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Sort input first when handling duplicates.</span>{" "}
           The "skip equal previous" trick requires equal elements be adjacent.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Use generators / iterators when output is
           large.</span> Don't materialize a list of 10⁶ permutations; yield them.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Prefer std::next_permutation for lex
           ordering.</span> Battle-tested, O(1) amortized, idiomatic C++.
@@ -213,16 +229,19 @@ export default function PermutationsAndCombinationsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Recursing on start + 1 instead of i + 1 in
           combinations.</span> Reuses the same element across choices. Use{" "}
           <code>combine(i + 1, ...)</code>.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Forgetting to copy path on emit.</span> Storing
           a reference to the mutable path makes all emitted "results" identical to the
           final state. Copy on push.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Wrong duplicate skipping.</span> For permutations
           with duplicates, skipping when used[i−1] is true (rather than false) gives the
@@ -249,17 +268,20 @@ export default function PermutationsAndCombinationsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">A/B test cohort design.</span> When n
           experimental conditions need balanced assignment to k cohorts, enumerate
           k-permutations or partitions to find balanced ones. Small n (≤ 8 or so) makes
           brute enumeration feasible; larger uses MILP or randomization.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Feature selection in ML.</span> Forward/backward
           selection considers C(n, k) feature subsets at each step. Pure enumeration is
           feasible only for small n; usually combined with greedy or genetic search.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Combinatorial test design.</span> Pairwise
           (2-way) coverage requires picking a small number of tests covering all parameter
@@ -290,15 +312,18 @@ export default function PermutationsAndCombinationsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Generate all subsets of [1,2,3]."</span>{" "}
           Include/exclude recursion or bitmask iteration. 8 subsets.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Subsets II — input may have duplicates."</span>{" "}
           Sort first; in the include branch loop, skip a[i] equal to previous when
           previous wasn't taken at this depth.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">"Permutations of [1,2,3]."</span> Swap-based
           recursion or used-array. 6 outputs.

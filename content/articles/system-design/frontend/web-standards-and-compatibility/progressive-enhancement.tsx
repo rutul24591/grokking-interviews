@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function ProgressiveEnhancementArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Progressive enhancement</strong> is a design and development
           philosophy where web experiences are built in layers — starting with a
           universally accessible baseline of semantic HTML, then adding
@@ -46,8 +50,8 @@ export default function ProgressiveEnhancementArticle() {
           those that lack support. The core principle is that content and core
           functionality must be available to every user, regardless of their
           browser, device, network conditions, or assistive technology.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Progressive enhancement emerged in the early 2000s as a response to
           the browser wars and the practice of building sites exclusively for
           the latest browsers. The term was coined by Steven Champeon in 2003,
@@ -57,7 +61,7 @@ export default function ProgressiveEnhancementArticle() {
           enhancement starts with the baseline and builds upward — a
           fundamentally different architectural mindset that prioritizes
           resilience over feature parity.
-        </p>
+        </HighlightBlock>
         <p>
           At the staff/principal engineer level, progressive enhancement is not
           merely a coding technique but a strategic architecture decision. It
@@ -87,8 +91,11 @@ export default function ProgressiveEnhancementArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Content Layer (HTML):</strong> The foundation of progressive
             enhancement. Semantic HTML delivers the core content and
             functionality — text, links, forms, navigation — without any CSS or
@@ -96,8 +103,8 @@ export default function ProgressiveEnhancementArticle() {
             text-only browser or screen reader can accomplish all primary tasks.
             Forms submit via standard POST requests, navigation uses anchor
             tags, and content is structured with semantic elements.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Presentation Layer (CSS):</strong> Styling enhances the
             visual experience without altering functionality. Layout, color,
             typography, and responsive design are applied through CSS. If CSS
@@ -105,7 +112,7 @@ export default function ProgressiveEnhancementArticle() {
             readable and functional in its default browser styling. Modern CSS
             features like Grid and custom properties can be layered using
             feature queries (<code>@supports</code>).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Behavior Layer (JavaScript):</strong> Interactive
             enhancements are the final layer — form validation, dynamic content
@@ -160,16 +167,19 @@ export default function ProgressiveEnhancementArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Progressive enhancement creates a layered architecture where each
           layer is independent and additive. Understanding these layers and
           their failure modes is essential for building resilient systems.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/web-standards-and-compatibility/progressive-enhancement-diagram-1.svg"
           alt="Progressive enhancement layer model showing HTML content layer, CSS presentation layer, and JavaScript behavior layer with their respective capabilities"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The three-layer model illustrates how capabilities stack. The HTML
           layer provides structure, semantics, and basic interactivity (links,
           forms). CSS adds visual design, layout, and responsive behavior.
@@ -177,7 +187,7 @@ export default function ProgressiveEnhancementArticle() {
           Each layer degrades independently — a CSS failure doesn&apos;t break
           functionality, and a JavaScript failure doesn&apos;t break content
           access.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/web-standards-and-compatibility/progressive-enhancement-diagram-2.svg"
           alt="Feature detection and enhancement pipeline showing how browser capabilities are tested and enhancements are conditionally applied"
@@ -208,6 +218,9 @@ export default function ProgressiveEnhancementArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -217,7 +230,7 @@ export default function ProgressiveEnhancementArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">Progressive Enhancement</td>
               <td className="p-3">
                 Inherently resilient — works when layers fail; accessible by
@@ -229,8 +242,8 @@ export default function ProgressiveEnhancementArticle() {
                 capability; developers must think in layers; some interactions
                 are harder to implement baseline-first
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">Graceful Degradation</td>
               <td className="p-3">
                 Faster initial development for modern browsers; full feature set
@@ -241,7 +254,7 @@ export default function ProgressiveEnhancementArticle() {
                 failures are discovered late; baseline users get a broken
                 experience patched after the fact
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3 font-medium">JavaScript-Required SPA</td>
               <td className="p-3">
@@ -274,22 +287,25 @@ export default function ProgressiveEnhancementArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Start Every Feature with the HTML Layer:</strong> Before
             writing any JavaScript, build the feature using only HTML. Forms
             should submit to server endpoints, navigation should use anchor tags
             with real hrefs, and content should be structured semantically. This
             baseline becomes the fallback that works everywhere.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Feature Detection, Not Browser Detection:</strong> Test
             for specific capabilities rather than identifying browsers. Feature
             detection is forward-compatible — new browsers that support a
             feature automatically receive the enhancement. User-agent sniffing
             is fragile, easily spoofed, and requires constant maintenance as new
             browsers emerge.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Define and Document the Baseline Contract:</strong>{" "}
             Explicitly document which tasks are baseline (work without
@@ -347,21 +363,24 @@ export default function ProgressiveEnhancementArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>JavaScript-Only Navigation:</strong> Client-side routing
             without server-side fallback means users cannot access pages when
             JavaScript fails. Every route in the application should resolve to a
             server-rendered page. This is the most common progressive
             enhancement violation in modern SPAs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Forms Without Server-Side Action:</strong> Forms that only
             submit via JavaScript (fetch/XHR) with no form action attribute
             become non-functional when JavaScript is unavailable. Always include
             a server-side form handler as the baseline, then enhance with
             JavaScript for inline validation and async submission.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Content Generated Entirely by JavaScript:</strong> If page
             content is rendered exclusively by client-side JavaScript, the
@@ -398,8 +417,11 @@ export default function ProgressiveEnhancementArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>GOV.UK:</strong> The UK Government Digital Service is the
             canonical example of progressive enhancement at scale. Every
             government service works without JavaScript — forms submit, content
@@ -407,8 +429,8 @@ export default function ProgressiveEnhancementArticle() {
             validation, dynamic content updates, and improved interactions. This
             ensures that citizens on any device, browser, or network can access
             critical government services.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>GitHub:</strong> GitHub extensively uses progressive
             enhancement. Repository browsing, file viewing, and issue reading
             work with server-rendered HTML. JavaScript enhances with inline
@@ -416,7 +438,7 @@ export default function ProgressiveEnhancementArticle() {
             keyboard shortcuts. When GitHub&apos;s JavaScript CDN had an outage
             in 2018, the site remained functional for reading and navigation —
             the baseline held.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Basecamp/Hey:</strong> Basecamp&apos;s products use Hotwire
             (Turbo + Stimulus) which is architecturally progressive enhancement.
@@ -439,13 +461,16 @@ export default function ProgressiveEnhancementArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between progressive enhancement and
               graceful degradation?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: They address the same problem from opposite directions.
               Progressive enhancement starts with a minimal, universally
               functional baseline (HTML) and adds layers of capability for more
@@ -456,7 +481,7 @@ export default function ProgressiveEnhancementArticle() {
               designed first. Graceful degradation often has an incomplete
               baseline because fallbacks are added retroactively, and edge cases
               are discovered in production rather than during design.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
@@ -549,21 +574,24 @@ export default function ProgressiveEnhancementArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Progressive Enhancement introduces security considerations around feature detection, graceful degradation of security features, and ensuring baseline security across all enhancement levels.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Progressive Enhancement Security Patterns</h3>
-          <ul className="space-y-2">
-            <li>
-              <strong>Baseline Security:</strong> Security features must work at the baseline level. Mitigation: implement security at the HTML/CSS layer, ensure JavaScript enhancements don't bypass security, validate all input server-side regardless of client-side validation.
-            </li>
-            <li>
-              <strong>Feature Detection Security:</strong> Feature detection can leak information about user's browser. Mitigation: use standardized feature detection libraries, avoid fingerprinting via feature detection, implement server-side feature detection where possible.
-            </li>
-            <li>
-              <strong>Graceful Security Degradation:</strong> Enhanced features may have additional security requirements. Mitigation: validate capabilities server-side, implement fallback security measures, ensure baseline security is never compromised.
+	          <h3 className="mb-4 text-lg font-semibold">Progressive Enhancement Security Patterns</h3>
+	          <ul className="space-y-2">
+	            <HighlightBlock as="li" tier="important">
+	              <strong>Baseline Security:</strong> Security features must work at the baseline level. Mitigation: implement security at the HTML/CSS layer, ensure JavaScript enhancements don't bypass security, validate all input server-side regardless of client-side validation.
+	            </HighlightBlock>
+	            <HighlightBlock as="li" tier="important">
+	              <strong>Feature Detection Security:</strong> Feature detection can leak information about user's browser. Mitigation: use standardized feature detection libraries, avoid fingerprinting via feature detection, implement server-side feature detection where possible.
+	            </HighlightBlock>
+	            <li>
+	              <strong>Graceful Security Degradation:</strong> Enhanced features may have additional security requirements. Mitigation: validate capabilities server-side, implement fallback security measures, ensure baseline security is never compromised.
             </li>
           </ul>
         </div>
@@ -571,9 +599,12 @@ export default function ProgressiveEnhancementArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Progressive Enhancement performance depends on baseline efficiency, enhancement loading strategy, and feature detection overhead.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -612,9 +643,9 @@ export default function ProgressiveEnhancementArticle() {
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Enhancement Strategy Comparison</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Different enhancement strategies have different performance characteristics:
-          </p>
+          </HighlightBlock>
           <ul className="mt-3 space-y-2">
             <li>
               <strong>CSS Enhancements:</strong> Load time: ~10-50ms. Best for: visual enhancements, layout improvements. Limitation: requires CSS support.
@@ -631,9 +662,12 @@ export default function ProgressiveEnhancementArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Progressive Enhancement has development costs but provides significant benefits for accessibility, SEO, and resilience.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
@@ -667,9 +701,9 @@ export default function ProgressiveEnhancementArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">When to Use Progressive Enhancement</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Use PE when: (1) you need maximum accessibility, (2) SEO is critical, (3) you serve users with varying browser capabilities. Avoid when: (1) you're building internal tools with known browser requirements, (2) the application requires modern features for core functionality.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 

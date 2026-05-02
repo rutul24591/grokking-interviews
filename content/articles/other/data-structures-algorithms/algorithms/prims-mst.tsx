@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function PrimsMSTArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Prim's algorithm finds a minimum spanning tree (MST) of a connected,
           undirected, weighted graph by growing a single tree outward from an
           arbitrary starting vertex. At each step it adds the lightest edge
@@ -46,8 +50,8 @@ export default function PrimsMSTArticle() {
           log V); with an array-scan implementation, it runs in O(V²) and
           wins on dense graphs; with a Fibonacci heap, the asymptotic bound
           drops to O(E + V log V) at the cost of large constants.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The algorithm has a tangled attribution. Vojtěch Jarník described
           it in 1930 in Czech, and it's sometimes called Jarník's algorithm
           in Eastern European literature. Robert Prim independently
@@ -55,7 +59,7 @@ export default function PrimsMSTArticle() {
           in 1959 — three independent inventions of the same simple idea.
           Modern textbooks credit Prim, occasionally Jarník-Prim or
           Prim-Jarník-Dijkstra.
-        </p>
+        </HighlightBlock>
         <p>
           Prim is the natural counterpart to Kruskal in the MST family. Both
           are greedy, both run in roughly O(E log V), and both produce an
@@ -86,7 +90,10 @@ export default function PrimsMSTArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The algorithm maintains three pieces of state: a boolean{" "}
           <code>in_mst[v]</code>, a key value <code>key[v]</code> (the
           minimum weight of any edge from an in-tree vertex to v), and a
@@ -96,8 +103,8 @@ export default function PrimsMSTArticle() {
           pull the vertex with smallest key from the priority queue, add it
           to the MST, and relax its outgoing edges: for each neighbor v not
           yet in MST, if w(u, v) &lt; key[v], update key[v] and parent[v].
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The correctness comes from the cut property. At every step the
           MST-so-far T forms a cut: the partition (T, V \ T). The lightest
           edge crossing this cut is in some MST (cut property), so adding
@@ -106,7 +113,7 @@ export default function PrimsMSTArticle() {
           edge, by construction. So Prim's algorithm always extends the
           partial MST with an edge that's in some MST; after V-1 steps,
           the result is a complete MST.
-        </p>
+        </HighlightBlock>
         <p>
           The proof is by induction on the number of vertices in the
           partial tree. Base case: a single-vertex tree is trivially in
@@ -156,27 +163,30 @@ export default function PrimsMSTArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The data structures are an adjacency list (or matrix for the
           dense variant), a key array, an in_mst boolean array, a parent
           array, and a priority queue. Memory is O(V + E) for adjacency
           plus O(V) for the per-vertex state. Initialize, push the start
           vertex, loop until V vertices are in the MST or the heap is
           empty.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/prims-mst-diagram-2.svg"
           alt="Prim vs Kruskal side-by-side and cut property"
           caption="Side-by-side comparison with Kruskal and the cut-property proof of correctness — Prim is the cut-property algorithm; Kruskal is the cycle-property dual."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           For dense graphs, the array-scan variant has noticeably better
           cache behavior than heap-based Prim. The inner loop is a single
           read-update-compare on contiguous memory, friendly to SIMD and
           to compilers. On a graph with V = 1000 and E = 10⁵, array Prim
           finishes in microseconds; heap Prim pays log overhead on every
           relaxation.
-        </p>
+        </HighlightBlock>
         <p>
           For implicit graphs — where edges are computed on demand rather
           than stored — Prim is the natural choice. Examples: geometric
@@ -211,17 +221,20 @@ export default function PrimsMSTArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Prim vs Kruskal (sparse).</strong> Both O(E log V); a
           wash. Pick by problem shape: Prim if you have an adjacency-list
           and a designated start vertex, Kruskal if you have an edge list
           and want global processing. Both work fine for sparse graphs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Prim vs Kruskal (dense).</strong> Array-scan Prim is
           O(V²); Kruskal needs to sort O(V²) edges in O(V² log V). Prim
           wins for E ≈ V². The crossover happens around E ≈ V² / log V.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Prim vs Kruskal (online edge stream).</strong> Kruskal
           processes edges in weight order; if the stream is sorted (or
@@ -257,17 +270,20 @@ export default function PrimsMSTArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Pick the variant by graph density.</strong> Sparse → heap
           Prim. Dense (E ≈ V²) → array Prim. Implicit graphs → heap Prim
           with on-demand neighbor computation. Don't reflexively use heap
           on dense graphs — the log factor adds up.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Lazy heap by default.</strong> Push on relaxation; skip
           on pop if already in MST. Use eager heap only if profiler
           evidence shows heap memory is a problem.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Choose the start vertex deliberately.</strong> The
           algorithm's correctness doesn't depend on the start, but if the
@@ -309,19 +325,22 @@ export default function PrimsMSTArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Wrong relaxation rule.</strong> The most common bug:
           using <code>key[u] + w</code> instead of <code>w</code> in the
           relaxation, which turns Prim into Dijkstra. The total weight
           looks plausible but the tree is wrong (it's the SPT, not the
           MST). Always test on a small graph where MST and SPT differ.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Forgetting in_mst check on pop.</strong> Without it,
           stale heap entries get processed twice, double-counting their
           weight in the total and corrupting parent pointers. Lazy heap
           requires the skip-on-pop pattern.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Heap-based Prim on dense graphs.</strong> O((V+E) log V)
           on a dense graph is O(V² log V); array-based is O(V²). On V =
@@ -355,26 +374,29 @@ export default function PrimsMSTArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/prims-mst-diagram-3.svg"
           alt="Prim production wins and applications"
           caption="When Prim wins over Kruskal — dense graphs, implicit graphs, root-anchored trees — and the production systems that lean on it."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Broadcast tree construction.</strong> In mesh and
           ad-hoc networks, broadcasting a message from a designated
           source to all nodes at minimum total link cost is exactly
           Prim's algorithm with the source as the root. Sensor networks,
           IoT clusters, and overlay networks for content distribution all
           use Prim or Prim-derived schemes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Computer graphics and mesh processing.</strong>
           Mesh simplification, point-cloud connectivity, and depth-image
           surfacing use MSTs to find natural neighbor structure. Prim is
           preferred over Kruskal because the graphs are dense in
           neighborhood and implicit (computed from geometric proximity).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Image quilting / texture synthesis.</strong> Efraim
           and Freeman's image-quilting algorithm uses minimum-error
@@ -422,18 +444,21 @@ export default function PrimsMSTArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Min Cost to Connect All Points (LeetCode 1584).</strong>
           A perfect Prim problem: dense graph (every pair has an edge),
           implicit weights (Manhattan distance), single starting vertex.
           Heap-based Prim: O(N² log N). Array-based Prim: O(N²) — wins.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Connecting Cities with Minimum Cost.</strong> Standard
           MST framing; either Prim or Kruskal works. Interviewer often
           asks "which would you pick and why?" — chance to discuss
           density tradeoffs.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Optimize Water Distribution.</strong> Add a virtual
           source connected to all cities (well costs); run MST. Both Prim

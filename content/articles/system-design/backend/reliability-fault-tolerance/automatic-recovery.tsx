@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,7 +28,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Automatic recovery, also known as self-healing, refers to the set of
           automated mechanisms that detect a degraded or failed system component,
           diagnose the nature of the failure, execute a remediation action, and
@@ -38,8 +42,8 @@ export default function ArticlePage() {
           detection and service restoration, transforming what would be a
           page-to-incident cycle into a bounded, automated sequence that restores
           capacity, correctness, or routing within seconds to minutes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The scope of automatic recovery spans multiple layers of a production
           stack. At the infrastructure level, orchestrators such as Kubernetes
           restart crashed containers, replace unhealthy nodes, and reschedule
@@ -49,7 +53,7 @@ export default function ArticlePage() {
           a bad release and triggers an automated rollback. Each layer operates
           with different signals, different remediation actions, and different
           constraints on what constitutes safe recovery.
-        </p>
+        </HighlightBlock>
         <p>
           What distinguishes mature automatic recovery from naive automation is
           its caution. Production systems that recover automatically must operate
@@ -91,9 +95,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>The Recovery Lifecycle: Detection, Diagnosis, Remediation, Verification</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Automatic recovery follows a four-phase lifecycle that repeats
           continuously for every monitored component in the system. The detection
           phase identifies that something has deviated from the expected steady
@@ -105,8 +112,8 @@ export default function ArticlePage() {
           example, a container restart might be triggered only when both the
           liveness probe fails and the error rate exceeds a sustained threshold
           over a defined window.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The diagnosis phase classifies the detected failure into a category that
           maps to a specific remediation strategy. This is where many recovery
           systems fall short. If a system cannot distinguish between an
@@ -116,7 +123,7 @@ export default function ArticlePage() {
           must narrow the failure to a class: instance-level failure, dependency
           failure, configuration failure, or deployment failure. Each class maps
           to a different recovery action.
-        </p>
+        </HighlightBlock>
         <p>
           The remediation phase executes the recovery action. The action depends
           on the diagnosed failure class: a process restart for transient crashes,
@@ -231,7 +238,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production recovery systems are built as control loops that continuously
           observe system health, evaluate policies, and execute remediation
           actions. The architecture consists of three main components: the
@@ -241,8 +251,8 @@ export default function ArticlePage() {
           These components communicate through well-defined interfaces so that
           policies can evolve independently of the observation and execution
           mechanisms.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The observation layer is responsible for aggregating signals from
           multiple sources: health probes from the orchestrator, application-level
           metrics such as error rates and latency percentiles, infrastructure
@@ -255,7 +265,7 @@ export default function ArticlePage() {
           control plane to perform restarts, instance replacements, traffic shifts,
           and rollbacks. It reports the outcome of each action back to the
           observation layer so that verification can proceed.
-        </p>
+        </HighlightBlock>
         <p>
           A critical architectural decision is whether the decision engine operates
           centrally or is distributed across individual services. A centralized
@@ -287,7 +297,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental trade-off in automatic recovery is between speed and
           safety. Faster recovery actions -- such as immediate instance replacement
           or aggressive circuit breaker tripping -- reduce downtime but increase
@@ -299,8 +312,8 @@ export default function ArticlePage() {
           afford slower, safer recovery. Systems with tight error budgets and
           frequent failures need faster recovery but must invest heavily in signal
           quality to avoid making things worse.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           There is also a trade-off between automation scope and operator
           understanding. When a system recovers automatically most of the time,
           operators lose practice with manual recovery procedures. This means that
@@ -310,7 +323,7 @@ export default function ArticlePage() {
           manual recovery paths even when automation is functioning well. This
           keeps operator skills sharp and validates that manual procedures are
           still current.
-        </p>
+        </HighlightBlock>
         <p>
           The choice between local and centralized recovery control presents another
           trade-off. Local recovery is resilient and fast but cannot coordinate
@@ -337,7 +350,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design recovery policies around failure classes, not individual signals.
           Define what constitutes an instance-level failure, a dependency failure,
           a configuration failure, and a deployment failure. For each class,
@@ -345,8 +361,8 @@ export default function ArticlePage() {
           criteria, and the escalation path. This structured approach ensures that
           automation acts with appropriate intent rather than blindly applying the
           same action to every anomaly.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implement progressive recovery with explicit escalation ladders. Start
           with the lightest action -- a process restart -- and only escalate to
           heavier actions -- instance replacement, traffic rerouting, rollback --
@@ -355,7 +371,7 @@ export default function ArticlePage() {
           verification gate. This prevents the system from jumping to disruptive
           actions for transient issues and prevents infinite loops of the same
           ineffective action.
-        </p>
+        </HighlightBlock>
         <p>
           Enforce strict guardrails on all automated recovery actions. Rate-limit
           the number of recovery actions per unit time to prevent thrashing.
@@ -380,7 +396,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           One of the most dangerous pitfalls is automation-induced masking, where
           repeated automated recovery actions hide structural problems that require
           permanent fixes. Frequent restarts that resolve memory leaks temporarily
@@ -392,8 +411,8 @@ export default function ArticlePage() {
           have a budget: if the same recovery action fires more than a defined
           number of times within a window, it should trigger an incident rather
           than silently repeating.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common pitfall is recovery feedback loops, where a recovery
           action increases load on a shared dependency, triggering additional
           recovery actions in a cascading chain. For example, replacing a failed
@@ -405,7 +424,7 @@ export default function ArticlePage() {
           pipeline, and to ensure that recovery actions do not share single points
           of failure. Pre-warm container images on healthy nodes, use local caches,
           and stagger replacement actions over time.
-        </p>
+        </HighlightBlock>
         <p>
           A third pitfall is silent automation, where the system performs recovery
           actions without adequate logging or visibility. Teams discover after an
@@ -435,9 +454,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Auto-Healing Container Orchestration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Kubernetes provides built-in self-healing through liveness and readiness
           probes. When a container fails its liveness probe, the kubelet restarts
           it. When a node becomes unreachable, the node controller evicts pods and
@@ -449,10 +471,10 @@ export default function ArticlePage() {
           handles the majority of instance-level failures without human
           intervention, while surfacing systemic issues through alerting on
           recovery action frequency and verification failures.
-        </p>
+        </HighlightBlock>
 
         <h3>Database Automatic Failover</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Managed database services such as Amazon RDS, Google Cloud SQL, and
           self-managed solutions using Patroni for PostgreSQL implement automatic
           failover for primary-replica setups. When the primary becomes
@@ -466,7 +488,7 @@ export default function ArticlePage() {
           promotion speed and data consistency: promoting a replica with
           incomplete replication risks data loss, while waiting for full catch-up
           extends the write outage.
-        </p>
+        </HighlightBlock>
 
         <h3>Deployment Rollback Automation</h3>
         <p>
@@ -503,23 +525,26 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">
               Question 1: What is the riskiest aspect of automatic recovery, and
               how do you mitigate it?
             </h3>
-            <p className="text-muted mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3">
               <strong>Answer:</strong>
-            </p>
-            <p className="mb-3">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               The riskiest aspect is wrong automation under ambiguity. A
               false-positive health signal can trigger recovery actions that are
               unnecessary or harmful. For example, restarting a healthy service
               based on a transient latency spike wastes capacity and may increase
               load on shared dependencies. In stateful systems, a false-positive
               failover can create split-brain scenarios and data corruption.
-            </p>
+            </HighlightBlock>
             <p>
               The mitigation is multi-signal gating and progressive escalation.
               Require multiple independent signals -- such as both a failed health

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,7 +24,10 @@ export default function TopKElementsArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The Top-K Elements pattern answers a single, recurring shape of question: from a collection
         of n items, return the k items that score best by some priority — largest values, smallest
         distances, most frequent words, closest points. The collection may be a static array, a
@@ -31,15 +35,15 @@ export default function TopKElementsArticle() {
         The pattern is so common that it deserves its own treatment separate from the general heap
         pattern, because the engineering choices — heap vs. quickselect vs. bucket sort — are
         worth knowing in their own right.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Recognition signals are explicit. The question literally contains the word &quot;k&quot;:
         &quot;k largest&quot;, &quot;k smallest&quot;, &quot;k most frequent&quot;, &quot;k
         closest&quot;, &quot;k-th order statistic&quot;. There is a target priority and a
         bounded-size answer. The interviewer is testing whether you know that the global sort
         (O(n log n)) is wasteful when the answer is small, and whether you can pick the right
         among three specialised algorithms.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         The structural insight is that you do not need the global ordering. You only need to know
         the boundary between the &quot;kept&quot; and the &quot;discarded&quot; — and once you
@@ -55,14 +59,17 @@ export default function TopKElementsArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Bounded heap.</strong> A min-heap of size at most k for &quot;k largest&quot;. For
         each incoming element x: push x; if the heap size exceeds k, pop the top. The invariant is
         that the heap always contains the k largest elements seen so far, with the smallest of
         those k at the top — the next candidate to be evicted by anything bigger. The dual works
         for &quot;k smallest&quot; with a max-heap. Time O(n log k), space O(k).
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Quickselect.</strong> The selection version of quicksort. Pick a pivot, partition
         the array into less / equal / greater, and recurse only into the side that contains the
         k-th index. The total work is dominated by the first partition, giving O(n) average and
@@ -71,7 +78,7 @@ export default function TopKElementsArticle() {
         the array is partitioned: the k smallest live in indices 0 through k-1 (or k largest in
         the upper segment), so you get the entire top-k as a free side effect of finding the
         k-th.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Bucket sort by frequency.</strong> When the priority is a count and the count
         range is bounded by n, allocate buckets[0..n] and place each element in the bucket of its
@@ -107,21 +114,24 @@ export default function TopKElementsArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/top-k-elements-diagram-1.svg" alt="Top-K pattern recognition and solution choices" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The bounded-heap template is the universal default. Initialise an empty min-heap (for k
         largest). Iterate the input. For each element, push it into the heap; if the heap size
         exceeds k, pop the top. After the iteration completes, the heap contains the k largest
         items. If the answer must be sorted, drain the heap into a list and reverse it (the heap
         gives smallest-first, so reversing yields largest-first).
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The quickselect template requires care with partition boundaries and termination. Pick a
         pivot index in [low, high]. Partition such that elements less than the pivot value go to
         the left segment, the pivot lands at index p, and elements greater go to the right.
         Compare p to k-1 (or n-k for &quot;k largest&quot; mapped to the right side). If equal,
         return; if smaller, recurse right; if larger, recurse left. Iterative implementation
         avoids stack-overflow risk on adversarial inputs.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         The bucket-sort template is straightforward but easy to get wrong on the boundary. Build a
         frequency counter. Allocate buckets sized n+1 (so the maximum possible frequency n fits).
@@ -148,19 +158,22 @@ export default function TopKElementsArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Heap vs. quickselect — average vs. worst.</strong> Heap is O(n log k) deterministic.
         Quickselect is O(n) expected but O(n²) worst. In an interview, both are acceptable; the
         choice depends on context the interviewer cares about. If they say &quot;a stream&quot;,
         heap. If they say &quot;an array, optimise expected time&quot;, quickselect. If they ask
         &quot;how does it scale to a billion?&quot;, heap, because the bounded memory footprint
         scales independently of n.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Heap vs. sort.</strong> Sorting the whole array is O(n log n). Heap is O(n log k).
         When k = n the heap degenerates to O(n log n) — no win. The break-even is around k = sqrt(n)
         in cache-aware practice. When k is small, the heap dominates; when k approaches n, sort.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Bucket sort vs. heap for frequency.</strong> Bucket sort is O(n) and beats the
         heap&apos;s O(n log k) when frequency is a small integer. The cost is O(n) extra memory
@@ -188,15 +201,18 @@ export default function TopKElementsArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/top-k-elements-diagram-2.svg" alt="Quickselect and bounded heap compared" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>State the polarity invariant aloud.</strong> &quot;Min-heap of size k holds the k
         largest seen so far; top is the smallest of the keepers, evicted when something larger
         arrives.&quot; Saying it forces you to verify the polarity before writing code.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Cap the heap on every push.</strong> The discipline is push-then-evict. If you
         ever let the heap grow past k, you have given up the entire complexity advantage.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Randomise quickselect pivots.</strong> Never use the first or last element as
         pivot on potentially sorted input — that is exactly the worst case. Random pivot or
@@ -223,14 +239,17 @@ export default function TopKElementsArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Wrong polarity.</strong> Max-heap for &quot;k largest&quot;: the top is the
         biggest, you would never want to evict the biggest. Reverse the heap.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Forgetting the size cap.</strong> Pushing every input element into an unbounded
         heap is O(n log n) and provides no speed-up over sorting. The cap is the entire point.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Comparator inversion bugs.</strong> For 692, the correct order is descending
         frequency, then ascending lex. The min-heap top must be the worst — smallest frequency,
@@ -257,16 +276,19 @@ export default function TopKElementsArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>215. Kth Largest Element in an Array.</strong> The textbook problem. Both
         quickselect (O(n) average) and min-heap of size k (O(n log k)) are accepted. Discuss both
         in interviews.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>703. Kth Largest Element in a Stream.</strong> Online variant. Maintain a
         min-heap of size k. addNum is O(log k); peek is O(1). The streaming flavour rules out
         quickselect.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>347. Top K Frequent Elements.</strong> Counter, then either min-heap of size k by
         frequency (O(n log k)) or bucket sort (O(n)). Bucket sort is the optimal answer when n is
@@ -311,13 +333,16 @@ export default function TopKElementsArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/top-k-elements-diagram-3.svg" alt="Canonical top-k Leetcode problems" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why min-heap for k largest?</strong> Because the heap top is the eviction
+        <HighlightBlock as="li" tier="important"><strong>Why min-heap for k largest?</strong> Because the heap top is the eviction
         candidate. To preserve the k largest, evict the smallest of the kept ones — that is the
-        min-heap top.</li>
-        <li><strong>Heap vs. quickselect — which would you write here?</strong> Default to heap if
+        min-heap top.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Heap vs. quickselect — which would you write here?</strong> Default to heap if
         the input is a stream or if worst-case bounds matter. Default to quickselect if the input
-        is offline and you want optimal expected time.</li>
+        is offline and you want optimal expected time.</HighlightBlock>
         <li><strong>Why is quickselect O(n) average?</strong> Each level partitions a strictly
         smaller portion than the previous; on average, the partition size halves, giving a
         geometric series summing to 2n. Worst case is O(n²) when the pivot is always the

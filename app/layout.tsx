@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { AppLayout } from "@/components/AppLayout";
+import { WebVitalsReporter } from "@/components/WebVitalsReporter";
 
 const sora = localFont({
   variable: "--font-sora",
@@ -73,27 +74,9 @@ export default async function RootLayout({
       <body
         className={`${sora.variable} ${firaCode.variable} antialiased`}
       >
+        <WebVitalsReporter />
         <AppLayout>{children}</AppLayout>
       </body>
     </html>
   );
-}
-
-/**
- * Web Vitals reporting — logs performance metrics to console
- * in development and to your analytics provider in production.
- */
-export function reportWebVitals(metric: {
-  id: string;
-  name: string;
-  startTime: number;
-  value: number;
-  delta: number;
-  rating: "good" | "needs-improvement" | "poor";
-}) {
-  if (process.env.NODE_ENV === "development") {
-    console.log(`[Web Vitals] ${metric.name}: ${metric.value.toFixed(2)} (${metric.rating})`);
-  }
-  // In production, send to your analytics provider:
-  // navigator.sendBeacon('/api/analytics', JSON.stringify(metric));
 }

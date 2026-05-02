@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -73,21 +74,24 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Anomalies and Isolation Levels</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>The Three Anomalies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           To understand isolation levels, you must first understand the anomalies they prevent. An
           anomaly is a phenomenon that can occur when transactions execute concurrently, producing
           results that would be impossible if transactions executed serially (one at a time).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Dirty Read</strong> occurs when a transaction reads data written by another
           transaction that hasn't committed yet. Imagine Transaction A updates a balance from $1000
           to $500, Transaction B reads the new balance ($500), then Transaction A rolls back.
           Transaction B has now seen data that never actually existed—this is a "dirty" read. Dirty
           reads violate atomicity because they expose intermediate states that may be rolled back.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Non-Repeatable Read</strong> occurs when a transaction reads the same row twice
@@ -160,23 +164,26 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Locking vs MVCC</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Pessimistic Locking (Two-Phase Locking)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pessimistic locking assumes conflicts are likely and prevents them proactively. The most
           common implementation is Two-Phase Locking (2PL), where transactions acquire locks before
           reading or writing data, and hold all locks until commit. Shared locks (read locks) are
           compatible with other shared locks but not with exclusive locks. Exclusive locks (write
           locks) are incompatible with everything.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           In 2PL, a transaction that wants to read a row acquires a shared lock. A transaction that
           wants to update acquires an exclusive lock. If Transaction A holds a shared lock and
           Transaction B requests an exclusive lock, B blocks until A releases its lock (commits or
           rolls back). This prevents all anomalies but dramatically reduces concurrency—readers block
           writers, and writers block readers.
-        </p>
+        </HighlightBlock>
 
         <p>
           Strict 2PL holds all locks until commit, preventing cascading rollbacks (where one rollback
@@ -251,19 +258,22 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Choosing the Right Level</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing an isolation level is a trade-off between correctness and performance. Stronger
           isolation prevents more anomalies but reduces concurrency and increases latency. The right
           choice depends on your business requirements: what anomalies can you tolerate, and what's
           the performance cost of preventing them?
-        </p>
+        </HighlightBlock>
 
         <h3>Performance Impact</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Read Uncommitted has the lowest overhead—no locks, no version tracking, just read whatever
           is there. But it's rarely usable because dirty reads are almost always unacceptable.
-        </p>
+        </HighlightBlock>
 
         <p>
           Read Committed adds minimal overhead—acquire a lock or snapshot for each statement, release
@@ -326,20 +336,23 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Transaction Isolation</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Start with your database's default.</strong> PostgreSQL and Oracle default to
           Read Committed; MySQL defaults to Repeatable Read. These defaults are sensible for most
           workloads. Only change the isolation level if you can demonstrate a specific anomaly
           causing data corruption or business logic errors.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use explicit locking for critical sections.</strong> Instead of raising the
           global isolation level to Serializable, use explicit locking (SELECT ... FOR UPDATE) for
           specific critical sections. This gives you fine-grained control over concurrency without
           penalizing all transactions.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Keep transactions short.</strong> Long-running transactions hold locks or snapshots
@@ -372,20 +385,23 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Assuming Repeatable Read prevents all anomalies.</strong> Many developers assume
           Repeatable Read is "safe enough." It prevents dirty and non-repeatable reads, but not
           phantoms or write skew. If your logic depends on "no new rows matching this condition,"
           you need Serializable isolation or explicit locking.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Ignoring isolation level in ORM configuration.</strong> Many ORMs don't set
           isolation level explicitly, using the database default. This can cause inconsistencies
           if you switch databases (PostgreSQL default is Read Committed; MySQL default is Repeatable
           Read). Always set isolation level explicitly in your ORM configuration.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Using Serializable without retry logic.</strong> Serializable isolation can abort
@@ -418,22 +434,25 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Financial Transfers (Serializable)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A bank processes money transfers between accounts. Each transfer debits one account and
           credits another. The bank uses Serializable isolation to prevent any possibility of
           anomalies. Without Serializable, two concurrent transfers could read the same balance,
           both approve, and overdraft the account. The performance cost is acceptable because
           financial correctness is non-negotiable.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implementation: The transfer transaction reads both accounts with SELECT FOR UPDATE
           (explicit locking), validates sufficient funds, updates both accounts, and commits. If
           a deadlock occurs (two transfers in opposite directions), one transaction is retried
           automatically.
-        </p>
+        </HighlightBlock>
 
         <h3>E-commerce Order Processing (Repeatable Read)</h3>
         <p>
@@ -481,14 +500,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: Explain the difference between Read Committed and Repeatable Read. When would
               you specifically choose one over the other?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Read Committed prevents dirty reads but allows non-repeatable
               reads—each statement sees a fresh snapshot. Repeatable Read prevents both dirty and
               non-repeatable reads—the entire transaction sees a single snapshot. Choose Read
@@ -497,7 +519,7 @@ export default function ArticlePage() {
               a transaction (generating reports, multi-step workflows that read the same data
               multiple times, calculating totals). PostgreSQL defaults to Read Committed; MySQL
               defaults to Repeatable Read.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> Does Repeatable Read prevent phantom reads? Answer: No,
               phantom reads (new rows appearing) require Serializable isolation or explicit locking

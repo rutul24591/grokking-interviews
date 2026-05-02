@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Hugging Face</strong> is the dominant open-source platform
           and ecosystem for machine learning, providing the infrastructure that
           powers much of the modern AI development workflow. At its core, Hugging
@@ -35,8 +39,8 @@ export default function ArticlePage() {
           and the <strong>Transformers library</strong> (the most widely used
           open-source framework for loading, fine-tuning, and deploying
           transformer-based models).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For software engineers entering the AI space, Hugging Face is the
           primary gateway to open-source AI. It is where you download models to
           self-host, where you find datasets to fine-tune on domain-specific
@@ -45,7 +49,7 @@ export default function ArticlePage() {
           Hugging Face ecosystem is essential because it is the standard
           infrastructure layer that connects model creators, dataset curators,
           and application developers in the open-source AI community.
-        </p>
+        </HighlightBlock>
         <p>
           The platform is the counterweight to closed-model providers like
           OpenAI, Anthropic, and Google. While closed models offer higher
@@ -59,7 +63,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Model Hub</strong> is the central repository where
           organizations and individuals publish pre-trained models. Each model
           card includes the model architecture, training data, intended use
@@ -70,8 +77,8 @@ export default function ArticlePage() {
           Python library or the Transformers library from_pretrained method,
           which handles downloading, caching, and version management
           automatically.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Transformers library</strong> is the workhorse of the
           Hugging Face ecosystem. It provides a unified API for loading any
           model from the Hub, regardless of architecture. The pipeline API
@@ -81,7 +88,7 @@ export default function ArticlePage() {
           question answering. For production use, the library provides
           fine-grained control over model loading, inference optimization, and
           batching.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/hugging-face-ecosystem.svg"
@@ -126,15 +133,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Hugging Face development workflow typically follows this
           sequence: discover and evaluate models on the Hub, download the
           selected model using the Transformers library, fine-tune on
           domain-specific data using the Datasets library and training scripts,
           evaluate the fine-tuned model against benchmarks, and deploy via
           self-hosting, Inference API, or Spaces for interactive demos.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The model loading pipeline in the Transformers library involves
           several steps. The model configuration is loaded from the Hub with
           architecture details, hyperparameters, and tokenizer settings. The
@@ -143,7 +153,7 @@ export default function ArticlePage() {
           the model vocabulary and tokenization algorithm. The model is moved
           to the target device whether CPU, GPU, or specialized accelerators.
           The from_pretrained method handles all of this automatically.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/hugging-face-model-lifecycle.svg"
@@ -176,7 +186,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Hugging Face models versus closed models</strong> is the
           fundamental architectural decision. Hugging Face open-weight models
           offer full control where you own the weights, control the deployment
@@ -186,8 +199,8 @@ export default function ArticlePage() {
           maintenance effort. Closed models offer higher capability with zero
           operational overhead but come with opaque pricing, rate limits, data
           privacy concerns, and no ability to modify the model.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Self-hosting versus Inference API</strong> within the Hugging
           Face ecosystem is another key decision. Self-hosting gives full
           control over model configuration, scaling, and cost optimization
@@ -195,7 +208,7 @@ export default function ArticlePage() {
           The Inference API is simpler to integrate with one API call and no
           infrastructure to manage but is more expensive per request, has rate
           limits, and offers less control over model configuration.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>model selection challenge</strong> on the Hub is real
           with over 1M models. Finding the right one requires understanding
@@ -222,7 +235,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Pin model versions</strong> in production. Never use the
           main branch or latest tag without pinning to a specific commit or
           revision. Models on the Hub can be updated, and an auto-update could
@@ -230,8 +246,8 @@ export default function ArticlePage() {
           breaking your application. Use revision hashes or named tags to pin
           to specific versions, and update versions through a controlled
           process with evaluation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use the Transformers pipeline API for prototyping</strong>
           and the lower-level AutoModel and AutoTokenizer API for production.
           The pipeline API is excellent for quick experiments and demos since
@@ -239,7 +255,7 @@ export default function ArticlePage() {
           For production, the lower-level API provides control over batching,
           device placement, quantization, and error handling that is essential
           for robust systems.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Implement model evaluation before deployment</strong>. Do not
           trust the model card benchmark scores alone. Evaluate the model on
@@ -262,7 +278,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>assuming all models on the Hub
           are production-ready</strong>. Many models are research experiments,
           incomplete fine-tunes, or community uploads with no quality
@@ -271,8 +290,8 @@ export default function ArticlePage() {
           reputable organizations or with significant community adoption. A
           model with few downloads and no model card is a research artifact,
           not a production-ready component.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Ignoring tokenizer-model mismatches</strong> causes subtle
           but severe quality degradation. If you load a model with its weights
           but use a different tokenizer than the one the model was trained
@@ -281,7 +300,7 @@ export default function ArticlePage() {
           tokenizer that ships with the model loaded automatically via
           AutoTokenizer from_pretrained, and never mix a model from one
           revision with a tokenizer from another.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Underestimating GPU requirements</strong> is common for teams
           new to self-hosting. A 7B parameter model in FP16 requires 14 GB of
@@ -304,22 +323,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Model evaluation and selection</strong> — before committing
           to a model for production, engineers use the Hub to download
           candidate models, evaluate them on domain-specific benchmarks using
           the Evaluate library, compare results on the Open LLM Leaderboard,
           and select the best model for their specific task and infrastructure
           constraints.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Fine-tuning pipeline</strong> — organizations use the
           Datasets library to load and preprocess their domain-specific data,
           the Transformers library to load a base model, fine-tune using their
           preferred training framework, evaluate the fine-tuned model, and push
           the fine-tuned weights back to the Hub for version tracking and team
           sharing.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Prototype to production</strong> — teams start with the
           Inference API for rapid prototyping with no infrastructure needed,
@@ -331,13 +353,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: What is the Hugging Face Transformers library and why is it
             the dominant framework for open-source models?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The Transformers library provides a unified Python API for loading,
             fine-tuning, and deploying any transformer-based model from the
             Hugging Face Hub. Its dominance stems from three factors. First,
@@ -350,8 +375,8 @@ export default function ArticlePage() {
             the broader ecosystem including Datasets for data, Evaluate for
             evaluation, Accelerate for distributed training, and Optimum for
             optimization.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             The library architecture is built around auto-classes that
             automatically detect the model architecture from the configuration
             file and instantiate the appropriate model class. This means users
@@ -359,7 +384,7 @@ export default function ArticlePage() {
             MistralForCausalLM — the AutoModelForCausalLM class figures it out.
             This abstraction is critical when the ecosystem includes hundreds
             of model architectures.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

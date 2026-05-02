@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function TopologicalSortArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A topological sort of a directed graph is a linear ordering of its
           vertices such that for every directed edge (u, v), u appears before
           v in the ordering. A topological order exists if and only if the
@@ -47,8 +51,8 @@ export default function TopologicalSortArticle() {
           the foundational algorithm for scheduling, build systems, dependency
           resolution, compiler analysis, and any problem whose state space
           forms a DAG.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Two algorithms compute it. <em>Kahn's algorithm</em> (1962) maintains
           an indegree count per vertex, repeatedly emits a zero-indegree
           vertex, and decrements the indegrees of its neighbors — a BFS over
@@ -60,7 +64,7 @@ export default function TopologicalSortArticle() {
           schedules. DFS post-order is recursive, composes with SCC and
           articulation-point machinery, and is the natural choice when you're
           already running DFS for other reasons.
-        </p>
+        </HighlightBlock>
         <p>
           Topological sort is rarely the deliverable on its own. It's the
           ordering inside which other things happen. Build systems run
@@ -91,7 +95,10 @@ export default function TopologicalSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Kahn's algorithm.</strong> Compute indegree[v] for every v
           (one pass over edges). Initialize a queue with all vertices of
           indegree 0 — the "ready" set. Repeatedly: pop u from the queue,
@@ -101,8 +108,8 @@ export default function TopologicalSortArticle() {
           order. If not, the remaining vertices form a cycle (their
           indegrees never reached zero because cycle members keep blocking
           each other).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>DFS post-order.</strong> Run DFS from every unvisited
           vertex, with three-color marking to detect cycles. When DFS from u
           finishes (after recursing into all of u's descendants), prepend u
@@ -110,7 +117,7 @@ export default function TopologicalSortArticle() {
           topological order. The intuition: u finishes last among everything
           reachable from u, so emitting in reverse-finish order puts u
           before everything it reaches.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Why it works (Kahn).</strong> Inductive: every emitted
           vertex has indegree 0 at the time of emission, meaning all its
@@ -160,7 +167,10 @@ export default function TopologicalSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production topological-sort implementations carry a few extra
           features beyond the textbook skeleton. First, they track levels or
           waves so that downstream parallel execution knows which vertices
@@ -169,20 +179,20 @@ export default function TopologicalSortArticle() {
           and scheduler decisions are reproducible. Third, they integrate
           cycle reporting: not just "cycle exists" but "here is the cycle"
           — useful for "circular dependency: A → B → C → A" error messages.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/topological-sort-diagram-2.svg"
           alt="Kahn vs DFS trade-offs"
           caption="Kahn vs DFS — when each is preferred. Kahn for parallel scheduling and lexicographic order; DFS for compiler pipelines that need post-order anyway."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           For build systems, the DAG is constructed by parsing build files
           (BUILD.bazel, Makefile, package.json). Each target declares its
           dependencies; the build tool inverts to an adjacency list and
           runs Kahn. Targets with indegree 0 are ready; as they finish,
           downstream indegrees decrement. The wave structure naturally maps
           to thread-pool execution: run all ready targets in parallel.
-        </p>
+        </HighlightBlock>
         <p>
           For schedulers, the DAG is the workflow definition (Airflow DAG
           file, Dagster job). Each task has dependencies; topological order
@@ -211,7 +221,10 @@ export default function TopologicalSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Kahn vs DFS.</strong> Kahn is iterative (no recursion-depth
           limits), parallelizable (the indegree-0 frontier is naturally a
           parallel wave), and easy to make deterministic with a min-heap.
@@ -220,13 +233,13 @@ export default function TopologicalSortArticle() {
           running DFS for those purposes. For pure topo-sort, Kahn is
           usually the better default; for "I'm doing DFS anyway and want
           topo order as a side-effect," DFS post-order wins.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Topological sort vs cycle detection alone.</strong> If you
           only need "is this a DAG?", three-color DFS is the simplest: O(V +
           E), no output. Topological sort gives the order plus the cycle
           check; pure cycle detection is leaner if you don't need the order.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Topo-sort + relaxation vs Dijkstra on a DAG.</strong> On a
           DAG, topo-sort plus a linear-pass relaxation gives shortest paths
@@ -256,19 +269,22 @@ export default function TopologicalSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Choose Kahn for scheduling, DFS for analysis.</strong>
           Kahn produces wave-friendly schedules and is iterative;
           DFS-post-order integrates with SCC pipelines and gives you
           finish-time stamps for free.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Always handle cycles explicitly.</strong> Don't assume
           input is a DAG. Production code should detect, report, and
           either fail loudly or skip the cyclic component. "Circular
           dependency: A → B → C → A" is a far better error message than
           "build hung."
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Sort adjacency lists for determinism.</strong> The
           topological order is generally not unique; different runs may
@@ -311,20 +327,23 @@ export default function TopologicalSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Forgetting cycle handling.</strong> The most common bug:
           run topo sort, output the result, ignore the fact that only
           part of the graph was emitted. Always check{" "}
           <code>output.length == V</code> at the end of Kahn or "no gray
           edge" at the end of DFS.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Wrong direction for build dependencies.</strong> A
           target's dependencies must build before the target itself. The
           edge direction in your graph must match — ambiguity here causes
           builds to run in reverse order. Convention: edge from dependency
           to dependent (or vice versa); pick one and stick to it.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Mutating the graph during iteration.</strong> Both
           algorithms read indegree or color arrays during iteration. Don't
@@ -361,25 +380,28 @@ export default function TopologicalSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/topological-sort-diagram-3.svg"
           alt="Topological sort applications and DAG-DP patterns"
           caption="Production systems running topological sort and the family of DAG-DP algorithms (longest path, path counting, critical path) it enables."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Build systems.</strong> Bazel, Make, Gradle, Buck, Pants,
           Ninja — every modern build tool runs topological sort on its
           target DAG. Bazel's wave-based parallel execution explicitly
           mirrors Kahn's algorithm. Build cycles are caught and reported as
           dependency errors.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Package managers.</strong> npm, pip, apt, dnf, brew, cargo —
           install and upgrade in topological order so that dependencies are
           satisfied before dependents start. Conflict detection (two
           packages requiring incompatible versions of a third) often
           surfaces as cycle-like failures in the resolution graph.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Workflow schedulers.</strong> Airflow, Dagster, Prefect,
           Argo Workflows, Step Functions — DAGs of tasks executed in
@@ -428,17 +450,20 @@ export default function TopologicalSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Course Schedule (LeetCode 207).</strong> "Given prerequisites,
           can all courses be finished?" Pure cycle detection on the
           dependency graph. Either Kahn (output size &lt; V → cycle) or
           three-color DFS.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Course Schedule II (LeetCode 210).</strong> Same setup,
           return the order. Pure topological sort. Both Kahn and DFS work;
           interviewers like seeing both.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alien Dictionary (LeetCode 269).</strong> Given a
           dictionary in alien-alphabetical order, derive the alphabet.

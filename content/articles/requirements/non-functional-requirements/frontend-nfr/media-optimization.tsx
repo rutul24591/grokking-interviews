@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,7 +36,10 @@ export default function MediaOptimizationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Media Optimization</strong> encompasses techniques for
           reducing the size and improving the delivery of images, video, and
           audio in web applications without perceptibly degrading quality. Media
@@ -47,8 +51,8 @@ export default function MediaOptimizationArticle() {
           increase in conversion rates. Media optimization directly affects Core
           Web Vitals — particularly Largest Contentful Paint (LCP), which is
           frequently a hero image or product photograph.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Optimization occurs at multiple levels in the media delivery chain.
           Format selection chooses the most efficient codec for each media type
           (AVIF for photographs, SVG for icons, WebM for video). Compression
@@ -60,7 +64,7 @@ export default function MediaOptimizationArticle() {
           reducing latency. Image services (Cloudinary, Imgix) automate many of
           these optimizations through URL parameters, handling format selection,
           resizing, and compression on-the-fly.
-        </p>
+        </HighlightBlock>
         <p>
           For staff engineers, media optimization is a multi-disciplinary
           concern spanning frontend engineering, design workflows, and
@@ -77,7 +81,10 @@ export default function MediaOptimizationArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Image format selection is the single highest-impact optimization
           decision. Modern formats provide dramatically better compression than
           legacy formats. AVIF (AV1 Image File Format) provides the best
@@ -92,8 +99,8 @@ export default function MediaOptimizationArticle() {
           animations, video (MP4 or WebM) is significantly more efficient than
           animated GIF — a 5-second loop that is 5MB as a GIF is typically 500KB
           as an MP4.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Responsive images ensure that devices receive appropriately sized
           media. The <code>srcset</code> attribute provides multiple resolution
           options (400w, 800w, 1200w, 1600w), and the browser selects the
@@ -106,7 +113,7 @@ export default function MediaOptimizationArticle() {
           first format it supports, with the <code>&lt;img&gt;</code> element
           as the fallback. This enables serving AVIF to supporting browsers,
           WebP to others, and JPEG as the universal fallback.
-        </p>
+        </HighlightBlock>
         <p>
           Lazy loading defers media loading until the element approaches the
           viewport. Native lazy loading (<code>loading=&quot;lazy&quot;</code>)
@@ -129,7 +136,10 @@ export default function MediaOptimizationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The responsive image delivery architecture uses the{" "}
           <code>&lt;picture&gt;</code> element with nested{" "}
           <code>&lt;source&gt;</code> elements for format negotiation and an{" "}
@@ -142,8 +152,8 @@ export default function MediaOptimizationArticle() {
           element&apos;s <code>src</code> and <code>srcset</code>. This
           progressive enhancement approach ensures every browser receives a
           compatible format while modern browsers receive the most efficient one.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The lazy loading architecture combines native lazy loading with
           Intersection Observer for enhanced experiences. The{" "}
           <code>&lt;img&gt;</code> element is configured with{" "}
@@ -156,7 +166,7 @@ export default function MediaOptimizationArticle() {
           image URL is assigned, and the browser begins downloading. When the
           image loads, a fade-in transition replaces the placeholder, providing
           a smooth visual experience.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/media-responsive-images.svg"
@@ -187,7 +197,10 @@ export default function MediaOptimizationArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Image format selection involves balancing compression efficiency
           against compatibility. AVIF provides the best compression but has
           slower encoding times (making on-the-fly generation expensive) and is
@@ -200,8 +213,8 @@ export default function MediaOptimizationArticle() {
           this gives the best format to every browser while maintaining
           compatibility. The additional markup complexity is minimal and
           automated by most image optimization libraries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Video codec selection for web delivery involves compatibility versus
           compression trade-offs. H.264 (MP4) has near-universal support (98%+)
           but the largest file sizes. VP9 (WebM) provides similar quality at
@@ -213,7 +226,7 @@ export default function MediaOptimizationArticle() {
           <code>&lt;source&gt;</code> elements: AV1 or WebM first, MP4 (H.264)
           as the universal fallback. For GIF replacement, short looping MP4 or
           WebM video is 10-20x smaller than equivalent animated GIFs.
-        </p>
+        </HighlightBlock>
         <p>
           Image optimization effort versus impact should be prioritized based
           on performance metrics. Format upgrade (JPEG to WebP or AVIF) provides
@@ -231,7 +244,10 @@ export default function MediaOptimizationArticle() {
 
       <section>
         <h2>AVIF Encoding Pipeline</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           AVIF (AV1 Image File Format) encoding requires a fundamentally
           different pipeline approach than JPEG or WebP because AV1 encoding is
           computationally intensive — encoding a single high-resolution image to
@@ -246,8 +262,8 @@ export default function MediaOptimizationArticle() {
           a quality setting that balances file size against visual fidelity
           (typically quality 65-75 for photographs, higher for graphics with
           sharp edges).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The encoder choice significantly impacts both encoding speed and
           output quality. libaom (the reference AV1 encoder) provides the best
           compression but is the slowest — appropriate for batch processing
@@ -261,7 +277,7 @@ export default function MediaOptimizationArticle() {
           libsvtav1 for user-uploaded images (faster encoding, acceptable
           quality trade-off) and libaom for pre-processed marketing and
           editorial images where every kilobyte matters.
-        </p>
+        </HighlightBlock>
         <p>
           Quality tuning for AVIF requires a different mental model than JPEG
           quality. JPEG quality 80 and AVIF quality 65 can produce visually
@@ -295,7 +311,10 @@ export default function MediaOptimizationArticle() {
 
       <section>
         <h2>Responsive Image Automation</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Responsive image automation eliminates the manual effort of generating
           and managing multiple image variants across an application. At build
           time, the image processing pipeline scans the codebase for image
@@ -310,8 +329,8 @@ export default function MediaOptimizationArticle() {
           WebP), quality optimization (re-encoding at the target quality level),
           and metadata stripping (removing EXIF data that inflates file size
           without affecting visual quality).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <code>sizes</code> attribute generation is a subtle but critical
           automation challenge. The browser needs to know how large the image
           will be displayed to select the appropriate srcset variant, but this
@@ -326,7 +345,7 @@ export default function MediaOptimizationArticle() {
           generates <code>sizes=&quot;(max-width: 768px) 100vw, 50vw&quot;</code>.
           This ensures the browser selects the optimal image size without
           downloading a larger variant than needed.
-        </p>
+        </HighlightBlock>
         <p>
           Art direction automation handles cases where different viewport sizes
           require different image crops or compositions, not just different
@@ -358,7 +377,10 @@ export default function MediaOptimizationArticle() {
 
       <section>
         <h2>CDN Image Transformation APIs</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CDN image transformation APIs provide on-the-fly image manipulation
           through URL parameters, eliminating the need to pre-generate and store
           multiple image variants. Cloudinary, Imgix, Cloudflare Images, and
@@ -369,8 +391,8 @@ export default function MediaOptimizationArticle() {
           background removal, face detection-based cropping). The CDN generates
           the transformed image on the first request, caches it at the edge, and
           serves it instantly for subsequent requests with the same parameters.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Automatic format selection (<code>f_auto</code> in Cloudinary,{" "}
           <code>auto=format</code> in Imgix) is one of the most valuable CDN
           features — the CDN inspects the Accept header of the incoming request
@@ -383,7 +405,7 @@ export default function MediaOptimizationArticle() {
           the optimal quality level (lower quality for smooth photographs,
           higher quality for text-heavy graphics), these features provide
           significant optimization with zero code changes.
-        </p>
+        </HighlightBlock>
         <p>
           Smart cropping and content-aware transformations leverage computer
           vision to produce better results than uniform resizing. Face detection
@@ -416,7 +438,10 @@ export default function MediaOptimizationArticle() {
 
       <section>
         <h2>Video Adaptive Bitrate Streaming</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Adaptive bitrate streaming (ABR) is the standard technique for
           delivering video that adapts to the viewer&apos;s network conditions
           and device capabilities. The source video is encoded into multiple
@@ -428,8 +453,8 @@ export default function MediaOptimizationArticle() {
           bitrate variant to avoid buffering; when bandwidth improves, it
           switches up to improve quality. This adaptation happens seamlessly
           during playback without interrupting the viewing experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           HLS (HTTP Live Streaming), developed by Apple, and DASH (Dynamic
           Adaptive Streaming over HTTP), developed by MPEG, are the two dominant
           ABR protocols. HLS uses .m3u8 playlist files to describe available
@@ -440,7 +465,7 @@ export default function MediaOptimizationArticle() {
           serve HLS to Safari/iOS and DASH to other browsers, using a player
           library like hls.js (for HLS in non-Safari browsers) or dash.js (for
           DASH) that handles the protocol-specific playback logic.
-        </p>
+        </HighlightBlock>
         <p>
           Encoding ladder design determines the set of bitrate variants produced
           for each video. A typical ladder includes 360p at 500kbps for mobile
@@ -475,7 +500,10 @@ export default function MediaOptimizationArticle() {
 
       <section>
         <h2>Image CDN Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Image CDN costs scale with three dimensions: storage (original and
           transformed images stored at the edge), transformations (the
           computational cost of generating new variants), and bandwidth (data
@@ -490,8 +518,8 @@ export default function MediaOptimizationArticle() {
           transformations included — this model is most predictable and
           cost-effective for applications with large image libraries and diverse
           transformation needs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The cost comparison between CDN image transformation and self-hosted
           image processing depends on scale. At low volumes (under 10,000
           images, under 1TB bandwidth), CDN services are cost-effective because
@@ -503,7 +531,7 @@ export default function MediaOptimizationArticle() {
           operational overhead of managing the pipeline. The break-even point
           typically occurs around 5-10TB monthly bandwidth, but varies based on
           the transformation complexity and the specific CDN pricing tier.
-        </p>
+        </HighlightBlock>
         <p>
           Cost optimization strategies for image CDNs include: consolidating
           transformation parameters to minimize unique variant count (use fixed
@@ -522,7 +550,10 @@ export default function MediaOptimizationArticle() {
 
       <section>
         <h2>Accessibility in Media</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Accessible media ensures that users with visual, auditory, and
           cognitive disabilities can consume content with an experience
           equivalent to non-disabled users. For images, alt text (alternative
@@ -536,8 +567,8 @@ export default function MediaOptimizationArticle() {
           crew neck, shown on a white background&quot; rather than &quot;Image
           of shirt.&quot; Decorative images should have empty alt text
           (<code>alt=&quot;&quot;</code>) so screen readers skip them entirely.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Video accessibility requires captions (text transcription of spoken
           dialogue and relevant sound effects), audio descriptions (narrated
           descriptions of visual content during dialogue pauses), and transcripts
@@ -550,7 +581,7 @@ export default function MediaOptimizationArticle() {
           content (Level AA). Audio descriptions are required at Level AA for
           prerecorded video where visual content carries information not
           conveyed by dialogue alone.
-        </p>
+        </HighlightBlock>
         <p>
           Automated caption generation using speech recognition (Google&apos;s
           automatic captions, YouTube&apos;s auto-captioning, AWS Transcribe)
@@ -584,7 +615,10 @@ export default function MediaOptimizationArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Always specify width and height attributes on images to prevent
           Cumulative Layout Shift (CLS), a Core Web Vital metric. When the
           browser knows the image dimensions before it loads, it reserves the
@@ -594,8 +628,8 @@ export default function MediaOptimizationArticle() {
           the correct proportions. This is especially important for hero images
           that are the LCP element — layout shift on the LCP element directly
           degrades the CLS score.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Do not lazy-load the Largest Contentful Paint (LCP) image. The LCP
           image is typically the hero image or main product photo — the first
           meaningful content the user sees. Lazy-loading this image delays its
@@ -605,7 +639,7 @@ export default function MediaOptimizationArticle() {
           to signal the browser to prioritize its download. All other images
           (below-the-fold content, thumbnails, decorative images) should be
           lazy-loaded.
-        </p>
+        </HighlightBlock>
         <p>
           Use CDN-based image optimization for applications with user-uploaded
           images or large image libraries. Instead of pre-processing every
@@ -624,7 +658,10 @@ export default function MediaOptimizationArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Using full-resolution images on mobile devices is one of the most
           common and costly performance mistakes. A 4000px-wide hero image
           looks great on a 27-inch desktop monitor but is wasteful on a 375px
@@ -634,8 +671,8 @@ export default function MediaOptimizationArticle() {
           let the browser select based on the viewport width. A typical srcset
           includes 400w, 800w, 1200w, and 1600w variants, ensuring mobile
           devices download appropriately sized images.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Animated GIFs for short loops, memes, and loading animations are
           extremely inefficient — GIF uses a 256-color palette with no
           inter-frame compression, resulting in file sizes 10-20x larger than
@@ -646,7 +683,7 @@ export default function MediaOptimizationArticle() {
           <code>muted</code>, <code>loop</code>, and{" "}
           <code>playsInline</code> attributes. This is critical for mobile
           performance where bandwidth is limited.
-        </p>
+        </HighlightBlock>
         <p>
           Forgetting to provide format fallbacks breaks the experience for users
           on older browsers. Serving only AVIF images means Safari 15 users and
@@ -661,7 +698,10 @@ export default function MediaOptimizationArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce product imagery represents the largest media optimization
           opportunity for online retailers. Product listing pages display dozens
           of product thumbnails, and product detail pages show multiple
@@ -673,8 +713,8 @@ export default function MediaOptimizationArticle() {
           below-the-fold product images, and preload the first product image as
           the LCP element. These optimizations typically reduce product page
           load time by 40-60%.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           News and media websites serve hundreds of images per article — hero
           images, inline photos, infographics, and advertisements. The
           Guardian and New York Times use CDN-based image optimization
@@ -685,7 +725,7 @@ export default function MediaOptimizationArticle() {
           immediate visual feedback while the full image loads. For articles
           with 20+ images, lazy loading is essential to keep initial page weight
           manageable.
-        </p>
+        </HighlightBlock>
         <p>
           Social media platforms handle user-generated media at massive scale.
           Instagram and Twitter convert every uploaded image and video to
@@ -702,12 +742,15 @@ export default function MediaOptimizationArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the best image format for web?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: AVIF for best compression (50% smaller than JPEG at equivalent
               quality), with WebP as fallback for broader compatibility, and
               JPEG as the universal fallback. Use the picture element with
@@ -716,7 +759,7 @@ export default function MediaOptimizationArticle() {
               animations, MP4 or WebM video is 10-20x smaller than animated
               GIF. Never use PNG for photographs — PNG is only appropriate for
               graphics requiring lossless quality or transparency.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

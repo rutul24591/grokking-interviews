@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Partitioning</strong> (also called <em>sharding</em> when
           distributed across machines) is the process of dividing a large
           dataset into smaller, independent subsets called <em>partitions</em>,
@@ -52,8 +56,8 @@ export default function ArticlePage() {
           piece of data lives on which node, how queries are routed to the
           correct node, and what happens when data needs to be redistributed
           (due to node additions, removals, or growth).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice of partitioning strategy is one of the most consequential
           architectural decisions in a distributed data system because it
           determines the system&apos;s performance characteristics, its ability
@@ -65,7 +69,7 @@ export default function ArticlePage() {
           well-chosen strategy distributes both data and traffic evenly across
           all partitions, enabling the system to scale linearly with the number
           of nodes.
-        </p>
+        </HighlightBlock>
         <p>
           There are four primary partitioning strategies, each with distinct
           trade-offs. <strong>Range partitioning</strong> assigns rows to
@@ -100,8 +104,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>partition key</strong> is the attribute (or composite of
           attributes) used to determine which partition a row belongs to. Every
           query that includes the partition key can be routed to a single
@@ -114,9 +121,9 @@ export default function ArticlePage() {
           patterns. A well-chosen partition key has high cardinality (many
           distinct values), appears in the WHERE clause of most queries, and
           distributes writes evenly across partitions.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Range partitioning</strong> divides the key space into
           contiguous ranges, each assigned to a partition. The ranges are
           typically defined by boundary values — for example, partition A
@@ -133,7 +140,7 @@ export default function ArticlePage() {
           threshold (e.g., 10 GB), it is split into two partitions, each owning
           half the range. MongoDB and HBase use automatic range splitting as
           part of their rebalancing process.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Hash partitioning</strong> applies a hash function to the
@@ -190,6 +197,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/partitioning-strategies-diagram-1.svg"
@@ -197,7 +207,7 @@ export default function ArticlePage() {
           caption="Range partitioning — contiguous key ranges assigned to partitions, with automatic range splitting when a partition exceeds the size threshold"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The request flow in a partitioned system begins with the client
           issuing a query that includes the partition key. The system first
           determines which partition owns the key — this determination depends
@@ -209,9 +219,9 @@ export default function ArticlePage() {
           target partition is identified, the request is routed to the node
           hosting that partition, which executes the query locally and returns
           the result.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The partition routing layer can be implemented in two ways. In a{" "}
           <strong>client-side routing</strong> model, the client application
           maintains a local partition map and routes queries directly to the
@@ -224,7 +234,7 @@ export default function ArticlePage() {
           management but adds latency and a potential bottleneck unless the
           proxy is replicated. Vitess (for MySQL) and CockroachDB&apos;s SQL
           gateway are examples of server-side routing.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/partitioning-strategies-diagram-2.svg"
@@ -279,8 +289,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The choice of partitioning strategy involves trade-offs across query
           flexibility, distribution quality, rebalancing cost, and operational
           complexity. Range partitioning is the best choice when range queries
@@ -294,20 +307,20 @@ export default function ArticlePage() {
           when the cluster size changes frequently — it minimizes the data
           movement during rebalancing but requires virtual nodes to achieve
           uniform distribution.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Strategy</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Strategy</th>
               <th className="p-3 text-left">Range Queries</th>
               <th className="p-3 text-left">Distribution</th>
               <th className="p-3 text-left">Rebalancing</th>
               <th className="p-3 text-left">Complexity</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Range Partitioning</strong>
               </td>
@@ -321,8 +334,8 @@ export default function ArticlePage() {
                 Automatic — range splitting
               </td>
               <td className="p-3">Low — simple boundaries</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Hash Partitioning</strong>
               </td>
@@ -336,7 +349,7 @@ export default function ArticlePage() {
               <td className="p-3">
                 Low — single computation
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Directory-Based</strong>
@@ -382,8 +395,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choose the partition key based on the most common query pattern, not
           on theoretical distribution quality. The ideal partition key appears
           in the WHERE clause of the majority of queries, has high cardinality,
@@ -398,9 +414,9 @@ export default function ArticlePage() {
           timestamps) with range partitioning — they concentrate all new writes
           on the last partition. If you must use a sequential key, use hash
           partitioning or prepend a random prefix to distribute the writes.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Design the application to minimize cross-partition queries from the
           outset. The most effective strategy is <em>colocation</em> — ensuring
           that data frequently queried together lives on the same partition. If
@@ -412,7 +428,7 @@ export default function ArticlePage() {
           denormalizing the data — store a copy of the frequently joined data
           on each relevant partition, accepting the write amplification cost to
           avoid the cross-partition read penalty.
-        </p>
+        </HighlightBlock>
 
         <p>
           Implement automated partition monitoring with per-partition metrics.
@@ -440,8 +456,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing a partition key that creates hot partitions is the most
           common and damaging mistake. A monotonically increasing partition key
           with range partitioning causes all new writes to target the last
@@ -451,9 +470,9 @@ export default function ArticlePage() {
           partitioning (which distributes sequential keys across partitions) or
           a composite partition key that includes a random component (e.g.,{" "}
           <code>hash(user_id + timestamp_bucket)</code>).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Underestimating cross-partition query cost is another common error.
           In a partitioned database, a JOIN across tables partitioned on
           different keys requires fetching rows from multiple partitions,
@@ -464,7 +483,7 @@ export default function ArticlePage() {
           to denormalize the data so that the JOIN is unnecessary. If neither
           is feasible, consider using a data warehouse for analytical queries
           and keep the partitioned database for transactional queries.
-        </p>
+        </HighlightBlock>
 
         <p>
           Neglecting partition rebalancing until it becomes a crisis. As data
@@ -495,8 +514,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-world Use Cases */}
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Spanner uses directory-based partitioning with range partitions
           managed by a Paxos-based directory service. Each range (a contiguous
           key range, typically 100 MB) is assigned to a &quot;tablet&quot; — a
@@ -508,9 +530,9 @@ export default function ArticlePage() {
           architecture enables Spanner to scale to petabytes of data across
           thousands of nodes while maintaining strong consistency and external
           consistency (linearizability) across all partitions.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Apache Kafka uses hash partitioning within topics — each topic is
           divided into partitions, and messages are assigned to partitions
           based on the hash of their key (or round-robin if no key is
@@ -522,7 +544,7 @@ export default function ArticlePage() {
           consumption. The number of partitions per topic is set at creation
           time and cannot be changed without recreating the topic — this is one
           of Kafka&apos;s most important capacity planning decisions.
-        </p>
+        </HighlightBlock>
 
         <p>
           Amazon DynamoDB uses consistent hashing with virtual nodes to
@@ -556,6 +578,9 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
@@ -566,15 +591,15 @@ export default function ArticlePage() {
             from followed users). What partition strategy would you choose and
             why?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The partition key should be <code>user_id</code> with hash-based
             partitioning. Hash-based ensures uniform distribution — even if user
             IDs are assigned sequentially, the hash function scatters them
             evenly across partitions. <code>user_id</code> is the natural
             choice because the two most common queries (profile and posts) are
             user-scoped and can be targeted to a single partition.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The feed query (c) is more challenging because it aggregates posts
             from multiple users who are distributed across partitions. A naive
             scatter-gather approach — querying all partitions for the latest
@@ -588,7 +613,7 @@ export default function ArticlePage() {
             When the follower loads their feed, the application reads the
             precomputed list and fetches the full post content from the
             respective partitions in a batch request.
-          </p>
+          </HighlightBlock>
           <p>
             For celebrity users with millions of followers, the push model
             creates write amplification. The solution is a hybrid approach: for

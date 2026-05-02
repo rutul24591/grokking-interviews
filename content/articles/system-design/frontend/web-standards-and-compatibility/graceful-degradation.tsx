@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function GracefulDegradationArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Graceful degradation</strong> is a design philosophy where web
           applications are built targeting the most capable browsers and modern
           standards first, then systematically providing fallback experiences
@@ -49,8 +53,8 @@ export default function GracefulDegradationArticle() {
           across all environments, but rather a thoughtful, planned reduction in
           experience quality that never completely breaks the user&apos;s
           ability to accomplish their primary tasks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The concept originated during the browser wars of the late 1990s and
           early 2000s, when web developers built sites for Internet Explorer 6
           and then scrambled to patch them for Netscape, Opera, and early
@@ -61,7 +65,7 @@ export default function GracefulDegradationArticle() {
           tiered support levels, and build degradation logic into component
           libraries and design systems rather than treating it as an
           afterthought.
-        </p>
+        </HighlightBlock>
         <p>
           At the systems level, graceful degradation intersects with reliability
           engineering, observability, and user experience strategy. When a
@@ -93,8 +97,11 @@ export default function GracefulDegradationArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Compatibility Contract:</strong> A formal, documented
             agreement specifying which browsers, devices, and capability levels
             receive which tiers of experience. The contract defines guaranteed
@@ -103,8 +110,8 @@ export default function GracefulDegradationArticle() {
             cutting-edge environments). This contract must be
             version-controlled, reviewed quarterly, and aligned with analytics
             data showing actual user agent distributions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Degradation Tier:</strong> A discrete level of experience
             quality within the degradation hierarchy. Tier 1 might be the full
             experience with animations, real-time updates, and advanced layouts.
@@ -112,7 +119,7 @@ export default function GracefulDegradationArticle() {
             treatments. Tier 3 might offer read-only access with basic HTML
             rendering. Each tier has explicit entry criteria based on detected
             capabilities.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Fallback Strategy:</strong> The specific technical mechanism
             used to provide alternative behavior when a feature is unavailable.
@@ -170,19 +177,22 @@ export default function GracefulDegradationArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Graceful degradation architectures require systematic approaches to
           capability detection, tier assignment, and fallback rendering. The
           following diagrams illustrate the key architectural patterns that
           enable maintainable degradation at scale.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/web-standards-and-compatibility/graceful-degradation-diagram-1.svg"
           alt="Graceful degradation tier architecture showing capability detection, tier assignment, and component rendering paths"
           caption="Figure 1: Degradation tier architecture — how capability detection feeds into tier assignment and component rendering decisions."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The tier architecture begins with a capability detection phase at
           application initialization. A centralized capability service probes
           for CSS feature support (using CSS.supports or feature queries),
@@ -196,7 +206,7 @@ export default function GracefulDegradationArticle() {
           variant. The capability service also reports tier assignment to
           analytics, creating a feedback loop that informs future support
           decisions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/web-standards-and-compatibility/graceful-degradation-diagram-2.svg"
@@ -242,6 +252,9 @@ export default function GracefulDegradationArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr>
@@ -257,7 +270,7 @@ export default function GracefulDegradationArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2">Development velocity</td>
               <td className="border border-theme p-2">
                 Teams can target modern browsers first and build features faster
@@ -269,8 +282,8 @@ export default function GracefulDegradationArticle() {
                 behind. Technical debt accumulates if degradation paths are
                 deferred and never completed.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2">
                 User experience consistency
               </td>
@@ -284,7 +297,7 @@ export default function GracefulDegradationArticle() {
                 experience. The gap between tiers can create a two-class user
                 perception if not managed carefully.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="border border-theme p-2">Testing complexity</td>
               <td className="border border-theme p-2">
@@ -351,8 +364,11 @@ export default function GracefulDegradationArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Define explicit compatibility contracts with stakeholders:
             </strong>{" "}
@@ -364,8 +380,8 @@ export default function GracefulDegradationArticle() {
             enhanced features (modern browsers only), and experimental features
             (cutting-edge browsers). Without this contract, degradation
             decisions become ad hoc and inconsistent across teams.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Centralize capability detection in a shared service:
             </strong>{" "}
@@ -376,7 +392,7 @@ export default function GracefulDegradationArticle() {
             detection work, ensures consistent tier assignment across the
             application, and provides a single place to update detection logic
             when browser support changes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Use CSS feature queries before JavaScript fallbacks:
@@ -434,8 +450,11 @@ export default function GracefulDegradationArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Indefinitely deferring fallback implementation:</strong>{" "}
             Teams build the primary experience with the intention of adding
             fallbacks later, but sprint pressure and feature work consistently
@@ -445,8 +464,8 @@ export default function GracefulDegradationArticle() {
             work in the definition of done for any feature that uses
             capabilities outside the compatibility contract&apos;s guaranteed
             tier.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Using user agent sniffing instead of feature detection:
             </strong>{" "}
@@ -455,7 +474,7 @@ export default function GracefulDegradationArticle() {
             initiative). Feature detection tests actual capability rather than
             assumed capability, making it robust against browser updates, custom
             user agents, and progressive browser feature adoption.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Creating silent degradation failures:</strong> When
             degradation logic fails silently — displaying a blank area where a
@@ -500,7 +519,10 @@ export default function GracefulDegradationArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>GitHub&apos;s progressive feature adoption:</strong> GitHub
           uses a structured degradation approach for its web interface, where
           features like real-time collaboration in Codespaces, code search with
@@ -511,8 +533,8 @@ export default function GracefulDegradationArticle() {
           keyboard-driven command palettes. Their compatibility contract is
           published in their documentation and aligned with their quarterly
           browser support reviews.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Google Maps tiered rendering:</strong> Google Maps implements
           one of the most sophisticated degradation architectures in production.
           The full experience uses WebGL for hardware-accelerated map rendering,
@@ -523,7 +545,7 @@ export default function GracefulDegradationArticle() {
           transitions. In extreme degradation scenarios, a static map image with
           basic pan and zoom provides the core mapping functionality without any
           advanced rendering pipeline.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Spotify Web Player audio pipeline:</strong> The Spotify Web
           Player degrades across multiple audio API tiers. The primary path uses
@@ -552,14 +574,17 @@ export default function GracefulDegradationArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between graceful degradation and
               progressive enhancement, and when would you choose one over the
               other?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Graceful degradation starts with the full-featured experience
               for modern browsers and defines fallback paths for less capable
               environments. Progressive enhancement starts with a baseline HTML
@@ -573,7 +598,7 @@ export default function GracefulDegradationArticle() {
               without JavaScript. In practice, most mature applications use a
               hybrid: progressive enhancement for content structure and graceful
               degradation for interactive features.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
@@ -683,28 +708,34 @@ export default function GracefulDegradationArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Graceful Degradation introduces security considerations around maintaining security features across all degradation levels and ensuring fallbacks don't introduce vulnerabilities.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Graceful Degradation Security Patterns</h3>
-          <ul className="space-y-2">
-            <li>
-              <strong>Security Feature Degradation:</strong> Security features must degrade gracefully. Mitigation: implement security at multiple layers, ensure fallbacks maintain security, validate all input server-side.
-            </li>
-            <li>
-              <strong>Fallback Security:</strong> Fallback mechanisms may have different security properties. Mitigation: validate fallback security properties, implement equivalent security measures, test fallback security thoroughly.
-            </li>
-          </ul>
-        </div>
+	          <h3 className="mb-4 text-lg font-semibold">Graceful Degradation Security Patterns</h3>
+	          <ul className="space-y-2">
+	            <HighlightBlock as="li" tier="important">
+	              <strong>Security Feature Degradation:</strong> Security features must degrade gracefully. Mitigation: implement security at multiple layers, ensure fallbacks maintain security, validate all input server-side.
+	            </HighlightBlock>
+	            <HighlightBlock as="li" tier="important">
+	              <strong>Fallback Security:</strong> Fallback mechanisms may have different security properties. Mitigation: validate fallback security properties, implement equivalent security measures, test fallback security thoroughly.
+	            </HighlightBlock>
+	          </ul>
+	        </div>
       </section>
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Graceful Degradation performance depends on fallback efficiency, feature detection overhead, and degradation strategy.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -717,16 +748,16 @@ export default function GracefulDegradationArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Fallback Load Time</td>
                 <td className="p-2">&lt;2 seconds</td>
                 <td className="p-2">Lighthouse</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Feature Detection Time</td>
                 <td className="p-2">&lt;10ms</td>
                 <td className="p-2">Performance.now()</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Fallback Functionality</td>
                 <td className="p-2">100% core features</td>
@@ -739,9 +770,12 @@ export default function GracefulDegradationArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Graceful Degradation has development costs but provides significant benefits for browser compatibility and user experience.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
@@ -760,9 +794,9 @@ export default function GracefulDegradationArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">When to Use Graceful Degradation</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Use GD when: (1) you need to support older browsers, (2) you're enhancing existing modern code, (3) you serve users with varying browser capabilities. Avoid when: (1) you only target modern browsers, (2) the application requires modern features for core functionality.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 

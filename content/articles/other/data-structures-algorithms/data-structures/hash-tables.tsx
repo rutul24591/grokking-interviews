@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function HashTablesArticle() {
       {/* SECTION 1 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>hash table</strong> is an associative container that
           maps keys to values using a hash function to compute an index into
           an underlying array of buckets. The contract it offers is stunning:
@@ -47,8 +51,8 @@ export default function HashTablesArticle() {
           constant-time keyed access — is the reason hash tables underpin
           nearly every caching layer, index, and symbol table in modern
           software.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The abstraction traces back to 1953 (Hans Peter Luhn&apos;s IBM
           memo) and has weathered more than seventy years of refinement.
           Every mainstream language ships a built-in hash map:
@@ -58,7 +62,7 @@ export default function HashTablesArticle() {
           <code>std::unordered_map</code>. Each differs in design choices —
           chaining vs open addressing, probing strategy, growth factor,
           hash function — but they all expose the same associative contract.
-        </p>
+        </HighlightBlock>
         <p>
           Underneath every hash table are three interrelated design
           decisions: the hash function, the collision-resolution strategy,
@@ -87,9 +91,12 @@ export default function HashTablesArticle() {
       {/* SECTION 2 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Hash functions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A good hash function distributes arbitrary keys uniformly across
           the bucket array. Three properties matter. <strong>Speed</strong>:
           computing the hash must be O(k) in key size with tight constants.{" "}
@@ -101,12 +108,12 @@ export default function HashTablesArticle() {
           the SipHash family (Python, Ruby, Node use SipHash as the default
           specifically because it has cryptographic collision resistance
           under key-seeded randomization).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Chaining collision resolution
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each bucket holds a linked list (or small array) of entries that
           hashed to it. Lookup: compute the hash, walk the bucket&apos;s
           chain comparing keys. Insert: prepend (or append) to the chain.
@@ -117,7 +124,7 @@ export default function HashTablesArticle() {
           <code> HashMap</code> uses chaining and escalates from linked
           list to balanced tree once a bucket&apos;s chain exceeds 8 entries
           — a defense against both natural skew and hash-flooding attacks.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Open addressing
@@ -148,11 +155,14 @@ export default function HashTablesArticle() {
       {/* SECTION 3 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Load factor and resizing
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Load factor α = n/cap measures how full the table is. Expected
           operation cost grows with α: chaining gives 1 + α/2 expected
           comparisons per lookup, open addressing gives 1/(1 − α). Most
@@ -162,12 +172,12 @@ export default function HashTablesArticle() {
           operation, amortized to O(1) per insert over the sequence of
           insertions — the same geometric-growth analysis that applies to
           dynamic arrays.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Robin Hood hashing
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An elegant open-addressing variant. Each slot tracks how far its
           current occupant has probed from its ideal position. On insert,
           if the new key has probed further than the occupant, they swap —
@@ -179,7 +189,7 @@ export default function HashTablesArticle() {
           isn&apos;t in the table. Rust&apos;s <code>HashMap</code> used
           Robin Hood hashing before moving to SwissTable; many modern
           implementations retain it.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Cuckoo hashing
@@ -227,6 +237,9 @@ export default function HashTablesArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Operation complexity
@@ -253,7 +266,7 @@ export default function HashTablesArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Chaining vs open addressing
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Chaining tolerates higher load factors, handles adversarial
           collisions gracefully (bucket chains just grow longer), and is
           simpler to implement. Open addressing wins on memory density
@@ -263,12 +276,12 @@ export default function HashTablesArticle() {
           being more sensitive to hash-function quality. Rust, Go, and
           Python chose open addressing for these reasons; Java and
           older C++ chose chaining for robustness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Hash table vs balanced tree
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Hash maps give expected O(1); trees give worst-case O(log n). For
           random and well-distributed keys, hash tables are faster on
           average and in the amortized sense. For ordered iteration,
@@ -276,7 +289,7 @@ export default function HashTablesArticle() {
           hash randomization, trees win. Java ships both <code>HashMap</code>
           {" "}and <code>TreeMap</code>; C++ ships <code>unordered_map</code>
           {" "}and <code>map</code>; the choice is workload-driven.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Concurrent hash maps
@@ -297,19 +310,22 @@ export default function HashTablesArticle() {
       {/* SECTION 5 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Pre-size when the key count is known.</strong> Pass a
             capacity hint (<code>new HashMap(cap)</code>,{" "}
             <code>HashMap::with_capacity(cap)</code>) to skip intermediate
             resizes. The difference can be 2–5× on large bulk loads.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use immutable, well-hashed keys.</strong> Strings,
             integers, and frozen tuples work well. Mutating a key after
             insertion silently loses the entry because the hash-to-bucket
             mapping stops matching the stored location.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Trust the runtime&apos;s randomization.</strong> Modern
             hashes seed per-process to prevent hash-flooding. Don&apos;t
@@ -347,21 +363,24 @@ export default function HashTablesArticle() {
       {/* SECTION 6 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Mutable keys.</strong> If a key&apos;s hash changes
             after insertion (by mutating the object), subsequent lookups
             return nothing even though the entry is technically still in
             the table. Use immutable types or freeze before insertion.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Hash-flooding attacks.</strong> Before hash
             randomization was standard, POST bodies with many
             same-hash keys could make parsing quadratic and take down web
             servers. Modern languages default to randomized per-process
             hashes, but older systems or custom hashes can still be
             vulnerable.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Assuming iteration order.</strong> Hash map iteration
             order is implementation-defined and changes across versions,
@@ -402,11 +421,14 @@ export default function HashTablesArticle() {
       {/* SECTION 7 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           V8 object shapes and property access
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           V8 uses hash tables for three distinct purposes. (1) The
           <em> string table</em> interns every JavaScript string used as a
           property key so equality is a pointer compare. (2)
@@ -418,12 +440,12 @@ export default function HashTablesArticle() {
           a hash table rather than using hidden classes. The performance
           cliff between hidden-class mode and dictionary mode is why
           type-stable object construction matters in hot code.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Redis hash and dictionaries
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Redis is, at its core, a distributed hash table server. The
           top-level keyspace is a hash table; hash-typed values (<code>
           HSET</code>/<code>HGET</code>) are per-key hash tables. The
@@ -432,7 +454,7 @@ export default function HashTablesArticle() {
           and each operation migrates one bucket. This amortizes the O(n)
           rehash over subsequent operations, keeping every single request
           bounded in latency — essential for a sub-millisecond-SLA system.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Database indexes
@@ -470,13 +492,16 @@ export default function HashTablesArticle() {
       {/* SECTION 8 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How does a hash table achieve amortized O(1) insert despite
               resizing?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Geometric growth. Each time load factor crosses the
               threshold, the backing array doubles and every entry is
               rehashed — an O(n) cost. But doubling means the next rehash
@@ -487,7 +512,7 @@ export default function HashTablesArticle() {
               O(n) during the rehash; for latency-critical systems,
               incremental rehashing (Redis) spreads the work over many
               subsequent operations.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

@@ -207,7 +207,6 @@ export default function CachingPatternsConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/caching-strategies/cache-first-flow.svg"
           alt="Cache-First strategy decision flow diagram"
           caption="Cache-First flow: Cache is always consulted first. Network is the fallback. Responses are cached on miss for future requests."
-          captionTier="important"
         />
 
         <h3 className="mt-6 mb-3 font-semibold">Network-First Flow</h3>
@@ -222,7 +221,6 @@ export default function CachingPatternsConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/caching-strategies/network-first-flow.svg"
           alt="Network-First strategy decision flow diagram"
           caption="Network-First flow: Network is attempted first with a configurable timeout. Cache serves as fallback for offline or slow-network scenarios."
-          captionTier="important"
         />
 
         <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-5">
@@ -553,22 +551,26 @@ export default function CachingPatternsConciseArticle() {
       {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: caching patterns are decision frameworks. Use these to map patterns to failure modes
+          (staleness, stampedes, consistency) and pick strategies based on latency SLOs and data correctness needs.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.chrome.com/docs/workbox/modules/workbox-strategies/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Workbox Strategies Module - Chrome Developers
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://web.dev/articles/offline-cookbook" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               The Offline Cookbook - Jake Archibald (web.dev)
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://web.dev/articles/service-worker-caching-and-http-caching" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Service Worker Caching and HTTP Caching - web.dev
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://developer.mozilla.org/en-US/docs/Web/API/Cache" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Cache API - MDN Web Docs

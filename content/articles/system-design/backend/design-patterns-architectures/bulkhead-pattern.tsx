@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Bulkhead pattern</strong> is a resilience strategy inspired by naval architecture: ships are divided into watertight compartments (bulkheads) so that flooding in one section cannot sink the entire vessel. In distributed systems, bulkheads <strong>partition resources</strong>—thread pools, connection pools, memory, CPU, and queue capacity—so that failures, slowdowns, or load spikes in one dependency, tenant, or workload class cannot monopolize shared capacity and cascade into a system-wide outage.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Bulkheads address a very specific and destructive failure mode: <em>resource starvation through unbounded sharing</em>. When a downstream dependency becomes slow or begins failing, requests pile up. Queues grow, thread pools saturate, database connections are exhausted, and eventually the hosting process becomes unable to serve even healthy requests that have nothing to do with the failing dependency. Without bulkheads, a single bad neighbor can consume all available concurrency, turning a localized degradation into a total service collapse. Bulkheads ensure that the blast radius of any single failure domain is strictly bounded.
-        </p>
+        </HighlightBlock>
         <p>
           The pattern is named after the ship compartments because the analogy is exact: just as water cannot pass between ship bulkheads, resource exhaustion in one software bulkhead cannot spill into another. The key insight is that <strong>sharing is the vulnerability</strong>. When multiple callers, dependencies, or tenants share the same pool of threads, connections, or memory, any one of them can consume the entire pool. Partitioning eliminates that shared risk.
         </p>
@@ -63,14 +67,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Bulkhead Isolation Dimensions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The first and most critical decision in bulkhead design is choosing <em>what</em> to partition. A common misconception is that bulkheads require microservices or separate processes. They do not. Bulkheads can be applied inside a monolith, at the service edge, within infrastructure components, or at any layer where resources are shared. What matters is the resource you are protecting and the boundary you choose for isolation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common isolation dimension is <strong>per-dependency partitioning</strong>. Each downstream service—payments, search, identity, recommendations—gets its own dedicated thread pool, connection pool, and concurrency budget. If the recommendations service becomes slow, only the recommendation thread pool saturates. The payments pool remains unaffected, and checkout continues to function normally. This is the simplest and most impactful form of bulkheading because it directly addresses the most common cause of cascading failures: one slow dependency consuming all shared threads.
-        </p>
+        </HighlightBlock>
         <p>
           A second dimension is <strong>per-tenant isolation</strong>. In multi-tenant systems, a single large tenant can generate enough traffic to saturate shared resources, degrading service for all other tenants. Per-tenant bulkheads allocate separate resource pools or quotas for each tenant, ensuring that one tenant&apos;s traffic spike or misconfiguration cannot impact others. This is especially important in SaaS platforms where SLA guarantees are per-tenant and noisy-neighbor problems directly violate contractual obligations.
         </p>
@@ -140,12 +147,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production bulkhead architecture operates at multiple layers simultaneously, creating defense-in-depth against resource starvation. The architecture begins at the ingress layer, where requests are classified and routed to the appropriate bulkhead partition. Classification is based on the request&apos;s target dependency, tenant, endpoint, or priority class. The classifier determines which resource pool will handle the request.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the service layer, each bulkhead partition enforces its own concurrency limits independently. A thread pool partition has its own queue, its own thread count, and its own rejection policy. A semaphore partition has its own counter and limit. When a request arrives at a partition, the system checks whether capacity is available. If yes, the request proceeds. If no, the overload behavior activates: the request is either queued (up to the bounded limit) or shed immediately with a fast failure response.
-        </p>
+        </HighlightBlock>
         <p>
           The dependency layer is where the actual downstream call executes within the partition&apos;s allocated resources. The call is subject to the partition&apos;s timeout policy, which should be aligned with the user-facing latency budget for that request class. If the call succeeds, the result flows back through the partition and the resources are released. If the call fails or times out, the failure is recorded in the partition&apos;s metrics, and the resources are released regardless of outcome.
         </p>
@@ -176,14 +186,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>Bulkhead vs. Circuit Breaker</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Bulkheads and circuit breakers are complementary patterns that address different aspects of failure. Bulkheads protect your <em>capacity</em> by partitioning it. They ensure that resource exhaustion in one partition cannot consume resources allocated to other partitions. Circuit breakers protect your <em>spending</em> by detecting unhealthy dependencies and stopping calls before they consume any capacity at all. A circuit breaker turns slow failures into fast failures and gives the dependency time to recover.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The distinction matters because each pattern alone is insufficient. A bulkhead without a circuit breaker will reject excess requests when a dependency is slow, but each request still consumes a thread or connection while waiting for the timeout. A circuit breaker without a bulkhead stops calling the unhealthy dependency, but if the caller shares threads across multiple dependencies, a different slow dependency can still saturate the shared pool. The strongest resilience posture uses both: bulkheads to partition capacity and circuit breakers to detect and react to dependency health.
-        </p>
+        </HighlightBlock>
         <p>
           In practice, bulkheads are the first line of defense because they are always active. Circuit breakers are the second line, activating only when a dependency shows sustained failure signals. The combination ensures that under normal conditions, bulkheads prevent cross-dependency interference, and under failure conditions, circuit breakers reduce waste by failing fast.
         </p>
@@ -213,12 +226,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Start with the smallest set of partitions that address your most common failure modes. For most services, this means per-dependency partitioning for the top three to five downstream services that have caused incidents. Resist the temptation to create dozens of fine-grained partitions upfront. Each additional partition increases operational complexity, tuning effort, and resource overhead. Add partitions incrementally as new failure modes emerge, and remove partitions that no longer serve a purpose.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Size each partition from observed production data, not theoretical capacity. Measure the actual concurrency level at p95 during normal operation, add a 20-30 percent safety margin, and validate the sizing with load tests that reproduce tail latency and failure conditions. Do not size from average concurrency, because averages hide the peaks that cause saturation. Do not size from maximum theoretical capacity, because that wastes resources during normal operation.
-        </p>
+        </HighlightBlock>
         <p>
           Always pair bulkheads with circuit breakers for the most critical dependencies. Bulkheads bound the blast radius of resource exhaustion. Circuit breakers detect unhealthy dependencies and fail fast, reducing waste. The combination provides both isolation and intelligent failure detection. Configure circuit breaker thresholds based on the same production data used to size bulkheads, ensuring that both patterns respond to the same failure signals.
         </p>
@@ -247,12 +263,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most destructive pitfall is <strong>mis-sized partitions</strong>. A partition that is too small causes unnecessary request rejection and queuing even when the downstream dependency is healthy and responsive. This manifests as unexplained latency spikes and elevated error rates during normal operation, which are particularly difficult to diagnose because the downstream appears healthy. The signal to watch for is rejection count rising while downstream latency and error rate remain stable. The mitigation is to size from observed p95 concurrency with a safety margin and validate with realistic load tests.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A closely related pitfall is <strong>priority inversion</strong>, where non-critical work consumes shared resources that critical work needs, defeating the purpose of the bulkhead design entirely. This happens when bulkheads are not properly aligned with priority classes, or when a shared resource (like CPU or memory) is not partitioned alongside thread or connection pools. The signal is that critical latency and error rate correlate with spikes in non-critical traffic. The mitigation is to reserve dedicated capacity for critical paths and enforce admission control at the edge, ensuring that non-critical work cannot consume critical resources even under heavy load.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Head-of-line blocking</strong> occurs when a queue mixes fast and slow requests, and slow requests block the queue, inflating tail latency for everyone behind them. This is particularly destructive when a bulkhead partition uses a single shared queue for all request types within that partition. The signal is that p99 latency rises while average latency remains acceptable, indicating that a small fraction of requests are experiencing extreme delays. The mitigation is to split queues by request class, set per-class time budgets, and shed expensive work early rather than letting it block faster requests.
         </p>
@@ -272,14 +291,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Netflix: Hystrix and Per-Dependency Thread Pools</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix pioneered the bulkhead pattern at scale through Hystrix, their open-source latency and fault tolerance library. Hystrix implements per-dependency thread pool isolation, where each downstream service call executes in its own dedicated thread pool with independent sizing, queueing, and rejection policies. During Netflix&apos;s transition from a monolith to a microservices architecture, Hystrix bulkheads prevented cascading failures where a slow recommendation service could not consume threads allocated to the video playback service.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Hystrix also integrated circuit breakers with bulkheads, creating a two-layer defense. The bulkhead bounded resource consumption per dependency, and the circuit breaker detected sustained failures and stopped calling unhealthy dependencies. This combination allowed Netflix to maintain service availability during partial outages, degrading non-critical features while preserving core video playback functionality. The operational lesson from Netflix is that bulkhead and circuit breaker patterns are most effective when they share configuration and metrics, responding to the same failure signals with complementary actions.
-        </p>
+        </HighlightBlock>
 
         <h3>AWS: Multi-Tenant Resource Isolation</h3>
         <p>
@@ -311,14 +333,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the Bulkhead pattern and what failure mode does it address?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               The Bulkhead pattern is a resilience strategy that partitions resources—thread pools, connection pools, memory, CPU—so that failures, slowdowns, or load spikes in one dependency, tenant, or workload class cannot monopolize shared capacity and cascade into a system-wide outage. It is inspired by ship compartments (bulkheads) that prevent flooding in one section from sinking the entire vessel.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               The specific failure mode it addresses is resource starvation through unbounded sharing. When a downstream dependency becomes slow or begins failing, requests pile up. Queues grow, thread pools saturate, connections are exhausted, and the system becomes unable to serve even healthy requests. Without bulkheads, a single bad neighbor can consume all available concurrency, turning localized degradation into total service collapse.
             </p>

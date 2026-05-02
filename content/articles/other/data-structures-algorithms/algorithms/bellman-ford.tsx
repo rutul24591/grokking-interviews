@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function BellmanFordArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Bellman-Ford algorithm computes single-source shortest paths in a
           directed weighted graph that may contain edges of negative weight,
           and reports the existence of a negative-weight cycle reachable from
@@ -46,15 +50,15 @@ export default function BellmanFordArticle() {
           times, with no priority queue, no finalized set, and no monotone
           assumption. The price is runtime: O(V · E) instead of Dijkstra's
           O((V + E) log V).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The algorithm is named for Richard Bellman (1958) and Lester Ford Jr.
           (1956), with Edward F. Moore independently publishing essentially the
           same procedure in 1959 — sometimes called Bellman-Ford-Moore. It
           predates Dijkstra by months in some accounts and was developed in the
           context of RAND's work on optimal control and dynamic programming;
           the V-1 nested loops are dynamic programming over path length.
-        </p>
+        </HighlightBlock>
         <p>
           Two capabilities make Bellman-Ford essential despite the runtime
           penalty. First, it tolerates negative edges, which arise naturally in
@@ -86,7 +90,10 @@ export default function BellmanFordArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The skeleton is two nested loops. Initialize{" "}
           <code>dist[s] = 0</code>, all others to infinity. Then for i from 1
           to V-1, iterate over every edge (u, v, w) and relax: if{" "}
@@ -94,8 +101,8 @@ export default function BellmanFordArticle() {
           and set <code>parent[v] = u</code>. After V-1 passes, run one more
           pass; if any edge still relaxes, a negative cycle is reachable from
           s.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The correctness argument is dynamic programming over path length.
           Define <code>D[i][v]</code> as the minimum weight of any path from s
           to v using at most i edges. Then{" "}
@@ -108,7 +115,7 @@ export default function BellmanFordArticle() {
           if a relaxation succeeds, the path it finds has V edges and must
           repeat a vertex, hence contains a cycle, and the relaxation
           succeeded only because that cycle's net weight is negative.
-        </p>
+        </HighlightBlock>
         <p>
           The in-place update is subtle. The textbook analysis treats each pass
           as computing <code>D[i][·]</code> from <code>D[i-1][·]</code>, which
@@ -159,19 +166,22 @@ export default function BellmanFordArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Bellman-Ford is straightforward to implement: an edge list, a
           distance array, a parent array. The edge list is preferred over an
           adjacency list because every pass iterates over all edges in a
           single flat loop. Memory is O(V + E) for the graph plus O(V) for
           dist and parent.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/bellman-ford-diagram-2.svg"
           alt="Negative cycles and Johnson's reweighting"
           caption="Negative-cycle semantics, cycle extraction via parent walking, and Johnson's algorithm reweighting trick."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           For distributed implementations (routing protocols), the architecture
           changes. Each node holds a local distance vector to every
           destination. Periodically (RIP: every 30s) or on change (triggered
@@ -182,7 +192,7 @@ export default function BellmanFordArticle() {
           link), is a direct consequence of asynchronous Bellman-Ford without
           global coordination. Mitigations include split horizon, route
           poisoning, and hold-down timers.
-        </p>
+        </HighlightBlock>
         <p>
           For min-cost flow, Bellman-Ford finds shortest (minimum-cost) paths
           in the residual graph. Residual edges have signed costs (forward
@@ -207,7 +217,10 @@ export default function BellmanFordArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Bellman-Ford vs Dijkstra.</strong> Dijkstra is faster
           (O((V+E) log V) vs O(VE)) but cannot handle negative edges. If the
           graph is guaranteed non-negative, Dijkstra always wins. If negative
@@ -216,14 +229,14 @@ export default function BellmanFordArticle() {
           the right algorithm, always run Bellman-Ford, or run Dijkstra with
           input validation that fails loudly on negative weights. Production
           systems usually pick option three.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Bellman-Ford vs Floyd-Warshall.</strong> Floyd-Warshall is
           all-pairs in O(V³); Bellman-Ford is single-source in O(VE). For APSP
           on dense graphs (E ≈ V²), they're equivalent. For APSP on sparse
           graphs, V Bellman-Ford runs cost O(V²E), worse than Floyd-Warshall.
           Johnson's algorithm wins on sparse APSP with negative edges.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Bellman-Ford vs SPFA.</strong> SPFA's average performance is
           much better, often by a factor of 5–20×, but its worst case is at
@@ -255,20 +268,23 @@ export default function BellmanFordArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use early termination.</strong> Add a "changed" flag per
           pass. Most real graphs converge in far fewer than V-1 passes; the
           flag costs almost nothing and often saves orders of magnitude in
           runtime.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Detect negative cycles explicitly.</strong> Don't rely on
           dist[v] being -∞ — that's not how the algorithm computes it. Run the
           Vth pass and check whether any edge still relaxes. If you need to
           report which vertices have unboundedly negative shortest paths,
           propagate the "on negative cycle" mark forward via BFS from any
           vertex that relaxed on the Vth pass.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Iterate edges, not adjacency lists.</strong> The flat edge
           list is slightly more cache-friendly and trivially parallelizable
@@ -312,20 +328,23 @@ export default function BellmanFordArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Skipping the Vth pass.</strong> Without it, you can't
           distinguish "shortest paths exist" from "negative cycle reachable."
           On a graph with a negative cycle, the V-1 passes return finite but
           wrong distances. Always run the detection pass.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Misinterpreting -∞ shortest paths.</strong> If a vertex is
           reachable from a negative cycle, its true shortest-path distance is
           -∞. Bellman-Ford's V-1 passes return some finite value (the
           shortest among paths with ≤ V-1 edges), which is wrong. Either
           report "negative cycle" globally and fail the query, or propagate
           -∞ to all reachable-from-cycle vertices.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Underflow on infinity sentinels.</strong> If you set INF =
           INT_MAX and then evaluate <code>INF + (-5) &lt; dist[v]</code>, the
@@ -363,12 +382,15 @@ export default function BellmanFordArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/bellman-ford-diagram-3.svg"
           alt="Bellman-Ford applications and comparison cheat sheet"
           caption="Production applications of Bellman-Ford and a cheat-sheet comparison against BFS, Dijkstra, and Floyd-Warshall."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Distance-vector routing protocols.</strong> RIP (RFC 2453),
           EIGRP, and BGP path-vector logic all use Bellman-Ford-style updates
           between routers. Each router holds distances to known destinations;
@@ -376,8 +398,8 @@ export default function BellmanFordArticle() {
           Modern intra-AS routing has largely shifted to link-state (OSPF,
           IS-IS) for faster convergence, but inter-AS routing (BGP) remains
           path-vector — a direct descendant of Bellman-Ford.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Currency arbitrage detection.</strong> Build a graph where
           vertices are currencies and edges have weight -log(rate). A path's
           total weight equals -log of the cumulative rate; a negative cycle
@@ -385,7 +407,7 @@ export default function BellmanFordArticle() {
           more than you started with. Bellman-Ford detects this in O(V·E).
           Real arbitrage systems use Bellman-Ford as a screening signal before
           running cost models that account for slippage and fees.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Difference-constraint solvers.</strong> Systems of
           inequalities x_i - x_j ≤ b reduce to shortest-path problems on a
@@ -432,20 +454,23 @@ export default function BellmanFordArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cheapest Flights Within K Stops (LeetCode).</strong> A
           natural Bellman-Ford fit: relax for K+1 passes (since K stops = K+1
           edges) and return the best cost to destination. Important detail:
           use a snapshot of dist from the previous pass to avoid using
           updated values within the same pass — otherwise you can use more
           than K+1 edges' worth of relaxations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Network Delay Time (LeetCode).</strong> Non-negative edges,
           so Dijkstra is the right answer. But interviewers often ask "what
           if edges could be negative?" to check that candidates know
           Bellman-Ford and understand the discriminator.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Detect a negative cycle.</strong> Classic. Run V-1 passes,
           then a Vth pass and report any successful relaxation. Bonus: print

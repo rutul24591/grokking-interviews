@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function FormStateManagementArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Form state management</strong> encompasses the strategies,
           patterns, and architectural decisions for tracking, updating, and
           synchronizing the state of form inputs, validation errors, submission
@@ -47,8 +51,8 @@ export default function FormStateManagementArticle() {
           or modified? When should validation run? How do we handle async
           validation without blocking user input? What happens to form state
           during navigation or page refresh?
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of form state management scales non-linearly with form
           size. A simple login form with two fields (email and password) can be
           managed with basic React state. A multi-step onboarding form with 50+
@@ -56,7 +60,7 @@ export default function FormStateManagementArticle() {
           auto-save requires a sophisticated state architecture that handles
           partial persistence, optimistic updates, conflict resolution, and
           graceful degradation when network requests fail.
-        </p>
+        </HighlightBlock>
         <p>
           Form state is not monolithic — it comprises multiple orthogonal
           dimensions that must be tracked independently yet coherently. The
@@ -101,8 +105,11 @@ export default function FormStateManagementArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Controlled Components:</strong> Form inputs whose values
             are driven by React state. The input&apos;s <code>value</code>{" "}
             prop is bound to state, and the <code>onChange</code> handler
@@ -114,8 +121,8 @@ export default function FormStateManagementArticle() {
             form would re-render the entire component tree on every keystroke
             without optimization strategies like memoization or field-level
             components.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Uncontrolled Components:</strong> Form inputs that manage
             their own internal DOM state. React accesses values via refs only
             when needed (typically on submit). This approach minimizes
@@ -124,7 +131,7 @@ export default function FormStateManagementArticle() {
             must be triggered imperatively, error display requires manual DOM
             manipulation or forced re-renders, and dynamic input behaviors
             (like conditional formatting) require imperative intervention.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Hybrid Approach:</strong> Modern form libraries combine
             controlled and uncontrolled patterns. React Hook Form registers
@@ -263,7 +270,10 @@ export default function FormStateManagementArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Form state architecture can be visualized as a layered system where
           each layer handles a specific concern. The foundation layer manages
           raw input values and DOM events. The validation layer applies rules
@@ -271,7 +281,7 @@ export default function FormStateManagementArticle() {
           feedback. The persistence layer handles auto-save and draft
           management. The orchestration layer coordinates cross-field
           dependencies and conditional logic.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/forms-validation/form-state-management/form-state-architecture.svg"
@@ -281,7 +291,7 @@ export default function FormStateManagementArticle() {
           height={600}
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The architecture diagram illustrates how form state flows through
           these layers. User interactions trigger events at the foundation
           layer, which propagate upward through validation and into the UI
@@ -290,7 +300,7 @@ export default function FormStateManagementArticle() {
           layer sits above all others, managing cross-cutting concerns like
           conditional field visibility, cross-field validation, and wizard step
           navigation.
-        </p>
+        </HighlightBlock>
 
         <h3>State Flow Diagram</h3>
         <p>
@@ -345,12 +355,15 @@ export default function FormStateManagementArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Form state management involves numerous trade-offs that must be
           evaluated based on form complexity, performance requirements, and user
           experience goals. There is no universally optimal approach — the right
           choice depends on context.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/forms-validation/form-state-management/controlled-vs-uncontrolled-flow.svg"
@@ -361,7 +374,7 @@ export default function FormStateManagementArticle() {
         />
 
         <h3>Centralized vs Distributed State</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Centralized state</strong> stores all form state in a single
           location — typically a form library&apos;s context or a Zustand store.
           This provides a single source of truth, makes debugging easier (state
@@ -371,7 +384,7 @@ export default function FormStateManagementArticle() {
           to avoid unnecessary re-renders. Large forms with centralized state
           can suffer from performance issues if the state shape isn&apos;t
           normalized or if selectors aren&apos;t specific enough.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Distributed state</strong> keeps form state closer to where
           it&apos;s used — individual fields manage their own state, and
@@ -467,8 +480,11 @@ export default function FormStateManagementArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Normalize State Shape:</strong> Store form state in a
             normalized, flat structure when possible. Avoid deeply nested
             objects that require expensive deep equality checks for dirty
@@ -477,15 +493,15 @@ export default function FormStateManagementArticle() {
             array fields (dynamic lists), use stable IDs rather than array
             indices to prevent state corruption when items are reordered or
             deleted.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounce Expensive Operations:</strong> Auto-save, async
             validation, and cross-field recalculations should be debounced to
             avoid excessive work. A 300-500ms debounce strikes a balance between
             responsiveness and efficiency. For auto-save, consider using{" "}
             <code>requestIdleCallback</code> to defer saves until the browser
             has idle time, ensuring user interactions aren&apos;t blocked.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement Proper Cleanup:</strong> Cancel pending API
             requests when components unmount or when a newer request supersedes
@@ -544,8 +560,11 @@ export default function FormStateManagementArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-Rendering in Controlled Components:</strong> The most
             common performance issue in form state management is triggering
             full form re-renders on every keystroke. This happens when the
@@ -554,8 +573,8 @@ export default function FormStateManagementArticle() {
             that subscribe only to their specific state, use uncontrolled
             inputs with refs, or leverage form libraries with built-in
             optimization (React Hook Form&apos;s subscription model).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Validation Race Conditions:</strong> Async validation can
             produce race conditions where an older validation result overwrites
             a newer one. For example, a user types &quot;john&quot; then quickly
@@ -563,7 +582,7 @@ export default function FormStateManagementArticle() {
             &quot;john&quot; arrives after &quot;johnny&quot;, the wrong
             validation result is displayed. Solution: Track the latest
             validation request ID and ignore responses for superseded requests.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Memory Leaks from Uncleaned Listeners:</strong> Form
             components often set up event listeners (focus, blur, beforeunload
@@ -621,9 +640,12 @@ export default function FormStateManagementArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Checkout Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A multi-step checkout form with shipping, billing, payment, and
           review steps requires sophisticated state management. Each step must
           persist its data before advancing, but users should be able to go back
@@ -635,10 +657,10 @@ export default function FormStateManagementArticle() {
           uses a step-based wizard pattern with per-step persistence to
           localStorage, encrypted payment state in memory only, and backend
           draft orders that sync as users progress.
-        </p>
+        </HighlightBlock>
 
         <h3>Enterprise Data Entry Application</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An insurance claims system with 100+ fields across multiple sections
           requires enterprise-grade form state management. Users spend 30+
           minutes filling a single claim, so auto-save every 30 seconds is
@@ -651,7 +673,7 @@ export default function FormStateManagementArticle() {
           form state with undo/redo history, and a custom conflict resolution
           UI that shows side-by-side comparisons when concurrent edits are
           detected.
-        </p>
+        </HighlightBlock>
 
         <h3>Collaborative Document Editor</h3>
         <p>
@@ -686,20 +708,23 @@ export default function FormStateManagementArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Common Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What are the trade-offs between controlled and uncontrolled
               components in React forms, and when would you choose each?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Controlled components bind input values to React state,
               creating a single source of truth where every keystroke triggers a
               state update and re-render. Uncontrolled components let the DOM
               manage input state internally, with React accessing values via
               refs only when needed.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               Controlled components excel when you need immediate validation,
               dynamic input transformation (formatting phone numbers as the user

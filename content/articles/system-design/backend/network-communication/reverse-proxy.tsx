@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,7 +28,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A reverse proxy is a server that sits between clients and one or more
           backend servers, receiving incoming client requests, forwarding them
           to the appropriate backend, and returning the backend&apos;s response
@@ -37,8 +41,8 @@ export default function ArticlePage() {
           perspective, the reverse proxy appears to be the origin server — the
           client is unaware of the internal topology behind the proxy, which
           provides both a security benefit and an operational abstraction.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Reverse proxies serve as the front door of any production web
           architecture. They are the first point of contact for every incoming
           request, and they perform a wide range of functions that would
@@ -55,7 +59,7 @@ export default function ArticlePage() {
           or other criteria; and security enforcement, which includes rate
           limiting, IP filtering, Web Application Firewall rules, and
           authentication offloading.
-        </p>
+        </HighlightBlock>
         <p>
           The importance of the reverse proxy layer cannot be overstated. It is
           the single most shared component in a production architecture,
@@ -81,13 +85,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The reverse proxy operates through a pipeline of processing stages
           that each transform or inspect the request and response. Understanding
           these stages and how they interact is essential for designing a proxy
           configuration that is correct, efficient, and secure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           TLS termination is the process by which the reverse proxy decrypts
           incoming HTTPS traffic from clients and optionally re-encrypts it
           before forwarding to backends. The proxy holds the TLS certificates
@@ -110,7 +117,7 @@ export default function ArticlePage() {
           existing connections. Tools like Let&apos;s Encrypt with automated
           renewal, or certificate managers like AWS ACM or HashiCorp Vault,
           handle this automation.
-        </p>
+        </HighlightBlock>
         <p>
           Load balancing at the reverse proxy layer distributes incoming
           requests across multiple backend instances. The proxy maintains a pool
@@ -197,7 +204,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production reverse proxy architecture is built around a processing
           pipeline that each request traverses from arrival to response. The
           pipeline consists of distinct stages that execute in a defined order,
@@ -205,8 +215,8 @@ export default function ArticlePage() {
           Understanding this pipeline is essential for debugging issues,
           optimizing performance, and ensuring that security controls are
           applied at the correct stage.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The request enters the pipeline at the TCP layer, where the proxy
           accepts the connection. If TLS is enabled, the TLS handshake occurs
           next, during which the proxy presents its certificate and negotiates
@@ -221,7 +231,7 @@ export default function ArticlePage() {
           response during the handshake, eliminating the need for the client to
           contact the certificate authority directly and reducing handshake
           latency.
-        </p>
+        </HighlightBlock>
         <p>
           After the TLS handshake, the proxy parses the HTTP request and enters
           the request-processing stage. This is where security controls are
@@ -289,14 +299,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The primary architectural decision with reverse proxies is whether to
           deploy a general-purpose proxy like NGINX or HAProxy, a programmable
           proxy like Envoy, or a cloud-managed proxy like AWS ALB or GCP Cloud
           Load Balancing. Each option has different trade-offs in terms of
           flexibility, operational overhead, and feature set.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           General-purpose proxies like NGINX and HAProxy are mature,
           well-understood, and performant. They handle high throughput with low
           latency, support all the standard proxy features (TLS termination,
@@ -308,7 +321,7 @@ export default function ArticlePage() {
           proxy needs — TLS termination, path-based routing, basic caching — a
           general-purpose proxy is the right choice. It is simple, reliable, and
           requires minimal expertise to operate.
-        </p>
+        </HighlightBlock>
         <p>
           Programmable proxies like Envoy provide a richer feature set and a
           more flexible configuration model. Envoy supports advanced features
@@ -371,7 +384,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Always terminate TLS at the proxy and enforce modern TLS versions and
           cipher suites. Disable TLS 1.0, TLS 1.1, and SSL 3.0. Enable TLS
           1.3 as the default and TLS 1.2 as a fallback. Use strong cipher suites
@@ -382,8 +398,8 @@ export default function ArticlePage() {
           HashiCorp Vault. Test certificate rotation in staging before deploying
           to production, and monitor certificate expiry dates with alerts set at
           30, 14, and 7 days before expiry.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Configure timeouts carefully at every stage: connect timeout, read
           timeout, and write timeout. The connect timeout should be short —
           typically one to three seconds — because a healthy backend should
@@ -397,7 +413,7 @@ export default function ArticlePage() {
           that the proxy times out before the client does, allowing the proxy to
           return a meaningful 504 Gateway Timeout rather than the client
           receiving a generic connection-reset error.
-        </p>
+        </HighlightBlock>
         <p>
           Implement strict header normalization and validation. The proxy should
           strip or normalize headers that could be used for header-injection
@@ -440,7 +456,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is misconfiguring the trusted-headers
           boundary. When the proxy sits behind a CDN or another proxy, it
           receives requests with X-Forwarded-For headers that may have been set
@@ -453,8 +472,8 @@ export default function ArticlePage() {
           client-provided headers. The proxy should set the X-Real-IP header to
           the actual source IP of the connection (the last hop), which is
           guaranteed to be correct.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A second pitfall is caching user-specific or private data at the proxy
           layer. If the proxy caches a response that contains user-specific
           information (e.g., a personalized dashboard or an API response with
@@ -465,7 +484,7 @@ export default function ArticlePage() {
           is to either disable caching for user-specific endpoints or to include
           the user&apos;s authentication token (or a hash of it) in the cache
           key, ensuring that each user receives their own cached response.
-        </p>
+        </HighlightBlock>
         <p>
           A third pitfall is setting proxy timeouts that are longer than the
           client&apos;s timeout. If the client times out after 30 seconds but
@@ -504,7 +523,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Netflix uses NGINX as its edge reverse proxy, handling all inbound
           traffic before it reaches the Zuul API gateway. NGINX performs TLS
           termination, static-asset serving, and initial request routing, while
@@ -516,8 +538,8 @@ export default function ArticlePage() {
           high-throughput, low-latency workloads of TLS termination and static
           content, while Zuul handles the complex, dynamic routing decisions
           that require application-level logic.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cloudflare operates one of the world&apos;s largest reverse proxy
           networks, with proxy nodes in over 300 cities. Each node terminates
           TLS, applies WAF rules, serves cached content, and forwards
@@ -528,7 +550,7 @@ export default function ArticlePage() {
           proxy also provides DDoS protection by absorbing and filtering
           malicious traffic at the edge, preventing it from reaching the origin
           server.
-        </p>
+        </HighlightBlock>
         <p>
           Airbnb uses Envoy as its service-mesh sidecar proxy, with each
           microservice instance running an Envoy proxy alongside the application
@@ -559,13 +581,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="rounded-lg bg-panel-soft p-6">
           <h3 className="mb-2 text-lg font-semibold">
             Q1: What is the role of a reverse proxy in a production
             architecture, and how does it differ from a forward proxy?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A reverse proxy sits in front of backend servers and handles inbound
             client traffic. It receives requests from clients, forwards them to
             the appropriate backend, and returns the backend&apos;s response to
@@ -581,7 +606,7 @@ export default function ArticlePage() {
             standard front door, providing TLS termination, load balancing,
             caching, compression, routing, and security enforcement for all
             incoming traffic.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="rounded-lg bg-panel-soft p-6">
@@ -589,7 +614,7 @@ export default function ArticlePage() {
             Q2: How do you handle TLS certificate rotation at the reverse proxy
             without dropping connections or causing downtime?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             TLS certificate rotation requires the proxy to load the new
             certificate and private key while continuing to serve existing
             connections. Most modern proxies support hot-reloading of
@@ -610,7 +635,7 @@ export default function ArticlePage() {
             monitor certificate expiry dates and set alerts at 30, 14, and 7
             days before expiry to catch any automation failures before they
             cause an outage.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="rounded-lg bg-panel-soft p-6">

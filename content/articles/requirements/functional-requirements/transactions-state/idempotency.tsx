@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,10 @@ export default function IdempotencyArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Idempotency ensures that performing the same operation multiple times
           produces the same result as performing it once. In distributed
           systems, this property is critical for reliability—network timeouts,
@@ -49,8 +53,8 @@ export default function IdempotencyArticle() {
           For staff and principal engineers, idempotency design involves
           trade-offs between consistency, performance, and complexity across
           service boundaries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The challenge of idempotency extends beyond simple deduplication.
           Operations may have side effects (sending emails, updating inventory,
           charging cards) that must not repeat. Distributed systems introduce
@@ -61,7 +65,7 @@ export default function IdempotencyArticle() {
           operations accidentally using same key). Storage and TTL management
           prevent unbounded growth while ensuring keys remain valid long enough
           for all legitimate retries.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, idempotency architecture involves
           distributed systems patterns. Idempotency keys must be generated
@@ -77,8 +81,11 @@ export default function IdempotencyArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Idempotency Key Generation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Idempotency keys are unique identifiers for operations, generated
           client-side before the first request. UUID v4 (random) is the
           standard—122 bits of randomness provides negligible collision
@@ -86,8 +93,8 @@ export default function IdempotencyArticle() {
           HTTP request. For checkout, one key for the entire checkout operation,
           not separate keys for each step. For payments, one key per charge
           attempt, allowing retries of the same charge.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Key scope determines what constitutes a "duplicate." Narrow scope
           (exact same request) allows similar operations (charge $50, then
           charge $50 again for different order). Wide scope (same customer, same
@@ -95,7 +102,7 @@ export default function IdempotencyArticle() {
           practice: key represents the logical operation, not the request.
           Include operation type in key namespace (payment:uuid, order:uuid) to
           prevent cross-operation collisions.
-        </p>
+        </HighlightBlock>
         <p>
           Key lifecycle begins at generation, ends at TTL expiration. Typical
           TTL: 24 hours for payments (covers retry window), 7 days for order
@@ -213,7 +220,10 @@ export default function IdempotencyArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Idempotency architecture spans client key generation, middleware
           interception, distributed locking, and result caching. Client
           generates UUID per operation, includes in Idempotency-Key header.
@@ -221,7 +231,7 @@ export default function IdempotencyArticle() {
           cached result. If not, acquire lock, process operation, store result,
           release lock. Distributed locking prevents concurrent same-key
           processing across instances.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/transactions-state/idempotency/idempotency-architecture.svg"
@@ -232,14 +242,14 @@ export default function IdempotencyArticle() {
         />
 
         <h3>Client-Side Key Generation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Client generates idempotency key before first request. UUID v4 using
           crypto.getRandomValues() (browser) or crypto.randomUUID() (Node.js).
           Store key with operation context (pending checkout ID, pending order
           ID). Include key in Idempotency-Key header for all requests (initial
           and retries). Key persists across page reloads (localStorage) for
           checkout recovery.
-        </p>
+        </HighlightBlock>
         <p>
           Retry logic uses same key for all attempts. Network timeout: retry
           with same key, server returns cached result if original succeeded.
@@ -347,20 +357,23 @@ export default function IdempotencyArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Idempotency design involves trade-offs between consistency, latency,
           complexity, and storage. Understanding these trade-offs enables
           informed decisions aligned with reliability requirements and
           operational capabilities.
-        </p>
+        </HighlightBlock>
 
         <h3>Storage: Redis vs. Database</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Redis for idempotency cache. Pros: Sub-millisecond lookups, automatic
           TTL expiration, atomic operations (SETNX). Cons: Volatile
           (memory-based), cost for large caches, potential data loss on restart.
           Best for: Hot cache, high-throughput APIs, short TTL (hours to days).
-        </p>
+        </HighlightBlock>
         <p>
           Database for idempotency storage. Pros: Durable (disk-based),
           queryable (audit trail), no memory limits. Cons: Slower lookups
@@ -444,18 +457,21 @@ export default function IdempotencyArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Generate keys client-side:</strong> UUID v4 using crypto
             API. Store with operation context. Include in Idempotency-Key
             header. Same key for all retries. Persist across page reloads
             (localStorage).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Redis for hot cache:</strong> SET with EX for TTL. GET
             for lookup. SETNX for locking. Sub-millisecond latency. Automatic
             expiration. Monitor memory usage.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement distributed locking:</strong> Redis SETNX with
             TTL. Lock key per idempotency key. Fail-fast or wait-and-retry on
@@ -501,17 +517,20 @@ export default function IdempotencyArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No idempotency for payments:</strong> Network retries create
             duplicate charges. Solution: Idempotency keys for all payment
             operations. Same key on retries.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Server-generated keys:</strong> Different key per request,
             can&apos;t deduplicate. Solution: Client-generated keys, same key
             for retries.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>TTL too short:</strong> Key expires before retry completes,
             duplicate operation. Solution: TTL &gt; max retry window. Monitor
@@ -556,24 +575,27 @@ export default function IdempotencyArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Stripe Payment Idempotency</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe requires Idempotency-Key header for all POST requests. Key
           stored with response. Retry with same key returns cached response.
           TTL: 24 hours. Keys scoped to endpoint (charge key ≠ refund key).
           Dashboard shows idempotency key usage. Client libraries auto-generate
           keys for retries.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Amazon Order Deduplication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon generates order ID client-side (UUID). Same order ID on retry
           prevents duplicate orders. Distributed locking prevents concurrent
           same-ID orders. Order ID persisted in localStorage—recover abandoned
           checkout. TTL: 30 days (covers fulfillment window). Audit trail in
           DynamoDB.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">PayPal Retry Logic</h3>
         <p>
@@ -604,19 +626,22 @@ export default function IdempotencyArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you implement idempotency for payment APIs?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Client generates UUID v4, includes in
               Idempotency-Key header. Server checks Redis for key. If found,
               return cached response. If not, acquire distributed lock (SETNX),
               process payment, store result (status, response, timestamp),
               release lock, return response. TTL: 24-48 hours. Database
               persistence for audit. Retry with same key returns cached result.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

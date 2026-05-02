@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p className="lead text-lg text-muted">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="lead text-lg text-muted">
           A forward proxy is an intermediary server positioned between internal clients and external destinations on the internet. It receives outbound requests from clients within a private network, evaluates those requests against organizational policies, and forwards approved requests to their ultimate destinations on behalf of the original requester. Unlike a reverse proxy, which sits in front of backend servers to protect and distribute incoming traffic, a forward proxy sits in front of clients to control, monitor, and potentially transform their outbound traffic. This architectural positioning makes the forward proxy the primary enforcement point for egress traffic management, corporate acceptable-use policies, security inspection, and network observability across enterprise and large-scale distributed environments.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The forward proxy concept operates across multiple organizational domains, each with distinct priorities. In corporate networks, the forward proxy enforces acceptable-use policies, filters malicious or prohibited content, and provides visibility into outbound traffic patterns that would otherwise be invisible to the security team. In cloud-native architectures, it serves as a controlled egress point for containerized services that must access external APIs, package registries, or third-party integrations while remaining isolated from direct internet exposure. In privacy-conscious applications, it enables client anonymization by masking the originating IP address from destination servers. In development environments, it facilitates debugging and protocol analysis by intercepting, logging, and potentially modifying HTTP traffic. Each of these deployment contexts demands different configuration strategies, different security postures, and different operational monitoring approaches.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, designing and operating forward proxy infrastructure requires navigating the fundamental tension between security control and performance overhead. Every request that passes through a forward proxy incurs additional latency: the TCP connection establishment between the client and the proxy, the proxy&apos;s own processing time encompassing policy evaluation, potential TLS decryption and re-encryption, content inspection, and audit logging, and finally the separate TCP connection from the proxy to the destination server. At organizational scale, where thousands of concurrent clients generate hundreds of thousands of requests per second, the proxy layer becomes a critical performance bottleneck if it is not architected with horizontal scalability, efficient resource utilization, and intelligent traffic distribution in mind. The decisions around proxy topology, TLS handling strategy, caching policy, and high-availability design directly determine both the security posture and the end-user experience.
         </p>
@@ -42,14 +46,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Client-Side Request Interception Mechanisms</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fundamental mechanism of a forward proxy is request interception, which can be achieved through either explicit configuration or transparent network-level interception. Explicit proxy configuration requires the client to be aware of the proxy&apos;s existence and to be configured with its address and port. This configuration can be applied through environment variables such as HTTP_PROXY and HTTPS_PROXY, through application-level settings within individual software packages, or through Proxy Auto-Config files. PAC files are JavaScript functions that evaluate each outbound request URL and return the appropriate proxy address, or the literal string DIRECT to indicate that the request should bypass the proxy entirely and connect to the destination directly. PAC files enable sophisticated traffic routing policies: internal corporate resources can be accessed directly without proxy overhead, while all external internet traffic is routed through the proxy for inspection and logging. The PAC file itself is typically hosted on an internal web server and distributed to clients through DHCP option 252 or through group policy configuration.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Transparent proxy interception operates at the network level without requiring any client-side configuration. Network administrators configure NAT rules on the perimeter router or firewall to redirect all outbound traffic on ports 80 and 443 to the proxy&apos;s IP address. The client believes it is communicating directly with the destination server, but the network infrastructure silently redirects the traffic through the proxy. This approach eliminates the operational burden of configuring every client device, but it introduces limitations: protocols that embed destination addresses within the application-layer payload (such as FTP active mode or certain SIP communications) break because the proxy cannot correctly interpret the embedded addresses. Transparent proxies also cannot support authenticated proxy access, since the client has no mechanism to present credentials to a proxy it does not know exists. For these reasons, transparent proxying is most commonly deployed in environments with unmanaged devices such as guest networks or IoT deployments, where explicit configuration is not feasible.
-        </p>
+        </HighlightBlock>
         <p>
           The HTTP CONNECT method is central to proxy operation for HTTPS traffic and represents one of the most critical protocol mechanisms that staff engineers must understand deeply. When a client needs to establish a TLS-encrypted connection to a destination server through a proxy, it sends an HTTP CONNECT request to the proxy specifying the destination hostname and port number. The proxy evaluates this CONNECT request against its policy rules, which may consider the destination hostname, the requesting user identity, the time of day, and the organization&apos;s current security posture. If the CONNECT request is allowed, the proxy establishes its own TCP connection to the destination server and then acts as a bidirectional byte tunnel, forwarding data between the client and the server without inspecting the encrypted payload. This tunneling approach preserves end-to-end encryption between the client and the destination server but prevents the proxy from performing any content inspection, malware scanning, or data loss prevention on the tunneled traffic.
         </p>
@@ -81,10 +88,13 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The architecture of a forward proxy deployment is determined by the scale of the organization, the geographic distribution of its users, the security requirements imposed by regulatory frameworks, and the performance expectations of the user base. Small deployments with a few hundred users can operate effectively with a single proxy server or an active-passive pair for high availability. Large enterprises with tens of thousands of users across multiple geographic locations deploy hierarchical proxy architectures with edge proxies in each office location forwarding unresolved requests to central proxy clusters hosted in data centers or cloud regions. Cloud-native deployments use sidecar proxies or egress gateways to control outbound traffic from containerized services that share a virtual private cloud but lack individual internet connectivity.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/forward-proxy-architecture.svg`}
@@ -93,9 +103,9 @@ export default function ArticlePage() {
         />
 
         <h3>Hierarchical Proxy Topology and Traffic Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In a typical enterprise deployment with multiple office locations, the proxy topology follows a multi-tier hierarchical architecture designed to balance latency, inspection depth, and operational cost. Clients in branch offices connect to local proxy instances that perform initial policy evaluation, allowlist and denylist enforcement, user identity verification, and HTTP response caching for frequently accessed content. These local proxies satisfy a significant portion of requests from their local cache, avoiding the latency of forwarding to a central location. Requests that cannot be satisfied locally, requests that require deep inspection, or requests to destinations not covered by the local cache are forwarded to regional or central proxy clusters. These central clusters perform computationally expensive operations including TLS inspection, deep packet inspection, DLP scanning, and advanced threat detection using sandboxing or machine-learning-based malware classification.
-        </p>
+        </HighlightBlock>
         <p>
           The complete traffic flow through this architecture follows a predictable path. The client application generates an HTTP request and consults its PAC file to determine the appropriate proxy address. The client sends the request to the local proxy, which evaluates basic policies including allowlist and denylist rules and verifies the user&apos;s identity. If the request is for a cacheable resource and a fresh cached response exists, the local proxy returns it immediately. Otherwise, the local proxy forwards the request to the central proxy cluster. The central proxy performs TLS inspection for destinations where inspection is enabled, runs DLP scanning on request and response bodies, performs advanced threat detection, and then establishes its own connection to the destination server. The response flows back through the same chain, with the central proxy inspecting the response content, the local proxy caching it if appropriate, and the client receiving the final result.
         </p>
@@ -139,14 +149,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The decision to deploy a forward proxy involves carefully weighing security control against performance overhead, operational complexity, and user experience impact. The security benefits are substantial and well-documented: comprehensive visibility into all outbound traffic, enforcement of granular access policies, detection and prevention of data exfiltration attempts, malware scanning of downloaded content, and centralized audit logging for compliance and incident response. The costs are equally real and measurable: increased latency for every single request, typically ranging from ten to fifty milliseconds per request for policy evaluation and TLS inspection processing, significant certificate management overhead for TLS inspection deployments, genuine privacy implications of decrypting employee communications, and the ongoing operational burden of maintaining, monitoring, and scaling proxy infrastructure as the organization grows. Organizations must make an explicit, documented decision about whether the security benefits justify these costs for their specific threat model, regulatory compliance requirements, and user population.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           TLS inspection represents the most consequential architectural trade-off in forward proxy design. Without TLS inspection, the proxy can only observe destination hostnames extracted from the CONNECT request and the Server Name Indication extension in the TLS handshake. It cannot inspect the actual content being transferred, which limits the proxy to domain-based filtering where entire domains are either allowed or blocked. This approach cannot detect malware delivered through otherwise allowed domains, cannot identify data exfiltration through permitted cloud services, and cannot enforce content-level policies within encrypted sessions. With TLS inspection enabled, the proxy gains full visibility into both request and response content, enabling deep packet inspection, data loss prevention scanning, malware detection within allowed services, and comprehensive content policy enforcement. However, TLS inspection introduces significant privacy concerns because employees may not reasonably expect their encrypted personal communications to be decrypted and inspected, creates certificate management complexity because every managed device must trust the internal CA, generates compatibility issues with certificate-pinned applications such as banking apps and some Google services, and raises potential legal implications in jurisdictions with strict privacy legislation. Many organizations adopt a hybrid approach where TLS inspection is applied to most traffic but explicitly bypassed for sensitive categories including personal banking, healthcare portals, and legal services where the privacy risk outweighs the security benefit.
-        </p>
+        </HighlightBlock>
 
         <p>
           Forward proxies compete with alternative egress control mechanisms that have emerged as cloud-native and zero-trust architectures have matured. Cloud-native architectures increasingly use egress gateways such as Istio Egress Gateway, AWS NAT Gateway with security groups, or Azure Firewall that provide network-level egress control without the application-layer inspection capabilities of a traditional forward proxy. These alternatives control which destinations are reachable from the internal network but do not inspect the content of the traffic flowing to those destinations. Zero-trust network access architectures replace the perimeter-based proxy model with identity-based access control for every resource regardless of network location, controlling access at the resource level rather than at the network perimeter. The fundamental trade-off is between the comprehensive visibility and control of a forward proxy, which inspects every individual request, and the more granular, identity-aware control of zero-trust architectures, which control access per resource but may not inspect content. Many organizations operate both simultaneously: forward proxies for general internet access and zero-trust access controls for internal resources, recognizing that the two security models are complementary rather than competitive.
@@ -159,14 +172,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Deploy forward proxies in a highly available cluster configuration with at least two instances in every location where clients depend on proxy connectivity, using automated health checking and failover mechanisms that operate without manual intervention. Proxy failure blocks all outbound internet access for affected clients, making it a critical availability concern that demands the same operational rigor as any production service. Use load balancing to distribute client connections across proxy instances, and configure PAC files with explicit failover ordering so that clients automatically switch to a secondary proxy if their primary proxy becomes unreachable. Monitor proxy health metrics continuously, including active connection counts, memory utilization, CPU consumption, request throughput rates, and TLS handshake latency. Alert on degradation thresholds that precede actual failure, giving the operations team time to intervene before users experience impact. Conduct regular failover tests by intentionally taking individual proxy instances offline and verifying that client connectivity is maintained through automatic failover mechanisms.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement TLS inspection selectively based on destination category and organizational risk assessment rather than applying it uniformly to all outbound traffic. Maintain a carefully curated bypass list for destinations where TLS inspection causes compatibility issues such as certificate-pinned services and sites with strict privacy requirements, and for destinations where the privacy implications of inspection are ethically or legally problematic. Ensure that the internal CA certificate is deployed to every managed device before enabling TLS inspection for any traffic category, and implement an automated process for rotating the CA certificate well before its expiration date. Monitor TLS inspection success rates and error rates continuously to detect certificate validation failures, pinned certificate encounters, and client trust chain problems before they manifest as user-reported browsing issues.
-        </p>
+        </HighlightBlock>
 
         <p>
           Maintain comprehensive audit logs of all proxy activity including allowed requests, blocked requests, TLS inspection decisions, data loss prevention triggers, and authentication events. These logs serve multiple critical purposes: security incident investigation where analysts trace the path of a data breach through proxy logs, compliance reporting where the organization demonstrates policy enforcement during regulatory audits, capacity planning where infrastructure teams understand traffic patterns and growth trends to provision appropriately, and troubleshooting where operators identify why a specific request was blocked or experienced unusual latency. Log retention periods should meet or exceed compliance requirements, which typically range from ninety days to seven years depending on the industry and jurisdiction, and logs should be forwarded in real time to a centralized security information and event management system for correlation with other security telemetry sources.
@@ -183,14 +199,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Deploying a single proxy instance without any redundancy is a critical availability mistake that causes complete loss of internet access for all affected clients when that single instance fails. This error is especially common in small organizations or branch office deployments where the proxy is treated as infrastructure that can be configured once and forgotten. When the proxy instance experiences a hardware failure, a software crash, or requires a restart for maintenance, every client that depends on it loses all outbound internet connectivity until the proxy is restored. The remedy is straightforward: deploy at least two proxy instances with automated failover even in the smallest deployments, and test the failover mechanism on a regular schedule to verify that it functions correctly when needed. For organizations using cloud-delivered proxy services, ensure that the provider&apos;s service level agreement covers the organization&apos;s availability requirements and that the provider maintains redundancy across multiple availability zones.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Enabling TLS inspection without first deploying the internal CA certificate to all client devices causes widespread certificate validation errors that break browsing for every affected user. This typically occurs when TLS inspection is enabled globally across all traffic categories but some devices such as contractor laptops, personal mobile devices, or IoT equipment have not received the CA certificate through the organization&apos;s device management infrastructure. The fix requires maintaining a comprehensive and continuously updated inventory of all devices that route traffic through the proxy, verifying CA certificate deployment status for every device before enabling TLS inspection, and implementing an automated onboarding process that deploys the CA certificate to new devices as part of their initial configuration. Monitoring for certificate validation errors provides an early warning system for devices that lack the required CA certificate.
-        </p>
+        </HighlightBlock>
 
         <p>
           Implementing overly restrictive proxy policies that block legitimate business tools drives users toward shadow IT workarounds that eliminate visibility and control entirely. When employees cannot access the tools they need to perform their jobs through the proxy, they resort to personal mobile hotspots, commercial VPN services, or personal devices that bypass the corporate proxy entirely. This behavior is counterproductive because it moves traffic from a monitored and controlled channel to an unmonitored and uncontrolled channel, increasing rather than decreasing the organization&apos;s security risk. The solution is to establish a self-service request process for accessing new tools and services, with a well-defined service level agreement for policy review and approval. A default-deny policy with a fast and transparent approval process is more effective than a default-allow policy with no visibility, because it creates an auditable record of what tools are being used and the business justification for their use.
@@ -207,16 +226,19 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Financial Services: Regulatory Compliance and Data Loss Prevention</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Large financial institutions deploy forward proxies as a critical component of their regulatory compliance infrastructure, where the proxy enforces strict content filtering policies that block unauthorized file sharing services, personal email platforms, and social media during trading hours. The proxy performs TLS inspection on all outbound traffic with carefully defined bypasses for regulatory reporting systems, and integrates with data loss prevention systems that scan for customer personally identifiable information, trading data, and other regulated data types. Every proxy event is logged with user identity, timestamp, destination, content category, and action taken, providing the comprehensive audit trail required by financial regulators including the SEC and FINRA. The proxy enforces time-based access policies that restrict external communications during trading hours while permitting broader access during non-trading periods, demonstrating how the forward proxy functions not merely as a security tool but as a regulatory compliance enforcement mechanism with direct legal implications for the institution.
-        </p>
+        </HighlightBlock>
 
         <h3>Healthcare Organizations: HIPAA-Compliant Egress Control</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Healthcare organizations deploy forward proxies to control outbound internet traffic while maintaining compliance with HIPAA privacy and security regulations. The proxy blocks access to unauthorized cloud storage services that could be used to exfiltrate protected health information through personal file sharing accounts, inspects all outbound traffic for PHI patterns including social security numbers, medical record numbers, and diagnosis codes, and logs all access to systems containing patient data. The proxy&apos;s TLS inspection capability is carefully configured to bypass healthcare-specific services such as patient portals and insurance claim submission systems where decryption would violate business associate agreements or introduce unacceptable compliance risk. The proxy enforces role-based access policies where clinical staff have access to different external resources than administrative staff, billing personnel, or research teams, with the proxy applying different filtering and inspection policies based on the authenticated user&apos;s role within the organization.
-        </p>
+        </HighlightBlock>
 
         <h3>Technology Companies: Developer-Focused Proxy with Selective Inspection</h3>
         <p>
@@ -231,23 +253,26 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions and Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             How does a forward proxy handle HTTPS traffic, and what is the fundamental difference between TLS tunneling and TLS inspection?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             For HTTPS traffic, the client sends an HTTP CONNECT request to the proxy specifying the destination hostname and port number, typically 443. The proxy evaluates this CONNECT request against its policy rules and, if allowed, establishes a TCP connection to the destination server. The proxy then acts as a blind bidirectional tunnel, forwarding encrypted bytes between the client and server without inspecting the content. This is TLS tunneling: the proxy sees only the destination hostname from the CONNECT request and the Server Name Indication extension, but cannot observe the actual content being exchanged. TLS inspection fundamentally changes this model: the proxy intercepts the TLS handshake, generates a certificate for the destination hostname signed by the organization&apos;s internal certificate authority, and presents this certificate to the client. The client validates this proxy-generated certificate against the internal CA that must be pre-installed on the device. The proxy simultaneously establishes its own independent TLS connection to the real destination server. With both TLS sessions established, the proxy can decrypt, inspect, and re-encrypt all traffic, enabling content inspection, malware scanning, and data loss prevention. The trade-off is between visibility, where inspection provides complete content access, and compatibility, where tunneling works with all destinations including those using certificate pinning while inspection breaks pinned certificate validation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             A forward proxy is experiencing high latency under load. Walk through your diagnostic approach and the potential fixes you would consider.
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The diagnostic approach begins by identifying which component of the request path is contributing to the observed latency. The request path has three segments: the client-to-proxy connection, the proxy&apos;s internal processing including policy evaluation and TLS inspection, and the proxy-to-destination connection. I would first examine proxy CPU utilization, as high CPU typically indicates that TLS inspection is the bottleneck since cryptographic operations for decrypting and re-encrypting traffic are computationally intensive. High memory utilization suggests that connection state retention or large response buffering for DLP scanning is consuming resources beyond the proxy&apos;s capacity. I would check the connection count per proxy instance to determine whether traffic is unevenly distributed, with one instance handling a disproportionate share of connections. If the proxy-to-destination segment is slow, the issue is external to the proxy infrastructure, potentially indicating destination server latency or network congestion between the proxy and the internet.
-          </p>
+          </HighlightBlock>
           <p>
             The fixes depend on the identified bottleneck. If the proxy is resource-constrained, adding more proxy instances and rebalancing client distribution across them provides immediate relief. If policy evaluation is slow, optimizing the rule set by removing redundant rules, consolidating overlapping policies, and ensuring that the most frequently matched rules are evaluated first can reduce processing time. If TLS inspection overhead is the primary contributor, increasing the TLS bypass list for low-risk destination categories reduces the number of connections requiring cryptographic processing. If caching effectiveness is low, tuning cache parameters to cache more aggressively for eligible content reduces the number of requests that require full proxy processing. Long-term, capacity planning based on traffic growth trends and regular load testing prevents latency issues before they impact users.
           </p>

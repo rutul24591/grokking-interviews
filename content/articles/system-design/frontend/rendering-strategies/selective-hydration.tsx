@@ -39,15 +39,15 @@ export default function SelectiveHydrationConciseArticle() {
           interactive components differently - shipping zero JavaScript for
           static sections like article text, images, or informational blocks.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           This approach fundamentally changes how we think about hydration. In
           traditional SSR with React or Angular, even a static paragraph of text
           gets &quot;hydrated&quot; - the framework attaches event listeners,
           builds a virtual DOM representation, and maintains component state,
           despite the content never changing or requiring interactivity. This
           wastes CPU cycles, memory, and JavaScript bundle size.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Selective hydration emerged from the &quot;islands architecture&quot;
           pattern popularized by Astro, but the concept predates it. The core
           insight: most web pages are 80-90% static content (text, images,
@@ -55,8 +55,8 @@ export default function SelectiveHydrationConciseArticle() {
           modals, carousels). Why hydrate and ship JavaScript for the static
           80%? Selective hydration treats interactive components as
           &quot;islands of interactivity&quot; in a sea of static HTML.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This technique is particularly powerful for content-driven sites
           (blogs, documentation, news sites) where the majority of the page is
           static content with occasional interactive elements. Companies like
@@ -64,7 +64,7 @@ export default function SelectiveHydrationConciseArticle() {
           selective hydration patterns, reporting 60-80% reductions in
           JavaScript payload and corresponding improvements in performance
           metrics.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -74,20 +74,20 @@ export default function SelectiveHydrationConciseArticle() {
           foundational concepts:
         </p>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Static vs Interactive Distinction:</strong> The fundamental
             decision for each component: Does it need JavaScript? Static content
             (paragraphs, headings, images, layout) gets server-rendered as HTML
             and never hydrates. Interactive components (forms, buttons with
             onClick, modals) hydrate with framework code.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Component Boundaries:</strong> Carefully defining boundaries
             between static and interactive regions. A blog post body is static,
             but a &quot;like button&quot; within it is interactive. The
             framework must know where each boundary lies to selectively hydrate
             only the interactive parts.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Islands Architecture:</strong> The architectural pattern
             underpinning selective hydration. The page is an ocean of static
@@ -95,20 +95,20 @@ export default function SelectiveHydrationConciseArticle() {
             independent, hydrates separately, and can use different frameworks
             (React island next to vanilla JS island).
           </li>
-          <HighlightBlock as="li" tier="important">
+          <HighlightBlock as="li" tier="crucial">
             <strong>Zero JavaScript for Static Content:</strong> The key benefit
             - static sections ship absolutely zero JavaScript. No framework
             runtime, no virtual DOM, no event listeners. Just HTML and CSS. This
             dramatically reduces bundle size and eliminates unnecessary
             hydration work.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Explicit Interactivity Opt-in:</strong> By default,
             components are static (no hydration). Developers must explicitly
             mark components as interactive using directives (Astro&apos;s
             client:*, Fresh&apos;s islands, Marko&apos;s interactive). This
             inverts the traditional model where everything hydrates by default.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Framework-Agnostic Boundaries:</strong> Because static
             sections have no framework code, each interactive island can use any
@@ -124,7 +124,11 @@ export default function SelectiveHydrationConciseArticle() {
           Selective hydration follows a distinct rendering and delivery pattern:
         </p>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
+        <HighlightBlock
+          as="div"
+          tier="important"
+          className="my-6 rounded-lg bg-panel-soft p-6"
+        >
           <h3 className="mb-4 text-lg font-semibold">
             Selective Hydration Flow
           </h3>
@@ -181,7 +185,14 @@ export default function SelectiveHydrationConciseArticle() {
               static content remains static HTML
             </li>
           </ol>
-        </div>
+        </HighlightBlock>
+
+        <HighlightBlock as="p" tier="important">
+          The key system design choice is defining{" "}
+          <strong>island boundaries</strong> (what stays static vs what becomes
+          a client component), and then enforcing it with tooling so teams don’t
+          accidentally pull large static regions into interactive islands.
+        </HighlightBlock>
 
         <HighlightBlock as="p" tier="crucial">
           The key difference from traditional SSR: static sections never execute
@@ -216,7 +227,7 @@ export default function SelectiveHydrationConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>JavaScript Payload</strong>
               </td>
@@ -234,8 +245,8 @@ export default function SelectiveHydrationConciseArticle() {
                 <br />
                 Everything downloads
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Hydration Work</strong>
               </td>
@@ -253,7 +264,7 @@ export default function SelectiveHydrationConciseArticle() {
                 <br />
                 Slow TTI
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Memory Usage</strong>
@@ -273,7 +284,7 @@ export default function SelectiveHydrationConciseArticle() {
                 Fixed overhead
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Developer Experience</strong>
               </td>
@@ -291,8 +302,8 @@ export default function SelectiveHydrationConciseArticle() {
                 <br />
                 Familiar pattern
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Best Use Case</strong>
               </td>
@@ -310,7 +321,7 @@ export default function SelectiveHydrationConciseArticle() {
                 <br />
                 Dashboards, tools
               </td>
-            </tr>
+            </HighlightBlock>
           </tbody>
         </table>
 
@@ -347,32 +358,32 @@ export default function SelectiveHydrationConciseArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Identify True Interactivity:</strong> Be honest about what
             needs JavaScript. Does that paragraph need React? Does that image
             need any framework? Most content doesn&apos;t. Reserve framework
             code for actual interactive components (forms, buttons with
             handlers, dynamic state).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Design Clear Boundaries:</strong> Draw clear lines between
             static and interactive regions. A blog post is static, but a like
             button within it is interactive. Use component boundaries to enforce
             this separation. Avoid mixing static content inside interactive
             components.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Framework-Native Solutions:</strong> Prefer frameworks
             with built-in selective hydration (Astro, Fresh, Qwik, Marko) over
             custom implementations. They handle edge cases, optimize bundle
             splitting, and provide better DX.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Minimize Island Size:</strong> Keep interactive islands
             small and focused. A &quot;like button&quot; island should just be
             the button, not the entire article card. Smaller islands = smaller
             JS bundles.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Lazy Load Island Code:</strong> Load each island&apos;s
             JavaScript on-demand. Use dynamic imports to split island code into
@@ -390,11 +401,11 @@ export default function SelectiveHydrationConciseArticle() {
             features can degrade gracefully. This ensures accessibility and
             resilience.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Monitor Real Performance:</strong> Track JavaScript payload
             size, TTI, and TBT. Compare before/after selective hydration. Expect
             50-80% JS reduction for content sites. Use lighthouse and RUM tools.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Document Island Boundaries:</strong> Maintain clear
             documentation of which components are islands and why. This helps
@@ -412,42 +423,42 @@ export default function SelectiveHydrationConciseArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Over-Hydrating Static Content:</strong> Marking too many
             components as interactive defeats the purpose. Be ruthless - if it
             doesn&apos;t have event handlers or state, it&apos;s static. A
             styled button that links to another page doesn&apos;t need React.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Nesting Static Inside Interactive:</strong> Putting large
             static content inside an interactive component forces hydration of
             that content. Extract static content outside the interactive
             boundary.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Sharing State Between Islands:</strong> Islands are
             independent by design. Sharing state between them is complex and
             often requires a global store. Reconsider your architecture if you
             need heavy inter-island communication.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Large Island Bundles:</strong> If an island&apos;s
             JavaScript bundle is 200KB, you&apos;ve negated the benefits. Keep
             islands small, lazy load dependencies, and consider splitting into
             multiple islands.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring SEO/Accessibility:</strong> Ensure static content
             is proper semantic HTML. Don&apos;t rely on JavaScript for critical
             content or navigation. The static HTML should be fully functional
             and accessible.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Hydration Mismatch Errors:</strong> Server HTML must match
             client expectations. Be careful with timestamps, random values, or
             client-only logic. These cause hydration errors and force
             re-renders.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not Testing Edge Cases:</strong> What if an island fails to
             load? What if JavaScript is disabled? Ensure graceful degradation.
@@ -474,33 +485,33 @@ export default function SelectiveHydrationConciseArticle() {
         <p>Selective hydration excels in these scenarios:</p>
 
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Blogs & Content Sites:</strong> The Guardian and Medium use
             selective hydration patterns. Article text is pure HTML (zero JS),
             while like buttons, comment forms, and newsletters are interactive
             islands. Result: 70-80% reduction in JavaScript, faster load times,
             better reading experience.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Documentation Sites:</strong> Astro docs, Deno docs, and
             Qwik docs use their own frameworks&apos; selective hydration. Main
             content is static, search is an interactive island, code examples
             have copy-to-clipboard islands. Typical JS payload: 30-80KB vs
             300KB+ for traditional SPA docs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Marketing Sites:</strong> Marketing landing pages are 90%
             static (hero, benefits, testimonials, footer) with small interactive
             islands (newsletter signup, demo request form, video player).
             Selective hydration achieves near-instant load times critical for
             conversion.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>E-commerce Product Pages:</strong> Product description,
             specs, and images are static. Add-to-cart button, variant selector,
             and reviews are interactive islands. This keeps page load fast while
             maintaining necessary interactivity for conversion.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>News Websites:</strong> Article text, images, and layout are
             static HTML. Comment sections, related articles widgets, and ad
@@ -541,7 +552,11 @@ export default function SelectiveHydrationConciseArticle() {
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="crucial"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">
               Q: How does selective hydration differ from progressive hydration?
             </p>
@@ -554,9 +569,13 @@ export default function SelectiveHydrationConciseArticle() {
               hydrate it eventually. Selective achieves much larger JS
               reductions (60-90% vs 20-40%).
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="important"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">Q: What is islands architecture?</p>
             <p className="mt-2 text-sm">
               A: Islands architecture is the pattern underpinning selective
@@ -567,9 +586,13 @@ export default function SelectiveHydrationConciseArticle() {
               a React like button island, a React comment section island, and
               vanilla JS theme toggle island.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="important"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">
               Q: When should you use selective hydration?
             </p>
@@ -581,14 +604,14 @@ export default function SelectiveHydrationConciseArticle() {
               content. Avoid for highly interactive apps (dashboards, tools)
               where most components need JavaScript anyway.
             </p>
-          </div>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>References & Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://docs.astro.build/en/concepts/islands/"
               className="text-accent hover:underline"
@@ -597,8 +620,8 @@ export default function SelectiveHydrationConciseArticle() {
             >
               Astro Islands Architecture Documentation
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://fresh.deno.dev/docs/concepts/islands"
               className="text-accent hover:underline"
@@ -607,8 +630,8 @@ export default function SelectiveHydrationConciseArticle() {
             >
               Fresh (Deno) Islands Documentation
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://markojs.com/docs/hydration/"
               className="text-accent hover:underline"
@@ -617,7 +640,7 @@ export default function SelectiveHydrationConciseArticle() {
             >
               Marko Selective Hydration Guide
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://www.patterns.dev/posts/islands-architecture/"

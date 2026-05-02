@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -41,7 +42,7 @@ export default function CdnStrategyExtensiveArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A <strong>Content Delivery Network (CDN)</strong> is a globally
           distributed system of edge servers that caches and serves content from
           locations geographically close to end users, dramatically reducing
@@ -50,45 +51,45 @@ export default function CdnStrategyExtensiveArticle() {
           involves deliberate decisions about cache architecture, invalidation
           models, multi-CDN redundancy, edge compute capabilities, security
           posture, and cost optimization.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the staff/principal engineer level, CDN strategy is a critical
           infrastructure design decision that directly impacts page load times
           (every 100ms of latency costs approximately 1% in conversion),
           availability SLAs (the CDN is often the first point of failure users
           encounter), and operational cost (CDN egress can represent 30-60% of
           infrastructure spend for media-heavy applications).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Modern CDNs have evolved from simple static file caches into
           full-featured edge platforms. Cloudflare Workers, Fastly Compute@Edge,
           and AWS CloudFront Functions enable running application logic at the
           edge, blurring the line between CDN and application server. This shift
           requires engineers to think about CDNs as a programmable layer in
           their architecture, not just a caching proxy.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Edge PoP (Point of Presence):</strong> A data center in the
             CDN network containing cache storage, TLS termination, and routing
             logic. Major CDNs operate 200-400+ PoPs. Each PoP independently
             caches content, meaning the same asset may be stored hundreds of
             times globally. The PoP closest to a user (determined by anycast
             routing) handles their request.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Origin Server:</strong> The authoritative source of content -
             your application server, S3 bucket, or other storage. The CDN only
             contacts the origin on cache misses or revalidation. Origin offload
             rate (percentage of requests served from cache) is a key metric;
             well-tuned CDNs achieve 95-99% offload for static assets.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Origin Shield (Mid-Tier Cache):</strong> An intermediate
             caching layer between edge PoPs and the origin. When multiple edge
             PoPs experience simultaneous cache misses (e.g., after a purge or
@@ -96,7 +97,7 @@ export default function CdnStrategyExtensiveArticle() {
             preventing thundering herd problems. Cloudflare calls this
             &quot;Tiered Caching,&quot; Fastly calls it &quot;Shielding,&quot; and CloudFront
             offers &quot;Origin Shield.&quot;
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Push vs. Pull CDN:</strong> In a <em>pull</em> model (most
             common), the CDN fetches content from the origin on first request
@@ -134,17 +135,17 @@ export default function CdnStrategyExtensiveArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The following diagram illustrates a typical CDN architecture with
           three tiers: edge PoPs that terminate TLS and serve cached content,
           a shield layer that coalesces cache misses, and the origin server.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/cdn-strategy-diagram-1.svg"
           alt="CDN architecture with edge, shield, and origin layers showing request flow"
           caption="Figure 1: Multi-tier CDN architecture showing edge PoPs, shield layer, and origin server with request flow paths"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a user requests an asset, their DNS query resolves via anycast
           to the nearest edge PoP. The PoP checks its local cache: on a hit,
           the response is served immediately (typically 5-50ms). On a miss, the
@@ -154,10 +155,10 @@ export default function CdnStrategyExtensiveArticle() {
           origin fetch populates both the shield and requesting edge, and
           subsequent misses from other edges hit the warm shield cache instead
           of the origin.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 font-semibold">Cache-Control Header Design</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Correct cache header configuration is the foundation of CDN strategy.
           The primary directives to understand: For static assets with content
           hashing (like <code>/assets/main.a1b2c3d4.js</code>), use{" "}
@@ -176,7 +177,7 @@ export default function CdnStrategyExtensiveArticle() {
           separate cache entry for every unique user-agent string. Instead,
           normalize device detection at the edge and use{" "}
           <code>Vary: X-Device-Type</code>.
-        </p>
+        </HighlightBlock>
         <p>
           The distinction between <code>max-age</code> and{" "}
           <code>s-maxage</code> is critical: <code>max-age</code> applies to
@@ -273,10 +274,13 @@ export default function CdnStrategyExtensiveArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="min-w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-theme">
+              <HighlightBlock as="tr" tier="important">
                 <th className="px-4 py-2 text-left font-semibold text-theme">
                   Dimension
                 </th>
@@ -292,23 +296,23 @@ export default function CdnStrategyExtensiveArticle() {
                 <th className="px-4 py-2 text-left font-semibold text-theme">
                   Akamai
                 </th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody>
-              <tr className="border-b border-theme">
+              <HighlightBlock as="tr" tier="important">
                 <td className="px-4 py-2 font-medium">PoP Count</td>
                 <td className="px-4 py-2">300+</td>
                 <td className="px-4 py-2">~90</td>
                 <td className="px-4 py-2">450+</td>
                 <td className="px-4 py-2">4,100+</td>
-              </tr>
-              <tr className="border-b border-theme">
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="px-4 py-2 font-medium">Purge Latency</td>
                 <td className="px-4 py-2">~5s global</td>
                 <td className="px-4 py-2">&lt;150ms global</td>
                 <td className="px-4 py-2">~60s (invalidation)</td>
                 <td className="px-4 py-2">~5s</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme">
                 <td className="px-4 py-2 font-medium">Edge Compute</td>
                 <td className="px-4 py-2">Workers (V8 isolates)</td>
@@ -394,26 +398,26 @@ export default function CdnStrategyExtensiveArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use content-hashed URLs for all static assets.</strong>{" "}
             Configure your bundler (Webpack, Vite) to include content hashes
             in filenames. Set <code>Cache-Control: public, max-age=31536000, immutable</code>{" "}
             on these assets. This achieves 100% cache hit rate for repeat
             visitors and eliminates invalidation complexity for static files.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Separate CDN TTLs from browser TTLs.</strong> Use{" "}
             <code>s-maxage</code> or <code>Surrogate-Control</code> to give the
             CDN a longer TTL than the browser. This lets you purge the CDN edge
             while the browser still revalidates on its shorter schedule.
             Example: <code>s-maxage=3600, max-age=60</code>.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enable origin shield / tiered caching.</strong> This is the
             single most impactful CDN configuration for reducing origin load.
             Without a shield, N edge PoPs can send N simultaneous requests to
             origin on cache miss. With a shield, these coalesce to 1 request.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement stale-while-revalidate for HTML pages.</strong>{" "}
             Dynamic pages (product pages, feeds, dashboards) benefit enormously
@@ -456,27 +460,27 @@ export default function CdnStrategyExtensiveArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Using Vary: User-Agent.</strong> This creates a separate
             cache entry for every unique User-Agent string. With thousands of
             browser/OS/device combinations, your cache hit rate drops to near
             zero. Instead, normalize to a custom header (e.g.,{" "}
             <code>X-Device-Type: mobile</code>) at the edge and vary on that.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Setting Cache-Control: no-cache on static assets.</strong>{" "}
             This forces revalidation on every request, defeating the purpose of
             CDN caching. For hashed static assets, use immutable caching. For
             HTML, use short <code>s-maxage</code> with{" "}
             <code>stale-while-revalidate</code>.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Set-Cookie responses.</strong> Most CDNs will not
             cache responses that include <code>Set-Cookie</code> headers, or
             worse, will cache them and serve the same cookie to all users. Strip{" "}
             <code>Set-Cookie</code> at the CDN edge for cacheable responses, or
             mark them <code>private</code>.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not accounting for cache stampede.</strong> When a popular
             cached item expires, hundreds of simultaneous requests can hit your
@@ -513,7 +517,7 @@ export default function CdnStrategyExtensiveArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <h3 className="mt-4 font-semibold">Netflix: Open Connect</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Netflix built its own CDN (Open Connect) specifically for video
           delivery. They place custom hardware appliances (Open Connect
           Appliances, or OCAs) directly inside ISP networks. During off-peak
@@ -523,22 +527,22 @@ export default function CdnStrategyExtensiveArticle() {
           Netflix&apos;s CDN strategy is a textbook example of push CDN at
           extreme scale, serving 15%+ of all downstream internet traffic
           globally.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-4 font-semibold">Cloudflare: Edge-First Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cloudflare pioneered the &quot;every PoP is a full node&quot; architecture where
           every edge location can handle any request type (caching, WAF, DDoS,
           Workers). This contrasts with tiered architectures where edge nodes
           are &quot;thin&quot; and defer to regional hubs. The benefit is lower latency
           (no inter-PoP hops for most requests), but requires each PoP to have
           significant compute and storage capacity.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-4 font-semibold">
           Shopify: Multi-CDN with Edge Rendering
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shopify uses a multi-CDN strategy (Cloudflare + Fastly) with edge
           rendering for storefront pages. Product pages are rendered at the
           edge using cached product data, with surrogate key-based invalidation
@@ -546,7 +550,7 @@ export default function CdnStrategyExtensiveArticle() {
           globally while supporting millions of unique storefronts. Their
           approach demonstrates how edge compute transforms CDN strategy from
           passive caching to active content assembly.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-4 font-semibold">
           GitHub: Conditional Request Optimization
@@ -565,25 +569,25 @@ export default function CdnStrategyExtensiveArticle() {
       {/* Section 8: Security at the CDN Edge */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Modern CDNs serve as the first line of defense for web applications.
           Key security capabilities to architect around include:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>DDoS Protection:</strong> CDNs absorb volumetric attacks by
             distributing traffic across hundreds of PoPs. Cloudflare has
             mitigated attacks exceeding 71 million requests per second. Ensure
             your origin is not directly accessible (restrict origin firewall to
             CDN IP ranges only).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Web Application Firewall (WAF):</strong> CDN-integrated WAFs
             inspect requests at the edge before they reach your origin. Configure
             managed rulesets (OWASP Top 10) and custom rules for your
             application. WAF at the edge blocks malicious traffic without
             consuming origin resources.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Signed URLs / Tokens:</strong> For premium or access-controlled
             content, use signed URLs with expiration timestamps. The CDN validates
@@ -611,23 +615,23 @@ export default function CdnStrategyExtensiveArticle() {
       {/* Section 9: Cost Optimization */}
       <section>
         <h2>Cost Optimization</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           CDN costs can escalate quickly, especially for high-traffic
           applications serving large media files. Key strategies:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Maximize cache hit ratio.</strong> Every cache miss costs
             egress bandwidth from your origin plus CDN-to-origin transfer. A 1%
             improvement in CHR from 95% to 96% reduces origin requests by 20%.
             Use longer TTLs, normalize cache keys, and enable origin shield.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Compress at the edge.</strong> Enable Brotli and gzip
             compression at the CDN. Brotli provides 15-25% better compression
             than gzip for text assets, directly reducing bandwidth costs.
             Most CDNs can compress on-the-fly or cache pre-compressed variants.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use request collapsing.</strong> When multiple users request
             the same uncached resource simultaneously, the CDN should coalesce
@@ -647,25 +651,25 @@ export default function CdnStrategyExtensiveArticle() {
       {/* Section 10: Edge Compute */}
       <section>
         <h2>CDN for Dynamic Content: Edge Compute</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Edge compute transforms CDNs from passive caches into active
           application platforms. Key patterns:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>A/B Testing at the Edge:</strong> Route users to different
             content variants at the CDN edge without origin involvement. Set a
             cookie on first visit to ensure consistent bucketing, and serve the
             appropriate variant from cache. This eliminates the performance
             penalty of server-side A/B testing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Edge Side Includes (ESI):</strong> Assemble pages from cached
             fragments at the edge. The page template and shared fragments are
             cached with long TTLs, while personalized fragments are fetched from
             the origin or computed at the edge. Akamai and Fastly support ESI
             natively.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Authentication at the Edge:</strong> Validate JWTs and API
             keys at the CDN edge, rejecting unauthorized requests before they
@@ -684,13 +688,16 @@ export default function CdnStrategyExtensiveArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel p-4">
-            <p className="font-semibold text-theme">
+            <HighlightBlock as="p" tier="important">
               Q: How would you design a CDN cache invalidation strategy for an
               e-commerce site where product prices change frequently?
-            </p>
-            <p className="mt-2 text-sm text-muted">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               Use a two-layer approach: static assets (images, JS, CSS) use
               content-hashed URLs with immutable caching (never need
               invalidation). Product pages use surrogate keys tagged with the
@@ -702,14 +709,14 @@ export default function CdnStrategyExtensiveArticle() {
               <code>stale-while-revalidate=300</code>. This ensures prices are
               eventually consistent (within ~60s) while maintaining fast
               response times.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel p-4">
-            <p className="font-semibold text-theme">
+            <HighlightBlock as="p" tier="important">
               Q: Explain the difference between max-age, s-maxage, and
               Surrogate-Control. When would you use each?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <code>max-age</code> sets the TTL for all caches (browsers and
               CDNs). <code>s-maxage</code> overrides <code>max-age</code> for

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ContentLifecycleManagementArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content Lifecycle Management governs content from initial creation through eventual archival or deletion, ensuring proper handling, compliance, and cost management at each stage. Every piece of content has a lifecycle—blog posts are drafted, reviewed, published, updated, and eventually archived or deleted. User-generated content is created, moderated, published, and may be removed for policy violations. Product listings are created, published, updated with inventory changes, and discontinued. For platforms managing large content volumes, lifecycle management is essential for compliance (legal retention requirements), cost control (storage costs for archived content), and content quality (keeping content fresh and relevant).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, content lifecycle architecture involves lifecycle stages (creation, review, publication, maintenance, archival, deletion), automation (workflow triggers, scheduled actions), retention policies (legal requirements, business rules), archival strategies (cold storage, reduced availability), deletion patterns (soft delete, hard delete, data erasure), and compliance (GDPR right to erasure, industry regulations). The implementation must balance competing priorities: user access to historical content versus storage costs, legal retention requirements versus privacy rights, automation efficiency versus human oversight. Poor lifecycle management leads to compliance violations, excessive storage costs, stale content degrading user experience, and inability to meet legal discovery requirements.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of content lifecycle extends beyond simple state transitions. Retention policies vary by content type (financial records: 7 years, user posts: indefinite until deleted, temporary content: 30 days). Archival strategies balance accessibility with cost (hot storage for recent content, cold storage for archived). Deletion must handle dependencies (content with comments, shares, backlinks). Compliance requirements vary by jurisdiction (GDPR right to erasure, HIPAA retention for medical content, SEC requirements for financial content). For staff engineers, lifecycle management is a content governance decision affecting compliance, costs, and long-term platform sustainability.
         </p>
@@ -46,13 +50,16 @@ export default function ContentLifecycleManagementArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Lifecycle Stages and Transitions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Creation stage encompasses content authoring and initial state. Draft state for work-in-progress content (not visible to public). Version control tracks changes during creation (version 1, 2, 3). Collaboration features enable multiple authors (comments, suggestions, co-authoring). Auto-save prevents data loss (save every 30 seconds). Metadata captured at creation (author, created date, content type, initial tags). Creation stage focuses on enabling efficient content authoring with appropriate safeguards (auto-save, versioning).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Review stage ensures content quality before publication. Moderation queue holds content awaiting review (user-generated content). Approval workflow routes content to appropriate reviewers (editor, legal, compliance). Edit requests enable reviewers to request changes (comment on specific sections). Rejection with reason provides feedback to authors (why content was rejected). Review stage balances quality assurance with throughput (don&apos;t bottleneck content publication).
-        </p>
+        </HighlightBlock>
         <p>
           Publication stage makes content visible to users. Live state (content visible to public). Indexed for search (added to search index). Distributed via CDN (cached at edge locations). Notified to subscribers (email, push notifications for new content). Publication triggers downstream actions (search indexing, CDN distribution, notifications). Publication is the transition from private to public content.
         </p>
@@ -119,9 +126,12 @@ export default function ContentLifecycleManagementArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content lifecycle architecture spans lifecycle service, retention policy engine, archival system, and deletion service. Lifecycle service manages state transitions and workflows. Retention policy engine evaluates and enforces retention rules. Archival system handles storage tiering and archive management. Deletion service manages soft delete, hard delete, and secure deletion. Each component has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/lifecycle-stages.svg"
@@ -132,9 +142,9 @@ export default function ContentLifecycleManagementArticle() {
         />
 
         <h3>Lifecycle Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Lifecycle service orchestrates content through lifecycle stages. State management tracks current state for each content item. Transition validation ensures only valid transitions occur (can&apos;t go from deleted to published). Workflow execution triggers appropriate actions at each transition (publish → index, notify). Event publishing notifies other systems of lifecycle changes (content published event, content archived event). Lifecycle service is the central coordinator for content lifecycle.
-        </p>
+        </HighlightBlock>
         <p>
           Lifecycle API provides programmatic access to lifecycle operations. State transitions (transition content from draft to review). Bulk operations (archive multiple content items). Status queries (get current state, transition history). Webhook subscriptions (notify external systems of lifecycle events). API enables integration with external systems and automation.
         </p>
@@ -174,14 +184,17 @@ export default function ContentLifecycleManagementArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content lifecycle design involves trade-offs between retention and cost, accessibility and archival savings, and automation and human oversight. Understanding these trade-offs enables informed decisions aligned with compliance requirements and business priorities.
-        </p>
+        </HighlightBlock>
 
         <h3>Retention: Long vs. Short</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Long retention (keep content indefinitely or for many years). Pros: Historical record preserved (content available for reference), legal compliance (meet retention requirements), user expectation (content they created still available). Cons: High storage costs (accumulating content over years), compliance risk (may retain content that should be deleted), discovery burden (more content to search through). Best for: Legal requirements, historical archives, user-generated content platforms.
-        </p>
+        </HighlightBlock>
         <p>
           Short retention (delete content after brief period). Pros: Low storage costs (content doesn&apos;t accumulate), reduced compliance risk (less data to protect), focused content (only current/relevant content). Cons: Historical loss (content unavailable for reference), user frustration (content disappears), potential legal issues (may delete content that should be retained). Best for: Temporary content, ephemeral platforms, cost-sensitive deployments.
         </p>
@@ -222,13 +235,16 @@ export default function ContentLifecycleManagementArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Define clear lifecycle stages:</strong> Document each stage (draft, review, published, archived, deleted). Define valid transitions. Implement state machine for enforcement.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement retention policies:</strong> Legal requirements (7 years for financial). Business rules (indefinite for user content). User preferences (auto-delete after X time).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Automate lifecycle transitions:</strong> Event triggers (publish → index). Scheduled jobs (nightly archival). Conditional logic (if temporary, delete after 30 days).
           </li>
@@ -258,13 +274,16 @@ export default function ContentLifecycleManagementArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No retention policies:</strong> Content retained indefinitely, compliance violations. <strong>Solution:</strong> Define retention by content type, automate enforcement.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Hard delete without soft delete:</strong> Accidental deletions unrecoverable. <strong>Solution:</strong> Always soft delete first, recovery window, then hard delete.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No dependency handling:</strong> Deleted content leaves orphaned references. <strong>Solution:</strong> Cascade delete, prevent deletion, or reassign dependencies.
           </li>
@@ -294,16 +313,19 @@ export default function ContentLifecycleManagementArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Enterprise Document Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Enterprise manages documents through lifecycle. Draft (authors collaborate, version control). Review (legal, compliance approval). Published (live in document repository, searchable). Maintenance (periodic review, updates). Archival (after 2 years inactive, moved to cold storage). Deletion (after 7 years, unless under legal hold). Legal hold preserves documents relevant to litigation. Automated workflows route documents through stages. Compliance reporting tracks document lifecycle for audits.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Social Media Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social platform manages user-generated content lifecycle. Creation (user posts content). Moderation (automated + human review). Published (visible to followers/public). Maintenance (user can edit/delete). Archival (inactive accounts after 5 years). Deletion (user deletes, account closure, policy violations). GDPR right to erasure (user can request deletion). Soft delete (30-day recovery window). Automated deletion for policy violations. Legal hold for content under investigation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">E-commerce Product Listings</h3>
         <p>
@@ -323,12 +345,15 @@ export default function ContentLifecycleManagementArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design retention policies that balance legal requirements with user privacy?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design retention policies that balance legal requirements with user privacy?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Implement tiered retention based on content type and jurisdiction. Legal minimums (financial: 7 years, medical: 6 years) take precedence. User content (indefinite until user deletes, respecting GDPR right to erasure). Temporary content (30-90 days auto-delete). Legal hold overrides all automatic deletion. The key insight: legal requirements are mandatory, user privacy is a right—design policies that satisfy both with clear exceptions for legal holds and user deletion requests.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

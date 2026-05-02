@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function DraftSavingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Draft Saving</strong> automatically preserves work-in-progress content to prevent
           data loss from browser crashes, network issues, or accidental navigation. It provides
           peace of mind enabling users to work across sessions without fear of losing progress.
           Draft saving is critical for user experience — without it, users lose work from browser
           crashes, accidental tab closes, or network failures leading to frustration and
           abandonment.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/draft-saving-flow.svg"
@@ -48,7 +52,7 @@ export default function DraftSavingArticle() {
           caption="Draft Saving Flow — showing auto-save triggers, local storage, server sync, conflict resolution, and draft recovery"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing draft saving requires deep understanding
           of auto-save strategies including time-based saving every 30-60 seconds, event-based
           saving on blur or content change, debounced saving after user stops typing, and adaptive
@@ -61,7 +65,7 @@ export default function DraftSavingArticle() {
           tracks draft versions enabling recovery of previous states. Offline support enables
           editing without connection with automatic sync when restored. The implementation must
           balance data safety with performance and user experience.
-        </p>
+        </HighlightBlock>
 
         <p>
           Modern draft saving has evolved from simple localStorage to sophisticated sync systems
@@ -76,13 +80,16 @@ export default function DraftSavingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Draft saving is built on fundamental concepts that determine how work-in-progress is
           preserved, synced, and recovered. Understanding these concepts is essential for designing
           effective draft saving systems.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Auto-Save Strategies:</strong> Time-based saving triggers at fixed intervals
           typically 30-60 seconds providing predictable save behavior but potentially saving
           unchanged content. Event-based saving triggers on specific events like blur when user
@@ -92,7 +99,7 @@ export default function DraftSavingArticle() {
           work. Adaptive intervals adjust based on user activity saving more frequently during
           active editing and less frequently during pauses optimizing server load while maintaining
           data safety.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Local Storage:</strong> IndexedDB provides large storage capacity (typically
@@ -125,11 +132,14 @@ export default function DraftSavingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Draft saving architecture separates auto-save triggers, local storage, server sync, and
           conflict resolution enabling modular implementation with clear boundaries. This
           architecture is critical for reliability, performance, and offline support.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/draft-saving-flow.svg"
@@ -137,7 +147,7 @@ export default function DraftSavingArticle() {
           caption="Draft Saving Flow — showing auto-save triggers, local storage, server sync, conflict resolution, and draft recovery"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Draft saving flow begins with user editing content. Auto-save trigger detects save
           condition through timer interval, debounce timeout, or event detection. Before save,
           system checks if content has changed comparing with last saved version skipping save if
@@ -150,7 +160,7 @@ export default function DraftSavingArticle() {
           conflict. User notification shows save status (Saved, Saving, Offline — saved locally)
           providing reassurance. Recovery interface enables user to restore previous versions from
           version history.
-        </p>
+        </HighlightBlock>
 
         <p>
           Auto-save architecture includes trigger detection monitoring timer intervals, debounce
@@ -180,13 +190,16 @@ export default function DraftSavingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing draft saving involves trade-offs between data safety, performance, server load,
           and user experience. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Time-based versus event-based auto-save presents frequency versus relevance trade-offs.
           Time-based saving triggers at fixed intervals like every 30 seconds providing predictable
           save behavior and simple implementation but potentially saving unchanged content wasting
@@ -196,7 +209,7 @@ export default function DraftSavingArticle() {
           saves if user doesn't trigger event like browser crash before blur. The recommendation is
           hybrid approach with time-based saving every 30 seconds as safety net plus event-based
           saving on blur and beforeunload for immediate persistence on meaningful actions.
-        </p>
+        </HighlightBlock>
 
         <p>
           LocalStorage versus IndexedDB presents simplicity versus capacity trade-offs.
@@ -223,19 +236,22 @@ export default function DraftSavingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing draft saving requires following established best practices to ensure data
           safety, performance, and user experience.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Auto-save configuration balances frequency with server load. Use hybrid approach with
           time-based saving every 30 seconds as safety net plus event-based saving on blur and
           beforeunload for immediate persistence. Implement debounced saving waiting 1-2 seconds
           after typing stops reducing save frequency during active editing. Skip save if content
           unchanged comparing hash with last saved version. Show save status indicator (Saved,
           Saving, Offline — saved locally) reassuring users their work is safe.
-        </p>
+        </HighlightBlock>
 
         <p>
           Local storage provides immediate persistence and offline support. Use IndexedDB for large
@@ -273,17 +289,20 @@ export default function DraftSavingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing draft saving to ensure data safety,
           performance, and user experience.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           No auto-save leaves users vulnerable to data loss from browser crashes or accidental
           navigation. Fix by implementing auto-save with hybrid approach (time-based every 30
           seconds plus event-based on blur and beforeunload). Show save status indicator reassuring
           users their work is safe.
-        </p>
+        </HighlightBlock>
 
         <p>
           Saving only to server without local backup risks data loss during network failures. Fix
@@ -343,13 +362,16 @@ export default function DraftSavingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Draft saving is critical for content creation workflows. Here are real-world
           implementations from production systems demonstrating different approaches to draft saving
           challenges.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Docs draft saving addresses real-time collaboration with continuous saving. The
           solution saves every keystroke with real-time sync to server, maintains version history
           accessible through File → Version history showing all versions with timestamp and author,
@@ -358,7 +380,7 @@ export default function DraftSavingArticle() {
           and shows save status (All changes saved in Drive) reassuring users. The result is
           seamless draft saving with no manual save required, comprehensive version history, and
           offline support.
-        </p>
+        </HighlightBlock>
 
         <p>
           Medium draft saving addresses long-form writing with periodic saving and recovery. The
@@ -399,14 +421,17 @@ export default function DraftSavingArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of draft saving design, implementation, and operational
           concerns for staff and principal engineer interviews.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you implement auto-save?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you implement auto-save?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Use hybrid approach with time-based saving every 30 seconds (setInterval) as
               safety net plus event-based saving on blur and beforeunload for immediate

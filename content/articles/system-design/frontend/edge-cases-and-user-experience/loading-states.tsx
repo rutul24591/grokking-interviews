@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function LoadingStatesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Loading states</strong> are the visual and interactive
           representations an application displays while asynchronous operations
           are in progress — data fetching from APIs, file uploads, complex
@@ -46,8 +50,8 @@ export default function LoadingStatesArticle() {
           designed loading states reduce perceived wait times, maintain user
           confidence, and prevent error-inducing behaviors like double-clicking
           submit buttons or navigating away during critical operations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The psychology of waiting is central to loading state design. Research
           consistently shows that perceived performance matters more than actual
           performance — a two-second load that shows progressive content feels
@@ -58,7 +62,7 @@ export default function LoadingStatesArticle() {
           abandonment (a detailed progress indicator with an estimated time
           remaining is essential). Between these thresholds, the choice of
           loading pattern dramatically affects user perception.
-        </p>
+        </HighlightBlock>
         <p>
           At the staff and principal engineer level, loading states are an
           architectural concern, not merely a UI pattern. The loading state
@@ -91,8 +95,11 @@ export default function LoadingStatesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Spinner/Indeterminate Indicator:</strong> The simplest
             loading pattern — a rotating icon or animation indicating that
             processing is in progress without specifying progress or duration.
@@ -101,8 +108,8 @@ export default function LoadingStatesArticle() {
             positioned contextually: inline spinners for button submissions,
             section-level spinners for panel loading, and page-level spinners
             (used sparingly) for full navigation transitions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Skeleton Screen:</strong> A placeholder UI that mimics the
             shape and layout of the content that will eventually load, typically
             using gray rectangles and circles where text, images, and avatars
@@ -111,7 +118,7 @@ export default function LoadingStatesArticle() {
             user&apos;s spatial expectations and eliminating the jarring
             transition from empty to full content. They are most effective for
             content-rich pages with predictable layouts.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Progress Bar/Determinate Indicator:</strong> A visual
             element that communicates specific progress toward completion —
@@ -176,18 +183,21 @@ export default function LoadingStatesArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Loading state architecture spans data fetching integration, component
           hierarchy design, and transition orchestration. The following diagrams
           illustrate the key patterns.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/edge-cases-and-user-experience/loading-states-diagram-1.svg"
           alt="Loading state hierarchy showing page-level, section-level, component-level, and inline loading indicators with their appropriate use cases"
           caption="Figure 1: Loading state hierarchy — how different loading indicator levels align with component scope and user impact."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The loading state hierarchy determines which level of the component
           tree owns the loading indicator for each data dependency. Page-level
           loading indicators (navigation progress bars, full-page overlays) are
@@ -201,7 +211,7 @@ export default function LoadingStatesArticle() {
           hierarchy ensures that loading feedback is proportionate to the scope
           of the operation — a single card reloading should not trigger a
           page-level loading state.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/edge-cases-and-user-experience/loading-states-diagram-2.svg"
@@ -246,6 +256,9 @@ export default function LoadingStatesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr>
@@ -255,7 +268,7 @@ export default function LoadingStatesArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2">Spinner</td>
               <td className="border border-theme p-2">
                 Simple to implement, universally understood, minimal layout impact, works for any content shape.
@@ -263,8 +276,8 @@ export default function LoadingStatesArticle() {
               <td className="border border-theme p-2">
                 Provides no progress information, does not reduce perceived wait time, can feel stale after two to three seconds, draws attention to the wait.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2">Skeleton screen</td>
               <td className="border border-theme p-2">
                 Reduces perceived load time, establishes layout structure, prevents content shift when data arrives, feels responsive and modern.
@@ -272,7 +285,7 @@ export default function LoadingStatesArticle() {
               <td className="border border-theme p-2">
                 Requires per-component skeleton design, must match actual content layout, complex for dynamic content shapes, adds maintenance overhead.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="border border-theme p-2">Progress bar</td>
               <td className="border border-theme p-2">
@@ -306,15 +319,18 @@ export default function LoadingStatesArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Match loading indicator scope to operation scope:</strong>{" "}
             Use the loading state hierarchy to select the appropriate indicator level. A single data source reloading should show a component-level indicator, not a full-page spinner. Navigation between routes should show a page-level progress bar, not a blank screen. Misaligned scope creates unnecessarily disruptive loading experiences.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use skeleton screens for content-rich, predictable layouts:</strong>{" "}
             Skeleton screens are most effective when the loaded content has a consistent, predictable shape — feeds, card grids, article pages. For content with unpredictable shape or size, a simpler indicator (shimmer bar, inline spinner) may be more appropriate than a skeleton that does not match the eventual content.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Delay loading indicators for fast operations:</strong>{" "}
             Operations that typically complete within 200 to 300 milliseconds should not show a loading indicator at all — the indicator would flash and disappear, creating visual noise. Implement a delay (typically 200 milliseconds) before showing loading indicators, so fast operations complete without any visible loading state.
@@ -340,15 +356,18 @@ export default function LoadingStatesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Showing full-page spinners for partial data fetches:</strong>{" "}
             Blocking the entire page with a spinner because one component is loading prevents users from interacting with already-available content. Use component-level loading indicators so the rest of the page remains interactive while individual sections load.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Flash of loading state for fast operations:</strong>{" "}
             Showing and immediately hiding a loading indicator for operations that complete in under 200 milliseconds creates distracting visual flicker. Add a minimum delay before showing indicators and a minimum display duration (at least 300 milliseconds once shown) to prevent the flash.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Skeleton screens that do not match loaded content:</strong>{" "}
             Skeleton shapes that differ significantly from the actual content layout create a confusing transition — the user&apos;s spatial expectations from the skeleton do not match the loaded content. Maintain skeleton components alongside their data-driven counterparts and update skeletons when the content layout changes.
@@ -370,12 +389,15 @@ export default function LoadingStatesArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Facebook&apos;s skeleton loading approach:</strong> Facebook pioneered the widespread use of skeleton screens in their News Feed. The feed shows gray placeholder blocks that match the shape of posts (header with avatar, text lines, image area) while content loads. This approach reduced perceived load time significantly and has since become an industry standard. Facebook&apos;s implementation coordinates skeleton display with their data preloading strategy — the skeleton appears only for content not already available in the client cache.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>YouTube&apos;s progressive content loading:</strong> YouTube loads the video player and metadata first, followed by recommendations, comments, and supplementary content in subsequent render passes. Each section has its own loading state — the video player shows a centered spinner, recommendations show card skeletons, and comments show text line skeletons. This progressive approach ensures users can start watching immediately while the rest of the page populates.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Slack&apos;s message loading strategy:</strong> Slack uses a combination of loading patterns: skeleton screens for channel switching, stale-while-revalidate for returning to previously viewed channels, and optimistic updates for message sending. The typing indicator serves as a pre-loading signal that prepares users for incoming content. This multi-pattern approach ensures that each interaction type receives the most appropriate loading treatment.
         </p>
@@ -386,12 +408,15 @@ export default function LoadingStatesArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: When should you use a skeleton screen versus a spinner?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: When should you use a skeleton screen versus a spinner?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use skeleton screens for content-rich areas with predictable layouts — feeds, card grids, profiles, article pages — where the loaded content shape is known in advance. Skeletons reduce perceived load time by establishing layout structure. Use spinners for short operations (under three seconds) where the content shape is unpredictable, for inline actions (button submissions), and for situations where designing a matching skeleton is impractical. A general guideline: if the content takes more than one second to load and has a consistent shape, use a skeleton. If it is under one second or has an unpredictable shape, use a spinner or no indicator at all.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you prevent layout shifts during loading?</p>

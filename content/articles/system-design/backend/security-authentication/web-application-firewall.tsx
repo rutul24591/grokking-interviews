@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,21 +28,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>WAF (Web Application Firewall)</strong> is a security control that inspects HTTP requests and
           blocks malicious traffic before it reaches the application — it protects web applications from common
           attacks (SQL injection, XSS, file inclusion, path traversal, malicious bots). WAF sits between the
           client and the application server, inspecting every HTTP request and comparing it against a set of
           security rules. If a request matches a rule (indicating a potential attack), the WAF blocks the request
           and returns a 403 Forbidden response.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           WAF is a supplementary security control — it does not replace secure coding practices, input
           validation, or parameterized queries. WAF protects against known attack patterns, but it cannot protect
           against novel attacks (zero-days, business logic vulnerabilities, complex attack chains). WAF is most
           effective when used in conjunction with secure coding practices — it provides a safety net for
           vulnerabilities that were not caught during development.
-        </p>
+        </HighlightBlock>
         <p>
           The evolution of WAF has been shaped by the need for accuracy and performance — early WAFs used simple
           pattern matching (blocking requests containing specific keywords like &quot;SELECT&quot;, &quot;DROP&quot;, &quot;&lt;script&gt;&quot;),
@@ -74,21 +78,24 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           OWASP Core Rule Set (CRS) is the most widely used WAF rule set — it is a comprehensive set of rules
           that detect common web attacks (SQL injection, XSS, file inclusion, path traversal, remote code
           execution). CRS is maintained by the OWASP community and is updated regularly to detect new attack
           patterns. CRS rules are organized by attack type — Rule 941 detects XSS attacks, Rule 942 detects SQL
           injection attacks, Rule 930 detects file inclusion attacks, and so on.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Custom rules are application-specific rules that complement the OWASP CRS — they detect attacks that
           are specific to the application&apos;s business logic, API structure, or user behavior. Custom rules include
           blocking specific user agents (known scraping bots, malicious crawlers), geo-blocking (blocking traffic
           from countries where the service is not offered), and API-specific rules (blocking requests without
           required headers, invalid API keys). Custom rules are essential for protecting against attacks that the
           OWASP CRS does not detect.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/web-application-firewall-diagram-1.svg"
           alt="WAF architecture showing how WAF sits between clients and application servers to filter malicious requests"
@@ -135,20 +142,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The WAF architecture consists of the rule engine (which evaluates requests against WAF rules), the
           rule set (OWASP CRS + custom rules), the logging system (which logs all requests, allowed and blocked),
           and the management console (which provides visibility into WAF activity and allows rule configuration).
           The rule engine is the core component — it inspects every HTTP request, evaluates it against the rule
           set, and returns an allow/block decision.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The WAF request flow begins with the client sending an HTTP request to the WAF. The WAF inspects the
           request (headers, body, query parameters, cookies) against the rule set. If the request matches a
           rule (indicating a potential attack), the WAF blocks the request and returns a 403 Forbidden response.
           If the request does not match any rule, the WAF allows the request and forwards it to the application
           server. The WAF logs all requests (allowed and blocked) for audit and monitoring purposes.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/web-application-firewall-diagram-3.svg"
           alt="Defense-in-depth showing WAF as one layer among network, application, data, and monitoring security controls"
@@ -176,7 +186,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cloud-based WAF versus self-hosted WAF is a trade-off between management overhead and control.
           Cloud-based WAF (Cloudflare, AWS WAF, Azure WAF) is managed by the provider — rules are updated
           automatically, infrastructure is scaled automatically, and DDoS protection is included. However,
@@ -186,15 +199,15 @@ export default function ArticlePage() {
           management overhead — rule updates, infrastructure scaling, and DDoS protection must be managed
           manually. The recommended approach is cloud-based WAF for most applications, with self-hosted WAF for
           high-security applications that require full control.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           WAF versus application-level input validation is a trade-off between supplementary and primary defense.
           WAF is a supplementary defense — it blocks known attack patterns but cannot protect against novel
           attacks (zero-days, business logic vulnerabilities). Application-level input validation is the primary
           defense — it validates all input against expected patterns, preventing injection attacks at the source.
           The recommended approach is both — application-level input validation as the primary defense, with WAF
           as a supplementary defense.
-        </p>
+        </HighlightBlock>
         <p>
           Blocking mode versus monitor mode is a trade-off between protection and false positives. Blocking mode
           blocks violations — it provides maximum protection but may block legitimate requests (false positives).
@@ -219,18 +232,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Start in monitor mode — deploy the WAF in monitor mode (logging violations without blocking) and
           monitor the logs for false positives (legitimate requests being blocked). Add rule exclusions for false
           positives, and switch to blocking mode after tuning. Starting in blocking mode without tuning is a
           common pitfall — it may block legitimate requests and disrupt the application.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use the OWASP Core Rule Set (CRS) — it is the most comprehensive and widely used WAF rule set,
           maintained by the OWASP community and updated regularly. CRS detects all common web attack patterns
           (SQLi, XSS, file inclusion, path traversal) and is compatible with all major WAF platforms. CRS should
           be the foundation of the WAF rule set, with custom rules added for application-specific attacks.
-        </p>
+        </HighlightBlock>
         <p>
           Add custom rules for application-specific attacks — OWASP CRS does not detect business logic abuse,
           API-specific vulnerabilities, or user behavior anomalies. Custom rules detect these attacks — block
@@ -262,18 +278,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Switching to blocking mode without tuning is a common WAF pitfall — the WAF may block legitimate
           requests (false positives), disrupting the application. The fix is to start in monitor mode, monitor
           the logs for false positives, add rule exclusions for false positives, and then switch to blocking
           mode after tuning.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not reviewing rule exclusions is a common operational pitfall — rule exclusions may inadvertently
           allow malicious requests (e.g., a rule exclusion for /api/webhook may allow file inclusion attacks on
           that endpoint). The fix is to review rule exclusions regularly (quarterly) and remove exclusions that
           are no longer necessary. Rule exclusions should be documented and approved by the security team.
-        </p>
+        </HighlightBlock>
         <p>
           Relying solely on WAF for security is a common pitfall — WAF blocks known attack patterns but does
           not protect against novel attacks (zero-days, business logic vulnerabilities, complex attack chains).
@@ -302,7 +321,10 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses AWS WAF for its public-facing web application — the WAF is configured
           with OWASP CRS, custom rules (blocking known scraping bots, geo-blocking traffic from unauthorized
           countries), rate limiting (100 requests per minute per IP), and bot management (challenging suspicious
@@ -310,15 +332,15 @@ export default function ArticlePage() {
           mode. The platform monitors WAF logs and alerts on anomalous patterns (sudden spike in blocked
           requests, new attack patterns). The platform achieves PCI-DSS compliance in part due to its WAF
           controls.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses Cloudflare WAF for its banking application — the WAF is configured
           with OWASP CRS, custom rules (blocking requests without required headers, invalid API keys), rate
           limiting (50 requests per minute per user), and bot management (challenging suspicious bots). The WAF
           is deployed in blocking mode after initial tuning in monitor mode. The company monitors WAF logs and
           alerts on anomalous patterns (SQL injection attempts, XSS attempts, credential stuffing attempts). The
           company achieves SOC 2 compliance in part due to its WAF controls.
-        </p>
+        </HighlightBlock>
         <p>
           A healthcare organization uses ModSecurity (self-hosted WAF) for its patient portal — the WAF is
           configured with OWASP CRS, custom rules (blocking requests with unauthorized API keys, geo-blocking
@@ -342,14 +364,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the OWASP Core Rule Set, and how does it protect web applications?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               OWASP CRS is a comprehensive set of WAF rules that detect common web attacks — SQL injection (Rule 942), XSS (Rule 941), file inclusion (Rule 930), path traversal (Rule 930), remote code execution (Rule 932), and many others. CRS is maintained by the OWASP community and is updated regularly to detect new attack patterns.
-            </p>
+            </HighlightBlock>
             <p>
               CRS protects web applications by inspecting every HTTP request and comparing it against the rule set. If a request matches a rule (indicating a potential attack), the WAF blocks the request and returns a 403 Forbidden response. CRS is the foundation of most WAF rule sets — it provides comprehensive protection against common web attacks.
             </p>

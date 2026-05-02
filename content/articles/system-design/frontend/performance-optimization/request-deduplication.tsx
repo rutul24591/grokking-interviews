@@ -453,12 +453,12 @@ export default function RequestDeduplicationArticle() {
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: What is request deduplication and why is it important?</p>
-            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
+            <p className="mt-2 text-sm">
               A: Request deduplication eliminates redundant API calls when multiple components or users request
               the same data simultaneously. It is important because duplicate requests waste bandwidth, increase
               server load, cause race conditions, and degrade user experience. Deduplication ensures only one
               request is made for identical data, with results shared across all callers.
-            </HighlightBlock>
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -514,22 +514,26 @@ export default function RequestDeduplicationArticle() {
 
       <section>
         <h2>References and Further Reading</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: be clear about the boundary between deduplication (in-flight request sharing) and caching
+          (reusing completed results), and how you handle invalidation, retries, and cross-tab behavior safely.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://tanstack.com/query/latest/docs/react/overview" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               React Query Documentation
             </a> - Comprehensive guide to React Query features including deduplication and caching.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://swr.vercel.app/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               SWR Documentation
             </a> - React Hooks library for data fetching with built-in deduplication.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.apollographql.com/docs/react/data/queries/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Apollo Client - Queries
             </a> - GraphQL client with built-in request deduplication.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://web.dev/http-cache/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev - HTTP Cache

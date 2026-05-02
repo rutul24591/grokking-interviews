@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ProfileVisibilityArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Profile Visibility controls enable users to manage who can see their profile and profile information. Users can set their profile to public (anyone can see), private (only approved connections can see), or limited visibility (specific audiences can see specific information). Profile visibility is fundamental to user privacy and safety—users need control over their digital identity, personal information exposure, and who can find and contact them. For platforms with user profiles (social networks, professional networks, dating apps, marketplaces), effective visibility controls are essential for user trust, safety, and regulatory compliance (GDPR, CCPA privacy rights).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, profile visibility architecture involves visibility levels (public, private, connections-only, custom), profile section visibility (different visibility for different profile sections), audience selection (who can see profile), profile discovery controls (search visibility, recommendations), privacy-preserving profile viewing (view without revealing viewer identity), and enforcement (visibility checks at profile access). The implementation must balance user privacy (control over exposure) with platform goals (discoverability, connections, engagement). Poor visibility controls lead to privacy violations, unwanted contact, safety risks, and user trust erosion.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of profile visibility extends beyond simple public/private toggle. Granular visibility (different sections have different visibility—profile photo public, email private). Connection-based visibility (visibility depends on relationship—connections see more than non-connections). Context-aware visibility (visibility changes based on context—viewing from search vs. direct link). Discovery controls (profile may be visible but not discoverable in search). Viewer anonymity (view profiles without revealing identity). For staff engineers, profile visibility is a privacy infrastructure decision affecting user safety, trust, and regulatory compliance.
         </p>
@@ -46,13 +50,16 @@ export default function ProfileVisibilityArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Visibility Levels</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Public visibility allows anyone to see profile. Search engines can index profile. Anyone with link can view. Profile appears in public directories. Maximum discoverability (easy to find and connect). Benefits include networking (easy for others to find you), professional presence (public professional profile). Drawbacks include privacy exposure (personal information public), unwanted contact (anyone can reach out), safety risks (stalkers, harassers can find you).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Private visibility restricts profile to approved connections only. Profile not visible to non-connections. Search engines cannot index. Profile doesn&apos;t appear in public directories. Maximum privacy (only approved people see profile). Benefits include privacy protection (control who sees information), safety (unwanted people can&apos;t find you), reduced spam (only connections can contact). Drawbacks include reduced discoverability (harder for legitimate connections to find you), networking limitations (can&apos;t be found by opportunities).
-        </p>
+        </HighlightBlock>
         <p>
           Connections-only visibility allows connections to see profile. Friends/followers can see full profile. Non-connections see limited or no profile. Balance between public and private (some discoverability with privacy). Benefits include controlled exposure (connections see you, strangers don&apos;t), networking within network (connections can still find you). Drawbacks includes connection barrier (must connect before seeing profile).
         </p>
@@ -107,9 +114,12 @@ export default function ProfileVisibilityArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Profile visibility architecture spans visibility settings, access control, discovery service, and enforcement layer. Visibility settings store user visibility preferences. Access control evaluates visibility at access time. Discovery service manages search and recommendation visibility. Enforcement layer ensures visibility is respected across all access paths. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/profile-visibility/visibility-architecture.svg"
@@ -120,9 +130,9 @@ export default function ProfileVisibilityArticle() {
         />
 
         <h3>Visibility Settings Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Visibility settings service stores and manages visibility preferences. Profile-level settings (overall profile visibility). Section-level settings (per-section visibility). Discovery settings (search, recommendations). Settings persistence (store in database). Settings API (get/set visibility settings). Settings service is the source of truth for visibility preferences.
-        </p>
+        </HighlightBlock>
         <p>
           Visibility inheritance manages default and override behavior. Default visibility (profile-level default for all sections). Section overrides (sections can override default). Inheritance resolution (determine effective visibility for each section). Inheritance simplifies settings (set once) while allowing flexibility (override when needed).
         </p>
@@ -162,14 +172,17 @@ export default function ProfileVisibilityArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Profile visibility design involves trade-offs between privacy and discoverability, simplicity and granularity, and transparency and anonymity. Understanding these trade-offs enables informed decisions aligned with platform values and user needs.
-        </p>
+        </HighlightBlock>
 
         <h3>Visibility: Public vs. Private Default</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Public default (profiles are public by default). Pros: Maximum discoverability (easy to find and connect), network growth (more connections), platform engagement (more profile views). Cons: Privacy risk (users may not realize public), unwanted contact (strangers can reach out), safety concerns (stalkers, harassers). Best for: Professional networks, public figures, platforms prioritizing growth.
-        </p>
+        </HighlightBlock>
         <p>
           Private default (profiles are private by default). Pros: Privacy protection (users start private), safety (control who sees profile), user trust (privacy-first approach). Cons: Reduced discoverability (harder to find), network growth friction (must approve connections), lower engagement. Best for: Safety-focused platforms, dating apps, platforms with sensitive user data.
         </p>
@@ -210,13 +223,16 @@ export default function ProfileVisibilityArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide clear visibility levels:</strong> Public, private, connections-only. Clear descriptions of each level. Visual indicators of current visibility.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Support granular section visibility:</strong> Per-section visibility controls. Section inheritance from profile. Override when needed.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Enable discovery controls:</strong> Search visibility toggle. Recommendation opt-out. Activity visibility controls.
           </li>
@@ -246,13 +262,16 @@ export default function ProfileVisibilityArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Public by default without notice:</strong> Users don&apos;t realize profile is public. <strong>Solution:</strong> Clear notice during setup, guided visibility choices.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Inconsistent enforcement:</strong> Visibility works in UI but not API. <strong>Solution:</strong> Enforce at API level, test all access paths.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Caching leaks private content:</strong> Cached content visible to unauthorized users. <strong>Solution:</strong> Visibility-aware caching, private content not cached.
           </li>
@@ -282,16 +301,19 @@ export default function ProfileVisibilityArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>LinkedIn Profile Visibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           LinkedIn provides professional profile visibility controls. Public profile (customizable public URL, select what&apos;s visible). Connection visibility (connections see full profile, non-connections see limited). Search visibility (control appearing in search results). Activity visibility (control who sees when you view profiles). Premium features (see who viewed your profile). Professional networking balance (discoverable for opportunities, privacy for sensitive info).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Facebook Profile Visibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook provides granular profile visibility. Profile sections (each section has independent visibility). Friend lists (different visibility for different friend lists). Public posts vs. friends-only posts. Search visibility (control search engine indexing). Timeline review (approve tags before appearing). Social networking focus (share with friends, control public exposure).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Dating App Profile Visibility</h3>
         <p>
@@ -311,12 +333,15 @@ export default function ProfileVisibilityArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design profile visibility that balances privacy with discoverability?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design profile visibility that balances privacy with discoverability?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement tiered visibility with informed defaults that match platform purpose and user expectations. Public default for professional networks like LinkedIn (with clear notice: &quot;Your profile is visible to anyone on the internet&quot;) because discoverability is the goal. Private default for safety-focused platforms like dating apps or support communities because user safety is paramount. Granular section visibility: basic info (name, avatar) public for recognition, contact info (email, phone) private by default, work history visible to connections for networking. Discovery controls separate from visibility: user can be visible (profile exists) but not discoverable (doesn&apos;t appear in search). Preview feature: show users exactly what their profile looks like to strangers, connections, and public—&quot;This is what strangers see&quot; with actual rendered preview. The key insight: privacy and discoverability aren&apos;t binary opposites—provide granular controls so users can balance both based on their specific needs, career stage, and comfort level.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

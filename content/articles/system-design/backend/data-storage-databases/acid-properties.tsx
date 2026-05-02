@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -75,24 +76,27 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: The Four Pillars of ACID</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Atomicity: All or Nothing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Atomicity guarantees that a transaction is treated as a single, indivisible unit of work.
           Either all operations within the transaction are applied to the database, or none of them
           are. There is no partial completion visible to other transactions. This property is
           fundamental because it allows developers to reason about complex multi-step operations as
           if they were single operations.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Consider an e-commerce order placement: inventory must be decremented, an order record
           created, a payment charged, and a shipping label generated. Without atomicity, a crash
           after charging payment but before creating the order record would leave the system in an
           inconsistent state where the customer paid but has no order. Atomicity ensures that if
           any step fails, all completed steps are rolled back, leaving the database as if the
           transaction never started.
-        </p>
+        </HighlightBlock>
 
         <p>
           Databases implement atomicity through write-ahead logging (WAL) or undo logs. Before
@@ -192,23 +196,26 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Write-Ahead Logging: The Foundation of Atomicity and Durability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Write-ahead logging (WAL) is the mechanism that makes ACID possible. The fundamental rule
           is simple: before modifying any data page, write a log record describing the change. Before
           acknowledging a commit, ensure all log records for that transaction are durably persisted.
           This ordering guarantee enables both atomicity (undo uncommitted changes) and durability
           (redo committed changes after crash).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           A WAL record contains the transaction ID, operation type (insert/update/delete), affected
           table and row, before-image (for undo), and after-image (for redo). Log records are written
           sequentially to a circular buffer, which is flushed to disk on commit. Because sequential
           writes are orders of magnitude faster than random page writes, WAL adds minimal overhead
           while providing maximum safety.
-        </p>
+        </HighlightBlock>
 
         <p>
           Checkpointing is the process of writing dirty pages from the buffer pool to data files.
@@ -272,22 +279,25 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: ACID vs BASE</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           ACID transactions provide strong guarantees but come with performance costs, especially in
           distributed systems. The CAP theorem proves that during network partitions, you must choose
           between consistency (ACID) and availability (BASE). Understanding this trade-off is critical
           for designing systems that meet business requirements without over-engineering.
-        </p>
+        </HighlightBlock>
 
         <h3>Performance Costs of ACID</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each ACID property has a performance implication. Atomicity requires WAL writes and fsync
           calls, adding 5-10ms per commit. Consistency checks (constraint validation) add CPU overhead
           proportional to constraint complexity. Isolation through locking reduces concurrency; through
           MVCC increases storage and cleanup overhead. Durability requires synchronous disk writes,
           the single largest latency component.
-        </p>
+        </HighlightBlock>
 
         <p>
           High-throughput systems often relax ACID properties selectively. Group commits batch
@@ -338,20 +348,23 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for ACID Transactions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Keep transactions short.</strong> Long-running transactions hold locks longer,
           reducing concurrency and increasing deadlock risk. Move non-essential operations (sending
           emails, calling external APIs) outside the transaction. Use asynchronous processing for
           work that doesn't need immediate consistency.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Choose the right isolation level.</strong> Start with your database's default
           (usually Read Committed or Repeatable Read). Only upgrade to Serializable if you can
           demonstrate a specific anomaly causing data corruption. Most applications work correctly
           with Read Committed if business logic handles race conditions appropriately.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Design for retries.</strong> Deadlocks and serialization failures are normal in
@@ -384,21 +397,24 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Implicit transactions in ORMs.</strong> Many ORMs wrap each operation in a
           transaction by default, but complex multi-step workflows may span multiple implicit
           transactions, losing atomicity. Always use explicit transaction boundaries for operations
           that must be atomic. In Hibernate, use <code className="inline-code">@Transactional</code>.
           In SQLAlchemy, use <code className="inline-code">with engine.begin()</code>.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>N+1 queries within transactions.</strong> Fetching related data in a loop within a
           transaction extends its duration unnecessarily. Use eager loading or batch queries to
           minimize time in transaction. A transaction that runs 100 queries in a loop is a deadlock
           waiting to happen.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Ignoring isolation level implications.</strong> Developers often assume Repeatable
@@ -432,22 +448,25 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Payment Processing (Stripe, PayPal)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Payment systems are the canonical ACID use case. A payment involves debiting the customer,
           crediting the merchant, recording the transaction, and updating balances. Any partial
           completion is unacceptable—losing money is bad for business. Stripe uses ACID transactions
           within their ledger service, with careful idempotency handling to ensure retries don't
           double-charge.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The isolation level choice is critical here. Read Committed is insufficient because
           concurrent payments could read the same balance and both approve, causing overdrafts.
           Repeatable Read or explicit locking (SELECT FOR UPDATE) ensures the balance check and
           update are atomic.
-        </p>
+        </HighlightBlock>
 
         <h3>Inventory Management (Amazon, Shopify)</h3>
         <p>
@@ -496,14 +515,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: Your payment system is seeing occasional double-charges during peak traffic. The
               code checks balance, then charges. What's the root cause and how do you fix it?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> This is a classic race condition caused by insufficient
               isolation. Two concurrent requests both read the same balance (say $100), both pass
               the balance check, and both charge $100—resulting in a $200 charge against a $100
@@ -513,7 +535,7 @@ export default function ArticlePage() {
               <code className="inline-code">SELECT FOR UPDATE</code> to lock the row during the
               check, ensuring only one transaction proceeds at a time. A third approach is
               optimistic locking with a version column, retrying on conflict.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What if adding locking causes unacceptable latency?
               Answer: Pre-authorize amounts, use idempotent charges with unique tokens, or

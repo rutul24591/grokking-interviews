@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -88,9 +89,12 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Gateway Responsibilities</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Request Routing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most fundamental responsibility of an API Gateway is routing incoming requests to the
           appropriate downstream service. This involves parsing the request path, method, headers,
           and query parameters, then determining which backend service should handle the request.
@@ -98,16 +102,16 @@ export default function ArticlePage() {
           (<code className="inline-code">/api/products/**</code> → Product Service), header-based
           rules (<code className="inline-code">X-Api-Version: v2</code> → Product Service v2), or
           content-based routing (inspect request body to determine destination).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Modern API Gateways support dynamic routing, where route configurations are loaded from a
           service registry or control plane rather than static configuration files. This allows the
           gateway to adapt to service scaling, deployment changes, and version rollouts without
           requiring gateway restarts or configuration reloads. Dynamic routing is essential in
           environments where services are deployed independently and frequently, as it eliminates
           the coupling between gateway configuration and service deployment.
-        </p>
+        </HighlightBlock>
 
         <h3>Authentication and Authorization</h3>
         <p>
@@ -199,25 +203,28 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Monolithic Gateway</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The simplest API Gateway architecture is a single monolithic gateway instance (or cluster
           of identical instances) that handles all routing, authentication, rate limiting,
           transformation, and aggregation for every client type. This approach is easy to deploy
           and manage: there is one codebase, one configuration, and one operational surface.
           However, it creates a single point of failure and a deployment bottleneck—any change to
           the gateway affects all clients simultaneously.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Monolithic gateways work well for organizations with a small number of services and
           client types, or where the gateway responsibilities are relatively uniform across clients.
           As the number of services and client types grows, the monolithic gateway becomes
           increasingly complex: route configurations grow, rate limit policies diverge, and
           transformation logic becomes client-specific. At this point, organizations typically
           transition to the BFF pattern.
-        </p>
+        </HighlightBlock>
 
         <h3>BFF (Backend for Frontend)</h3>
         <p>
@@ -289,8 +296,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The API Gateway pattern introduces a fundamental trade-off: it reduces client complexity
           at the cost of gateway complexity. Without a gateway, each client manages its own
           authentication, rate limiting, retry logic, and service discovery. This distributes
@@ -298,10 +308,10 @@ export default function ArticlePage() {
           With a gateway, complexity is centralized in one component that all clients depend on.
           This provides consistency and reduces client-side code but creates a critical
           infrastructure component that must be highly available and performant.
-        </p>
+        </HighlightBlock>
 
         <h3>Gateway vs Direct Client-to-Service Communication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Direct client-to-service communication eliminates the gateway as a dependency but
           requires each client to implement service discovery, load balancing, authentication,
           rate limiting, retry logic, and circuit breaking. For a system with ten microservices
@@ -309,7 +319,7 @@ export default function ArticlePage() {
           implementations of these cross-cutting concerns. Any change to authentication protocols
           or rate limit policies requires updating all thirty implementations. The gateway
           consolidates these into a single implementation that all clients benefit from.
-        </p>
+        </HighlightBlock>
 
         <h3>Monolithic Gateway vs BFF Pattern</h3>
         <p>
@@ -338,17 +348,20 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for API Gateway Design</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Keep the gateway thin.</strong> The gateway should handle cross-cutting concerns
           (routing, authentication, rate limiting) but should not contain business logic. Business
           logic belongs in the downstream services that own the relevant domain. A thin gateway is
           easier to reason about, test, and deploy. If the gateway starts implementing business
           rules (calculating discounts, validating order totals, applying business-specific
           transformations), it has become a distributed monolith and should be refactored.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Design for failure.</strong> The gateway is in the critical path for every
           client request. If the gateway fails, all clients lose access to all services. Design
           the gateway with high availability (multiple instances across availability zones),
@@ -356,7 +369,7 @@ export default function ArticlePage() {
           and circuit breaking (stop forwarding requests to failing services to prevent cascading
           failures). Implement health checks and automated failover so that gateway instances
           can be replaced without client impact.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Implement distributed tracing at the gateway.</strong> The gateway is the
@@ -390,8 +403,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Gateway as a bottleneck.</strong> When all traffic flows through a single gateway
           instance, it becomes a performance bottleneck and a single point of failure. The fix is
           to deploy multiple gateway instances behind a load balancer, implement connection pooling
@@ -399,9 +415,9 @@ export default function ArticlePage() {
           (logging, metrics collection). Monitor gateway CPU utilization, connection count, and
           request queue depth to detect bottleneck conditions before they cause client-facing
           failures.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Tight coupling between gateway and services.</strong> When the gateway knows too
           much about internal service details (specific endpoints, data formats, error codes),
           changes to services require gateway changes, creating a deployment dependency. The fix
@@ -409,7 +425,7 @@ export default function ArticlePage() {
           well-defined internal API that the gateway calls, and services maintain backward
           compatibility when evolving their internal APIs. Use feature flags and canary routing
           to decouple gateway deployments from service deployments.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Configuration drift.</strong> As route configurations, rate limit policies,
@@ -447,9 +463,12 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Netflix: Zuul API Gateway</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix uses Zuul as its API Gateway, handling billions of requests per day across
           hundreds of microservices. Zuul implements dynamic routing, where route configurations
           are loaded from a service registry and updated in real time without gateway restarts.
@@ -459,10 +478,10 @@ export default function ArticlePage() {
           cellular networks. Zuul also implements request hedging (sending duplicate requests
           to multiple backend instances and using the fastest response) and circuit breaking
           (stopping requests to failing services) to maintain high availability.
-        </p>
+        </HighlightBlock>
 
         <h3>Spotify: BFF Per Client Type</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Spotify implements the BFF pattern with separate gateways for its web player, desktop
           app, mobile app, and third-party API. Each BFF is owned by the team that owns the
           corresponding client, allowing independent deployment and client-specific optimization.
@@ -471,7 +490,7 @@ export default function ArticlePage() {
           BFF exposes granular endpoints for interactive features like collaborative playlists
           and real-time lyrics. The third-party API BFF enforces strict rate limits and exposes
           a stable public contract that external developers depend on.
-        </p>
+        </HighlightBlock>
 
         <h3>Amazon: API Gateway for AWS Services</h3>
         <p>
@@ -490,11 +509,14 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg bg-panel-soft p-6">
-            <p className="font-semibold">Q1: What is the API Gateway pattern, and when should you use it?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q1: What is the API Gateway pattern, and when should you use it?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> The API Gateway pattern provides a single entry point for
               all client requests in a microservices architecture. It handles cross-cutting
               concerns such as routing, authentication, rate limiting, request transformation,
@@ -503,7 +525,7 @@ export default function ArticlePage() {
               from the internal service topology, enforce consistent security and rate limiting
               policies, and reduce client-side complexity by aggregating multiple service calls
               into a single gateway call.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg bg-panel-soft p-6">

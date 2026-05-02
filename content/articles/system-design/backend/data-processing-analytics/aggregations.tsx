@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,22 +25,25 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Aggregations</strong> transform raw events into summaries: counts per route, revenue per day, unique
           users per region, p95 latency per endpoint. They are the most common computation in data-intensive systems,
           appearing in real-time dashboards, billing pipelines, experimentation platforms, anomaly detection systems, and
           operational alerting. Aggregations look deceptively simple — a SQL GROUP BY or a reduce function — but become
           deeply complex in distributed systems because results must be combined across partitions, data skew must be
           managed, and correctness must be defined under late data, retries, and system failures.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental challenge is that distributed systems process data in parallel across many workers, each
           handling a subset of the total dataset. The results from these workers must be combined into a single correct
           answer. If the aggregation function supports associative merging — meaning merge(a, merge(b, c)) equals
           merge(merge(a, b), c) — the combination is straightforward and efficient. If it does not, the system must use
           more expensive strategies such as full data shuffles, approximate sketches, or multi-stage pipelines that
           increase latency, cost, and operational complexity.
-        </p>
+        </HighlightBlock>
         <p>
           The key mental model for staff and principal engineers is that aggregation design is a decomposition problem.
           You must decompose the desired result into partial aggregates that can be computed independently on each
@@ -78,22 +82,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Distributed aggregations are easiest and cheapest when partial results can be computed independently and then
           merged. This property is called associativity. Sums and counts are fully associative: the sum of partial sums
           equals the total sum, and the count of partial counts equals the total count. This means you can compute a
           partial sum on each partition, ship only the partial results (not the raw data) to a merge stage, and combine
           them to produce the correct final answer. This is why SUM and COUNT are considered cheap aggregations in
           distributed systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Averages are slightly more complex because they are not directly mergeable. You cannot merge two averages by
           averaging them — that produces an incorrect result unless the underlying counts are equal. Instead, averages
           must be decomposed into two associative aggregates: sum and count. The partial sums and partial counts are
           shipped to the merge stage, and the final average is computed as total sum divided by total count. This
           decomposition is a common pattern: when a direct aggregation is not associative, look for a decomposable
           representation that is.
-        </p>
+        </HighlightBlock>
         <p>
           Minimum and maximum are associative but require careful handling of empty partitions and null values. The merge
           function for min is the minimum of partial mins, and the merge function for max is the maximum of partial
@@ -141,21 +148,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The aggregation pipeline architecture follows a consistent pattern regardless of whether the execution engine
           is batch, streaming, or incremental. The first stage is data ingestion, where events are read from source
           systems such as message queues, log streams, or database change feeds. Each event is assigned to a partition
           based on a partitioning key, which determines which worker will process it. The choice of partitioning key is
           critical because it determines the distribution of work across workers and the potential for skew.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The second stage is partial aggregation, where each worker processes its assigned partition and computes
           intermediate aggregate results. For associative aggregations, the partial result is a compact representation
           of the aggregate state: a running sum and count for averages, a HyperLogLog sketch for distinct counts, or a
           t-digest for percentiles. For non-associative aggregations, the partial result may be larger — for example, a
           sorted list of values for exact percentile computation — and the cost of shipping this partial to the merge
           stage becomes the bottleneck.
-        </p>
+        </HighlightBlock>
         <p>
           The third stage is the shuffle, where partial results are redistributed to merge workers based on the group-by
           key. The shuffle is the most expensive phase in terms of network I/O because it moves data across the network
@@ -212,15 +222,18 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice between exact and approximate aggregation is the most consequential trade-off in aggregation system
           design. Exact aggregation guarantees correct results but can be prohibitively expensive for high-cardinality
           group-by operations or for aggregations that are not associative. Approximate aggregation provides results with
           known, bounded error at a fraction of the cost, but requires consumers to understand and accept the error
           bounds. The right choice depends on the use case, the audience, and the downstream decisions that depend on
           the aggregation results.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For billing and financial reporting, exact aggregation is usually mandatory because even small errors can have
           contractual implications. In this context, the cost of exact aggregation is justified, and the system is
           designed to minimize that cost through combiners, partitioning strategies, and batch processing with sufficient
@@ -230,7 +243,7 @@ export default function ArticlePage() {
           nineteen point seven percent. For experimentation and A/B testing, the required precision depends on the
           effect size being measured: if the expected effect is large, approximate aggregation with a two percent error
           bound is adequate; if the expected effect is small, tighter error bounds are needed.
-        </p>
+        </HighlightBlock>
         <p>
           Batch versus streaming aggregation represents another fundamental trade-off. Batch aggregation processes all
           available data at once, producing results that are complete and accurate but delayed by the batch window —
@@ -264,20 +277,23 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Prefer decomposable aggregations with associative merge functions. When designing an aggregation, first check
           whether the desired result can be expressed as a combination of associative partial aggregates. If it can,
           compute the partials close to the data and merge them at the final stage, minimizing shuffle volume. If it
           cannot, look for a decomposable representation — for example, decompose average into sum and count, or use an
           approximate algorithm with a mergeable sketch representation such as HyperLogLog for distinct counts.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use combiners to reduce network shuffle. Whenever the aggregation function supports it, run a combiner after
           the partial aggregation stage to pre-merge results within each partition before shipping them to the merge
           stage. This can reduce shuffle volume by orders of magnitude for high-cardinality group-by operations, because
           the combiner collapses multiple records with the same key into a single partial aggregate before network
           transmission.
-        </p>
+        </HighlightBlock>
         <p>
           Design for skew detection and mitigation from the start. Monitor the top keys by volume, state size, and
           processing time in every aggregation pipeline. When a single key dominates the distribution, apply salting to
@@ -312,7 +328,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Hot keys causing long tail runtimes and missed SLAs is the most common aggregation performance failure. A
           single key — a large enterprise tenant, a popular product SKU, a frequently accessed API endpoint — can
           dominate the data volume for a group-by operation, forcing one worker to process the vast majority of records
@@ -320,8 +339,8 @@ export default function ArticlePage() {
           until the hot-key worker finishes, and the hot-key worker may run out of memory or spill to disk, further
           degrading performance. Detection requires monitoring the top keys by volume and processing time per worker,
           and mitigation requires salting or dedicated pipeline isolation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Late data arriving after window closure leads to undercounting or excessive corrections is the most common
           streaming aggregation correctness failure. When events arrive after the watermark has advanced past the window
           boundary, the aggregation system must decide whether to drop the event, update the already-emitted result, or
@@ -329,7 +348,7 @@ export default function ArticlePage() {
           consumers to handle corrections, and accumulating separately adds complexity to the serving layer. The pitfall
           occurs when the late-data policy is not defined explicitly, leading to inconsistent behavior across pipeline
           stages and confusion about why numbers change after initial emission.
-        </p>
+        </HighlightBlock>
         <p>
           Duplicates inflating counts when idempotency is missing is a correctness failure that is particularly insidious
           because the inflated numbers often look plausible. When a pipeline is retried after a failure, or when a
@@ -360,7 +379,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses aggregations to power its real-time revenue dashboard, showing revenue per
           region, per product category, and per customer segment with a latency target of under thirty seconds from
           event to dashboard. The pipeline uses event-time tumbling windows with a five-minute window size and a
@@ -371,8 +393,8 @@ export default function ArticlePage() {
           shows provisional results that are marked as such until the watermark passes, at which point the results are
           certified as final. A nightly batch reconciliation compares the streaming results against a batch pipeline
           processing the same events, and alerts on any mismatch exceeding a defined threshold.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A social media platform uses aggregations to power its experimentation system, running hundreds of A/B tests
           simultaneously and computing metrics such as engagement rate, session duration, and feature adoption rate for
           each experiment. The aggregation pipeline processes billions of events per day and must support high-cardinality
@@ -383,7 +405,7 @@ export default function ArticlePage() {
           matter, the pipeline switches to exact aggregation with increased resource allocation. The system includes
           automated cardinality budgeting that caps the number of unique experiment IDs processed concurrently, routing
           overflow experiments into a batch pipeline that processes them separately.
-        </p>
+        </HighlightBlock>
         <p>
           A financial services company uses aggregations for fraud detection, computing rolling counts of transactions
           per account, per merchant, and per geographic location over sliding time windows of one minute, five minutes,
@@ -408,24 +430,27 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: Why do associative merges matter for distributed aggregations?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Associative merges are the foundation of efficient distributed aggregation because they enable the
             partial-then-merge pattern. When an aggregation function is associative, each worker can compute a partial
             result independently on its assigned partition, and these partials can be merged in any order to produce the
             correct final result. This means the system can minimize network shuffle — the most expensive phase of
             distributed aggregation — by shipping only compact partial results instead of raw data.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Without associativity, the system must either perform a full data shuffle, moving all raw records to a
             single merge point, or use approximate algorithms with mergeable sketches. Full shuffle is prohibitively
             expensive at scale because it moves orders of magnitude more data across the network. Approximate algorithms
             are efficient but introduce error bounds that may not be acceptable for all use cases.
-          </p>
+          </HighlightBlock>
           <p>
             The practical implication is that aggregation design starts with a question: is the desired result
             associative? If yes, use partial-then-merge. If no, look for a decomposable representation that is

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function LoginAttemptTrackingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Login Attempt Tracking</strong> is the practice of recording all authentication
           attempts (successful and failed) for security monitoring, fraud detection, and account
           protection. It enables detection of brute force attacks (many failures on one account),
           credential stuffing (failures across many accounts from same IP), and unauthorized access
           attempts (success after many failures). Without login tracking, you can't detect attacks
           or protect user accounts.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/login-attempt-tracking.svg"
@@ -48,14 +52,14 @@ export default function LoginAttemptTrackingArticle() {
           caption="Login Attempt Tracking — showing Redis-based rate limiting, attempt logging, threat detection, and alerting flow"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing login attempt tracking requires deep
           understanding of tracking data (what to record), storage strategies (Redis for recent,
           database for history), rate limiting (per IP, per account), fraud detection (brute force,
           credential stuffing, anomaly detection), and security monitoring (real-time alerting,
           automated response). The implementation must balance security monitoring with privacy and
           performance.
-        </p>
+        </HighlightBlock>
         <p>
           Modern login tracking has evolved from simple failure counters to sophisticated threat
           detection systems with machine learning anomaly detection, real-time alerting, and
@@ -67,18 +71,21 @@ export default function LoginAttemptTrackingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Login attempt tracking is built on fundamental concepts that determine how attempts are
           recorded, analyzed, and acted upon. Understanding these concepts is essential for
           designing effective tracking systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Tracking Data:</strong> Timestamp (when attempt occurred — ISO 8601 format),
           identifier (email/username attempted — for account-based tracking), outcome (success or
           failure reason — invalid password, account locked, MFA failed), context (IP address, user
           agent, device fingerprint — for threat analysis), location (geolocation from IP — city,
           country for anomaly detection).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Storage Strategy:</strong> Redis for recent attempts (sub-1ms lookup, TTL-based
           expiry — 24 hours), database for history (durable storage, complex queries — 90 days
@@ -102,11 +109,14 @@ export default function LoginAttemptTrackingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Login tracking architecture separates attempt recording from analysis, enabling fast
           authentication with comprehensive security monitoring. This architecture is critical for
           detecting attacks without impacting legitimate users.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/login-threat-detection.svg"
@@ -114,14 +124,14 @@ export default function LoginAttemptTrackingArticle() {
           caption="Login Threat Detection — showing risk signals (IP reputation, location, device), scoring engine, and adaptive responses (MFA, block, alert)"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tracking flow: User attempts login. Auth service validates credentials. Backend records
           attempt (timestamp, identifier, outcome, IP, user agent, device fingerprint) — write to
           Redis (for rate limiting) and database (for history). Check rate limits (per IP, per
           account). If exceeded: trigger CAPTCHA or temporary lockout. Analyze for threats (brute
           force, credential stuffing, anomaly). If threat detected: trigger response (block IP,
           lock account, alert user, require MFA).
-        </p>
+        </HighlightBlock>
         <p>
           Threat detection architecture includes: risk signals (IP reputation, location, device,
           time of day), scoring engine (calculate risk score 0-100), adaptive responses (low risk:
@@ -146,22 +156,25 @@ export default function LoginAttemptTrackingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing login tracking involves trade-offs between security, privacy, and performance.
           Understanding these trade-offs is essential for making informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Redis vs Database for Tracking</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Redis:</strong> Sub-1ms lookup, TTL-based expiry, perfect for rate limiting.
               Limitation: volatile (data loss on restart), limited query capabilities.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Database:</strong> Durable storage, complex queries, historical analysis.
               Limitation: slower (5-50ms), requires cleanup job for old data.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Hybrid — Redis for rate limiting (fast), database
               for history (durable). Write to both synchronously or async to database.
@@ -209,18 +222,21 @@ export default function LoginAttemptTrackingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing login tracking requires following established best practices to ensure
           security, privacy, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Data Collection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Record all attempts (success and failure) — needed for threat analysis. Include
           timestamp, identifier, outcome, IP, user agent, device fingerprint. Mask sensitive data
           (IP address — show 192.168.x.x in logs, not full IP). Comply with privacy regulations
           (GDPR — minimize personal data, retention limits).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Rate Limiting</h3>
         <p>
@@ -250,21 +266,24 @@ export default function LoginAttemptTrackingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing login tracking to ensure effective security
           monitoring without impacting legitimate users.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Only tracking failures:</strong> Can't detect account takeover (success after
             failures). <strong>Fix:</strong> Track all attempts (success and failure). Analyze
             patterns.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No rate limiting:</strong> Brute force attacks succeed. <strong>Fix:</strong>
             Per IP (10/min) and per account (5/hour) rate limiting. Exponential backoff. CAPTCHA
             trigger.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Storing full IP addresses:</strong> Privacy violation, GDPR risk.{" "}
             <strong>Fix:</strong> Mask IP in logs (192.168.x.x). Store full IP encrypted if needed
@@ -306,16 +325,19 @@ export default function LoginAttemptTrackingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Login attempt tracking is critical for account security. Here are real-world
           implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer Platform (Google)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Billions of login attempts daily. Sophisticated attacks
           (credential stuffing, brute force). Need to protect users without friction.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Redis-based rate limiting. Machine learning anomaly detection.
           Real-time threat scoring. Adaptive response (low risk: allow, medium: MFA, high: block).
@@ -408,14 +430,17 @@ export default function LoginAttemptTrackingArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of login tracking design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What data do you track for login attempts?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What data do you track for login attempts?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Timestamp (ISO 8601), identifier (email/username), outcome (success/failure
               reason), IP address (masked for privacy), user agent, device fingerprint, location

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -78,22 +79,25 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Schema-on-Read &amp; Medallion Architecture</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Schema-on-Read vs Schema-on-Write</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Schema-on-write</strong> (data warehouses) requires defining schema before
           loading data. Data is validated, transformed, and cleaned during ETL. Benefits: high
           data quality, consistent schema, optimized for queries. Trade-offs: slow ingestion,
           inflexible (schema changes require ETL updates), data loss (non-conforming data
           rejected).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Schema-on-read</strong> (data lakes) stores data as-is, applies schema when
           reading. Benefits: fast ingestion (no transformation), flexible (store any data),
           no data loss (raw data preserved). Trade-offs: data quality varies, consumers must
           understand data, query performance depends on data organization.
-        </p>
+        </HighlightBlock>
 
         <p>
           Schema-on-read enables storing data before knowing how it will be used. Data
@@ -148,19 +152,22 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Governance &amp; Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Data Governance Framework</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Without governance, data lakes become "data swamps"—unusable data graveyards.
           Governance frameworks ensure data is discoverable, secure, and trustworthy.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Data catalog</strong> provides metadata management: what data exists, where
           it is, who owns it, how to access it. Catalogs enable data discovery (search datasets),
           lineage (trace data flow), and documentation (business context). Examples: AWS
           Glue Data Catalog, Azure Purview, Amundsen, DataHub.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Access control</strong> ensures only authorized users access data. Use
@@ -209,18 +216,21 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Data Lake vs Data Warehouse</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Data lakes and data warehouses serve different purposes. Understanding the trade-offs
           helps you choose the right architecture—or combine both in a lakehouse pattern.
-        </p>
+        </HighlightBlock>
 
         <h3>Data Lake Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Flexibility</strong> is the primary advantage. Store any data type (structured,
           semi-structured, unstructured) without upfront schema. This enables storing data
           before knowing how it will be used—essential for ML and exploration.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Cost</strong> is far lower than data warehouses. Object storage costs
@@ -290,18 +300,21 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Data Lakes</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Implement medallion architecture.</strong> Organize data into bronze/silver/gold
           layers. This provides structure without sacrificing flexibility. Document what each
           layer contains and quality expectations.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use open table formats.</strong> Delta Lake, Iceberg, or Hudi provide ACID
           transactions, schema evolution, and time travel. These features are essential for
           production data lakes.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Optimize file formats.</strong> Use columnar formats (Parquet, ORC) for
@@ -331,18 +344,21 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Data swamp.</strong> Dumping data without governance creates unusable
           swamps. Solution: Implement medallion architecture, data catalog, access control,
           and quality monitoring from day one.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>No ownership.</strong> Data without owners becomes stale and unreliable.
           Solution: Assign data owners per dataset. Owners are responsible for quality,
           documentation, and access.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Poor file organization.</strong> Many small files cause performance issues
@@ -372,20 +388,23 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Machine Learning Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           ML platforms use data lakes for training data storage. Raw data (bronze) is ingested
           from multiple sources. Feature engineering transforms raw data into features (silver).
           Feature tables (gold) are used for model training. The same lake serves exploration
           (raw data), feature engineering (silver), and training (gold).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This pattern works because ML needs diverse data (multiple sources), large scale
           (terabytes of training data), and flexibility (schema evolves as features are
           discovered).
-        </p>
+        </HighlightBlock>
 
         <h3>Enterprise Analytics</h3>
         <p>
@@ -433,14 +452,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: When would you choose a data lake over a data warehouse? Give a concrete
               example.
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Choose data lakes for diverse data types, massive scale,
               and schema flexibility. Example: ML platform needing training data from multiple
               sources (databases, logs, IoT, files). Data warehouse requires schema design and
@@ -449,7 +471,7 @@ export default function ArticlePage() {
               train on curated datasets. Choose lake for: ML, exploration, diverse data,
               cost-effective scale. Choose warehouse for: BI, reporting, consistent schemas,
               business users.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What about query performance? Answer: Lakes have
               lower query performance than warehouses. Optimize with columnar formats

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,12 +38,15 @@ export default function AbTestingServiceArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>A/B testing service</strong> (also known as an experimentation platform) is a system that runs controlled, randomized experiments by assigning users to variants (control and one or more treatments), recording what each user actually experienced, and computing whether observed differences in outcomes are statistically significant. The fundamental goal is causal inference: determining whether a change caused a measurable improvement in a target metric, without being misled by seasonality, selection bias, confounding variables, or instrumentation gaps. A/B testing is the primary mechanism by which product teams validate hypotheses with real users before committing to permanent changes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, designing an A/B testing service is one of the most challenging infrastructure problems because it sits at the intersection of distributed systems, statistics, and product analytics. The technical difficulty is not randomization in isolation — hashing a user ID into a bucket is trivial. The difficulty lies in building a reliable, end-to-end pipeline from deterministic assignment through exposure logging through metric computation through statistical analysis, while handling retries, caching layers, partial failures, identity resolution, privacy constraints, and experiment interference at scale. If any link in that pipeline breaks or produces inconsistent data, the experiment can look decisive while being fundamentally wrong, leading to shipping bad changes or discarding good ones.
-        </p>
+        </HighlightBlock>
         <p>
           A/B testing services involve several technical considerations. Deterministic assignment (consistent bucketing of users into variants using a hash function over a stable identifier and experiment key, ensuring that the same user always sees the same variant throughout the experiment). Exposure logging (recording what the user actually rendered, not just what the system intended — caches, rendering failures, and conditional logic can cause intended and actual experiences to diverge). Statistical analysis (frequentist hypothesis testing with p-values and confidence intervals, or Bayesian inference with posterior distributions — each with different trade-offs in sample size requirements, peeking tolerance, and interpretability). Guardrail systems (automated monitoring of error rates, latency, revenue impact, and system load that trigger automatic rollback when an experiment causes harmful regressions). Experiment interference management (mutually exclusive layers and global holdout groups to prevent overlapping experiments from contaminating each other&apos;s results).
         </p>
@@ -54,14 +58,17 @@ export default function AbTestingServiceArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Deterministic Assignment and Stable Bucketing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Deterministic assignment is the foundation of experiment integrity. Each user must be assigned to exactly one variant for the duration of the experiment, and that assignment must be reproducible — the same user, given the same experiment configuration, must always receive the same variant regardless of which server, data center, or client handles the request. The standard approach is to compute a hash of the user identifier concatenated with the experiment key (for example, SHA-256 of `user_id:experiment_key`), take the first 8 bytes of the hash output, interpret them as an integer, and map that integer modulo 100 to a bucket number between 0 and 99. Bucket ranges are then mapped to variants (for example, buckets 0-49 map to control, 50-99 map to treatment for a 50/50 split). Because the hash function is deterministic, the same user always lands in the same bucket, ensuring stable assignment.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice of user identifier is critical and involves trade-offs. User IDs provide cross-device stability (the same user on mobile and desktop receives the same variant) but are only available after sign-in. Device IDs support anonymous experimentation for unauthenticated users but can be reset (browser clearing, app reinstall), causing the user to receive a different variant mid-experiment. Production A/B systems typically support multiple identity tiers with an explicit fallback order: user ID if available, then device ID, then session ID. When identity changes (an anonymous user signs in), the system must reconcile the assignment — either honoring the pre-sign-in bucket or re-bucketing based on the new identifier, and logging the transition for analysis.
-        </p>
+        </HighlightBlock>
 
         <h3>Assignment Versus Exposure</h3>
         <p>
@@ -104,9 +111,12 @@ export default function AbTestingServiceArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The A/B testing service architecture consists of five major components: the assignment service (deterministic bucketing with eligibility filtering), the event ingestion pipeline (receiving, deduplicating, and validating exposure events), the metrics computation engine (joining exposure events with outcome events and computing statistical measures), the guardrail monitoring system (tracking system-health metrics and triggering alerts), and the results dashboard (presenting statistical significance, effect sizes, confidence intervals, and guardrail status to experiment owners). The flow begins with a client application requesting an assignment for a specific experiment and user. The assignment service computes the deterministic bucket, applies eligibility filters (region, device class, subscription tier), and returns the variant. The client renders the variant and logs an exposure event to the ingestion pipeline. The ingestion pipeline deduplicates events, validates them against the experiment configuration, and enqueues them for processing. The metrics computation engine periodically joins exposure events with outcome events (conversions, clicks, purchases) and computes the primary metric, secondary metrics, and guardrail metrics for each variant. Statistical tests are applied to determine significance, and results are displayed in the dashboard.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/system-components-services/ab-testing-architecture.svg"
@@ -116,9 +126,9 @@ export default function AbTestingServiceArticle() {
           height={550}
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The assignment service is designed for low latency and high availability because it is on the critical path of every user request that participates in an experiment. It caches experiment configurations locally (with a short TTL to pick up configuration changes quickly) and performs the hash computation in-process (no network calls). The cache is invalidated when experiment configurations change (new experiment started, existing experiment stopped, variant percentages adjusted). Eligibility filters are evaluated against the user&apos;s context (region, device, subscription tier) and must be consistent across all clients and servers — inconsistent filtering is the most common cause of sample ratio mismatch.
-        </p>
+        </HighlightBlock>
         <p>
           The event ingestion pipeline is designed for high throughput and bounded loss. Exposure events arrive from millions of clients simultaneously, and the pipeline must process them without becoming a bottleneck. Events are batched on the client side (multiple exposure events sent in a single HTTP request), transmitted over a reliable transport (HTTPS with retry logic), and received by the ingestion service, which validates each event (correct experiment ID, valid variant ID, non-null user identifier, timestamp within acceptable range), deduplicates based on a composite key (user ID + experiment ID), and enqueues validated events for downstream processing. The system defines a loss budget (maximum acceptable event loss rate, typically 0.1%) and monitors actual loss against this budget. If ingestion falls behind, backpressure is applied to clients (they reduce event frequency or buffer locally) rather than silently dropping events.
         </p>
@@ -161,14 +171,17 @@ export default function AbTestingServiceArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A/B testing service design involves trade-offs between statistical rigor and speed of decision, assignment stability and flexibility, centralized control and team autonomy, and frequentist and Bayesian analysis methods. Understanding these trade-offs is essential for designing experimentation platforms that match your organization&apos;s velocity, risk tolerance, and analytical maturity.
-        </p>
+        </HighlightBlock>
 
         <h3>Frequentist Versus Bayesian Analysis</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Frequentist Analysis:</strong> Computes a p-value representing the probability of the observed result under the null hypothesis (no difference). Requires a fixed sample size determined by power analysis before the experiment begins. Decision rule: reject null if p &lt; 0.05. Advantages: simple to implement, widely understood by non-technical stakeholders, well-established statistical theory, easy to compute. Limitations: peeking at results before the target sample size inflates false positive rates (the sequential testing problem), requires accurate estimates of baseline conversion rates for power analysis, p-values are commonly misinterpreted (a p-value of 0.05 does not mean there is a 5% chance the null is true). Best for: organizations with mature statistical practices, experiments where the cost of a false positive is high.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Bayesian Analysis:</strong> Computes a posterior distribution over the treatment effect by combining a prior distribution with observed data. Decision rule: ship if the probability that the treatment is better than control exceeds a threshold (e.g., 95%). Advantages: naturally handles sequential data (results can be checked at any time without inflating false positive rates), produces intuitive outputs (&quot;95% probability the treatment is better&quot;), allows incorporation of prior knowledge. Limitations: requires specifying a prior (which introduces subjectivity — a poorly chosen prior can bias results), computationally more expensive (requires numerical integration or MCMC sampling), results are sensitive to prior specification. Best for: organizations running many small experiments, teams that need to make decisions before reaching a fixed sample size, platforms that support continuous monitoring dashboards.
         </p>
@@ -201,16 +214,19 @@ export default function AbTestingServiceArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Enforce Deterministic Assignment on Stable Identifiers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Assignment must be deterministic — the same user, given the same experiment configuration, must always receive the same variant. Use a cryptographic hash function (SHA-256) over a concatenation of the user identifier and experiment key, take the first 8 bytes, interpret as an integer, and map modulo 100 to a bucket number. The user identifier should follow a fallback chain: user ID if available, then device ID, then session ID. When identity changes (anonymous user signs in), the system must reconcile assignments by either honoring the pre-sign-in bucket or re-bucketing based on the new identifier and logging the transition. Never use random number generators for assignment (they produce different results on each call, violating stability).
-        </p>
+        </HighlightBlock>
 
         <h3>Log Exposure at the Point of Rendering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Exposure events must be logged where the experience is actually realized — in the client when the variant is rendered on screen, or on the server when the variant&apos;s code path is executed. Logging exposure on the server for a client-rendered feature is incorrect because the server may assign the treatment while the client fails to render it (JavaScript error, unsupported browser, network timeout). Each exposure event must be deduplicated (one event per user per experiment), validated against the experiment configuration (valid experiment ID, valid variant ID), and enriched with metadata (timestamp, user identifier, variant version, request context). Monitor exposure completeness by comparing exposure volumes across variants — a significant discrepancy indicates a logging bug.
-        </p>
+        </HighlightBlock>
 
         <h3>Define Guardrails Before Starting Experiments</h3>
         <p>
@@ -236,16 +252,19 @@ export default function AbTestingServiceArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Peeking at Results Before Target Sample Size</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common statistical mistake in A/B testing is checking results repeatedly during the experiment and stopping as soon as statistical significance is reached. This practice (called &quot;peeking&quot; or &quot;optional stopping&quot;) inflates the false positive rate dramatically — if you check results after every 100 users and stop when p &lt; 0.05, the actual false positive rate can exceed 30% instead of the nominal 5%. The mitigation is to pre-commit to a fixed sample size determined by power analysis and not check results until that sample size is reached, or to use Bayesian methods (which naturally handle sequential monitoring) or sequential frequentist methods (with alpha-spending functions that adjust the significance threshold for each interim look).
-        </p>
+        </HighlightBlock>
 
         <h3>Logging Assignment Instead of Exposure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Counting assigned users as exposed users is a critical measurement error that dilutes the treatment effect and produces misleadingly conservative results. When the system assigns a user to the treatment variant but the user never actually sees the treatment (due to caching, rendering failures, or feature flag gating), the user&apos;s outcome is attributed to the treatment even though they experienced the control. This causes the treatment&apos;s measured performance to be biased toward the control&apos;s, making real effects harder to detect. The mitigation is to log exposure events at the point of rendering and to analyze only users who were actually exposed to their assigned variant.
-        </p>
+        </HighlightBlock>
 
         <h3>Ignoring Experiment Interference</h3>
         <p>
@@ -271,16 +290,19 @@ export default function AbTestingServiceArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Checkout Optimization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms (Amazon, Shopify stores) use A/B testing to optimize checkout flows — testing different button placements, form field orders, payment method displays, and trust signal placements. Each experiment uses deterministic assignment based on user ID (for logged-in users) or session ID (for anonymous users), with exposure logged at the point the checkout page is actually rendered. Guardrail metrics include payment success rate, retry rate, chargeback indicators, and customer support tickets related to checkout issues. Experiments follow a progressive rollout (1% canary for 2 hours, 10% ramp for 2 days, 50% expand for 5 days) with automatic rollback if any guardrail metric degrades. Companies like Amazon run thousands of checkout experiments simultaneously, organized into mutually exclusive layers (UI changes, payment logic changes, pricing changes) with a global holdout measuring the cumulative impact of all checkout optimizations.
-        </p>
+        </HighlightBlock>
 
         <h3>Social Media Algorithm Changes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms (Facebook, Twitter, Instagram) use A/B testing to validate changes to their feed ranking algorithms — testing different ranking signals, weight adjustments, and content-type prioritizations. These experiments are particularly challenging because the treatment effect may not be visible immediately (users need time to generate engagement data for the algorithm to respond to) and because algorithm changes can cause large backend load shifts (different ranking logic may require different computational resources). Exposure is logged at the point the feed is actually rendered to the user, with deduplication across multiple feed loads. Guardrail metrics include feed load latency, API error rates, and infrastructure cost per user. Experiments run for extended periods (2-4 weeks) to capture weekly usage patterns and seasonal effects.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS Onboarding Flow Redesign</h3>
         <p>
@@ -296,15 +318,18 @@ export default function AbTestingServiceArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between assignment logging and exposure logging, and why does it matter?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Assignment logging records which variant the system intended the user to see (the result of the deterministic bucketing function). Exposure logging records which variant the user actually experienced (what was rendered on the screen or executed on the server). This distinction matters because caches, rendering failures, feature flag gating, and conditional logic can cause intended and actual experiences to diverge. If analysis counts assigned users as exposed users, it includes users who never actually saw the treatment in the treatment population, diluting the measured effect size and producing misleadingly conservative results. Exposure must be logged at the point of rendering with deduplication and completeness monitoring.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

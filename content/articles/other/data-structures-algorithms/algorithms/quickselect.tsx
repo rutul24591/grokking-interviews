@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,14 +25,17 @@ export default function QuickselectArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Quickselect</span> finds the k-th smallest element
           of an unsorted array in expected O(n) time. Hoare published it in 1961 alongside
           quicksort. The insight: to find a rank rather than sort everything, partition once
           around a pivot and recurse into only the side that contains the k-th element —
           discarding the other side without work.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Quickselect is the canonical selection algorithm. It's what{" "}
           <code className="px-1">std::nth_element</code>,
           <code className="px-1">np.partition</code>, and Rust's{" "}
@@ -39,7 +43,7 @@ export default function QuickselectArticle() {
           with Blum–Floyd–Pratt–Rivest–Tarjan's median-of-medians pivot (1973), it achieves
           worst-case O(n) — proving the k-th smallest can always be found in linear time
           regardless of input.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Interview traction is high because quickselect sits at the intersection of
           partitioning, divide-and-conquer, and randomized analysis. Staff rounds often ask
@@ -56,20 +60,23 @@ export default function QuickselectArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Partition</span> rearranges elements around a pivot
           so that all elements less than the pivot lie to its left and all greater lie to its
           right. After partition, the pivot is in its final sorted position; its rank is
           known. Lomuto partition is simpler (single scan, one swap per element); Hoare
           partition is faster (two-pointer, fewer swaps) but trickier to implement
           correctly.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">One-sided recursion</span> is the key difference
           from quicksort. If the pivot's final rank equals k, return it. If k is smaller,
           recurse into the left partition. Otherwise recurse into the right with adjusted k.
           Only one recursive call, not two — so total work telescopes.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Recurrence &amp; analysis.</span> With a pivot that
           splits the input in half on average, T(n) = T(n/2) + n = 2n = Θ(n). A bad pivot
@@ -113,21 +120,24 @@ export default function QuickselectArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Canonical in-place implementation</span> maintains
           two indices into a subarray [lo, hi] and a target rank k. Pick a pivot (random
           index in [lo, hi]), swap it to the end, walk left-to-right maintaining "less than
           pivot" segment, and finally swap the pivot into its rank position. Compare that
           rank to k and recurse into the appropriate side, adjusting lo/hi rather than
           allocating subarrays.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Three-way partition (Dutch national flag)</span>{" "}
           groups &lt;pivot, =pivot, &gt;pivot. On input with many duplicates, standard
           quickselect can degenerate because all duplicates cluster on one side; three-way
           handles this in one pass. Bentley–McIlroy's "Engineering a Sort Function" (1993)
           popularized the technique.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Iterative vs recursive</span>. Because only one
           branch recurses, quickselect trivially converts to a loop that updates lo/hi in
@@ -157,19 +167,22 @@ export default function QuickselectArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Quickselect vs sort-then-index.</span> Sort costs
           Θ(n log n); quickselect averages Θ(n). For a single k-th query on large n, select
           wins clearly. For many queries across the same array, sort once and then answer in
           O(1).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Quickselect vs min-heap of size k.</span> Build a
           min-heap of the first k elements; for each remaining, if greater than root, replace
           and sift. Result: top-k in Θ(n log k) time and Θ(k) space. Heap wins when data is
           streaming (can't re-scan), when you must preserve original order, or when k is
           small enough that log k ≪ log n.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Quickselect vs counting approaches.</span> When
           values are small integers, counting sort / bucket-based selection runs in O(n + V).
@@ -192,17 +205,20 @@ export default function QuickselectArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Randomize the pivot or shuffle the input.</span>{" "}
           Otherwise sorted input causes Θ(n²) worst-case. A single <code>std::shuffle</code>{" "}
           at the top of the algorithm suffices and moves the average case to the worst case
           with high probability.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Use three-way partitioning for duplicate-heavy
           data.</span> Logs of status codes, rounded latencies, or categorical data will
           produce many equal keys; Dutch-flag avoids pathological Θ(n²) on those inputs.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Iterate, don't recurse.</span> One-sided recursion
           → while loop. This avoids stack growth and makes the code cache-faster.
@@ -226,17 +242,20 @@ export default function QuickselectArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Off-by-one on rank.</span> k can be 0-indexed or
           1-indexed. Comparing pivot's rank to k in the wrong indexing returns the element
           adjacent to the true answer — a bug that passes most unit tests but fails at
           boundaries.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Forgetting to adjust k on right recursion.</span>{" "}
           When recursing into the right partition, you must subtract (pivotRank + 1 − lo) to
           convert the global rank into a local one. Missing this gives wildly wrong answers.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Non-random pivot on sorted input.</span> First or
           last element pivot on a sorted array → Θ(n²), easy to trigger in interviews and
@@ -266,19 +285,22 @@ export default function QuickselectArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Percentile / SLA monitoring.</span> Computing p50,
           p95, p99 of 10M latency samples per minute: <code>np.partition</code> runs in ~40ms
           vs sort's ~150ms. Datadog, New Relic, and internal observability services use
           quickselect variants under the hood.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Top-k queries when data fits in memory.</span>{" "}
           Leaderboards, search results ranking, and recommendation re-ranking often pipeline
           quickselect → sort-top-k. DuckDB's ORDER BY LIMIT uses quickselect for exact
           answers on data that fits; Postgres uses heap-based top-k because it doesn't
           materialize the array.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Median cut color quantization.</span> Reducing a
           24-bit image to a 256-color palette by recursively median-cutting the RGB cloud.
@@ -309,16 +331,19 @@ export default function QuickselectArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Find the k-th largest element."</span> Quickselect
           with comparator reversed, or quickselect for the (n−k)-th smallest. Average Θ(n),
           space O(1) iterative.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Why is quickselect O(n) average, not O(n log
           n)?"</span> Quicksort's recurrence T(n)=2T(n/2)+n has log n levels → n log n. But
           quickselect recurses into only one side: T(n)=T(n/2)+n telescopes to 2n.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">"Prove median-of-medians guarantees linear
           time."</span> Pivot beats ≥ 3 elements in ≥ ⌈n/10⌉ groups = 3n/10 elements, and is

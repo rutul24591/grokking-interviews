@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,20 +28,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition and Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Session management</strong> is the practice of maintaining authentication state across multiple
           HTTP requests from the same user. HTTP is stateless — each request is independent, and the server does not
           remember previous requests from the same user. Session management bridges this gap by associating a
           session identifier with the user&apos;s authentication state, allowing the server to recognize the user across
           requests without requiring re-authentication.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Sessions are the foundation of user experience in web applications — without sessions, users would need to
           re-enter their credentials on every page navigation, every API call, and every form submission. Sessions
           also enable the server to maintain user-specific state (preferences, shopping cart, form data) across
           requests. However, sessions are also a critical security concern — if a session is compromised, the
           attacker gains full access to the user&apos;s account for the duration of the session.
-        </p>
+        </HighlightBlock>
         <p>
           The evolution of session management has progressed from simple server-side sessions (session ID stored in
           a cookie, session data stored on the server) to distributed session stores (Redis, Memcached) for
@@ -80,20 +84,23 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The session ID is the key to session security — it must be unpredictable, unguessable, and unique. Session
           IDs should be generated using a cryptographically secure random number generator (CSPRNG) with at least
           128 bits of entropy. Session IDs should never be generated using predictable values (timestamps, user IDs,
           sequential numbers), as these can be guessed by an attacker to hijack sessions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Session storage is the mechanism by which the server stores session data. There are three primary patterns:
           server-side sessions (session data stored on the server&apos;s local filesystem or memory), distributed sessions
           (session data stored in a shared session store like Redis or Memcached), and token-based sessions (session
           data encoded in a JWT, with no server-side storage). Server-side sessions are simple but do not scale
           horizontally without sticky sessions. Distributed sessions scale horizontally but introduce a dependency
           on the session store. Token-based sessions are stateless but cannot be revoked until expiration.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/session-management-diagram-1.svg"
           alt="Session lifecycle showing creation, active use, renewal, and termination phases"
@@ -139,22 +146,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture and Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The session management architecture consists of the session store (where session data is stored), the
           session manager (which creates, validates, renews, and terminates sessions), and the client (which stores
           and sends the session ID). The session store can be in-memory (for single-server apps), Redis or Memcached
           (for distributed apps), or a database (for apps that need persistent sessions). The session manager is
           typically implemented as middleware that intercepts each request, validates the session ID, and attaches
           the session data to the request context.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The session flow begins with the user authenticating — the server verifies the credentials, creates a
           session (generating a random session ID, storing session data in the session store), and sends the session
           ID to the client in a Set-Cookie header. The client stores the cookie and sends it with each subsequent
           request. The server&apos;s session middleware extracts the session ID from the cookie, looks up the session
           data in the session store, and attaches it to the request context. If the session is not found or has
           expired, the request is rejected with a 401 Unauthorized response.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/security-authentication/session-management-diagram-3.svg"
           alt="Session attacks and defenses showing hijacking, fixation, CSRF with mitigations"
@@ -190,22 +200,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs and Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Server-side sessions versus JWT-based sessions is the primary trade-off in session management. Server-side
           sessions store session data on the server — the session ID is a reference to the server-side state. This
           enables immediate revocation (the server deletes the session, and it becomes invalid), but requires a
           server lookup on each request. JWT-based sessions encode session data in the token — the server validates
           the token&apos;s signature without looking up session state. This enables stateless validation (no server
           lookup), but prevents immediate revocation (the token remains valid until expiration).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In-memory session stores versus distributed session stores is a trade-off between simplicity and
           scalability. In-memory stores (session data stored in the server&apos;s memory) are simple to implement but
           do not scale horizontally — if the server restarts, all sessions are lost, and users must re-authenticate.
           Distributed stores (Redis, Memcached) store session data in a shared store that all servers can access —
           this enables horizontal scaling and session persistence across server restarts, but introduces a
           dependency on the session store.
-        </p>
+        </HighlightBlock>
         <p>
           Sliding expiration versus fixed expiration is a trade-off between user experience and security. Sliding
           expiration renews the session on each request, extending the idle timeout — the user is not logged out
@@ -229,18 +242,21 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Generate session IDs using a CSPRNG with at least 128 bits of entropy. Session IDs must be unpredictable
           and unguessable — never use sequential numbers, timestamps, or user IDs as session IDs. Use a well-tested
           session management library (express-session, Django sessions, Spring Session) — do not implement session
           management yourself, as it is easy to make mistakes (weak session ID generation, missing security flags).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Configure session cookies with security flags — httpOnly (prevents JavaScript access), Secure (HTTPS-only),
           and SameSite=Strict or Lax (prevents CSRF). These flags are the first line of defense against session
           hijacking and CSRF attacks. Without these flags, the session is vulnerable to theft via XSS, network
           sniffing, and cross-site request forgery.
-        </p>
+        </HighlightBlock>
         <p>
           Rotate session IDs after authentication — issue a new session ID after the user logs in, and invalidate
           the old one. This prevents session fixation attacks, where the attacker sets a known session ID before
@@ -273,17 +289,20 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not rotating session IDs after authentication is a common pitfall. If the session ID is not rotated after
           login, the attacker can use session fixation to set a known session ID before the user logs in, and then
           use the same session ID to access the user&apos;s account after login. The fix is to issue a new session ID
           after authentication and invalidate the old one.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Missing httpOnly cookie flag is a common security pitfall. Without httpOnly, the cookie is accessible to
           JavaScript — an XSS attack can steal the session ID and use it to hijack the user&apos;s session. The fix is
           to set the httpOnly flag on all session cookies.
-        </p>
+        </HighlightBlock>
         <p>
           Using predictable session IDs is a critical vulnerability. If session IDs are generated using sequential
           numbers, timestamps, or user IDs, an attacker can guess valid session IDs and hijack sessions. The fix is
@@ -309,22 +328,25 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform uses Redis for distributed session management — user sessions are stored in
           Redis, and all web servers access the session store to validate session IDs. Sessions have an idle timeout
           of 30 minutes and an absolute timeout of 24 hours. Session IDs are rotated after login and after privilege
           changes (e.g., when a customer becomes a seller). The platform monitors session activity and alerts on
           anomalous patterns (concurrent sessions from different countries, sudden location changes). Sessions are
           terminated immediately when the user logs out or when the account password is changed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A financial services company uses server-side sessions with strict security controls — sessions are stored
           in-memory on the server (single-server deployment), with an idle timeout of 15 minutes and an absolute
           timeout of 8 hours. Session cookies are configured with httpOnly, Secure, and SameSite=Strict flags.
           Session IDs are rotated after login, after privilege changes, and every 60 minutes (periodic rotation).
           The company monitors session activity and logs all session events (creation, use, termination) for audit
           and incident response.
-        </p>
+        </HighlightBlock>
         <p>
           A SaaS platform uses JWT-based sessions for its API — users authenticate through the platform&apos;s identity
           provider, which issues short-lived access tokens (15 minutes) and long-lived refresh tokens (30 days). The
@@ -348,14 +370,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-5">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is session fixation, and how do you prevent it?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Session fixation is an attack where the attacker sets a known session ID before the user logs in. After the user authenticates, the attacker uses the same session ID to access the user&apos;s account. This works because the server associates the session with the authenticated user after login, but does not change the session ID.
-            </p>
+            </HighlightBlock>
             <p>
               The defense is session rotation — the server should issue a new session ID after authentication, invalidating the old one. This ensures that the attacker&apos;s known session ID is no longer valid after the user logs in. Session rotation should also occur after privilege changes (e.g., user becomes admin) to prevent privilege escalation through session hijacking.
             </p>

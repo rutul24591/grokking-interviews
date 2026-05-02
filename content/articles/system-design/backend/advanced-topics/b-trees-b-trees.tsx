@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>B-trees</strong> and <strong>B+ trees</strong> are balanced, page-oriented tree data structures designed for storage systems where data lives on fixed-size blocks—disk pages or SSD blocks. They minimize random I/O by maximizing fanout: each node stores many keys, so the tree remains shallow even for datasets with hundreds of millions of entries. Where a binary search tree would have height proportional to log₂(n), a B-tree with fanout 100 has height proportional to log₁₀₀(n)—meaning a billion keys fit in three levels.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These structures are the foundation of database indexes in MySQL (InnoDB), PostgreSQL, SQLite, and virtually every relational database engine. They support both point lookups and range scans with predictable, bounded performance. The distinction between B-trees and B+ trees matters: B-trees can store records in both internal nodes and leaves, while B+ trees store all actual data exclusively in leaf nodes and link leaves together as a sorted chain.
-        </p>
+        </HighlightBlock>
         <p>
           The design decision to use page-oriented nodes rather than individual node records is driven by the physics of storage. A disk seek costs milliseconds; a sequential page read costs microseconds. By sizing each node to match a page (typically 4 KB to 16 KB), a B-tree ensures each tree level requires at most one page read. With upper levels cached in a buffer pool, many lookups require only a single leaf page access.
         </p>
@@ -48,6 +52,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/advanced-topics/btree-node-structure.svg"
@@ -56,12 +63,12 @@ export default function ArticlePage() {
         />
 
         <h3>Page-Oriented Storage and Node Structure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fundamental insight behind B-trees is that storage systems read and write in pages, not individual records. A B-tree node is designed to occupy exactly one page (or a small multiple). Each internal node contains up to M-1 keys and M child pointers, where M is the fanout determined by page size divided by the size of a key-pointer pair. For a 16 KB page with 8-byte keys and 8-byte pointers, M is approximately 500, meaning a three-level tree can hold 125 billion entries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Leaf nodes contain key-value pairs or key-record-id pairs, depending on whether the index is clustered or secondary. In a clustered index, the leaf pages contain the actual table data, ordered by the primary key. In a secondary index, leaf pages contain the indexed key and a pointer (typically the primary key) to the actual row. This distinction has major performance implications: secondary index lookups require two index traversals—the secondary index lookup followed by a primary key lookup (a "bookmark lookup" in SQL Server terminology).
-        </p>
+        </HighlightBlock>
         <p>
           B+ trees improve on this by storing all data in leaves and linking leaves as a doubly-linked list. Internal nodes contain only keys and child pointers, serving purely as a routing structure. This design gives B+ trees two advantages: internal nodes can hold more routing keys since they carry no data payloads, and range scans follow leaf links without re-traversing the tree.
         </p>
@@ -100,14 +107,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Database Index Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In a relational database, tables typically have one clustered index (the primary key by default in InnoDB) and zero or more secondary indexes. The clustered index determines the physical order of the table data on disk. Every secondary index leaf entry contains the indexed key plus the clustered key, enabling row lookups. This design means that secondary index size is proportional to table size times the number of secondary indexes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           PostgreSQL uses a different approach: it employs a heap-based table storage model where the primary key index is a secondary structure pointing to heap rows. This decouples physical row order from any single index, allowing multiple indexes to serve equally. The trade-off is that PostgreSQL cannot guarantee physical locality for primary key range scans, and index-only scans require a visibility map to avoid heap lookups.
-        </p>
+        </HighlightBlock>
         <p>
           The query optimizer uses B-tree statistics—cardinality, value distribution, and page depth—to choose between index scan, full table scan, or index-only scan. Accurate statistics are critical: stale statistics cause the optimizer to choose suboptimal plans, leading to performance regressions after data distribution changes.
         </p>
@@ -140,12 +150,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice between B+ trees and alternative index structures involves fundamental trade-offs between read performance, write performance, and operational complexity. B+ trees excel at read-heavy and mixed workloads with moderate write rates. They provide predictable read latency (bounded by tree height), efficient range scans via linked leaves, and mature operational tooling. The cost is write amplification from page splits, hot page contention under sequential inserts, and index bloat from churn.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           LSM trees represent the primary alternative for write-heavy workloads. LSM trees convert random writes into sequential appends by buffering writes in an in-memory structure (memtable) and periodically flushing to immutable on-disk files (SSTables). This eliminates page splits entirely and achieves much higher write throughput than B+ trees. The trade-off is read amplification: a point lookup may need to check the memtable plus multiple SSTable levels, requiring Bloom filters to avoid unnecessary disk reads. LSM trees also require periodic compaction, which consumes I/O and can cause latency spikes.
-        </p>
+        </HighlightBlock>
         <p>
           Hash indexes offer O(1) point lookups but cannot support range queries, prefix searches, or ordered iteration. They are suitable for key-value stores with pure point-lookup workloads (like memcached) but inadequate for general-purpose database workloads. Fractal trees (used in TokuDB) attempt to combine B-tree read performance with LSM-like write buffering by keeping message buffers at internal nodes, batching updates as they flow down the tree. The complexity and operational maturity of B+ trees, however, has kept them as the default choice for most relational databases.
         </p>
@@ -159,12 +172,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design your primary key to avoid write hotspots. Sequential auto-increment keys concentrate inserts on the rightmost leaf, creating contention. Consider using UUIDs (with proper ordering via UUIDv7), hash-based partitioning, or composite keys that distribute writes across multiple leaf pages. For high-throughput systems, evaluate whether your key distribution naturally spreads writes or concentrates them on specific pages.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Size your buffer pool to keep the upper tree levels and working set of leaf pages in memory. For InnoDB, the buffer pool should be large enough to hold the entire index for read-heavy workloads, or at minimum the root and intermediate levels plus frequently accessed leaf pages. Monitor buffer pool hit ratio and page read rate to detect cache pressure before it impacts user-facing latency.
-        </p>
+        </HighlightBlock>
         <p>
           Use covering indexes to eliminate bookmark lookups. When a query selects only columns that are present in a secondary index, the database can satisfy the query from the index alone without visiting the table data. This is particularly valuable for queries that select a small number of columns from a wide table, where the secondary index is much smaller than the full row.
         </p>
@@ -178,12 +194,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most insidious B-tree pitfall is <strong>monotonic key-induced write hotspots</strong>. Auto-increment primary keys, timestamp-based keys, and sequential UUIDs all concentrate writes on the rightmost leaf page. Under high write concurrency, this single page becomes a serialization bottleneck, dramatically increasing p99 latency. Many teams discover this problem only under production load, after months of smooth operation at lower scale. The fix requires schema redesign and potentially data migration, which is disruptive.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Index bloat from churn</strong> silently degrades performance over time. When rows are frequently updated or deleted, pages accumulate free space that is not immediately reclaimed. Over weeks or months, indexes grow significantly larger than necessary, increasing cache misses and I/O. The degradation is gradual enough that teams often fail to notice until query latency drifts upward and correlation with index bloat becomes clear only through careful monitoring.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Selecting the wrong clustered index</strong> is a structural mistake that is expensive to correct. The clustered index determines physical data order, and changing it requires a full table rebuild. If your most common queries are range scans on a timestamp but your clustered index is on an auto-increment ID, every range scan requires a full index scan plus bookmark lookups. Evaluate your dominant query patterns before choosing the clustered key.
         </p>
@@ -197,16 +216,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce: Order Range Queries with B+ Tree Indexes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce platform needed to support queries like "all orders between two timestamps" for reporting and customer support. The solution was a B+ tree index on the order timestamp column. The B+ tree's linked leaf structure enables efficient range scans: locate the starting leaf with a single tree traversal, then iterate through linked leaves sequentially. Under 500K daily orders, the index maintained sub-millisecond point lookups and sub-second range scans across millions of rows.
-        </p>
+        </HighlightBlock>
 
         <h3>Multi-Tenant SaaS: Avoiding Write Hotspots</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A multi-tenant SaaS platform used auto-increment IDs as primary keys and experienced p99 latency spikes under load. Investigation revealed monotonic inserts concentrating writes on the rightmost leaf. The fix was switching to UUIDv7 keys, which are time-sortable (preserving range query efficiency) but distribute writes across multiple leaf pages. Write throughput increased 3x and p99 latency stabilized.
-        </p>
+        </HighlightBlock>
 
         <h3>Analytics Platform: Index Bloat Management</h3>
         <p>
@@ -224,14 +246,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: Why do databases prefer B+ trees over B-trees?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               B+ trees store all data exclusively in leaf nodes, while internal nodes serve purely as routing structures. This provides two key advantages. First, internal nodes can hold more routing keys because they carry no data payloads, increasing fanout and reducing tree height. Second, leaf nodes are linked together as a doubly-linked chain, enabling efficient range scans by sequential iteration through leaves without re-traversing the tree.
-            </p>
+            </HighlightBlock>
             <p>
               B-trees store records in both internal nodes and leaves, which wastes internal node capacity on data and makes range scans less efficient because the traversal must visit internal nodes that may contain qualifying records. For database workloads dominated by range queries and ordered iteration, B+ trees are the superior choice.
             </p>

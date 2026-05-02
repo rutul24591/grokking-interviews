@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 const BASE_PATH = "/diagrams/system-design-concepts/backend/network-communication";
@@ -35,12 +36,15 @@ export default function LongPollingArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Long polling</strong> is a server-push emulation technique built entirely on standard HTTP request-response semantics. Unlike traditional polling, where a client sends a request and immediately receives whatever response is available (even if empty), long polling instructs the server to hold the HTTP connection open until new data arrives or a server-side timeout expires. The client, upon receiving a response, immediately issues a new request, creating a near-continuous cycle of held-open connections that delivers data to the client with latency bounded only by the server&apos;s event detection speed and the network round-trip time for the next request. This pattern was the cornerstone of real-time web applications before WebSocket standardization and remains in active use today for environments where persistent bidirectional connections are impractical, unreliable, or prohibited by infrastructure constraints.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The technique emerged from the broader <strong>Comet</strong> umbrella — a collection of workarounds developed in the mid-2000s to enable server-initiated communication over HTTP. Comet encompassed two primary approaches: long polling (holding requests open) and HTTP streaming (sending a multipart response that the browser incrementally processes). Long polling won broader adoption because it was simpler to implement, more compatible with existing HTTP infrastructure, and did not require special handling of chunked transfer encoding or multipart MIME parsing on the client side. Applications like Gmail, Google Talk, and early collaborative editing tools relied on long polling to deliver real-time updates to millions of users, proving that the pattern could scale to production workloads despite its inherent inefficiencies.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, long polling is not merely a historical curiosity — it remains a critical tool in the real-time communication toolkit. Mobile networks with unreliable connectivity benefit from long polling&apos;s request-response model, where each response naturally creates a reconnection point. Corporate firewalls and enterprise proxies that block or throttle WebSocket connections often permit long-polling HTTP requests without special configuration. Serverless and edge computing platforms that do not support persistent connections can still serve long-polling endpoints, provided the timeout constraints of the platform are respected. Understanding the operational characteristics, scaling limits, and failure modes of long polling is essential for any engineer designing real-time systems that must work across heterogeneous deployment environments and network conditions.
         </p>
@@ -52,16 +56,19 @@ export default function LongPollingArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding long polling at a production level requires mastering several interlocking concepts: the request lifecycle, timeout management, retry orchestration, cursor-based resumption, and the operational signals that indicate healthy versus degraded system behavior.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Request Hold Lifecycle:</strong> When a client issues a long-polling request, the server does not respond immediately. Instead, it registers the connection in a subscription registry — typically a data structure that maps the client or channel to a list of pending HTTP response handles. When an event occurs for that client or channel, the server writes the response to the held connection and closes it. If no event occurs within the configured hold time, the server responds with a heartbeat or empty acknowledgement, prompting the client to reconnect. The choice of server-side concurrency model determines how efficiently held connections are managed: event-driven servers like Nginx with Lua, Node.js, or Go&apos;s goroutine model can hold hundreds of thousands of connections with minimal overhead, while thread-per-request servers like traditional Apache or Tomcat exhaust thread pools quickly.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Timeout Strategy:</strong> Timeout configuration is the single most impactful operational decision in long polling architecture. The server-side hold timeout must be long enough to provide meaningful responsiveness — typically between 20 and 60 seconds — but short enough to avoid exhausting server resources or colliding with intermediary timeout limits. The client-side timeout should be slightly longer than the server-side timeout to allow the server to gracefully respond before the client aborts. Critically, both timeouts must include randomized jitter (10 to 20 percent of the base timeout) to prevent synchronized reconnect storms. Without jitter, if the server hold time is exactly 30 seconds for all clients, every connection expires simultaneously, creating a thundering herd of reconnect requests that can overwhelm the server.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Retry and Reconnect Logic:</strong> When a long-polling connection closes — whether due to a server response, a timeout, a network error, or an intermediary intervention — the client must reconnect. The reconnection strategy determines system stability under failure conditions. Immediate reconnection without backoff creates retry storms during outages. Exponential backoff with jitter provides the standard solution: the delay between retries doubles (or increases by a configurable factor) up to a maximum ceiling, with a random jitter applied at each step to desynchronize clients that disconnected simultaneously. The maximum retry ceiling should be calibrated to the expected outage duration — for transient failures, 30 to 60 seconds is appropriate; for extended outages, capping at several minutes prevents resource waste while keeping the client alive.
           </li>
@@ -80,9 +87,12 @@ export default function LongPollingArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The long polling architecture centers on a subscription management layer that bridges the event generation system with held HTTP connections. When a client connects, the subscription manager registers the response handle. When events arrive, the dispatcher looks up the registered handles and writes the event data. The following diagram illustrates this architecture.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/long-polling-diagram.svg`}
@@ -90,9 +100,9 @@ export default function LongPollingArticle() {
           caption="Figure 1: Long polling architecture — clients hold HTTP connections open through the load balancer to servers that maintain a subscription registry and dispatch events as they arrive"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The flow begins with the client issuing an HTTP GET request to the long-polling endpoint. The load balancer routes the request to an available server instance, which registers the request handle in its in-memory subscription registry alongside the client identifier or channel identifier. The request now enters a held state — the server&apos;s event loop does not block; it simply awaits an event or a timeout. Meanwhile, the event dispatcher receives events from upstream sources (message queues, database change streams, application logic) and queries the subscription registry to find the held connection associated with the event&apos;s target. It serializes the event, writes it to the HTTP response, and closes the connection. If the hold timer expires before any event arrives, the server writes an empty response or heartbeat and closes the connection. In either case, the client receives the response and immediately issues a new request, restarting the cycle.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/polling-system.svg`}
@@ -118,10 +128,13 @@ export default function LongPollingArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr>
-              <th className="border border-theme bg-panel p-3 text-left">
+  <tr>
+<th className="border border-theme bg-panel p-3 text-left">
                 Aspect
               </th>
               <th className="border border-theme bg-panel p-3 text-left">
@@ -133,11 +146,11 @@ export default function LongPollingArticle() {
               <th className="border border-theme bg-panel p-3 text-left">
                 Server-Sent Events (SSE)
               </th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody>
-            <tr>
-              <td className="border border-theme p-3 font-medium">Connection Model</td>
+            <HighlightBlock as="tr" tier="important">
+<td className="border border-theme p-3 font-medium">Connection Model</td>
               <td className="border border-theme p-3">
                 Request-response cycle with held connections; each delivery requires a new HTTP request
               </td>
@@ -147,8 +160,8 @@ export default function LongPollingArticle() {
               <td className="border border-theme p-3">
                 Persistent unidirectional HTTP stream; server pushes events over a single held connection
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-3 font-medium">Latency</td>
               <td className="border border-theme p-3">
                 Higher — bounded by reconnect round-trip time after each delivery (typically 50-200ms)
@@ -159,8 +172,8 @@ export default function LongPollingArticle() {
               <td className="border border-theme p-3">
                 Low — events pushed over existing connection, but reconnect needed after connection drop
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-3 font-medium">Server Resource Cost</td>
               <td className="border border-theme p-3">
                 Highest — every client requires a new HTTP request after each response, creating connection churn
@@ -171,7 +184,7 @@ export default function LongPollingArticle() {
               <td className="border border-theme p-3">
                 Moderate — one connection per client, but no client-to-server messages after initial setup
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="border border-theme p-3 font-medium">Infrastructure Compatibility</td>
               <td className="border border-theme p-3">
@@ -239,13 +252,16 @@ export default function LongPollingArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Configure timeouts with jitter at every layer:</strong> The server hold timeout should be 20 to 60 seconds with 10 to 20 percent random jitter applied per connection. The client timeout should exceed the server maximum hold time by 10 to 15 seconds. Reconnect delays should use exponential backoff with jitter, starting at 1 second and capping at 60 seconds. This layered approach prevents synchronized connection expirations, synchronized reconnect arrivals, and thundering herd effects during partial outages.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement cursor-based event resumption:</strong> Every response must include a cursor, sequence number, or resume token that the client sends with its next request. The server uses this token to deliver any events generated since the previous response was sent. Without cursor-based resumption, events are silently lost during the reconnect window. The server must retain events for a retention window that exceeds the maximum expected reconnect delay plus a safety margin.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use event-driven server architectures:</strong> Long polling fundamentally requires holding many connections simultaneously. Thread-per-request servers like traditional servlet containers cannot scale beyond a few thousand concurrent connections because each connection consumes a thread from a finite pool. Event-driven servers — Node.js, Go, Nginx with Lua, or async frameworks like FastAPI and Actix — use non-blocking I/O and can hold hundreds of thousands of connections with minimal resource overhead. The choice of server architecture is the primary determinant of scaling capacity.
           </li>
@@ -264,13 +280,16 @@ export default function LongPollingArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Thundering herd from synchronized timeouts:</strong> The most common production incident in long polling systems occurs when all connections expire simultaneously. If the server hold time is a fixed 30 seconds without jitter, every client reconnects at the same moment, creating a spike of new requests that can overwhelm the server. The solution is straightforward — apply random jitter to the hold time — but it is frequently overlooked during initial implementation because the system works perfectly at low traffic volumes. The problem only surfaces at scale, when the synchronized reconnect spike causes a self-reinforcing cycle of timeouts and reconnects.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Lost events during reconnect windows:</strong> Without cursor-based resumption, any event generated between the client receiving a response and issuing the next request is silently lost. This is particularly insidious because the loss is intermittent and difficult to reproduce in testing. Engineers sometimes implement client-side acknowledgment schemes where the server tracks which events have been acknowledged, but this adds significant complexity. The simpler approach is to include a sequence number in every response and have the client send it with the next request, allowing the server to replay any missed events.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Exhausting server file descriptors:</strong> Each held long-polling connection consumes a file descriptor. On Unix systems, the default file descriptor limit is often 1024 per process, which means a single server process can hold at most 1024 connections (minus descriptors used for other I/O). In production, this limit must be raised to tens of thousands, and the server process must be configured to handle the increased limit. Additionally, the operating system&apos;s global file descriptor limit and the maximum number of ephemeral ports must be configured to support the expected connection count.
           </li>
@@ -286,13 +305,16 @@ export default function LongPollingArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Early Gmail Chat (Google Talk):</strong> Google&apos;s early web chat implementation used long polling to deliver messages to the browser. The server held connections open for incoming chat messages, responding immediately when a message arrived or after a timeout if nothing came through. This approach allowed real-time chat functionality without requiring any browser plugins or non-standard protocols, and it worked reliably across the diverse proxy and firewall configurations of enterprise networks in the mid-2000s.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Bayeux Protocol and CometD:</strong> The Bayeux protocol formalized long polling (and HTTP streaming) as a messaging pattern for web applications. CometD, an implementation of Bayeux, provides a publish-subscribe messaging system over long polling that supports channels, message ordering, and quality-of-service levels. It was widely adopted in enterprise Java environments where WebSocket support was slow to arrive, and it remains in use for applications that require messaging over restrictive network infrastructure.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Mobile Push Notifications over HTTP:</strong> Mobile applications operating in environments with unreliable connectivity often use long polling as a fallback when persistent socket connections are impractical. The mobile SDK issues a long-polling request to a backend endpoint, holds it open while the device is in a stable network state, and reconnects when the connection drops due to network transitions (Wi-Fi to cellular, entering a tunnel). This approach avoids the battery and network overhead of maintaining a persistent socket on a device that frequently changes network state.
           </li>
@@ -308,23 +330,26 @@ export default function LongPollingArticle() {
       {/* Section 8: Interview Q&A */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: Explain how long polling works end-to-end and why it is less efficient than WebSockets for high-frequency message delivery.
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Long polling works by having the client send an HTTP request that the server holds open until data is available or a timeout occurs. When the server responds, the client immediately sends a new request, creating a cycle of held connections. Each message delivery requires a full HTTP request-response cycle, including TCP connection establishment (unless keep-alive is used), HTTP headers, and server-side request processing. For high-frequency delivery, this per-message overhead becomes prohibitive: if a client receives 10 messages per second, long polling requires 10 HTTP request-response cycles per second, each carrying header overhead and server processing cost. WebSockets, by contrast, establish a single persistent connection through an HTTP upgrade handshake, after which messages flow bidirectionally with minimal framing overhead (2 to 14 bytes per message). At 10 messages per second, WebSocket&apos;s total overhead is negligible compared to long polling&apos;s repeated HTTP cycles. The practical implication is that long polling is appropriate for low-frequency updates (a few messages per minute), while WebSockets are necessary for high-frequency streams.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q2: How do you prevent thundering herd reconnects when thousands of clients simultaneously lose their long-polling connections?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Thundering herd reconnects are prevented by applying randomized jitter at multiple layers. First, the server-side hold timeout should include per-connection jitter — instead of a fixed 30-second timeout, each connection gets a timeout between 27 and 33 seconds (10 percent jitter). This ensures connections expire at different times. Second, the client-side reconnect delay should use exponential backoff with jitter: the first retry after 1 second plus or minus a random offset, the second after 2 seconds plus or minus jitter, and so on, up to a maximum ceiling. Third, if a server-wide event triggers mass disconnection (for example, a deployment), the server should include a Retry-After header with a jittered value, instructing clients to wait different amounts of time before reconnecting. The combination of these strategies distributes reconnections across a time window rather than concentrating them at a single moment, smoothing the load spike that would otherwise overwhelm the server.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

@@ -2,10 +2,11 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import { useHighlights } from "@/components/articles/HighlightsContext";
 import { classNames } from "@/lib/classNames";
 import type { ArticleMetadata } from "@/types/article";
-import type { CSSProperties } from "react";
 
 export const metadata: ArticleMetadata = {
   id: "article-frontend-client-sid-extensive",
@@ -28,106 +29,28 @@ export const metadata: ArticleMetadata = {
 
 function ClientSideRenderingArticleContent() {
   const { highlightsOn } = useHighlights();
-  const highlight = (tier: "crucial" | "important") =>
-    highlightsOn ? `highlight-${tier}` : undefined;
-  const highlightStyle = (
-    tier: "crucial" | "important",
-    kind: "block" | "inline" | "caption" = "block",
-  ): CSSProperties | undefined => {
-    if (!highlightsOn) return undefined;
-
-    if (tier === "crucial") {
-      if (kind === "inline") {
-        return {
-          backgroundColor: "rgba(244, 114, 182, 0.22)",
-          borderRadius: "999px",
-          padding: "0.08rem 0.4rem",
-          fontWeight: 700,
-        };
-      }
-
-      if (kind === "caption") {
-        return {
-          backgroundColor: "rgba(236, 72, 153, 0.16)",
-          boxShadow: "inset 3px 0 0 rgba(168, 85, 247, 0.72)",
-          borderRadius: "0.5rem",
-          padding: "0.2rem 0.75rem",
-          display: "inline-block",
-        };
-      }
-
-      return {
-        backgroundColor: "rgba(236, 72, 153, 0.16)",
-        boxShadow: "inset 4px 0 0 rgba(168, 85, 247, 0.8)",
-        borderRadius: "0.5rem",
-        padding: "0.35rem 0.65rem",
-      };
-    }
-
-    if (kind === "inline") {
-      return {
-        backgroundColor: "rgba(251, 146, 60, 0.22)",
-        borderRadius: "999px",
-        padding: "0.08rem 0.4rem",
-        fontWeight: 700,
-      };
-    }
-
-    if (kind === "caption") {
-      return {
-        backgroundColor: "rgba(251, 146, 60, 0.14)",
-        boxShadow: "inset 3px 0 0 rgba(234, 88, 12, 0.72)",
-        borderRadius: "0.5rem",
-        padding: "0.2rem 0.75rem",
-        display: "inline-block",
-      };
-    }
-
-    return {
-      backgroundColor: "rgba(251, 146, 60, 0.14)",
-      boxShadow: "inset 4px 0 0 rgba(234, 88, 12, 0.8)",
-      borderRadius: "0.5rem",
-      padding: "0.35rem 0.65rem",
-    };
-  };
 
   return (
     <>
       <section>
         <h2>Definition & Context</h2>
-        <p className={highlight("crucial")} style={highlightStyle("crucial")}>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Client-Side Rendering (CSR)</strong> is a rendering pattern
           where the browser downloads a{" "}
-          <span
-            className={highlight("important")}
-            style={highlightStyle("important", "inline")}
-          >
-            minimal HTML page
-          </span>
-          , and JavaScript is responsible for dynamically rendering content on
-          the client. The server sends a{" "}
-          <span
-            className={highlight("important")}
-            style={highlightStyle("important", "inline")}
-          >
-            nearly empty HTML shell
-          </span>{" "}
-          with{" "}
-          <span
-            className={highlight("important")}
-            style={highlightStyle("important", "inline")}
-          >
-            JavaScript bundles
-          </span>
-          , and the application builds the DOM entirely in the browser.
-        </p>
-        <p>
+          <Highlight tier="important">minimal HTML page</Highlight>, and
+          JavaScript is responsible for dynamically rendering content on the
+          client. The server sends a{" "}
+          <Highlight tier="important">nearly empty HTML shell</Highlight> with{" "}
+          <Highlight tier="important">JavaScript bundles</Highlight>, and the
+          application builds the DOM entirely in the browser.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CSR emerged with the rise of Single Page Applications (SPAs) around
           2010-2012, pioneered by frameworks like AngularJS, Backbone.js, and
           later React, Vue, and Angular. This approach shifted rendering
           responsibility from servers to browsers, enabling rich, interactive
           experiences that felt more like native desktop applications.
-        </p>
+        </HighlightBlock>
         <p>
           The paradigm shift was driven by several factors: improving browser
           JavaScript engines (V8, SpiderMonkey), the need for highly interactive
@@ -135,6 +58,21 @@ function ClientSideRenderingArticleContent() {
           clients, and the desire for faster subsequent navigation after initial
           load.
         </p>
+        <HighlightBlock as="p" tier="important">
+          Interview framing: CSR is a deliberate trade where you accept{" "}
+          <Highlight tier="important">slower first load</Highlight> for{" "}
+          <Highlight tier="important">fast in-app navigation</Highlight> and a
+          richer client runtime. You should be able to articulate the CSR
+          critical path (HTML shell, JS parse/execute, data fetch, render) and
+          where you’ll invest (bundling, caching, RUM, perf budgets).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          CSR is usually best for{" "}
+          <Highlight tier="important">authenticated products</Highlight>{" "}
+          (dashboards, editors, internal tools) and weaker for{" "}
+          <Highlight tier="important">public SEO pages</Highlight> unless you
+          layer SSR/SSG/ISR for the entry routes.
+        </HighlightBlock>
       </section>
 
       <section>
@@ -144,30 +82,21 @@ function ClientSideRenderingArticleContent() {
           define how it operates:
         </p>
         <ul>
-          <li
-            className={highlight("important")}
-            style={highlightStyle("important")}
-          >
+          <HighlightBlock as="li" tier="important">
             <strong>Initial HTML Shell:</strong> The server returns minimal HTML
             (often just a div with id="root") with script tags that reference
             JavaScript bundles. This HTML contains no meaningful content.
-          </li>
-          <li
-            className={highlight("crucial")}
-            style={highlightStyle("crucial")}
-          >
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>JavaScript Hydration:</strong> Once JS downloads and
             executes, it takes over the page, fetches data via APIs, and
             dynamically constructs the DOM tree in the browser.
-          </li>
-          <li
-            className={highlight("important")}
-            style={highlightStyle("important")}
-          >
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Runtime Rendering:</strong> All rendering happens at runtime
             in the browser. Components mount, state updates trigger re-renders,
             and the virtual DOM reconciles changes to the actual DOM.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Client-Side Routing:</strong> Navigation is handled by
             JavaScript routers (React Router, Vue Router) without full page
@@ -179,24 +108,29 @@ function ClientSideRenderingArticleContent() {
             REST or GraphQL APIs, making them backend-agnostic and enabling true
             separation of concerns between frontend and backend.
           </li>
+          <HighlightBlock as="li" tier="important">
+            <strong>Deterministic Rendering:</strong> Since HTML is produced on
+            the client, you must design for{" "}
+            <Highlight tier="important">loading</Highlight>,{" "}
+            <Highlight tier="important">error</Highlight>, and{" "}
+            <Highlight tier="important">empty</Highlight> states, and ensure
+            your first paint is predictable even under slow networks, low-end
+            CPUs, and partial API failure.
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p
-          className={highlight("important")}
-          style={highlightStyle("important")}
-        >
+        <HighlightBlock as="p" tier="important">
           The CSR architecture follows a distinct request-response pattern:
-        </p>
+          meaningful UI is gated on JS download, execution, and data fetching.
+        </HighlightBlock>
 
-        <div
-          className={classNames(
-            "my-6 rounded-lg bg-panel-soft p-6",
-            highlight("important"),
-          )}
-          style={highlightStyle("important")}
+        <HighlightBlock
+          as="div"
+          tier="important"
+          className="my-6 rounded-lg bg-panel-soft p-6"
         >
           <h3 className="mb-4 text-lg font-semibold">CSR Request Flow</h3>
           <ol className="space-y-3">
@@ -236,35 +170,43 @@ function ClientSideRenderingArticleContent() {
               (TTI)
             </li>
           </ol>
-        </div>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/rendering-strategies/csr-flow-sequence.svg"
           alt="CSR Request Flow Sequence Diagram"
           caption="Client-Side Rendering Request Flow - Sequential steps showing the multi-stage loading process"
-          captionClassName={highlight("important")}
-          captionStyle={highlightStyle("important", "caption")}
+          captionClassName={classNames(highlightsOn && "highlight-important")}
         />
 
-        <p className={highlight("crucial")} style={highlightStyle("crucial")}>
+        <HighlightBlock as="p" tier="crucial">
           This multi-step process means users may experience a{" "}
-          <span
-            className={highlight("important")}
-            style={highlightStyle("important", "inline")}
-          >
-            "blank screen"
-          </span>{" "}
-          or loading spinner during steps 2-7, which can take 3-10 seconds on
-          slower networks or devices. The First Contentful Paint (FCP) is
-          delayed until JavaScript executes and renders content.
-        </p>
+          <Highlight tier="important">blank screen</Highlight> or loading
+          spinner during steps 2-7, which can take 3-10 seconds on slower
+          networks or devices. First Contentful Paint (FCP) is delayed until
+          JavaScript executes and renders content.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Staff+ interview signal: you should talk about preventing "white
+          screen" time via <Highlight tier="important">route-based splitting</Highlight>,{" "}
+          <Highlight tier="important">prioritized hydration</Highlight> (or
+          islands/partial hydration), and{" "}
+          <Highlight tier="important">data prefetching</Highlight> for the first
+          route.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          CSR also makes the API tier part of the page-load critical path; for
+          robustness you typically add <Highlight tier="important">timeouts</Highlight>,{" "}
+          <Highlight tier="important">retries with backoff</Highlight>, and{" "}
+          <Highlight tier="important">cached fallbacks</Highlight> so a slow API
+          doesn’t brick first paint.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/rendering-strategies/csr-architecture-flow.svg"
           alt="CSR Architecture Flow Diagram"
           caption="CSR Architecture Flow - Shows the dependency chain from initial request to interactivity"
-          captionClassName={highlight("important")}
-          captionStyle={highlightStyle("important", "caption")}
+          captionClassName={classNames(highlightsOn && "highlight-important")}
         />
       </section>
 
@@ -279,21 +221,12 @@ function ClientSideRenderingArticleContent() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr
-              className={highlight("crucial")}
-              style={highlightStyle("crucial")}
-            >
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Performance</strong>
               </td>
               <td className="p-3">
-                •{" "}
-                <span
-                  className={highlight("important")}
-                  style={highlightStyle("important", "inline")}
-                >
-                  Fast subsequent navigation
-                </span>{" "}
+                • <Highlight tier="important">Fast subsequent navigation</Highlight>{" "}
                 (no page reloads)
                 <br />
                 • Rich interactivity with instant feedback
@@ -305,11 +238,8 @@ function ClientSideRenderingArticleContent() {
                 • Delayed Time to Interactive (TTI)
                 <br />• Poor on slow networks/devices
               </td>
-            </tr>
-            <tr
-              className={highlight("crucial")}
-              style={highlightStyle("crucial")}
-            >
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>SEO</strong>
               </td>
@@ -323,7 +253,7 @@ function ClientSideRenderingArticleContent() {
                 • Content not in initial HTML
                 <br />• Social media preview issues
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Development</strong>
@@ -341,10 +271,7 @@ function ClientSideRenderingArticleContent() {
                 <br />• Requires good DevOps for deployments
               </td>
             </tr>
-            <tr
-              className={highlight("important")}
-              style={highlightStyle("important")}
-            >
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>User Experience</strong>
               </td>
@@ -360,7 +287,7 @@ function ClientSideRenderingArticleContent() {
                 • Requires loading states everywhere
                 <br />• Poor experience on slow connections
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Infrastructure</strong>
@@ -385,8 +312,7 @@ function ClientSideRenderingArticleContent() {
           src="/diagrams/system-design-concepts/frontend/rendering-strategies/csr-performance-gantt.svg"
           alt="CSR vs SSR Performance Timeline"
           caption="Performance comparison: CSR has delayed FCP (6s) but simpler architecture, while SSR has fast FCP (0.9s) but requires server processing"
-          captionClassName={highlight("crucial")}
-          captionStyle={highlightStyle("crucial", "caption")}
+          captionClassName={classNames(highlightsOn && "highlight-crucial")}
         />
       </section>
 
@@ -394,40 +320,31 @@ function ClientSideRenderingArticleContent() {
         <h2>Best Practices</h2>
         <p>To build performant CSR applications, follow these practices:</p>
         <ol className="space-y-3">
-          <li
-            className={highlight("crucial")}
-            style={highlightStyle("crucial")}
-          >
+          <HighlightBlock as="li" tier="crucial">
             <strong>Code Splitting:</strong> Split bundles by route using
             dynamic imports. Load only necessary code for current page. Use
             React.lazy() or Vue's defineAsyncComponent().
-          </li>
-          <li
-            className={highlight("important")}
-            style={highlightStyle("important")}
-          >
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Aggressive Caching:</strong> Use service workers for offline
             support. Cache API responses with stale-while-revalidate strategy.
             Leverage HTTP cache headers for static assets.
-          </li>
-          <li
-            className={highlight("crucial")}
-            style={highlightStyle("crucial")}
-          >
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Optimize Bundle Size:</strong> Tree-shake unused code,
             minify production builds, use modern JavaScript for modern browsers
             (with fallback), and analyze bundle with webpack-bundle-analyzer.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Loading States:</strong> Show skeleton screens instead of
             spinners. Implement optimistic UI updates. Use Suspense boundaries
             (React 18+) for granular loading states.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Prefetching Data:</strong> Prefetch data for likely next
             routes. Use link prefetching for critical resources. Implement
             predictive prefetching based on user behavior.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Critical CSS:</strong> Inline critical CSS in HTML head.
             Defer non-critical CSS loading. Use CSS-in-JS with SSR for automatic
@@ -450,23 +367,17 @@ function ClientSideRenderingArticleContent() {
         <h2>Common Pitfalls</h2>
         <p>Avoid these common mistakes when building CSR applications:</p>
         <ul className="space-y-3">
-          <li
-            className={highlight("crucial")}
-            style={highlightStyle("crucial")}
-          >
+          <HighlightBlock as="li" tier="crucial">
             <strong>Ignoring Initial Load Performance:</strong> Shipping massive
             JavaScript bundles (3MB+) that take 10+ seconds to load and parse.
             Always measure and optimize bundle size. Target {"&lt;"}200KB for
             initial JS payload.
-          </li>
-          <li
-            className={highlight("crucial")}
-            style={highlightStyle("crucial")}
-          >
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No SEO Strategy:</strong> Building CSR apps without
             considering SEO needs. If organic traffic matters, use SSR, SSG, or
             prerendering. CSR alone is insufficient for content-driven sites.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Poor Error Handling:</strong> Not handling network failures,
             showing generic errors, or letting the app crash. Implement proper
@@ -492,6 +403,22 @@ function ClientSideRenderingArticleContent() {
             loads, creating jarring UX. Always provide feedback during async
             operations.
           </li>
+          <HighlightBlock as="li" tier="important">
+            <strong>Not Measuring Real Users:</strong> Optimizing only via lab
+            metrics (Lighthouse) and missing the real bottlenecks in production.
+            For CSR-heavy apps, you typically need{" "}
+            <Highlight tier="important">RUM</Highlight>, long-task tracking, and
+            client error rates to catch regressions tied to devices, geos, and
+            third-party scripts.
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            <strong>API Coupling Without Fallbacks:</strong> When the first
+            route depends on multiple APIs, a single slow dependency can cause
+            a first-load meltdown. Design with{" "}
+            <Highlight tier="important">cached placeholders</Highlight>,{" "}
+            <Highlight tier="important">timeouts</Highlight>, and partial
+            rendering so the page remains usable under partial outage.
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -499,28 +426,22 @@ function ClientSideRenderingArticleContent() {
         <h2>Real-World Use Cases</h2>
         <p>CSR excels in these scenarios:</p>
         <ul className="space-y-3">
-          <li
-            className={highlight("important")}
-            style={highlightStyle("important")}
-          >
+          <HighlightBlock as="li" tier="important">
             <strong>Dashboard Applications:</strong> Admin panels, analytics
             dashboards, and internal tools where SEO doesn't matter and users
             are authenticated. Examples: Vercel Dashboard, Netlify UI, Stripe
             Dashboard.
-          </li>
-          <li
-            className={highlight("important")}
-            style={highlightStyle("important")}
-          >
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Web Applications:</strong> Rich interactive apps like Gmail,
             Figma, Notion, or Linear where the experience needs to feel native
             and responsive.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Real-time Collaboration Tools:</strong> Apps like Google
             Docs, Miro, or Slack that require instant updates and maintain
             WebSocket connections.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Progressive Web Apps:</strong> Apps that work offline, sync
             in background, and feel native on mobile. CSR + Service Workers
@@ -536,14 +457,19 @@ function ClientSideRenderingArticleContent() {
             or Netflix (for authenticated views) where interactive playback
             controls are critical.
           </li>
+          <HighlightBlock as="li" tier="important">
+            <strong>Heavily Personalized Experiences:</strong> Experiences where
+            the UI is materially different per user and SSR caching is low value
+            (feature flags, user-specific navigation, rich permissions). CSR can
+            simplify personalization while you control performance with budgets
+            and caching.
+          </HighlightBlock>
         </ul>
 
-        <div
-          className={classNames(
-            "mt-6 rounded-lg border border-theme bg-panel-soft p-6",
-            highlight("crucial"),
-          )}
-          style={highlightStyle("crucial")}
+        <HighlightBlock
+          as="div"
+          tier="crucial"
+          className="mt-6 rounded-lg border border-theme bg-panel-soft p-6"
         >
           <h3 className="mb-3 font-semibold">When NOT to Use CSR</h3>
           <p>Avoid CSR for:</p>
@@ -555,18 +481,16 @@ function ClientSideRenderingArticleContent() {
               • Public-facing content requiring social sharing (no meta tags)
             </li>
           </ul>
-        </div>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div
-            className={classNames(
-              "rounded-lg border border-theme bg-panel-soft p-4",
-              highlight("important"),
-            )}
-            style={highlightStyle("important")}
+          <HighlightBlock
+            as="div"
+            tier="important"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
           >
             <p className="font-semibold">Q: Why is CSR bad for SEO?</p>
             <p className="mt-2 text-sm">
@@ -575,14 +499,12 @@ function ClientSideRenderingArticleContent() {
               render JS, it's slow and unreliable. Other crawlers (Bing, social
               media bots) often can't execute JS at all, seeing no content.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div
-            className={classNames(
-              "rounded-lg border border-theme bg-panel-soft p-4",
-              highlight("crucial"),
-            )}
-            style={highlightStyle("crucial")}
+          <HighlightBlock
+            as="div"
+            tier="crucial"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
           >
             <p className="font-semibold">
               Q: How would you optimize CSR performance?
@@ -593,14 +515,12 @@ function ClientSideRenderingArticleContent() {
               using CDN, prefetching likely routes, skeleton screens, and
               keeping initial bundle under 200KB.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div
-            className={classNames(
-              "rounded-lg border border-theme bg-panel-soft p-4",
-              highlight("crucial"),
-            )}
-            style={highlightStyle("crucial")}
+          <HighlightBlock
+            as="div"
+            tier="important"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
           >
             <p className="font-semibold">Q: CSR vs SSR - when to use each?</p>
             <p className="mt-2 text-sm">
@@ -609,14 +529,14 @@ function ClientSideRenderingArticleContent() {
               content, e-commerce, or marketing sites where SEO and fast initial
               load matter. Or use hybrid (Next.js) to get benefits of both.
             </p>
-          </div>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>References & Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://web.dev/rendering-on-the-web/"
               className="text-accent hover:underline"
@@ -625,8 +545,8 @@ function ClientSideRenderingArticleContent() {
             >
               Rendering on the Web - web.dev
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://react.dev/learn/start-a-new-react-project"
               className="text-accent hover:underline"
@@ -635,8 +555,8 @@ function ClientSideRenderingArticleContent() {
             >
               React Documentation - Start a New React Project
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://vuejs.org/guide/scaling-up/ssr.html"
               className="text-accent hover:underline"
@@ -645,7 +565,7 @@ function ClientSideRenderingArticleContent() {
             >
               Vue.js Guide - Server-Side Rendering vs Client-Side
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://developer.chrome.com/docs/lighthouse/performance/"

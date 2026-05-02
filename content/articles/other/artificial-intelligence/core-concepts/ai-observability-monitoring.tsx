@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>AI observability</strong> is the practice of collecting,
           analyzing, and acting on telemetry data from AI systems to understand
           their behavior, detect issues, and optimize performance. Unlike
@@ -32,8 +36,8 @@ export default function ArticlePage() {
           memory, error rates), AI observability must also track model-specific
           signals: output quality, token usage, prompt effectiveness,
           hallucination rates, user satisfaction, and cost per interaction.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The need for AI-specific observability stems from the probabilistic
           nature of LLM outputs. Traditional software produces deterministic
           outputs — the same input always produces the same output. AI systems
@@ -42,7 +46,7 @@ export default function ArticlePage() {
           time due to model updates, prompt changes, or shifts in input
           distribution. Without comprehensive observability, these quality
           changes go undetected until users report them.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>LLM tracing</strong> is the foundation of AI observability —
           capturing the complete execution trace of every AI interaction,
@@ -77,7 +81,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>telemetry pipeline</strong> for AI observability collects
           data from multiple sources. <strong>Application telemetry</strong>{" "}
           captures what the application sends to and receives from the model —
@@ -88,8 +95,8 @@ export default function ArticlePage() {
           distances, and session duration. <strong>Infrastructure telemetry</strong>{" "}
           captures the operational layer — GPU utilization, memory usage,
           network latency, and queue depth.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Quality metrics</strong> measure how well the AI system
           performs its intended function. These include: accuracy (does the
           output correctly answer the query), completeness (does the output
@@ -99,7 +106,7 @@ export default function ArticlePage() {
           across similar inputs). Quality metrics are the most important but
           also the hardest to measure — they often require human judgment or
           sophisticated evaluation models.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/observability-telemetry-pipeline.svg"
@@ -139,7 +146,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An AI observability architecture consists of several components. The{" "}
           <strong>collection layer</strong> instruments the AI application to
           emit telemetry — traces, metrics, and logs — at key points in the
@@ -151,7 +161,7 @@ export default function ArticlePage() {
           analytical queries — enabling engineers to monitor system health,
           debug issues, identify optimization opportunities, and report on
           AI system performance.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/quality-metrics-dashboard.svg"
@@ -159,7 +169,7 @@ export default function ArticlePage() {
           caption="Quality metrics — accuracy, completeness, helpfulness, safety, and consistency tracked over time with alert thresholds"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>LLM-as-a-judge evaluation</strong> is a common pattern for
           automated quality assessment. A separate (typically more capable) LLM
           evaluates the primary model&apos;s outputs against quality criteria
@@ -168,7 +178,7 @@ export default function ArticlePage() {
           inconsistency across runs), it provides a scalable evaluation
           mechanism that correlates reasonably well with human judgment for
           many tasks.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Distributed tracing</strong> extends traditional distributed
           tracing (OpenTelemetry, Jaeger, Zipkin) to AI workflows. Each AI
@@ -194,7 +204,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Sampling rate</strong> involves a cost-versus-visibility
           trade-off. Tracing every AI interaction provides complete visibility
           but generates massive volumes of telemetry data (each trace can be
@@ -203,8 +216,8 @@ export default function ArticlePage() {
           cost but may miss rare issues. The pragmatic approach is to trace
           every interaction but store full traces for a limited retention period
           (7-30 days), while storing aggregated metrics indefinitely.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Automated versus human evaluation</strong> presents a
           quality-versus-cost trade-off. Automated evaluation (LLM-as-a-judge,
           rule-based checks) is fast, cheap, and consistent but may miss nuanced
@@ -212,7 +225,7 @@ export default function ArticlePage() {
           inconsistent across evaluators. The recommended approach is automated
           evaluation for routine quality checks and human evaluation for
           periodic calibration.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/ai-cost-tracking-architecture.svg"
@@ -230,22 +243,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Instrument at the framework level</strong> — use LangChain
           callbacks, OpenTelemetry instrumentation, or custom middleware to
           automatically capture telemetry from every AI interaction. Do not rely
           on manual instrumentation at each call site — it is error-prone and
           inconsistent. Framework-level instrumentation ensures every
           interaction is traced, even when new call sites are added.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Track cost metrics in real-time</strong> — implement
           per-request cost tracking that logs input tokens, output tokens, model
           used, and calculated cost. Aggregate costs by feature, user, and time
           period. Set up alerts for cost anomalies (sudden spikes, unexpected
           trends). Cost observability is essential for AI systems because costs
           can spiral without visible warning.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Establish quality baselines</strong> — before deploying an AI
           system to production, establish baseline quality metrics on a
@@ -276,7 +292,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>monitoring vanity metrics</strong>{" "}
           — tracking metrics that look impressive but do not correlate with
           actual system quality. Total tokens processed, number of AI
@@ -285,15 +304,15 @@ export default function ArticlePage() {
           safe outputs. Focus on quality metrics (accuracy, helpfulness,
           safety) and business metrics (user satisfaction, support ticket
           reduction, conversion rate).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Ignoring silent failures</strong> — AI systems can degrade
           gradually without triggering any error alerts. The model continues to
           produce outputs, the system continues to respond, but the quality of
           outputs slowly declines due to input drift, model updates, or prompt
           degradation. Without quality monitoring and alerting, these silent
           failures persist until users notice and complain.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Not correlating traces with user feedback</strong> — telemetry
           data without user context is incomplete. When a user gives negative
@@ -312,7 +331,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>AI-powered customer support monitoring</strong> — tracking
           the quality, cost, and resolution rate of AI-generated support
           responses. Dashboards show AI resolution rate versus human escalation
@@ -331,8 +353,8 @@ export default function ArticlePage() {
           65 percent to 58 percent over a two-week period, the quality alerting
           system detects the drift and the team rolls back the change before
           thousands of additional tickets are mishandled.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Code assistant quality tracking</strong> — monitoring the
           acceptance rate of AI-generated code suggestions, the time developers
           spend reviewing and editing AI output, and the correlation between
@@ -354,7 +376,7 @@ export default function ArticlePage() {
           the most commonly used model) and identifies that 30 percent of
           generated suggestions are never viewed by the developer, indicating
           opportunities to reduce generation frequency and save costs.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Legal document analysis quality monitoring</strong> — a law
           firm deploying an AI system for contract review and risk assessment
@@ -386,12 +408,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: What metrics should you track for production AI systems?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Production AI systems require metrics across four categories.
             Quality metrics: accuracy (correctness of outputs), completeness
             (coverage of query aspects), helpfulness (actionable value), safety
@@ -400,8 +425,8 @@ export default function ArticlePage() {
             complete response), throughput (requests per second), error rate
             (failed requests, validation failures), and availability (uptime,
             degradation periods).
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             Cost metrics: tokens per request (input and output separately), cost
             per request (calculated from token counts and model pricing), cost
             per feature (aggregated by product area), cost per user (for budget
@@ -410,7 +435,7 @@ export default function ArticlePage() {
             engagement (re-query rate, session duration, edit distance), and
             business impact (support ticket reduction, conversion rate,
             retention).
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -43,7 +44,7 @@ export default function StaticAssetHostingArticle() {
       {/* ── 1. Definition & Context ────────────────────────────── */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Static asset hosting</strong> is the infrastructure pattern of
           serving immutable, pre-built files&mdash;JavaScript bundles, CSS
           stylesheets, images, fonts, and other binary resources&mdash;from
@@ -51,22 +52,22 @@ export default function StaticAssetHostingArticle() {
           dynamic server-rendered responses, static assets do not change between
           deployments, making them ideal candidates for aggressive caching and
           geographic distribution.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the staff/principal engineer level, static asset hosting is far more
           than &quot;put files in a bucket.&quot; It encompasses deployment
           atomicity, cache invalidation strategy, security posture (signed URLs,
           SRI, CORS), compression negotiation, cost modeling, and
           multi-region resilience. The decisions you make here directly impact
           page load performance, deployment velocity, and infrastructure spend.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Modern platforms like Vercel, Netlify, and Cloudflare Pages abstract
           much of this complexity, but understanding the underlying architecture
           is essential when you need to debug production cache issues, optimize
           egress costs, or design a custom asset pipeline for a large-scale
           application.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">
@@ -87,27 +88,27 @@ export default function StaticAssetHostingArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Object Storage:</strong> Cloud-native storage services (AWS
             S3, Google Cloud Storage, Azure Blob Storage) designed for
             durability (11 nines), high availability, and near-infinite scale.
             Assets are stored as objects with metadata (content-type,
             cache-control, content-encoding) rather than in a traditional file
             system.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>CDN (Content Delivery Network):</strong> A globally
             distributed network of edge servers (Points of Presence / PoPs) that
             cache and serve assets from locations geographically close to users.
             CloudFront, Cloud CDN, Fastly, and Cloudflare are the major
             providers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Origin Shield:</strong> A regional caching layer between
             edge PoPs and the origin that collapses concurrent cache-miss
             requests into a single upstream fetch, dramatically reducing origin
             load and egress costs.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Content-Hashed Filenames:</strong> Build tools (Webpack,
             Vite, esbuild) generate filenames containing a hash of the file
@@ -146,12 +147,12 @@ export default function StaticAssetHostingArticle() {
       {/* ── 3. Architecture & Flow ────────────────────────────── */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A production-grade static asset hosting architecture consists of three
           layers: the client layer (browser caches, service workers), the edge
           layer (CDN PoPs with origin shield), and the origin layer (object
           storage with asset manifests).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/static-asset-hosting-diagram-1.svg"
@@ -189,12 +190,12 @@ export default function StaticAssetHostingArticle() {
         </ol>
 
         <h3>Deployment Pipeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The deployment pipeline must guarantee atomicity: users should never
           load a partially deployed set of assets. The standard pattern is to
           upload all new hashed assets first, then atomically switch the entry
           point.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/static-asset-hosting-diagram-2.svg"
@@ -202,12 +203,12 @@ export default function StaticAssetHostingArticle() {
         />
 
         <h3>Caching Hierarchy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding the multi-tier caching hierarchy is essential for
           debugging &quot;why is the user seeing stale content&quot; issues and
           for optimizing cache hit ratios. The origin shield pattern is
           particularly important for reducing egress costs and origin load.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/asset-management/static-asset-hosting-diagram-3.svg"
@@ -252,10 +253,13 @@ export default function StaticAssetHostingArticle() {
       {/* ── 4. Trade-offs & Comparisons ───────────────────────── */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-theme">
+              <HighlightBlock as="tr" tier="important">
                 <th className="px-4 py-2 text-left font-semibold text-theme">
                   Approach
                 </th>
@@ -268,10 +272,10 @@ export default function StaticAssetHostingArticle() {
                 <th className="px-4 py-2 text-left font-semibold text-theme">
                   Best For
                 </th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody>
-              <tr className="border-b border-theme/50">
+              <HighlightBlock as="tr" tier="important">
                 <td className="px-4 py-2 font-medium">
                   S3 + CloudFront
                 </td>
@@ -284,8 +288,8 @@ export default function StaticAssetHostingArticle() {
                 <td className="px-4 py-2">
                   AWS-native stacks, enterprise
                 </td>
-              </tr>
-              <tr className="border-b border-theme/50">
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="px-4 py-2 font-medium">
                   GCS + Cloud CDN
                 </td>
@@ -298,7 +302,7 @@ export default function StaticAssetHostingArticle() {
                 <td className="px-4 py-2">
                   GCP-native stacks
                 </td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme/50">
                 <td className="px-4 py-2 font-medium">
                   Cloudflare R2 + CDN
@@ -392,7 +396,7 @@ export default function StaticAssetHostingArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use content-hashed filenames for all assets:</strong> This
             is non-negotiable. Every JS, CSS, image, and font file should have a
             content hash in its filename. Set{" "}
@@ -400,20 +404,20 @@ export default function StaticAssetHostingArticle() {
             all hashed assets. Only entry points (<code>index.html</code>,{" "}
             <code>manifest.json</code>) should use{" "}
             <code>Cache-Control: no-cache</code>.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enable Origin Shield:</strong> For any CDN with more than a
             handful of PoPs, enable origin shield in the region closest to your
             storage bucket. This typically reduces origin requests by 90%+ and
             significantly cuts egress costs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Pre-compress at build time:</strong> Generate both{" "}
             <code>.br</code> and <code>.gz</code> variants during the build.
             Configure the CDN to serve the best variant based on{" "}
             <code>Accept-Encoding</code>. This avoids edge CPU overhead and
             allows maximum Brotli compression quality (level 11).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement atomic deployments:</strong> Upload all new
             hashed assets before updating the entry point. Keep old asset
@@ -465,26 +469,26 @@ export default function StaticAssetHostingArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Invalidating all CDN paths on every deploy:</strong>{" "}
             Wildcard invalidation (<code>/*</code>) is expensive and slow. With
             content-hashed filenames, you only need to invalidate{" "}
             <code>/index.html</code> and possibly <code>/manifest.json</code>.
             Hashed assets never need invalidation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Forgetting to set CORS on font files:</strong> Browsers
             enforce CORS for <code>@font-face</code> cross-origin requests.
             Missing <code>Access-Control-Allow-Origin</code> headers cause fonts
             to silently fail, often only caught in production.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Query-string cache busting instead of filename hashing:</strong>{" "}
             Using <code>app.js?v=123</code> instead of{" "}
             <code>app.a1b2c3.js</code> is fragile. Some CDNs and proxies strip
             query strings, leading to stale content. Filename hashing is
             universally supported.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Not retaining old asset versions during blue-green deploys:
@@ -526,28 +530,28 @@ export default function StaticAssetHostingArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Vercel&apos;s Edge Network:</strong> Vercel deploys Next.js
             static assets to a global edge network with automatic content
             hashing, immutable caching, and instant rollback. Their architecture
             uses atomic deployments where each deploy gets a unique URL, and
             production traffic switches atomically. They pre-compress all text
             assets with Brotli and serve via their 70+ edge locations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Netlify&apos;s Atomic Deploys:</strong> Netlify pioneered
             the &quot;atomic deploy&quot; concept for JAMstack sites. Each
             deploy creates a complete, immutable snapshot of the site. Rollback
             is instant because previous snapshots are retained. They use a
             custom CDN (Netlify Edge) built on top of multiple cloud providers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Netflix&apos;s Open Connect:</strong> Netflix serves static
             media assets from its Open Connect CDN, which places custom hardware
             appliances directly in ISP networks. Their origin is backed by S3
             with multi-region replication, and they pre-position popular content
             during off-peak hours.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Shopify&apos;s Asset Pipeline:</strong> Shopify serves
             merchant storefront assets from a global CDN backed by GCS. They
@@ -568,76 +572,86 @@ export default function StaticAssetHostingArticle() {
       {/* ── 8. Security Deep Dive ─────────────────────────────── */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Static asset hosting has a unique security profile: assets are public
           by design (anyone can fetch your JS bundles), but the infrastructure
           serving them must be locked down to prevent unauthorized uploads,
-          bucket enumeration, and supply chain attacks. Bucket policies enforce
-          CDN-only access via Origin Access Control (OAC), with a statement
-          allowing CloudFront service principal to get objects only from a
-          specific distribution ARN, and a deny statement for all other access.
-          Subresource Integrity (SRI) protects against CDN tampering: build
-          tools generate SHA-384 integrity hashes that are included in script
-          tags, and browsers verify the fetched content matches the expected
-          hash before execution. For sensitive assets like premium video
-          content, signed URLs with expiration times (e.g., 1 hour) are
-          generated using CloudFront key pairs, ensuring only authorized users
-          can access the content.
-        </p>
+          bucket enumeration, and supply chain attacks.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Bucket policies enforce CDN-only access via Origin Access Control (OAC), with a statement
+          allowing CloudFront service principal to get objects only from a specific distribution ARN,
+          and a deny statement for all other access.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Subresource Integrity (SRI) protects against CDN tampering: build tools generate SHA-384
+          integrity hashes that are included in script tags, and browsers verify the fetched content
+          matches the expected hash before execution. For sensitive assets like premium video content,
+          signed URLs with expiration times (e.g., 1 hour) are generated using CloudFront key pairs,
+          ensuring only authorized users can access the content.
+        </HighlightBlock>
       </section>
 
       {/* ── 9. Cost Optimization ──────────────────────────────── */}
       <section>
         <h2>Cost Optimization</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           At scale, static asset hosting costs are dominated by CDN egress
           (data transfer out) and CDN request fees, not storage. A systematic
           approach to cost optimization focuses on maximizing cache hit ratios
-          and minimizing origin fetches. For a typical workload of 10M daily
-          page views with 2MB average assets per page and 95% CDN cache hit
-          ratio, the cost breakdown is approximately: storage at $1.15/month
-          (50GB × $0.023/GB), CDN requests at $300/month, CDN egress at
-          $850/month, and origin egress at $900/month, totaling around
-          $2,050/month. Key optimization levers include: Origin Shield which
-          reduces origin egress by 90% (saving $810/month), Brotli compression
-          reducing payload by 25% (saving $212/month), using Cloudflare R2 for
-          zero egress fees (saving $900/month on origin), and improving cache
-          hit ratio from 95% to 99% which reduces egress by 80%. S3 Lifecycle
-          policies automatically transition old assets to cheaper storage
-          classes (STANDARD_IA after 30 days, GLACIER after 90 days) and
-          expire assets after 180 days.
-        </p>
+          and minimizing origin fetches.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          For a typical workload of 10M daily page views with 2MB average assets per page and 95% CDN
+          cache hit ratio, the cost breakdown is approximately: storage at $1.15/month (50GB ×
+          $0.023/GB), CDN requests at $300/month, CDN egress at $850/month, and origin egress at
+          $900/month, totaling around $2,050/month.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Key optimization levers include: Origin Shield which reduces origin egress by 90% (saving
+          $810/month), Brotli compression reducing payload by 25% (saving $212/month), using Cloudflare
+          R2 for zero egress fees (saving $900/month on origin), and improving cache hit ratio from 95%
+          to 99% which reduces egress by 80%. S3 Lifecycle policies automatically transition old assets
+          to cheaper storage classes (STANDARD_IA after 30 days, GLACIER after 90 days) and expire
+          assets after 180 days.
+        </HighlightBlock>
       </section>
 
       {/* ── 10. Monitoring & Observability ────────────────────── */}
       <section>
         <h2>Monitoring &amp; Observability</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Effective monitoring of a static asset hosting stack requires tracking
           metrics at every layer of the caching hierarchy. The key metrics to
           alert on are: At the CDN layer, cache hit ratio (target 0.95, alert
           below 0.90), edge latency P95 (target 50ms, alert above 200ms), and
-          origin error rate (target 0.1%, alert above 1%). At the client layer
-          (Real User Monitoring), resource load time for cached assets (target
-          100ms, alert above 500ms) and SRI failures (target 0, alert above 1).
-          At the cost layer, monthly egress against budget (e.g., 5000GB budget,
-          alert at 4000GB). CloudWatch dashboards for S3 + CloudFront should
-          track TotalErrorRate, 4xx/5xxErrorRate, BytesDownloaded,
-          BytesUploaded, CacheHitRate by distribution, and OriginLatency at
-          p50, p95, and p99 percentiles.
-        </p>
+          origin error rate (target 0.1%, alert above 1%).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          At the client layer (Real User Monitoring), resource load time for cached assets (target
+          100ms, alert above 500ms) and SRI failures (target 0, alert above 1%). At the cost layer,
+          monthly egress against budget (e.g., 5000GB budget, alert at 4000GB).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          CloudWatch dashboards for S3 + CloudFront should track TotalErrorRate, 4xx/5xxErrorRate,
+          BytesDownloaded, BytesUploaded, CacheHitRate by distribution, and OriginLatency at p50, p95,
+          and p99 percentiles.
+        </HighlightBlock>
       </section>
 
       {/* ── 11. Common Interview Questions ────────────────────── */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel p-4">
-            <p className="font-semibold text-theme">
+            <HighlightBlock as="p" tier="important">
               Q: How would you design an atomic deployment strategy for static
               assets to ensure zero-downtime deploys?
-            </p>
-            <p className="mt-2 text-sm text-muted">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               Use content-hashed filenames for all assets and version-prefixed
               directories in object storage (e.g., /v42/, /v43/). Upload all new
               assets to the new version directory first. Then atomically update the
@@ -646,14 +660,14 @@ export default function StaticAssetHostingArticle() {
               instant: revert index.html to point at the previous manifest. The key
               insight is that hashed assets are immutable and can coexist
               indefinitely&mdash;only the entry point pointer changes.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel p-4">
-            <p className="font-semibold text-theme">
+            <HighlightBlock as="p" tier="important">
               Q: What is an origin shield and when would you recommend enabling
               it?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               An origin shield is a regional caching layer between edge PoPs and
               the origin. When multiple edge nodes simultaneously miss for the

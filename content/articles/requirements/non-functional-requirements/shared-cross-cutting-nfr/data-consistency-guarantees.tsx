@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,20 +25,23 @@ export default function DataConsistencyGuaranteesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Data Consistency Guarantees</strong> define what users can expect when reading and
           writing data in a system. In single-node databases, consistency is straightforward—reads return
           the most recent write. In distributed systems with replication, consistency becomes a design
           choice with significant implications for availability, latency, and complexity. For staff and
           principal engineers, understanding these trade-offs is essential for designing systems that meet
           business requirements while scaling effectively.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental trade-off is captured by the CAP theorem: you can have at most two of Consistency,
           Availability, and Partition tolerance. Different systems make different choices based on their
           requirements. The key is choosing the right consistency model for your specific use case—not all
           data requires strong consistency.
-        </p>
+        </HighlightBlock>
         <p>
           Consistency is not binary but rather a spectrum ranging from strong (linearizable) to weak
           (eventual). The right choice depends on the use case: financial transactions need strong
@@ -55,7 +59,10 @@ export default function DataConsistencyGuaranteesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data consistency in distributed systems is governed by two fundamentally different approaches:
           ACID and BASE. ACID (Atomicity, Consistency, Isolation, Durability) guarantees strong consistency
           and forms the foundation of traditional relational databases. Atomicity ensures all operations in
@@ -65,8 +72,8 @@ export default function DataConsistencyGuaranteesArticle() {
           do not interfere with each other, and Durability ensures committed data persists even after
           system failure. ACID is essential for financial systems, inventory management, order processing,
           and any domain where data correctness is critical.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           BASE (Basically Available, Soft state, Eventual consistency) sacrifices strong consistency for
           availability and partition tolerance, and is common in distributed NoSQL databases. Basically
           Available means the system remains available even during failures, potentially returning stale
@@ -76,7 +83,7 @@ export default function DataConsistencyGuaranteesArticle() {
           if no new updates are made, with convergence time depending on replication lag and conflict
           resolution. BASE suits social media feeds, caching layers, activity feeds, analytics, and
           content management systems.
-        </p>
+        </HighlightBlock>
         <p>
           Transaction isolation levels define how concurrent transactions interact, with higher isolation
           preventing more anomalies but reducing concurrency and performance. The four standard SQL
@@ -115,13 +122,16 @@ export default function DataConsistencyGuaranteesArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consistency systems in distributed environments rely on several architectural patterns that
           govern how data is replicated, how consensus is reached, and how conflicts are resolved.
           Understanding these architectures is critical for designing systems with the right consistency
           guarantees.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Replication topology determines how data flows between nodes. In single-primary (leader-follower)
           replication, all writes go to the leader and are asynchronously or synchronously replicated to
           followers. This provides strong read-after-write consistency for the leader but may serve stale
@@ -130,7 +140,7 @@ export default function DataConsistencyGuaranteesArticle() {
           writes target the same data. Leaderless replication, used by Dynamo-style databases and Cassandra,
           routes reads and writes to any node using consistent hashing, with consistency determined by
           quorum configuration.
-        </p>
+        </HighlightBlock>
         <p>
           Consensus protocols like Raft and Paxos enable distributed systems to agree on a single value
           despite node failures. Raft, used by etcd, Consul, and CockroachDB, achieves consensus through
@@ -187,33 +197,36 @@ export default function DataConsistencyGuaranteesArticle() {
 
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Choosing the right consistency model requires understanding the trade-offs across multiple
           dimensions. No single approach is universally optimal—the right choice depends on workload
           characteristics, availability requirements, and acceptable complexity.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">ACID vs BASE</h3>
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-theme">
-                <th className="p-2 text-left">Dimension</th>
+  <tr className="border-b border-theme">
+<th className="p-2 text-left">Dimension</th>
                 <th className="p-2 text-left">ACID</th>
                 <th className="p-2 text-left">BASE</th>
-              </tr>
-            </thead>
+  </tr>
+</thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Consistency</td>
                 <td className="p-2">Strong (immediate)</td>
                 <td className="p-2">Eventual</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Availability</td>
                 <td className="p-2">May degrade during partitions</td>
                 <td className="p-2">Always available</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Latency</td>
                 <td className="p-2">Higher (coordination overhead)</td>
@@ -244,16 +257,16 @@ export default function DataConsistencyGuaranteesArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Consistency</td>
                 <td className="p-2">Strong (atomic)</td>
                 <td className="p-2">Eventual</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Blocking</td>
                 <td className="p-2">Yes (locks held throughout)</td>
                 <td className="p-2">No (local transactions)</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Availability</td>
                 <td className="p-2">Poor (coordinator SPOF)</td>
@@ -290,18 +303,18 @@ export default function DataConsistencyGuaranteesArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Read Freshness</td>
                 <td className="p-2">Always latest write</td>
                 <td className="p-2">Causally related writes ordered</td>
                 <td className="p-2">May read stale data</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Write Latency</td>
                 <td className="p-2">Highest (sync replication)</td>
                 <td className="p-2">Moderate</td>
                 <td className="p-2">Lowest (async)</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Availability During Partition</td>
                 <td className="p-2">Unavailable</td>
@@ -329,16 +342,16 @@ export default function DataConsistencyGuaranteesArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Data Loss on Primary Failure</td>
                 <td className="p-2">Zero (committed on both)</td>
                 <td className="p-2">Possible (replication lag)</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Write Latency</td>
                 <td className="p-2">Higher (wait for all replicas)</td>
                 <td className="p-2">Lower (return immediately)</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Primary Availability</td>
                 <td className="p-2">Blocked if replica down</td>
@@ -356,21 +369,24 @@ export default function DataConsistencyGuaranteesArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design consistency strategies per data type rather than applying a one-size-fits-all approach.
           Document consistency requirements clearly so engineers understand which guarantees each data
           store provides. Design for the weakest consistency that meets requirements to maximize
           availability and performance. Consider read-your-writes consistency for user-facing features
           where users expect to see their changes immediately. Plan for conflict resolution in eventual
           consistency systems before conflicts occur in production.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementation should use optimistic locking for concurrent updates to avoid the overhead of
           pessimistic locking. Implement idempotent operations so retries do not cause duplicate effects.
           Design compensating actions for every step in saga-based distributed transactions. Use version
           vectors for conflict detection in leaderless replication scenarios. Test concurrent scenarios
           thoroughly, including race conditions and conflict resolution paths.
-        </p>
+        </HighlightBlock>
         <p>
           Monitoring must track replication lag to detect consistency degradation before it impacts users.
           Track consistency violations to understand how often stale data is served. Alert on transaction
@@ -388,22 +404,25 @@ export default function DataConsistencyGuaranteesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Over-engineering consistency by using strong consistency when eventual consistency is sufficient
           leads to unnecessary latency and reduced availability. The fix is to choose the weakest
           consistency model that meets requirements for each data type. Conversely, under-engineering
           consistency by using eventual consistency when strong consistency is required leads to data
           corruption and business impact. Understanding business requirements and documenting consistency
           needs prevents this.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Ignoring conflict resolution in eventually consistent systems results in data loss or
           inconsistent states when concurrent writes occur. Design conflict detection and resolution
           mechanisms before deploying to production. Sagas without compensating actions leave the system
           in an inconsistent state on failure—every saga step must have a corresponding compensating
           action. Using the default isolation level when a different level is needed can cause subtle
           concurrency anomalies; choose isolation levels per use case rather than relying on defaults.
-        </p>
+        </HighlightBlock>
         <p>
           Assuming Two-Phase Commit works well for microservices couples services too tightly and degrades
           availability—use the Saga pattern for microservice transactions instead. Ignoring replication
@@ -416,7 +435,10 @@ export default function DataConsistencyGuaranteesArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Amazon DynamoDB uses eventual consistency as its default model with configurable strong
           consistency for reads. It implements quorum-based reads and writes across multiple availability
           zones, achieving single-digit millisecond latency at any scale. DynamoDB uses vector clocks
@@ -424,15 +446,15 @@ export default function DataConsistencyGuaranteesArticle() {
           capture. For cross-region replication, DynamoDB Global Tables use multi-primary replication
           with last-writer-wins conflict resolution, providing globally distributed, eventually
           consistent tables with single-digit millisecond latency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Google Spanner provides externally consistent (serializable) isolation for globally distributed
           databases—a rarity in distributed systems. It achieves this through TrueTime API, which uses
           GPS and atomic clocks to bound clock uncertainty across datacenters. Spanner uses synchronous
           replication within regions and Paxos-based consensus across regions, trading higher write
           latency for strong consistency guarantees. This enables applications like Google Ads and Google
           Cloud Spanner customers to run globally distributed transactions with serializable isolation.
-        </p>
+        </HighlightBlock>
         <p>
           CockroachDB is a distributed SQL database that is always serializable, using Raft consensus for
           replication and synchronous writes within regions. It uses a hybrid clock model for timestamp
@@ -454,15 +476,18 @@ export default function DataConsistencyGuaranteesArticle() {
 
       <section>
         <h2>Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is the CAP theorem?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What is the CAP theorem?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: In distributed systems, you can have at most two of: Consistency (all nodes see same data
               at same time), Availability (every request gets response), Partition tolerance (system works
               despite network partitions). During network partition, must choose CP (consistency—reject
               requests) or AP (availability—may return stale data).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

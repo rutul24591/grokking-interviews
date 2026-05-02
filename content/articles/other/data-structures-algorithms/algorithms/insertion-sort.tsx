@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,10 @@ export default function InsertionSortArticle() {
       {/* SECTION 1 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Insertion sort</strong> builds a sorted prefix one element
           at a time. For each new element, it shifts larger elements in the
           sorted prefix rightward to open a slot, then drops the new
@@ -47,8 +51,8 @@ export default function InsertionSortArticle() {
           inversion-count k — making it the canonical <em>adaptive</em>{" "}
           sort. It is stable, in-place (O(1) space), and has excellent
           cache behavior because shifts are sequential memory writes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Insertion sort punches far above its asymptotic weight. Every
           serious production sort in use today — Tim Sort (Python, Java
           since 7), Pdqsort (Rust default since 2017, C++ libstdc++),
@@ -60,7 +64,7 @@ export default function InsertionSortArticle() {
           the asymptotic disadvantage. On modern CPUs, insertion sort of
           16 random integers takes fewer cycles than calling a merge-sort
           function that then operates on the same data.
-        </p>
+        </HighlightBlock>
         <p>
           The second reason insertion sort earns staff-level interest is
           the inversion count. The running time is exactly Θ(n + I) where
@@ -87,11 +91,14 @@ export default function InsertionSortArticle() {
       {/* SECTION 2 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           The shift-and-insert invariant
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For each i from 1 to n−1: store <code>key = a[i]</code>, then
           shift all elements in the sorted prefix greater than{" "}
           <code>key</code> one position right, and write <code>key</code>{" "}
@@ -100,12 +107,12 @@ export default function InsertionSortArticle() {
           elements originally in <code>a[0..i]</code>. The invariant is
           strictly strengthening — each iteration incorporates one more
           element into the sorted region.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Shifts, not swaps
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A subtle but important implementation detail: insertion sort
           performs <em>shifts</em>, not swaps. Each inversion costs one
           shift (a single read-write pair), not one swap (three
@@ -115,7 +122,7 @@ export default function InsertionSortArticle() {
           stores the key aside, shifts until the insertion point is found,
           then writes the key — a strictly cheaper memory pattern than
           swap-based formulations.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Adaptiveness and inversion count
@@ -158,11 +165,14 @@ export default function InsertionSortArticle() {
       {/* SECTION 3 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Sequential execution trace
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Input <code>[5, 2, 4, 6, 1, 3]</code>. Iteration 1: key=2, shift
           5 right → <code>[2, 5, 4, 6, 1, 3]</code>. Iteration 2: key=4,
           shift 5 right → <code>[2, 4, 5, 6, 1, 3]</code>. Iteration 3:
@@ -171,16 +181,16 @@ export default function InsertionSortArticle() {
           Iteration 5: key=3, shift 6, 5, 4 right →{" "}
           <code>[1, 2, 3, 4, 5, 6]</code>. Total: 5 iterations, 10 shifts
           (= inversion count), 13 comparisons.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Hybrid sorts — insertion as small-n base case
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Introsort, Tim Sort, and Pdqsort all recurse or partition until
           subarrays fall below a threshold, then switch to insertion sort.
           The thresholds are empirically tuned:
-        </p>
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
           <li>
             <strong>Tim Sort (Python, Java)</strong>: 32 elements —
@@ -248,6 +258,9 @@ export default function InsertionSortArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Complexity summary
@@ -293,7 +306,7 @@ export default function InsertionSortArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Insertion sort vs bubble sort
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Same asymptotic complexity; insertion sort wins on every
           practical metric. Insertion performs shifts (one read-write
           pair) instead of swaps (three), halving memory traffic.
@@ -301,12 +314,12 @@ export default function InsertionSortArticle() {
           insertion point; bubble sort always completes the full pass.
           Both are stable, adaptive with the flag, and in-place. Every
           production library uses insertion sort; none use bubble sort.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Insertion sort vs selection sort
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Selection performs exactly n−1 swaps, insertion performs up to
           n(n−1)/2 shifts. On workloads where writes are expensive
           (flash, large records), selection wins. On workloads where
@@ -314,7 +327,7 @@ export default function InsertionSortArticle() {
           nearly-sorted, insertion wins dramatically because of
           adaptiveness — insertion is O(n) on sorted input, selection is
           always Θ(n²). For general-purpose use, insertion dominates.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Insertion sort vs quicksort and merge sort at small n
@@ -347,19 +360,22 @@ export default function InsertionSortArticle() {
       {/* SECTION 5 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use insertion sort as the small-n base case in any
             recursive sort.</strong> Threshold 16–32 is standard. This is
             not an optimization — it is a correctness-preserving performance
             requirement for production-grade sort libraries.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Prefer shifts over swaps in the implementation.</strong>{" "}
             Store the key, shift in place, write the key once. This halves
             memory traffic compared to the pedagogical swap-based
             formulation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use binary insertion when comparisons are
             expensive.</strong> Record comparators that dispatch through
@@ -391,30 +407,33 @@ export default function InsertionSortArticle() {
       {/* SECTION 6 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Confusing shifts with swaps
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A common implementation mistake is using <code>swap</code>{" "}
           inside the inner loop. This works correctly but performs 3×
           the memory writes of the canonical shift-and-insert. The
           pedagogical simplicity of swap-based insertion sort masks a
           substantial performance regression. Always implement with
           key-aside-shift-and-drop.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Breaking stability with <code>&gt;=</code>
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Using <code>&gt;=</code> in the shift condition allows equal
           elements to be shifted past each other, reversing their relative
           order. The single-character fix from <code>&gt;=</code> to{" "}
           <code>&gt;</code> preserves stability. This matters for
           multi-pass sorts that rely on preserving secondary-key ordering
           from a previous pass.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Using insertion sort on large random inputs
@@ -456,11 +475,14 @@ export default function InsertionSortArticle() {
       {/* SECTION 7 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Small-n base case in production sorts
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The dominant legitimate use. Every modern sort library switches
           to insertion sort below a hardware-tuned threshold. Python&apos;s
           Tim Sort, Java&apos;s Arrays.sort (both the object sort using
@@ -469,12 +491,12 @@ export default function InsertionSortArticle() {
           introsort — all of them. Without insertion sort as the small-n
           case, production sorts would be 20–30% slower on real-world
           data.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Tim Sort run-merging and galloping
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tim Sort finds naturally-occurring sorted runs in the input,
           extends short runs using binary insertion sort to reach a
           minimum run length (typically 32–64), then merges adjacent
@@ -482,7 +504,7 @@ export default function InsertionSortArticle() {
           on the tail of a short run. Peter McIlroy&apos;s 1993 paper on
           natural mergesort and Tim Peters&apos; 2002 Python
           implementation both built on the insertion-sort primitive.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Nearly-sorted real-world data
@@ -523,14 +545,17 @@ export default function InsertionSortArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Common Interview Questions
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q1. Why is insertion sort used as the small-n base case in
               production sorts?
-            </p>
-            <p className="mt-2">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2">
               At small n (below ~16–64, hardware-dependent),
               insertion sort&apos;s low constant factor and predictable
               inner loop beat any O(n log n) algorithm. The O(n log n)
@@ -541,7 +566,7 @@ export default function InsertionSortArticle() {
               pipelines. Every production library (Tim Sort, Pdqsort,
               introsort, Arrays.sort) switches to insertion sort below its
               threshold.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

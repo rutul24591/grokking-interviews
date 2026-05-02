@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -40,7 +41,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Write scaling</strong> is the set of architectural techniques
           and operational strategies used to increase a distributed system&apos;s
           capacity to accept, process, and durably persist write operations as
@@ -52,8 +56,8 @@ export default function ArticlePage() {
           be reflected in the authoritative data store, and the mechanisms by
           which that happens determine the system&apos;s write throughput
           ceiling.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The core challenge of write scaling is that writes cannot be freely
           replicated or cached. A read can be served from any replica that
           holds the data, and stale reads are often acceptable for many
@@ -65,7 +69,7 @@ export default function ArticlePage() {
           scaling is primarily about <em>partitioning</em> (splitting the
           write workload across independent nodes that each own a disjoint
           subset of the data).
-        </p>
+        </HighlightBlock>
         <p>
           In a single-node database, write throughput is bounded by the node&apos;s
           I/O capacity (disk write bandwidth, fsync latency), CPU capacity
@@ -102,8 +106,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Write-throughput optimization</strong> begins with
           understanding the bottleneck. In most production databases, the
           dominant constraint on write throughput is not CPU or network
@@ -118,9 +125,9 @@ export default function ArticlePage() {
           grouping them (batching), delaying them (buffering), or reducing the
           number of physical writes required per logical write (reducing
           amplification).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Batch writes</strong> are the process of coalescing multiple
           individual write operations into a single atomic batch that is
           persisted in one I/O operation. Instead of executing five separate
@@ -140,7 +147,7 @@ export default function ArticlePage() {
           in write acknowledgment), but for latency-sensitive workloads (e.g.,
           financial trading systems), the batch window must be kept very small
           (1–5 ms) or batching must be avoided entirely.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Write buffering</strong> extends the batching concept by
@@ -237,8 +244,11 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The write path in a scaled distributed system follows a multi-stage
           pipeline. A client initiates a write request, which is first received
           by an API gateway or write coordinator. The coordinator validates the
@@ -250,9 +260,9 @@ export default function ArticlePage() {
           The routing is typically determined by a consistent hash of the
           partition key, or by consulting a metadata service that maintains the
           current partition-to-node mapping.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Once the write reaches the correct partition node, it enters the
           write buffer — a queue that collects writes and releases them in
           batches. The buffer may be in-memory (fast but volatile) or durable
@@ -263,7 +273,7 @@ export default function ArticlePage() {
           coalesce writes to the same key, and release writes to the storage
           engine at a rate that the storage engine can sustain without
           saturating its I/O capacity.
-        </p>
+        </HighlightBlock>
 
         <p>
           From the buffer, writes are flushed to the write-ahead log (WAL). The
@@ -337,8 +347,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every write scaling strategy involves explicit trade-offs between
           throughput, latency, consistency, and operational complexity.
           Understanding these trade-offs is essential for selecting the right
@@ -348,7 +361,7 @@ export default function ArticlePage() {
           write latency and consistency guarantees, which leads to systems that
           achieve high throughput but violate their SLOs for write latency or
           data durability.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -447,7 +460,7 @@ export default function ArticlePage() {
           caption="Write scaling strategies comparison — throughput gains versus operational complexity across five major strategies"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Sharding vs. partitioning</strong> is often confused, but they
           serve different purposes. Sharding distributes data across independent
           database instances (each shard is a complete database with its own
@@ -461,7 +474,7 @@ export default function ArticlePage() {
           complexity (single database to manage, but partition key design is
           critical). For most teams, partitioning is the right first step, and
           sharding is adopted only when partitioning reaches its limits.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Batching vs. write buffering</strong> are complementary
@@ -508,8 +521,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Begin with a write amplification audit before implementing any write
           scaling strategy. Measure the amplification factor of your current
           write workload by instrumenting the storage layer to count physical
@@ -521,9 +537,9 @@ export default function ArticlePage() {
           In many production systems, removing two or three unused secondary
           indexes reduces write amplification by 30–50%, which is equivalent to
           doubling or tripling write throughput on the existing hardware.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choose partition keys that distribute writes uniformly across
           partitions. The most common cause of write scaling failure is a poorly
           chosen partition key that creates hot partitions. Sequential or
@@ -537,7 +553,7 @@ export default function ArticlePage() {
           suffix) to distribute the hotspot across multiple partitions. The
           trade-off is that reads must now query all salted partitions and
           aggregate the results, which increases read latency.
-        </p>
+        </HighlightBlock>
 
         <p>
           Configure batch sizes based on empirical latency measurements, not
@@ -592,8 +608,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most pervasive pitfall in write scaling is the <em>hot partition
           problem</em>, where a disproportionate share of writes targets a
           single partition, creating a bottleneck that negates the benefits of
@@ -608,9 +627,9 @@ export default function ArticlePage() {
           is independent of the access pattern (e.g., a hash of the primary key)
           and to implement adaptive partitioning that splits hot partitions into
           smaller sub-partitions when their write rate exceeds a threshold.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Another common pitfall is <em>unbounded write queues</em> that absorb
           write load indefinitely without applying backpressure. When the write
           rate exceeds the storage engine&apos;s sustainable throughput, the
@@ -623,7 +642,7 @@ export default function ArticlePage() {
           write can be retried by the client after backoff, but a write stuck in
           a deep queue provides no feedback to the client and may be lost if the
           system crashes before the write is processed.
-        </p>
+        </HighlightBlock>
 
         <p>
           <em>Write amplification creep</em> is a subtle pitfall where the
@@ -680,8 +699,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-world Use Cases */}
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>IoT telemetry ingestion</strong> is the canonical write-heavy
           workload. A fleet of 100,000 IoT devices sending telemetry data every
           10 seconds generates 10,000 writes per second, and this rate grows
@@ -699,9 +721,9 @@ export default function ArticlePage() {
           devices and sends it in batches to the central storage system), which
           reduces the number of network round trips and amortizes the per-batch
           overhead across many writes.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Event logging and audit trails</strong> represent another
           write-heavy workload where every action in the system must be recorded
           permanently. A financial services platform may need to log every
@@ -717,7 +739,7 @@ export default function ArticlePage() {
           path eliminates write amplification entirely (no index updates, no
           page rewrites), and the event log provides a complete, immutable audit
           trail that satisfies regulatory requirements.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>E-commerce order processing</strong> combines write-heavy and
@@ -761,13 +783,16 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="text-lg font-semibold text-heading mb-3">
             Question 1: How do you scale write throughput in a database that is
             becoming I/O-bound? Walk through your approach step by step.
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The first step is to diagnose the specific bottleneck. I/O-bound
             writes are typically constrained by fsync latency (the cost of
             flushing data to persistent storage) rather than raw sequential
@@ -776,15 +801,15 @@ export default function ArticlePage() {
             understand how many physical I/O operations each logical write
             triggers. This includes primary data page writes, secondary index
             updates, WAL appends, and replication writes.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             If the amplification factor is high (greater than 5x), I would first
             reduce amplification by removing unused secondary indexes,
             deferring materialized view updates to asynchronous processes, and
             switching from synchronous to asynchronous replication where
             durability requirements allow. This is the lowest-cost intervention
             because it requires no architectural changes.
-          </p>
+          </HighlightBlock>
           <p>
             Next, I would implement write batching at the storage engine level.
             By coalescing multiple writes into a single batch that is flushed

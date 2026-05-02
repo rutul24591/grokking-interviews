@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -31,7 +32,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Retry mechanisms are a foundational resilience pattern in distributed
           systems. When a service-to-service request fails due to a transient
           error — a network timeout, a momentarily overloaded downstream, a
@@ -42,8 +46,8 @@ export default function ArticlePage() {
           user, and are governed by carefully calibrated policies that balance
           the probability of eventual success against the risk of amplifying
           load on an already-struggling dependency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The need for retries arises from the fundamental property of
           distributed systems known as the fallacy of reliable networks. In
           practice, networks are not reliable: packets are dropped, connections
@@ -55,7 +59,7 @@ export default function ArticlePage() {
           error, degrading the perceived reliability of the system. With
           retries, the system absorbs these failures internally and presents a
           more reliable surface to the user.
-        </p>
+        </HighlightBlock>
         <p>
           However, retries are a double-edged sword. An uncontrolled retry
           policy — one that retries too aggressively, too many times, or on the
@@ -79,14 +83,17 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust retry mechanism is built on four pillars: error
           classification, backoff strategy, retry budget, and idempotency
           guarantees. Each pillar addresses a different dimension of the retry
           problem, and all four must be present for the mechanism to be safe in
           production.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Error classification is the first and most critical decision: which
           errors are retriable and which are not. Retriable errors are those
           that are likely to be transient — network timeouts, connection
@@ -105,7 +112,7 @@ export default function ArticlePage() {
           the retry count aggressively and to monitor the success-after-retry
           rate to ensure that the retries are actually recovering requests
           rather than burning through the budget.
-        </p>
+        </HighlightBlock>
         <p>
           The backoff strategy determines how long the client waits between
           retry attempts. A naive approach — retrying immediately or with a
@@ -170,13 +177,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In a production system, retry logic is implemented at one of three
           layers: within the client library, within a service-mesh sidecar
           proxy, or within an API gateway. Each layer has different trade-offs
           in terms of flexibility, observability, and operational complexity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Client-side retries are the most common approach. Each service&apos;s
           HTTP or gRPC client library includes retry logic that is configured
           with the error classification rules, backoff parameters, and retry
@@ -191,7 +201,7 @@ export default function ArticlePage() {
           system-wide behavior. Additionally, client-side retries require every
           development team to understand and implement the retry policy
           correctly, which is a source of operational risk.
-        </p>
+        </HighlightBlock>
         <p>
           Service-mesh retries move the retry logic into the sidecar proxy
           (typically Envoy) that sits alongside each service. The retry policy
@@ -251,7 +261,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental trade-off in retry design is between availability and
           load amplification. More retries improve the probability that any
           given transient failure will be recovered, which improves the
@@ -262,8 +275,8 @@ export default function ArticlePage() {
           rate while keeping the retry rate below the budget threshold. Finding
           this optimum requires continuous monitoring and adjustment, not a
           set-and-forget configuration.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compared to request hedging, retries address a different failure mode
           and have different cost characteristics. Hedging sends duplicate
           requests proactively, before the original has failed, and accepts the
@@ -278,7 +291,7 @@ export default function ArticlePage() {
           provide more value. In practice, most systems need both, and the
           interaction between them must be carefully managed to avoid
           multiplicative load amplification.
-        </p>
+        </HighlightBlock>
         <p>
           Compared to circuit breakers, retries and circuit breakers serve
           complementary roles. A circuit breaker monitors the error rate of a
@@ -314,7 +327,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Classify errors carefully and retry only on errors that are genuinely
           transient. Retriable errors include network timeouts, connection
           refusals, HTTP 503, HTTP 429, and gRPC UNAVAILABLE. Non-retriable
@@ -325,8 +341,8 @@ export default function ArticlePage() {
           Maintain a list of retriable error codes that is reviewed and updated
           as the system evolves, and ensure that every client library and every
           mesh configuration uses the same classification.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use exponential backoff with full jitter for all retry attempts. The
           formula sleep = random(0, min(cap, base * 2 ^ attempt)) provides the
           best desynchronization properties. Set the base delay to a value that
@@ -337,7 +353,7 @@ export default function ArticlePage() {
           three for latency-sensitive user-facing paths and five to seven for
           background or batch processing tasks where additional latency is
           acceptable.
-        </p>
+        </HighlightBlock>
         <p>
           Enforce a retry budget of ten to twenty percent of total traffic,
           measured over a sliding one-minute window. The budget should be
@@ -374,7 +390,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common and most dangerous pitfall is retrying without
           timeouts. If a client retries a request that has not failed but is
           simply slow, and the client has no timeout configured, the client will
@@ -383,8 +402,8 @@ export default function ArticlePage() {
           clearly defined timeout that is shorter than the overall request
           deadline, and the timeout must be enforced at the transport level, not
           just at the application level.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A second pitfall is infinite or excessive retries. Some systems retry
           until success or until a very high maximum count, without considering
           the cumulative latency that the caller will experience. If a caller
@@ -393,7 +412,7 @@ export default function ArticlePage() {
           deadline. The maximum retry count should be calibrated against the
           caller&apos;s timeout so that all retry attempts complete before the
           deadline expires.
-        </p>
+        </HighlightBlock>
         <p>
           A third pitfall is retrying non-idempotent writes. When a POST request
           that creates a resource is retried, and the downstream does not
@@ -427,7 +446,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Amazon&apos;s e-commerce platform uses retries extensively across its
           service-oriented architecture. During peak events like Prime Day, when
           traffic increases by an order of magnitude, transient failures become
@@ -439,8 +461,8 @@ export default function ArticlePage() {
           budget is enforced globally, and during peak events, the budget is
           temporarily increased to accommodate the higher failure rate without
           triggering budget exhaustion that would suppress retries entirely.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Stripe&apos;s payment processing platform faces a unique challenge:
           every write operation — every charge, every refund — must be
           idempotent because network failures between the client and Stripe&apos;s
@@ -453,7 +475,7 @@ export default function ArticlePage() {
           the payment. This ensures that retries are safe even for financial
           transactions, and it allows merchants to retry aggressively without
           risking duplicate charges.
-        </p>
+        </HighlightBlock>
         <p>
           Google&apos;s internal infrastructure uses retries at every layer of
           its service stack, from the lowest-level RPC framework (gRPC&apos;s
@@ -482,13 +504,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="rounded-lg bg-panel-soft p-6">
           <h3 className="mb-2 text-lg font-semibold">
             Q1: What is a retry storm, how does it occur, and how do you
             prevent it?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A retry storm is a positive feedback loop in which a downstream
             service degrades, causing upstream clients to retry their failed
             requests, which increases the load on the downstream, causing it to
@@ -507,7 +532,7 @@ export default function ArticlePage() {
             recover. Together, these mechanisms ensure that retries improve
             availability during transient failures without amplifying failures
             during sustained outages.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="rounded-lg bg-panel-soft p-6">
@@ -515,7 +540,7 @@ export default function ArticlePage() {
             Q2: Explain the difference between exponential backoff and
             exponential backoff with jitter, and why jitter matters.
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Exponential backoff increases the delay between retry attempts
             exponentially: the first retry fires after a base delay, the second
             after twice that delay, the third after four times, and so on. This
@@ -531,7 +556,7 @@ export default function ArticlePage() {
             bounds. The result is that the downstream receives a steady trickle
             of retries rather than a synchronized spike, which is much easier
             for it to absorb while recovering.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="rounded-lg bg-panel-soft p-6">

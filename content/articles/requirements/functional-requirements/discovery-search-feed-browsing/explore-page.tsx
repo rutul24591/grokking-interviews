@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,21 +34,24 @@ export default function ExplorePageArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Explore Page</strong> is a dedicated discovery destination that helps
           users find new content, topics, and creators beyond their existing follow graph.
           Unlike the feed (which shows content from followed accounts), the explore page
           surfaces trending topics, curated collections, and personalized recommendations
           to expand user interests and drive engagement. It is a critical feature for
           user retention—users who discover relevant content are more likely to return.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Explore pages balance multiple objectives: surfacing trending content (what's
           popular now), personalized recommendations (what you might like), and diverse
           content (expanding your horizons). Twitter's Explore tab drives 30% of
           engagement, Instagram's Explore is the primary discovery surface for younger
           users, and YouTube's Explore homepage drives billions of views monthly.
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, explore page implementation involves recommendation
           algorithms (collaborative filtering, content-based), diversity optimization
@@ -58,10 +62,13 @@ export default function ExplorePageArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Explore vs Feed</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding the distinction between explore and feed is critical:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Feed:</strong> Content from accounts/topics you follow. Primarily
@@ -81,9 +88,9 @@ export default function ExplorePageArticle() {
         </ul>
 
         <h3 className="mt-6">Explore Page Sections</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Typical explore page components:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Trending Topics:</strong> What's popular platform-wide or in your
@@ -162,10 +169,13 @@ export default function ExplorePageArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production explore page involves multiple components working together for
           personalized, diverse discovery.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery-search-feed-browsing/explore-page/explore-page-architecture.svg"
@@ -229,9 +239,9 @@ export default function ExplorePageArticle() {
         />
 
         <h3 className="mt-6">Curation Tools</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Editor-facing tools for content curation:
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -285,9 +295,12 @@ export default function ExplorePageArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Explore page design involves balancing discovery, relevance, and diversity.
-        </p>
+        </HighlightBlock>
 
         <h3>Manual vs Algorithmic Curation</h3>
         <div className="overflow-x-auto">
@@ -336,11 +349,11 @@ export default function ExplorePageArticle() {
         />
 
         <h3 className="mt-6">Personalization vs Discovery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>High Personalization:</strong> Show content similar to past engagement.
           High relevance, low discovery. Risk: Filter bubble, user gets stuck in echo
           chamber.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>High Discovery:</strong> Show diverse, novel content. Low relevance
           initially, high discovery potential. Risk: User overwhelmed, low engagement.
@@ -369,16 +382,19 @@ export default function ExplorePageArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Balance Sections:</strong> Mix trending, personalized, curated,
             discovery. Don't let one section dominate. Target: 30% trending, 40%
             personalized, 20% curated, 10% discovery.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Fresh Content:</strong> Prioritize new content in explore. Users
             come to discover, not see old content. Boost content &lt;24 hours old.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Diversity Constraints:</strong> Limit consecutive items from same
             topic/source. Ensure topic diversity (no more than 30% from one category).
@@ -408,15 +424,18 @@ export default function ExplorePageArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Echo Chamber:</strong> Only showing content similar to past engagement.
             Solution: Allocate exploration budget (10-20% for discovery).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Stale Content:</strong> Old content dominates explore. Solution:
             Freshness boost, decay old content scores.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Over-curation:</strong> Too many curated sections, not enough
             algorithmic. Solution: Balance manual and algorithmic (30/70 split).
@@ -438,17 +457,20 @@ export default function ExplorePageArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Twitter Explore</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter Explore shows trending topics, news, sports, entertainment. Personalized
           based on followed accounts, engaged topics. Includes "Because you followed"
           section for topic discovery.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Real-time trending computation—topics update
           every 5 minutes based on engagement velocity. Breaking news surfaces immediately.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Instagram Explore</h3>
         <p>
@@ -484,17 +506,20 @@ export default function ExplorePageArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How is Explore different from Feed?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How is Explore different from Feed?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Feed shows content from accounts/topics you follow—
               primarily chronological or ranked by engagement with followed accounts.
               Explore shows content beyond your follow graph—trending topics, personalized
               recommendations, curated collections. Feed is for keeping up with existing
               interests; Explore is for discovering new interests. Some overlap (viral
               posts from followed accounts) but Explore should prioritize novelty.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

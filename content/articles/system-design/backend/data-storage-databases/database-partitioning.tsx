@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -79,21 +80,24 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Horizontal vs Vertical Partitioning</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Horizontal Partitioning (Sharding)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Horizontal partitioning</strong> splits tables by rows. Each partition has the
           same schema but contains different rows. This is also called <strong>sharding</strong>.
           Example: A users table partitioned by user_id ranges—partition 1 has users 1-100K,
           partition 2 has users 100K-200K. Each partition is a complete, independent table.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Horizontal partitioning enables <strong>horizontal scaling</strong>: add more partitions
           (servers) to handle more data and throughput. This is essential for high-growth
           applications. However, it introduces complexity: queries spanning multiple partitions
           (cross-partition queries) are slow, and distributed transactions are limited.
-        </p>
+        </HighlightBlock>
 
         <p>
           Common horizontal partitioning strategies: <strong>Range-based</strong> (partition by
@@ -161,18 +165,21 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Cross-Partition Queries &amp; Rebalancing</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Cross-Partition Query Challenge</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cross-partition queries (queries that span multiple partitions) are the primary
           challenge of partitioning. A query like <code className="inline-code">SELECT * FROM users WHERE country = 'US'</code> may need to scan all partitions if country isn't the shard key. This is 10-100x slower than single-partition queries due to network overhead, parallel query coordination, and result merging.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cross-partition queries become bottlenecks at scale. A single slow query can consume
           resources across all partitions, affecting overall throughput. At extreme scale,
           cross-partition queries may timeout or fail entirely.
-        </p>
+        </HighlightBlock>
 
         <p>
           Mitigation strategies: <strong>Denormalization</strong>—duplicate data by query pattern
@@ -234,20 +241,23 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Partitioning vs Replication</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Partitioning and replication are both scaling strategies, but they solve different
           problems. Understanding the trade-offs helps you choose the right approach—or combine
           both.
-        </p>
+        </HighlightBlock>
 
         <h3>Partitioning Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Horizontal scaling</strong> is the primary advantage. Partitioning enables
           databases to scale beyond single-machine limits. Add more partitions for more storage
           and write throughput. This is essential for high-growth applications (millions to
           billions of rows).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Write throughput</strong> scales linearly with partitions. Each partition
@@ -332,19 +342,22 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Database Partitioning</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Start with single node.</strong> Don't partition prematurely. Modern databases
           handle millions of rows on single nodes. Partition when you hit limits (storage,
           write throughput, query performance), not before.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Choose shard key carefully.</strong> This is the most critical decision.
           Analyze query patterns: what fields are in WHERE clauses? Choose high-cardinality,
           evenly-distributed fields. Avoid monotonically increasing values (timestamps,
           auto-increment IDs).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Design for query patterns.</strong> Structure partitions so common queries
@@ -375,20 +388,23 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Premature partitioning.</strong> Partitioning before hitting limits adds
           complexity without benefit. Solution: Start with single node, monitor metrics,
           partition when you hit limits (storage more than 80% full, write latency increasing, queries
           slowing down).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Poor shard key selection.</strong> Choosing low-cardinality or skewed keys
           causes hot spots (one partition overloaded). Solution: Analyze data distribution
           before choosing, test with production-like data, monitor partition sizes after
           deployment.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Ignoring cross-partition query cost.</strong> Cross-partition queries are
@@ -418,21 +434,24 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Multi-Tenant SaaS (Shopify, Salesforce)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Multi-tenant SaaS platforms partition by tenant_id (shop_id for Shopify, org_id for
           Salesforce). Each tenant's data is isolated in dedicated partitions. Benefits: data
           isolation (security, compliance), noisy neighbor prevention (one tenant's load doesn't
           affect others), easy tenant migration (move partition to different server), simplified
           deletion (drop partition for churned tenants).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This pattern works because SaaS queries are typically tenant-scoped (all queries
           include tenant_id in WHERE clause). Cross-tenant queries are rare (admin dashboards
           can use separate analytics database).
-        </p>
+        </HighlightBlock>
 
         <h3>Time-Series Data (IoT, Monitoring)</h3>
         <p>
@@ -478,14 +497,17 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: When would you partition a database? What are the signs that partitioning is
               needed?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Partition when you hit single-node limits. Signs: (1)
               Storage—database approaching disk capacity, (2) Write throughput—write latency
               increasing, write queue building up, (3) Query performance—queries slowing down
@@ -494,7 +516,7 @@ export default function ArticlePage() {
               databases handle millions of rows on single nodes. Partition when metrics show
               limits, not based on arbitrary row counts. Start with read replicas and query
               optimization before partitioning.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> What's the first step before partitioning? Answer:
               Analyze query patterns. Identify most common queries, ensure they can be served

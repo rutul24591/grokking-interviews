@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,21 +34,24 @@ export default function RecommendationAlgorithmsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Recommendation Algorithms</strong> are ML systems that predict which items
           (content, products, connections) a user will find relevant. They are the core
           discovery engine for modern platforms—Netflix attributes 80% of watched content to
           recommendations, Amazon reports 35% of revenue from product recommendations, and
           YouTube's recommendation system drives 70% of watch time.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The recommendation problem is fundamentally about information filtering: given
           millions of items and thousands of users, efficiently surface the handful of items
           each user will engage with. This requires solving multiple challenges: sparse
           interaction data (most users interact with &lt;0.01% of items), cold start (new
           users/items with no history), scalability (millions of users × millions of items),
           and diversity (avoiding filter bubbles while maintaining relevance).
-        </p>
+        </HighlightBlock>
         <p>
           For staff-level engineers, recommendation systems represent a complex distributed
           systems challenge combining ML infrastructure, real-time feature computation,
@@ -57,12 +61,15 @@ export default function RecommendationAlgorithmsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Collaborative Filtering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Collaborative filtering (CF) recommends items based on user-item interaction patterns,
           without requiring item content analysis. The core insight: users who agreed in the
           past will agree in the future.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>User-Based CF:</strong> Find similar users, recommend what they liked.
@@ -83,10 +90,10 @@ export default function RecommendationAlgorithmsArticle() {
         </ul>
 
         <h3 className="mt-6">Content-Based Filtering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Content-based filtering recommends items similar to what the user liked before,
           based on item features.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Feature Extraction:</strong> TF-IDF for text, CNN embeddings for images,
@@ -155,10 +162,13 @@ export default function RecommendationAlgorithmsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Production recommendation systems use a multi-stage pipeline to efficiently
           narrow millions of candidates to a personalized shortlist.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/discovery/recommendation-algorithms/collaborative-filtering-architecture.svg"
@@ -193,10 +203,10 @@ export default function RecommendationAlgorithmsArticle() {
         </ol>
 
         <h3 className="mt-6">Matrix Factorization Deep Dive</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Matrix factorization is the workhorse of collaborative filtering. Given a sparse
           user-item interaction matrix R (m users × n items), factorize into:
-        </p>
+        </HighlightBlock>
         <p className="my-4 font-mono text-sm">
           R ≈ U × V^T
         </p>
@@ -268,10 +278,13 @@ export default function RecommendationAlgorithmsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Recommendation algorithm selection involves balancing accuracy, scalability,
           interpretability, and cold start handling.
-        </p>
+        </HighlightBlock>
 
         <h3>Algorithm Comparison</h3>
         <div className="overflow-x-auto">
@@ -341,11 +354,11 @@ export default function RecommendationAlgorithmsArticle() {
         />
 
         <h3 className="mt-6">Exploration vs Exploitation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Exploitation:</strong> Recommend what you know the user will like.
           Maximizes short-term engagement but creates filter bubbles and prevents new
           item discovery.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Exploration:</strong> Recommend uncertain items to learn preferences.
           Reduces short-term engagement but improves long-term accuracy and diversity.
@@ -376,17 +389,20 @@ export default function RecommendationAlgorithmsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Multi-Stage Pipeline:</strong> Never rank all items directly.
             Candidate generation (fast, high recall) → scoring (accurate, lower recall) →
             re-ranking (business rules). Each stage narrows by 10-100x.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Handle Cold Start Explicitly:</strong> New users: onboarding flow,
             popularity-based, demographic-based. New items: content-based scoring,
             temporary boost, show to engaged users first.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement Negative Feedback:</strong> Track not just clicks but
             skips, hides, reports. Use implicit negative signals (short dwell time =
@@ -422,17 +438,20 @@ export default function RecommendationAlgorithmsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Cold Start:</strong> New users see irrelevant recommendations,
             new items never get exposure. Solution: Explicit cold start strategies,
             content-based fallback, exploration bandits.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Feedback Loops:</strong> Recommended items get more clicks, reinforcing
             their position regardless of quality. Solution: De-bias training data, use
             inverse propensity scoring, inject exploration.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Popularity Bias:</strong> Model recommends only popular items, creating
             rich-get-richer effect. Solution: Down-weight popularity in training, ensure
@@ -463,20 +482,23 @@ export default function RecommendationAlgorithmsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Netflix Recommendations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix uses ensemble of 100+ models for different surfaces (homepage,
           &quot;because you watched&quot;, email). Key innovations: artwork personalization
           (different thumbnails for same title based on predicted appeal), taste profiles
           (cluster users by preference patterns), session-based &quot;continue watching&quot;
           prioritization.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Innovation:</strong> Netflix Prize (2006-2009) offered $1M for 10%
           improvement in rating prediction. Winner: BellKor's Pragmatic Chaos used ensemble
           of 107 models. Modern Netflix system uses deep learning with attention mechanisms.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">YouTube Recommendations</h3>
         <p>
@@ -517,17 +539,20 @@ export default function RecommendationAlgorithmsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you scale collaborative filtering?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you scale collaborative filtering?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use distributed matrix factorization (Spark ALS) for
               training. For inference, pre-compute item-item similarity offline, store in
               key-value store. Use approximate nearest neighbors (FAISS, Annoy) for
               candidate generation. Implement two-stage pipeline: retrieve 1000 candidates
               with CF, score with ML model, return top 100. Cache recommendations for
               returning users with TTL.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

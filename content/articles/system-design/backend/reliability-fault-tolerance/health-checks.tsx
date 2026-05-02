@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Health checks</strong> are signals used by routing layers, orchestrators, and service discovery systems to determine whether a component should receive traffic. They bridge observability and control: a health signal can remove capacity from service, trigger automated remediation, or redirect traffic away from unhealthy instances. Health checks are the connective tissue between detecting a failure and acting on it.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Health checks are deceptively simple—a URL that returns 200 means "healthy"—but designing them correctly for production systems is one of the most error-prone aspects of reliability engineering. A check that is too shallow misses real failure and keeps broken instances in rotation. A check that is too strict ejects healthy nodes and reduces capacity during peak load, potentially causing a cascade where the system removes instances faster than it can recover them.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, health checks require balancing four competing concerns. <strong>Accuracy</strong> means the check must correctly identify both healthy and unhealthy states—false negatives eject healthy capacity, false negatives keep broken nodes serving traffic. <strong>Latency</strong> means the check itself must be fast and low-impact—a probe that triggers expensive logic can overload the system it is trying to monitor. <strong>Consumer awareness</strong> means understanding who consumes the health signal and what action they take—Kubernetes restarts pods, load balancers route traffic, service discovery publishes or withdraws endpoints, and each consumer has different failure consequences. <strong>Stability</strong> means the check must not cause oscillation—rapid cycling between healthy and unhealthy states that creates churn, probe storms, and capacity collapse.
         </p>
@@ -48,6 +52,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/reliability-fault-tolerance/health-check-types.svg"
@@ -56,12 +63,12 @@ export default function ArticlePage() {
         />
 
         <h3>Liveness Probes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Liveness probes answer the binary question: "is the process alive?" They check whether the application process is running and able to respond to a basic request. Liveness probes are intentionally shallow—they do not check database connectivity, downstream dependency health, or initialization status. A liveness probe failure triggers process restart, not traffic removal.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The design principle for liveness probes is minimalism. The probe endpoint should do the least work necessary to confirm the process is responsive. It should not depend on any external system, perform database queries, or execute application logic. The probe should return quickly—typically within 1-2 seconds—and should be isolated from the main request path so that application-level resource exhaustion does not prevent the liveness check from responding.
-        </p>
+        </HighlightBlock>
         <p>
           A common anti-pattern is making liveness probes too sophisticated. If a liveness probe checks database connectivity and the database is temporarily slow, the probe times out, and the orchestrator restarts the application—even though the application itself is healthy and would recover on its own once the database stabilizes. The restart causes additional load during an already-stressful moment and may make things worse.
         </p>
@@ -125,14 +132,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust health check architecture separates concerns by probe type, aligns signals with consumer actions, and enforces stability through hysteresis and cooldowns. The flow begins with the application exposing dedicated health check endpoints that implement liveness, readiness, and startup logic independently. Orchestrators and load balancers poll these endpoints at configured intervals. Based on the responses, they take action: adding instances to rotation, removing them, restarting them, or publishing them to service discovery.
-        </p>
+        </HighlightBlock>
 
         <h3>Health Check Endpoint Design</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement separate endpoints for each probe type. The liveness endpoint should be minimal—confirm the process is running and able to respond to HTTP requests. Do not perform any database queries, dependency checks, or application logic. The readiness endpoint should check critical dependencies only—database connectivity, required cache warming, configuration loading, and any initialization that must complete before serving traffic. The startup endpoint should check whether the application has completed its initialization sequence.
-        </p>
+        </HighlightBlock>
         <p>
           Make timeouts explicit. A probe that hangs is worse than a probe that fails quickly, because it can exhaust threads or connections on both the probed and probing sides. Keep probe logic isolated from the main request path where possible. Use a separate HTTP listener or a dedicated thread for health check endpoints so that application-level resource exhaustion (thread pool saturation, connection pool exhaustion) does not prevent the health check from responding.
         </p>
@@ -159,12 +169,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Health check design involves fundamental trade-offs between detection sensitivity and system stability. More sophisticated checks improve correctness but increase probe latency and complexity. A readiness probe that checks five dependencies is more accurate but takes longer to execute, generates more network traffic, and has more failure modes than a probe that checks one dependency. A good compromise is multi-layer checks: a cheap liveness probe, a readiness probe that validates core dependencies, and a separate synthetic monitor for end-to-end behavior.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Probe frequency is another trade-off. Frequent probes detect failures faster but generate more probe traffic and increase the risk of probe storms during incidents. Infrequent probes reduce overhead but delay failure detection. The right frequency depends on the system's tolerance for serving traffic from unhealthy instances and the cost of probe traffic. For critical services, 10-second intervals are common; for background workers, 30-60 second intervals are acceptable.
-        </p>
+        </HighlightBlock>
         <p>
           Health checks are also a governance and alignment issue. Different systems—Kubernetes, load balancers, service discovery, synthetic monitors—consume health signals and take different actions. Teams must agree on what "healthy" means across all consumers. If Kubernetes considers an instance ready based on a minimal check while the load balancer requires a deeper check, instances may receive traffic before they can actually serve it, causing user-visible errors.
         </p>
@@ -175,12 +188,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Separate liveness from readiness clearly. Liveness checks whether the process is running; readiness checks whether it can serve traffic. Never combine them into a single check, because the actions are different—liveness failure triggers restart, readiness failure removes from rotation. Combining them means a dependency issue can trigger unnecessary restarts, which amplifies load during an already-stressful moment.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Keep probes lightweight and isolated from the main request path. Use dedicated endpoints with minimal logic. Avoid probes that depend on optional dependencies. Make timeouts explicit and conservative—a probe that hangs exhausts resources on both sides. Use a separate HTTP listener or dedicated thread for health endpoints so that application-level resource exhaustion does not prevent health checks from responding.
-        </p>
+        </HighlightBlock>
         <p>
           Use hysteresis to prevent flapping. Require multiple consecutive failures before taking action (typically 3) and at least one consecutive success before re-admitting. Configure probe intervals and timeouts based on the application's normal response characteristics, not arbitrary defaults. Test probe behavior under realistic failure conditions—inject dependency failures, saturate CPU, and verify that instances are removed and reintroduced at expected thresholds.
         </p>
@@ -194,12 +210,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cascading ejection from overly broad readiness checks is among the most dangerous health check failures. When a readiness probe depends on a downstream dependency that is partially degraded, all instances can fail the probe simultaneously and be ejected from rotation at once. This turns a partial dependency issue into a complete service outage. The fix is to make readiness probes depend only on the minimal set of critical dependencies and to implement progressive degradation rather than all-or-nothing readiness.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Probe storms occur when health check traffic becomes a meaningful share of system load. This happens when probes are too frequent, too expensive, or when many instances are being probed simultaneously. Under incident conditions, orchestrators and load balancers may increase probe frequency, which amplifies the problem. The feedback loop—marginal system health leads to more aggressive probing which further degrades health—can push a marginal system into complete failure. Probes must be cheap, and hysteresis and cooldown windows matter.
-        </p>
+        </HighlightBlock>
         <p>
           Flapping—repeated ejection and re-admission of instances—occurs when thresholds are too aggressive or when the boundary between healthy and unhealthy is too narrow. Flapping wastes capacity, generates alert noise, and can cause load balancer churn that impacts user experience. The fix is hysteresis with a clear gap between ejection and re-admission thresholds, and cooldown periods that prevent rapid state transitions.
         </p>
@@ -213,16 +232,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Kubernetes Deployment: Rolling Update with Readiness Gates</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A platform team deploying a Java-based microservice experienced frequent request errors during rolling updates. The issue was that Kubernetes marked pods as ready as soon as the process started, but the application required 45 seconds to initialize Spring context, establish database connections, and warm caches. The fix was implementing a startup probe with a 60-second initial delay and failure threshold, combined with a readiness probe that verified database connectivity and cache warming. Rolling updates became error-free because new pods only received traffic after full initialization.
-        </p>
+        </HighlightBlock>
 
         <h3>Load Balancer: Health Check Alignment with Application</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce platform experienced intermittent 502 errors from its application load balancer. Investigation revealed that the load balancer health check interval was 5 seconds with a 2-second timeout, while the application's health endpoint sometimes took 4 seconds under load due to a database query. The load balancer considered the instance unhealthy and removed it, but the application was actually functional. The fix was optimizing the health endpoint to use a cached connection pool check instead of an actual query, reducing response time to under 100ms even under load.
-        </p>
+        </HighlightBlock>
 
         <h3>Queue Consumer: Progress-Based Health</h3>
         <p>
@@ -240,14 +262,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the difference between liveness and readiness probes?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Liveness answers "is the process alive?" and is intentionally shallow—it checks that the application process is running and can respond to a basic request. It does not check database connectivity, dependency health, or initialization status. A liveness failure triggers process restart.
-            </p>
+            </HighlightBlock>
             <p>
               Readiness answers "can this instance safely serve traffic?" and can include critical dependency checks and initialization gates. It checks whether the database connection pool is established, whether caches are warm, and whether configuration has loaded. A readiness failure removes the instance from the load balancer rotation but does not restart it. The actions are fundamentally different, which is why they must be separate probes.
             </p>

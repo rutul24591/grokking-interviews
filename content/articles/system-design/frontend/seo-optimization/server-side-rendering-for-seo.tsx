@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function ServerSideRenderingForSeoArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Server-Side Rendering (SSR) for SEO</strong> is the practice
           of generating complete HTML on the server before sending it to the
           client, ensuring that search engine crawlers receive fully rendered
@@ -46,8 +47,8 @@ export default function ServerSideRenderingForSeoArticle() {
           the most reliable approach for ensuring content is immediately
           crawlable, indexable, and eligible for rich results across all search
           engines.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The relationship between rendering strategy and SEO is nuanced. Google
           uses a <strong>two-phase indexing process</strong>: the first wave
           indexes content from the raw HTML response, and the second wave
@@ -58,8 +59,8 @@ export default function ServerSideRenderingForSeoArticle() {
           may not be indexed for extended periods. Other search engines (Bing,
           Yandex, Baidu) have varying JavaScript rendering capabilities, with
           some having significantly less sophisticated rendering than Google.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the staff/principal engineer level, choosing a rendering strategy
           for SEO involves balancing indexation reliability (SSR guarantees
           crawlability), performance characteristics (SSG provides the fastest
@@ -69,14 +70,14 @@ export default function ServerSideRenderingForSeoArticle() {
           single strategy — most production applications use a hybrid approach
           where different page types receive different rendering strategies
           based on their SEO importance and content dynamics.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Server-Side Rendering (SSR):</strong> HTML is generated on
             the server for each request, populated with data from APIs or
             databases, and sent as a complete document. The client receives
@@ -85,23 +86,23 @@ export default function ServerSideRenderingForSeoArticle() {
             meta tags, structured data, and page content) is present in the
             initial HTML response, visible to every crawler regardless of
             JavaScript capability.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Static Site Generation (SSG):</strong> HTML is pre-generated
             at build time and served as static files from a CDN. SSG provides
             the fastest Time to First Byte (TTFB) and is ideal for content that
             doesn&apos;t change frequently. For SEO, SSG pages are immediately
             crawlable with complete content. The limitation is content freshness
             — pages are only updated on rebuild.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Incremental Static Regeneration (ISR):</strong> A hybrid of
             SSG and SSR where pages are generated statically but can be
             regenerated on-demand or on a schedule after deployment. ISR
             provides SSG&apos;s performance benefits while allowing content
             updates without full rebuilds. For SEO, ISR pages behave like static
             pages (fast, fully rendered) but with configurable freshness.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Client-Side Rendering (CSR):</strong> The server sends a
             minimal HTML shell, and JavaScript renders all content in the
@@ -148,15 +149,15 @@ export default function ServerSideRenderingForSeoArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The choice of rendering strategy fundamentally determines how search
           engines discover, process, and index your content.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/server-side-rendering-for-seo-diagram-1.svg"
           alt="SSR vs CSR crawling comparison showing what Googlebot sees in each scenario at first wave and second wave indexing"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The critical difference is timing. With SSR, Googlebot sees complete
           content in the first wave — meta tags, structured data, page content,
           and internal links are all immediately available. With CSR, the first
@@ -164,12 +165,12 @@ export default function ServerSideRenderingForSeoArticle() {
           and complete content is only available after the second wave renders
           JavaScript. The gap between waves is unpredictable — during heavy
           crawl periods, it can extend to days.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/server-side-rendering-for-seo-diagram-2.svg"
           alt="Rendering strategies spectrum for SEO showing SSG, ISR, SSR, dynamic rendering, and CSR with their trade-offs"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The rendering spectrum ranges from fully static (SSG) to fully dynamic
           (CSR). SSG provides the best crawlability and performance but the
           least content freshness. CSR provides the most dynamic content but the
@@ -177,7 +178,7 @@ export default function ServerSideRenderingForSeoArticle() {
           SSR provides per-request freshness with guaranteed crawlability, and
           dynamic rendering serves as a bridge for applications that cannot
           migrate from CSR.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/server-side-rendering-for-seo-diagram-3.svg"
           alt="Dynamic rendering architecture showing user-agent detection routing crawler requests to prerendered content and user requests to the SPA"
@@ -197,16 +198,19 @@ export default function ServerSideRenderingForSeoArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="important">
               <th className="p-3 text-left">Strategy</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
+            </HighlightBlock>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">SSR (per request)</td>
               <td className="p-3">
                 Always fresh content; complete HTML for all crawlers; meta tags
@@ -216,8 +220,8 @@ export default function ServerSideRenderingForSeoArticle() {
                 Server compute cost per request; higher TTFB than SSG; requires
                 server infrastructure; data fetching failures affect all users
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">SSG (build time)</td>
               <td className="p-3">
                 Fastest TTFB; CDN-cacheable; no server needed; complete HTML;
@@ -227,7 +231,7 @@ export default function ServerSideRenderingForSeoArticle() {
                 Stale until rebuild; build times scale with page count;
                 impractical for frequently changing or personalized content
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3 font-medium">ISR (hybrid)</td>
               <td className="p-3">
@@ -270,14 +274,14 @@ export default function ServerSideRenderingForSeoArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use SSR or SSG for SEO-Critical Pages:</strong> Product
             pages, landing pages, blog posts, category pages — any page
             targeting organic search traffic should be server-rendered. Reserve
             CSR for authenticated experiences (dashboards, admin panels, user
             settings) where SEO is irrelevant.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Ensure Meta Tags and Structured Data Are in Initial HTML:
             </strong>{" "}
@@ -285,8 +289,8 @@ export default function ServerSideRenderingForSeoArticle() {
             for Google, meta tags and JSON-LD structured data in the initial
             HTML are processed in the first indexing wave, ensuring immediate
             eligibility for rich results and social previews.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Choose ISR for Content with Moderate Update Frequency:
             </strong>{" "}
@@ -295,7 +299,7 @@ export default function ServerSideRenderingForSeoArticle() {
             ideal ISR candidates. Configure revalidation intervals to match
             content change frequency — hourly for dynamic content, daily for
             semi-static content.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Monitor JavaScript Rendering in Search Console:</strong> Use
             the URL Inspection tool to compare the &quot;tested URL&quot; (raw
@@ -334,28 +338,28 @@ export default function ServerSideRenderingForSeoArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Assuming Googlebot Renders Everything:</strong> While
             Googlebot can execute JavaScript, it has timeout limits (~5 seconds
             for initial render), doesn&apos;t interact with the page (no
             scrolling, clicking, or form submission), and may delay rendering
             due to queue backlog. Content that requires user interaction or
             extended load times may never be rendered.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Client-Side Meta Tag Injection:</strong> Injecting title
             tags, meta descriptions, and Open Graph tags via JavaScript means
             social crawlers never see them, and Google may not process them
             until the second indexing wave. Always include meta tags in the
             initial server-rendered HTML.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Non-Google Search Engines:</strong> Bing&apos;s
             JavaScript rendering is less capable than Google&apos;s. Yandex and
             Baidu have limited JavaScript support. If your site targets markets
             where these engines are significant, SSR is not optional — it&apos;s
             mandatory.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Using Dynamic Rendering as a Permanent Solution:</strong>{" "}
             Google has signaled that dynamic rendering is a temporary workaround
@@ -378,27 +382,27 @@ export default function ServerSideRenderingForSeoArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Next.js App Router:</strong> Enables per-route rendering
             strategy selection. Server Components are SSR by default, static
             routes are automatically SSG, generateStaticParams enables SSG for
             dynamic routes, and revalidate enables ISR. This granular control
             allows teams to optimize each page type independently.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Airbnb:</strong> Migrated from a client-rendered React SPA
             to server-rendered pages, citing improved SEO performance as a
             primary driver. Property listing pages, search results, and location
             guides are all SSR, while the booking flow and user dashboard remain
             client-rendered.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Twitter/X:</strong> Uses SSR for public tweet and profile
             pages to ensure indexing, while the timeline and interactive
             features are client-rendered. This hybrid approach keeps
             SEO-critical content crawlable while maintaining the interactive
             experience.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Walmart:</strong> Processes hundreds of millions of product
             page requests with SSR, using aggressive edge caching (ISR-like
@@ -412,13 +416,16 @@ export default function ServerSideRenderingForSeoArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: If Googlebot can render JavaScript, why do we still need SSR
               for SEO?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Several reasons. First, Google&apos;s two-phase indexing means
               JavaScript content may not be indexed for hours or days — content
               in the initial HTML is indexed immediately. Second, Googlebot has
@@ -429,13 +436,13 @@ export default function ServerSideRenderingForSeoArticle() {
               (Facebook, Twitter, LinkedIn) don&apos;t execute JavaScript at
               all. Fifth, SSR improves Core Web Vitals (LCP, CLS), which are
               ranking factors.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How would you decide which rendering strategy to use for
               different page types?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: I evaluate three dimensions: SEO importance, content dynamism,
               and personalization needs. Marketing/landing pages use SSG — they
@@ -505,7 +512,7 @@ export default function ServerSideRenderingForSeoArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics"
               target="_blank"
@@ -514,8 +521,8 @@ export default function ServerSideRenderingForSeoArticle() {
             >
               Google Search Central — JavaScript SEO Basics
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developers.google.com/search/docs/crawling-indexing/javascript/dynamic-rendering"
               target="_blank"
@@ -524,8 +531,8 @@ export default function ServerSideRenderingForSeoArticle() {
             >
               Google — Dynamic Rendering
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://web.dev/articles/rendering-on-the-web"
               target="_blank"
@@ -534,7 +541,7 @@ export default function ServerSideRenderingForSeoArticle() {
             >
               web.dev — Rendering on the Web
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://nextjs.org/docs/app/building-your-application/rendering"

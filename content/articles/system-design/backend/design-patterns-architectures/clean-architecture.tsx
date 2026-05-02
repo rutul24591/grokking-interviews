@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,12 +28,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Clean Architecture</strong> is an application architecture style that keeps business rules independent from frameworks, databases, user interfaces, and external services. Proposed by Robert C. Martin (Uncle Bob) in 2012, the architecture organizes code into concentric circles where the innermost circle contains the most stable, fundamental business rules, and outer circles contain increasingly volatile concerns like databases, web frameworks, and user interfaces. The central goal is not to worship layers or create ceremony; the goal is to make the most important logic in your system—the rules that define the business—resilient to technology churn and easy to test in isolation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Clean Architecture popularized a simple but powerful dependency rule: <strong>dependencies point inward</strong>. Outer layers (web frameworks, persistence, messaging) depend on inner layers (use cases, domain rules), not the other way around. This inversion of control means you can change how the system is delivered—switching from REST to GraphQL, from PostgreSQL to MongoDB, from synchronous to asynchronous processing—without rewriting what the system means. The core business logic remains untouched.
-        </p>
+        </HighlightBlock>
         <p>
           The concentric circle model consists of four primary layers. <strong>Entities</strong> form the innermost circle and contain enterprise-wide business rules—the invariants and rules that would exist even if the application were delivered through a different medium entirely. <strong>Use Cases</strong> surround entities and contain application-specific business rules—the workflow orchestration that coordinates how entities interact to accomplish tasks. <strong>Interface Adapters</strong> form the next layer and convert data between the format most convenient for use cases and entities and the format most convenient for external agencies like databases and web servers. <strong>Frameworks and Drivers</strong> form the outermost layer and contain all the concrete implementations—database engines, web frameworks, UI frameworks—everything that is replaceable by design.
         </p>
@@ -54,14 +58,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>The Dependency Rule</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The dependency rule is the foundation upon which all of Clean Architecture rests. Source code dependencies must point only inward, toward higher-level policies. The inner circles know nothing about the outer circles. Entities do not know about use cases. Use cases do not know about controllers or gateways. This unidirectional dependency flow is what makes the core stable and the outer layers replaceable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The practical enforcement of the dependency rule requires several techniques. <strong>Dependency inversion</strong> means that when inner circles need behavior from outer circles, they define an interface and the outer circle implements it. For example, a use case needs to persist data, so it defines a <code>Repository</code> interface, and the infrastructure layer implements that interface with a concrete database client. <strong>Crossing boundaries</strong> requires careful data handling—data crossing inward must be in a format the inner circle understands, typically simple data structures or domain models, never framework-specific objects. <strong>Dependency injection</strong> resolves the actual implementations at runtime, wiring concrete adapters to the interfaces the core depends on.
-        </p>
+        </HighlightBlock>
         <p>
           Violations of the dependency rule are the most common way Clean Architecture degrades over time. When a use case imports from a framework package, when an entity references a database ORM model, when a controller contains business logic that should live in a use case—these are all dependency rule violations that create coupling and make future changes harder to reason about and more expensive to execute.
         </p>
@@ -127,14 +134,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding how data flows through a Clean Architecture system is essential for implementing it correctly and for explaining it in interviews. The flow follows the dependency rule: requests enter from the outside, pass through adapters into use cases, use cases orchestrate entity interactions, and responses flow back outward through adapters.
-        </p>
+        </HighlightBlock>
 
         <h3>Request Flow Through the Layers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a client sends an HTTP request to create an order, the request first reaches the <strong>frameworks layer</strong>—the web server (Express, Fastify, Spring Boot) receives the raw HTTP request with headers, body, and authentication tokens. The framework routes the request to the appropriate <strong>interface adapter</strong>—the OrderController. The controller parses the request body, validates syntactic requirements (required fields present, types correct), and translates the payload into an <code>CreateOrderRequest</code> input model that the use case understands.
-        </p>
+        </HighlightBlock>
         <p>
           The controller then invokes the <strong>use case</strong>—the <code>CreateOrderUseCase</code>. The use case receives the input model and orchestrates the workflow: it loads the relevant Customer entity through a repository interface, validates that the customer exists and is in good standing, creates a new Order entity with the requested items (the Order entity enforces its own invariants—items must be in stock, quantities must be positive), persists the order through a repository interface, and may publish a domain event signaling that an order was created.
         </p>
@@ -173,14 +183,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Clean Architecture is not universally appropriate. Understanding when to apply it, when to simplify, and how it compares to similar architectures is a staff-level skill that separates architects who apply patterns thoughtfully from those who apply them dogmatically.
-        </p>
+        </HighlightBlock>
 
         <h3>When Clean Architecture Pays Off</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Clean Architecture provides the most value in systems with significant business complexity—domains with many invariants, rules that interact in non-trivial ways, and workflows that span multiple entities. It provides value when the system is expected to evolve over years, with multiple teams contributing, because the architecture communicates intent and constrains how changes can be made safely. It provides value when integrations change frequently—when you anticipate switching databases, adding new API transports, or connecting to new external systems—because those changes are confined to adapters. And it provides value when testability matters—when you need fast, reliable tests for business logic to support continuous delivery with confidence.
-        </p>
+        </HighlightBlock>
 
         <h3>When Clean Architecture Is Overkill</h3>
         <p>
@@ -217,12 +230,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Define and enforce the dependency rule from day one. Make it a code review standard: any import from an outer layer into an inner layer is a violation. Use tooling like architecture fitness functions or dependency analysis tools to automatically detect violations. Document the rule and ensure every team member understands it, because violations creep in gradually and are hard to reverse once established.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Keep the core focused on business invariants and workflows, not on persistence or transport formats. The entity layer should contain no database annotations, no HTTP concerns, no framework-specific code. If you can look at an entity and tell which database it is stored in or which API exposes it, the boundary has been violated. Use cases should contain no HTTP status codes, no SQL queries, no serialization logic. Their job is orchestration and business rule application, not integration.
-        </p>
+        </HighlightBlock>
         <p>
           Use adapters to translate formats and isolate network and database failure semantics. Adapters should be thin—their job is translation, not decision-making. Business decisions belong in use cases and entities. When an adapter needs to make a decision beyond format conversion, that decision likely belongs in the core. Adapters should also handle retries, timeouts, and error translation so that the core does not need to know about transient network failures or database connection issues.
         </p>
@@ -242,12 +258,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common failure mode is adopting Clean Architecture as ceremony rather than as a dependency discipline. Teams build many layers that do not actually isolate change or reduce risk. They create interfaces for everything, implement dependency injection everywhere, and end up with a codebase that is harder to navigate and slower to develop in, without any of the benefits of clean boundaries. This is over-abstraction: interfaces everywhere, little value. The result is slower development and harder navigation without corresponding gains in change safety.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The anemic core is another common pitfall. The domain layer ends up containing only data structures with getters and setters, while actual business rules live in controllers or service classes. This happens when teams draw the circles but do not move the behavior inward. The cure is to identify business invariants and workflows and place them in entities and use cases, not in the adapters that handle external requests.
-        </p>
+        </HighlightBlock>
         <p>
           Leaky boundaries occur when database concepts—tables, query builders, ORM-specific annotations—bleed into use cases and shape the business model. This happens when adapters are not disciplined about translation, when use cases accept ORM entities directly, or when query shapes influence entity design. The result is that changing the database requires changing the business logic, which defeats the primary purpose of the architecture.
         </p>
@@ -267,14 +286,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce: Order Processing System</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform needed to handle order processing across multiple sales channels (web, mobile, in-store POS) with complex business rules: inventory checks, payment authorization, fraud detection, tax calculation, and shipping orchestration. The system needed to support adding new channels without rewriting order logic, and it needed to handle high transaction volume during peak seasons with reliable testing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The team implemented Clean Architecture with Order and Customer entities at the core, use cases for placing orders, cancelling orders, and processing returns, adapters for each sales channel (REST API for web, GraphQL for mobile, message consumers for POS), and repository adapters for inventory, payment, and shipping services. When they added a new voice-commerce channel (Alexa integration), it required only a new adapter—the order use cases and entities were unchanged. The architecture also enabled comprehensive testing of order logic without external services, reducing regression defects during peak season preparation by 45%.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Services: Payment Processing Platform</h3>
         <p>
@@ -306,14 +328,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the dependency rule in Clean Architecture and why does it matter?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               The dependency rule states that source code dependencies must point only inward, toward higher-level policies. Outer layers (frameworks, adapters) depend on inner layers (use cases, entities), never the reverse. Inner circles know nothing about outer circles—entities do not know about use cases, use cases do not know about controllers or databases.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               This matters because it makes the core business logic stable and replaceable at the edges. When dependencies point inward, you can swap a database, change an API style, or add a new transport without touching business rules. The core is protected from technology churn, which is the primary source of long-term maintenance cost in software systems.
             </p>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function SecuritySettingsUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Security Settings UI</strong> provides a centralized dashboard for users to
           manage their account security including MFA configuration, active sessions, login
           history, security alerts, password management, and connected apps. It empowers users to
           monitor and protect their accounts while providing transparency into security status.
           Security settings is often the most important settings page — users come here to protect
           their accounts from unauthorized access.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/security-settings-dashboard.svg"
@@ -48,12 +52,12 @@ export default function SecuritySettingsUIArticle() {
           caption="Security Settings Dashboard — showing security score, MFA status, active sessions, login history, and security recommendations"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing security settings requires deep
           understanding of security UX, risk communication, actionable recommendations, and
           balancing comprehensiveness with usability. The implementation must make security
           accessible to non-technical users while providing advanced options for power users.
-        </p>
+        </HighlightBlock>
         <p>
           Modern security settings has evolved from simple password change forms to comprehensive
           security dashboards with security scores, actionable recommendations, and one-click
@@ -66,18 +70,21 @@ export default function SecuritySettingsUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Security settings is built on fundamental concepts that determine how security is
           presented and managed. Understanding these concepts is essential for designing effective
           security settings UI.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Security Dashboard:</strong> Security score (visual indicator 0-100 or
           Excellent/Good/Fair/Poor — color-coded), security checklist (MFA enabled, email
           verified, phone verified, recent password change, backup codes downloaded, sessions
           reviewed), recommendations (actionable items to improve security — "Enable MFA for +30
           points"), progress tracking (show improvement over time — gamification for engagement).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>MFA Management:</strong> Enrolled methods list (TOTP, SMS, WebAuthn — show
           status enabled/disabled), enroll new method (step-by-step wizard), set default method
@@ -99,11 +106,14 @@ export default function SecuritySettingsUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Security settings architecture separates security data from presentation, enabling
           real-time updates with secure management. This architecture is critical for providing
           accurate security information.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/security-mfa-management.svg"
@@ -111,14 +121,14 @@ export default function SecuritySettingsUIArticle() {
           caption="MFA Management — showing enrollment flow, method list, recovery options, and disable flow"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Security dashboard flow: User navigates to security settings. Frontend requests security
           data (GET /security/dashboard). Backend aggregates data (MFA status, sessions, login
           history, recommendations), calculates security score, returns dashboard data. Frontend
           renders security score (color-coded gauge), checklist (checked/unchecked items),
           recommendations (actionable cards with "Enable" buttons). User clicks recommendation.
           Frontend navigates to relevant section (MFA, sessions, etc.).
-        </p>
+        </HighlightBlock>
         <p>
           MFA management flow: User clicks "Enable MFA". Frontend shows method selection (TOTP,
           SMS, WebAuthn). User selects method. Frontend shows enrollment wizard (step-by-step).
@@ -143,23 +153,26 @@ export default function SecuritySettingsUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing security settings involves trade-offs between comprehensiveness, simplicity,
           and user engagement. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Security Score vs Checklist</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Security Score:</strong> Single number (0-100), gamification, easy to
               understand. Limitation: oversimplifies security, users may obsess over score.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Checklist:</strong> Specific items (MFA enabled, email verified), actionable.
               Limitation: no overall picture, users may not know priority.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Both — score for overall picture, checklist for
               specifics. Score drives engagement, checklist drives action.
@@ -206,18 +219,21 @@ export default function SecuritySettingsUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing security settings requires following established best practices to ensure
           security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Dashboard</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Show security score prominently — color-coded gauge (green/yellow/red). Display security
           checklist — checked/unchecked items with descriptions. Show recommendations — actionable
           cards with "Enable" buttons, show impact ("+30 points"). Track progress — show
           improvement over time (chart).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">MFA Management</h3>
         <p>
@@ -245,21 +261,24 @@ export default function SecuritySettingsUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing security settings to ensure secure, usable,
           and maintainable security settings.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No security score:</strong> Users don't know overall security posture.{" "}
             <strong>Fix:</strong> Show security score (0-100) with color coding. Explain how score
             is calculated.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Vague recommendations:</strong> "Improve security" not actionable.{" "}
             <strong>Fix:</strong> Specific recommendations ("Enable MFA for +30 points"). Show
             impact.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No MFA recovery:</strong> Users locked out if they lose MFA device.{" "}
             <strong>Fix:</strong> Force backup code download during enrollment. Show recovery
@@ -304,16 +323,19 @@ export default function SecuritySettingsUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Security settings is critical for account protection. Here are real-world implementations
           from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer Platform (Google)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Billions of users with varying technical knowledge. Need to
           make security accessible. Drive MFA adoption.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Security checkup wizard (step-by-step). Security score with
           recommendations. One-click MFA enrollment. Session management with device info. Login
@@ -401,14 +423,17 @@ export default function SecuritySettingsUIArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of security settings UI design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you calculate security score?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you calculate security score?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Weighted factors — MFA enabled (+30 points), email verified (+10), phone verified
               (+10), recent password change (+10), backup codes downloaded (+10), sessions reviewed

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function HeapsPriorityQueuesArticle() {
       {/* SECTION 1 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>heap</strong> is a complete binary tree whose nodes
           obey a heap-order property: each parent is no greater than its
           children (min-heap) or no less than them (max-heap). A{" "}
@@ -45,8 +49,8 @@ export default function HeapsPriorityQueuesArticle() {
           backed by a heap. The combination gives O(log n) insert and
           remove-min with O(1) peek — the canonical interface for
           scheduling, shortest-path algorithms, and event simulation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The critical implementation insight is that a complete binary
           tree can be stored implicitly in an array, without any pointers.
           Node at index <em>i</em> has parent at{" "}
@@ -57,7 +61,7 @@ export default function HeapsPriorityQueuesArticle() {
           <code>PriorityQueue</code>, Python&apos;s <code>heapq</code>,
           C++&apos;s <code>std::priority_queue</code>, Rust&apos;s{" "}
           <code>BinaryHeap</code> — uses this array backing.
-        </p>
+        </HighlightBlock>
         <p>
           Heaps are narrower than ordered trees: they answer one question
           (what is the min/max?) rather than supporting general search.
@@ -83,11 +87,14 @@ export default function HeapsPriorityQueuesArticle() {
       {/* SECTION 2 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Heap-order property and completeness
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A <strong>min-heap</strong> satisfies{" "}
           <code>parent ≤ children</code> at every node. The root is the
           global minimum. <strong>Complete</strong> means every level
@@ -95,10 +102,10 @@ export default function HeapsPriorityQueuesArticle() {
           level is filled from left to right. Completeness is what allows
           the implicit array representation — and it also bounds height
           at ⌊log₂ n⌋, which is how heap operations stay O(log n).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Sift-up (insert)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Append the new element at the end of the array (maintaining
           completeness), then &quot;sift up&quot;: compare with the
           parent, swap if out of heap order, recurse. Runs in O(log n)
@@ -106,7 +113,7 @@ export default function HeapsPriorityQueuesArticle() {
           height. The typical case is much faster — newly-inserted
           elements often land near the bottom and don&apos;t need to
           bubble far.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Sift-down (extract)
@@ -131,11 +138,14 @@ export default function HeapsPriorityQueuesArticle() {
       {/* SECTION 3 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Linear-time heapify
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Building a heap from an unsorted array looks like it should
           cost O(n log n) — n inserts at O(log n) each. But Floyd&apos;s
           heapify algorithm runs in O(n): walk the array from the last
@@ -145,12 +155,12 @@ export default function HeapsPriorityQueuesArticle() {
           the work sum telescopes to O(n) rather than O(n log n). This
           is why heapsort&apos;s build phase is linear and only the n
           extract-mins contribute the log factor.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           d-ary heaps
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A d-ary heap has d children per node instead of 2. Height becomes
           log_d n, so sift-up is O(log_d n) — faster for insert-heavy
           workloads. Sift-down becomes O(d · log_d n) because each level
@@ -158,7 +168,7 @@ export default function HeapsPriorityQueuesArticle() {
           workloads. Practical optimum for Dijkstra&apos;s with decrease-key
           is d around 4 or 8, depending on edge-to-vertex ratio. Boost C++
           ships an n-ary heap for exactly this tuning reason.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Fibonacci heaps and theoretical bounds
@@ -187,6 +197,9 @@ export default function HeapsPriorityQueuesArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Operation complexity (binary heap)
@@ -218,25 +231,25 @@ export default function HeapsPriorityQueuesArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Heap vs sorted array
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A sorted array gives O(1) min extraction but O(n) insert. A
           heap gives O(log n) for both. For repeated insertions
           interspersed with extractions — the typical priority queue
           workload — the heap dominates. A sorted array wins only when
           the data is static after initial load.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Heap vs balanced BST
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A balanced BST offers ordered iteration, range queries, and
           arbitrary key lookup in O(log n). A heap only offers priority
           access — min or max. For pure priority workloads the heap wins
           on constant factors (implicit layout, no rotations, better
           cache behavior). For mixed workloads with range queries or
           membership tests, the BST wins on flexibility.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Indexed priority queue
@@ -255,17 +268,20 @@ export default function HeapsPriorityQueuesArticle() {
       {/* SECTION 5 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use the standard library.</strong> Python{" "}
             <code>heapq</code>, Java <code>PriorityQueue</code>, C++
             <code> std::priority_queue</code>, Rust <code>BinaryHeap</code>
             — all battle-tested implementations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Pre-size with known capacity.</strong> A hint avoids
             mid-insert reallocations during the O(n log n) load phase.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Prefer Floyd&apos;s heapify for bulk build.</strong>{" "}
             O(n) instead of O(n log n). Every implementation exposes this
@@ -298,19 +314,22 @@ export default function HeapsPriorityQueuesArticle() {
       {/* SECTION 6 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Mutable priority in a heap.</strong> Mutating a queued
             element&apos;s priority after insert breaks the heap order
             silently. Either remove, mutate, and re-insert, or use
             decrease-key via an indexed priority queue.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Iterating a heap expecting sorted order.</strong> Heap
             iteration walks the array in index order, not priority order.
             Only repeated <code>extract</code> calls produce sorted
             output — which destroys the heap.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Assuming O(1) delete-arbitrary.</strong> Removing an
             element by value is O(n) in a binary heap. Use an indexed
@@ -349,11 +368,14 @@ export default function HeapsPriorityQueuesArticle() {
       {/* SECTION 7 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Task schedulers
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every earliest-deadline-first and rate-monotonic scheduler uses
           a priority queue keyed by deadline or rate. Real-time operating
           systems (RTEMS, VxWorks, QNX) maintain ready queues as heaps so
@@ -361,18 +383,18 @@ export default function HeapsPriorityQueuesArticle() {
           Non-real-time systems (setTimeout implementations in Node.js
           and browsers) similarly store pending timers in a heap keyed
           by expiration.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Dijkstra&apos;s shortest path and A*
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Both algorithms repeatedly extract the lowest-cost unvisited
           vertex, making a priority queue the obvious choice. With an
           indexed binary heap, Dijkstra runs in O((V + E) log V). Google
           Maps, Waze, in-game pathfinding, and network routing protocols
           (OSPF, IS-IS) all use heap-based Dijkstra variants.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           K-way merge
@@ -407,19 +429,22 @@ export default function HeapsPriorityQueuesArticle() {
       {/* SECTION 8 */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you find the k largest elements in an array of n?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Maintain a size-k min-heap. Iterate the array: push each
               element; if heap size exceeds k, pop the minimum. At the
               end, the heap contains the k largest elements. O(n log k)
               time, O(k) space. Superior to sorting (O(n log n), O(1)) or
               using a max-heap of all elements (O(n + k log n)) when k is
               much smaller than n — which is the typical case.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

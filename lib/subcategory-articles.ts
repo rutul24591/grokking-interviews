@@ -4233,6 +4233,75 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Comprehensive guide to API versioning, schema evolution, backward compatibility strategies, deprecation policies, and migration patterns for staff/principal engineer interviews."
     }
   ],
+  "system-design-problems/high-level-design/core-product-systems": [
+    {
+      "slug": "social-media-news-feed-frontend",
+      "title": "Design the Frontend for a Social Media News Feed",
+      "description": "A deep dive into designing a scalable, high-performance frontend for a social media news feed, focusing on virtualization, state normalization, and real-time updates."
+    }
+  ],
+  "system-design-problems/low-level-design/communication-collaboration": [
+    {
+      "slug": "chat-messaging-ui",
+      "title": "Design a Chat / Messaging UI",
+      "description": "LLD for a chat UI: message grouping, read receipts, typing indicators, infinite scroll upward, media previews, optimistic send, and accessibility."
+    },
+    {
+      "slug": "collaborative-whiteboard",
+      "title": "Design a Collaborative Whiteboard",
+      "description": "LLD for a real-time whiteboard: vector shapes, free-draw, multi-user CRDT sync, infinite canvas with pan/zoom, live cursors, and offline-aware persistence."
+    },
+    {
+      "slug": "conflict-resolution-ui",
+      "title": "Design a Conflict Resolution UI",
+      "description": "LLD for surfacing and resolving conflicts: side-by-side diff, field-level merge, accept-mine/theirs/merge actions, and accessible decision flows."
+    },
+    {
+      "slug": "live-cursor-presence-system",
+      "title": "Design a Live Cursor / Presence System",
+      "description": "LLD for live cursors and presence: throttled cursor broadcasts, smooth interpolation, presence list with colors, idle/away detection, and cleanup on disconnect."
+    },
+    {
+      "slug": "message-delivery-state-system",
+      "title": "Design a Message Delivery State System",
+      "description": "LLD for tracking message delivery: sending, sent, delivered, read states with optimistic UI, retries, failure handling, and per-recipient tracking."
+    },
+    {
+      "slug": "multiplayer-lobby-ui",
+      "title": "Design a Multiplayer Lobby UI",
+      "description": "LLD for a multiplayer lobby: room list, real-time membership updates, ready states, host controls, matchmaking handoff, and accessibility."
+    },
+    {
+      "slug": "notification-center-inbox",
+      "title": "Design a Notification Center / Inbox",
+      "description": "LLD for an in-app notification center: read/unread, grouping, mark-all-read, real-time badge count, infinite scroll, and accessibility."
+    },
+    {
+      "slug": "presence-last-seen-system",
+      "title": "Design a Presence + Last Seen System",
+      "description": "LLD for presence (online/away/offline) plus last-seen timestamps: heartbeat, debounced updates, privacy preferences, and accessible display."
+    },
+    {
+      "slug": "real-time-collaborative-editor",
+      "title": "Design a Real-time Collaborative Editor",
+      "description": "LLD for a real-time collaborative editor: CRDTs vs OT, presence, live cursors, conflict resolution, offline-aware sync, and accessibility."
+    },
+    {
+      "slug": "real-time-notification-delivery-system",
+      "title": "Design a Real-time Notification Delivery System",
+      "description": "LLD for delivering notifications across surfaces (in-app, toast, badge, push) with consistency, deduplication, ordering, and accessibility."
+    },
+    {
+      "slug": "threaded-conversation-system",
+      "title": "Design a Threaded Conversation System",
+      "description": "LLD for threaded conversations: nested replies, lazy-load, optimistic post, collapsing depth, and accessibility for tree-structured discussions."
+    },
+    {
+      "slug": "typing-indicator-system",
+      "title": "Design a Typing Indicator System",
+      "description": "LLD for typing indicators: debounced broadcast, timeout cleanup, multi-user aggregation, accessibility, and integration with chat/editor systems."
+    }
+  ],
   "system-design-problems/low-level-design/component-level-ui-patterns": [
     {
       "slug": "accordion-collapsible",

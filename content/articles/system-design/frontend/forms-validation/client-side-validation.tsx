@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function ClientSideValidationArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Client-side validation</strong> refers to the practice of
           validating user input in the browser before submission to the server.
           It serves as the first line of defense against invalid data, providing
@@ -44,8 +48,8 @@ export default function ClientSideValidationArticle() {
           However, client-side validation is a UX optimization, not a security
           measure — server-side validation remains mandatory for data integrity
           and security.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The scope of client-side validation has expanded significantly over
           the years. Early web forms relied on HTML5 constraint validation API
           (required, pattern, min, max attributes). Modern applications employ
@@ -55,7 +59,7 @@ export default function ClientSideValidationArticle() {
           Yup, Joi, and Valibot provide schema-based validation with TypeScript
           integration, enabling type-safe validation rules that serve as both
           runtime validators and type documentation.
-        </p>
+        </HighlightBlock>
         <p>
           Client-side validation operates at multiple levels. <strong>Field-level
           validation</strong> checks individual inputs (email format, password
@@ -97,8 +101,11 @@ export default function ClientSideValidationArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Constraint Validation API:</strong> The browser&apos;s
             native validation API accessible via HTML attributes (required,
             pattern, minlength, maxlength, min, max, step, type) and JavaScript
@@ -106,8 +113,8 @@ export default function ClientSideValidationArticle() {
             Provides built-in validation with localized error messages, but
             limited customization and inconsistent styling across browsers. Best
             for simple forms where default browser validation is acceptable.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Schema Validation:</strong> Define validation rules as a
             schema object that describes the expected shape and constraints of
             form data. Libraries like Zod, Yup, and Joi allow you to declare
@@ -115,7 +122,7 @@ export default function ClientSideValidationArticle() {
             type inference. Schema validation excels at complex nested objects,
             arrays with validation rules, and conditional validation based on
             sibling field values.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Validator Functions:</strong> Pure functions that take a
             value and return a boolean or error message. Validator functions
@@ -189,14 +196,17 @@ export default function ClientSideValidationArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Client-side validation architecture consists of several components
           working together: the validation engine that executes rules, the rule
           definitions themselves, the error state management, and the UI
           components that display feedback. The architecture must handle sync
           and async validation, manage error state efficiently, and provide
           clear feedback without overwhelming users.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/forms-validation/client-side-validation/validation-architecture.svg"
@@ -206,7 +216,7 @@ export default function ClientSideValidationArticle() {
           height={600}
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The validation architecture diagram shows how user input flows through
           the validation pipeline. Input events trigger the validation engine,
           which executes applicable rules (both sync and async). Results are
@@ -214,7 +224,7 @@ export default function ClientSideValidationArticle() {
           feedback. Async validation requires special handling — loading states,
           request cancellation for superseded validations, and error handling
           for network failures.
-        </p>
+        </HighlightBlock>
 
         <h3>Validation Rule Execution Flow</h3>
         <p>
@@ -252,20 +262,23 @@ export default function ClientSideValidationArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Validation strategy decisions involve trade-offs between user
           experience, implementation complexity, and performance.
-        </p>
+        </HighlightBlock>
 
         <h3>Strict vs Lenient Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Strict validation</strong> shows errors immediately and
           prevents form submission until all rules pass. This ensures data
           quality but can frustrate users who prefer to complete the form before
           seeing errors. Strict validation is appropriate for critical fields
           (payment information, legal agreements) where errors have significant
           consequences.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Lenient validation</strong> allows form submission with
           warnings or soft validation. Users can proceed with invalid data,
@@ -330,20 +343,23 @@ export default function ClientSideValidationArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Validate Early, Fail Fast:</strong> Run required field and
             format validation before async validation. Don&apos;t make API
             calls to check username availability if the username is empty or
             contains invalid characters. This reduces unnecessary network
             traffic and provides faster feedback.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounce Async Validation:</strong> Wait 300-500ms after
             the user stops typing before triggering async validation. This
             prevents excessive API calls during active typing. Cancel pending
             requests when newer requests supersede them using AbortController.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Provide Actionable Error Messages:</strong> Error messages
             should tell users exactly what went wrong and how to fix it.
@@ -386,19 +402,22 @@ export default function ClientSideValidationArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Relying Solely on Client Validation:</strong> Client-side
             validation can be bypassed. Always validate on the server. Treat
             client validation as a UX enhancement, not a security measure.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Validation Race Conditions:</strong> When users rapidly
             change input, async validation responses may arrive out of order.
             The response for &quot;john&quot; might arrive after the response
             for &quot;johnny&quot;, showing the wrong validation result. Track
             request IDs and ignore responses for superseded requests.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Over-Validation:</strong> Validating on every keystroke for
             rules that require minimum length shows errors while users are still
@@ -429,9 +448,12 @@ export default function ClientSideValidationArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Checkout Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Checkout forms require extensive validation: email format, address
           completeness, credit card number validation (Luhn algorithm), expiry
             date checks, CVV length validation. Async validation checks if the
@@ -441,10 +463,10 @@ export default function ClientSideValidationArticle() {
           architecture uses schema validation (Zod) for format rules, custom
           validators for Luhn algorithm, and async validators for address
           verification.
-        </p>
+        </HighlightBlock>
 
         <h3>User Registration with Username Availability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Registration forms validate email format, password strength
           (length, complexity rules), and username format. Async validation
           checks username and email uniqueness against the database. The
@@ -452,7 +474,7 @@ export default function ClientSideValidationArticle() {
           uniqueness check with debouncing. Loading states show &quot;Checking
           availability...&quot; with spinners. If the API is down, fall back to
           allowing submission and handle duplicates on the server.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Data Entry</h3>
         <p>
@@ -469,19 +491,22 @@ export default function ClientSideValidationArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Common Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between client-side and server-side
               validation, and why do we need both?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Client-side validation runs in the browser and provides
               immediate feedback to users. Server-side validation runs on the
               backend and ensures data integrity. We need both because they
               serve different purposes.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               Client-side validation is a UX optimization — it catches errors
               early, reduces unnecessary network requests, and guides users

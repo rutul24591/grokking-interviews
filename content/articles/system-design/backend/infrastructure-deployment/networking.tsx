@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -47,12 +48,15 @@ export default function NetworkingArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Networking</strong> in the context of cloud infrastructure is the set of architectural decisions that define how compute, storage, and service resources communicate with each other and with external clients. Networking is not simply about connectivity — it is about intentional isolation, performance optimization, security boundary enforcement, and blast-radius management. A network design explicitly defines what resources can communicate with which other resources, through which paths, under what constraints, and with what observability guarantees. For staff and principal engineers, networking is foundational infrastructure: every other system (databases, caches, message queues, microservices) depends on the network behaving predictably under load and degrading gracefully under failure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The scope of infrastructure networking spans multiple layers of abstraction. At the lowest level, it involves address space allocation (CIDR block selection), subnet partitioning, and route table configuration. At the middle layer, it involves NAT gateways for controlled egress, VPC peering or transit gateways for inter-network connectivity, and private endpoints for secure access to managed services. At the highest layer, it involves DNS resolution strategies, egress filtering policies, security group and network ACL enforcement, and network observability through flow logs, packet capture, and telemetry pipelines. Each layer interacts with the others, and misconfiguration at any layer can produce cascading failures that are difficult to diagnose without systematic understanding of the full stack.
-        </p>
+        </HighlightBlock>
         <p>
           The business case for disciplined network design is risk reduction and operational efficiency. When segmentation is intentional, a compromised service cannot reach sensitive data stores. When routing is explicit and version-controlled, outages are easier to diagnose and roll back. When egress is controlled, both security exposure and data transfer costs are manageable. When network observability is comprehensive, mean time to detection and mean time to resolution for network-related incidents are dramatically reduced. Organizations that treat networking as a first-class engineering concern — rather than an operational afterthought — consistently experience fewer production incidents, faster incident resolution, and lower infrastructure costs.
         </p>
@@ -68,14 +72,17 @@ export default function NetworkingArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>VPC/VNet Design and CIDR Block Allocation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A Virtual Private Cloud (VPC) in AWS or Virtual Network (VNet) in Azure is the foundational network isolation boundary for cloud resources. The design of a VPC begins with CIDR block allocation — selecting the IP address range that the VPC will consume. This decision is critical because CIDR blocks cannot be easily changed after creation, and overlapping CIDR blocks between VPCs prevent peering or transit gateway connectivity. The recommended approach is to allocate a large CIDR block (e.g., /16, providing 65,536 addresses) from RFC 1918 private address space (10.0.0.0/8, 172.16.0.0/12, or 192.168.0.0/16) and subdivide it into smaller subnets for different workload tiers. Organizations operating multi-region or multi-account architectures should plan CIDR allocation centrally to prevent overlap, using a network registry or infrastructure-as-code module that guarantees uniqueness across all VPCs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           VPC design also involves decisions about multi-AZ placement (distributing subnets across availability zones for resilience), DNS configuration (whether to use the VPC&apos;s built-in DNS resolver or a custom resolver), and tenancy (dedicated versus shared hardware). For compliance-regulated workloads, VPC design may also include dedicated ENI (Elastic Network Interface) placement, explicit routing through network appliances, and integration with on-premises networks through Direct Connect or ExpressRoute. The VPC is the perimeter within which all subsequent networking decisions operate, so its design must accommodate both current requirements and anticipated growth.
-        </p>
+        </HighlightBlock>
 
         <h3>Subnetting and Tiered Architecture</h3>
         <p>
@@ -121,9 +128,12 @@ export default function NetworkingArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production-scale network architecture in a cloud environment follows a layered, defense-in-depth model. The outermost layer is the VPC boundary itself, defined by its CIDR block and internet gateway attachment. Within the VPC, subnets are organized into tiers: public subnets hosting NAT gateways and load balancers, private application subnets hosting compute instances and containers, and private data subnets hosting databases and caches. Traffic flows between these tiers are controlled by route tables (determining the path), security groups (determining which connections are allowed), and NACLs (providing a subnet-level safety net).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/networking-diagram-2.svg"
@@ -133,9 +143,9 @@ export default function NetworkingArticle() {
           height={550}
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The traffic flow for a typical request begins with a client connecting to a public-facing load balancer in a public subnet. The load balancer forwards the request to an application server in a private application subnet. If the application server needs to call an external API (e.g., a third-party payment service), the request is routed through a NAT gateway in the public subnet, which translates the source IP address to the NAT gateway&apos;s public IP. If the application server needs to query a database in the private data subnet, the request traverses the route table directly (no NAT required, as both subnets are within the same VPC). The database responds directly to the application server, and the application server responds to the load balancer, which returns the response to the client.
-        </p>
+        </HighlightBlock>
 
         <h3>Egress Control Architecture</h3>
         <p>
@@ -164,14 +174,17 @@ export default function NetworkingArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>Security Groups vs. NACLs: When to Use Each</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Security Groups:</strong> Stateful, instance-level firewall rules. Advantages: fine-grained control (rules apply to individual ENIs, not entire subnets), stateful (allowing inbound automatically allows outbound response, simplifying rule management), supports referencing other security groups as sources (enabling identity-based rules rather than IP-based rules). Limitations: evaluated per-ENI (not a subnet-level safety net), limited rule count per group (typically 60 inbound + 60 outbound rules), cannot explicitly deny traffic (only allow rules exist, so anything not explicitly allowed is denied). Best for: service-level access control, micro-segmentation between application tiers, identity-based rules using security group references.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Network ACLs:</strong> Stateless, subnet-level firewall rules. Advantages: broad coverage (applies to all traffic entering or leaving a subnet), can explicitly deny traffic (unlike security groups, which only allow), provides a safety net for misconfigured security groups. Limitations: stateless (requires separate inbound and outbound rules, increasing complexity), coarse-grained (cannot target individual instances), rule evaluation is order-dependent (first matching rule wins, so rule ordering matters critically). Best for: subnet-level segmentation policies, incident response (quickly blocking traffic from a compromised subnet), compliance-mandated network boundaries (e.g., ensuring PCI-scoped subnets have explicit deny rules for non-PCI sources).
-        </p>
+        </HighlightBlock>
 
         <h3>VPC Peering vs. Transit Gateway</h3>
         <p>
@@ -201,16 +214,19 @@ export default function NetworkingArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Plan CIDR Allocation Centrally for Multi-Account Architectures</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When operating multiple VPCs across multiple AWS accounts or Azure subscriptions, CIDR block allocation must be planned centrally to prevent overlaps that make peering and transit gateway connectivity impossible. Establish a CIDR registry — a shared infrastructure-as-code module or configuration source — that assigns non-overlapping CIDR blocks to each VPC before creation. Use large CIDR blocks (/16 or larger) from the 10.0.0.0/8 range, which provides ample address space for subnetting and future growth. Avoid using 172.16.0.0/12 or 192.168.0.0/16 for VPC CIDRs if there is any possibility of on-premises connectivity, as these ranges are commonly used in corporate networks and are more likely to overlap. Document CIDR allocations alongside VPC creation in your infrastructure repository so that network topology is auditable and reproducible.
-        </p>
+        </HighlightBlock>
 
         <h3>Implement Three-Tier Subnet Architecture with Multi-AZ Distribution</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Divide your VPC into public subnets (NAT gateways, load balancers, bastion hosts), private application subnets (compute instances, containers, API servers), and private data subnets (databases, caches, message queues). Each tier should span at least two availability zones to ensure resilience against AZ-level failures. Size subnets based on maximum expected capacity plus a safety margin of 2-3x current peak — a /24 subnet (251 usable addresses) is appropriate for most application tiers, while data subnets may only need /26 or /27 (59 or 27 usable addresses) since databases and caches are fewer in number. Monitor IP address utilization continuously and alert when any subnet exceeds 70% utilization, as IP exhaustion during a scale event prevents new instances from launching and can cause cascading failures.
-        </p>
+        </HighlightBlock>
 
         <h3>Use Security Group References for Identity-Based Access Control</h3>
         <p>
@@ -236,16 +252,19 @@ export default function NetworkingArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Route Black Holes from Misconfigured Route Tables</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A route black hole occurs when a route table entry points to a target that does not exist, is not attached, or is in a failed state. For example, a route that sends traffic to a VPC peering connection that has been deleted, or a route to a NAT gateway that has been terminated. When a route black hole exists, traffic matching that route is silently dropped — no error is returned to the sender, and no log entry is generated beyond what flow logs capture. The result is widespread connectivity failures that manifest as timeouts across many services simultaneously, with no clear indication in application logs that the root cause is network-layer routing. The mitigation is to validate route table contents after every change (automated checks in CI/CD pipelines that verify route targets exist and are in an active state), to use infrastructure-as-code with pre-apply plan reviews, and to maintain documented rollback procedures for route table changes.
-        </p>
+        </HighlightBlock>
 
         <h3>Over-Permissive Security Group Rules Accumulating Over Time</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Security group rules tend to accumulate over the lifetime of a system — developers add rules to unblock connectivity during development, incident responders add rules to restore service during outages, and teams add rules for new features without removing old ones that are no longer needed. Over time, security groups become overly permissive, allowing broad access that violates least-privilege principles and increases the blast radius of a compromise. A security group that allows inbound access from 0.0.0.0/0 on all ports is effectively unfirewalled. The mitigation is to implement regular security group audits (monthly or quarterly), use automated policy enforcement tools (AWS Config rules, Open Policy Agent) that flag overly permissive rules, and adopt a culture where security group changes require the same review rigor as application code changes. Remove rules that have not matched traffic in the past 90 days (verifiable through flow log analysis).
-        </p>
+        </HighlightBlock>
 
         <h3>Overlapping CIDR Blocks Preventing Future Connectivity</h3>
         <p>
@@ -271,16 +290,19 @@ export default function NetworkingArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Multi-Tenant SaaS Platform with Network Isolation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A SaaS platform serving multiple enterprise customers requires network isolation between tenants to meet compliance and data residency requirements. The architecture uses a shared services VPC (hosting shared infrastructure like NAT gateways, DNS resolvers, and monitoring agents) and per-tenant VPCs (each with its own application and data subnets). Connectivity between the shared services VPC and tenant VPCs is managed through a transit gateway with separate route tables, ensuring that tenant A cannot reach tenant B&apos;s network even though both connect to the same transit gateway. Security group references enforce least-privilege access — the shared monitoring security group is allowed to probe tenant application security groups on health check ports, but no other cross-tenant traffic is permitted. This pattern is used by SaaS providers like Datadog, Snowflake, and Confluent to provide tenant isolation while sharing common infrastructure.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Services Platform with PCI-DSS Network Segmentation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Financial services platforms that process credit card payments must comply with PCI-DSS requirements, which mandate strict network segmentation between PCI-scoped systems and non-PCI systems. The architecture uses dedicated private data subnets for PCI-scoped databases and payment processors, with NACLs enforcing explicit deny rules for all traffic from non-PCI subnets. Security groups for PCI resources allow inbound access only from specific application security groups (not CIDR blocks), and all traffic to PCI subnets is logged via VPC Flow Logs with retention periods meeting audit requirements. Egress from PCI subnets is tightly controlled — only approved payment processor endpoints are reachable, and all outbound traffic passes through a proxy firewall with deep packet inspection. This pattern is essential for any organization handling payment card data.
-        </p>
+        </HighlightBlock>
 
         <h3>Hybrid Cloud Architecture with Direct Connect</h3>
         <p>
@@ -296,15 +318,18 @@ export default function NetworkingArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you design a VPC architecture for a multi-region, multi-account organization?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Start with central CIDR allocation planning — establish a CIDR registry that assigns non-overlapping /16 (or larger) blocks from 10.0.0.0/8 to each VPC across all accounts and regions. Within each VPC, implement a three-tier subnet architecture (public, private application, private data) spanning multiple availability zones, with subnets sized based on maximum expected capacity plus 2-3x safety margin. For inter-VPC connectivity within a region, use a transit gateway with route tables for segmentation (different attachments see different routing views). For cross-region connectivity, use transit gateway inter-region peering. For on-premises connectivity, use Direct Connect attached to the transit gateway. Implement VPC endpoints for AWS-managed services to reduce NAT gateway load, deploy one NAT gateway per AZ for resilience, and use security group references for identity-based access control. All configuration should be version-controlled in infrastructure-as-code with change review processes.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

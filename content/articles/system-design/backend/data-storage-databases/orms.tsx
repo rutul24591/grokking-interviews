@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -84,18 +85,21 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: ORM Patterns &amp; Loading Strategies</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>ORM Patterns: Active Record vs Data Mapper</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Active Record</strong> pattern: Objects contain both data and database
           logic. <code className="inline-code">class User &#123; save() &#123; ... &#125; delete() &#123; ... &#125;
           &#125;</code>. Each object knows how to persist itself. Used by: Ruby on Rails
           (ActiveRecord), Laravel (Eloquent), Django ORM. Benefits: simple, intuitive,
           less code. Trade-offs: tight coupling (hard to test without database), objects
           do too much (violates single responsibility).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Data Mapper</strong> pattern: Separate mapper handles persistence.
           <code className="inline-code">class User &#123; /* just data */ &#125;</code>,
           <code className="inline-code">class UserMapper &#123; save(user) &#123; ... &#125; &#125;</code>.
@@ -103,7 +107,7 @@ export default function ArticlePage() {
           (Java), SQLAlchemy (Python), Entity Framework (.NET). Benefits: separation of
           concerns (easy to test), objects focus on business logic. Trade-offs: more
           code (mapper classes), more complex.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Repository Pattern</strong>: Abstraction layer between domain objects
@@ -174,17 +178,20 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: N+1 &amp; Optimization</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>N+1 Query Problem</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>N+1</strong> is the most common ORM performance issue. Fetch N parent
           records (1 query), then fetch children for each parent (N queries). Example:
           <code className="inline-code">users = User.all() /* 1 query */; users.each &#123; |u|
           u.orders /* N queries */ &#125;</code>. Total: 1 + N queries (100 users = 101 queries).
           Performance: 10-100x slower than necessary.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Solution: Eager loading</strong>.
           <code className="inline-code">users = User.includes(:orders).all() /* 1 query
           with JOIN */; users.each &#123; |u| u.orders /* no query, already loaded */ &#125;</code>.
@@ -192,7 +199,7 @@ export default function ArticlePage() {
           <code className="inline-code">includes</code> (Rails),
           <code className="inline-code">select_related</code> (Django),
           <code className="inline-code">JOIN</code> (Hibernate).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Detecting N+1</strong>: Monitor query count (alert on high count), use
@@ -247,19 +254,22 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: ORM vs Raw SQL</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fundamental question: should you use ORM or raw SQL? Understanding the
           trade-offs helps you make the right choice.
-        </p>
+        </HighlightBlock>
 
         <h3>ORM Strengths</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Developer productivity</strong> is the primary advantage. Less boilerplate
           (no SQL strings), auto-generated SQL (CRUD is trivial), consistent patterns (all
           developers use same approach). Benefits: faster development, easier onboarding,
           less code to maintain.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Database abstraction</strong>: ORM hides database-specific SQL. Switch
@@ -369,20 +379,23 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for ORMs</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use eager loading.</strong> Prevent N+1 queries:
           <code className="inline-code">User.includes(:orders).find(1)</code> instead of
           <code className="inline-code">user.orders</code> in loop. Benefits: 1 query vs
           N queries, predictable performance.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Select only needed columns.</strong>
           <code className="inline-code">User.select(:id, :name)</code> instead of
           <code className="inline-code">User.all()</code> (SELECT *). Benefits: less data
           transferred, faster queries, less memory.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Use pagination.</strong>
@@ -427,20 +440,23 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>N+1 queries.</strong> Most common ORM issue. Lazy loading in loops
           (100 users → 100 queries for orders). Solution: use eager loading
           (<code className="inline-code">includes</code>, <code className="inline-code">
           select_related</code>), monitor query count (alert on high count).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>SELECT * (fetching all columns).</strong> ORM loads all columns
           (<code className="inline-code">User.all()</code>). Wastes bandwidth, memory.
           Solution: select only needed columns (<code className="inline-code">
           User.select(:id, :name)</code>).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>No pagination.</strong> Loading all rows (<code className="inline-code">
@@ -477,25 +493,28 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Rapid Development: Startup MVP</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Startup building MVP uses ORM (Rails ActiveRecord):
           <code className="inline-code">class User &lt; ApplicationRecord; has_many :posts;
           end</code>. CRUD operations are trivial (<code className="inline-code">
           User.create(...)</code>, <code className="inline-code">user.posts</code>).
           Benefits: fast development (focus on features, not SQL), consistent patterns
           (all developers use same approach), easy to iterate (change schema, ORM adapts).
-        </p>
+        </HighlightBlock>
 
         <h3>Enterprise Application: Team Productivity</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Enterprise uses ORM (Hibernate, Entity Framework): consistent patterns across
           teams, easier onboarding (learn ORM once, use everywhere), database abstraction
           (support multiple databases). Benefits: team productivity (less time on SQL,
           more on business logic), maintainability (consistent patterns), flexibility
           (switch databases if needed).
-        </p>
+        </HighlightBlock>
 
         <h3>Analytics: Raw SQL for Complex Queries</h3>
         <p>
@@ -519,13 +538,16 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: What is the N+1 query problem? How do you detect and fix it?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> N+1: Fetch N parent records (1 query), then fetch
               children for each parent (N queries). Example:
               <code className="inline-code">users = User.all() /* 1 query */; users.each
@@ -535,7 +557,7 @@ export default function ArticlePage() {
               toolbar). Fix: eager loading
               (<code className="inline-code">User.includes(:orders).all() /* 1 query
               with JOIN */</code>), review loops (check for lazy loading inside loops).
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> How much slower is N+1? Answer: 10-100x slower
               depending on N. 100 users: 101 queries vs 1 query (100x more queries).

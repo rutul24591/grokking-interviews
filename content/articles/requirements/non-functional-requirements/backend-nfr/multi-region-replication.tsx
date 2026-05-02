@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,15 +25,18 @@ export default function MultiRegionReplicationArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Multi-region replication</strong> is the practice of replicating data across multiple
           geographic regions to provide low-latency access to users worldwide, high availability against
           region-wide failures, and disaster recovery capabilities. Multi-region replication is essential
           for global applications — a user in Tokyo should not experience 200ms latency waiting for data
           from a database in Virginia, and a region outage in Virginia should not take down the entire
           application.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Multi-region replication introduces significant challenges — replication latency (the time
           for data to propagate from one region to another) causes consistency issues (users in
           different regions may see different data), conflict resolution (concurrent writes in
@@ -41,7 +45,7 @@ export default function MultiRegionReplicationArticle() {
           synchronous replication (strong consistency, high latency) and asynchronous replication
           (eventual consistency, low latency) depends on the application&apos;s consistency requirements
           and latency tolerance.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, multi-region replication architecture
           demonstrates understanding of distributed systems consistency challenges, the ability to
@@ -74,13 +78,16 @@ export default function MultiRegionReplicationArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding multi-region replication requires grasping several foundational concepts about
           replication topologies, consistency models, conflict resolution, and latency management.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Synchronous vs Asynchronous Replication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Synchronous replication waits for all regions to acknowledge a write before returning success
           to the client — this provides strong consistency (all regions see the same data) but adds
           latency proportional to the slowest region (cross-region latency is 50-200ms). Asynchronous
@@ -89,7 +96,7 @@ export default function MultiRegionReplicationArticle() {
           latency only) but eventual consistency (other regions may see stale data for seconds or
           minutes). Most global applications use asynchronous replication — the latency of synchronous
           replication across regions is unacceptable for user-facing applications.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Conflict Resolution</h3>
         <p>
@@ -118,10 +125,13 @@ export default function MultiRegionReplicationArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Multi-region replication architecture spans replication topology, conflict resolution
           mechanisms, replication lag monitoring, and region failover orchestration.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/multi-region-replication.svg"
@@ -130,7 +140,7 @@ export default function MultiRegionReplicationArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Replication Topology</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Replication topology defines how regions are connected for replication. Star topology has
           a primary region that replicates to all other regions — simple to manage but the primary
           is a bottleneck and single point of failure. Mesh topology has every region replicating to
@@ -138,7 +148,7 @@ export default function MultiRegionReplicationArticle() {
           to conflicts. Ring topology has each region replicating to one other region in a ring —
           balances simplicity with redundancy but has higher replication latency (data must traverse
           the ring to reach all regions).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Region Failover</h3>
         <p>
@@ -167,25 +177,28 @@ export default function MultiRegionReplicationArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Replication Type</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Replication Type</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Synchronous</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>Synchronous</strong></td>
               <td className="p-3">
                 Strong consistency. No data loss on region failure. Simple conflict resolution (no conflicts).
               </td>
               <td className="p-3">
                 High latency (cross-region round-trip). Availability depends on all regions. Expensive.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Asynchronous</strong></td>
               <td className="p-3">
                 Low latency (local write). High availability (regions independent). Cost-effective.
@@ -193,8 +206,8 @@ export default function MultiRegionReplicationArticle() {
               <td className="p-3">
                 Eventual consistency. Replication lag. Conflicts on concurrent writes. Potential data loss.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Semi-Synchronous</strong></td>
               <td className="p-3">
                 Balanced consistency and latency. Acknowledged by majority before return. Tolerates region failures.
@@ -202,7 +215,7 @@ export default function MultiRegionReplicationArticle() {
               <td className="p-3">
                 More complex than async. Higher latency than async. Still eventual consistency for non-majority regions.
               </td>
-            </tr>
+            </HighlightBlock>
           </tbody>
         </table>
       </section>
@@ -210,9 +223,12 @@ export default function MultiRegionReplicationArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Use Active-Active for Low Latency, Active-Passive for DR</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Active-active replication provides low-latency reads and writes worldwide — users in each
           region read and write to their local region, and changes are replicated asynchronously to
           other regions. This is ideal for user-facing applications where latency matters. Active-passive
@@ -220,17 +236,17 @@ export default function MultiRegionReplicationArticle() {
           to primary if the primary region fails. This is ideal for disaster recovery where consistency
           matters more than latency. Many organizations use both — active-active for user-facing data,
           active-passive for critical data (financial transactions, user accounts).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Monitor Replication Lag Continuously</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Replication lag is the primary indicator of replication health — high lag means users in
           different regions see stale data, and region failover may result in data loss. Monitor
           replication lag continuously for each replication link and alert when it exceeds acceptable
           thresholds (e.g., 5 seconds for active-active, 30 seconds for active-passive). If replication
           lag consistently exceeds thresholds, investigate the root cause (network issues, overloaded
           replicas, slow writes) and remediate.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Test Region Failover Quarterly</h3>
         <p>
@@ -255,26 +271,29 @@ export default function MultiRegionReplicationArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Ignoring Replication Lag</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Replication lag is inevitable in asynchronous multi-region replication — cross-region latency
           (50-200ms) means that replication cannot be instantaneous. Ignoring replication lag causes
           read-your-writes consistency violations, stale reads, and conflict resolution failures.
           Monitor replication lag continuously, alert when it exceeds thresholds, and design the
           application to handle stale reads gracefully (e.g., show &quot;data may be stale&quot;
           warnings, or route reads to the write region for session affinity).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Last-Write-Wins Data Loss</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Last-write-wins conflict resolution discards the earlier write when concurrent writes occur
           in different regions — if region A writes &quot;balance = 100&quot; and region B writes
           &quot;balance = 200&quot; concurrently, the result is either 100 or 200, losing one write.
           This is unacceptable for financial data, user profiles, or any data where writes are
           additive (increments, appends). Use CRDTs or application-level conflict resolution for
           data that cannot tolerate write loss.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Untested Region Failover</h3>
         <p>
@@ -299,25 +318,28 @@ export default function MultiRegionReplicationArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Amazon DynamoDB — Global Tables</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon DynamoDB Global Tables provide active-active multi-region replication — data is
           replicated asynchronously across regions with last-write-wins conflict resolution. DynamoDB
           ensures read-your-writes consistency by routing each user&apos;s reads and writes to their
           home region (session affinity). DynamoDB Global Tables provide single-digit millisecond
           latency worldwide with automatic failover if a region fails.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Google Spanner — Synchronous Multi-Region</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Spanner provides synchronous multi-region replication using the Paxos consensus
           protocol — writes are replicated synchronously to a majority of regions before returning
           success, providing strong consistency across regions. Spanner&apos;s TrueTime API provides
           globally synchronized clocks, enabling external consistency (transactions appear to execute
           in a globally consistent order). Spanner is used for critical data (financial transactions,
           user accounts) where strong consistency is required.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cassandra — Active-Active with Tunable Consistency</h3>
         <p>
@@ -341,19 +363,22 @@ export default function MultiRegionReplicationArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Multi-region replication involves security risks — data is transmitted across regions and may be exposed in transit, and replication may violate data residency requirements.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Replication Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Data in Transit:</strong> Replication traffic crosses public networks between regions and may be intercepted. Mitigation: encrypt replication traffic with TLS, use private network connections (AWS Direct Connect, Google Cloud Interconnect) for replication, monitor replication traffic for anomalies.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Data Residency:</strong> Replicating data to regions in different countries may violate data residency requirements (GDPR, CCPA, local regulations). Mitigation: restrict replication to approved regions, encrypt data at rest in each region, implement data residency controls that prevent replication to restricted regions, audit replication topology for compliance.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Region Failover Security:</strong> During region failover, the new primary region may have weaker security controls than the original primary. Mitigation: ensure all regions have equivalent security controls, test failover with security validation, include security checks in failover runbooks.
             </li>
@@ -364,19 +389,22 @@ export default function MultiRegionReplicationArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Multi-region replication must be validated through systematic testing — replication lag, conflict resolution, region failover, and data consistency must all be tested.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Replication Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Replication Lag Test:</strong> Write to the primary region and measure the time for the write to appear in each replica region. Verify that replication lag is within acceptable thresholds (5 seconds for active-active, 30 seconds for active-passive). Test under different load conditions (normal, peak, write-heavy).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Conflict Resolution Test:</strong> Write to the same data concurrently in different regions and verify that conflict resolution produces the correct result. Test with different conflict resolution strategies (last-write-wins, CRDTs, application-level) and verify convergence across all regions.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Region Failover Test:</strong> Simulate a region outage (disable the primary region) and verify that the passive region is promoted to primary, traffic is redirected, replication is reversed, and data consistency is maintained. Measure failover time (RTO) and data loss (RPO) against targets.
             </li>

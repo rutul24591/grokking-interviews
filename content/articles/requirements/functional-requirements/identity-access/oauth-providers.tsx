@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function OAuthProvidersArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>OAuth Providers</strong> are third-party identity services that enable users to
           authenticate using existing accounts (Google, Facebook, Apple, GitHub, Microsoft, etc.).
           OAuth integration reduces signup friction (no new password to remember), improves
           conversion (one-click signup), and offloads password management to specialized providers.
           For consumer applications, OAuth is often expected — users want the convenience of
           signing in with Google or Apple.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/oauth-flow.svg"
@@ -48,7 +52,7 @@ export default function OAuthProvidersArticle() {
           caption="OAuth 2.0 Authorization Code Flow with PKCE — showing redirect, authorization, token exchange"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, integrating OAuth providers requires deep
           understanding of OAuth 2.0 flows (authorization code with PKCE), provider-specific
           quirks (Apple's privacy features, Google's brand guidelines), security considerations
@@ -56,7 +60,7 @@ export default function OAuthProvidersArticle() {
           (merging OAuth with existing accounts), and operational concerns (provider outages, API
           changes, rate limits). The implementation must provide seamless UX while maintaining
           security and data privacy.
-        </p>
+        </HighlightBlock>
         <p>
           Modern platforms typically support multiple OAuth providers to maximize conversion. Each
           provider has unique requirements: Apple requires "Sign in with Apple" if you offer other
@@ -69,12 +73,15 @@ export default function OAuthProvidersArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           OAuth integration is built on fundamental concepts that determine how authentication
           flows work and how identity is federated between systems. Understanding these concepts is
           essential for designing effective OAuth integrations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Authorization Code Flow with PKCE:</strong> The recommended OAuth 2.0 flow for
           web and mobile applications. Flow: (1) Client generates code verifier (random string),
           creates code challenge (SHA256 hash), redirects user to provider with challenge. (2) User
@@ -82,7 +89,7 @@ export default function OAuthProvidersArticle() {
           authorization code. (4) Client exchanges code for tokens (access_token, refresh_token,
           id_token) using verifier. PKCE prevents authorization code interception attacks — even if
           code is intercepted, attacker can't exchange without verifier.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>OpenID Connect (OIDC):</strong> Identity layer on top of OAuth 2.0. Provides
           id_token (JWT containing user identity claims: sub, email, name, picture). Standard
@@ -108,11 +115,14 @@ export default function OAuthProvidersArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           OAuth architecture separates provider integration from application logic, enabling
           centralized OAuth management with distributed authentication. This architecture is
           critical for supporting multiple providers while maintaining code quality.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/oauth-providers.svg"
@@ -120,7 +130,7 @@ export default function OAuthProvidersArticle() {
           caption="OAuth Provider Comparison — showing Google, Apple, Facebook, GitHub with market share and use cases"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           OAuth flow (authorization code with PKCE): User clicks "Sign in with Google". Client
           generates code verifier (random 43-128 chars), creates code challenge (SHA256 hash),
           redirects to Google authorization endpoint with client_id, redirect_uri, scope, state
@@ -129,7 +139,7 @@ export default function OAuthProvidersArticle() {
           state matches, exchanges code for tokens using client_secret and code_verifier. Client
           validates id_token signature (using Google's JWKS), extracts user claims, creates or
           links local account, creates session.
-        </p>
+        </HighlightBlock>
         <p>
           Provider abstraction architecture includes: common interface (normalize provider
           differences), provider adapters (Google adapter, Apple adapter, etc.), token validation
@@ -156,25 +166,28 @@ export default function OAuthProvidersArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing OAuth integrations involves trade-offs between convenience, security, and
           provider dependencies. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Google vs Apple vs Facebook</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Google:</strong> Most common (90%+ users have Google account), trusted,
               provides email/name/photo. Limitation: brand guidelines strict, verification required
               for sensitive scopes.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Apple:</strong> Privacy-focused (hide email option), required for iOS apps
               with other social logins. Limitation: relay emails (@privaterelay.appleid.com) can't
               contact users directly.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Facebook:</strong> Large user base, declining usage. Limitation: app review
               required for most permissions, strict data use policies, privacy concerns.
@@ -221,19 +234,22 @@ export default function OAuthProvidersArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing OAuth requires following established best practices to ensure security,
           usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use PKCE for all OAuth flows (even server-side) — prevents code interception attacks.
           Validate state parameter to prevent CSRF — generate random state, validate on callback.
           Store tokens securely (encrypted at rest) — never store plaintext. Verify token
           signatures and claims — use provider's JWKS, validate iss, aud, exp. Implement token
           refresh logic — handle token expiry gracefully.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
         <p>
@@ -263,21 +279,24 @@ export default function OAuthProvidersArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing OAuth to ensure secure, usable, and
           maintainable integrations.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No PKCE:</strong> Authorization code interception attacks, especially for
             mobile/SPA. <strong>Fix:</strong> Always use PKCE, even for server-side flows. RFC
             7636 recommends for all clients.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing state validation:</strong> CSRF attacks possible, attacker can
             authenticate as victim. <strong>Fix:</strong> Generate random state, store in session,
             validate on callback.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Insecure token storage:</strong> Tokens exposed if DB compromised, attacker
             can impersonate users. <strong>Fix:</strong> Encrypt tokens at rest, use secure
@@ -323,17 +342,20 @@ export default function OAuthProvidersArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           OAuth integration is critical for consumer applications. Here are real-world
           implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer App (Spotify)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Music streaming app with millions of users. Need frictionless
           signup. Support multiple OAuth providers (Google, Facebook, Apple). Account linking for
           users with multiple signup methods.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> OAuth 2.0 with PKCE. Provider abstraction layer (Google,
           Facebook, Apple adapters). Account linking with email verification. Fallback to email
@@ -430,14 +452,17 @@ export default function OAuthProvidersArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of OAuth design, implementation, and operational
           concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle OAuth provider outages?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle OAuth provider outages?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Graceful degradation — hide provider button if down (health check), fallback to
               email/password, queue OAuth logins for retry, circuit breaker pattern. Never block

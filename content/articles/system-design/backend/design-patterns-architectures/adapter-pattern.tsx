@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Adapter pattern</strong> is a structural design pattern that enables two incompatible interfaces to collaborate by introducing a translation layer between them. The adapter acts as a wrapper around an existing component, converting its interface into one that clients expect, without modifying the underlying component&apos;s source code. This makes the Adapter pattern a cornerstone of integration architecture in backend systems, where disparate services, legacy systems, third-party APIs, and evolving internal components must coexist and communicate reliably.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The pattern originated in the Gang of Four&apos;s design patterns catalog and was initially described in object-oriented terms, distinguishing between object adapters (which use composition to wrap the adaptee) and class adapters (which use multiple inheritance to inherit from both the target and adaptee interfaces). In modern backend engineering, the distinction has evolved beyond pure OOP mechanics. Today, adapters serve as the primary mechanism for containing integration complexity at system boundaries, isolating domain logic from the volatility of external dependencies, and enabling incremental migration strategies without disruptive big-bang rewrites.
-        </p>
+        </HighlightBlock>
         <p>
           The fundamental problem the Adapter pattern solves is interface incompatibility. Consider a payment processing service that initially integrates with Stripe. Months later, business requirements demand support for PayPal and Razorpay. Each provider has different request formats, response structures, authentication mechanisms, error semantics, and rate-limiting behavior. Without an adapter, every call site in the codebase would need to branch on which provider is being used, creating a tangled web of provider-specific logic scattered throughout the application. With an adapter, the core business logic depends on a single, stable interface—<code>PaymentProcessor</code> with methods like <code>charge(amount, currency, metadata)</code>—and each provider gets its own adapter implementation that translates between the canonical interface and the provider&apos;s actual API.
         </p>
@@ -57,14 +61,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Participants in the Adapter Pattern</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Adapter pattern involves four distinct participants, each playing a specific role. The <strong>Target</strong> defines the domain-specific interface that the client uses. It represents the contract your application code expects, expressed in terms meaningful to your domain rather than the external system. The <strong>Client</strong> is any component that collaborates with objects conforming to the Target interface. The client should have zero knowledge of the adaptee&apos;s existence or interface details. The <strong>Adaptee</strong> is the existing component with an incompatible interface—this could be a third-party SDK, a legacy SOAP service, a database driver, or any system whose interface does not match what your client expects. The <strong>Adapter</strong> wraps the adaptee and implements the target interface, translating calls and data between the two worlds.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The critical design principle governing these participants is that the client must never depend on the adaptee directly. All communication flows through the target interface, and the adapter is the sole component that understands both sides of the conversation. This isolation is what makes the pattern valuable for long-term maintainability.
-        </p>
+        </HighlightBlock>
 
         <h3>Object Adapter Versus Class Adapter</h3>
         <p>
@@ -101,9 +108,12 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In production backend systems, adapters are the connective tissue between your domain core and the external ecosystem. A typical architecture features the domain layer at the center, expressing its needs through port interfaces. Adapters implement these ports for specific technologies—HTTP clients for external APIs, database drivers for persistence, message queue consumers for async communication, and CLI adapters for operational tooling. This architecture is known as hexagonal architecture or ports-and-adapters, and it makes the Adapter pattern the structural backbone of the entire system.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/adapter-pattern-diagram-2.svg"
           alt="Hexagonal architecture showing domain core surrounded by port interfaces, with adapters implementing ports for REST APIs, databases, message queues, and external services"
@@ -111,9 +121,9 @@ export default function ArticlePage() {
         />
 
         <h3>Outbound Adapter Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Outbound adapters wrap calls to external services. The flow begins when the domain layer invokes a method on the port interface. The adapter receives this call, constructs the external request by mapping domain objects to the external format (serializing payloads, setting authentication headers, building query parameters), executes the call with appropriate timeouts and retry logic, receives the external response, maps it back into the domain model, normalizes any errors into the canonical error classification, and returns the result to the caller. Observability metadata—request IDs, latency measurements, vendor-specific correlation IDs—is captured and emitted as part of this flow, ensuring that every external call is traceable through distributed tracing systems.
-        </p>
+        </HighlightBlock>
 
         <h3>Inbound Adapter Flow</h3>
         <p>
@@ -144,14 +154,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>Adapter Versus Facade Versus Bridge</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These three patterns are frequently confused in system design interviews because all three involve intermediaries between components. Understanding their distinctions is essential for making correct architectural decisions. The <strong>Adapter pattern</strong> makes existing incompatible interfaces work together. It wraps an existing component to make it conform to an interface the client expects. The adapter is applied after the fact—you have an existing adaptee with an existing interface, and you need it to work with a client that expects something different. The adapter&apos;s purpose is compatibility.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Facade pattern</strong> provides a simplified interface to a complex subsystem. Unlike the adapter, the facade does not translate between incompatible interfaces. Instead, it takes a set of complex, low-level interfaces and presents a higher-level, easier-to-use interface on top of them. The facade&apos;s purpose is simplification. For example, a payment processing facade might expose a single <code>processPayment(order)</code> method that internally orchestrates fraud checking, payment authorization, receipt generation, and notification sending. The client does not need to understand the individual steps—the facade handles the complexity.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>Bridge pattern</strong> decouples an abstraction from its implementation so that the two can vary independently. The bridge is designed up front, as part of the initial architecture. It separates the &quot;what&quot; from the &quot;how&quot; by introducing two parallel hierarchies connected by a bridge interface. For example, a messaging abstraction (the &quot;what&quot;) might support email, SMS, and push notifications, while the implementation side (the &quot;how&quot;) might vary between providers like SendGrid, Twilio, and Firebase. The bridge ensures that adding a new message type does not require changes to the provider implementations, and adding a new provider does not require changes to the message types. The bridge&apos;s purpose is independent extensibility.
         </p>
@@ -183,12 +196,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most critical best practice is to define a stable, domain-centric target interface that expresses what your system needs, not what the external system provides. This canonical model is the foundation upon which everything else rests. If the target interface mirrors the external system&apos;s model, you have gained nothing. The target should be expressed in domain language, use domain concepts, and remain stable even as external systems evolve. This principle applies equally to data models, error semantics, and behavioral contracts.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Keep vendor types strictly out of the domain layer. Adapter implementations will necessarily import vendor SDKs, parse vendor-specific response types, and handle vendor-specific error codes. But these vendor types must never escape the adapter boundary. If a Stripe <code>Charge</code> object or a Salesforce <code>SObject</code> appears in domain logic, the adapter has failed to isolate the integration. Domain code should only see domain types. This discipline is what enables you to swap vendors, upgrade SDKs, or add alternative implementations without touching the core.
-        </p>
+        </HighlightBlock>
         <p>
           Centralize all integration-specific operational concerns within the adapter. Each adapter should own its timeout configuration, retry policy with exponential backoff and jitter, circuit breaker thresholds, rate-limiting rules, and observability requirements. These settings vary dramatically between dependencies—a payment gateway needs different resilience characteristics than a logging sink—and co-locating them with the adapter prevents scattering integration knowledge across the codebase. It also makes the adapter self-documenting: a developer can understand everything about how your system interacts with a particular dependency by reading a single file.
         </p>
@@ -208,12 +224,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most pervasive pitfall is allowing vendor concepts to leak into the domain layer. This happens gradually and insidiously. A developer needs a field from the vendor response that is not in the canonical model, so they pass the vendor object through the adapter instead of mapping it. Another developer needs to check a vendor-specific status code, so they import the vendor&apos;s error enum into the domain service. Each individual decision seems harmless, but collectively they erode the adapter&apos;s isolation until the adapter becomes a thin passthrough and the domain is tightly coupled to the vendor. The cure is strict architectural discipline: vendor types stop at the adapter boundary, period.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another common pitfall is embedding business logic inside the adapter. The adapter should translate, not decide. When an adapter starts making domain-level decisions—whether to retry based on business rules, how to reconcile conflicting data, what fallback behavior is appropriate for a particular user segment—it becomes a domain service wearing an adapter costume. This makes the adapter difficult to test, difficult to replace, and difficult to understand. Business decisions belong in the domain layer; the adapter&apos;s responsibility is to provide the domain layer with clean, normalized inputs and to faithfully execute the domain&apos;s decisions against the external system.
-        </p>
+        </HighlightBlock>
         <p>
           Neglecting error normalization is a frequent source of production incidents. External systems return errors in inconsistent formats, and if the adapter does not normalize them into a small, well-defined set of categories, every caller must implement its own error handling logic. This leads to duplicated error handling code, inconsistent retry behavior, and alerting gaps where some callers retry on errors that should be fatal and others fail on errors that should be retried. The adapter must classify every possible error from the external system into retryable, non-retryable, or unknown, and every caller must rely on this classification.
         </p>
@@ -230,14 +249,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>API Versioning and Backward Compatibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           API versioning is one of the most common and production-critical applications of the Adapter pattern. When an API evolves from v1 to v2, the changes are often breaking: fields are renamed, response structures are reorganized, authentication mechanisms change, or deprecated endpoints are removed. The business cannot force all clients to migrate simultaneously—some clients are external partners with their own release cycles, some are internal services with complex deployment dependencies, and some are mobile applications that cannot be updated until users choose to install the new version.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The adapter solution implements a two-way adapter at the API gateway level. The adapter accepts v1 requests, translates them into the v2 internal representation, routes them to the v2 business logic, and translates the v2 response back to v1 format. This allows the entire application to run on v2 internally while maintaining v1 compatibility externally. The adapter handles field renames by mapping old field names to new ones, structure changes by restructuring JSON payloads, and behavioral changes by implementing v1 semantics on top of v2 primitives. The adapter is explicitly temporary, with a deprecation timeline that gives clients a clear migration window. This approach has been used by Stripe, GitHub, and Twitter during major API migrations, allowing them to modernize their internal architecture while maintaining external compatibility for months or years.
-        </p>
+        </HighlightBlock>
 
         <h3>Database Migration and Schema Evolution</h3>
         <p>
@@ -269,14 +291,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the Adapter pattern and when should you use it in a backend system?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               The Adapter pattern is a structural design pattern that enables two incompatible interfaces to collaborate by introducing a translation layer between them. The adapter wraps an existing component (the adaptee) and converts its interface into one that clients expect (the target), without modifying the adaptee&apos;s source code. In backend systems, adapters are most valuable at integration seams: where your application touches external APIs, third-party services, legacy systems, databases, or message queues.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               You should use an adapter when multiple callers need the same integration, when the external system is likely to change or be replaced, when the external interface is fundamentally different from what your domain needs, or when you need consistent error handling, retries, and observability across integrations. The adapter creates a fault line at exactly the right place—between what your system controls and what it does not—so that external changes only impact the adapter, not the core domain logic.
             </p>

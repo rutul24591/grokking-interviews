@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,10 @@ export default function FeatureFlaggingRolloutsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Feature Flagging</strong> (feature toggles, feature switches)
           is a technique for conditionally enabling or disabling features in a
           running application without deploying new code. Flags transform release
@@ -43,8 +47,8 @@ export default function FeatureFlaggingRolloutsArticle() {
           decouples deployment (shipping code to production) from release (making
           the feature visible to users), which is a foundational practice for
           continuous delivery and trunk-based development.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff engineers, feature flags are an essential risk mitigation
           tool and experimentation platform. They enable testing in production
           with minimal blast radius — if a new checkout flow has a bug, you can
@@ -57,7 +61,7 @@ export default function FeatureFlaggingRolloutsArticle() {
           complexity — flag evaluation latency, technical debt from stale flags,
           testing overhead for all flag combinations, and the risk of flag
           misconfiguration causing production outages.
-        </p>
+        </HighlightBlock>
         <p>
           The feature flag ecosystem has matured from simple boolean toggles in
           configuration files to sophisticated management platforms
@@ -72,7 +76,10 @@ export default function FeatureFlaggingRolloutsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature flags are categorized by their purpose and lifecycle duration.
           Release flags are short-lived flags used for gradual rollout of new
           features. They enable a feature for a percentage of users and are
@@ -86,8 +93,8 @@ export default function FeatureFlaggingRolloutsArticle() {
           experiments need to run until statistical significance is reached, but
           they too must be removed after the experiment concludes and the
           winning variant is implemented.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Ops flags (operational flags) are long-lived controls for managing
           system behavior during incidents or maintenance. They allow operations
           teams to disable expensive features during traffic spikes (turn off
@@ -99,7 +106,7 @@ export default function FeatureFlaggingRolloutsArticle() {
           plan, geographic region, or organizational affiliation. These are
           long-lived and tied to the business model, such as enabling enterprise
           features for premium-tier customers or beta features for early adopters.
-        </p>
+        </HighlightBlock>
         <p>
           Flag evaluation is the process of determining whether a flag is
           enabled for a specific user context. Simple flags are boolean toggles
@@ -130,7 +137,10 @@ export default function FeatureFlaggingRolloutsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The feature flag evaluation architecture determines how flags are
           fetched, cached, and evaluated in the application. On application
           initialization, the flag SDK fetches the current flag configuration
@@ -143,8 +153,8 @@ export default function FeatureFlaggingRolloutsArticle() {
           (Server-Sent Events or WebSocket) to the flag service, receiving
           updates when flags are changed and applying them without requiring a
           page reload.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           When a component checks a flag, the evaluation flow checks the cached
           configuration against the current user context (user ID, plan,
           geography, device type). For percentage rollouts, the user ID is
@@ -156,7 +166,7 @@ export default function FeatureFlaggingRolloutsArticle() {
           rules). If the flag service is unavailable, the SDK falls back to
           default values configured at build time, ensuring the application
           remains functional even when the flag service experiences an outage.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/flag-evaluation-flow.svg"
@@ -182,7 +192,10 @@ export default function FeatureFlaggingRolloutsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Building versus buying a feature flag platform involves significant
           trade-offs. LaunchDarkly and similar platforms provide mature
           infrastructure with real-time updates, advanced targeting, audit logs,
@@ -196,8 +209,8 @@ export default function FeatureFlaggingRolloutsArticle() {
           patterns, and then decide whether to continue with the managed service,
           self-host the open-source platform, or build a custom solution for
           specific requirements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Client-side versus server-side flag evaluation presents security and
           performance trade-offs. Client-side evaluation is fast (no network
           round-trip per evaluation) and works offline (flags are cached), but
@@ -212,7 +225,7 @@ export default function FeatureFlaggingRolloutsArticle() {
           validation as the ultimate authority), and client-side evaluation for
           release flags and UI experiments (where performance matters more than
           security).
-        </p>
+        </HighlightBlock>
         <p>
           Flag granularity versus complexity is a design trade-off. Fine-grained
           flags (one flag per component or feature) provide precise control but
@@ -230,7 +243,10 @@ export default function FeatureFlaggingRolloutsArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Establish flag hygiene from the start. Name flags descriptively with
           a consistent convention — <code>feature-checkout-v2</code> is clear,
           while <code>new-checkout</code> is ambiguous. Document each flag with
@@ -241,8 +257,8 @@ export default function FeatureFlaggingRolloutsArticle() {
           days), create a ticket or pull request to remove the flag and its
           conditional logic. Treat stale flags as technical debt that must be
           addressed, not as a permanent part of the codebase.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Always provide default values for every flag. The default is the value
           used when the flag service is unavailable, the SDK has not yet loaded,
           or the user context does not match any targeting rule. For release
@@ -252,7 +268,7 @@ export default function FeatureFlaggingRolloutsArticle() {
           disabled). Cache flag configurations locally so the application can
           function during flag service outages, and implement retry with
           exponential backoff for flag service reconnection.
-        </p>
+        </HighlightBlock>
         <p>
           Test all flag variants as part of your test strategy. Unit tests
           should verify behavior with the flag enabled and disabled. Integration
@@ -269,7 +285,10 @@ export default function FeatureFlaggingRolloutsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Flag sprawl — the accumulation of hundreds of flags without cleanup —
           is the most common and damaging pitfall. Each stale flag adds
           conditional logic that must be understood, tested, and maintained.
@@ -280,8 +299,8 @@ export default function FeatureFlaggingRolloutsArticle() {
           dates, track flag usage metrics to identify unused flags, and conduct
           quarterly flag audits. Engineering leadership must enforce a &quot;no
           flag without an owner and expiry date&quot; policy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Evaluating flags synchronously during rendering causes performance
           degradation. If flag evaluation requires a network request, the user
           sees a blank screen or loading spinner while the flags load. The fix
@@ -291,7 +310,7 @@ export default function FeatureFlaggingRolloutsArticle() {
           so the client has flags available immediately. If real-time flag
           updates are needed, use a streaming connection that updates flags
           in the background without blocking rendering.
-        </p>
+        </HighlightBlock>
         <p>
           Using feature flags for configuration management is an anti-pattern.
           Flags should control feature visibility, not store application
@@ -307,7 +326,10 @@ export default function FeatureFlaggingRolloutsArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Facebook uses feature flags extensively for gradual rollouts and
           experimentation. Every new feature is deployed behind a flag, starting
           with internal employees, then expanding to 1% of users, then 10%, 50%,
@@ -318,8 +340,8 @@ export default function FeatureFlaggingRolloutsArticle() {
           flags with real-time evaluation, automated rollback triggers based on
           metric thresholds, and rigorous flag cleanup processes to prevent
           technical debt accumulation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           E-commerce companies use feature flags for checkout flow experiments
           and operational control during peak events. During Black Friday,
           recommendation engines, product review widgets, and social proof
@@ -330,7 +352,7 @@ export default function FeatureFlaggingRolloutsArticle() {
           winning variant determined by conversion rate analysis. After the
           experiment concludes, the winning variant is promoted to the default
           and the experiment flag is removed.
-        </p>
+        </HighlightBlock>
         <p>
           SaaS companies use permission flags for tiered feature access and
           beta programs. Enterprise features (SSO, advanced analytics, custom
@@ -347,12 +369,15 @@ export default function FeatureFlaggingRolloutsArticle() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What are feature flags and why use them?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Feature flags enable conditional feature release without
               redeploying code. Benefits include gradual rollout (reducing risk
               by exposing features to increasing percentages of users), A/B
@@ -361,7 +386,7 @@ export default function FeatureFlaggingRolloutsArticle() {
               deployment from release. They are essential for continuous delivery,
               trunk-based development, and risk mitigation in production
               environments.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,12 +36,15 @@ export default function CommentUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Comment UI enables users to engage in asynchronous discussions by posting responses to content and to each other. Unlike simple reactions like likes, comments represent substantive engagement that requires cognitive effort and contributes to community building. Well-designed comment systems foster healthy discourse, enable knowledge sharing, and increase user retention by creating investment in the platform community.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The complexity of comment UI varies significantly by platform. Reddit supports deeply nested threaded discussions with thousands of comments per post. YouTube uses flat comments with limited reply threading. Instagram places comments below photos with simple @mentions for replies. Hacker News uses minimal threading with collapse functionality. Each design reflects different community goals and content types.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, comment UI implementation involves navigating significant technical and social challenges. The system must handle real-time comment delivery for active discussions while scaling to millions of comments on viral content. It must integrate with content moderation systems to filter spam, harassment, and policy violations. The architecture must support rich features like mentions, formatting, and editing while maintaining performance. Additionally, engineers must consider the social dynamics their design enables—thread depth affects conversation quality, sorting algorithms affect which voices are heard, and moderation tools affect community health.
         </p>
@@ -48,13 +52,16 @@ export default function CommentUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Threading Models</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Threading determines how replies are organized and displayed. Flat threading shows all comments at the same level with no visual nesting. This model, used by YouTube and Instagram, simplifies the UI and ensures all comments receive equal visual weight. However, it makes following specific conversations difficult when multiple discussion threads intermingle.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Nested threading indents replies under their parent comments, creating visual conversation trees. Reddit supports unlimited nesting depth, enabling complex multi-level discussions. Most platforms limit nesting to 2-3 levels to prevent excessive indentation that becomes unreadable on mobile devices. Nested threading makes conversations easier to follow but can create echo chambers where users only engage with immediate replies rather than the broader discussion.
-        </p>
+        </HighlightBlock>
         <p>
           Hybrid approaches combine flat and nested models. Comments display flat initially, but tapping a comment expands its replies in a threaded view. This approach balances readability with conversation tracking. Some platforms use flat display with visual indicators showing reply relationships, such as connecting lines or color coding.
         </p>
@@ -95,9 +102,12 @@ export default function CommentUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Comment UI architecture spans client rendering, API design, database schema, and real-time infrastructure. The client component manages comment tree rendering, input state, pagination, and real-time updates. The API layer handles comment creation, retrieval, updates, and deletion with appropriate authorization. The database stores comments with parent-child relationships and indexes for efficient retrieval. Real-time infrastructure delivers new comments to connected clients without polling.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/interaction-engagement/comment-ui/comment-architecture.svg"
@@ -108,9 +118,9 @@ export default function CommentUIArticle() {
         />
 
         <h3>Client Component Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The client component manages comment tree state, loading states, and user interactions. Comments are typically fetched in pages of 20-50 comments to avoid overwhelming initial load. The component renders comments recursively for nested threading, with configurable maximum depth. Deep threads collapse automatically with expand controls.
-        </p>
+        </HighlightBlock>
         <p>
           Virtual scrolling becomes essential for comment sections with hundreds or thousands of comments. Libraries like react-window or tanstack/virtual render only visible comments plus a small buffer, dramatically reducing DOM nodes and improving scroll performance. Virtual scrolling requires careful height calculation for variable-height comments.
         </p>
@@ -162,14 +172,17 @@ export default function CommentUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Comment UI design involves numerous trade-offs affecting conversation quality, user experience, and system complexity. Understanding these trade-offs enables informed decisions aligned with community goals.
-        </p>
+        </HighlightBlock>
 
         <h3>Threading Depth Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Unlimited threading depth, as used by Reddit and Hacker News, enables complex multi-level discussions where each reply directly addresses its parent. This structure supports nuanced conversations with multiple sub-topics. However, deep indentation becomes unreadable on mobile devices, and very deep threads often fragment into parallel conversations that lose coherence.
-        </p>
+        </HighlightBlock>
         <p>
           Limited threading depth of 2-3 levels balances conversation tracking with readability. This approach, used by Facebook and YouTube, ensures comments remain readable on all screen sizes. The constraint encourages users to start new top-level comments rather than replying deep in threads, potentially surfacing more diverse perspectives. However, it can make following specific conversations more difficult.
         </p>
@@ -207,13 +220,16 @@ export default function CommentUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Limit threading depth to 2-3 levels:</strong> Prevent excessive indentation that becomes unreadable on mobile. Collapse deep threads automatically with expand controls for users who want full context.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement optimistic comment creation:</strong> Display comments immediately while the API request completes in the background. Revert on failure with clear error messaging and retry option.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use cursor-based pagination:</strong> Avoid offset pagination performance issues for deep pagination. Use comment IDs or timestamps as cursors for efficient database queries.
           </li>
@@ -237,13 +253,16 @@ export default function CommentUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Unlimited threading depth:</strong> Allowing unlimited nesting creates unreadable indentation on mobile and fragments conversations. Limit depth and collapse deep threads.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No pagination:</strong> Loading all comments at once causes performance issues for popular content. Implement pagination with appropriate page sizes (20-50 comments).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Missing draft auto-save:</strong> Users lose comments from accidental navigation or crashes, creating frustration and support tickets. Implement local storage draft persistence.
           </li>
@@ -261,16 +280,19 @@ export default function CommentUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Reddit Threading</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Reddit supports unlimited nesting depth with collapse controls for deep threads. Comments sort by top, new, controversial, or old. Collapsed comments show score and preview text. Reddit uses materialized paths for efficient tree queries and implements vote fuzzing to prevent exact score tracking. The platform handles millions of comments daily across thousands of active discussions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">YouTube Comments</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           YouTube uses flat comments with one level of reply threading. Comments sort by top or newest by default. The platform emphasizes creator engagement with pinned comments and creator heart reactions. YouTube implements aggressive automated moderation using Google's Perspective API for toxicity detection. Comments on controversial content may require manual approval.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Discord Threading</h3>
         <p>
@@ -285,12 +307,15 @@ export default function CommentUIArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle deep nesting in comment threads?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle deep nesting in comment threads?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Limit visual nesting to 2-3 levels maximum. For deeper replies, flatten the display by showing them at the maximum indent level with a visual indicator showing they are further replies. Implement collapse controls for threads exceeding a certain depth, showing only the first few comments with a "show more replies" button. On mobile, consider using a separate screen for viewing deep thread context rather than trying to fit everything on one screen. Use indentation lines or connecting visual elements to show reply relationships even when flattened.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Idempotency</strong> is the property of an operation whereby performing it multiple times has the same effect as performing it once. In distributed systems, idempotency is essential because retries are not just possible—they are expected. Network timeouts, server crashes, load balancer retransmissions, and client-side retry logic all create scenarios where the same logical request may arrive at a server multiple times. Without idempotency, each retry can produce duplicate side effects: double charges, duplicate accounts, repeated notifications, or corrupted state.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Idempotency is often confused with simply returning the same HTTP response. It is about business effects, not response consistency. If a retry causes two emails to be sent or two invoices to be created, the operation is not effectively idempotent, even if the client receives a 200 status code both times. Strong designs specify which effects must be exactly-once—charging a card, creating an account—and which effects can be best-effort—emitting an analytics event, logging an audit record.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, idempotency requires balancing four competing concerns. <strong>Correctness</strong> means that repeated requests must never produce duplicate business effects—this is non-negotiable for financial transactions, provisioning operations, and state mutations. <strong>Performance</strong> means that idempotency checks must be fast and not add significant latency to every request—deduplication lookups should be sub-millisecond. <strong>Storage</strong> means that idempotency records must be managed with appropriate retention policies—keys must expire to prevent unbounded growth, but expiration windows must exceed client retry time to remain safe. <strong>Distribution</strong> means that idempotency must work across multiple service instances, potentially across multiple regions, which requires shared state and careful consistency modeling.
         </p>
@@ -48,6 +52,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/reliability-fault-tolerance/idempotent-key-pattern.svg"
@@ -56,12 +63,12 @@ export default function ArticlePage() {
         />
 
         <h3>HTTP Method Idempotency</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           HTTP semantics provide a foundation for idempotency. GET, PUT, DELETE, HEAD, OPTIONS, and TRACE are defined as idempotent by the HTTP specification. POST is not idempotent by default. This means that repeating a PUT request should have the same effect as a single PUT—updating a resource to the same state. Repeating a DELETE should have the same effect—the resource is deleted, and subsequent deletes are no-ops.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           However, HTTP semantics alone are not sufficient for application-level idempotency. A PUT request that updates a user record is idempotent at the HTTP level, but if the update triggers a side effect like sending a notification email, that side effect may not be idempotent. Similarly, a POST request can be made idempotent at the application level through the use of idempotency keys, even though HTTP defines POST as non-idempotent.
-        </p>
+        </HighlightBlock>
         <p>
           The staff-level insight is to treat HTTP method semantics as a hint, not a guarantee. Implement server-side deduplication for any operation that has side effects, regardless of the HTTP method used. The idempotency guarantee is an application-level concern that HTTP semantics cannot fully address.
         </p>
@@ -119,14 +126,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust idempotency architecture treats idempotency as a cross-cutting concern with standardized key generation, storage, and lifecycle management. The flow begins with the client generating a unique idempotency key (typically a UUID v4) for each logical request. The server receives the request, checks the idempotency store for an existing record, and either returns the cached response or processes the request and stores the result. The entire check-process-store sequence should be atomic to prevent race conditions between concurrent retries.
-        </p>
+        </HighlightBlock>
 
         <h3>Idempotency Middleware</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement idempotency as middleware that wraps the request handler. The middleware extracts the idempotency key from the request header, checks the store, and either short-circuits with a cached response or passes through to the handler. After the handler completes, the middleware stores the response keyed by the idempotency key before returning it to the client. This pattern keeps idempotency logic separate from business logic and ensures consistent behavior across all endpoints.
-        </p>
+        </HighlightBlock>
         <p>
           The middleware should handle concurrent retries safely. Use a distributed lock or a database-level unique constraint to ensure that only one instance processes a given idempotency key at a time. Concurrent retries that both pass the "key not found" check would both process the request, defeating the purpose of idempotency. The lock should be short-lived—long enough to prevent concurrent processing but short enough to avoid holding resources if the processing instance crashes.
         </p>
@@ -151,12 +161,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Idempotency improves correctness but adds storage and latency overhead. The idempotency check adds a lookup to every request, and storing results adds a write. For high-throughput systems, this overhead can be significant. The trade-off is between correctness and performance—and for operations with side effects such as payments, provisioning, or user creation, correctness always wins. For read-only operations or best-effort side effects like analytics, idempotency may be unnecessary.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The choice of idempotency storage is a critical trade-off. Cache-based storage is fast but volatile—records can be lost during outages, allowing duplicates. Durable storage is safe but slower and more expensive. The hybrid approach—durable constraints for critical invariants plus a cache for high-volume retry deduplication—provides a balance but adds operational complexity. The right choice depends on the cost of a duplicate: if a double charge costs the business $100 in refunds and reputation damage, the durable storage cost is justified.
-        </p>
+        </HighlightBlock>
         <p>
           Key retention is another trade-off. Longer retention improves safety—clients can retry for a longer window without risk of duplicates—but increases storage cost and can itself cause reliability issues if the store grows unbounded. Shorter retention reduces cost but increases the risk that a late retry is treated as a new request. The retention window should be based on observed client retry behavior, not arbitrary defaults.
         </p>
@@ -167,12 +180,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use idempotency keys for all side-effecting operations, not just POST requests. Any operation that creates, modifies, or triggers an external effect should be idempotent. Define which operations require idempotency and document the key management policy for each operation. Monitor duplicate request rates and idempotency cache hit rates to ensure the system is functioning correctly.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Store idempotency results in the same atomic unit as the side effect whenever possible. Use database transactions to ensure that the "already processed" record and the state change commit together. If atomic storage is not possible, use conditional updates, unique constraints on business identifiers, or outbox-driven workflows to provide a reliable idempotency boundary.
-        </p>
+        </HighlightBlock>
         <p>
           Scope idempotency keys by tenant or user to prevent accidental collisions. Bind keys to request fingerprints to prevent accidental misuse across different operations. Set retention windows based on observed client retry behavior, with a safety margin. Alert on anomalies: spikes in duplicate requests, increased idempotency misses, and elevated fingerprint mismatch rates.
         </p>
@@ -186,12 +202,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Expiring idempotency keys too quickly is the most common pitfall. If keys expire before the client's retry window closes, retries will be treated as new requests and may cause duplicate effects. This is particularly dangerous for async operations where the client may retry hours or days after the original request. The retention window must cover the longest credible retry scenario, including offline clients, batch processing delays, and async callback patterns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Partial idempotency—where only some side effects are deduplicated—leads to inconsistent behavior that is difficult to diagnose. For example, a payment API may deduplicate the charge but not the notification email, resulting in one charge but two emails. All side effects of an operation must be covered by the same idempotency guarantee. If some effects cannot be deduplicated, they should be decoupled from the idempotent operation and handled asynchronously with their own idempotency mechanism.
-        </p>
+        </HighlightBlock>
         <p>
           Key scoping failures allow accidental collisions. If idempotency keys are not scoped by tenant or user, different clients may accidentally use the same key for different requests, causing incorrect responses to be reused. Similarly, if keys are accepted without binding to request parameters, a client bug can reuse keys across different operations and produce surprising outcomes that are difficult to debug.
         </p>
@@ -205,16 +224,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Payment Processing: Stripe-style Idempotency</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A payment processing platform implemented idempotency keys for all charge creation requests. Clients generate a UUID for each charge attempt and include it in the Idempotency-Key header. The server checks a Redis-backed idempotency store, processes the charge if new, and stores the result. The tricky part is that the first attempt might succeed at the payment provider but fail while returning the response. The system treats the provider transaction ID as part of the internal state machine and ensures that any retry resolves to the same internal payment intent. This prevents double charges even when the payment provider confirms the charge but the response is lost in transit.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce: Order Creation with Inventory Reservation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce platform needed idempotent order creation that reserved inventory and charged the customer. The order creation workflow spans three services: order service, inventory service, and payment service. The idempotency key propagates through all three services, and each service independently checks and records idempotency. If the client retries after a timeout, the order service returns the existing order, the inventory service confirms the existing reservation, and the payment service returns the existing charge—no duplicates at any level.
-        </p>
+        </HighlightBlock>
 
         <h3>Event-Driven: Kafka Consumer Idempotency</h3>
         <p>
@@ -232,14 +254,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How do you implement idempotency for a payment API?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               The client generates a unique idempotency key (UUID) for each charge attempt and includes it in the request header. The server checks a durable idempotency store for an existing record. If found, it returns the cached response without re-processing. If not found, it processes the charge, stores the result with the key, and returns the response. The check and store must be atomic with the charge operation.
-            </p>
+            </HighlightBlock>
             <p>
               The critical detail is handling the case where the charge succeeds at the payment provider but the response is lost. The system must store the provider transaction ID as part of the internal state and ensure that any retry resolves to the same payment intent. Idempotency is not just a key lookup—it is a way to ensure that a distributed workflow produces a single outcome.
             </p>

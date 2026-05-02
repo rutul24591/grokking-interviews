@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,12 +39,15 @@ export default function SessionManagementServiceArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Session management service</strong> is the infrastructure that creates, validates, renews, and revokes user sessions — the mechanism by which an application recognizes a returning user across multiple HTTP requests. Because HTTP is stateless (each request is independent and carries no memory of previous requests), sessions provide the statefulness that applications need to maintain user identity, preferences, and authorization context across a sequence of interactions. The session management service generates a session identifier (a cryptographically random token or a signed JWT) when a user authenticates, stores session state (user ID, roles, permissions, last activity timestamp) associated with that identifier, validates the session on every subsequent request, renews the session to extend its lifetime (sliding expiration), and revokes the session when the user logs out or when security events require invalidation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, designing a session management service is a distributed systems challenge that balances security, performance, and scalability. The technical difficulty lies in managing millions of concurrent sessions with sub-5-millisecond validation latency (session validation happens on every authenticated request, so it must be fast), supporting immediate revocation (when a user changes their password or an administrator force-logs out a compromised account, all sessions must be invalidated within seconds), handling session distribution across multiple service nodes (any node must be able to validate any session, requiring shared state or stateless tokens), and preventing session-based attacks (session fixation, hijacking, replay, and concurrent session violations).
-        </p>
+        </HighlightBlock>
         <p>
           Session management service design involves several technical considerations. Stateful versus stateless sessions (stateful sessions store session data on the server and the client holds only a session ID — enabling immediate revocation but requiring server-side storage for every active session; stateless sessions encode all session data in a signed token (JWT) that the client presents on every request — eliminating server-side storage but making individual token revocation impossible until the token expires). Token lifecycle (short-lived access tokens (15-60 minutes) for efficient stateless validation, paired with long-lived refresh tokens (7-90 days) stored in the session store for revocable session renewal). Session storage (Redis or Memcached for low-latency session lookups, with distributed replication for high availability and horizontal scaling). Revocation strategies (immediate revocation for logout, cascading revocation for password changes (all sessions for the user), global revocation for security breaches (all sessions across all users), and expiration-based revocation for inactive sessions). Security controls (session fixation prevention (regenerating the session ID on authentication), concurrent session limits (restricting the number of active sessions per user), device fingerprinting (detecting session access from new devices or locations), and secure cookie attributes (HTTP-only, Secure, SameSite) for web-based sessions.
         </p>
@@ -55,14 +59,17 @@ export default function SessionManagementServiceArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Stateful Versus Stateless Sessions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stateful sessions store session data on the server side (in Redis, Memcached, or a database) and the client holds only a session identifier (a cryptographically random string stored in a cookie or returned in an Authorization header). When the client makes a request, the server looks up the session data using the session ID. Stateful sessions support immediate revocation — deleting the session from the store invalidates the session immediately, regardless of when the token was issued. However, stateful sessions require the server to maintain storage for every active session, which becomes a scalability challenge at millions of concurrent sessions (the session store must handle millions of lookups per second with sub-5-millisecond latency).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Stateless sessions encode all session data in a signed token (typically a JWT — JSON Web Token) that the client presents on every request. The server validates the token&apos;s cryptographic signature and extracts the session data (user ID, roles, expiration) from the token itself, without any server-side lookup. Stateless sessions scale infinitely — the server does not need to store anything, and any service node can validate any token. However, stateless sessions cannot be individually revoked before expiration — a token remains valid until it expires, which means that if a token is compromised, the attacker can use it until the token&apos;s expiry time (typically 15-60 minutes for access tokens).
-        </p>
+        </HighlightBlock>
 
         <h3>Access Tokens and Refresh Tokens</h3>
         <p>
@@ -94,9 +101,12 @@ export default function SessionManagementServiceArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The session management service architecture consists of the session store (Redis cluster maintaining active session data with TTL-based expiration), the token issuer (generating access tokens and refresh tokens, signing JWTs with RSA or HMAC keys, and storing refresh tokens in the session store), the token validator (verifying JWT signatures, checking expiration, and looking up refresh tokens in the session store), and the revocation manager (invalidating sessions by deleting them from the session store, maintaining a revocation list for stateless tokens, and propagating revocation events to all service nodes). The flow begins with user authentication — the authentication service validates the user&apos;s credentials and requests a new session from the session management service. The session management service generates a session ID, stores the session state (user ID, roles, device fingerprint, creation timestamp) in Redis with a TTL (e.g., 30 days for the refresh token, 15 minutes for the access token), signs a JWT access token containing the user ID and expiration, and returns both the access token (JWT) and the refresh token (opaque string) to the client.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/system-components-services/session-architecture.svg"
@@ -106,9 +116,9 @@ export default function SessionManagementServiceArticle() {
           height={550}
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           On each subsequent request, the client presents the access token (JWT) in the Authorization header. The API gateway or service middleware validates the token&apos;s cryptographic signature (using the public key or shared secret), checks the expiration claim, and extracts the user ID and roles from the token — all without any server-side lookup. If the access token is expired, the client sends the refresh token to the session management service&apos;s token refresh endpoint. The service looks up the refresh token in Redis (checking that it has not been revoked or expired), issues a new access token (and optionally a new refresh token through rotation), updates the session&apos;s last-activity timestamp (sliding expiration), and returns the new tokens to the client.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/system-components-services/session-lifecycle.svg"
@@ -148,14 +158,17 @@ export default function SessionManagementServiceArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Session management design involves trade-offs between stateless and stateful session storage, short-lived and long-lived tokens, strict and lenient session expiration, and centralized and distributed session stores. Understanding these trade-offs is essential for designing session management systems that match your application&apos;s security requirements, scalability needs, and user experience goals.
-        </p>
+        </HighlightBlock>
 
         <h3>Stateless JWT Versus Stateful Session Store</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Stateless JWT:</strong> Session data is encoded in a signed token that the client presents on every request. Advantages: infinite scalability (no server-side storage required, any node can validate any token without coordination), lowest validation latency (cryptographic signature verification takes microseconds, no network round-trip), and simplest architecture (no session store to manage, scale, or back up). Limitations: no individual token revocation (tokens remain valid until they expire, so compromised tokens cannot be invalidated immediately), larger token size (JWTs are larger than opaque session IDs, increasing network overhead), and limited session data (tokens have size constraints, so storing large amounts of session data is impractical). Best for: high-throughput APIs, microservices architectures (where every service needs to validate tokens independently), applications where immediate revocation is not a critical requirement.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Stateful Session Store:</strong> Session data is stored on the server, and the client holds only a session ID. Advantages: immediate revocation (deleting the session from the store invalidates it immediately), unlimited session data (the server can store arbitrarily large session state — user preferences, shopping cart contents, multi-step form data), and server-side session management (the server can modify session data without the client&apos;s involvement — adding roles, updating preferences, tracking activity). Limitations: requires distributed storage (Redis cluster, Memcached farm) that must be scaled, monitored, and backed up, validation latency includes a network round-trip to the session store (1-5ms), and session store outages cause mass session invalidation (all users are logged out). Best for: applications requiring immediate revocation (banking, enterprise SaaS), applications with rich session state (shopping carts, multi-step workflows), compliance-driven applications (SOC 2, HIPAA requiring session audit and revocation).
         </p>
@@ -188,16 +201,19 @@ export default function SessionManagementServiceArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Use the Hybrid Token Model (Stateless Access + Stateful Refresh)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Combine short-lived stateless JWT access tokens (15-60 minutes) with long-lived stateful refresh tokens (7-90 days) stored in the session store. The access token provides efficient stateless validation on every request (no server lookup), while the refresh token provides revocation capability (deleting the refresh token from the store prevents the client from obtaining new access tokens, and the existing access token expires within 15-60 minutes). This model balances the efficiency of stateless tokens with the security of stateful revocation, and is the recommended approach for most production applications. Implement token rotation (issuing a new refresh token on each refresh) to detect token theft — if the legitimate client&apos;s refresh fails because the refresh token has been rotated, the system can alert the user to potential account compromise.
-        </p>
+        </HighlightBlock>
 
         <h3>Regenerate Session IDs on Authentication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Always regenerate the session ID when a user transitions from an unauthenticated to an authenticated state (session fixation prevention). If the user had a pre-authentication session (anonymous browsing, shopping cart), discard the old session ID and generate a new one after authentication. This prevents an attacker from fixing a known session ID in the user&apos;s browser before authentication and hijacking the session after authentication. Set the new session ID in a secure cookie (HTTP-only, Secure, SameSite=Strict or Lax) to prevent XSS-based session theft and CSRF attacks.
-        </p>
+        </HighlightBlock>
 
         <h3>Enforce Concurrent Session Limits</h3>
         <p>
@@ -223,16 +239,19 @@ export default function SessionManagementServiceArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Storing Tokens in localStorage for Web Applications</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Storing JWT access tokens or refresh tokens in browser localStorage makes them accessible to JavaScript, which means any XSS vulnerability in the application can expose the tokens to an attacker. The attacker can read the token from localStorage and use it to impersonate the user until the token expires. The mitigation is to store tokens in HTTP-only cookies (which JavaScript cannot read) with Secure and SameSite attributes. HTTP-only cookies are sent automatically with every request to the same origin, so the application does not need to manually attach the token to requests, and the tokens are not accessible to XSS attacks.
-        </p>
+        </HighlightBlock>
 
         <h3>Not Revoking Refresh Tokens on Password Change</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a user changes their password, failing to revoke all existing refresh tokens means that an attacker who has stolen a refresh token can continue to obtain new access tokens even after the password change. The password change invalidates the user&apos;s credentials, but the stolen refresh token provides an alternate authentication path that bypasses the password entirely. The mitigation is to revoke all refresh tokens for the user when their password changes, except for the current session (the session used to change the password). This ensures that the user stays logged in on their current device while all other sessions are invalidated.
-        </p>
+        </HighlightBlock>
 
         <h3>Using Stateless Tokens When Revocation Is Required</h3>
         <p>
@@ -258,16 +277,19 @@ export default function SessionManagementServiceArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Enterprise SaaS Session Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Enterprise SaaS platforms (Salesforce, Slack, Workday) use session management services to manage user sessions across web browsers, mobile apps, and API integrations. Sessions are stateful (stored in Redis) to support immediate revocation (when an employee leaves the company, the IT administrator revokes all their sessions), concurrent session limits (maximum 5 sessions per user), and device management (users can view and revoke sessions from unfamiliar devices). Session activity is audited for compliance (SOC 2, HIPAA) — every session creation, validation, and revocation is logged with timestamps, IP addresses, and device fingerprints. Enterprise SaaS platforms typically use short-lived access tokens (15 minutes) with sliding expiration and long-lived refresh tokens (30 days) to balance user convenience with security requirements.
-        </p>
+        </HighlightBlock>
 
         <h3>Banking Application Session Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Banking applications use strict session management with absolute expiration (sessions expire after 15 minutes of inactivity, regardless of activity), immediate revocation on password change, device binding (sessions are tied to the device that created them, and accessing a session from a new device requires re-authentication), and concurrent session limits (maximum 2 sessions per user — one web, one mobile). Session activity is monitored for anomalies (login from a new country, simultaneous sessions from distant locations, access at unusual hours) and suspicious sessions are revoked with user notification. Banking applications typically use stateful sessions (stored in a highly available Redis cluster with cross-region replication) to ensure immediate revocation capability and full audit trails for regulatory compliance.
-        </p>
+        </HighlightBlock>
 
         <h3>Consumer Social Media Session Management</h3>
         <p>
@@ -283,15 +305,18 @@ export default function SessionManagementServiceArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between stateful and stateless sessions, and when would you use each?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Stateful sessions store session data on the server (Redis, Memcached) and the client holds only a session ID. They support immediate revocation (delete from store) but require server-side storage for every active session, which becomes a scalability challenge at millions of concurrent sessions. Stateless sessions encode all session data in a signed token (JWT) that the client presents on every request. They scale infinitely (no server storage needed) but cannot be individually revoked before expiration. Use stateful sessions when immediate revocation is required (banking, enterprise SaaS, compliance-driven applications). Use stateless sessions for high-throughput APIs and microservices where revocation can wait until token expiry (15-60 minutes).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

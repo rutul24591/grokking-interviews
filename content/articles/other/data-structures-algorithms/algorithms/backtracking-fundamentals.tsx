@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function BacktrackingFundamentalsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Backtracking</span> is a systematic way to
           enumerate or search a combinatorial space by incrementally building partial
           candidates and abandoning ("backtracking" out of) any partial candidate that
@@ -32,15 +36,15 @@ export default function BacktrackingFundamentalsArticle() {
           tree, with the critical addition of an{" "}
           <span className="font-semibold">undo</span> step after each recursive exploration
           and constraint-driven pruning that prunes whole subtrees of dead ends.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The term was coined by D.H. Lehmer in the 1950s. R.J. Walker formalized it in
           1960. Robert Floyd's 1967 paper "Nondeterministic algorithms" gave the modern
           framing as DFS over a search tree with backjumping. It powers nearly every
           combinatorial-search engine: SAT solvers, constraint propagators, theorem
           provers, type-inference algorithms, register allocators, and the puzzle solvers
           we see in interviews.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Interview problems that map cleanly to backtracking: subsets, permutations,
           combinations, N-Queens, Sudoku, word search, palindrome partitioning, generate
@@ -58,20 +62,23 @@ export default function BacktrackingFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">State-space tree.</span> Every backtracking
           algorithm defines an implicit tree: the root is the empty partial solution;
           children of a node are the nodes obtained by extending the partial with one more
           choice. Leaves are full candidates (some valid, some invalid). The algorithm is a
           DFS over this tree.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Choose–explore–unchoose.</span> The template has
           three steps per recursive call: choose a candidate extension, recurse to explore
           its subtree, then undo the choice (unchoose) before trying the next sibling. The
           undo is what distinguishes backtracking from plain DFS — it lets a single mutable
           state object visit the entire tree without copying.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Pruning is the whole game.</span> Without pruning
           a backtracker enumerates the full state-space tree; for n-element problems that's
@@ -121,19 +128,22 @@ export default function BacktrackingFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Recursion vs explicit stack.</span> Most
           interview-style backtrackers use recursion because the implicit call stack
           captures the state-space DFS naturally. Production solvers prefer explicit stacks
           to avoid recursion-depth limits and to support non-chronological backtracking
           (backjumping in CDCL SAT solvers).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">In-place vs copy-on-write state.</span> For
           subsets, a single growable list with append/pop is the cheapest representation.
           For permutations, swap the chosen element to the front of the remaining range and
           recurse on the suffix. For grids, mark cells as visited and unmark on undo.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Iterative deepening.</span> When the depth of the
           solution is unknown but bounded, run DFS to depth 1, then 2, then 3, etc. Each
@@ -165,19 +175,22 @@ export default function BacktrackingFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Backtracking vs DP.</span> DP is the right tool
           when subproblems overlap and a polynomial state space exists. Backtracking
           enumerates the full search tree. If you can express the problem as overlapping
           subproblems with cacheable answers, prefer DP — it transforms exponential into
           polynomial.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Backtracking vs greedy.</span> Greedy commits
           locally and never reconsiders. When the greedy-choice property holds (activity
           selection, MST), greedy wins on speed. When it doesn't (0/1 knapsack, Sudoku),
           backtracking is necessary — possibly with greedy heuristics inside.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Backtracking vs BFS.</span> BFS finds the
           shortest path / smallest solution but uses memory proportional to the frontier
@@ -203,17 +216,20 @@ export default function BacktrackingFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Identify the state explicitly.</span> Before
           coding, write what fields define a partial state. For permutations, it's the
           chosen prefix and the multiset of remaining elements. For Sudoku, the partial
           board. Naming the state clarifies the recursion.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Prune as early as possible.</span> Reject
           invalidly-extending choices before recursing, not after returning. The earlier
           you prune, the bigger the subtree avoided.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Use mutable state with explicit undo.</span> For
           performance, mutate the state and append/pop. For correctness, use persistent
@@ -239,16 +255,19 @@ export default function BacktrackingFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Forgetting the undo step.</span> The most common
           bug. State leaks across siblings, producing wrong answers that look almost right.
           Always pair every mutation with an undo on the same recursion level.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Modifying loop iteration variables.</span>{" "}
           Iterating over a list while removing elements during recursion confuses indices.
           Iterate over a snapshot or use index-based loops.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Sharing mutable state across results.</span> A
           common mistake: <code>results.append(state)</code> stores a reference to the
@@ -280,18 +299,21 @@ export default function BacktrackingFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">SAT/SMT solvers.</span> Z3, MiniSAT, Glucose, and
           Microsoft's RoslynSecurityAnalysis run DPLL/CDCL — backtracking with unit
           propagation and clause learning. Used in firmware verification, software model
           checking, scheduling, and program analysis.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">Compiler register allocation.</span> Graph
           coloring of the interference graph is NP-hard; chordal-graph heuristics combined
           with backtracking handle it in practice. LLVM's greedy allocator falls back to
           backtracking on infeasible coloring.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">Type inference.</span> Hindley–Milner unification
           backtracks when a type assignment leads to a contradiction. Languages with type
@@ -322,16 +344,19 @@ export default function BacktrackingFundamentalsArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Generate all subsets of [1,2,3]."</span> At each
           index, branch on include/exclude. 2ⁿ subsets, O(n·2ⁿ) total. Iterative bitmask
           version: for mask in 0..2ⁿ, take elements at set bits.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <span className="font-semibold">"Generate all permutations of n distinct
           elements."</span> Swap each element to the prefix in turn, recurse on suffix,
           swap back. n! solutions, O(n·n!) total.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <span className="font-semibold">"All combinations of size k from n."</span> At
           each index branch include/exclude; prune when count exceeds k or remaining

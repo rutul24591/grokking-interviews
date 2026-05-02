@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function CrossBrowserTestingArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cross-browser testing</strong> is the systematic practice of
           verifying that web applications render correctly and function
           consistently across different browsers, browser versions, operating
@@ -48,8 +52,8 @@ export default function CrossBrowserTestingArticle() {
           availability. Cross-browser testing identifies these differences
           before they reach production, ensuring that users across all supported
           environments receive a functional, visually consistent experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The scope of cross-browser testing extends well beyond simply opening
           a page in different browsers. A comprehensive strategy includes
           functional testing (do interactive features work correctly across
@@ -61,7 +65,7 @@ export default function CrossBrowserTestingArticle() {
           tooling and approaches, and the test matrix (browsers multiplied by
           operating systems multiplied by device types multiplied by test
           dimensions) can grow exponentially without careful prioritization.
-        </p>
+        </HighlightBlock>
         <p>
           At the staff and principal engineer level, cross-browser testing is an
           infrastructure and strategy problem, not a manual QA activity. The key
@@ -93,8 +97,11 @@ export default function CrossBrowserTestingArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Test Matrix:</strong> The cross-product of browsers, browser
             versions, operating systems, and device types that define the scope
             of cross-browser testing. A typical matrix might include Chrome
@@ -103,8 +110,8 @@ export default function CrossBrowserTestingArticle() {
             Windows. The matrix is derived from the compatibility contract and
             production analytics, prioritizing combinations with significant
             user traffic.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Visual Regression Testing:</strong> Automated comparison of
             rendered page screenshots across browser updates, code changes, and
             environments. Tools like Percy, Chromatic, BackstopJS, and
@@ -113,7 +120,7 @@ export default function CrossBrowserTestingArticle() {
             regression testing catches rendering issues that functional tests
             miss — layout shifts, font rendering differences, color variations,
             and spacing inconsistencies.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Browser Automation Frameworks:</strong> Tools that
             programmatically control browsers for automated testing. Playwright
@@ -177,18 +184,21 @@ export default function CrossBrowserTestingArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cross-browser testing infrastructure spans CI pipeline integration,
           test execution orchestration, and results analysis. The following
           diagrams illustrate the key architectural patterns.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/web-standards-and-compatibility/cross-browser-testing-diagram-1.svg"
           alt="Cross-browser testing pipeline showing CI trigger, test matrix expansion, parallel browser execution, and results aggregation"
           caption="Figure 1: Cross-browser testing pipeline — how CI triggers expand into parallel browser test execution and aggregated results."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The testing pipeline begins with a CI trigger (pull request, merge to
           main, or scheduled build). The pipeline determines the appropriate
           test tier based on the trigger type — PRs might run Tier 1 tests
@@ -202,7 +212,7 @@ export default function CrossBrowserTestingArticle() {
           shows pass/fail status per browser, screenshot comparisons for visual
           tests, and performance metrics. Failed tests are linked to the
           specific browser-platform combination for diagnosis.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/web-standards-and-compatibility/cross-browser-testing-diagram-2.svg"
@@ -249,6 +259,9 @@ export default function CrossBrowserTestingArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr>
@@ -264,7 +277,7 @@ export default function CrossBrowserTestingArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2">
                 Playwright for cross-browser
               </td>
@@ -278,8 +291,8 @@ export default function CrossBrowserTestingArticle() {
                 native mobile browser testing. Limited to three rendering
                 engines. Cannot test older browser versions.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2">
                 Cloud testing services
               </td>
@@ -293,7 +306,7 @@ export default function CrossBrowserTestingArticle() {
                 latency to cloud infrastructure. Test flakiness from shared
                 infrastructure. Vendor dependency for testing capability.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="border border-theme p-2">
                 Visual regression vs. functional testing
@@ -348,8 +361,11 @@ export default function CrossBrowserTestingArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Design the test matrix from analytics data and the compatibility
               contract:
@@ -360,8 +376,8 @@ export default function CrossBrowserTestingArticle() {
             combinations that collectively cover 95 percent or more of actual
             traffic. The compatibility contract defines which combinations must
             pass all tests versus which receive best-effort coverage.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Implement tiered testing to manage CI time and costs:
             </strong>{" "}
@@ -371,7 +387,7 @@ export default function CrossBrowserTestingArticle() {
             representative coverage. Secondary features receive single-browser
             coverage in CI with periodic full-matrix checks. This tiering keeps
             PR feedback loops under 30 minutes while maintaining confidence.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Use Playwright for CI-integrated cross-browser testing:
@@ -433,8 +449,11 @@ export default function CrossBrowserTestingArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Testing only in Chrome:</strong> Chrome&apos;s dominant
             market share tempts teams to test exclusively in Chrome, but Safari
             (particularly on iOS) and Firefox have meaningful rendering and API
@@ -443,8 +462,8 @@ export default function CrossBrowserTestingArticle() {
             users. Firefox&apos;s stricter security defaults (CORS, mixed
             content) surface issues that Chrome permits. Test at least one
             browser per rendering engine.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Building an unmaintainable test matrix:</strong> Including
             every browser-version-platform combination creates a test matrix so
             large that test runs take hours and flakiness rates become
@@ -452,7 +471,7 @@ export default function CrossBrowserTestingArticle() {
             100 test files = 3,000 test configurations. Ruthlessly prioritize
             based on analytics data and use tiered testing to keep the matrix
             focused on high-impact combinations.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Treating visual regression as pass/fail automation:</strong>{" "}
             Visual regression tools flag pixel differences, but many differences
@@ -496,7 +515,10 @@ export default function CrossBrowserTestingArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Vercel&apos;s Playwright-based cross-browser CI:</strong>{" "}
           Vercel uses Playwright to run cross-browser tests against Chromium,
           Firefox, and WebKit in their CI pipeline for the Next.js framework.
@@ -506,8 +528,8 @@ export default function CrossBrowserTestingArticle() {
           high confidence in cross-browser compatibility without the overhead of
           testing every browser-version combination, since the rendering engine
           determines the vast majority of rendering behavior.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>
             Shopify&apos;s tiered testing for merchant storefronts:
           </strong>{" "}
@@ -520,7 +542,7 @@ export default function CrossBrowserTestingArticle() {
           in CI with quarterly full-matrix validation. This tiering keeps their
           CI pipeline responsive while ensuring that the highest-impact flows
           receive the broadest cross-browser coverage.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>
             Chromatic&apos;s visual regression for component libraries:
@@ -550,28 +572,34 @@ export default function CrossBrowserTestingArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cross-Browser Testing introduces security considerations around testing environments, third-party testing services, and ensuring test coverage includes security features.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Cross-Browser Testing Security Patterns</h3>
-          <ul className="space-y-2">
-            <li>
-              <strong>Testing Environment Security:</strong> Testing environments may expose vulnerabilities. Mitigation: use isolated testing environments, sanitize test data, use secure testing services.
-            </li>
-            <li>
-              <strong>Third-Party Testing Services:</strong> Services like BrowserStack access your application. Mitigation: use enterprise plans with security features, limit access to production data, use staging environments for testing.
-            </li>
-          </ul>
-        </div>
+	          <h3 className="mb-4 text-lg font-semibold">Cross-Browser Testing Security Patterns</h3>
+	          <ul className="space-y-2">
+	            <HighlightBlock as="li" tier="important">
+	              <strong>Testing Environment Security:</strong> Testing environments may expose vulnerabilities. Mitigation: use isolated testing environments, sanitize test data, use secure testing services.
+	            </HighlightBlock>
+	            <HighlightBlock as="li" tier="important">
+	              <strong>Third-Party Testing Services:</strong> Services like BrowserStack access your application. Mitigation: use enterprise plans with security features, limit access to production data, use staging environments for testing.
+	            </HighlightBlock>
+	          </ul>
+	        </div>
       </section>
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cross-Browser Testing performance depends on test suite size, parallelization, and testing infrastructure.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -584,16 +612,16 @@ export default function CrossBrowserTestingArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Test Suite Duration</td>
                 <td className="p-2">&lt;30 minutes</td>
                 <td className="p-2">CI/CD metrics</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Browser Coverage</td>
                 <td className="p-2">100% target browsers</td>
                 <td className="p-2">Test reports</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Bug Detection Rate</td>
                 <td className="p-2">&gt;90% before production</td>
@@ -606,9 +634,12 @@ export default function CrossBrowserTestingArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cross-Browser Testing has infrastructure and tooling costs but provides significant benefits for quality and user experience.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
@@ -627,22 +658,25 @@ export default function CrossBrowserTestingArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">When to Invest in Cross-Browser Testing</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Invest in cross-browser testing when: (1) you serve users across multiple browsers, (2) browser compatibility is critical for your business, (3) you have resources for comprehensive testing. Start with automated testing for critical paths, then expand coverage.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you design a cross-browser test matrix for a large-scale
               application?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Start with production analytics to identify which browser-
               platform combinations comprise 95 percent or more of actual user
               traffic. Group these into a compatibility contract with support
@@ -655,7 +689,7 @@ export default function CrossBrowserTestingArticle() {
               important features get engine-representative coverage, secondary
               features get single-browser coverage. Review and update the matrix
               quarterly as browser usage patterns shift.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

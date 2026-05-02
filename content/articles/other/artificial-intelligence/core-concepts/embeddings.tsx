@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An <strong>embedding</strong> is a dense vector representation of
           data (text, images, audio) in a continuous vector space where
           semantically similar items are positioned close together. Unlike
@@ -34,8 +38,8 @@ export default function ArticlePage() {
           vector for &quot;queen&quot; than to the vector for &quot;table&quot;
           because the embedding model has learned that kings and queens share
           semantic properties (royalty, leadership) that tables do not.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Embeddings are the foundation of modern AI systems. They power
           semantic search (finding documents that mean the same thing, not just
           contain the same words), retrieval-augmented generation (finding
@@ -46,7 +50,7 @@ export default function ArticlePage() {
           embeddings is essential because they are the bridge between
           unstructured data (text, images) and structured computation
           (similarity scores, cluster assignments, classification labels).
-        </p>
+        </HighlightBlock>
         <p>
           The quality of an AI system is fundamentally bounded by the quality
           of its embeddings. Poor embeddings produce poor retrieval results,
@@ -88,7 +92,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Embeddings are produced by <strong>embedding models</strong> — neural
           networks trained to map inputs to vectors such that semantically
           similar inputs produce similar vectors. The training objective varies
@@ -100,8 +107,8 @@ export default function ArticlePage() {
           <strong>Supervised fine-tuning</strong> trains the model on labeled
           data (similarity labels, classification labels) to produce embeddings
           optimized for specific tasks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Contrastive learning</strong> is the dominant training
           methodology for modern embedding models. The core idea is to train
           the model using triplets or batches of positive and negative pairs. A
@@ -124,7 +131,7 @@ export default function ArticlePage() {
           similarity and the query-negative similarity, though infoNCE with
           in-batch negatives has largely superseded it due to better
           utilization of batch statistics and more stable gradients.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/embedding-training-pipeline.svg"
@@ -230,7 +237,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>embedding pipeline</strong> processes raw data into
           indexed vectors ready for retrieval. Documents are chunked (split
           into retrievable units), each chunk is passed through the embedding
@@ -239,7 +249,7 @@ export default function ArticlePage() {
           permissions). At query time, the user&apos;s query is embedded using
           the same model, and the query vector is compared against all stored
           vectors to find the most similar chunks.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/embedding-pipeline-architecture.svg"
@@ -247,7 +257,7 @@ export default function ArticlePage() {
           caption="Embedding pipeline — raw text → chunking → embedding model → vector storage → query embedding → similarity search → retrieved results"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Embedding normalization</strong> is important for consistent
           similarity computation. Most embedding models produce vectors that
           should be L2-normalized (unit length) before computing cosine
@@ -255,7 +265,7 @@ export default function ArticlePage() {
           require explicit normalization. Using unnormalized vectors with cosine
           similarity can produce incorrect results because the magnitude affects
           the dot product computation.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Embedding caching strategies</strong> are critical for
           production systems where embedding computation is a significant cost
@@ -318,7 +328,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Embedding dimensionality</strong> involves a quality-versus-cost
           trade-off. Higher dimensions capture more semantic nuance but cost
           more to store and slower to search. A 1536-dimensional embedding
@@ -327,8 +340,8 @@ export default function ArticlePage() {
           dimensionality from 1536 to 384 (via PCA or using a smaller model)
           loses less than 5% retrieval quality while reducing storage and
           search costs by 75%.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>API versus self-hosted embedding models</strong> involves a
           convenience-versus-control trade-off. API models (OpenAI, Cohere)
           require no infrastructure but cost per embedding, have rate limits,
@@ -336,7 +349,7 @@ export default function ArticlePage() {
           (sentence-transformers, BGE) are free per embedding, have no rate
           limits, and keep data on-premise, but require compute infrastructure
           and ML ops expertise.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Dense versus sparse embeddings</strong> represent two
           fundamentally different approaches to retrieval, each with distinct
@@ -396,21 +409,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Evaluate embedding quality on your specific task</strong>{" "}
           rather than relying on benchmark scores. An embedding model that
           scores highest on MTEB (Massive Text Embedding Benchmark) may not be
           the best for your specific retrieval task. Build a task-specific
           evaluation set (queries with relevant documents) and test candidate
           models against it.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use the same embedding model for indexing and querying</strong>{" "}
           — mixing embeddings from different models produces meaningless
           similarity scores because each model defines its own vector space. If
           you need to switch embedding models, rebuild the entire index with the
           new model.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Chunk documents at semantic boundaries</strong> rather than
           fixed token counts. Embeddings represent the semantic content of a
@@ -474,21 +490,24 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>assuming all embeddings are
           interchangeable</strong> — embeddings from different models live in
           different vector spaces and cannot be compared. An embedding from
           OpenAI&apos;s model cannot be meaningfully compared to an embedding
           from Cohere&apos;s model. Always use the same model for all
           embeddings in a single index.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Ignoring embedding model updates</strong> — embedding model
           providers periodically update their models, and the new model may
           produce different embeddings for the same text. If you use an API
           model without pinning the version, your embeddings may silently change,
           breaking retrieval quality. Always pin the embedding model version.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Using embeddings for tasks they are not optimized for</strong>{" "}
           — general-purpose embeddings (trained for semantic similarity) may not
@@ -562,7 +581,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Semantic search</strong> — embedding documents and queries
           enables finding documents that are semantically similar to the query
           even when they do not share exact keywords. This is the foundation of
@@ -582,8 +604,8 @@ export default function ArticlePage() {
           precision), where the cross-encoder re-ranker evaluates each
           candidate pair individually, adding 100-500ms of latency but
           improving NDCG@10 by 15-25%.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Document clustering</strong> — embedding documents and
           applying clustering algorithms (k-means, HDBSCAN) groups similar
           documents together, enabling topic discovery, content organization,
@@ -606,7 +628,7 @@ export default function ArticlePage() {
           support tickets, this pipeline discovers 40-60 natural topic clusters
           that align closely with manually defined support categories, enabling
           automated ticket routing and emerging issue detection.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Classification via embedding proximity</strong> — embedding
           labeled examples and classifying new inputs based on their nearest
@@ -672,12 +694,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: What makes a good embedding model and how do you evaluate one?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A good embedding model produces vectors where semantically similar
             inputs are close together and dissimilar inputs are far apart,
             across the full range of inputs the system will encounter. The
@@ -685,15 +710,15 @@ export default function ArticlePage() {
             measure retrieval recall and precision on a query-document test set;
             for clustering, measure cluster purity against known categories; for
             classification, measure k-NN classification accuracy.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             Standard benchmarks include MTEB (Massive Text Embedding Benchmark)
             which evaluates embedding models across 56 datasets covering
             retrieval, clustering, classification, and pair classification
             tasks. However, benchmark scores do not always correlate with
             task-specific performance — always evaluate on your specific
             workload before selecting an embedding model.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

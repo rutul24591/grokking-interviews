@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,15 +37,15 @@ export default function GeolocationAPIArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Geolocation API</strong> provides programmatic access to device location information including latitude, longitude, altitude, accuracy, heading, and speed. Location data comes from multiple sources depending on device capabilities: GPS satellites (most accurate, slowest, highest power consumption), WiFi networks (moderate accuracy, fast, moderate power consumption), cell towers (low accuracy, fast, low power consumption), and IP address (city-level accuracy, instant, no power consumption). The browser automatically selects the best available source based on device capabilities and the enableHighAccuracy option.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, Geolocation API involves critical considerations around privacy, accuracy trade-offs, power consumption, and user experience. Location is sensitive personal data — browsers require explicit user permission before accessing location, and the API only works in secure contexts (HTTPS or localhost). Accuracy varies significantly by device and method: GPS provides 1-10 meter accuracy but can take seconds to minutes for the first fix and drains battery quickly. WiFi provides 10-100 meter accuracy and is faster with less power consumption. Cell towers provide 100-1000 meter accuracy and are fast with low power consumption. IP address provides city-level accuracy instantly with no power consumption but no permission required.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The Geolocation API provides two main methods: getCurrentPosition for one-time location requests and watchPosition for continuous location tracking. getCurrentPosition is appropriate for use cases where you need the user&apos;s location once (e.g., finding nearby businesses, checking in at a location). watchPosition is appropriate for use cases where you need to track the user&apos;s location over time (e.g., navigation, fitness tracking, delivery tracking). watchPosition returns a watch ID that can be used to stop tracking with clearWatch, which is essential for preventing battery drain.
-        </p>
+        </HighlightBlock>
         <p>
           The business case for Geolocation API is location-based functionality that enhances user experience and enables new use cases. Delivery apps (Uber Eats, DoorDash) track drivers in real-time to provide accurate ETAs. Ride-sharing apps (Uber, Lyft) match riders with nearby drivers. Fitness apps (Strava, Nike Run Club) track runs and workouts. Retail apps show nearby stores and products. News and weather apps show local content. For all of these use cases, the Geolocation API is essential for providing a good user experience.
         </p>
@@ -57,15 +58,15 @@ export default function GeolocationAPIArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>getCurrentPosition:</strong> One-time location request. Takes three arguments: success callback (receives Position object with coordinates and accuracy), error callback (receives PositionError with code and message), and options object (enableHighAccuracy, timeout, maximumAge). The success callback is invoked when location is available, the error callback is invoked when location is unavailable or permission is denied. The options object controls accuracy, timeout, and caching behavior.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>watchPosition:</strong> Continuous location tracking. Takes the same arguments as getCurrentPosition. Returns a watch ID that can be used to stop tracking with clearWatch. The success callback is invoked whenever location changes (with a frequency determined by the device and options). The error callback is invoked when location becomes unavailable. Use for navigation, fitness tracking, delivery tracking. Clear watch when done to save battery.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Position Object:</strong> Contains coords (Coordinates object with latitude, longitude, accuracy, altitude, altitudeAccuracy, heading, speed) and timestamp (milliseconds since epoch when location was acquired). latitude and longitude are in decimal degrees. accuracy is the radius of uncertainty in meters (actual location is within this radius of reported coordinates with 95% confidence). altitude is in meters above the WGS84 ellipsoid (null if unavailable). altitudeAccuracy is the accuracy of altitude in meters (null if unavailable). heading is the direction of travel in degrees clockwise from north (null if unavailable). speed is the speed in meters per second (null if unavailable).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Permission:</strong> Browsers require explicit user consent before accessing location. The permission prompt is shown when getCurrentPosition or watchPosition is called. Permission can be granted, denied, or prompted (user has not yet decided). HTTPS is required for geolocation (except localhost). Handle all permission states gracefully: granted (use location), denied (offer manual location entry or IP-based fallback), prompted (wait for user decision).
           </li>
@@ -89,12 +90,12 @@ export default function GeolocationAPIArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Geolocation architecture consists of permission handling (request, handle grant/deny), location retrieval (getCurrentPosition or watchPosition), and position processing (use coordinates, handle errors). The architecture must handle permission states (granted, denied, prompted), accuracy trade-offs (GPS vs WiFi vs cell vs IP), and provide fallback for denied/unavailable location (manual location entry, IP-based location).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The browser automatically selects the best available location source based on device capabilities and the enableHighAccuracy option. If enableHighAccuracy is true, the browser uses GPS (if available). If enableHighAccuracy is false, the browser uses WiFi or cell towers (if available). If no location source is available, the browser returns a POSITION_UNAVAILABLE error. The browser may cache location results and return cached results if maximumAge is set to a non-zero value.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/browser-apis/location-accuracy-sources.svg"
@@ -105,9 +106,9 @@ export default function GeolocationAPIArticle() {
         />
 
         <h3>Permission Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Request on User Action:</strong> Request location when user clicks a location-related feature (e.g., &quot;Find Nearby&quot; button, &quot;Use My Location&quot; button). Advantages: user understands why location is needed (higher grant rate), user is more likely to grant permission (because they requested it). Limitations: can&apos;t show location features upfront (must wait for user action). Best for: most applications (e-commerce, retail, content sites).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Request on Load:</strong> Request location on page load. Advantages: location is ready immediately (no wait for user action). Limitations: users deny without context (lower grant rate), can&apos;t re-request after denial (browser does not show permission prompt again after denial). Best for: location-first apps (maps, navigation, weather apps where location is the primary feature).
         </p>
@@ -127,17 +128,17 @@ export default function GeolocationAPIArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Geolocation involves trade-offs between accuracy, speed, power consumption, and privacy. Understanding these trade-offs is essential for making informed decisions about when to use geolocation and how to configure it.
-        </p>
+        </HighlightBlock>
 
         <h3>Accuracy vs. Power</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>GPS (enableHighAccuracy: true):</strong> Most accurate (1-10 meter accuracy) but slow (seconds to minutes for first fix), drains battery quickly (GPS radio consumes significant power). Best for: navigation (turn-by-turn directions need precise location), fitness tracking (distance calculation needs precise location), delivery tracking (ETA calculation needs precise location). Use only when GPS precision is needed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>WiFi/Cell (enableHighAccuracy: false):</strong> Less accurate (10-1000 meter accuracy) but fast (seconds to get location), less power consumption (WiFi and cell radios consume less power than GPS). Best for: nearby businesses (finding stores within a few miles does not need GPS precision), local content (showing local news, weather, currency does not need GPS precision), approximate location (showing city-level location does not need GPS precision). Use for most use cases where GPS precision is not needed.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>IP-based (fallback):</strong> Least accurate (city-level accuracy) but instant (no delay), no power consumption (no radio needed), no permission required (IP address is always available). Best for: coarse localization (language, currency, regional content), fallback when geolocation is denied (provide a basic experience without precise location), initial page load (show content based on IP location while waiting for precise location).
         </p>
@@ -163,15 +164,15 @@ export default function GeolocationAPIArticle() {
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Request on User Action:</strong> Do not request location on page load — users deny without understanding why (lower grant rate). Request when user clicks a location-related feature (e.g., &quot;Find Nearby&quot; button, &quot;Use My Location&quot; button). Explain why you need location before requesting (e.g., show a message: &quot;We need your location to find nearby stores&quot;). This increases the grant rate and provides a better user experience.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Appropriate Accuracy:</strong> Do not use enableHighAccuracy unless you need GPS precision. WiFi/cell location is faster and uses less battery. Most use cases (nearby businesses, local content, approximate location) do not need GPS precision. Use enableHighAccuracy: true only for navigation, fitness tracking, delivery tracking, and other use cases that need precise location.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Clear watchPosition:</strong> Always call clearWatch(watchId) when continuous tracking is no longer needed. This prevents battery drain (tracking continues even after the user leaves the page if watch is not cleared). Common bug: forget to clear watch when component unmounts (tracking continues in background, draining battery). In React, call clearWatch in the useEffect cleanup function. In other frameworks, call clearWatch in the appropriate lifecycle hook (e.g., componentWillUnmount in class components).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Provide Fallback:</strong> Not all devices have GPS, users can deny permission, location can be unavailable (no WiFi, no cell coverage). Provide manual location entry as fallback (e.g., a search box where users can enter their city or zip code). Provide IP-based location as coarse fallback (use a geolocation service to get city-level location from IP address). This ensures that users who deny permission or have no location source still have a basic experience.
           </li>
@@ -188,15 +189,15 @@ export default function GeolocationAPIArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Requesting on Load:</strong> Requesting location on page load causes users to deny without understanding why (lower grant rate). After denial, the browser does not show the permission prompt again (user must manually enable location access in browser settings). Always request location on user action with explanation (e.g., &quot;We need your location to find nearby stores&quot;). This increases the grant rate and provides a better user experience.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Clearing Watch:</strong> watchPosition continues tracking after component unmounts (tracking continues even after the user leaves the page). This drains battery (GPS radio consumes significant power). Always clear watch in cleanup (useEffect return in React, componentWillUnmount in class components). Common bug: create watch on component mount, forget to clear watch on component unmount.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Always Using High Accuracy:</strong> Using enableHighAccuracy: true for all use cases drains battery (GPS radio consumes significant power) and is slow (seconds to minutes for first fix). Use enableHighAccuracy: false for most use cases (nearby businesses, local content, approximate location). Use enableHighAccuracy: true only for navigation, fitness tracking, delivery tracking, and other use cases that need precise location.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No Fallback:</strong> Users deny permission or device lacks GPS. App breaks without location (no manual location entry, no IP-based fallback). Always provide manual location entry (e.g., a search box where users can enter their city or zip code) or IP-based fallback (use a geolocation service to get city-level location from IP address). This ensures that users who deny permission or have no location source still have a basic experience.
           </li>
@@ -214,19 +215,19 @@ export default function GeolocationAPIArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>Delivery Tracking</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Delivery apps (Uber Eats, DoorDash, Instacart) use watchPosition to track driver location in real-time. High accuracy needed for precise ETA calculation (enableHighAccuracy: true). Update location every few seconds (not continuously, to balance accuracy with battery drain). Clear watch when delivery is complete (stop tracking driver). Show driver location on map for customer (real-time tracking). Calculate ETA based on driver location and traffic conditions. This pattern provides accurate ETAs and real-time tracking for customers, improving user experience and reducing customer support inquiries (&quot;Where is my order?&quot;).
-        </p>
+        </HighlightBlock>
 
         <h3>Nearby Businesses</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Maps, review sites (Yelp, Google Maps, TripAdvisor) use getCurrentPosition for nearby search. One-time location (user clicks &quot;Find Nearby&quot; button). WiFi/cell accuracy sufficient (finding stores within a few miles does not need GPS precision). Show businesses within accuracy radius (e.g., search within 10 miles of user location). Provide manual location entry for users who deny permission (e.g., a search box where users can enter their city or zip code). This pattern provides a good user experience for users who grant permission and a basic experience for users who deny permission.
-        </p>
+        </HighlightBlock>
 
         <h3>Fitness Tracking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Fitness apps (Strava, Nike Run Club, MapMyRun) use watchPosition with enableHighAccuracy for route tracking. GPS accuracy needed for distance calculation (enableHighAccuracy: true). Background location permission required (tracking continues when app is in background). Clear watch when workout ends (stop tracking). Calculate distance, pace, elevation from location data. Show route on map. This pattern provides accurate workout tracking for users, enabling them to track their progress and share their workouts with friends.
-        </p>
+        </HighlightBlock>
 
         <h3>Local Content</h3>
         <p>
@@ -240,18 +241,18 @@ export default function GeolocationAPIArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial">
               Q: How does the Geolocation API work and what are the location sources?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: Geolocation API requests location from browser, which determines best source based on device capabilities and enableHighAccuracy option. GPS (most accurate, 1-10 meters, slow, drains battery) is used when enableHighAccuracy is true. WiFi (10-100 meters, faster, moderate power) is used when enableHighAccuracy is false and WiFi is available. Cell towers (100-1000 meters, fast, low power) are used when enableHighAccuracy is false and cell coverage is available. IP (city-level, instant, no power) is used as fallback when no other source is available. Browser returns Position object with latitude, longitude, accuracy (radius in meters), timestamp. Accuracy varies by source — GPS is precise, IP is coarse. The browser automatically selects the best available source, so you do not need to manage sources manually.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How do you handle geolocation permission denial?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: Handle PERMISSION_DENIED error gracefully: explain why location is useful, provide instructions to enable in browser settings, offer manual location entry as fallback, and use IP-based location for coarse localization. Never repeatedly request after denial since the browser does not show the permission prompt again after denial.
             </p>

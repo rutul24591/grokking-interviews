@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,12 +28,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>timeout</strong> is an explicit limit on how long a caller will wait for an operation to complete before abandoning the request and treating it as a failure. In distributed systems, timeouts are not optional safeguards—they are first-class design primitives. Networks partition, dependencies stall under load, garbage collection pauses freeze threads, and queues grow without bound. Without timeouts, these failures manifest as slow degradation rather than clean errors, making them harder to detect, harder to recover from, and far more destructive to system stability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Timeouts serve a dual purpose that is often underappreciated. The most visible purpose is user experience: a request that fails fast with a clear error is preferable to one that hangs indefinitely, leaving the user staring at a spinner. The less visible but equally critical purpose is <strong>resource protection</strong>. Every in-flight request consumes memory, thread pool slots, database connections, and network bandwidth. A slow request is not merely a slow request—it is a claim on finite capacity that could serve other requests. When many requests slow simultaneously, the system enters a death spiral where capacity is consumed by work that will never complete successfully.
-        </p>
+        </HighlightBlock>
         <p>
           The distinction between a timeout and a deadline is fundamental to designing resilient multi-hop systems. A <strong>timeout</strong> answers the question: &quot;how long will this individual dependency call wait?&quot; A <strong>deadline</strong> answers a different question: &quot;how much total time does this end-to-end request have remaining?&quot; In a system with five services along a request path, five independent timeouts can stack to produce a wait time far exceeding what any user can tolerate. Deadline propagation solves this by threading a single end-to-end budget through every hop, with each service using the remaining budget rather than a local default.
         </p>
@@ -49,6 +53,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/timeout-pattern-diagram-1.svg"
@@ -57,12 +64,12 @@ export default function ArticlePage() {
         />
 
         <h3>Timeout Budgeting Across Call Chains</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Timeout budgeting is the practice of treating the total end-to-end latency target as a finite resource that must be allocated across every hop in a request path. If a product page has a 2-second latency budget, that budget must be divided among the API gateway, identity service, pricing service, inventory service, and recommendation service. Each service receives a portion of the budget and must complete its work—including its own downstream calls—within that allocation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The arithmetic of budgeting is unforgiving. If the gateway takes 100ms, identity takes 150ms, pricing takes 200ms, inventory takes 300ms, and recommendations takes 800ms, the total is 1550ms—well within the 2-second budget. But if recommendations slows to 1500ms due to a partial outage, the total becomes 2250ms, exceeding the budget and causing a user-visible timeout. The solution is not to increase the budget but to treat recommendations as an optional call with its own strict sub-budget. When that sub-budget is exceeded, the system returns a degraded response without recommendations rather than failing the entire page.
-        </p>
+        </HighlightBlock>
         <p>
           The critical insight is that timeout budgets must account for more than just service processing time. Network latency, serialization and deserialization overhead, queueing delay, and garbage collection pauses all consume budget. A service that processes requests in 50ms may still cause a 500ms latency if requests queue before reaching the service. Budget allocation must include an explicit queueing budget, derived from observed queue depths and processing rates under load.
         </p>
@@ -123,14 +130,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production-grade timeout architecture is not a single setting but a layered system of interlocking mechanisms. Each layer addresses a different failure mode, and the layers must be designed to work together rather than in isolation.
-        </p>
+        </HighlightBlock>
 
         <h3>Timeout Layer Design</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The timeout layer operates at multiple levels of the stack. At the client level, the HTTP or RPC client enforces a per-call timeout, which is the outermost guard against indefinite waiting. At the connection level, connection establishment timeouts prevent the client from waiting forever for a TCP handshake or TLS negotiation that will never complete. At the server level, request timeouts ensure that the server does not spend unbounded time on a single request, even if the client has disconnected. At the database level, query timeouts prevent a single slow query from holding locks and blocking other queries.
-        </p>
+        </HighlightBlock>
         <p>
           These layers must be coordinated. The client timeout should be the tightest, the server timeout should be slightly looser to allow for cleanup, and the database timeout should be the loosest to allow for query completion. If the client timeout is longer than the server timeout, the server will abandon work while the client is still waiting, leading to confusing error semantics. If the database timeout is shorter than the client timeout, queries may be cancelled prematurely while the client is still willing to wait.
         </p>
@@ -180,14 +190,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>Timeouts vs Circuit Breakers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Timeouts and circuit breakers address different failure modes but are often confused. A timeout is a per-call mechanism: each individual request has a deadline, and if the deadline is exceeded, that request fails. A circuit breaker is an aggregate mechanism: it tracks the failure rate across many requests to a dependency, and when the failure rate exceeds a threshold, it opens the circuit and fails all subsequent requests immediately without attempting the call.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The trade-off is between granularity and efficiency. Timeouts provide per-request granularity but require each request to wait for the timeout duration before failing, which wastes time and resources during sustained failures. Circuit breakers provide system-level efficiency by failing fast for all requests once the circuit is open, but they lack per-request nuance—a single slow dependency does not necessarily mean all calls should fail. The correct approach is to use both: timeouts protect individual requests, and circuit breakers protect the system from sustained failure amplification.
-        </p>
+        </HighlightBlock>
 
         <h3>Timeouts vs Retries</h3>
         <p>
@@ -222,16 +235,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Derive Timeouts from Latency Percentiles and User Budgets</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Timeout values should never be chosen by intuition. Start from the user-facing latency target for the endpoint—this is your total budget. Work backward through the service chain, allocating sub-budgets to each hop based on observed latency percentiles under load. Use p99 or p99.9 as the baseline, not p50 or p90, and apply a safety factor of 1.2x to 2.0x to accommodate natural variance. Validate these values with realistic load tests that simulate production traffic patterns, including the tail latency characteristics of each dependency.
-        </p>
+        </HighlightBlock>
 
         <h3>Propagate Deadlines Across All Hops</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use deadline propagation frameworks such as gRPC context propagation or OpenTelemetry baggage to thread the remaining deadline through every service in the request path. Each service should extract the remaining deadline, subtract its own processing budget, and pass the remainder downstream. If the remaining deadline is insufficient, fail fast rather than starting work that cannot complete. This prevents the stacked-timeout problem where each service independently waits longer than the user can tolerate.
-        </p>
+        </HighlightBlock>
 
         <h3>Implement Cancellation-Aware Clients and Servers</h3>
         <p>
@@ -259,14 +275,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Default Timeouts Are Too Long</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Most HTTP clients and RPC frameworks have default timeouts of 30 seconds or more. These defaults are far too generous for production systems where user-facing latency targets are typically in the hundreds of milliseconds to low single-digit seconds. A 30-second timeout means that during a slowdown, each in-flight request consumes resources for up to 30 seconds before failing. With a modest request rate, this quickly exhausts thread pools and memory, leading to total system collapse.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fix is to never use default timeouts. Every client call should have an explicit timeout derived from the end-to-end budget and the dependency&apos;s observed latency distribution. The default should be set to a value that causes immediate failure, forcing developers to consciously choose a timeout value rather than accidentally inheriting a dangerous default.
-        </p>
+        </HighlightBlock>
 
         <h3>Retry Amplification During Partial Outages</h3>
         <p>
@@ -306,14 +325,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Platform: Protecting Checkout During Recommendation Outage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform experienced periodic slowdowns in its recommendation service due to a misconfigured cache eviction policy. The recommendation service was called as part of the product page rendering pipeline with a 5-second timeout. When the recommendation service slowed to 8-second response times, the entire product page timed out, including the add-to-cart functionality. Users could not browse products or add items to their cart during these incidents, directly impacting revenue.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fix involved three changes. First, the recommendation call was given a strict 500ms sub-budget within the 2-second page rendering target. Second, when the budget was exceeded, the page rendered without recommendations rather than timing out entirely. Third, a circuit breaker was added to the recommendation service call, opening after three consecutive timeout failures and remaining open for 30 seconds. The result was that during recommendation slowdowns, the product page remained fully functional with the recommendations section empty, and the recommendation service was protected from retry amplification.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Services: gRPC Deadline Propagation in Payment Processing</h3>
         <p>
@@ -353,14 +375,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: Why do timeouts improve system reliability, and what resources do they protect?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Timeouts improve reliability by bounding the amount of time a caller will wait for an operation to complete, which prevents slow dependencies from consuming unbounded system resources. Without timeouts, a stalled dependency causes requests to accumulate in thread pools, connection pools, and memory queues. Each in-flight request holds resources—threads, database connections, file descriptors, and heap memory—that could serve other requests.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               The resources protected by timeouts are thread pool slots, which determine how many concurrent requests a service can process; database connections, which are typically limited by connection pool configuration; memory, as each in-flight request holds request and response buffers; and network connections, which are limited by the operating system&apos;s file descriptor limit. When any of these resources are exhausted, the service cannot process new requests, even if those requests would have completed quickly.
             </p>

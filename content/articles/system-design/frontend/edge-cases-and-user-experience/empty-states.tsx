@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,10 @@ export default function EmptyStatesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Empty states</strong> are the UI conditions that occur when
           there is no content to display in a given view or component —
           whether because the user is new and has not created content yet, a
@@ -46,8 +50,8 @@ export default function EmptyStatesArticle() {
           design. A well-designed empty state transforms a moment of potential
           confusion or disappointment into an opportunity for guidance,
           education, or engagement.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Empty states occur in virtually every application feature: an inbox
           with no messages, a project management board with no tasks, a search
           with no matching results, a favorites list with no saved items, an
@@ -58,7 +62,7 @@ export default function EmptyStatesArticle() {
           user whose search returned zero results needs refinement suggestions.
           A user whose filter eliminated all items needs a way to clear filters.
           A user whose data was deleted needs confirmation and an undo option.
-        </p>
+        </HighlightBlock>
         <p>
           At the staff and principal engineer level, empty states require
           systematic treatment across the application. A design system should
@@ -89,8 +93,11 @@ export default function EmptyStatesArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>First-Use Empty State:</strong> The empty state displayed
             when a user encounters a feature for the first time with no
             existing data. This is the most important empty state type because
@@ -99,8 +106,8 @@ export default function EmptyStatesArticle() {
             provide a one-click path to creating the first piece of content.
             Effective first-use empty states include an illustration, a brief
             value proposition, and a prominent call-to-action.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No Results Empty State:</strong> Displayed when a search
             query, filter, or category selection returns zero matching items.
             This state should acknowledge the search attempt, explain why there
@@ -108,7 +115,7 @@ export default function EmptyStatesArticle() {
             broadening search terms, clearing filters, or trying a different
             category. The worst no-results empty state is a blank area with
             no explanation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cleared/Completed Empty State:</strong> Shown when a user
             has processed all items — an inbox with all messages read, a task
@@ -169,18 +176,21 @@ export default function EmptyStatesArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Empty state architecture involves data state detection, context
           classification, and component rendering. The following diagrams
           illustrate the key patterns.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/edge-cases-and-user-experience/empty-states-diagram-1.svg"
           alt="Empty state decision tree showing how data state, user context, and error state combine to select the appropriate empty state variant"
           caption="Figure 1: Empty state decision tree — how context determines which empty state variant to display."
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The decision tree evaluates multiple signals to select the appropriate
           empty state variant. First, it checks whether data loading completed
           successfully — if not, the error-induced empty state is displayed.
@@ -191,7 +201,7 @@ export default function EmptyStatesArticle() {
           whether the user has cleared all items (completed state). Each
           terminal node in the decision tree maps to a specific empty state
           component with appropriate messaging, illustration, and actions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/edge-cases-and-user-experience/empty-states-diagram-2.svg"
@@ -235,6 +245,9 @@ export default function EmptyStatesArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr>
@@ -244,7 +257,7 @@ export default function EmptyStatesArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2">Illustrated empty states</td>
               <td className="border border-theme p-2">
                 Visually engaging, convey brand personality, make empty moments feel intentional, improve first impressions.
@@ -252,8 +265,8 @@ export default function EmptyStatesArticle() {
               <td className="border border-theme p-2">
                 Require design investment per feature, illustration maintenance as features evolve, larger asset sizes, potential accessibility concerns with decorative images.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2">Text-only empty states</td>
               <td className="border border-theme p-2">
                 Simple to implement, easy to localize, minimal maintenance, lightweight assets.
@@ -261,7 +274,7 @@ export default function EmptyStatesArticle() {
               <td className="border border-theme p-2">
                 Feel sparse and undesigned, miss the opportunity for engagement, less memorable, can appear as a bug to users.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="border border-theme p-2">Placeholder content</td>
               <td className="border border-theme p-2">
@@ -286,15 +299,18 @@ export default function EmptyStatesArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Design every data-driven view&apos;s empty state explicitly:</strong>{" "}
             Audit every feature that displays data and ensure each has a designed empty state. No view should display a blank white space when there is no data. Include empty state design as a required artifact in feature specification templates. The audit should cover first-use, no-results, completed, and error-induced variants for each view.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Distinguish between empty types with different messages and actions:</strong>{" "}
             A first-use empty state needs onboarding guidance. A no-results state needs search refinement suggestions. A completed state needs positive reinforcement. An error state needs retry options. Using a single generic &quot;Nothing here yet&quot; message for all contexts misses the opportunity to provide specific, actionable guidance.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Make the primary action obvious and accessible:</strong>{" "}
             The primary action in an empty state should be the single most helpful next step for the user. Place it prominently — a filled button below the description — and make it immediately actionable. The best empty states require a single click to begin creating content.
@@ -316,15 +332,18 @@ export default function EmptyStatesArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Blank white space with no explanation:</strong>{" "}
             The most common empty state failure — a data list renders nothing because the array is empty, leaving a blank area. Users cannot tell whether the page is loading, broken, or genuinely empty. Always render an explicit empty state component when data arrays are empty.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Generic messages that do not help the user act:</strong>{" "}
             &quot;No data available&quot; tells the user what they can see (nothing) but not what to do about it. Provide specific guidance: what they can create, where to look for content, or how to adjust their query. Empty states are guidance opportunities, not error messages.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Displaying first-use messaging to returning users:</strong>{" "}
             When a returning user deletes all items or applies a filter that eliminates all results, showing the first-use onboarding message is confusing — they already know what the feature does. Track whether the user has previously had data and display the appropriate variant (completed or no-results) instead.
@@ -342,12 +361,15 @@ export default function EmptyStatesArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Dropbox&apos;s first-use onboarding:</strong> Dropbox displays an illustrated empty state when a new user first opens their file browser, showing a welcoming illustration of a folder with files and a prominent &quot;Upload files&quot; button. The empty state includes a brief explanation of how Dropbox works and links to install the desktop client and mobile app. This treatment converts the potentially confusing moment of an empty file browser into a guided onboarding step.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Gmail&apos;s inbox zero state:</strong> When a user achieves inbox zero, Gmail displays a sun-and-checkmark illustration with the message &quot;You&apos;re all done! Nothing in Primary.&quot; This positive completed empty state provides satisfaction and reinforcement rather than presenting an empty inbox as a problem. The treatment varies by inbox tab — Primary shows the celebratory state while Promotions shows a simpler &quot;No new mail&quot; message.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Notion&apos;s template-driven empty states:</strong> Notion displays empty page states with an inline menu offering template options relevant to the page type — meeting notes, project tracker, knowledge base, and more. Rather than showing a blank page, the empty state becomes a feature discovery mechanism that accelerates time-to-value by connecting users with pre-built structures they can customize.
         </p>
@@ -358,12 +380,15 @@ export default function EmptyStatesArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What are the different types of empty states, and how should each be handled?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What are the different types of empty states, and how should each be handled?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: There are five primary types. First-use: the user has never created content in this feature — provide onboarding guidance and a clear creation path. No-results: a search or filter returned nothing — show refinement suggestions and related content. Completed: the user has processed all items — provide positive reinforcement and next-action suggestions. Error-induced: content failed to load — explain the error and provide retry options. Permission-based: content exists but is inaccessible — explain the restriction and provide access request path. Each type requires different messaging, illustrations, and actions. Using a generic empty state for all types misses the opportunity to provide contextually appropriate guidance.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you prevent empty states from appearing broken to users?</p>

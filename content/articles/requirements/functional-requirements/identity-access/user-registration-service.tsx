@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,13 +34,16 @@ export default function UserRegistrationServiceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>User Registration Service</strong> is the backend component responsible for
           creating new user accounts, validating input data, preventing fraud, and initiating
           verification flows. It is the gateway for user acquisition and must balance conversion
           optimization (minimize friction) with security (prevent fake accounts, bot signups) and
           data quality (valid emails, strong passwords).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/user-registration-flow.svg"
@@ -47,7 +51,7 @@ export default function UserRegistrationServiceArticle() {
           caption="User Registration Flow — showing signup submission, validation, fraud checks, password hashing, user creation, and verification trigger"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, building a registration service requires deep
           understanding of data validation (email format, password strength, username
           availability), password security (hashing with Argon2/bcrypt, breach detection), fraud
@@ -56,7 +60,7 @@ export default function UserRegistrationServiceArticle() {
           scaling for high-volume signup events (rate limiting, queue-based processing). The
           service must handle millions of registrations while preventing abuse and maintaining data
           integrity.
-        </p>
+        </HighlightBlock>
         <p>
           Modern registration services have evolved from simple form submission to sophisticated
           fraud prevention systems with bot detection, IP reputation checking, email domain
@@ -68,12 +72,15 @@ export default function UserRegistrationServiceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User registration is built on fundamental concepts that determine how accounts are
           created securely. Understanding these concepts is essential for designing effective
           registration systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Registration Flow:</strong> Input validation (email format, password strength,
           username availability — return specific errors for client correction), fraud checks (IP
           reputation, device fingerprint, email domain validity — block high-risk signups),
@@ -81,7 +88,7 @@ export default function UserRegistrationServiceArticle() {
           (insert user record with unique ID, set initial status unverified), verification trigger
           (send verification email/SMS, create verification token), response (return user ID,
           require verification before full access).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Input Validation:</strong> Email format (regex + MX record check), password
           strength (minimum 8 characters per NIST, breach database check — no composition rules),
@@ -106,11 +113,14 @@ export default function UserRegistrationServiceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Registration architecture separates validation from creation, enabling fast feedback with
           reliable account creation. This architecture is critical for preventing abuse while
           maintaining good UX.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/registration-validation.svg"
@@ -118,7 +128,7 @@ export default function UserRegistrationServiceArticle() {
           caption="Registration Validation — showing client-side validation, server-side validation, fraud prevention, duplicate detection, and generic response strategy"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Registration flow: User submits signup form. Frontend validates format (client-side —
           immediate feedback). Backend receives request. Backend validates input (email format,
           password strength, username availability — server-side, never trust client). Backend
@@ -127,7 +137,7 @@ export default function UserRegistrationServiceArticle() {
           record (unique ID, unverified status). Backend sends verification email (token with
           24-hour expiry). Backend returns success (generic response — "If email valid, we'll send
           verification" — prevent enumeration).
-        </p>
+        </HighlightBlock>
         <p>
           Validation architecture includes: client-side validation (immediate feedback, reduce
           server load), server-side validation (never trust client, authoritative), fraud
@@ -156,23 +166,26 @@ export default function UserRegistrationServiceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing registration involves trade-offs between conversion, security, and data
           quality. Understanding these trade-offs is essential for making informed architecture
           decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Minimal vs Comprehensive Validation</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Minimal:</strong> Just email + password. Fast signup, high conversion.
               Limitation: fake accounts, poor data quality, security risk.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Comprehensive:</strong> Email, password, username, phone, CAPTCHA. Better
               security, data quality. Limitation: friction, lower conversion.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Minimal for initial signup (email + password),
               progressive profiling (collect more data post-signup). Balance conversion with
@@ -220,19 +233,22 @@ export default function UserRegistrationServiceArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing registration requires following established best practices to ensure
           security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Input Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Validate email format (regex + MX record check) — ensure deliverable. Validate password
           strength (min 8 chars per NIST, breach database check) — no composition rules. Check
           username availability (real-time, debounce API calls) — unique constraint. Profanity
           filter (block inappropriate usernames) — server-side. Return specific errors for format
           issues, generic for availability (prevent enumeration).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Password Security</h3>
         <p>
@@ -262,20 +278,23 @@ export default function UserRegistrationServiceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing registration to ensure secure, usable, and
           scalable registration systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No server-side validation:</strong> Trusting client-side validation, invalid
             data stored. <strong>Fix:</strong> Always validate server-side. Client-side is UX
             optimization only.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Storing plaintext passwords:</strong> Database breach exposes all passwords.{" "}
             <strong>Fix:</strong> Hash with Argon2id or bcrypt. Never store plaintext.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No fraud prevention:</strong> Bot signups, fake accounts, platform abuse.{" "}
             <strong>Fix:</strong> IP reputation, device fingerprinting, CAPTCHA, email domain
@@ -318,16 +337,19 @@ export default function UserRegistrationServiceArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           User registration is critical for platform growth. Here are real-world implementations
           from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Social Platform (Twitter)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Millions of signups daily. Bot accounts common. Need to
           prevent fake accounts while maintaining conversion.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Minimal initial signup (email + password). Phone verification
           for suspicious signups. CAPTCHA after suspicious patterns. Email verification required.
@@ -418,14 +440,17 @@ export default function UserRegistrationServiceArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of registration service design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you validate passwords?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you validate passwords?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: NIST guidelines — minimum 8 characters, no composition rules (no required
               uppercase, numbers, symbols). Check breach database (Have I Been Pwned API) — warn if

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,13 +34,16 @@ export default function DeviceSessionManagementUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Device/Session Management UI</strong> allows users to view and control their
           active sessions across devices. It provides visibility into where their account is logged
           in, enables remote logout of specific sessions, and alerts users to suspicious activity.
           This is a critical security feature for account protection — users can detect
           unauthorized access and revoke compromised sessions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/device-session-management.svg"
@@ -47,12 +51,12 @@ export default function DeviceSessionManagementUIArticle() {
           caption="Device Session Management — showing session list, device info, location, and remote logout"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing session management UI requires deep
           understanding of session tracking, device fingerprinting, security alerting, and UX
           patterns that help users make informed security decisions. The implementation must
           balance security (detailed information) with privacy (not exposing too much device data).
-        </p>
+        </HighlightBlock>
         <p>
           Modern session management has evolved from simple session lists to sophisticated security
           dashboards with device trust, anomaly detection, and one-click revocation. Organizations
@@ -64,18 +68,21 @@ export default function DeviceSessionManagementUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Device/session management is built on fundamental concepts that determine how sessions
           are tracked, displayed, and controlled. Understanding these concepts is essential for
           designing effective session management UI.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Session Display:</strong> Device type (desktop, mobile, tablet — with icon),
           browser (Chrome, Safari, Firefox with version), location (city, country from IP —
           approximate, not precise), IP address (last 2 octets masked for privacy — 192.168.x.x),
           last active (relative time — "2 minutes ago", "3 days ago"), current session indicator
           ("This device" or "Current session").
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Device Fingerprinting:</strong> Collect device signals (user agent, screen
           resolution, fonts, timezone, WebGL, canvas) to create unique device fingerprint. Store
@@ -96,11 +103,14 @@ export default function DeviceSessionManagementUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Session management UI architecture separates session data from presentation, enabling
           real-time updates with secure session control. This architecture is critical for
           providing accurate session information.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/device-session-security.svg"
@@ -108,7 +118,7 @@ export default function DeviceSessionManagementUIArticle() {
           caption="Device Session Security — showing device fingerprinting, anomaly detection, session binding, and revocation flow"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Session display flow: User navigates to security settings. Frontend requests active
           sessions (GET /sessions). Backend queries session store (Redis), enriches with device
           info (user agent parsing), location (IP geolocation), returns session list. Frontend
@@ -116,7 +126,7 @@ export default function DeviceSessionManagementUIArticle() {
           indicator. User clicks "Logout" on specific session. Frontend sends revoke request (POST
           {'/sessions/{id}/revoke'}). Backend invalidates session, broadcasts logout, returns
           success. Frontend updates UI (remove session card).
-        </p>
+        </HighlightBlock>
         <p>
           Security architecture includes: device fingerprinting (collect signals, create hash),
           anomaly detection (detect unusual patterns — new device, different location, concurrent
@@ -145,24 +155,27 @@ export default function DeviceSessionManagementUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing session management UI involves trade-offs between security, privacy, and user
           experience. Understanding these trade-offs is essential for making informed architecture
           decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Detailed vs Minimal Session Info</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Detailed:</strong> Full device info, precise location, IP address. Better
               security (users can identify unknown devices). Limitation: privacy concerns,
               information overload.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Minimal:</strong> Device type, approximate location, masked IP. Better
               privacy, simpler UI. Limitation: harder to identify unknown devices.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Balanced approach — device type + browser, city +
               country (not precise), masked IP (192.168.x.x). Enough info to identify unknown
@@ -211,19 +224,22 @@ export default function DeviceSessionManagementUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing session management UI requires following established best practices to
           ensure security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Session Display</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Show device type with icon — recognizable icons (desktop, mobile, tablet). Show browser
           with version — helps identify unknown devices (Chrome 120, Safari 17). Show approximate
           location — city, country from IP (not precise address). Mask IP address — show
           192.168.x.x (last 2 octets masked for privacy). Show relative time — "2 minutes ago", "3
           days ago" (human-readable). Highlight current session — "This device" indicator.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Remote Logout</h3>
         <p>
@@ -252,21 +268,24 @@ export default function DeviceSessionManagementUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing session management UI to ensure secure,
           usable, and maintainable session management.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No current session indicator:</strong> Users don't know which session is
             current, may logout themselves. <strong>Fix:</strong> Highlight "This device" or
             "Current session". Disable logout button for current session.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Precise location:</strong> Shows exact address, privacy violation.{" "}
             <strong>Fix:</strong> Show city, country only (approximate from IP). Don't show
             precise coordinates.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Full IP address:</strong> Exposes user's IP, privacy/security risk.{" "}
             <strong>Fix:</strong> Mask last 2 octets (192.168.x.x). Show only for audit logs.
@@ -309,16 +328,19 @@ export default function DeviceSessionManagementUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Session management UI is critical for account security. Here are real-world
           implementations from production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer Platform (Google)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Billions of users, multiple devices per user. Need to show
           all sessions clearly. Detect unauthorized access.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Session list with device icon, browser, location, last
           active. "This device" indicator. One-click logout. Security alerts for new devices.
@@ -404,14 +426,17 @@ export default function DeviceSessionManagementUIArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of session management UI design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What session info should you display to users?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: What session info should you display to users?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Device type with icon (desktop, mobile, tablet), browser with version (Chrome 120,
               Safari 17), approximate location (city, country — not precise), masked IP

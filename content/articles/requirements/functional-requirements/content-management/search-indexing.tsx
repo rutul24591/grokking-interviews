@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function SearchIndexingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Search Indexing</strong> creates and maintains search indexes for content enabling
           fast, relevant search results. It is critical for content discovery and user experience —
           without proper indexing, search is slow returning irrelevant results causing user
           frustration and abandonment. Search indexing transforms content into searchable structure
           through analysis (tokenization, stemming, normalization) enabling full-text search with
           relevance ranking.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/search-indexing-flow.svg"
@@ -48,7 +52,7 @@ export default function SearchIndexingArticle() {
           caption="Search Indexing Flow — showing content ingestion, analysis (tokenization, stemming), indexing, and search query processing"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing search indexing requires deep
           understanding of index structure including field configuration (title, body, tags, author,
           category) with appropriate field types (text for full-text, keyword for exact match),
@@ -64,7 +68,7 @@ export default function SearchIndexingArticle() {
           partitioning by document or hash), replication (copies for availability and read
           scaling), and cluster management (coordinator nodes, data nodes, master nodes). The
           implementation must balance index freshness with system performance and search quality.
-        </p>
+        </HighlightBlock>
 
         <p>
           Modern search indexing has evolved from simple keyword matching to sophisticated relevance
@@ -78,13 +82,16 @@ export default function SearchIndexingArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Search indexing is built on fundamental concepts that determine how content is analyzed,
           indexed, and searched. Understanding these concepts is essential for designing effective
           search systems.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Index Structure:</strong> Field configuration defines how each field is indexed
           and searched. Title field uses text type with high weight for full-text search enabling
           ranking boost for title matches. Body field uses text type with standard analyzer for
@@ -92,7 +99,7 @@ export default function SearchIndexingArticle() {
           faceted search. Author field uses keyword or text based on use case (keyword for exact
           match, text for full-text). Category field uses keyword type for faceted search and
           filtering. Field types determine analysis and search behavior.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Analyzers:</strong> Tokenization splits text into tokens (words) removing
@@ -124,11 +131,14 @@ export default function SearchIndexingArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Search indexing architecture separates content ingestion, analysis, indexing, and search
           query processing enabling modular implementation with clear boundaries. This architecture
           is critical for search quality, performance, and scalability.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/search-indexing-flow.svg"
@@ -136,7 +146,7 @@ export default function SearchIndexingArticle() {
           caption="Search Indexing Flow — showing content ingestion, analysis, indexing, and search query processing"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Indexing flow begins with content ingestion from database or message queue. Content is
           analyzed through analyzer pipeline (tokenization, stemming, normalization, stop words
           removal). Analyzed tokens are indexed with field information and document ID. Index is
@@ -145,7 +155,7 @@ export default function SearchIndexingArticle() {
           with query parsing (analyzing query through same analyzer as indexing). Query is executed
           against index through inverted index lookup. Results are scored through BM25 algorithm
           with boosting applied. Results are sorted by score and returned to user.
-        </p>
+        </HighlightBlock>
 
         <p>
           Index structure architecture includes inverted index mapping terms to documents containing
@@ -172,13 +182,16 @@ export default function SearchIndexingArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing search indexing involves trade-offs between index freshness, search quality,
           performance, and resource usage. Understanding these trade-offs is essential for making
           informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Full reindex versus incremental update presents completeness versus efficiency trade-offs.
           Full reindex rebuilds entire index from scratch ensuring index consistency and cleaning
           up stale data but is resource intensive requiring significant CPU and I/O, causes index
@@ -187,7 +200,7 @@ export default function SearchIndexingArticle() {
           resource usage but risks index drift over time requiring periodic full reindex and
           complexity for handling deletes and updates. The recommendation is incremental update for
           daily operations with periodic full reindex (weekly or monthly) for index health.
-        </p>
+        </HighlightBlock>
 
         <p>
           Exact match versus fuzzy match presents precision versus recall trade-offs. Exact match
@@ -216,18 +229,21 @@ export default function SearchIndexingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing search indexing requires following established best practices to ensure
           search quality, performance, and scalability.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Index structure configures appropriate field types (text for full-text, keyword for
           exact match). Define custom analyzers for specific requirements (language-specific,
           domain-specific). Configure field boosts for important fields (title boost 3x, body
           boost 1x). Enable norms for field length normalization. Use doc_values for sorting and
           aggregations.
-        </p>
+        </HighlightBlock>
 
         <p>
           Incremental updates enable near real-time search through document-level operations. Use
@@ -262,17 +278,20 @@ export default function SearchIndexingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing search indexing to ensure search quality,
           performance, and scalability.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           No analyzer configuration uses default analyzer missing optimization opportunities. Fix by
           configuring custom analyzers for specific requirements. Use language-specific analyzers
           for non-English content. Configure synonyms for domain-specific terms. Test analyzer
           output through analyze API.
-        </p>
+        </HighlightBlock>
 
         <p>
           No relevance tuning returns irrelevant results frustrating users. Fix by configuring
@@ -335,20 +354,23 @@ export default function SearchIndexingArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Search indexing is critical for content discovery across different domains. Here are
           real-world implementations from production systems demonstrating different approaches to
           search challenges.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce search (Amazon) addresses product discovery with faceted search. The solution
           uses Elasticsearch with custom analyzers for product titles and descriptions, field
           boosting for brand and title, faceted search for category, price range, ratings, synonym
           expansion for product variations (TV → television, TV show), and personalization through
           user behavior. The result is relevant product search enabling customers to find products
           quickly with high conversion rate.
-        </p>
+        </HighlightBlock>
 
         <p>
           Content search (Medium) addresses article discovery with full-text search. The solution
@@ -386,14 +408,17 @@ export default function SearchIndexingArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of search indexing design, implementation, and
           operational concerns for staff and principal engineer interviews.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you configure index structure?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you configure index structure?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Define field types (text for full-text, keyword for exact match). Configure
               custom analyzers for specific requirements (language-specific, domain-specific).

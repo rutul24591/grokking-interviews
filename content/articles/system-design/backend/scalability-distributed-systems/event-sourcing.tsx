@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Event Sourcing</strong> is a persistence pattern in which the
           state of an application is determined by a sequence of stored events,
           rather than by storing only the current state. In a traditional
@@ -53,8 +57,8 @@ export default function ArticlePage() {
           event log, applying each event in sequence to reconstruct the current
           state. The event log is the source of truth — the current state is a
           derivation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The pattern was popularized by Martin Fowler in 2005 (building on
           earlier work by Greg Young and the Domain-Driven Design community) and
           has since been adopted by systems that require full auditability,
@@ -65,7 +69,7 @@ export default function ArticlePage() {
           storing it as an event preserves the historical record. Storing only
           the current address discards the history and loses information that
           may be valuable for auditing, debugging, analytics, or compliance.
-        </p>
+        </HighlightBlock>
         <p>
           Event Sourcing is fundamentally different from event-driven
           architecture. Event-driven architecture uses events as a communication
@@ -99,8 +103,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>event store</strong> is the foundational component of an
           event-sourced system. It is an append-only database that stores events
           in the order they occurred. Each event has a globally unique
@@ -118,9 +125,9 @@ export default function ArticlePage() {
           pair). This guarantee is critical because it ensures that events can
           be replayed in the exact order they occurred, producing a
           deterministic reconstruction of the aggregate&apos;s state.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           An <strong>aggregate</strong> in event sourcing is the unit of
           consistency — it is a cluster of domain objects that are treated as a
           single unit for data changes. Each aggregate has its own event stream
@@ -140,7 +147,7 @@ export default function ArticlePage() {
           OrderShipped sets the status to &quot;shipped&quot; and records the
           shipping date. The final state of the Order object after all events
           have been applied is the current state.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Snapshots</strong> are a performance optimization that
@@ -203,6 +210,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/event-sourcing-diagram-1.svg"
@@ -210,7 +220,7 @@ export default function ArticlePage() {
           caption="Event store — events are appended sequentially, and aggregates are reconstructed by replaying the event stream"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The write flow in an event-sourced system begins with a command
           arriving at the aggregate&apos;s command handler. The handler
           reconstructs the aggregate by loading its event stream from the event
@@ -234,9 +244,9 @@ export default function ArticlePage() {
           the load and the save), the command handler retries: it reloads the
           aggregate (including the new events that caused the conflict),
           re-applies the command, and re-attempts the append.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The read flow is handled entirely by projections. When a query
           arrives, the query handler does not interact with the event store — it
           reads from the projection&apos;s read model, which is a denormalized,
@@ -249,7 +259,7 @@ export default function ArticlePage() {
           being appended to the event store and the projection applying it to
           the read model. This lag is typically 10–500 milliseconds and is
           monitored as a first-class operational metric.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/event-sourcing-diagram-2.svg"
@@ -305,8 +315,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event Sourcing must be compared against the traditional state-stored
           approach with explicit audit logging. The state-stored approach
           persists the current state in a database and optionally records
@@ -319,7 +332,7 @@ export default function ArticlePage() {
           records the business event itself (OrderConfirmed, not &quot;status
           changed from pending to confirmed&quot;), which is semantically richer
           and more aligned with the domain language.
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
@@ -392,7 +405,7 @@ export default function ArticlePage() {
           </tbody>
         </table>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The event store&apos;s append-only nature provides unique benefits for
           write performance. Appends are the fastest database operation — they
           do not require reading existing data, computing deltas, or updating
@@ -404,14 +417,17 @@ export default function ArticlePage() {
           offset by the read cost — reconstructing the current state from events
           is slower than reading it from a single row, and the projection
           pipeline adds operational complexity.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Model events as past-tense facts in the domain language, not as
           technical data changes. An event should describe{" "}
           <em>what happened in the business</em>, not{" "}
@@ -425,9 +441,9 @@ export default function ArticlePage() {
           confirmed — not &quot;status: pending → confirmed.&quot; This approach
           ensures that the event log is a meaningful business record that domain
           experts can read and understand, not just a technical change log.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Include metadata in every event for observability and debugging. Each
           event should carry a <code>correlationId</code> (identifying the
           original command or user action that triggered the event chain), a{" "}
@@ -442,7 +458,7 @@ export default function ArticlePage() {
           <code>correlationId</code> allows you to trace all events in the
           chain, identify the event that introduced the incorrect state, and
           understand the context (who initiated it, when, and what caused it).
-        </p>
+        </HighlightBlock>
 
         <p>
           Use optimistic concurrency control for event appends. When appending
@@ -493,8 +509,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Storing derived data in events is a common mistake that corrupts the
           event stream. Events should contain only the data that was known at
           the time the event occurred — not data that is derived from other
@@ -510,9 +529,9 @@ export default function ArticlePage() {
           <code>ItemAdded</code> events. The rule is: events should contain the{" "}
           <em>minimal data necessary to apply the event to the aggregate</em> —
           any additional data should be derived during replay.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Deleting or modifying events in the event store is an anti-pattern
           that destroys the integrity of the event-sourced system. The event
           store is append-only — events are never deleted or modified (with the
@@ -528,7 +547,7 @@ export default function ArticlePage() {
           happened (including the bug), and the compensating events bring the
           aggregate to the correct state. Deleting events breaks the sequence
           number chain and makes aggregate reconstruction impossible.
-        </p>
+        </HighlightBlock>
 
         <p>
           GDPR right-to-erasure (the &quot;right to be forgotten&quot;) is the
@@ -582,8 +601,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The BBC uses Event Sourcing for its content management platform, where
           every change to a piece of content (article, video, podcast) is stored
           as an event. The event stream for each content item records the full
@@ -598,9 +620,9 @@ export default function ArticlePage() {
           The projections power the content management UI (current state), the
           editorial dashboard (recent changes across all content), and the
           analytics platform (content lifecycle metrics).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           SourceLatency (a financial trading platform) uses Event Sourcing for
           its trade processing system, where every trade lifecycle event (trade
           created, trade amended, trade confirmed, trade settled, trade
@@ -616,7 +638,7 @@ export default function ArticlePage() {
           changed, the team created a new projection and replayed all historical
           trade events to generate the reports in the new format — no data
           migration was needed.
-        </p>
+        </HighlightBlock>
 
         <p>
           Atomist, a software delivery platform, uses Event Sourcing for its
@@ -653,6 +675,9 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
@@ -660,7 +685,7 @@ export default function ArticlePage() {
             event-sourced system? What happens when the event stream grows very
             large, and how do you optimize for it?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Aggregate reconstruction follows a deterministic process: create an
             empty aggregate instance, load all events for that aggregate from
             the event store (ordered by sequence number), and apply each event
@@ -673,8 +698,8 @@ export default function ArticlePage() {
             event sets the status to &quot;confirmed.&quot; After all events
             have been applied, the aggregate&apos;s state reflects all changes
             and represents the current state.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             When the event stream grows large (thousands of events for a single
             aggregate), full reconstruction from the beginning becomes slow. The
             optimization is <strong>snapshotting</strong>: periodically, the
@@ -686,7 +711,7 @@ export default function ArticlePage() {
             events after N (from N+1 to the current sequence number). This
             reduces the replay cost from O(total events) to O(events since last
             snapshot).
-          </p>
+          </HighlightBlock>
           <p className="mb-3">
             The snapshot frequency is a tuning parameter. With a snapshot every
             100 events, the maximum replay cost is 100 event applications. With

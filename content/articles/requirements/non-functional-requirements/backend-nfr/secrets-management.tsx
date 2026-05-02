@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,22 +25,25 @@ export default function SecretsManagementArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Secrets management</strong> is the practice of securely storing, distributing,
           rotating, and auditing access to secrets (passwords, API keys, certificates, encryption
           keys, tokens). Secrets are the credentials that services use to authenticate with each
           other and with external services — if secrets are compromised, attackers can access
           databases, APIs, and infrastructure. Secrets management is a critical non-functional
           requirement for any system that handles sensitive data or integrates with external services.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Secrets management involves several challenges — secrets must be stored securely (encrypted
           at rest), distributed securely (encrypted in transit, access-controlled), rotated regularly
           (to limit the impact of compromised secrets), and audited (who accessed which secret, when,
           and why). Traditional secrets management (storing secrets in configuration files, environment
           variables, or source code) is insecure — secrets are exposed to anyone with access to the
           configuration, and rotation is manual and error-prone.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, secrets management architecture demonstrates
           understanding of security fundamentals, the ability to design secrets management systems
@@ -72,19 +76,22 @@ export default function SecretsManagementArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding secrets management requires grasping several foundational concepts about
           secret storage, rotation, access control, and audit logging.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Secret Storage and Encryption</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Secrets must be encrypted at rest (using AES-256 encryption) and in transit (using TLS).
           Dedicated secrets management tools (Vault, AWS Secrets Manager, GCP Secret Manager) encrypt
           secrets at rest using encryption keys managed by a key management service (AWS KMS, GCP KMS,
           HashiCorp Transit). The encryption keys are separate from the secrets — even if the secrets
           storage is compromised, the secrets cannot be decrypted without the encryption keys.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Secret Rotation</h3>
         <p>
@@ -110,10 +117,13 @@ export default function SecretsManagementArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Secrets management architecture spans secret storage, secret distribution, secret rotation,
           access control, and audit logging.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/secrets-lifecycle.svg"
@@ -122,14 +132,14 @@ export default function SecretsManagementArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Secret Distribution Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a service starts, it authenticates with the secrets management tool (using IAM roles,
           service accounts, or authentication tokens) and requests the secrets it needs. The secrets
           management tool verifies the service&apos;s identity, checks the access policy, and returns
           the secrets if the service is authorized. The secrets are delivered over TLS and are stored
           in the service&apos;s memory (not on disk). The secrets are refreshed periodically (before
           they expire) by re-authenticating with the secrets management tool.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Secret Rotation Flow</h3>
         <p>
@@ -156,25 +166,28 @@ export default function SecretsManagementArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Approach</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Approach</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Environment Variables</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>Environment Variables</strong></td>
               <td className="p-3">
                 Simple to implement. No additional infrastructure. Supported by all platforms.
               </td>
               <td className="p-3">
                 Exposed to processes with same user. No rotation. No audit logging. Not secure.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Configuration Files</strong></td>
               <td className="p-3">
                 Easy to manage. Version controlled. Human-readable.
@@ -182,8 +195,8 @@ export default function SecretsManagementArticle() {
               <td className="p-3">
                 Secrets in version control (if not encrypted). No rotation. No access control.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Secrets Manager (Vault, AWS SM)</strong></td>
               <td className="p-3">
                 Encrypted at rest. Access control. Automated rotation. Audit logging. Short-lived tokens.
@@ -191,7 +204,7 @@ export default function SecretsManagementArticle() {
               <td className="p-3">
                 Additional infrastructure. Learning curve. Operational overhead. Cost.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>KMS-Encrypted Secrets</strong></td>
               <td className="p-3">
@@ -208,24 +221,27 @@ export default function SecretsManagementArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Use Dedicated Secrets Management Tools</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Never store secrets in environment variables, configuration files, or source code — use a
           dedicated secrets management tool (HashiCorp Vault, AWS Secrets Manager, GCP Secret Manager).
           Secrets management tools provide encryption at rest, access control, automated rotation,
           and audit logging — features that are essential for secure secrets management and difficult
           to implement correctly from scratch.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Rotate Secrets Regularly</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Rotate secrets regularly to limit the impact of compromised secrets — API keys every 90
           days, database passwords every 30 days, certificates before they expire. Automated secret
           rotation is essential — manual rotation is error-prone and often skipped. Secrets management
           tools support automated rotation — they generate new secrets, update the dependent services,
           and deactivate the old secrets.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Enforce Least-Privilege Access</h3>
         <p>
@@ -248,25 +264,28 @@ export default function SecretsManagementArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Secrets in Source Code</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Storing secrets in source code (hardcoded API keys, passwords in configuration files) is
           the most common and dangerous secrets management pitfall — source code is often stored in
           version control systems (GitHub, GitLab) that are accessible to many developers, and secrets
           in source code are difficult to rotate (every occurrence must be updated). Use pre-commit
           hooks to detect secrets in source code (git-secrets, detect-secrets), and use secrets
           management tools to distribute secrets at runtime.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Overly Permissive Access Policies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Access policies that grant access to all secrets (instead of specific secrets) violate
           least-privilege — if a service is compromised, the attacker has access to all secrets.
           Enforce least-privilege access — each service should only have access to the secrets it
           needs. Use secrets management tools with fine-grained access control (path-based policies,
           role-based access control) to enforce least-privilege access.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Not Rotating Secrets</h3>
         <p>
@@ -288,25 +307,28 @@ export default function SecretsManagementArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">HashiCorp — Vault Secrets Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           HashiCorp Vault is the industry-standard secrets management tool — it stores secrets
           encrypted at rest, provides fine-grained access control, supports automated secret
           rotation, and logs all secret access. Vault uses short-lived tokens (TTL of 1 hour) to
           reduce the impact of compromised tokens, and supports dynamic secrets (secrets generated
           on-demand with automatic expiration). Vault is used by thousands of organizations to
           manage secrets at scale.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">AWS — Secrets Manager for Automated Rotation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           AWS Secrets Manager provides automated secret rotation for RDS databases, Redshift
           clusters, and DocumentDB clusters — it generates new passwords, updates the database,
           and deactivates the old password. AWS Secrets Manager supports custom rotation Lambdas
           for applications that need custom rotation logic. AWS Secrets Manager is integrated with
           IAM for access control and CloudTrail for audit logging.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Netflix — Conductor for Secrets Workflow</h3>
         <p>
@@ -332,19 +354,22 @@ export default function SecretsManagementArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Secrets management is a security control — it protects secrets from unauthorized access, but the secrets management system itself must be secured.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Secrets Management Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Secrets Management Tool Security:</strong> The secrets management tool is a high-value target — if compromised, all secrets are exposed. Mitigation: encrypt secrets at rest with KMS-managed keys, restrict access to the secrets management tool, monitor access patterns, conduct regular security audits, use hardware security modules (HSM) for key management.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Secret Distribution Security:</strong> Secrets are transmitted from the secrets management tool to services — if the transmission is intercepted, secrets are exposed. Mitigation: use TLS for all secret transmissions, use mutual TLS (mTLS) for service-to-service authentication, verify service identity before distributing secrets.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Secret Rotation Security:</strong> Secret rotation must be atomic — if the new secret fails, the old secret must remain active. Mitigation: test new secrets before deactivating old secrets, implement rollback for failed rotations, monitor rotation success rate, alert on rotation failures.
             </li>
@@ -355,19 +380,22 @@ export default function SecretsManagementArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Secrets management must be validated through systematic testing — access control, rotation, audit logging, and failure handling must all be tested.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Secrets Management Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Access Control Test:</strong> Request a secret with authorized and unauthorized identities. Verify that authorized identities receive the secret and unauthorized identities are rejected. Verify that least-privilege is enforced (services can only access their own secrets).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Rotation Test:</strong> Trigger secret rotation and verify that the new secret is generated, distributed to dependent services, and the old secret is deactivated. Verify that services can authenticate with the new secret and that the old secret no longer works.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Audit Logging Test:</strong> Access a secret and verify that the access is logged with the correct identity, timestamp, and secret path. Verify that audit logs are stored in a tamper-evident system and cannot be modified.
             </li>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 const BASE_PATH = "/diagrams/system-design-concepts/backend/network-communication";
@@ -26,7 +27,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Event streaming architecture treats every piece of domain activity as an immutable,
           append-only event that is captured, durably stored, and made available to any number of
           independent consumers for real-time processing, historical replay, or state
@@ -36,8 +40,8 @@ export default function ArticlePage() {
           do with those facts. This decoupling in both space and time is the defining
           characteristic that separates event streaming from traditional message queues and RESTful
           APIs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The conceptual lineage of event streaming extends back to two distinct intellectual
           traditions. The first is the commit log abstraction that underpins every relational
           database system, where mutations are recorded as an ordered sequence of write-ahead log
@@ -49,7 +53,7 @@ export default function ArticlePage() {
           service could write to or read from. This elevation of an internal database implementation
           detail to a shared substrate for organizational-scale data movement is what triggered the
           widespread adoption of event streaming across the industry.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, the challenge of event streaming lies not in the
           mechanical act of producing and consuming messages, which any framework can handle, but in
@@ -79,9 +83,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>The Partitioned Append-Only Log</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           At the heart of every event streaming platform lies the partitioned append-only log, a
           data structure that is deceptively simple in its definition but extraordinarily powerful in
           its implications. A topic represents a named channel to which producers publish events,
@@ -92,8 +99,8 @@ export default function ArticlePage() {
           elegant because it reduces the problem of distributed ordering to a set of independent
           total orders: within any single partition, the order of events is deterministic and
           guaranteed; across partitions, no ordering is assumed or enforced by the platform.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The append-only property of the log is what unlocks the replay capability that
           distinguishes event streaming from traditional message queues. Because records are never
           modified or overwritten within the retention window, any consumer can position itself at
@@ -106,7 +113,7 @@ export default function ArticlePage() {
           producers. This replay capability is foundational to event sourcing, where the current
           state of any entity is defined as the result of replaying all events that affected that
           entity.
-        </p>
+        </HighlightBlock>
 
         <h3>Consumer Groups and Offset Management</h3>
         <p>
@@ -197,8 +204,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           A production-grade event streaming system comprises several interacting layers that
           together provide durability, scalability, ordering guarantees, and fault tolerance.
           Producers publish events to topics through a client library that handles serialization,
@@ -209,7 +219,7 @@ export default function ArticlePage() {
           offsets. Stream processors form an additional layer that reads from input topics, applies
           transformations, and writes results to output topics, creating multi-stage processing
           pipelines that can be arbitrarily deep.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/event-streaming-architecture-overview.svg`}
@@ -218,7 +228,7 @@ export default function ArticlePage() {
         />
 
         <h3>Broker Internals and Replication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Within the broker layer, each partition has exactly one leader broker and zero or more
           follower replicas. All write requests for a partition are directed to the leader, and the
           leader is responsible for replicating the log to its followers. The set of followers that
@@ -230,7 +240,7 @@ export default function ArticlePage() {
           When the producer requires only the leader&apos;s acknowledgment, write latency decreases
           but the risk of data loss increases if the leader fails before followers have replicated
           the data.
-        </p>
+        </HighlightBlock>
         <p>
           Broker failover is triggered when a leader becomes unreachable, at which point one of the
           ISR members is elected as the new leader. During this election, the partition is
@@ -343,8 +353,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event streaming is not the appropriate communication mechanism for every inter-service
           interaction, and the decision to adopt it involves weighing substantial benefits against
           equally substantial costs. The primary benefit is decoupling: producers and consumers
@@ -356,9 +369,9 @@ export default function ArticlePage() {
           consumer lag, and well-rehearsed runbooks for failure scenarios. Organizations that
           underestimate this complexity often find themselves operating a system that is more
           fragile than the synchronous APIs it was intended to replace.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comparing event streaming to traditional message queues reveals a fundamental architectural
           divergence in how messages are consumed. Message queues such as RabbitMQ follow a
           competitive consumer model where each message is delivered to exactly one consumer and
@@ -369,7 +382,7 @@ export default function ArticlePage() {
           state derivation, where multiple downstream systems need to react to the same events in
           different ways. The choice depends on whether the primary use case is task distribution
           (favoring message queues) or event distribution (favoring event streaming).
-        </p>
+        </HighlightBlock>
 
         <p>
           Within the event streaming ecosystem, platform selection involves comparing the
@@ -426,8 +439,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Partition key design must be approached with the same rigor as database index design,
           because it determines both the ordering guarantees available to consumers and the load
           distribution across the partition set. The analysis should begin by identifying which
@@ -441,9 +457,9 @@ export default function ArticlePage() {
           scenarios. Increasing the partition count after topic creation is possible in Kafka but
           breaks existing key-to-partition mappings, so getting the initial partition count right
           is significantly cheaper than correcting it later.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Idempotent consumers are not an optimization but a fundamental correctness requirement
           for any production event streaming system. Even with at-least-once delivery semantics,
           duplicate events are possible due to consumer rebalancing, broker failovers, producer
@@ -454,7 +470,7 @@ export default function ArticlePage() {
           small per-event overhead for the idempotency check but eliminates the need for
           distributed transactions and enables safe replay of the entire event history for debugging,
           recovery, and reprocessing after logic changes.
-        </p>
+        </HighlightBlock>
 
         <p>
           A schema registry with enforced compatibility rules must be operationalized from the first
@@ -515,8 +531,11 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Creating topics with a single partition is a frequent initial mistake that functions
           adequately in development and early staging but becomes a hard throughput ceiling in
           production. A single-partition topic can be consumed by only one consumer at a time, which
@@ -529,9 +548,9 @@ export default function ArticlePage() {
           partitions, potentially reordering events for existing keys. The remedy is to calculate
           the required partition count from peak throughput projections and consumer capacity before
           topic creation, and to create the topic with that count from the outset.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Treating consumer lag as a secondary metric rather than a primary service level indicator
           is a pervasive operational failure mode. Consumer lag grows gradually, often over hours
           or days, and without dedicated monitoring and alerting, operators frequently do not notice
@@ -541,7 +560,7 @@ export default function ArticlePage() {
           group, and establish alerting thresholds that trigger investigation before user impact
           occurs. Automated responses such as consumer auto-scaling and producer backpressure should
           be implemented for critical lag conditions where manual intervention would be too slow.
-        </p>
+        </HighlightBlock>
 
         <p>
           Assuming cross-partition ordering is a subtle and intermittent bug that is notoriously
@@ -605,9 +624,12 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>LinkedIn: Activity Feed and Real-Time Analytics at Origin Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           LinkedIn&apos;s development of Apache Kafka was driven by the need to capture and process
           every user action across the platform: profile views, likes, shares, messages, job
           applications, and search queries. Each of these actions is published as an event to a Kafka
@@ -623,10 +645,10 @@ export default function ArticlePage() {
           purposes without the event producer needing any knowledge of the downstream consumers,
           enabling LinkedIn to introduce entirely new downstream systems over the years without
           modifying a single producer.
-        </p>
+        </HighlightBlock>
 
         <h3>Uber: Trip Lifecycle Management Through Event Sourcing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uber models the entire lifecycle of a trip as an event-sourced entity, where each state
           transition is an immutable event: trip requested, driver matched, driver en route, driver
           arrived, trip started, trip completed, payment processed. These events are partitioned by
@@ -639,7 +661,7 @@ export default function ArticlePage() {
           new trip-related features such as safety check-ins, fare splitting, or route sharing by
           adding new consumers that react to existing events, without requiring any changes to the
           core trip management service that produces the events.
-        </p>
+        </HighlightBlock>
 
         <h3>Netflix: Content Delivery Optimization Through Stream Processing</h3>
         <p>
@@ -679,13 +701,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Explain how consumer groups enable both horizontal scaling and fault tolerance in event
             streaming systems. What happens during a consumer group rebalance?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A consumer group is a coordination primitive where multiple consumer instances work
             together to process the partitions of a topic. The streaming platform runs a partition
             assignment protocol that distributes partitions among the group members such that each
@@ -694,8 +719,8 @@ export default function ArticlePage() {
             processed in parallel, up to the total number of partitions. A group with ten consumers
             can process up to ten partitions concurrently; a group with one consumer can only
             process one partition at a time regardless of how many partitions the topic has.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             Fault tolerance emerges from the rebalancing mechanism. When a consumer fails, becomes
             unreachable, or voluntarily leaves the group, the platform detects the membership change
             and triggers a rebalance. During the rebalance, the partitions previously assigned to
@@ -708,7 +733,7 @@ export default function ArticlePage() {
             session timeout configuration. Modern Kafka versions support cooperative sticky
             assignors that minimize the number of partition movements during rebalances, reducing
             the processing pause duration.
-          </p>
+          </HighlightBlock>
           <p>
             The critical detail that interviewers look for is the understanding that consumer groups
             provide scaling and fault tolerance within a single group, while multiple independent

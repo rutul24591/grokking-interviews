@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function MetaTagsArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Meta tags</strong> are HTML elements placed within the{" "}
           <code>&lt;head&gt;</code> section of a web page that provide
           structured metadata about the document to browsers, search engines,
@@ -45,8 +46,8 @@ export default function MetaTagsArticle() {
           page but serve as machine-readable instructions that influence how a
           page is indexed, ranked, displayed in search results, and previewed
           when shared on social platforms.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The meta tag ecosystem has evolved significantly since the early web.
           In the late 1990s, the <code>meta keywords</code> tag was a primary
           ranking signal — search engines trusted page authors to accurately
@@ -60,8 +61,8 @@ export default function MetaTagsArticle() {
           technical meta tags like <code>robots</code>, <code>viewport</code>,
           and <code>canonical</code> govern crawling, rendering, and duplicate
           content resolution.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the staff/principal engineer level, meta tag strategy is an
           architectural concern — not just a content concern. Dynamic meta tag
           generation must be integrated into the rendering pipeline (SSR, SSG,
@@ -71,14 +72,14 @@ export default function MetaTagsArticle() {
           single missing <code>og:image</code> tag on a viral article can mean
           the difference between a compelling social preview that drives
           millions of clicks and a blank card that gets scrolled past.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Title Tag:</strong> The single most important on-page SEO
             element. Displayed as the clickable headline in search results and
             in the browser tab. Google typically displays the first 50-60
@@ -88,8 +89,8 @@ export default function MetaTagsArticle() {
             page, include the primary keyword near the beginning, and follow a
             consistent brand pattern (e.g., &quot;Page Title | Brand
             Name&quot;).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Meta Description:</strong> A 150-160 character summary
             displayed below the title in search results. While not a direct
             ranking factor, it significantly impacts click-through rate (CTR),
@@ -98,8 +99,8 @@ export default function MetaTagsArticle() {
             the page content better matches the query. Well-crafted descriptions
             include the target keyword naturally, contain a clear value
             proposition, and end with a call to action.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Open Graph Protocol (OG):</strong> Developed by Facebook in
             2010, the Open Graph protocol transforms web pages into rich objects
             in a social graph. The four required properties are{" "}
@@ -111,7 +112,7 @@ export default function MetaTagsArticle() {
             Discord, and most modern messaging platforms. The{" "}
             <code>og:image</code> should be at least 1200×630 pixels for optimal
             display across platforms.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Twitter Cards:</strong> Twitter&apos;s proprietary meta tag
             system that controls how links appear when shared on the platform.
@@ -168,28 +169,28 @@ export default function MetaTagsArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Understanding the meta tag ecosystem requires examining how different
           consumers — search engines, social platforms, browsers — parse and
           prioritize metadata from the document head.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/meta-tags-diagram-1.svg"
           alt="Meta tag hierarchy showing how title, description, Open Graph, and Twitter Card tags are organized and prioritized by different consumers"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           The diagram above illustrates the meta tag hierarchy. Search engines
           primarily consume the title tag, meta description, robots directives,
           and canonical link. Social platforms read Open Graph and Twitter Card
           tags, falling back to title and description when social-specific tags
           are absent. Browsers use viewport, charset, and theme-color tags to
           configure rendering behavior.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/meta-tags-diagram-2.svg"
           alt="Social media preview rendering pipeline showing how platforms fetch, parse, cache, and display meta tag data"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a URL is shared on a social platform, the platform&apos;s crawler
           (Facebook&apos;s crawler, Twitter&apos;s bot, LinkedIn&apos;s scraper)
           fetches the page, parses the head section, extracts OG/Twitter tags,
@@ -200,7 +201,7 @@ export default function MetaTagsArticle() {
           invalidation tool (Facebook Sharing Debugger, Twitter Card Validator,
           LinkedIn Post Inspector) that engineers must use during development
           and after meta tag updates.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/meta-tags-diagram-3.svg"
           alt="Dynamic meta tag generation architecture showing SSR, SSG, and edge rendering approaches for generating page-specific metadata"
@@ -221,16 +222,19 @@ export default function MetaTagsArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: pick the mechanism that eliminates ambiguity (single source of truth), minimizes long-lived inconsistencies, and is easiest to validate continuously (tests + monitoring) under real crawl/user traffic.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="important">
               <th className="p-3 text-left">Approach</th>
               <th className="p-3 text-left">Advantages</th>
               <th className="p-3 text-left">Disadvantages</th>
-            </tr>
+            </HighlightBlock>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">Static Meta Tags</td>
               <td className="p-3">
                 Simplest implementation; no runtime overhead; guaranteed
@@ -241,8 +245,8 @@ export default function MetaTagsArticle() {
                 impractical for pages with user-generated or database-driven
                 content
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">SSR Dynamic Meta</td>
               <td className="p-3">
                 Tags generated per-request with fresh data; fully customizable
@@ -253,7 +257,7 @@ export default function MetaTagsArticle() {
                 missing tags; requires server infrastructure; higher compute
                 costs
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3 font-medium">SSG with Revalidation</td>
               <td className="p-3">
@@ -288,29 +292,29 @@ export default function MetaTagsArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Ensure Every Page Has Unique Title and Description:</strong>{" "}
             Duplicate or missing titles are among the most common SEO issues at
             scale. Implement build-time validation that flags pages without
             unique title tags. Use templating patterns (e.g., &quot;Product Name
             - Category | Brand&quot;) but ensure the dynamic portion is
             genuinely unique per page.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Complete OG Tag Sets:</strong> At minimum, include
             og:title, og:description, og:image, og:url, and og:type on every
             publicly shareable page. Missing og:image is the most impactful
             omission — pages shared without images receive 50-80% fewer clicks
             on social platforms compared to those with compelling preview
             images.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Server-Side Rendering for Meta Tags:</strong> Social
             media crawlers and some search engine crawlers do not execute
             JavaScript. Meta tags injected client-side via JavaScript will be
             invisible to these consumers. Always ensure meta tags are present in
             the initial HTML response, whether via SSR, SSG, or edge rendering.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Optimize OG Images for Cross-Platform Display:</strong> Use
             1200×630 pixels as the standard OG image size (1.91:1 ratio). This
@@ -346,26 +350,26 @@ export default function MetaTagsArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Client-Side Only Meta Tag Injection:</strong> Using
             JavaScript to inject meta tags after page load means social crawlers
             and many search engine crawlers never see them. This is the most
             common meta tag architecture mistake in single-page applications.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Social Platform Caching:</strong> After updating OG
             tags, engineers expect the changes to appear immediately on social
             platforms. Facebook caches scrape results for up to 30 days. Without
             manual cache invalidation via each platform&apos;s debugging tool,
             outdated previews persist indefinitely.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Duplicate Titles Across Pages:</strong> Template-driven
             sites often produce identical titles for pages that differ only in
             query parameters or minor content variations. Search engines may
             consolidate these pages, choosing an unexpected canonical and
             dropping others from the index.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Exceeding Character Limits:</strong> Titles over 60
             characters and descriptions over 160 characters get truncated in
@@ -391,28 +395,28 @@ export default function MetaTagsArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Netflix:</strong> Generates unique OG images for each title
             page, using the show/movie poster art sized precisely for social
             sharing. Their meta descriptions are algorithmically composed from
             genre tags, cast information, and synopsis data to maximize
             relevance across different search queries.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Shopify Storefronts:</strong> Shopify&apos;s Liquid
             templating engine generates product-specific meta tags from catalog
             data — product name as title, description from product copy, first
             product image as og:image. This automated pipeline ensures thousands
             of product pages have complete, unique metadata without manual
             intervention.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>The New York Times:</strong> Implements comprehensive
             article meta tags including article:published_time,
             article:modified_time, article:author, and article:section OG tags.
             Their dynamic OG images often include headline text overlaid on
             article photography, optimized for social sharing engagement.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Vercel/Next.js:</strong> Their documentation site uses
             Next.js generateMetadata API to produce page-specific meta tags at
@@ -426,13 +430,16 @@ export default function MetaTagsArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: What is the difference between the title tag and og:title, and
               when would they differ?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               A: The title tag is consumed by search engines and displayed in
               browser tabs and SERPs. og:title is consumed by social platforms
               for link previews. They often contain similar content but may
@@ -442,13 +449,13 @@ export default function MetaTagsArticle() {
               card already shows the domain. og:title has no strict character
               limit but should stay under 65 characters for optimal display.
               Title tags should be under 60 characters to avoid SERP truncation.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: How would you architect a meta tag system for a large
               e-commerce site with millions of product pages?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               A: I would build a template-based meta generation pipeline
               integrated with the product catalog. Each product page&apos;s
@@ -544,7 +551,7 @@ export default function MetaTagsArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://ogp.me/"
               target="_blank"
@@ -553,8 +560,8 @@ export default function MetaTagsArticle() {
             >
               The Open Graph Protocol — Official Specification
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards"
               target="_blank"
@@ -563,8 +570,8 @@ export default function MetaTagsArticle() {
             >
               Twitter Cards Documentation
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://developers.google.com/search/docs/appearance/title-link"
               target="_blank"
@@ -573,7 +580,7 @@ export default function MetaTagsArticle() {
             >
               Google Search Central — Title Links
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://nextjs.org/docs/app/building-your-application/optimizing/metadata"

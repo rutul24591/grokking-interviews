@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,21 +30,24 @@ export default function HeapSortArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Heap Sort is an in-place comparison sort with guaranteed Θ(n log n) worst-case running
           time, O(1) extra space, and no dependence on input distribution. J. W. J. Williams invented
           the binary heap and heap sort in 1964, and R. W. Floyd refined the implementation to use
           sift-down (siftup from the bottom is O(n) rather than O(n log n) for heap construction —
           a subtle but important optimization). The algorithm operates on an implicit max-heap built
           in the array itself, repeatedly extracting the maximum to the end of the array.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Heap Sort is conceptually a turbocharged selection sort. Selection sort scans the unsorted
           region in Θ(n) to find the max and places it at the end. Heap sort maintains a heap over
           the unsorted region so finding-and-removing the max costs O(log n) instead of O(n).
           Summed over n extractions, that is Θ(n log n) — the same asymptotic class as merge sort
           and (expected) quicksort, achieved entirely in place.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           In production, heap sort rarely runs as a primary sort because it is 2–3× slower than
           quicksort on average — its memory access pattern (parent at i, children at 2i+1 and 2i+2)
@@ -69,22 +73,25 @@ export default function HeapSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">The binary heap as an array</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A binary heap is a complete binary tree (every level full except possibly the last, which
           fills left-to-right) satisfying the heap property: every parent&apos;s key is ≥ both children
           (max-heap) or ≤ both children (min-heap). Crucially, this complete shape lets us store the
           heap as a flat array with no pointers: the root is index 0, and for any index i, the left
           child is at 2i+1, the right child at 2i+2, and the parent at ⌊(i−1)/2⌋. Heap sort uses the
           <em>same</em> array for both the heap and the sorted output, which is why it is in place.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">Sift-down (heapify)</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The core operation is sift-down: given a node that may violate the heap property, swap it
           with its larger child repeatedly until it is either ≥ both children or becomes a leaf.
           Sift-down on a node at height h costs O(h). Since a binary heap&apos;s height is ⌊log₂ n⌋,
           single sift-down is O(log n).
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">Floyd&apos;s build-heap — why it&apos;s O(n)</h3>
         <p className="mb-4">
           Naively, building a heap by inserting n elements one at a time is Θ(n log n). Floyd&apos;s
@@ -112,7 +119,10 @@ export default function HeapSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A production heap sort is tight: build-heap calls sift-down from ⌊n/2⌋−1 down to 0; the
           extraction loop runs from i = n−1 down to 1, each iteration swapping arr[0] with arr[i],
           decrementing the logical heap size, and sift-downing arr[0] within [0, i). The inner
@@ -120,8 +130,8 @@ export default function HeapSortArticle() {
           current node, and swaps if the node is smaller. Branch prediction on this inner loop
           matters: on modern CPUs, a branchless compare-and-swap variant can nearly double
           throughput.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Cache behavior is the Achilles heel. At height h, sift-down jumps from index i to index
           2i+1 or 2i+2 — for large arrays, this crosses cache lines on nearly every step. Merge
           sort and quicksort do sequential scans, hitting every element in a cache line before
@@ -130,7 +140,7 @@ export default function HeapSortArticle() {
           d-ary heaps (each node has d = 4 or 8 children, giving log_d n depth and better locality)
           reduce cache misses at the cost of more comparisons per sift-down. The d=4 quaternary
           heap is a measured sweet spot — used in some priority queue libraries.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Introsort&apos;s integration of heap sort is an interesting engineering pattern. The quicksort
           recursion carries a depth counter initialized to 2⌊log₂ n⌋. If a call is entered with
@@ -149,19 +159,22 @@ export default function HeapSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Quick Sort</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Quick sort is ~2–3× faster on average due to cache-friendly sequential access and tighter
           inner loops, but has O(n²) worst case. Heap sort is slower but has guaranteed O(n log n).
           Introsort combines them: quicksort on the happy path, heap sort when depth blows up.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Merge Sort</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Both are O(n log n) worst case. Merge sort is stable and needs Θ(n) auxiliary space; heap
           sort is unstable and in-place. Merge sort is faster in practice for large arrays because
           it has sequential access; heap sort&apos;s jumpy pattern loses to prefetchers. Choose merge
           sort for stable sort needs, heap sort for O(1) space + guaranteed bound.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">Stability</h3>
         <p className="mb-4">
           Heap sort is <strong>unstable</strong>. Sift-down swaps can reorder elements with equal
@@ -178,9 +191,12 @@ export default function HeapSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc pl-6 mb-4 space-y-2">
-          <li><strong>Use Floyd&apos;s build-heap</strong> (Θ(n)) not n-insertions (Θ(n log n)) — worst error is constant factor.</li>
-          <li><strong>Consider d-ary heaps (d=4)</strong> when cache misses dominate; shallower tree = better locality at small comparison cost.</li>
+          <HighlightBlock as="li" tier="important"><strong>Use Floyd&apos;s build-heap</strong> (Θ(n)) not n-insertions (Θ(n log n)) — worst error is constant factor.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Consider d-ary heaps (d=4)</strong> when cache misses dominate; shallower tree = better locality at small comparison cost.</HighlightBlock>
           <li><strong>For top-k with n ≫ k, use size-k min-heap</strong>, not sort-then-slice — O(n log k) vs O(n log n).</li>
           <li><strong>Heap sort as the primary sort</strong> only when you need O(1) space and guaranteed bound and cannot use introsort — e.g., kernel or embedded code.</li>
           <li><strong>Guard against integer overflow</strong> in index arithmetic (2i+1 and 2i+2) when n approaches 2³¹.</li>
@@ -191,9 +207,12 @@ export default function HeapSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc pl-6 mb-4 space-y-2">
-          <li><strong>Sifting up instead of down for build-heap</strong>: yields O(n log n) instead of O(n). Build from the last non-leaf downward.</li>
-          <li><strong>Confusing max-heap with min-heap direction</strong>: sorting ascending needs max-heap (largest to end); descending needs min-heap.</li>
+          <HighlightBlock as="li" tier="important"><strong>Sifting up instead of down for build-heap</strong>: yields O(n log n) instead of O(n). Build from the last non-leaf downward.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Confusing max-heap with min-heap direction</strong>: sorting ascending needs max-heap (largest to end); descending needs min-heap.</HighlightBlock>
           <li><strong>Off-by-one in heap-size tracking</strong> during extraction — after swap, sift-down must operate on [0, size−1), not [0, size).</li>
           <li><strong>Assuming heap sort is stable</strong> — breaks code that relied on equal-key ordering.</li>
           <li><strong>Expecting adaptivity</strong> — sorted input runs in full Θ(n log n), not Θ(n) like Tim Sort.</li>
@@ -203,15 +222,18 @@ export default function HeapSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Introsort fallback</strong>: C++ std::sort, libc++ std::sort, MSVC std::sort all
           call heap sort when quicksort recursion depth exceeds 2⌊log₂ n⌋. The primary production
           use.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Linux kernel sort()</strong> (lib/sort.c) is heap sort — chosen specifically for
           predictable worst-case timing in kernel paths where O(n²) would be unacceptable.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Priority queue implementations</strong>: Python&apos;s heapq, Java&apos;s PriorityQueue,
           C++&apos;s std::priority_queue, Rust&apos;s BinaryHeap — all use binary heap internals. While they
@@ -246,9 +268,12 @@ export default function HeapSortArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <ol className="list-decimal pl-6 mb-4 space-y-2">
-          <li><strong>Why is Floyd&apos;s build-heap O(n) and not O(n log n)?</strong> Cost per node proportional to height; most nodes are near the bottom where height is small. Sum is Θ(n).</li>
-          <li><strong>Implement heap sort in place.</strong> Build-heap via sift-down from ⌊n/2⌋−1; loop swap root with end and sift-down within shrinking range.</li>
+          <HighlightBlock as="li" tier="important"><strong>Why is Floyd&apos;s build-heap O(n) and not O(n log n)?</strong> Cost per node proportional to height; most nodes are near the bottom where height is small. Sum is Θ(n).</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Implement heap sort in place.</strong> Build-heap via sift-down from ⌊n/2⌋−1; loop swap root with end and sift-down within shrinking range.</HighlightBlock>
           <li><strong>How does heap sort differ from selection sort?</strong> Both repeatedly select the max — selection sort in O(n), heap sort in O(log n). Same structure, exponentially better.</li>
           <li><strong>Find the k largest elements in an n-element array.</strong> Size-k min-heap, scan array, replace min when larger appears. O(n log k).</li>
           <li><strong>Why is heap sort slower than quicksort despite same O(n log n)?</strong> Cache-unfriendly jumps between parent and child indices; quicksort&apos;s partition is sequential.</li>

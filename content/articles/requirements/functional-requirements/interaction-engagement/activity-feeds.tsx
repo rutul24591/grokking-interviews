@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,10 @@ export default function ActivityFeedsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Activity feeds track and display user actions and interactions,
           enabling social awareness and engagement notifications. When a user's
           friend likes a post, follows an account, comments on content, or
@@ -47,8 +51,8 @@ export default function ActivityFeedsArticle() {
           re-engagement and social connection. Activity feeds power "What's New"
           pages, notification centers, and email digests that bring users back
           to the platform.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The business impact of activity feeds is substantial. Facebook's News
           Feed—arguably the most influential activity feed ever built—drives
           billions of daily engagements and serves as the primary surface for
@@ -57,7 +61,7 @@ export default function ActivityFeedsArticle() {
           updates, and job changes. Well-designed activity feeds increase user
           retention by 20-40% through social proof and fear of missing out
           (FOMO).
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, activity feed implementation
           involves distributed systems challenges at scale. The system must
@@ -75,8 +79,11 @@ export default function ActivityFeedsArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Activity Event Types</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Activity events fall into categories based on action type and social
           signal strength. High-engagement events include comments, mentions,
           and direct messages—these signal active conversation and drive
@@ -84,15 +91,15 @@ export default function ActivityFeedsArticle() {
           and follows—these indicate interest but don't require response.
           Low-engagement events include profile views, content views, and
           passive consumption—these provide awareness without demanding action.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Event schema captures actor (who performed action), verb (what
           action), object (what was acted upon), and target (optional
           recipient). Example: "John (actor) commented on (verb) your post
           (object)" or "Sarah (actor) mentioned (verb) you (target) in a comment
           (object)". This Activity Streams 2.0 model enables flexible activity
           representation across diverse actions.
-        </p>
+        </HighlightBlock>
         <p>
           Event metadata includes timestamp, actor profile snapshot (name,
           profile picture at time of action), object preview (content snippet,
@@ -207,13 +214,16 @@ export default function ActivityFeedsArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Activity feed architecture spans event generation, storage, ranking,
           and delivery. Events generate from user actions through API layer.
           Event processing pipeline handles fan-out, aggregation, and ranking.
           Storage layer persists activities for retrieval. Delivery layer pushes
           activities to clients in real-time or serves on feed load.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/interaction-engagement/activity-feeds/activity-feed-architecture.svg"
@@ -224,14 +234,14 @@ export default function ActivityFeedsArticle() {
         />
 
         <h3>Event Generation Pipeline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event generation starts with user action—like, comment, follow, share.
           API validates action, persists to database, then publishes event to
           message queue. Event payload includes actor ID, verb, object ID,
           target ID (if applicable), timestamp, and context metadata. Message
           queue (Kafka, Kinesis, Pub/Sub) buffers events for async processing,
           smoothing traffic spikes.
-        </p>
+        </HighlightBlock>
         <p>
           Event enrichment adds actor profile data (name, profile picture URL),
           object preview (content snippet, thumbnail URL), and computed metadata
@@ -362,21 +372,24 @@ export default function ActivityFeedsArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Activity feed design involves fundamental trade-offs between write
           cost, read cost, freshness, and complexity. Understanding these
           trade-offs enables informed decisions aligned with platform scale and
           user expectations.
-        </p>
+        </HighlightBlock>
 
         <h3>Push vs Pull Fan-out</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Push fan-out (fan-out-on-write) creates activities for all followers
           on action. Write cost: O(followers). Read cost: O(1)—fetch precomputed
           feed. Best for: Read-heavy workloads, users with moderate follower
           counts (under 10K). Used by: Twitter (for regular users), Instagram,
           Facebook.
-        </p>
+        </HighlightBlock>
         <p>
           Pull fan-out (fan-out-on-read) stores activity globally, fetches on
           read. Write cost: O(1)—single insert. Read cost: O(following)—fetch
@@ -467,17 +480,20 @@ export default function ActivityFeedsArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use hybrid fan-out:</strong> Push for regular users (under
             10K followers), pull for celebrities. This balances write and read
             costs at scale. Implement routing logic based on follower threshold.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Store actor snapshots:</strong> Include name, profile
             picture in activity record. Prevents broken activities when users
             delete accounts. Refresh snapshots periodically for active users.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Aggregate activities:</strong> Group similar activities
             within 5-15 minute window. "John and 4 others liked your post"
@@ -525,18 +541,21 @@ export default function ActivityFeedsArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Pure push fan-out at scale:</strong> Pushing to millions of
             followers for celebrity posts causes write amplification. Solution:
             Hybrid fan-out—pull for celebrities over follower threshold.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No activity aggregation:</strong> Showing every activity
             individually overwhelms users. Solution: Aggregate similar
             activities within time window. "X people liked your post" instead of
             X notifications.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Broken activities from deleted accounts:</strong> Activities
             show "Unknown user" when users delete accounts. Solution: Store
@@ -572,9 +591,12 @@ export default function ActivityFeedsArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Facebook News Feed</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facebook's News Feed is the most influential activity feed, serving
           billions of users. Uses hybrid fan-out—push for regular users, pull
           for celebrities. Ranking algorithm (EdgeRank originally, now ML-based)
@@ -582,17 +604,17 @@ export default function ActivityFeedsArticle() {
           and 49 others liked your post". Real-time delivery via WebSocket for
           active users. Storage uses multi-tier approach with TAo (Facebook's
           graph store) for hot data.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Twitter Activity Tab</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Twitter's activity tab shows likes, retweets, follows, and mentions
           related to user's tweets. Uses pull fan-out for celebrities (millions
           of followers), push for regular users. Aggregation groups similar
           activities. Real-time delivery for mentions and retweets during active
           conversations. Storage optimized for high-velocity tweet activity with
           billions of events daily.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">LinkedIn Notifications</h3>
         <p>
@@ -627,12 +649,15 @@ export default function ActivityFeedsArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How do you generate activity feeds?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Event-driven architecture: user action
               triggers API, API publishes event to Kafka. Stream processor
               consumes events, enriches with actor/object data, routes to
@@ -641,7 +666,7 @@ export default function ActivityFeedsArticle() {
               stored in Redis sorted sets with ranking score. Real-time delivery
               via WebSocket to active clients. Fallback to polling for
               unsupported clients.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -24,15 +25,18 @@ export default function GeolocationServiceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>geolocation service</strong> is a system that determines the physical location of a device, user, or
           network entity and returns structured geographic data including coordinates, administrative boundaries, and
           contextual information such as timezone, postal code, and nearby points of interest. Geolocation services
           power a wide range of applications: localized content delivery, fraud detection, location-based search,
           ride-hailing dispatch, logistics routing, targeted advertising, and regulatory compliance such as geo-fencing
           for content licensing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Geolocation encompasses multiple positioning technologies, each with different accuracy characteristics,
           latency profiles, and privacy implications. GPS provides meter-level accuracy outdoors but fails indoors and
           consumes significant battery. WiFi positioning (CSS, cellular signal strength) provides ten-to-fifty-meter
@@ -41,7 +45,7 @@ export default function GeolocationServiceArticle() {
           geolocation maps IP addresses to geographic regions through ISP registry data, providing city-level accuracy
           but often misidentifying the user&apos;s actual location when the ISP&apos;s routing infrastructure is distant
           from the subscriber.
-        </p>
+        </HighlightBlock>
         <p>
           The fundamental architectural challenge in geolocation service design is managing the trade-off between
           accuracy and latency. High-accuracy positioning (GPS) requires hardware sensors, clear sky visibility, and
@@ -62,7 +66,10 @@ export default function GeolocationServiceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>IP geolocation</strong> is the most universally applicable positioning method because it works for any
           internet-connected device without requiring special hardware or user consent. IP geolocation databases such as
           MaxMind GeoIP2 and IP2Location map IP address ranges to geographic regions based on ISP registry data, routing
@@ -71,8 +78,8 @@ export default function GeolocationServiceArticle() {
           mobile carriers and satellite ISPs the accuracy can be much lower because the IP is assigned to a regional hub
           far from the subscriber. IP geolocation is updated monthly or quarterly to account for IP reassignments, and
           stale data is a persistent source of inaccuracy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>GPS positioning</strong> uses signals from the Global Positioning System satellite constellation to
           compute the receiver&apos;s latitude, longitude, and altitude through trilateration. A minimum of four
           satellites is required for a three-dimensional fix. GPS provides the highest accuracy of any positioning
@@ -81,7 +88,7 @@ export default function GeolocationServiceArticle() {
           by providing satellite ephemeris data through the cellular network, reducing the fix time from minutes to
           seconds. GPS is the primary positioning method for mobile devices outdoors, with fallback to other methods
           when GPS signals are unavailable.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>WiFi positioning (CSS)</strong> determines location by scanning nearby WiFi access points, collecting
           their BSSIDs (MAC addresses) and signal strengths, and matching them against a database of known access point
@@ -130,19 +137,22 @@ export default function GeolocationServiceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The geolocation service architecture consists of client request handlers, an API gateway for rate limiting and
           validation, a resolution pipeline that queries multiple data sources, a processing layer for coordinate
           transformation and spatial indexing, a cache layer for low-latency responses, and a response assembly module
           that formats results with confidence scores and source attribution.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Client requests arrive in multiple forms: IP address lookups from backend services that need to determine the
           geographic origin of a request, GPS coordinates from mobile applications that need reverse geocoding or nearby
           point queries, and WiFi or cell tower identifiers from devices that need position estimation. The API gateway
           validates the request format, checks rate limits and quotas, and routes the request to the appropriate
           resolution handler.
-        </p>
+        </HighlightBlock>
         <p>
           The resolution pipeline is the core of the service. For IP lookups, the pipeline queries the local IP
           geolocation database (loaded into memory for sub-millisecond access) and returns the mapped location with a
@@ -177,7 +187,10 @@ export default function GeolocationServiceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The primary trade-off in geolocation service design is between accuracy and latency. GPS provides the highest
           accuracy but requires seconds to minutes for a fix and consumes significant battery. IP geolocation provides
           instant results but with city-level accuracy that may be off by tens of kilometers. WiFi positioning provides
@@ -186,8 +199,8 @@ export default function GeolocationServiceArticle() {
           approach: attempt the most accurate method first, fall back to progressively less accurate methods, and return
           the best available result with a confidence score so that consuming services can decide whether the accuracy is
           sufficient for their use case.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Building a geolocation service in-house versus using a commercial provider such as Google Geolocation API,
           MaxMind, or LocationIQ involves a build-versus-buy decision. Commercial providers offer comprehensive
           databases with global coverage, regular updates, high availability SLAs, and APIs that handle the complexity
@@ -197,7 +210,7 @@ export default function GeolocationServiceArticle() {
           in data acquisition, database maintenance, and operational reliability. Organizations with fewer than one
           million requests per day typically benefit from commercial providers, while very large organizations may
           justify the investment in a custom service.
-        </p>
+        </HighlightBlock>
         <p>
           The choice between S2 Geometry and H3 for spatial indexing affects query performance and developer
           experience. S2 provides a mature, well-tested library with excellent support for range queries and region
@@ -236,20 +249,23 @@ export default function GeolocationServiceArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Always return a confidence score alongside the location result. The confidence score should reflect the
           positioning method used, the freshness of the underlying data, and the known accuracy characteristics of the
           source. Consuming services need this information to make informed decisions: a fraud detection system may
           reject a transaction if the IP geolocation confidence is below a threshold, while a content localization
           system may accept lower-confidence results for language selection.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cache IP geolocation lookups aggressively with a twenty-four-hour TTL. IP assignments change infrequently, and
           the same IP is typically looked up many times per day by different services. Caching at the application level
           with an in-process cache and at the distributed level with Redis provides defense in depth: the in-process
           cache handles the hottest lookups with sub-microsecond latency, while Redis handles the broader set of cached
           lookups with sub-millisecond latency and cross-instance sharing.
-        </p>
+        </HighlightBlock>
         <p>
           Update IP geolocation databases on a regular schedule, typically monthly for MaxMind GeoIP2 and quarterly for
           other providers. The update process should use blue-green deployment: load the new database into a separate
@@ -281,21 +297,24 @@ export default function GeolocationServiceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Treating IP geolocation as authoritative is a common mistake that leads to incorrect behavior. IP geolocation
           can be wrong by tens or hundreds of kilometers, especially for mobile carriers, satellite ISPs, and VPN
           users. Services that make critical decisions based solely on IP geolocation (such as blocking access from a
           region or applying different pricing) will produce incorrect results for a significant fraction of users. The
           fix is to use IP geolocation as a signal with a confidence score, not as a definitive location, and to allow
           users to override the detected location when it is incorrect.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Not handling the transition between positioning methods gracefully causes jarring user experiences. When a user
           moves from outdoors (GPS available) to indoors (GPS unavailable, WiFi positioning active), the reported
           location may jump by hundreds of meters. The service should smooth transitions between positioning methods by
           blending results when multiple methods are available and by reporting the accuracy radius so that consuming
           applications can display the appropriate level of uncertainty to the user.
-        </p>
+        </HighlightBlock>
         <p>
           Storing high-precision coordinates when low precision suffices is both a privacy risk and a storage waste.
           If a service only needs city-level location for content localization, storing exact GPS coordinates is
@@ -330,7 +349,10 @@ export default function GeolocationServiceArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Google Maps uses a sophisticated multi-source geolocation pipeline that combines GPS, WiFi positioning, cell
           tower triangulation, and sensor fusion (accelerometer, gyroscope, magnetometer) to provide continuous
           positioning across indoor and outdoor environments. Google&apos;s WiFi positioning database is the largest in
@@ -338,15 +360,15 @@ export default function GeolocationServiceArticle() {
           positioning where GPS is unavailable. Google Maps also implements smooth transitions between positioning
           methods, so users experience continuous tracking even when moving between environments with different signal
           availability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Uber uses geolocation for rider-driver matching, route optimization, and surge pricing. Uber&apos;s H3 spatial
           indexing system divides cities into hexagonal cells, enabling efficient proximity queries for finding nearby
           drivers, computing estimated arrival times, and identifying surge pricing zones. The H3 system was open-sourced
           by Uber and has been adopted by many other companies for spatial analytics. Uber&apos;s geolocation pipeline
           also incorporates GPS smoothing algorithms that filter out noisy GPS readings and provide accurate location
           tracking even in urban canyons where GPS signals bounce off buildings.
-        </p>
+        </HighlightBlock>
         <p>
           Cloudflare uses IP geolocation at the edge to route requests to the nearest data center, serve localized
           content, and enforce geo-based access controls. Cloudflare&apos;s geolocation database is deployed to every
@@ -374,12 +396,15 @@ export default function GeolocationServiceArticle() {
 
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 1: How would you design a geolocation service that handles one million requests per second with sub-100ms latency?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The key insight is that the most common lookup type (IP geolocation) is a simple key-value lookup that can be
             served from an in-memory database with sub-millisecond latency. The IP geolocation database (approximately
             ten gigabytes for MaxMind GeoIP2) fits entirely in RAM on a single server, so the lookup path is a hash table
@@ -392,14 +417,14 @@ export default function GeolocationServiceArticle() {
             caches results with a one-hour TTL using geohash-prefix keys to enable partial matching for nearby
             coordinates. The total p99 latency is dominated by cache misses for reverse geocoding, which should be
             under fifty milliseconds with proper indexing.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Question 2: How do you handle the scenario where a user&apos;s IP geolocation points to the wrong city?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             IP geolocation is inherently imprecise and can be wrong by tens or hundreds of kilometers, especially for
             mobile carriers, satellite ISPs, and VPN users. The service should return a confidence score alongside the
             location, reflecting the known accuracy characteristics of the IP type. For residential broadband in
@@ -411,7 +436,7 @@ export default function GeolocationServiceArticle() {
             decisions. Additionally, the service should provide a mechanism for users to override their detected
             location, and the override should be stored as a higher-confidence signal that supersedes the IP
             geolocation for future requests from the same user.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">

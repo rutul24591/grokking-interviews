@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function PublishingWorkflowArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Publishing Workflow</strong> defines the process content goes through from
           creation to publication including review, approval, scheduling, and lifecycle management.
           It ensures content quality and compliance before going live through structured state
           transitions and approval gates. Publishing workflow is critical for content quality —
           without it, unreviewed content may be published causing quality issues, compliance
           violations, or brand damage.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/publishing-states.svg"
@@ -48,7 +52,7 @@ export default function PublishingWorkflowArticle() {
           caption="Publishing States — showing content state machine with draft, pending review, approved, scheduled, published, and archived states with transitions"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing publishing workflow requires deep
           understanding of content states including draft for work in progress visible only to
           author, pending review for content submitted for approval locked for editing, approved
@@ -63,7 +67,7 @@ export default function PublishingWorkflowArticle() {
           trails tracking all state changes with who when and why, retention policies for published
           content, and regulatory compliance for regulated industries. The implementation must
           balance workflow rigor with user experience and efficiency.
-        </p>
+        </HighlightBlock>
 
         <p>
           Modern publishing workflows have evolved from simple draft-publish to sophisticated
@@ -78,13 +82,16 @@ export default function PublishingWorkflowArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Publishing workflow is built on fundamental concepts that determine how content progresses
           through states from creation to publication. Understanding these concepts is essential for
           designing effective workflow systems.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Content States:</strong> Draft state represents work in progress visible only to
           author with full edit capabilities and auto-save functionality. Pending Review state
           represents content submitted for approval locked for editing to prevent changes during
@@ -95,7 +102,7 @@ export default function PublishingWorkflowArticle() {
           live content visible to audience with analytics tracking and version control. Archived
           state represents retired content no longer visible but retained for history with optional
           restoration capability.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Approval Chains:</strong> Single approver workflow has one person responsible for
@@ -129,11 +136,14 @@ export default function PublishingWorkflowArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Publishing workflow architecture separates state management, approval processing,
           scheduling, and compliance tracking enabling modular implementation with clear boundaries.
           This architecture is critical for workflow integrity, audit capability, and scalability.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/publishing-states.svg"
@@ -141,7 +151,7 @@ export default function PublishingWorkflowArticle() {
           caption="Publishing States — showing content state machine with draft, pending review, approved, scheduled, published, and archived states with transitions"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Publishing flow begins with author creating content in draft state with auto-save
           functionality. Author submits for review transitioning to pending review state locking
           content for editing and notifying assigned reviewer. Reviewer reviews content making
@@ -153,7 +163,7 @@ export default function PublishingWorkflowArticle() {
           Published content can be archived transitioning to archived state for retired content
           retained for history. Each state transition is logged with timestamp, user, and reason
           for audit trail.
-        </p>
+        </HighlightBlock>
 
         <p>
           State machine architecture includes state definitions with properties (visible, editable,
@@ -183,13 +193,16 @@ export default function PublishingWorkflowArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing publishing workflow involves trade-offs between quality control, speed, and
           complexity. Understanding these trade-offs is essential for making informed architecture
           decisions.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Single versus multi-level approval presents speed versus quality trade-offs. Single
           approver workflow has one person responsible for approval enabling fast turnaround with
           clear accountability but risks single point of failure if approver unavailable and
@@ -199,7 +212,7 @@ export default function PublishingWorkflowArticle() {
           for routing and tracking. The recommendation is single approver for routine content with
           trusted authors, multi-level for high-risk content (legal, compliance, brand-sensitive)
           requiring multiple perspectives.
-        </p>
+        </HighlightBlock>
 
         <p>
           Sequential versus parallel approval presents coordination versus speed trade-offs.
@@ -227,18 +240,21 @@ export default function PublishingWorkflowArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing publishing workflow requires following established best practices to ensure
           quality control, compliance, and user experience.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           State management defines clear states (draft, pending, approved, scheduled, published,
           archived) with explicit properties (visible, editable, deletable). Implement state machine
           validating transitions preventing invalid transitions. Log all state changes with
           timestamp, user, and reason for audit trail. Provide state visualization showing current
           state and available transitions to users.
-        </p>
+        </HighlightBlock>
 
         <p>
           Approval chains configure appropriate approval levels based on content risk (single for
@@ -274,17 +290,20 @@ export default function PublishingWorkflowArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing publishing workflow to ensure quality
           control, compliance, and user experience.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           No state machine allows invalid state transitions like draft to published skipping review.
           Fix by implementing state machine validating transitions before execution. Define valid
           transitions explicitly. Prevent invalid transitions through database constraints or
           application logic.
-        </p>
+        </HighlightBlock>
 
         <p>
           No audit trail prevents tracking who changed what when. Fix by logging all state changes
@@ -343,19 +362,22 @@ export default function PublishingWorkflowArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Publishing workflow is critical for content quality across different domains. Here are
           real-world implementations from production systems demonstrating different approaches to
           workflow challenges.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           WordPress publishing addresses blog content workflow with simple review process. The
           solution uses draft state for work in progress with auto-save, pending review state for
           content submitted to editor, editor approval or rejection with comments, scheduled
           publishing for future publication, and published state for live content. The result is
           simple workflow suitable for blogs with clear author-editor relationship.
-        </p>
+        </HighlightBlock>
 
         <p>
           Medium publishing addresses quality control through editor review. The solution uses
@@ -393,14 +415,17 @@ export default function PublishingWorkflowArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of publishing workflow design, implementation, and
           operational concerns for staff and principal engineer interviews.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you implement state machine?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you implement state machine?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Define states (draft, pending, approved, scheduled, published, archived) with
               properties (visible, editable, deletable). Define transitions with source state,

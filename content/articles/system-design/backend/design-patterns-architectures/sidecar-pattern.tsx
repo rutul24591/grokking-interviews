@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,12 +28,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>sidecar pattern</strong> is an architectural design where a companion process—typically packaged as a separate container—is deployed alongside the primary application process within the same deployment unit. In Kubernetes, this means the sidecar container shares the same Pod, network namespace, storage volumes, and lifecycle boundaries as the main application container. The sidecar extends or augments the application&apos;s capabilities without requiring any modification to the application&apos;s own code.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The term &quot;sidecar&quot; draws its analogy from a motorcycle sidecar: a secondary attachment that adds functionality (carrying a passenger, extra cargo) to the primary vehicle without altering the vehicle&apos;s core mechanics. Similarly, a software sidecar attaches auxiliary capabilities—such as networking proxies, log shippers, certificate rotators, or metrics collectors—to an application while the application remains oblivious to these additions.
-        </p>
+        </HighlightBlock>
         <p>
           The sidecar pattern belongs to a family of three related patterns in distributed system design. The <strong>sidecar pattern</strong> extends the application&apos;s functionality by running alongside it and sharing its lifecycle. The <strong>ambassador pattern</strong> acts as a proxy for outbound or inbound network traffic, abstracting away service discovery, retry logic, and circuit breaking from the application. The <strong>adapter pattern</strong> normalizes or transforms the application&apos;s output—such as metrics, logs, or health data—into a standardized format expected by external systems. All three share a common structural arrangement: an auxiliary container co-located with the primary application. They differ in their intent and the nature of the interface between the application and the auxiliary component.
         </p>
@@ -49,6 +53,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/sidecar-pattern-diagram-1.svg"
@@ -57,12 +64,12 @@ export default function ArticlePage() {
         />
 
         <h3>Kubernetes Pod Architecture and Shared Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding the sidecar pattern requires a precise understanding of the Kubernetes Pod as the fundamental deployment unit. A Pod is a group of one or more containers that share several kernel namespaces: the network namespace, the IPC namespace, and optionally the PID namespace. Within a Pod, all containers share the same IP address and port space, meaning they communicate over <code>localhost</code> without traversing the cluster network. They can also share storage volumes, enabling data exchange through the filesystem.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This shared context is what makes the sidecar pattern powerful. Because the sidecar and the application share the network namespace, a sidecar acting as a proxy can intercept all network traffic by binding to <code>localhost</code> ports or by using iptables rules to transparently redirect traffic. Because they share volumes, a certificate-rotating sidecar can write refreshed TLS certificates to a shared directory that the application reads without requiring any API call between them. The lifecycle coupling means that when the Pod is terminated, all containers—including sidecars—receive the SIGTERM signal and the Pod does not fully terminate until all containers have exited or the grace period expires.
-        </p>
+        </HighlightBlock>
         <p>
           The Pod-level semantics have direct implications for sidecar design. The <code>restartPolicy</code> applies to all containers in the Pod. If the application crashes, Kubernetes restarts all containers. If a sidecar crashes, Kubernetes restarts the entire Pod, including the application. This coupling means that sidecar stability directly affects application availability, making resource isolation and health management critical concerns.
         </p>
@@ -115,14 +122,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Interface Mechanisms Between Application and Sidecar</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The sidecar pattern is fundamentally an interface design decision. How the application and sidecar communicate determines correctness, performance, failure semantics, and upgradeability. There are three primary interface mechanisms used in production sidecar deployments.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Loopback networking</strong> is the most common mechanism. Because the sidecar and application share the same network namespace, they communicate over <code>localhost</code>. The application routes traffic to <code>127.0.0.1</code> where the sidecar listens, processes the request, and forwards it to the final destination. This is how Envoy operates in Istio&apos;s sidecar injection model: iptables rules transparently redirect all outbound (and optionally inbound) traffic through the Envoy sidecar listening on localhost ports. The advantage of loopback networking is that it provides a clean, protocol-agnostic interface with well-understood failure modes. The disadvantage is that the sidecar sits on the critical path of every request, adding latency (typically 1-3ms for a well-configured proxy) and becoming part of the availability SLO.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Shared volumes</strong> enable file-based communication between the application and sidecar. A certificate-rotating sidecar writes refreshed TLS certificates to a shared emptyDir volume, and the application reads them from the same path. A log-shipping sidecar reads log files that the application writes to a shared volume. The advantage of shared volumes is that they provide asynchronous, decoupled communication: the application writes a file and continues without waiting for the sidecar to process it. The disadvantage is that file-based interfaces require careful synchronization semantics: the sidecar must handle partial writes, log rotation, and concurrent access.
         </p>
@@ -178,14 +188,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>Sidecar vs. Embedded Library: Detailed Comparison</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The choice between sidecar and embedded library is not binary but contextual. Sidecars provide language-agnostic consistency where one implementation serves all application languages, but at the cost of additional resource consumption (CPU, memory, network overhead) and operational complexity. Embedded libraries provide zero resource overhead and deep application integration, but require per-language implementation and maintenance, creating a multiplication of effort proportional to the number of languages in use.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Sidecars decouple platform updates from application deployments. You can upgrade Envoy across 1000 Pods by updating the sidecar image version in the Pod template, triggering a rolling update without touching application code. With embedded libraries, updating the observability SDK from version 2 to version 3 requires every service team to update their dependency, pass tests, and redeploy—a coordination effort that can take months in large organizations.
-        </p>
+        </HighlightBlock>
         <p>
           Sidecars provide failure isolation: a memory leak in the logging sidecar causes the sidecar to restart but does not directly crash the application process. However, the Pod restart affects the application container as well, so the isolation is partial. Embedded libraries share the same process space, so a bug in the observability library can crash the entire application process directly.
         </p>
@@ -220,14 +233,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3>Define Explicit Failure Semantics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most critical sidecar design decision is determining what happens when the sidecar fails. For on-path sidecars, you must choose between fail-open and fail-closed behavior. Fail-closed means that if the sidecar is unavailable, the application cannot serve traffic. This is appropriate for security sidecars that enforce authorization policies—if the policy engine is down, denying all traffic is the safe default. Fail-open means that if the sidecar is unavailable, the application continues serving traffic directly. This requires the application to have a bypass mechanism and is appropriate when the sidecar provides non-critical enhancements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For off-path sidecars, the default should be fail-open. A logging sidecar should buffer logs locally when the shipping backend is unavailable and ship them later. A metrics sidecar should cache metrics and flush them when connectivity is restored. The application must never depend on an off-path sidecar for correctness. Document these failure semantics explicitly in your sidecar configuration and ensure they are tested in chaos engineering exercises.
-        </p>
+        </HighlightBlock>
 
         <h3>Right-Size Resources with Measured Headroom</h3>
         <p>
@@ -267,14 +283,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Implicit Failure Semantics Causing Cascading Outages</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most dangerous pitfall is leaving sidecar failure behavior undefined. When a sidecar becomes unhealthy and no one has explicitly decided whether the application should continue serving or stop, the default behavior is usually the worst of both worlds: the application experiences degraded performance because the sidecar is slow, but does not fully fail over to a bypass mode. A logging sidecar with a full buffer blocks the application&apos;s log writes, turning a logging issue into a request-processing outage. A proxy sidecar with exhausted connection pools returns 503 errors that propagate to end users.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The prevention is to explicitly define, document, and test failure behavior for every sidecar. Write runbooks that describe exactly what happens when each sidecar fails, and validate these behaviors in staging and chaos engineering exercises.
-        </p>
+        </HighlightBlock>
 
         <h3>Resource Contention Between Application and Sidecar</h3>
         <p>
@@ -314,16 +333,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Istio Service Mesh: Fleet-Wide Traffic Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A financial services company with 300 microservices across 15 teams needed consistent mutual TLS, traffic routing, and observability without requiring each team to implement these capabilities in their respective languages (Java, Go, Python, Node.js). They deployed Istio with automatic sidecar injection, adding an Envoy sidecar to every Pod. The Envoy sidecar enforced mTLS between all services, applied centralized traffic policies (retries, timeouts, circuit breakers), and collected detailed telemetry. The result was consistent security posture across all services, zero per-service implementation effort for networking concerns, and the ability to update traffic policies fleet-wide through Istio configuration changes without application redeployments. The operational cost was approximately 20% additional CPU and memory overhead per Pod for the Envoy sidecars, plus the Istio control plane infrastructure.
-        </p>
+        </HighlightBlock>
 
         <h3>Fluentd Logging Sidecar: Multi-Tenant Log Shipping</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A multi-tenant SaaS platform needed per-tenant log isolation, where each service&apos;s logs were shipped to a different Elasticsearch index based on tenant context. They deployed Fluentd as a sidecar alongside each application container. The Fluentd sidecar read logs from the container&apos;s stdout, enriched them with Kubernetes metadata (namespace, Pod name, labels), applied tenant-based filtering and routing, and shipped them to the appropriate Elasticsearch index. The application was completely unaware of the log routing logic. This approach provided per-Pod log configurability, reliable log shipping with disk-based buffering, and tenant isolation. The challenge was managing Fluentd configuration updates across thousands of Pods, which they solved by storing Fluentd configuration in ConfigMaps and triggering sidecar reloads via a sidecar configuration reload endpoint.
-        </p>
+        </HighlightBlock>
 
         <h3>Certificate Rotation Sidecar: Automated TLS Lifecycle</h3>
         <p>
@@ -341,14 +363,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is the sidecar pattern and how does it differ from the ambassador and adapter patterns?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               The sidecar pattern deploys a companion process (typically a container) alongside the primary application within the same deployment unit (Kubernetes Pod). The sidecar shares the lifecycle, network namespace, and storage volumes with the application, extending or augmenting the application&apos;s capabilities without modifying application code. Common sidecar responsibilities include log shipping, metrics collection, certificate rotation, and network proxying.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               The <strong>ambassador pattern</strong> is a specialized sidecar focused exclusively on proxying network traffic. The ambassador sits between the application and external services, abstracting away service discovery, load balancing, retries, circuit breaking, and protocol translation. The application sends requests to localhost, and the ambassador forwards them. Envoy in Istio functions as an ambassador when it intercepts and routes all application traffic.
             </p>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +24,15 @@ export default function SkipListsArticle() {
     <ArticleLayout metadata={metadata}>
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition & Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A skip list is a probabilistic data structure that supports ordered search, insert, and delete in O(log n) expected time. It consists of a stack of sorted linked lists: the bottom level contains every element; each higher level contains a randomly-selected subset, halving in size on average. The higher levels act as &quot;express lanes&quot; that let search skip past large portions of the list quickly.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           William Pugh introduced skip lists in 1990 with a paper titled &quot;Skip Lists: A Probabilistic Alternative to Balanced Trees&quot;. The pitch was simple — balanced BSTs (AVL, red-black) deliver guaranteed O(log n) but require complex rotation logic that&apos;s notoriously hard to get right, especially under concurrency. Skip lists deliver the same expected complexity using nothing but linked lists and a coin flip, and the local-only pointer mutations make concurrent implementations dramatically easier.
-        </p>
+        </HighlightBlock>
         <p>
           Today skip lists power Redis sorted sets (the structure behind ZADD/ZRANGE), Java&apos;s ConcurrentSkipListMap, MemSQL&apos;s in-memory indexes, LevelDB&apos;s MemTable, and HBase&apos;s in-memory store. Every time you call ZRANGEBYSCORE on a Redis sorted set with millions of entries and get an instant response, that&apos;s a skip list traversal.
         </p>
@@ -36,12 +40,15 @@ export default function SkipListsArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The skip list&apos;s structure is best understood as a stack of singly-linked lists. Level 0 is the full sorted list of all n elements. Level 1 contains roughly n/2 elements; level 2 roughly n/4; and so on, until the top level holds just a constant number of elements. Each node stores its value plus an array of forward pointers — one per level it participates in. A head sentinel holds pointers across all levels.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The trick is how levels are assigned. When inserting a new node, the algorithm flips a fair coin until it gets tails: heads → promote one more level, tails → stop. The number of heads determines the node&apos;s height. This produces a geometric distribution: P(height ≥ k) = 1/2^k. Expected total nodes across all levels: 2n. Expected maximum level: log₂(n).
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           The deep insight is that this random structure is &quot;balanced enough&quot; in expectation, without any rebalancing logic. Each level has half the nodes of the level below — exactly the structure of a balanced BST&apos;s level distribution — but the balance is statistical rather than enforced. The probability of an extremely unbalanced skip list decays exponentially with n; for n = 10⁶, the probability of a worst-case search vanishes for all practical purposes.
         </p>
@@ -57,12 +64,15 @@ export default function SkipListsArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture & Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Search(key):</strong> start at the head&apos;s topmost level. Repeatedly check the next node at the current level: if its key is &lt; target, advance; if ≥ target, drop one level. When you reach level 0, the next pointer either points at the target (found) or past it (not found). Total expected work O(log n).
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Insert(key, value):</strong> first run the search, recording at each level the rightmost node whose next overshoots the target — these are the &quot;update points&quot; where the new node will splice in. Then flip coins to determine the new node&apos;s level. Allocate the node, and for each level from 0 up to its level, update the forward pointers exactly as you would in a singly-linked list insert. If the new level exceeds the current maximum, extend the head pointers and update.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Delete(key):</strong> identical setup to insert — find the update points at each level. If the next node at level 0 matches the target, splice it out at every level it occupies by rewriting the forward pointers of the update points. Decrement the maximum level if the top level is now empty.
         </p>
@@ -81,12 +91,15 @@ export default function SkipListsArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Trade-offs & Comparisons</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Skip list vs balanced BST (AVL, red-black).</strong> Both achieve O(log n) for search, insert, delete. BSTs guarantee O(log n) worst case; skip lists are O(log n) expected with exponentially-vanishing tails. The decisive practical differences are simplicity (skip list code is half the size) and concurrency (skip lists are dramatically easier to make lock-free). For new in-memory ordered structures, skip list is often the better choice; BSTs remain dominant in disk-resident contexts (B-trees) where the deterministic structure aids I/O planning.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Skip list vs B-tree.</strong> B-trees pack many keys per node for disk I/O efficiency (one node = one disk block); skip lists are pointer-chasing structures optimized for in-memory use. For RAM-resident ordered indexes, skip list wins on simplicity. For disk-resident, B-tree wins overwhelmingly.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Skip list vs hash table.</strong> Hash tables are O(1) expected for unordered operations but support no ordering — no range queries, no in-order traversal, no min/max. Skip lists support all of these in O(log n). Use a hash table when you only need point queries; use a skip list when ordering matters.
         </p>
@@ -100,9 +113,12 @@ export default function SkipListsArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li><strong>Cap the maximum level.</strong> Allocating an unbounded level array per node is wasteful. Cap at log₂(expected n) + a small safety margin (Redis uses 32 for sorted sets up to ~2³² elements). Beyond that, the express lanes don&apos;t help.</li>
-          <li><strong>Use a deterministic seed in tests.</strong> Coin flips make every run different. Use a seeded PRNG in unit tests so failures reproduce.</li>
+          <HighlightBlock as="li" tier="important"><strong>Cap the maximum level.</strong> Allocating an unbounded level array per node is wasteful. Cap at log₂(expected n) + a small safety margin (Redis uses 32 for sorted sets up to ~2³² elements). Beyond that, the express lanes don&apos;t help.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Use a deterministic seed in tests.</strong> Coin flips make every run different. Use a seeded PRNG in unit tests so failures reproduce.</HighlightBlock>
           <li><strong>Pick the right p.</strong> The classic p = 1/2 is optimal for time. p = 1/4 (Pugh&apos;s suggestion) trades slightly slower search for fewer total pointers — better cache behavior, sometimes faster overall.</li>
           <li><strong>Co-locate value with key.</strong> If the value is small, store it inline in the node. Cache locality dominates over indirection in modern hardware.</li>
           <li><strong>Use SkipList for ordered concurrent access.</strong> Java&apos;s ConcurrentSkipListMap is the right choice when many threads insert/delete an ordered map. Don&apos;t reach for ConcurrentHashMap if you need ordering.</li>
@@ -113,9 +129,12 @@ export default function SkipListsArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc space-y-2 pl-6">
-          <li><strong>Forgetting to update head pointers when promoting.</strong> If a new node&apos;s level exceeds the current max, you must extend the head&apos;s forward array. Easy to miss; produces silent search failures.</li>
-          <li><strong>Off-by-one in level indexing.</strong> Levels are typically 0-indexed, but some implementations 1-index. Mixing conventions corrupts the structure silently.</li>
+          <HighlightBlock as="li" tier="important"><strong>Forgetting to update head pointers when promoting.</strong> If a new node&apos;s level exceeds the current max, you must extend the head&apos;s forward array. Easy to miss; produces silent search failures.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Off-by-one in level indexing.</strong> Levels are typically 0-indexed, but some implementations 1-index. Mixing conventions corrupts the structure silently.</HighlightBlock>
           <li><strong>Insufficient randomness.</strong> A predictable PRNG seeded from time produces correlated heights across nodes; an adversarial input can degrade search to O(n). Use a non-trivial seed (cryptographic in adversarial settings).</li>
           <li><strong>Holding pointers across mutations.</strong> Pointer-chasing snapshots may dangle after concurrent inserts/deletes. Use the API correctly — no peeking.</li>
           <li><strong>Concurrent modification without proper synchronization.</strong> Naive skip list code is not thread-safe. Either use a battle-tested concurrent variant or lock the entire structure.</li>
@@ -126,12 +145,15 @@ export default function SkipListsArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Redis sorted sets.</strong> The ZADD/ZRANGE/ZRANGEBYSCORE/ZRANK family of commands is backed by a skip list paired with a hash table. The skip list provides O(log n) insertion and ordered range queries; the hash table provides O(1) member-to-score lookup. Used everywhere from leaderboards (top-K queries) to time-series indexing (range over timestamp scores) to deduplicated sorted feeds. The single most important data structure in Redis after the basic dict.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>LevelDB and RocksDB MemTable.</strong> The in-memory write buffer in both LSM-tree storage engines is a concurrent skip list (LevelDB) or a configurable choice including skip list (RocksDB). When the buffer fills, it&apos;s flushed to disk as a sorted SSTable. The skip list&apos;s concurrent insert behavior matches the high-write workloads these engines are designed for.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Java&apos;s ConcurrentSkipListMap and Set.</strong> The standard concurrent ordered map in the JDK. Used in distributed coordination (Zookeeper-style watches), event scheduling (TimerWheel alternatives), and any application needing ordered concurrent access. The lock-free design scales to dozens of cores without lock contention.
         </p>
@@ -150,10 +172,13 @@ export default function SkipListsArticle() {
 
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why use a skip list instead of a balanced BST?</p>
-            <p className="mt-2 text-sm">A: Same O(log n) expected complexity, dramatically simpler code (no rotations, no rebalancing), and far easier to make concurrent (lock-free implementations are practical because all updates are local pointer mutations). Trade-off: O(log n) is expected, not worst-case — but the tail probability vanishes exponentially with n. For most in-memory ordered workloads, skip list is the better engineering choice.</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: Why use a skip list instead of a balanced BST?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">A: Same O(log n) expected complexity, dramatically simpler code (no rotations, no rebalancing), and far easier to make concurrent (lock-free implementations are practical because all updates are local pointer mutations). Trade-off: O(log n) is expected, not worst-case — but the tail probability vanishes exponentially with n. For most in-memory ordered workloads, skip list is the better engineering choice.</HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How does the random level selection work?</p>

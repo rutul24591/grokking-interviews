@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -41,7 +42,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>gossip protocol</strong> is a class of distributed
           communication protocol in which nodes exchange state information with
           randomly selected peers in periodic rounds, mimicking the way rumors
@@ -53,8 +57,8 @@ export default function ArticlePage() {
           overhead remains constant regardless of cluster size. This property
           makes gossip protocols uniquely suited for large-scale distributed
           systems where centralized coordination would become a bottleneck.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The term &quot;gossip protocol&quot; was coined by Alan Demers and
           colleagues at Xerox PARC in 1987 in their paper &quot;Epidemic
           Algorithms for Replicated Database Maintenance,&quot; which
@@ -68,7 +72,7 @@ export default function ArticlePage() {
           epidemiology — specifically the SIR (Susceptible-Infected-Removed)
           model — which explains why information spreads exponentially in the
           early rounds and then slows as fewer uninformed nodes remain.
-        </p>
+        </HighlightBlock>
         <p>
           Gossip protocols are used in production distributed systems for three
           primary purposes: <strong>membership management</strong> (maintaining
@@ -113,8 +117,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Epidemic dissemination</strong> is the core mechanism that
           drives gossip protocols. In each gossip round, every node selects{" "}
           <code>k</code> random peers (where <code>k</code> is typically 1-3)
@@ -136,9 +143,9 @@ export default function ArticlePage() {
           peers per round, the total message cost is <code>2 * 14 * 10000 =
           280,000</code> messages — constant per node and manageable even at
           very large scale.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Membership protocols</strong> are the most common application
           of gossip in production systems. The SWIM protocol, introduced by
           Mukesh Agarwal, Richard Decker, and colleagues at Cornell in 2002, is
@@ -158,7 +165,7 @@ export default function ArticlePage() {
           suspicion phase is critical — it prevents premature failure
           declarations due to transient network glitches, GC pauses, or
           temporary CPU saturation that might delay a single ping-ack.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Failure detection</strong> in gossip protocols uses an
@@ -234,6 +241,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/gossip-protocol-diagram-3.svg"
@@ -241,7 +251,7 @@ export default function ArticlePage() {
           caption="Convergence heatmap — each row is a node, each column is a gossip round. Colored cells indicate the node has received the information. In a 10-node cluster with k=2 peers per round, all nodes converge in approximately 5 rounds (ln(10) ≈ 2.3, scaled by constant factors)."
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The architecture of a gossip-based system consists of several
           interconnected components that work together to maintain cluster-wide
           state consistency. At the foundation is the <strong>gossip engine</strong>,
@@ -255,9 +265,9 @@ export default function ArticlePage() {
           of a cluster&apos;s lifecycle. Production systems often use a
           &quot;recently contacted&quot; exclusion window to ensure that each
           node contacts a diverse set of peers over time.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>gossip message</strong> itself contains a digest of the
           sender&apos;s state — typically a list of key-value pairs with version
           numbers or timestamps, or a more compact representation using Merkle
@@ -271,7 +281,7 @@ export default function ArticlePage() {
           size is bounded to prevent network saturation — if the digest exceeds
           the maximum message size, the sender prioritizes the most recent or
           most important entries.
-        </p>
+        </HighlightBlock>
 
         <p>
           The <strong>membership layer</strong> sits on top of the gossip engine
@@ -334,8 +344,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fundamental trade-off in gossip protocol design is between{" "}
           <strong>convergence speed and message overhead</strong>. Increasing
           the fan-out parameter <code>k</code> (number of peers contacted per
@@ -349,9 +362,9 @@ export default function ArticlePage() {
           seconds is critical, <code>k = 2-3</code> is appropriate; for
           metadata dissemination where eventual consistency within tens of
           seconds is acceptable, <code>k = 1</code> may suffice.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The gossip interval (time between rounds) presents another trade-off.
           Shorter intervals (e.g., 500 ms) provide faster convergence and more
           responsive failure detection, but they increase CPU utilization and
@@ -364,7 +377,7 @@ export default function ArticlePage() {
           increased to prevent the aggregate gossip traffic from saturating the
           network — at 10,000 nodes with <code>k = 2</code> and a 1-second
           interval, the cluster generates 20,000 gossip messages per second.
-        </p>
+        </HighlightBlock>
 
         <p>
           The choice between <strong>gossip-based membership</strong> and{" "}
@@ -499,8 +512,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Configure the gossip fan-out (<code>k</code>) based on cluster size
           and convergence requirements. For clusters up to 100 nodes, a fan-out
           of 3 provides fast convergence (typically within 3-5 rounds, or 3-5
@@ -513,9 +529,9 @@ export default function ArticlePage() {
           convergence time proportionally. The key insight is that fan-out
           should decrease as cluster size increases, because the absolute number
           of messages (<code>k * N</code>) grows linearly with cluster size.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tune the phi accrual failure detection threshold based on network
           stability and application tolerance for false positives. The default
           threshold in Cassandra is 8.0, which provides a good balance for
@@ -530,7 +546,7 @@ export default function ArticlePage() {
           and setting the threshold to a value that corresponds to a false
           positive rate acceptable to the application (e.g., 1 false positive
           per node per month).
-        </p>
+        </HighlightBlock>
 
         <p>
           Use seed nodes for bootstrap but do not rely on them for ongoing
@@ -597,8 +613,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Assuming that gossip provides a consistent, instantaneous view of the
           cluster is the most common conceptual error. Gossip converges
           eventually, not immediately — during the convergence window (typically
@@ -612,9 +631,9 @@ export default function ArticlePage() {
           immediately visible to all nodes, and they should implement retry
           logic with backoff for operations that depend on up-to-date membership
           information.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Setting the failure detection timeout too aggressively causes false
           positive storms, which are among the most disruptive failure modes in
           gossip-based systems. When a node is incorrectly marked as dead (a
@@ -631,7 +650,7 @@ export default function ArticlePage() {
           adapting to network conditions, but it requires careful tuning of the
           conviction threshold to balance detection speed against false positive
           rate.
-        </p>
+        </HighlightBlock>
 
         <p>
           Using gossip for decisions that require strong consistency is a
@@ -701,8 +720,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-world Use Cases */}
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Apache Cassandra</strong> uses gossip as its primary mechanism
           for membership management and failure detection across its peer-to-peer
           ring architecture. Every Cassandra node runs a gossip service (on port
@@ -722,9 +744,9 @@ export default function ArticlePage() {
           node recovers. Cassandra also runs anti-entropy repairs (via Merkle
           trees) on a scheduled basis to ensure long-term consistency across
           replicas.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>HashiCorp Consul</strong> uses the SWIM gossip protocol for
           its service discovery and health checking infrastructure. Consul runs
           a gossip pool (using the Serf library, which implements SWIM) where
@@ -744,7 +766,7 @@ export default function ArticlePage() {
           results). Consul&apos;s gossip encryption ensures that only
           authorized nodes can join the gossip pool and exchange membership
           information.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Riak</strong> (originally developed by Basho Technologies)
@@ -791,6 +813,9 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
@@ -799,7 +824,7 @@ export default function ArticlePage() {
             happens to convergence time and message overhead if you increase the
             fan-out to 3?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             The convergence time of a gossip protocol is bounded by{" "}
             <code>O(log N)</code> rounds with high probability. More precisely,
             for <code>N</code> nodes and fan-out <code>k</code>, the expected
@@ -814,8 +839,8 @@ export default function ArticlePage() {
             (typically 1.5-2 for high-probability convergence) gives us about
             10-14 rounds. At a 1-second gossip interval, this means convergence
             in 10-14 seconds.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             If you increase the fan-out to 3, the convergence time decreases
             proportionally — from 10-14 rounds to approximately 7-10 rounds —
             because each informed node contacts 50% more peers per round.
@@ -826,7 +851,7 @@ export default function ArticlePage() {
             the cost of higher bandwidth (which may saturate the network in
             large clusters or cause increased application latency due to
             contention).
-          </p>
+          </HighlightBlock>
           <p>
             In practice, for a 1000-node cluster, a fan-out of 2 is typically
             sufficient — convergence within 10-14 seconds is acceptable for

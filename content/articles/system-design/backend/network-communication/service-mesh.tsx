@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 const BASE_PATH = "/diagrams/system-design-concepts/backend/network-communication";
@@ -39,7 +40,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A service mesh is an infrastructure layer that handles
           service-to-service communication by intercepting network traffic
           between microservices and applying consistent policies for traffic
@@ -53,8 +57,8 @@ export default function ArticlePage() {
           all network traffic. The application code is unaware of the mesh; it
           simply sends and receives data on localhost, and the sidecar handles
           the rest.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The term &quot;service mesh&quot; was coined by William Morgan at
           Buoyant in 2016, and the pattern emerged as a response to the growing
           complexity of microservice communication. As organizations adopted
@@ -67,7 +71,7 @@ export default function ArticlePage() {
           by extracting these concerns into a shared infrastructure layer that
           is managed centrally, configured declaratively, and applied uniformly
           across all services.
-        </p>
+        </HighlightBlock>
         <p>
           The service mesh has two distinct planes: the data plane, which
           consists of the sidecar proxies that actually handle the network
@@ -100,7 +104,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The sidecar proxy is the fundamental building block of the service
           mesh. It is a reverse proxy (typically Envoy for Istio, or Linkerd2-proxy
           for Linkerd) that runs as a separate process or container alongside
@@ -115,8 +122,8 @@ export default function ArticlePage() {
           optionally at the application layer (L7 for HTTP, gRPC, and other
           recognized protocols), enabling fine-grained routing and policy
           enforcement based on HTTP headers, gRPC metadata, or request paths.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Mutual TLS (mTLS) is the security foundation of the service mesh. In
           standard TLS, the client verifies the server&apos;s identity by
           validating its certificate against a trusted Certificate Authority (CA).
@@ -134,7 +141,7 @@ export default function ArticlePage() {
           based on the identity in the client&apos;s certificate, eliminating
           the need for each service to implement its own authentication and
           authorization logic.
-        </p>
+        </HighlightBlock>
         <p>
           Traffic management in a service mesh goes far beyond simple load
           balancing. The mesh supports weighted traffic splitting (send 90% of
@@ -168,7 +175,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The service mesh architecture is organized into three layers: the data
           plane (sidecar proxies running alongside each service instance), the
           control plane (the management system that configures the data plane),
@@ -176,7 +186,7 @@ export default function ArticlePage() {
           data and enforce organizational policies). The data plane handles the
           actual traffic, the control plane manages the configuration, and the
           policy layer governs the behavior.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src={`${BASE_PATH}/istio-architecture.svg`}
@@ -184,7 +194,7 @@ export default function ArticlePage() {
           caption="Service mesh architecture — the control plane distributes configuration and certificates to sidecar proxies in the data plane, which intercept all service-to-service traffic"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Istio is the most feature-complete service mesh and also the most
           complex. Its control plane consists of several components: istiod
           (which combines the previous Pilot, Citadel, and Galley components into
@@ -201,7 +211,7 @@ export default function ArticlePage() {
           and the newer ambient mesh model, which eliminates sidecars by running
           the data plane as a shared per-node proxy (ztunnel for L4 security
           and waypoint proxies for L7 policy enforcement).
-        </p>
+        </HighlightBlock>
 
         <p>
           Linkerd takes a fundamentally different design philosophy: simplicity
@@ -251,12 +261,15 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The decision to adopt a service mesh, and which mesh to choose, is
           driven by the scale of your microservice ecosystem, the operational
           capacity of your platform team, and the specific capabilities you need.
           The trade-offs are substantial and should be evaluated carefully.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -338,7 +351,7 @@ export default function ArticlePage() {
             </tr>
           </tbody>
         </table>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fundamental trade-off is between uniformity and simplicity. A
           service mesh provides uniform behavior across all services: every
           service gets the same retry logic, the same timeout handling, the same
@@ -353,12 +366,15 @@ export default function ArticlePage() {
           whether the cost of inconsistent networking (application libraries
           implemented differently by different teams) exceeds the cost of mesh
           complexity (proxy overhead, operational burden, new failure modes).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Adopt a service mesh incrementally, starting with a single namespace
           or a small set of non-critical services. Install the mesh in
           permissive mode (where mTLS is not enforced, allowing both plaintext
@@ -369,8 +385,8 @@ export default function ArticlePage() {
           you to identify and resolve issues before they affect production
           traffic, and it gives your team time to develop operational expertise
           with the mesh before relying on it for critical services.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Monitor the sidecar proxy&apos;s resource consumption and latency
           overhead as primary health indicators. Set alerts for proxy memory
           usage exceeding a threshold (typically 80% of the proxy&apos;s memory
@@ -383,7 +399,7 @@ export default function ArticlePage() {
           resource budget, the mesh is too heavy for that workload, and you
           should consider a lighter proxy (Linkerd instead of Istio) or the
           ambient mesh pattern.
-        </p>
+        </HighlightBlock>
         <p>
           Test policy changes in a staging environment before applying them to
           production. Service mesh policies (routing rules, authorization
@@ -425,7 +441,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Deploying a service mesh before understanding the problem it solves is
           the most common pitfall. Teams adopt service meshes because they are
           popular in the industry or because they expect the mesh to solve
@@ -439,8 +458,8 @@ export default function ArticlePage() {
           impossible, or compliance requirements mandating mTLS across all
           internal communication. If none of these problems exist, the mesh is
           premature optimization.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Control plane outages causing configuration drift is a failure mode
           that catches teams by surprise. When the control plane goes down, the
           sidecar proxies continue to operate with their last known
@@ -452,7 +471,7 @@ export default function ArticlePage() {
           not monitor the control plane&apos;s health and do not have a plan for
           extended control plane outages will experience gradual degradation
           that compounds over time.
-        </p>
+        </HighlightBlock>
         <p>
           Policy misconfiguration causing production outages is a recurring
           incident pattern in service mesh operations. The complexity of the
@@ -487,7 +506,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Adobe deployed Istio across its cloud infrastructure to manage
           service-to-service communication for its Creative Cloud and Document
           Cloud platforms, serving hundreds of microservices across multiple
@@ -498,8 +520,8 @@ export default function ArticlePage() {
           platform team manages the Istio control plane and provides the mesh as
           a shared service to all product teams, who configure their routing and
           security policies through the mesh&apos;s CRD interface.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Shopify uses Linkerd for its service mesh, prioritizing operational
           simplicity and low resource overhead over the feature completeness of
           Istio. Shopify&apos;s services are primarily Ruby and Go, and the
@@ -508,7 +530,7 @@ export default function ArticlePage() {
           or accept significant latency overhead. Linkerd&apos;s lightweight
           proxy and simple installation model aligned with Shopify&apos;s
           engineering culture of minimizing operational burden.
-        </p>
+        </HighlightBlock>
         <p>
           The United States Department of Defense (DoD) uses service meshes to
           implement zero-trust security across its cloud environments. The
@@ -532,13 +554,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg bg-panel-soft p-6">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What problem does a service mesh solve that cannot be solved
               with application-level libraries?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Application-level libraries can implement retries, timeouts,
               circuit breakers, and metrics collection. What they cannot provide
               is uniformity. When each team implements its own retry logic, the
@@ -553,7 +578,7 @@ export default function ArticlePage() {
               every service gets metrics and tracing simply by being on the mesh,
               regardless of the language it is written in or the observability
               libraries it uses.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg bg-panel-soft p-6">

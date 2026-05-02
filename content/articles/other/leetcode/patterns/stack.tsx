@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,21 +24,24 @@ export default function StackArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         A stack is a last-in, first-out container that exposes three O(1) operations: push, pop, and peek. As an
         interview pattern, the stack is the load-bearing structure for problems where the next decision depends on
         the most recent unfinished thing — nested brackets, function calls, parsed expressions, recursion made
         iterative, undo histories, and the &quot;nearest enclosing X&quot; family. The shape that signals a stack is
         the recursive shape of the input: parentheses, calls, or a tree walked depth-first.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The pattern divides into three rough categories. <strong>Matched-pair / bracket validation</strong>: push
         on opener, verify match and pop on closer. <strong>Expression evaluation</strong>: a values stack and an
         operators stack process tokens by precedence. <strong>Iterative DFS / backtracking</strong>: the stack
         replaces the implicit recursion frame so we can avoid stack-overflow on deep inputs and gain explicit
         control over traversal order. A fourth category — <strong>monotonic stack</strong> — earns its own pattern
         because the maintenance discipline differs.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         Recognition signals are concrete. &quot;Balanced&quot;, &quot;nested&quot;, &quot;matched&quot;,
         &quot;valid parentheses&quot;, &quot;decode&quot;, &quot;simplify path&quot;, &quot;evaluate
@@ -54,18 +58,21 @@ export default function StackArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>LIFO invariant.</strong> The element at the top is the most recently pushed and the next one to be
         popped. In bracket matching, the top is the most recent opener that has not yet been closed; in iterative
         DFS, the top is the next node whose subtree to explore. The invariant is what makes nested-structure
         problems collapse to one-pass solutions.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Push-on-open, pop-on-close.</strong> The base discipline for matched-pair problems. The
         well-formedness check has three places to fail: (1) a closer with an empty stack (no opener available),
         (2) a closer that does not match the top opener, and (3) a non-empty stack at the end of input (unclosed
         opener). Forgetting any of the three produces a wrong answer.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Push the index, not the character.</strong> When the question asks &quot;longest&quot; or
         &quot;range&quot;, push indices instead of characters. The top of the stack tells you both the most recent
@@ -104,18 +111,21 @@ export default function StackArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Bracket-matching template.</strong> Maintain stack of openers. For each character: if opener,
         push. If closer, the stack must be non-empty AND the top must be the matching opener; pop. After scan,
         stack must be empty. Three failure points — empty-on-closer, mismatch-on-closer, non-empty-at-end —
         each must produce false. 20 (Valid Parentheses) is this verbatim.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Longest-valid-parentheses template.</strong> Push −1 sentinel. For each i: if &apos;(&apos;, push
         i. If &apos;)&apos;, pop. If stack empty after pop, push i (new sentinel for the next valid stretch).
         Else update best with i − stack.top(). The sentinel is what makes the length formula &quot;current i
         minus last invalid index&quot; work uniformly.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Min-stack design.</strong> Two parallel stacks: values and running-mins. On push(x): push x to
         values; push min(x, mins.top() if non-empty else x) to mins. On pop: pop both. getMin: peek mins.
@@ -152,18 +162,21 @@ export default function StackArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Stack vs. recursion.</strong> Both express the same control flow on tree-shaped data. Recursion
         is shorter and clearer; explicit stack avoids stack-overflow on deep inputs (Java&apos;s default 512 KB
         thread stack overflows around 10⁴ frames; Python&apos;s sys.setrecursionlimit defaults to 1000). Use
         recursion when the depth is bounded by the problem; switch to a stack for deep linked-lists, deeply
         nested expressions, or when the problem says &quot;handle inputs up to 10⁵&quot;.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Stack vs. queue.</strong> Stack is LIFO, queue is FIFO. DFS uses a stack and explores deep before
         wide; BFS uses a queue and explores by distance. The data-structure choice <em>is</em> the algorithmic
         choice — switching them is switching strategies.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Stack vs. monotonic stack.</strong> A vanilla stack stores everything pushed; a monotonic stack
         evicts violators of an order invariant on push. The latter solves &quot;nearest greater / smaller&quot;
@@ -189,16 +202,19 @@ export default function StackArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Document what is on the stack.</strong> One line of comment: &quot;stack stores indices of
         unmatched openers&quot; or &quot;stack of (multiplier, prefix) for outer contexts&quot;. Without this the
         invariant gets muddled and edge cases break.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Use sentinels to remove edge cases.</strong> A −1 at the bottom of the longest-valid-parentheses
         stack makes the length formula uniform. A 0 at the bottom of an integer-stack avoids empty checks. Pick a
         sentinel value that cannot appear in the legitimate domain.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Pop, then peek.</strong> Don&apos;t peek and conditionally pop; the conditional logic creates two
         code paths that must agree. Pop first, then if you need to put it back, push it again — or use a
@@ -221,14 +237,17 @@ export default function StackArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Forgetting the post-loop empty check.</strong> &quot;((&quot; passes opener-pop checks but leaves
         unmatched openers on the stack. Final stack must be empty.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Popping an empty stack.</strong> A closer with no opener should fail fast. Test for empty before
         peeking; in Java, peek() on an empty Deque throws.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Comparing characters incorrectly for bracket pairs.</strong> The matching map is small but easy
         to get backwards. Use a tiny map openerOf[closer] = opener and check stack.top() == openerOf[c]. Hardcoded
@@ -253,14 +272,17 @@ export default function StackArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode Problems)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>20. Valid Parentheses.</strong> The base template. Push openers, pop and match on closers, check
         empty at end.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>32. Longest Valid Parentheses.</strong> Index stack with −1 sentinel. Each match yields a length
         candidate i − stack.top(). The sentinel makes the boundary case disappear.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>921 / 1249. Minimum Add / Remove to Make Parentheses Valid.</strong> Single counter (or stack)
         tracks unmatched openers and excess closers. Sum at the end is the answer.
@@ -304,12 +326,15 @@ export default function StackArticle() {
       />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why does a stack solve bracket matching in one pass?</strong> Because the matching relation is
+        <HighlightBlock as="li" tier="important"><strong>Why does a stack solve bracket matching in one pass?</strong> Because the matching relation is
         nested: the most recent unmatched opener is the only legal target for the next closer. A LIFO container
-        gives O(1) access to that target.</li>
-        <li><strong>Why amortised O(1) for queue-from-two-stacks?</strong> Each element is moved across stacks at
-        most once. Over n operations the total work is O(n), so the per-op average is O(1).</li>
+        gives O(1) access to that target.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Why amortised O(1) for queue-from-two-stacks?</strong> Each element is moved across stacks at
+        most once. Over n operations the total work is O(n), so the per-op average is O(1).</HighlightBlock>
         <li><strong>How do you implement min-stack with O(1) getMin?</strong> Pair every push with the running min —
         either as a parallel stack or as a tuple. The min at the top is always valid.</li>
         <li><strong>Why does longest-valid-parentheses need a sentinel?</strong> The length formula i − stack.top()

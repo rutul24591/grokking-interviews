@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,10 @@ export default function RequestAnimationFrameArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>requestAnimationFrame</strong> (rAF) is a browser API that
           schedules a callback to execute just before the browser performs its
           next paint. It is the fundamental timing primitive for all imperative
@@ -47,8 +51,8 @@ export default function RequestAnimationFrameArticle() {
           function to run at the optimal time in the rendering pipeline — after
           input processing and before layout, paint, and composite — ensuring
           your visual updates are captured in the next frame.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Before rAF, developers used <code>setTimeout</code> or{" "}
           <code>setInterval</code> with a 16ms delay to approximate 60 fps.
           This approach was fundamentally flawed for three reasons. First,
@@ -62,7 +66,7 @@ export default function RequestAnimationFrameArticle() {
           it fires at vsync boundaries, pauses when the tab is hidden, and
           the browser can batch and prioritize rAF callbacks for optimal
           rendering throughput.
-        </p>
+        </HighlightBlock>
         <p>
           At the staff-engineer level, understanding rAF is essential because
           it underpins every animation library (GSAP, Framer Motion, Three.js),
@@ -93,16 +97,19 @@ export default function RequestAnimationFrameArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Frame Budget:</strong> At 60 fps, each frame has 16.67ms
             (1000ms ÷ 60) for all work: JavaScript execution, style
             recalculation, layout, paint, and composite. At 120 fps (iPad Pro,
             newer phones), the budget shrinks to 8.33ms. Your rAF callback
             must complete well within this budget — ideally under 10ms at
             60 fps — to leave room for the browser&apos;s rendering work.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>High-Resolution Timestamp:</strong> The rAF callback
             receives a <code>DOMHighResTimeStamp</code> parameter representing
             the time at which the frame began, measured from{" "}
@@ -111,7 +118,7 @@ export default function RequestAnimationFrameArticle() {
             computing animation progress. Never use <code>Date.now()</code> in
             animation loops — it has millisecond precision and is susceptible to
             system clock adjustments.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Delta Time:</strong> The difference between the current
             frame&apos;s timestamp and the previous frame&apos;s timestamp.
@@ -181,12 +188,15 @@ export default function RequestAnimationFrameArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/request-animation-frame-diagram-1.svg"
           alt="Browser frame lifecycle showing the ordering of input, rAF, style, layout, paint, and composite phases"
           caption="Figure 1: Browser frame lifecycle — rAF callback executes after input processing but before style/layout/paint"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each browser frame follows a deterministic sequence. First, the
           browser processes pending input events (click, scroll, keydown).
           Then it fires all registered rAF callbacks in registration order.
@@ -197,14 +207,14 @@ export default function RequestAnimationFrameArticle() {
           your DOM mutations are captured in the current frame&apos;s paint.
           If your callback takes too long and pushes past the vsync deadline,
           the entire frame is dropped.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/request-animation-frame-diagram-2.svg"
           alt="Animation loop architecture showing delta time computation, state update, render, and frame scheduling"
           caption="Figure 2: Custom animation loop pattern with delta time normalization and frame budget monitoring"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           A well-structured animation loop separates concerns into three
           phases: compute, apply, and schedule. The compute phase uses the
           delta time to calculate new animation values (positions, opacities,
@@ -217,7 +227,7 @@ export default function RequestAnimationFrameArticle() {
           phase helps detect when the callback exceeds its frame budget,
           enabling adaptive quality reduction (fewer particles, simpler
           physics) before jank becomes visible.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/animation-transitions/request-animation-frame-diagram-3.svg"
@@ -242,6 +252,9 @@ export default function RequestAnimationFrameArticle() {
       {/* Section 4: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr>
@@ -260,7 +273,7 @@ export default function RequestAnimationFrameArticle() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2 font-medium">
                 Thread
               </td>
@@ -273,8 +286,8 @@ export default function RequestAnimationFrameArticle() {
               <td className="border border-theme p-2">
                 Main thread — same event loop as all other tasks
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="border border-theme p-2 font-medium">
                 Vsync Sync
               </td>
@@ -287,7 +300,7 @@ export default function RequestAnimationFrameArticle() {
               <td className="border border-theme p-2">
                 No — timer-based, drifts from vsync boundaries
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="border border-theme p-2 font-medium">
                 Background Behavior
@@ -337,20 +350,23 @@ export default function RequestAnimationFrameArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Always use delta time for animation progress:</strong>{" "}
             Compute animation advancement as a function of elapsed time, not
             frame count. This ensures consistent animation speed across 60 Hz,
             120 Hz, and variable refresh rate displays. A frame-count-based
             animation runs twice as fast on a 120 Hz display.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cap delta time to prevent time jumps:</strong> When a tab
             returns from background, the first delta time can be seconds long.
             Clamp it to a maximum (e.g., 100ms) to prevent physics simulations
             from exploding or animations from teleporting to their end state.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Store and cancel the rAF ID on cleanup:</strong> Every
             component that starts a rAF loop must cancel it on unmount.
@@ -397,8 +413,11 @@ export default function RequestAnimationFrameArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Layout thrashing inside rAF:</strong> Reading{" "}
             <code>element.offsetHeight</code> after setting{" "}
             <code>element.style.height</code> forces the browser to perform a
@@ -406,14 +425,14 @@ export default function RequestAnimationFrameArticle() {
             multiple elements, each read-after-write triggers a full layout
             pass, potentially causing dozens of layout recalculations per frame.
             Batch all reads first, then all writes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not cancelling rAF on component unmount:</strong> The rAF
             callback closures retain references to the component scope. If the
             loop continues after unmount, it accesses stale state or
             null refs, causing errors and memory leaks. Always store the ID
             and cancel on cleanup.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Using frame count instead of time for animation:</strong>{" "}
             Counting frames and advancing by a fixed amount per frame produces
@@ -441,8 +460,11 @@ export default function RequestAnimationFrameArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Three.js / WebGL Rendering:</strong> Every Three.js
             application&apos;s render loop is built on rAF. The loop updates
             object positions, camera transforms, and shader uniforms each
@@ -451,15 +473,15 @@ export default function RequestAnimationFrameArticle() {
             step inside the same rAF callback, using fixed-timestep
             sub-stepping to ensure deterministic simulation regardless of
             frame rate.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>D3.js Data Visualizations:</strong> D3&apos;s force-directed
             graph layout runs a physics simulation via rAF, computing node
             positions each frame based on link forces, charge repulsion, and
             centering gravity. The simulation uses delta time for consistent
             behavior and automatically cools (reduces alpha) to settle into a
             stable layout.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>GSAP Core:</strong> GSAP uses a single global rAF callback
             (the &quot;ticker&quot;) that processes all active tweens in each
@@ -482,14 +504,17 @@ export default function RequestAnimationFrameArticle() {
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-medium">
+            <HighlightBlock as="p" tier="important" className="font-medium">
               Why is requestAnimationFrame better than setTimeout for
               animations?
-            </p>
-            <p className="mt-2">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2">
               Three fundamental reasons. First, rAF is synchronized with the
               display&apos;s vsync signal — it fires at exactly the right time
               before each paint, ensuring updates are captured in the next
@@ -501,7 +526,7 @@ export default function RequestAnimationFrameArticle() {
               can optimize rAF callbacks — batching them, prioritizing them, and
               skipping them when the page is not visible — because it
               understands their intent is visual rendering.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

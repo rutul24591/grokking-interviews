@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Microservices architecture</strong> decomposes a system into multiple services that are independently deployable and are typically aligned to business capabilities. Each service owns its runtime, its deployment cadence, and ideally its data. Services communicate over the network through HTTP, gRPC, or asynchronous event streams, which introduces distributed-systems behavior: latency, partial failures, retries, and version skew.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Microservices are not a technology choice; they are an organizational and operational choice. They can unlock autonomy and scale, but they also impose a &quot;platform tax&quot;: you must operate routing, observability, deployments, and cross-service correctness under partial failures. The decision to adopt microservices is fundamentally a decision about how teams will work together and how independently they can deliver value.
-        </p>
+        </HighlightBlock>
         <p>
           The architectural contrast to a monolith is sharp. A monolith runs as a single process with shared memory, shared database, and coordinated deployments. A modular monolith introduces internal boundaries through packages, modules, and well-defined interfaces while remaining a single deployable unit. Microservices go further by enforcing physical boundaries: services run in separate processes, own separate databases, and deploy on independent schedules. Each model has a legitimate use case. A monolith is optimal for small teams, unclear domain boundaries, or early-stage products where the primary need is iteration speed. A modular monolith serves medium-sized teams that need internal discipline without distributed complexity. Microservices serve large organizations where many teams must ship independently, capabilities have wildly different scaling needs, and fault isolation is a business requirement.
         </p>
@@ -61,6 +65,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/microservices-architecture-diagram-2.svg"
@@ -69,12 +76,12 @@ export default function ArticlePage() {
         />
 
         <h3>Service Decomposition Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The hardest part of microservices is not running them; it is deciding where the boundaries go. Service decomposition determines everything downstream: how teams are organized, how data is owned, how failures propagate, and how the system scales. Several decomposition strategies exist in practice, and most production systems use a combination of them.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Decomposition by business capability</strong> aligns services to what the business does: order management, inventory, payments, shipping, and customer support. This is the most common approach because it maps cleanly to organizational structure and creates natural ownership boundaries. When the order team needs to change order logic, they do not coordinate with the payments team. The boundary is stable because business capabilities change slowly.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Decomposition by subdomain</strong> uses domain-driven design concepts. Core subdomains (the differentiators of the business) get the most engineering investment. Supporting subdomains are necessary but not competitive advantages. Generic subdomains can be bought or outsourced. This decomposition helps prioritize where to invest microservice complexity and where simpler solutions suffice.
         </p>
@@ -144,6 +151,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/microservices-architecture-diagram-3.svg"
@@ -152,12 +162,12 @@ export default function ArticlePage() {
         />
 
         <h3>Service Mesh and Infrastructure Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           As the number of services grows, the operational burden of managing service-to-service communication increases. Each service needs retry logic, circuit breaking, rate limiting, mutual TLS, traffic splitting for canary deployments, and observability integration. Implementing these concerns in every service creates duplication, inconsistency, and maintenance burden.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A service mesh like Istio, Linkerd, or Consul Connect addresses this by moving infrastructure concerns out of application code and into a dedicated infrastructure layer. The mesh deploys a sidecar proxy alongside each service instance. All inbound and outbound traffic passes through the proxy, which handles retries, circuit breaking, load balancing, mutual TLS authentication, traffic routing, and observability. The application code focuses on business logic while the mesh handles the operational concerns.
-        </p>
+        </HighlightBlock>
         <p>
           The service mesh provides several critical capabilities. Mutual TLS authentication between services ensures that service-to-service communication is encrypted and authenticated without application-level changes. Traffic splitting enables canary deployments where a percentage of traffic routes to a new version while the rest continues to the stable version. Circuit breaking prevents cascading failures by stopping requests to services that are failing. Distributed tracing headers are automatically injected by the mesh. Rate limiting and quotas protect services from traffic spikes.
         </p>
@@ -196,14 +206,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>Monolith vs. Modular Monolith vs. Microservices</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The monolith deploys as a single unit with shared memory, shared database, and synchronized releases. Development is straightforward with simple testing and debugging. Scaling means scaling the entire application even if only one component needs more resources. As the codebase grows, build times increase, merge conflicts become frequent, and the coordination overhead of a single release train slows delivery. A monolith is appropriate for small teams, products in discovery mode where requirements are highly uncertain, and systems where the primary need is development velocity rather than independent scaling.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The modular monolith introduces internal boundaries through well-defined modules, packages, and interfaces while remaining a single deployable unit. Dependency rules between modules are enforced through tooling and code review. Modules communicate through interfaces, not through direct database access. The modular monolith addresses the code organization and team ownership problems of a large monolith without introducing distributed systems complexity. It is appropriate for medium-sized teams that have outgrown a flat monolith but do not yet need independent deployment or scaling.
-        </p>
+        </HighlightBlock>
         <p>
           Microservices enforce physical boundaries with separate processes, separate databases, and independent deployment pipelines. They enable independent scaling of individual services, fault isolation where a failure in one service does not bring down the entire system, technology diversity where each service can use the most appropriate stack, and organizational autonomy where teams ship on their own schedules. The costs are distributed systems complexity, network latency on every cross-service call, operational overhead for running and monitoring many services, and the challenge of maintaining data consistency across service boundaries.
         </p>
@@ -231,12 +244,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Adopt microservices for autonomy, not because it is fashionable. The legitimate reasons are independent deployment, independent scaling, fault isolation, and clear domain boundaries. If your primary driver is codebase size, invest in modularization first. Microservices introduce distributed systems complexity that is only justified when the organizational and scaling benefits outweigh the costs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Design service boundaries around business capabilities and data ownership. Avoid shared databases for write operations, as this creates a distributed monolith where services are coupled through schema changes and migration timing. Define clear API contracts and event schemas as long-lived artifacts with versioning and deprecation policies. The contract between services is as important as the code within them, and contract changes should go through the same rigor as API changes in a public-facing product.
-        </p>
+        </HighlightBlock>
         <p>
           Invest in platform fundamentals before scaling the number of services. Routing and service discovery must be reliable and provide safe rollout mechanisms like canary deployments and feature flags. Observability must include standardized metrics, logs, and traces with correlation IDs propagated across all services. Schema governance must include compatibility checks, versioning policies, and deprecation windows. Resilience defaults including timeouts, retries with jitter, circuit breakers, and bulkheads should be applied consistently, ideally through infrastructure like a service mesh rather than through application code.
         </p>
@@ -256,12 +272,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is adopting microservices without a clear organizational driver. Teams split a monolith into services because it seems like the right architectural choice, only to discover that the coordination overhead, operational burden, and debugging complexity have increased dramatically. The monolith was not the problem; unclear boundaries, lack of modularization, and poor code organization were. These problems do not disappear with microservices; they become harder to diagnose because the failure modes are distributed across many services.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Shared databases are the second most common pitfall. Services that share a database are not independent. A schema change in one service breaks another. Migration timing becomes a coordination point. The database becomes the real integration layer, and the service APIs become a facade. This distributed monolith combines the worst of both worlds: the complexity of distributed deployment with the coupling of shared state. The fix is to establish clear data ownership per service and use events or APIs for cross-service data access, accepting eventual consistency where necessary.
-        </p>
+        </HighlightBlock>
         <p>
           Chatty service calls create latency accumulation. A single user request that triggers ten sequential service calls, each adding fifty milliseconds of network latency, produces a baseline latency of five hundred milliseconds before any business logic runs. Add retry logic, circuit breakers, and serialization, and the latency grows further. The fix is to reduce fan-out, batch calls where possible, use aggregation services that combine multiple data sources, and design coarse-grained APIs that return everything the caller needs in a single round trip.
         </p>
@@ -281,14 +300,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Netflix: Cloud Migration and Service Autonomy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix&apos;s migration from a monolithic datacenter architecture to cloud-based microservices is one of the most documented transitions. The monolith handled everything from user authentication to video encoding to recommendation generation. As Netflix grew to serve millions of concurrent viewers, the monolith became a bottleneck for both scaling and development velocity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Netflix decomposed the monolith into hundreds of microservices organized around business capabilities: user profiles, device registration, content metadata, recommendation engine, video encoding, playback, billing, and many more. Each service team owned their service end to end, including deployment, monitoring, and on-call. The platform team provided infrastructure services like service discovery through Eureka, API gateway through Zuul, and circuit breaking through Hystrix.
-        </p>
+        </HighlightBlock>
         <p>
           The key architectural decision was embracing eventual consistency. Netflix accepted that some data would be temporarily inconsistent across services and built systems to handle this gracefully. The recommendation engine does not need perfectly real-time data about what a user just watched; a few seconds of delay is acceptable. This acceptance of eventual consistency reduced the need for expensive distributed transactions and enabled services to operate independently.
         </p>
@@ -329,14 +351,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: When should you choose microservices over a modular monolith?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Choose microservices when you have multiple teams that need independent deployment schedules, when different capabilities have vastly different scaling requirements, when fault isolation is a business requirement, and when domain boundaries are clear and stable. The modular monolith is appropriate for medium-sized teams that need internal discipline without distributed complexity.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               The key signal is organizational: if you have more than five to seven teams stepping on each other&apos;s toes during releases, if one team&apos;s deployment requires coordination with three other teams, and if one team&apos;s feature needs to wait for another team&apos;s release cycle, microservices can unlock autonomy. But only if you are willing to invest in the platform: service discovery, observability, deployment tooling, and contract governance.
             </p>

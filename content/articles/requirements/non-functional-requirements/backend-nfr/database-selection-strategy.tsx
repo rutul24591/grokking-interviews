@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function DatabaseSelectionStrategyArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Database selection</strong> is the process of choosing the right database technology
           for a given workload based on data structure, access patterns, consistency requirements,
           scalability needs, and operational constraints. The database landscape has evolved from a
@@ -32,14 +36,14 @@ export default function DatabaseSelectionStrategyArticle() {
           PostgreSQL), document (MongoDB, DynamoDB), key-value (Redis, Memcached), column-family
           (Cassandra, HBase), graph (Neo4j, Neptune), time-series (InfluxDB, TimescaleDB), and
           search engines (Elasticsearch, Solr).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The wrong database choice creates lasting constraints — data models that are difficult to
           query, consistency guarantees that do not match business requirements, scalability limits
           that require expensive migration, and operational overhead that diverts engineering resources
           from product development. The right database choice enables efficient data modeling,
           appropriate consistency guarantees, linear scalability, and manageable operations.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineer candidates, database selection architecture demonstrates
           understanding of database internals, the ability to analyze workload requirements, and the
@@ -73,13 +77,16 @@ export default function DatabaseSelectionStrategyArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding database selection requires grasping several foundational concepts about database
           architectures, consistency models, and scalability patterns.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">CAP Theorem and Database Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The CAP theorem states that a distributed database can only guarantee two of three properties
           simultaneously: Consistency (all nodes see the same data at the same time), Availability
           (every request receives a response), and Partition tolerance (the system continues operating
@@ -88,7 +95,7 @@ export default function DatabaseSelectionStrategyArticle() {
           HBase, Redis) prioritize consistency — they may return errors during partitions rather than
           stale data. AP databases (Cassandra, DynamoDB, CouchDB) prioritize availability — they return
           the most recent data available, which may be stale during partitions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Database Scalability Patterns</h3>
         <p>
@@ -116,10 +123,13 @@ export default function DatabaseSelectionStrategyArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Database selection architecture spans workload analysis, candidate evaluation, proof-of-concept
           testing, operational assessment, and decision documentation.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/database-selection-strategy.svg"
@@ -128,7 +138,7 @@ export default function DatabaseSelectionStrategyArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Workload Analysis Framework</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The workload analysis framework evaluates four dimensions: data model (structured, semi-structured,
           unstructured, graph), access patterns (read-heavy, write-heavy, mixed, random vs sequential),
           consistency requirements (strong, eventual, causal, tunable), and scalability requirements
@@ -136,7 +146,7 @@ export default function DatabaseSelectionStrategyArticle() {
           for example, a workload that requires strong consistency and complex joins eliminates most
           NoSQL options, while a workload that requires horizontal scaling and sub-millisecond latency
           eliminates most relational options.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Evaluation and Proof-of-Concept</h3>
         <p>
@@ -164,25 +174,28 @@ export default function DatabaseSelectionStrategyArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-Offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Database Type</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Database Type</th>
               <th className="p-3 text-left">Strengths</th>
               <th className="p-3 text-left">Weaknesses</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Relational (MySQL, PostgreSQL)</strong></td>
+            <HighlightBlock as="tr" tier="important">
+<td className="p-3"><strong>Relational (MySQL, PostgreSQL)</strong></td>
               <td className="p-3">
                 Strong consistency. ACID transactions. Expressive queries (SQL, joins). Mature ecosystem.
               </td>
               <td className="p-3">
                 Vertical scaling limits. Complex sharding. Rigid schema. Slower writes at scale.
               </td>
-            </tr>
-            <tr>
+</HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Document (MongoDB, DynamoDB)</strong></td>
               <td className="p-3">
                 Flexible schema. Horizontal scaling. Good for hierarchical data. Fast reads/writes.
@@ -190,8 +203,8 @@ export default function DatabaseSelectionStrategyArticle() {
               <td className="p-3">
                 Limited joins. Eventual consistency (typically). Complex transactions.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Key-Value (Redis, Memcached)</strong></td>
               <td className="p-3">
                 Sub-millisecond latency. Simple data model. High throughput. Ephemeral data support.
@@ -199,7 +212,7 @@ export default function DatabaseSelectionStrategyArticle() {
               <td className="p-3">
                 No complex queries. No relationships. Limited durability (Memcached). Memory-bound.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Column-Family (Cassandra, HBase)</strong></td>
               <td className="p-3">
@@ -225,9 +238,12 @@ export default function DatabaseSelectionStrategyArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Start with Relational, Move to NoSQL When Necessary</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Relational databases are the safest default — they provide strong consistency, ACID
           transactions, and expressive queries that satisfy most workload requirements. Move to NoSQL
           only when relational databases cannot meet specific requirements — horizontal scaling beyond
@@ -236,10 +252,10 @@ export default function DatabaseSelectionStrategyArticle() {
           queries. Starting with NoSQL and moving to relational is much harder than starting with
           relational and moving to NoSQL, because relational databases can handle many workloads that
           NoSQL databases cannot (complex joins, transactions, ad-hoc queries).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Use Managed Services When Possible</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Managed database services (RDS, Cloud SQL, DynamoDB, MongoDB Atlas) handle operational
           tasks — backup, monitoring, patching, scaling, failover — that divert engineering resources
           from product development. The operational overhead of self-hosted databases is often
@@ -247,7 +263,7 @@ export default function DatabaseSelectionStrategyArticle() {
           and the cost of that team often exceeds the managed service premium. Use managed services
           unless there is a specific requirement that managed services cannot satisfy (custom database
           engine, specific compliance certification, cost optimization at extreme scale).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Design for Database Portability</h3>
         <p>
@@ -275,19 +291,22 @@ export default function DatabaseSelectionStrategyArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Choosing Based on Popularity, Not Requirements</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing a database because it is popular (MongoDB, Cassandra, Redis) or trendy, rather than
           because it matches the workload requirements, is the most common database selection error.
           Popular databases are popular for a reason — they solve specific problems well — but they are
           not the right choice for every problem. MongoDB is not a replacement for PostgreSQL — it is a
           document database for flexible schema and horizontal scaling, not a general-purpose relational
           database. Evaluate databases based on workload requirements, not popularity.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Ignoring Operational Overhead</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Database selection decisions that focus only on technical features (query language, consistency
           model, scalability) while ignoring operational overhead (backup, monitoring, patching, scaling,
           failover) often result in databases that are technically excellent but operationally
@@ -295,7 +314,7 @@ export default function DatabaseSelectionStrategyArticle() {
           management, performance tuning, capacity planning, failure recovery, and security patching.
           Factor operational overhead into the selection decision — the total cost of ownership includes
           both infrastructure cost and operational cost (engineering time).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Forcing a Single Database for All Workloads</h3>
         <p>
@@ -324,9 +343,12 @@ export default function DatabaseSelectionStrategyArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Uber — Polyglot Persistence at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uber uses multiple databases for different workloads — PostgreSQL for user profiles and trip
           data (structured data, transactions, complex queries), Redis for real-time driver location
           and dispatch (sub-millisecond latency, high throughput, ephemeral data), Cassandra for trip
@@ -334,10 +356,10 @@ export default function DatabaseSelectionStrategyArticle() {
           Elasticsearch for search and discovery (full-text search, geospatial queries). Each database
           is chosen for its strengths in the specific workload it serves, and the data access layer
           abstracts database-specific details from application code.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Netflix — Cassandra for Global Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Netflix chose Cassandra for its core viewing data because it requires global horizontal
           scaling (millions of concurrent viewers across 190+ countries), high write throughput (every
           view, pause, and seek is recorded), and tunable consistency (eventual consistency is acceptable
@@ -346,7 +368,7 @@ export default function DatabaseSelectionStrategyArticle() {
           handling millions of writes per second. Netflix&apos;s Cassandra expertise is a core competency
           — they contribute to the open-source project and have dedicated teams managing Cassandra
           operations.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Airbnb — PostgreSQL with Sharding</h3>
         <p>
@@ -375,19 +397,22 @@ export default function DatabaseSelectionStrategyArticle() {
       {/* Section 8: Security Considerations */}
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Database selection decisions have security implications — different databases provide different security features, and the wrong choice may leave data unprotected.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Database Security Features</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Encryption at Rest:</strong> All databases should support encryption at rest (TDE, disk encryption). Verify that the chosen database encrypts data at rest by default, supports customer-managed encryption keys (CMEK), and provides key rotation without downtime.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Encryption in Transit:</strong> All database connections should use TLS. Verify that the chosen database supports TLS 1.2+ for all connections, provides certificate validation, and supports mutual TLS for client authentication.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Access Control:</strong> Verify that the chosen database provides fine-grained access control (row-level, column-level, or document-level), role-based access control (RBAC), and audit logging for all access attempts.
             </li>
@@ -410,19 +435,22 @@ export default function DatabaseSelectionStrategyArticle() {
       {/* Section 9: Testing Strategies */}
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: highlight the decision-making, not just definitions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Database selection must be validated through systematic testing — performance under realistic workloads, consistency during failures, operational manageability, and developer experience must all be evaluated.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Testing</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Realistic Workload Testing:</strong> Run the database with actual data models, actual query patterns, and actual throughput levels. Measure query latency (P50, P95, P99), write throughput, read throughput, and resource utilization (CPU, memory, disk I/O). Test at 2× expected peak load to verify headroom.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Scalability Testing:</strong> Test horizontal scaling (adding nodes) and verify that throughput scales linearly and latency remains within SLOs. Test vertical scaling (increasing instance size) and verify the performance improvement justifies the cost increase.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Failure Testing:</strong> Simulate node failures, network partitions, and disk full scenarios. Verify that the database maintains consistency (no data loss), availability (continues serving requests), and automatic recovery (fails over to replica, rebalances data).
             </li>

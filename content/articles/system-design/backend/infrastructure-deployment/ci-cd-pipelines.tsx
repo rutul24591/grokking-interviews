@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,12 +38,15 @@ export default function CICDPipelinesArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>CI/CD pipelines</strong> automate the process of building, testing, and deploying software. Continuous Integration (CI) ensures that code changes are automatically built and tested on every commit, catching integration issues early (before they are merged into the main branch). Continuous Delivery (CD) ensures that code changes are automatically deployed to staging environments (ready for manual release), and Continuous Deployment (CD) ensures that code changes are automatically deployed to production (without manual intervention). CI/CD pipelines are the backbone of modern software delivery — enabling organizations to ship code frequently, reliably, and safely.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, CI/CD pipeline design is a critical architectural decision that impacts developer velocity, release frequency, and deployment reliability. A well-designed pipeline enables teams to ship code multiple times per day with confidence, while a poorly-designed pipeline becomes a bottleneck that slows development, causes deployment failures, and erodes team trust in the release process. Pipeline optimization (caching, parallel jobs, incremental builds) can reduce pipeline duration from 30 minutes to 3 minutes, dramatically improving developer feedback loops.
-        </p>
+        </HighlightBlock>
         <p>
           CI/CD pipelines involve several technical considerations. Pipeline stages (build, test, deploy — each stage must pass before the next stage runs, ensuring quality gates are enforced). Pipeline triggers (on commit, on pull request, on merge, on schedule — determining when the pipeline runs). Pipeline artifacts (build outputs, test results, deployment logs — stored for later use and audit). Pipeline configuration (YAML files defining pipeline stages, stored in version control alongside code — enabling pipeline changes to be reviewed and tracked). Pipeline scalability (running multiple pipelines in parallel, scaling pipeline runners based on demand).
         </p>
@@ -54,12 +58,15 @@ export default function CICDPipelinesArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Continuous Integration (CI)</strong> automatically builds and tests every code change on every commit. CI pipelines run on pull requests, ensuring that code meets quality standards before merging. CI stages include installing dependencies, compiling code, running unit tests, running integration tests, running linters and type checkers, and analyzing code quality. CI failures block the merge, preventing broken code from reaching the main branch. CI ensures that the main branch is always in a working state — all tests pass, all quality checks pass — which is foundational for any team practicing trunk-based development or frequent merges.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Continuous Delivery</strong> automatically deploys tested code to staging environments, ready for manual release to production. Continuous Delivery pipelines run after CI passes and the pull request is merged. CD stages include building for production, running E2E tests against the production build, deploying to staging, running smoke tests, and notifying the team that the deployment is ready for manual release. Continuous Delivery enables frequent, reliable deployments — the team can release to production at any time, with confidence that the code is tested and ready. This approach is particularly valuable in regulated industries where manual approval gates are mandated by compliance requirements.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Continuous Deployment</strong> automatically deploys tested code to production environments without manual intervention. Continuous Deployment pipelines run after CI passes and the pull request is merged. CD stages include building for production, running E2E tests, deploying to production, running post-deployment health checks, and notifying the team that the deployment was successful. Continuous Deployment enables teams to ship code multiple times per day — the fastest software delivery model, requiring high confidence in automated testing. Organizations like Netflix and Amazon practice Continuous Deployment at scale, deploying thousands of times per day.
         </p>
@@ -85,12 +92,15 @@ export default function CICDPipelinesArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CI/CD pipeline architecture consists of the source control system (Git repository — where code is stored, commits trigger pipelines), the CI/CD platform (Jenkins, GitLab CI, GitHub Actions — orchestrates pipeline execution), the pipeline runners (executing pipeline stages — build, test, deploy), and the deployment targets (staging and production environments — where code is deployed). The flow begins with a developer committing code to the repository, which triggers the CI pipeline. The CI pipeline runs build and test stages, and if all stages pass, the code is merged. The CD pipeline then runs, deploying the code to staging (Continuous Delivery) or production (Continuous Deployment).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For production deployments, the CD pipeline deploys the application to production, runs post-deployment health checks (verifying that the application is healthy — HTTP endpoints respond, error rates are normal, performance metrics are within thresholds), and notifies the team (deployment successful, or deployment failed with error details). If the deployment fails, the pipeline automatically rolls back to the previous version (redeploying the previous version, ensuring production is always in a working state).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/jenkins-vs-gitlab-github.svg"
@@ -123,14 +133,17 @@ export default function CICDPipelinesArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CI/CD pipelines involve trade-offs between pipeline speed and thoroughness, self-hosted and cloud-hosted runners, and Continuous Delivery and Continuous Deployment. Understanding these trade-offs is essential for designing effective CI/CD pipelines.
-        </p>
+        </HighlightBlock>
 
         <h3>Continuous Delivery vs. Continuous Deployment</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Continuous Delivery:</strong> Code is automatically deployed to staging (ready for manual release to production). Advantages: manual approval gate (human reviews the deployment before releasing to production), compliance-friendly (meets regulatory requirements for manual approval), safer for critical applications (human judgment catches issues that automated tests may miss). Limitations: slower release cycle (waiting for manual approval), inconsistent release timing (releases depend on human availability). Best for: regulated industries, critical applications, organizations transitioning to Continuous Deployment.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Continuous Deployment:</strong> Code is automatically deployed to production (without manual intervention). Advantages: fastest release cycle (code is deployed immediately after passing tests), consistent release timing (every merge triggers a deployment), forces high test quality (without automated tests catching bugs, broken code reaches production). Limitations: requires high confidence in automated tests (any bug that automated tests miss reaches production), compliance challenges (regulatory requirements may mandate manual approval), cultural shift (teams must trust automated pipelines). Best for: organizations with high test quality, non-regulated industries, teams practicing trunk-based development.
         </p>
@@ -155,12 +168,15 @@ export default function CICDPipelinesArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Keep pipelines fast.</strong> Pipelines should complete in under 10 minutes, ideally under 5 minutes. Fast pipelines provide rapid feedback so developers know if their changes pass tests quickly, encourage frequent commits because developers commit often when pipelines are fast, and enable Continuous Deployment since fast pipelines support multiple deployments per day. Optimize pipeline speed by caching dependencies to avoid reinstalling dependencies on every run, parallelizing stages by running unit tests, integration tests, and E2E tests in parallel, using incremental builds to only rebuild changed code, and using fast runners with adequate CPU, memory, and disk resources.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Fail fast.</strong> Run fast checks first — linting, type checking, unit tests — before slow checks like integration tests, E2E tests, and performance tests. If fast checks fail, the pipeline stops immediately, skipping slow checks and saving time and resources. Fail fast ensures that developers get feedback on common issues such as syntax errors, type errors, and unit test failures quickly, without waiting for slow checks to complete. This strategy dramatically improves developer experience and reduces wasted compute resources on pipelines that are already destined to fail.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Automate rollback.</strong> Configure the CD pipeline to automatically rollback to the previous version if the deployment fails — when post-deployment health checks fail, error rates spike, or performance degrades. Automated rollback ensures that production is always in a working state. If a deployment introduces a bug, the pipeline automatically reverts to the previous version, minimizing user impact. Automated rollback is faster and more reliable than manual rollback because it requires no human intervention and completes in seconds.
         </p>
@@ -178,12 +194,15 @@ export default function CICDPipelinesArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Slow pipelines.</strong> Pipelines that take 30 or more minutes to complete discourage frequent commits because developers wait for pipeline results before committing, block deployments since slow pipelines delay releases, and indicate architectural issues such as unnecessary dependencies, inefficient builds, or sequential test execution. Optimize slow pipelines by caching dependencies, parallelizing stages, using incremental builds, and using fast runners. Teams should set a target pipeline duration — typically under 10 minutes — and treat any pipeline exceeding that target as a production incident requiring immediate optimization.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Flaky tests.</strong> Tests that pass or fail non-deterministically — same code, different results — erode trust in the pipeline because developers ignore failures assuming they are flaky, waste developer time by requiring re-runs to check if tests pass, and block deployments since flaky failures prevent merging. Fix flaky tests by eliminating non-determinism through mocking external services, using controlled test data, and adding retries for transient failures. Quarantine persistently flaky tests by excluding them from required checks until they are fixed. Track flaky test rate as a team metric and dedicate engineering effort to reducing it systematically.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Manual deployment steps.</strong> Pipelines with manual steps — manually running build scripts, manually uploading artifacts, manually configuring deployment targets — are error-prone due to human mistakes, slow because they require waiting for human intervention, and not reproducible since different humans do things differently. Automate every step of the pipeline. Eliminate manual steps entirely, ensuring that pipelines run end-to-end without human intervention. Even in regulated industries where manual approval is required, the approval should be a single gate in an otherwise fully automated pipeline, not a series of manual operations.
         </p>
@@ -201,16 +220,19 @@ export default function CICDPipelinesArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Continuous Deployment at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Organizations practicing Continuous Deployment (Netflix, Amazon, Facebook) deploy code to production hundreds or thousands of times per day. CI/CD pipelines automate the entire process — code is committed, built, tested, deployed to production, and verified automatically. If the deployment fails, the pipeline automatically rolls back to the previous version. This pattern enables organizations to ship features rapidly, respond to issues quickly, and maintain high production reliability (automated testing catches bugs before they reach production).
-        </p>
+        </HighlightBlock>
 
         <h3>Regulated Industry Deployment</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Organizations in regulated industries (healthcare, finance, government) use Continuous Delivery with manual approval gates. CI/CD pipelines automate building, testing, and deploying to staging, but require manual approval before deploying to production (compliance requirement). The manual approval gate ensures that a human reviews the deployment before releasing to production (meeting regulatory requirements for human oversight). This pattern balances automation with compliance — automated testing and staging deployment, with manual approval for production.
-        </p>
+        </HighlightBlock>
 
         <h3>Multi-Environment Deployment</h3>
         <p>
@@ -226,15 +248,18 @@ export default function CICDPipelinesArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What is the difference between Continuous Integration, Continuous Delivery, and Continuous Deployment?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Continuous Integration (CI) automatically builds and tests every code change on every commit, catching integration issues early (before they are merged). Continuous Delivery automatically deploys tested code to staging (ready for manual release to production) — a human approves the production deployment. Continuous Deployment automatically deploys tested code to production (without manual intervention) — every merge triggers a production deployment. CI ensures code quality, Continuous Delivery ensures deployment readiness, Continuous Deployment ensures rapid release.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

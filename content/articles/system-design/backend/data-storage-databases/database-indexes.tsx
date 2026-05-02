@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -79,21 +80,24 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Index Types &amp; Structures</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>B-Tree Indexes (Default)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>B-Tree</strong> (Balanced Tree) is the default index type in most databases
           (PostgreSQL, MySQL, Oracle). B-Tree maintains a balanced tree structure: root node,
           internal nodes, leaf nodes. All leaf nodes are at same depth (balanced), ensuring
           O(log n) complexity for search, insert, delete.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           B-Tree structure: <strong>Root node</strong> (top of tree, single node),
           <strong>Internal nodes</strong> (intermediate levels, contain keys and pointers),
           <strong>Leaf nodes</strong> (bottom level, contain keys and row pointers/actual data).
           Leaf nodes are linked (doubly-linked list) for efficient range scans.
-        </p>
+        </HighlightBlock>
 
         <p>
           B-Tree supports: <strong>Equality queries</strong>
@@ -178,14 +182,17 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation: Index Selection &amp; Maintenance</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Index Selection Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing which columns to index is critical. Too few indexes = slow queries. Too
           many indexes = slow writes, storage waste. Guidelines:
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Index WHERE clause columns</strong>: Columns used in filters benefit most
           from indexes. Example: <code className="inline-code">WHERE email = ?</code> → index
           on email. <strong>Index JOIN keys</strong>: Foreign keys and join columns benefit
@@ -194,7 +201,7 @@ export default function ArticlePage() {
           columns</strong>: Sorting uses index order (no sort needed). Example:
           <code className="inline-code">ORDER BY created_at DESC</code> → index on
           created_at.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Composite indexes</strong> (multiple columns): Index
@@ -265,20 +272,23 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison: Index Benefits vs Costs</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Indexes involve fundamental trade-offs: faster reads vs slower writes, storage
           overhead vs query performance. Understanding these trade-offs helps you index
           selectively and effectively.
-        </p>
+        </HighlightBlock>
 
         <h3>Index Benefits</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Query performance</strong> is the primary benefit. Indexes transform O(n)
           full table scans into O(log n) tree traversals or O(1) hash lookups. For large
           tables (1M+ rows), this is 100-1000x improvement. Queries that took seconds now
           take milliseconds.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Sorted output</strong>—B-Tree indexes maintain order.
@@ -369,14 +379,17 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Database Indexing</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Index selectively.</strong> Don't index every column. Index columns used
           in WHERE, JOIN, ORDER BY. Monitor index usage, remove unused indexes. Fewer,
           well-chosen indexes are better than many indexes.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use composite indexes wisely.</strong> Order matters: put most selective
           columns first. Follow leftmost prefix rule: index
           <code className="inline-code">(a, b, c)</code> supports queries on
@@ -384,7 +397,7 @@ export default function ArticlePage() {
           b)</code>, <code className="inline-code">(a, b, c)</code>, but NOT
           <code className="inline-code">(b)</code> or <code className="inline-code">(c)</code>
           alone.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Create covering indexes for critical queries.</strong> For high-traffic
@@ -422,19 +435,22 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Over-indexing.</strong> Creating too many indexes slows writes, wastes
           storage. Solution: Index selectively (WHERE, JOIN, ORDER BY columns), monitor
           usage, remove unused indexes. Rule of thumb: 3-5 indexes per table typical,
           &gt;10 indexes = review needed.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Under-indexing.</strong> Too few indexes causes slow queries (full table
           scans). Solution: Analyze slow queries (EXPLAIN ANALYZE), identify missing indexes
           (WHERE, JOIN, ORDER BY columns), create indexes selectively.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Indexing low-cardinality columns.</strong> Columns with few distinct
@@ -467,21 +483,24 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-Commerce Product Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce sites use indexes for product search. Products table:
           <code className="inline-code">CREATE INDEX ON products (category_id, price,
           rating)</code>. Query: <code className="inline-code">SELECT * FROM products WHERE
           category_id = ? AND price BETWEEN ? AND ? ORDER BY rating DESC</code>. Composite
           index supports filter + sort (single index scan). Benefits: fast product search
           (100ms vs 5 seconds), supports filtering + sorting efficiently.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This pattern works because e-commerce queries filter by category, price range,
           sort by rating. Composite index matches query pattern exactly.
-        </p>
+        </HighlightBlock>
 
         <h3>User Authentication</h3>
         <p>
@@ -532,13 +551,16 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <p className="font-semibold text-lg">
+            <HighlightBlock as="p" tier="important" className="font-semibold text-lg">
               Q1: When would you create an index? What are the signs that an index is needed?
-            </p>
-            <p className="mt-3 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-3 text-sm">
               <strong>Answer:</strong> Create indexes for query optimization. Signs an index
               is needed: (1) Slow queries (EXPLAIN ANALYZE shows full table scan), (2)
               Frequent WHERE clauses on same columns, (3) JOIN operations on same columns,
@@ -546,7 +568,7 @@ export default function ArticlePage() {
               queries). Don't create indexes for: small tables (&lt;1000 rows), low-cardinality
               columns (gender, boolean), write-heavy tables (index overhead exceeds benefit),
               columns never in WHERE/JOIN/ORDER BY.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm text-muted">
               <strong>Follow-up:</strong> How do you verify an index helps? Answer: Use
               EXPLAIN ANALYZE before and after creating index. Compare: execution time

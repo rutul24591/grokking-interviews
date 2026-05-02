@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,15 +36,18 @@ export default function BinarySearchArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Binary Search locates an element (or insertion point) in a sorted sequence in Θ(log n)
           time by repeatedly halving the search range. Each step compares the midpoint to the
           target, discarding half the remaining range. The earliest documented occurrence is in
           John Mauchly&apos;s 1946 lectures at the Moore School — the same event that launched the
           field of algorithm design. It predates the modern programming language by a decade and
           remains one of the most important primitives in computer science.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Three variants dominate in practice. <strong>Standard binary search</strong> returns the
           index of any matching element or not-found. <strong>lower_bound</strong> returns the
           first position where target could be inserted without violating order — i.e., the
@@ -52,7 +56,7 @@ export default function BinarySearchArticle() {
           occurrences of a target, enabling count queries and range-insert operations. Every
           standard library implements this trio: C++&apos;s &lt;algorithm&gt;, Python&apos;s bisect, Java&apos;s
           Collections.binarySearch, Rust&apos;s slice::binary_search, Go&apos;s sort.SearchInts.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           Beyond array lookup, binary search is the spine of <strong>parametric search</strong> —
           the technique of reducing an optimization problem &quot;find the smallest x satisfying
@@ -81,8 +85,11 @@ export default function BinarySearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">Invariants and the off-by-one trap</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Binary search&apos;s correctness depends on a loop invariant: the answer, if it exists, is
           always within [lo, hi). The three common bug sources are the loop condition (<code>lo &lt;
           hi</code> vs <code>lo &lt;= hi</code>), the midpoint formula (<code>(lo + hi) / 2</code> vs
@@ -91,9 +98,9 @@ export default function BinarySearchArticle() {
           Research blog post noted that the JDK&apos;s Arrays.binarySearch had the integer-overflow
           bug <em>for 9 years</em>, affecting Sun, IBM, and everyone else. The rule: use
           <code> mid = lo + (hi − lo) / 2</code>, not <code>(lo + hi) / 2</code>.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">lower_bound / upper_bound</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           The most useful variant is &quot;find first index where predicate P is true&quot;, given that P
           is monotonic: false for indices &lt; k, true for ≥ k. This is lower_bound generalized.
           Using half-open interval [lo, hi) and updating <code>hi = mid</code> when P(mid) is true,
@@ -101,7 +108,7 @@ export default function BinarySearchArticle() {
           you grasp this pattern, you can implement any binary-search variant (find first, find
           last, count occurrences, insertion point) by choosing the right P. This is the pattern
           behind C++&apos;s std::lower_bound and Rust&apos;s partition_point.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">Parametric / answer search</h3>
         <p className="mb-4">
           When the question is &quot;find the smallest/largest x such that property P(x) holds&quot;, and
@@ -136,7 +143,10 @@ export default function BinarySearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           A production binary search looks simple but is highly engineered. The classical form has
           log₂n iterations, each with one comparison and two mispredictable branches. On
           pipelined CPUs, these branches are unpredictable (50/50 on random targets) and cost
@@ -144,14 +154,14 @@ export default function BinarySearchArticle() {
           search</strong> (Bentley, Kunisch) replaces the branch with a conditional move
           (CMOV/SEL), making iteration time constant. For n = 10⁶ in L3 cache, branchless is ~3×
           faster than branching.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Another optimization is <strong>Eytzinger layout</strong>: instead of storing the sorted
           array, store it in breadth-first order of an implicit binary search tree. Binary search
           becomes i → 2i+1 or 2i+2, giving cache-line-friendly access patterns: the first few
           levels fit in L1, accelerating the start of each search. Cache-aligned Eytzinger beats
           standard sorted-array binary search by 2–3× on large arrays.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>B+ tree / database indices</strong> generalize this. Each node is a sorted array
           of ~100 keys with child pointers. Lookup does a binary search within the node, then
@@ -171,20 +181,23 @@ export default function BinarySearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Linear Search</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           O(log n) vs O(n). Binary requires sorted input; linear does not. For small n (&lt; 64)
           linear is faster because of branch prediction and prefetching. Binary wins decisively
           for n &gt; 1000.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Hash Lookup</h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important" className="mb-4">
           Hash is O(1) expected; binary is O(log n). Hash needs preprocessing + hash function
           (15–20 cycles). For n &lt; 32, binary can match hash; for n &gt; 1000, hash dominates. Binary
           preserves order — enables range queries (&quot;all values in [a,b]&quot;), predecessor /
           successor, order statistics. Hash does not. Choose hash for point lookups, binary for
           range and order.
-        </p>
+        </HighlightBlock>
         <h3 className="text-xl font-semibold mt-6 mb-3">vs. Balanced BST</h3>
         <p className="mb-4">
           Both O(log n). Arrays with binary search have better cache behavior due to contiguity;
@@ -202,9 +215,12 @@ export default function BinarySearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="list-disc pl-6 mb-4 space-y-2">
-          <li><strong>Use <code>mid = lo + (hi − lo) / 2</code></strong> — not <code>(lo + hi) / 2</code>. Avoids integer overflow.</li>
-          <li><strong>Half-open interval [lo, hi)</strong> with <code>hi = mid</code> / <code>lo = mid + 1</code> is the cleanest template — memorize it.</li>
+          <HighlightBlock as="li" tier="important"><strong>Use <code>mid = lo + (hi − lo) / 2</code></strong> — not <code>(lo + hi) / 2</code>. Avoids integer overflow.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Half-open interval [lo, hi)</strong> with <code>hi = mid</code> / <code>lo = mid + 1</code> is the cleanest template — memorize it.</HighlightBlock>
           <li><strong>Define the predicate explicitly</strong> for lower_bound-style problems. &quot;First index where P is true&quot; generalizes all variants.</li>
           <li><strong>Use std::lower_bound / bisect_left / Collections.binarySearch</strong> rather than hand-rolling — standard libs are tested and correct.</li>
           <li><strong>For reals, run fixed iterations</strong> (60–100) rather than converging to equality.</li>
@@ -217,9 +233,12 @@ export default function BinarySearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="list-disc pl-6 mb-4 space-y-2">
-          <li><strong>Integer overflow in midpoint</strong>: <code>(lo + hi) / 2</code> overflows for lo + hi &gt; 2³¹. Use <code>lo + (hi − lo) / 2</code>.</li>
-          <li><strong>Infinite loop from incorrect update</strong>: e.g., <code>lo = mid</code> instead of <code>lo = mid + 1</code> with condition <code>lo &lt; hi</code>.</li>
+          <HighlightBlock as="li" tier="important"><strong>Integer overflow in midpoint</strong>: <code>(lo + hi) / 2</code> overflows for lo + hi &gt; 2³¹. Use <code>lo + (hi − lo) / 2</code>.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Infinite loop from incorrect update</strong>: e.g., <code>lo = mid</code> instead of <code>lo = mid + 1</code> with condition <code>lo &lt; hi</code>.</HighlightBlock>
           <li><strong>Off-by-one returning wrong index</strong>: exact-match template vs lower_bound template differ by one step; conflating them gives wrong answers on edge cases.</li>
           <li><strong>Searching unsorted input</strong>: binary search silently produces garbage. Always verify sort invariant upstream.</li>
           <li><strong>Floating-point termination loops</strong>: <code>while (lo &lt; hi)</code> can loop forever on reals; use fixed iterations.</li>
@@ -231,16 +250,19 @@ export default function BinarySearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Database B-tree indices</strong>: PostgreSQL btree, InnoDB B+ tree, SQLite
           B-tree. Every indexed query does a logarithmic-depth binary search. The default index
           type in every relational DB.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important" className="mb-4">
           <strong>Rate limiters &amp; scheduling</strong>: parametric binary search finds the
           minimum rate/capacity satisfying SLO. Google Borg, Kubernetes scheduler, AWS
           auto-scaling all use this pattern.
-        </p>
+        </HighlightBlock>
         <p className="mb-4">
           <strong>Git packfile index</strong>: sorted array of object hashes; binary search for
           object lookup. Every <code>git show</code> does log₂(objects) comparisons.
@@ -278,9 +300,12 @@ export default function BinarySearchArticle() {
 
       <section>
         <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <ol className="list-decimal pl-6 mb-4 space-y-2">
-          <li><strong>Implement binary search (exact match).</strong> Half-open interval, mid = lo + (hi−lo)/2, lo &lt; hi loop.</li>
-          <li><strong>Implement lower_bound / upper_bound.</strong> First index ≥ target / first index &gt; target.</li>
+          <HighlightBlock as="li" tier="important"><strong>Implement binary search (exact match).</strong> Half-open interval, mid = lo + (hi−lo)/2, lo &lt; hi loop.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Implement lower_bound / upper_bound.</strong> First index ≥ target / first index &gt; target.</HighlightBlock>
           <li><strong>Count occurrences of target.</strong> upper_bound − lower_bound.</li>
           <li><strong>Find first and last positions of target.</strong> Two binary searches.</li>
           <li><strong>Search in rotated sorted array.</strong> Binary search with an extra check on which half is sorted.</li>

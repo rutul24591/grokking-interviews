@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,12 +28,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           An <strong>anti-corruption layer (ACL)</strong> is an architectural boundary that prevents an external system&apos;s data model, terminology, invariants, and failure semantics from leaking into your internal domain model. It achieves this through explicit, bidirectional translation: the ACL accepts external concepts and produces internal concepts that align with your domain&apos;s ubiquitous language, and when necessary, translates internal concepts back into the format the external system expects.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The term &quot;anti-corruption&quot; was coined by Eric Evans in Domain-Driven Design to describe a pattern that protects a bounded context from the &quot;corrosive&quot; influence of another context&apos;s model. Corruption is not malicious—it is the natural consequence of two independently evolved systems with different assumptions about the world trying to interoperate. When the upstream system uses a field called &quot;status&quot; that conflates lifecycle state, payment status, and fulfillment state into a single overloaded enum, adopting that model directly forces your internal codebase to inherit that ambiguity. Over time, this ambiguity makes your own invariants harder to express, harder to test, and harder to evolve.
-        </p>
+        </HighlightBlock>
         <p>
           ACLs become essential when integrating with legacy systems, third-party APIs, or shared platforms where you do not control the change cycle. Without an ACL, the external model tends to infect the internal codebase through mismatched terminology, awkward invariants, and persistent special cases that accumulate as technical debt. With an ACL, that complexity is contained, owned, and made visible.
         </p>
@@ -54,14 +58,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>What &quot;Corruption&quot; Looks Like in Practice</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Corruption manifests in several dimensions. <strong>Semantic corruption</strong> occurs when upstream terminology and internal terminology conflict. An upstream system might use &quot;customer&quot; to mean both individual users and organizations, while your domain distinguishes between them. Adopting the upstream model forces your internal code to carry this ambiguity forward. <strong>State corruption</strong> happens when upstream status fields conflate multiple dimensions of state. A single &quot;order_status&quot; field that encodes whether the order is paid, shipped, refunded, and cancelled simultaneously forces your internal logic to decode this overloaded field at every call site.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Operational corruption</strong> is equally dangerous. External systems often have unusual error codes, rate limits, partial success semantics, and inconsistent latency profiles. If these behaviors leak into your domain workflows without normalization, your internal logic becomes coupled to external failure modes. A retry strategy designed around an upstream&apos;s idiosyncratic timeout behavior becomes impossible to change without touching domain logic. <strong>Identity corruption</strong> occurs when upstream IDs and internal IDs occupy the same namespace without clear separation, leading to collisions, incorrect joins, and subtle data integrity issues.
-        </p>
+        </HighlightBlock>
 
         <h3>ACL vs. Adapter Pattern: A Critical Distinction</h3>
         <p>
@@ -119,14 +126,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A well-designed anti-corruption layer functions as a protective boundary with clear responsibilities, explicit translation rules, and comprehensive observability. The ACL is not a passive passthrough—it actively validates, translates, normalizes, and protects.
-        </p>
+        </HighlightBlock>
 
         <h3>ACL Request Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When an internal service needs data from an external system, the request flows through the ACL in a defined sequence. The internal service calls the ACL&apos;s stable internal API, using internal domain terminology and internal data types. The ACL receives the request and, if translating outbound, converts internal concepts into the format the external system expects. It then invokes the external system with appropriate operational protections: configured timeouts, retry policies with exponential backoff, circuit breaker state checks, and rate limiting enforcement.
-        </p>
+        </HighlightBlock>
         <p>
           When the external system responds, the ACL performs the critical inbound translation. It first validates that the response conforms to the expected upstream schema. It then translates the upstream data model into the internal domain model, applying state machine mapping, unit conversion, identity translation, and invariant enforcement. Errors from the upstream system are normalized into internal error categories before being returned to the internal service. Throughout this flow, the ACL emits telemetry: request latency, translation success/failure counts, upstream error rates, and circuit breaker state transitions.
         </p>
@@ -172,12 +182,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing an anti-corruption layer involves significant trade-offs that must be evaluated against the specific integration context. The primary trade-off is between <strong>isolation and complexity</strong>. An ACL adds an additional architectural layer that must be designed, implemented, tested, deployed, and maintained. For a simple integration with a stable, well-documented upstream system, this added complexity may outweigh the benefits of isolation. The ACL becomes overhead rather than protection. However, for integrations with unstable or poorly understood upstream systems, the ACL pays for itself quickly by containing integration complexity and preventing domain model pollution.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The second trade-off is between <strong>latency and protection</strong>. Each translation step in the ACL adds processing latency to the request-response path. Schema validation, semantic mapping, invariant enforcement, and error normalization all consume time. In latency-sensitive paths—such as user-facing API calls with sub-100ms SLAs—this additional latency must be carefully measured and optimized. Techniques like memoization of translation results, caching of upstream responses, and asynchronous pre-translation of frequently-accessed data can mitigate the latency impact. However, these optimizations introduce their own complexity around cache invalidation and stale data.
-        </p>
+        </HighlightBlock>
         <p>
           The third trade-off is between <strong>centralization and distribution</strong>. A centralized ACL (facade service) provides a single ownership boundary, prevents duplicated logic, and enables comprehensive monitoring. However, it also becomes a potential bottleneck and a single point of failure. If the ACL service goes down, all consuming services lose access to the external system. A distributed ACL (translator modules within each consuming service) avoids the single point of failure but risks inconsistent translation logic across services and makes it harder to detect upstream changes comprehensively.
         </p>
@@ -204,12 +217,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Introduce an ACL when integrating with systems whose semantics you do not control and whose models differ meaningfully from your domain model. The decision should be driven by semantic distance, not integration count. Translate meaning, not just fields: state machines, units of measurement, invariants, identity namespaces, and error categories all require explicit translation rules. Treat these translation rules as a versioned contract with golden payload tests that validate correctness in CI.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Make translation owned and centralized. Avoid scattering mapping logic across multiple services, which leads to divergent interpretations when the upstream system changes. A single ACL with clear ownership ensures consistent translation, comprehensive monitoring, and a defined upgrade path when upstream semantics shift. Use the ACL to enforce protective operational policies: timeouts, retries, circuit breaking, rate limiting, and caching for upstream data. These policies belong at the boundary because they manage upstream instability, not domain logic.
-        </p>
+        </HighlightBlock>
         <p>
           Instrument the ACL boundary comprehensively. Track upstream latency percentiles, translation success and failure counts, unknown state rates, and circuit breaker transitions. These signals detect upstream changes before they cause production incidents. Store a representative sample of raw upstream payloads alongside their translated outputs, enabling debugging, reprocessing, and drift detection. When the ACL encounters unrecognized upstream values, quarantine them explicitly rather than mapping them silently to incorrect internal states.
         </p>
@@ -226,16 +242,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
         <h3>Leaky Abstraction: Upstream Concepts Leak Into Internal APIs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common ACL failure is a leaky abstraction, where upstream terminology appears in internal APIs despite the ACL&apos;s presence. This happens when the ACL cannot fully translate a complex upstream concept and passes raw upstream data through to consumers, or when internal services discover they can access upstream concepts through the ACL and begin depending on them. The mitigation is strict: internal interfaces must speak only the internal domain language. If the ACL cannot translate a concept, it should reject it or quarantine it rather than leaking it. Code reviews should specifically check for upstream terminology in internal APIs.
-        </p>
+        </HighlightBlock>
 
         <h3>Translation Duplication Across Services</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When multiple teams implement their own mapping of the same upstream system, translation logic diverges. Team A maps upstream status &quot;P&quot; to internal &quot;pending&quot; while Team B maps it to &quot;processing&quot;. When the upstream system changes the meaning of &quot;P&quot;, Team A updates its mapping but Team B does not, leading to inconsistent behavior across the platform. The mitigation is a single owned ACL with a clear contract. If the ACL is a facade service, all consumers call it. If the ACL is a translator module, it is a shared library with a single source of truth and versioned releases.
-        </p>
+        </HighlightBlock>
 
         <h3>Unmanaged Upstream Semantic Drift</h3>
         <p>
@@ -258,14 +277,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Legacy ERP Integration for Order Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A retail company built a new order management microservice to replace functionality in a thirty-year-old ERP system. The ERP used overloaded status codes where a single field encoded order state, payment status, and fulfillment stage simultaneously. It returned partial data during nightly batch windows and used proprietary error codes that changed meaning between versions. Without an ACL, engineers began copying ERP field names and status codes into the new service&apos;s data model. Within months, the new service&apos;s domain model was shaped around ERP quirks, making it impossible to express the business&apos;s actual order lifecycle cleanly.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The team implemented an ACL as a dedicated facade service. The facade exposed a clean internal API with explicit order states (draft, confirmed, paid, fulfilled, shipped, delivered, cancelled, returned), enforced invariants (an order cannot be fulfilled before it is confirmed), normalized ERP error codes into internal categories, and implemented protective timeouts and caching for ERP data. When the ERP changed a status code during a vendor upgrade, the ACL detected the change through increased translation failure rates, quarantined the affected orders, and the team updated the translation rules without touching the order service. The ACL localized the integration complexity and allowed the order service to express its domain model cleanly.
-        </p>
+        </HighlightBlock>
 
         <h3>Third-Party Payment Gateway Integration</h3>
         <p>
@@ -297,14 +319,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What problem does an anti-corruption layer solve, and how is it different from the adapter pattern?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               An anti-corruption layer prevents external data models, terminology, invariants, and failure semantics from contaminating your internal domain model. It achieves this through explicit, bidirectional translation that maps external concepts into your domain&apos;s ubiquitous language. The ACL is essential when integrating with legacy systems, third-party APIs, or any external system where you do not control the change cycle.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               The adapter pattern and the ACL are related but serve different purposes. An adapter provides interface compatibility between two systems that fundamentally share the same model but differ in API shape or protocol. It translates signatures, not semantics. An ACL provides semantic compatibility between two systems with fundamentally different models. It translates meaning, not just format.
             </p>

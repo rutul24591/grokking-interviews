@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,7 +34,10 @@ export default function DeleteContentUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Delete Content UI</strong> provides users the ability to remove their content
           while preventing accidental deletion and offering recovery options when appropriate. It
           encompasses both soft delete which hides content but retains it for recovery and hard
@@ -41,7 +45,7 @@ export default function DeleteContentUIArticle() {
           compliance requirements. Delete UI is critical for user control and compliance — users
           must be able to delete their content, but accidental deletion must be preventable and
           recoverable.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/delete-content-flow.svg"
@@ -49,7 +53,7 @@ export default function DeleteContentUIArticle() {
           caption="Delete Content Flow — showing confirmation dialog, soft delete with recovery window, cascading deletes, and permanent deletion"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, implementing delete UI requires deep understanding of
           deletion patterns including soft delete with deleted_at timestamp and is_deleted flag for
           recoverable deletion, hard delete for permanent removal required by GDPR right to
@@ -63,7 +67,7 @@ export default function DeleteContentUIArticle() {
           retained before permanent deletion based on compliance requirements. The implementation
           must balance ease of deletion providing user control with protection from accidental loss
           through confirmation friction and recovery options.
-        </p>
+        </HighlightBlock>
 
         <p>
           Modern delete UIs have evolved from simple delete buttons to sophisticated deletion
@@ -78,13 +82,16 @@ export default function DeleteContentUIArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Content deletion is built on fundamental concepts that determine how content is removed,
           retained, and recovered. Understanding these concepts is essential for designing deletion
           interfaces that balance user control with data protection.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Soft Delete:</strong> Marks content as deleted without removing it from database
           using deleted_at timestamp or is_deleted boolean flag. Content is hidden from normal views
           but retained in database for recovery. Users can restore deleted content within retention
@@ -94,7 +101,7 @@ export default function DeleteContentUIArticle() {
           compliance. Considerations include storage costs for retained data, privacy implications
           of retaining personal data, need for cleanup jobs to permanently delete after retention
           period, and potential user confusion about where deleted content goes.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Hard Delete:</strong> Permanently removes content from database with no recovery
@@ -134,11 +141,14 @@ export default function DeleteContentUIArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Delete UI architecture separates user interface, confirmation flow, deletion logic, and
           recovery mechanisms enabling modular implementation with clear boundaries. This
           architecture is critical for user experience, data integrity, and compliance.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/delete-content-flow.svg"
@@ -146,7 +156,7 @@ export default function DeleteContentUIArticle() {
           caption="Delete Content Flow — showing confirmation dialog, soft delete with recovery window, cascading deletes, and permanent deletion"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Delete flow begins when user clicks delete on content. Frontend shows confirmation dialog
           with clear warning about consequences and recovery options. User confirms deletion
           (possibly with enhanced confirmation like typing "DELETE" for high-risk content).
@@ -158,7 +168,7 @@ export default function DeleteContentUIArticle() {
           handles cascading deletes for related content, logs deletion for audit. Backend returns
           success with recovery information if applicable (recovery deadline, trash location).
           Frontend shows success message with recovery options and deadline.
-        </p>
+        </HighlightBlock>
 
         <p>
           Confirmation architecture includes simple confirmation with dialog showing delete button
@@ -192,13 +202,16 @@ export default function DeleteContentUIArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing delete UI involves trade-offs between user control, data protection, compliance
           requirements, and storage costs. Understanding these trade-offs is essential for making
           informed architecture decisions.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Soft delete versus hard delete presents recovery versus compliance trade-offs. Soft
           delete retains deleted content with deleted_at timestamp enabling recovery within
           retention period, maintains referential integrity by keeping foreign key relationships
@@ -211,7 +224,7 @@ export default function DeleteContentUIArticle() {
           integrity. The recommendation is soft delete for most user content enabling recovery from
           mistakes, hard delete for GDPR right to erasure requests and sensitive data requiring
           complete removal.
-        </p>
+        </HighlightBlock>
 
         <p>
           Simple versus enhanced confirmation presents usability versus protection trade-offs.
@@ -240,19 +253,22 @@ export default function DeleteContentUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing delete content UI requires following established best practices to ensure
           user control, data protection, compliance, and recoverability.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Confirmation flows prevent accidental deletion through deliberate user action. Use simple
           confirmation dialog for low-risk content with clear warning about consequences. Use
           enhanced confirmation requiring typing confirmation phrase for high-risk content. Use
           delayed confirmation with email cancellation for critical content. Always communicate
           consequences clearly including what content will be deleted, whether recovery is possible,
           how long recovery window lasts, and what happens to related content.
-        </p>
+        </HighlightBlock>
 
         <p>
           Soft delete with recovery enables users to recover from accidental deletion. Set
@@ -291,16 +307,19 @@ export default function DeleteContentUIArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing delete content UI to ensure user control,
           data protection, compliance, and recoverability.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           No confirmation dialog allows accidental deletion from misclicks. Fix by always showing
           confirmation dialog before deletion with clear warning about consequences. Use enhanced
           confirmation for high-risk content requiring typing confirmation phrase.
-        </p>
+        </HighlightBlock>
 
         <p>
           Hard delete by default prevents any recovery from accidents. Fix by using soft delete as
@@ -359,13 +378,16 @@ export default function DeleteContentUIArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Delete content UI is critical for user control and compliance. Here are real-world
           implementations from production systems demonstrating different approaches to deletion
           challenges.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Drive deletion addresses file and folder deletion with trash recovery and sharing
           implications. The solution uses soft delete moving files to trash with 30-day retention,
           shows confirmation dialog warning about shared file implications, provides trash interface
@@ -373,7 +395,7 @@ export default function DeleteContentUIArticle() {
           deletion, and handles cascading deletes for folders deleting all contained files. The
           result is user-friendly deletion with safety net from accidents, clear communication
           about shared content impact, and compliance with data retention policies.
-        </p>
+        </HighlightBlock>
 
         <p>
           GitHub repository deletion addresses high-risk deletion with enhanced confirmation and
@@ -417,14 +439,17 @@ export default function DeleteContentUIArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of delete content UI design, implementation, and
           compliance concerns for staff and principal engineer interviews.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you implement soft delete?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you implement soft delete?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Add deleted_at timestamp and is_deleted boolean flag to content table. Update
               delete operation to set deleted_at = NOW() and is_deleted = true instead of removing

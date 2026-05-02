@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,12 +37,15 @@ export default function CanaryDeploymentArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Canary deployment</strong> is a release strategy where a new version is gradually rolled out to users, starting with a small percentage of traffic and progressively increasing until all users are on the new version. The name comes from the &quot;canary in a coal mine&quot; metaphor — the small initial rollout acts as an early warning system, allowing issues to be detected when they affect only a small percentage of users before the full rollout is complete. If issues are detected at any stage, the rollout is halted and traffic is rolled back to the previous version.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, canary deployment represents the optimal balance between deployment speed and risk mitigation. Unlike blue-green deployment (all traffic switches at once), canary deployment limits the blast radius of issues — if the new version has a bug, only a small percentage of users are affected. Unlike rolling deployment (gradual instance replacement), canary deployment routes traffic based on percentage, not instance count, enabling precise control over user exposure. This makes canary deployment ideal for high-risk deployments where minimizing user impact is critical.
-        </p>
+        </HighlightBlock>
         <p>
           Canary deployment involves several technical considerations. Traffic splitting mechanism (load balancer, service mesh, CDN-based routing) determines how traffic is distributed between old and new versions. Canary metrics (error rate, response time, business metrics) are monitored to determine whether the canary is healthy. Rollout stages (1%, 5%, 10%, 25%, 50%, 100%) define the progressive traffic increase, with each stage requiring successful metric validation before proceeding. Automated promotion (metrics-based decision to proceed to the next stage) enables hands-off rollouts, while manual promotion (human approval at each stage) provides oversight for high-risk deployments.
         </p>
@@ -53,12 +57,15 @@ export default function CanaryDeploymentArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Traffic Splitting</strong> is the mechanism for distributing user traffic between the old version (baseline) and the new version (canary). Common methods include load balancer percentage routing (e.g., 95% to old, 5% to new), service mesh traffic splitting (Istio, Linkerd), and CDN-based routing (different origins for different percentages). Traffic splitting should be sticky — the same user always sees the same version during the canary — to ensure consistent user experience. Without sticky sessions, a user may see the old version on one request and the new version on the next, causing inconsistent behavior such as different UI rendering or different feature flags being evaluated. Load balancer percentage routing offers precise control and instant traffic adjustment with sticky session support via cookie-based or user-based routing, but requires load balancer infrastructure and more complex configuration. Service mesh traffic splitting provides fine-grained control including header-based routing and user segment routing, along with automatic metrics collection and built-in observability, but demands service mesh infrastructure with complex setup and management. CDN-based routing works well with static frontend assets and requires no backend infrastructure, but CDN cache may serve old versions to some users resulting in eventual consistency and less precise traffic control.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Canary Metrics</strong> are the metrics monitored to determine whether the canary is healthy. Essential metrics include error rate (percentage of requests resulting in errors, which should not increase beyond acceptable thresholds), response time (average and p99 latency, which should not degrade), business metrics (conversion rate, user engagement, which should not decline), and infrastructure metrics (CPU, memory, network, which should not spike). Canary metrics are compared between the old and new versions — if the new version&apos;s metrics are within acceptable thresholds of the old version, the canary is considered healthy. A typical threshold might be error rate within 10% of baseline, response time within 5% of baseline, and business metrics within 5% of baseline. These thresholds must be calibrated based on the application&apos;s normal variance patterns to avoid false positives triggering unnecessary rollbacks.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Rollout Stages</strong> define the progressive traffic increase from initial canary (1-5% of traffic) to full rollout (100%). Common stages are 1% for the initial canary catching critical issues, 5% for expanded canary catching moderate issues, 10% for broader exposure catching edge cases, 25% for significant exposure catching performance issues, 50% for half traffic catching scale issues, and 100% for full rollout. Each stage runs for a defined duration — 15 minutes for initial stages, 30 minutes to 1 hour for middle stages, and 1-24 hours for later stages — to allow metrics to stabilize and issues to surface. Some issues such as memory leaks or gradual performance degradation take time to manifest, making sufficient stage duration critical for effective canary validation.
         </p>
@@ -84,12 +91,15 @@ export default function CanaryDeploymentArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Canary deployment architecture consists of two versions running simultaneously (old and new), a traffic splitter distributing requests between them, a metrics collection system monitoring canary health, and a promotion engine deciding whether to proceed to the next rollout stage. The flow begins with the old version serving 100% of traffic. The new version is deployed alongside the old version, traffic is split (e.g., 95% old, 5% new), metrics are collected and compared, and if metrics are healthy, traffic is progressively increased until the new version serves 100% of traffic.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At each rollout stage, the promotion engine evaluates canary metrics against baseline metrics. If metrics are within acceptable thresholds, the rollout proceeds to the next stage. If metrics degrade beyond thresholds, the rollout is halted and rolled back. The entire process can be automated (no human intervention needed) or include manual approval gates for high-risk deployments.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/infrastructure-deployment/canary-metrics.svg"
@@ -122,14 +132,17 @@ export default function CanaryDeploymentArticle() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Canary deployment involves trade-offs between deployment speed, risk mitigation, complexity, and infrastructure cost. Understanding these trade-offs is essential for deciding when to use canary deployment versus other deployment strategies.
-        </p>
+        </HighlightBlock>
 
         <h3>Canary vs. Blue-Green</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Canary:</strong> Gradual traffic increase (1%, 5%, 10%, 25%, 50%, 100%). Advantages: limited blast radius (issues affect only a subset of users), metrics-driven decisions (proceed based on canary health), gradual validation (catch issues at each stage). Limitations: complex traffic splitting logic, slower deployment (gradual increase takes time), complex rollback (determine which users to roll back). Best for: high-risk deployments, applications where user impact must be minimized.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Blue-Green:</strong> All-at-once traffic switch. Advantages: instant rollback (switch back to previous environment instantly), simple deployment logic (all-or-nothing switch), zero-downtime (traffic switch is instant). Limitations: all users are impacted if the new version has issues (no gradual exposure), double infrastructure cost. Best for: well-tested deployments, teams wanting simple deployment logic with instant rollback.
         </p>
@@ -154,12 +167,15 @@ export default function CanaryDeploymentArticle() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Define clear success criteria</strong> before starting the canary. The metrics and thresholds that determine success must be explicitly stated: error rate should not increase by more than 10% compared to baseline, response time should not degrade by more than 5%, and business metrics should not decline by more than 5%. Clear success criteria remove ambiguity from the promotion decision, ensuring objective, metrics-driven rollout. Without defined criteria, the promotion decision becomes subjective and inconsistent across different deployment cycles and different team members.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Start with small initial canaries</strong> by beginning with 1-5% of traffic for the initial canary. This limits the blast radius if the new version has critical issues — only 1-5% of users are affected. If the initial canary is healthy, progressively increase the traffic percentage. Starting small ensures that critical issues are caught before they affect a significant percentage of users. For high-risk deployments such as checkout flow redesign or major API changes, starting at 1% rather than 5% provides an additional safety margin.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Use sticky sessions</strong> to ensure that the same user always sees the same version during the canary period. Without sticky sessions, users may experience different versions across requests, causing inconsistent behavior such as different UI rendering, different features, or different API response formats. Use user-based routing (hash user ID to determine version) for logged-in users, or cookie-based routing (set a cookie with the version) for anonymous users. Sticky sessions are critical for maintaining a consistent user experience during the canary period.
         </p>
@@ -177,12 +193,15 @@ export default function CanaryDeploymentArticle() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Insufficient canary duration</strong> is one of the most common mistakes, where each stage is run for too short a duration such as 1 minute, which does not allow metrics to stabilize or issues to surface. Some issues such as memory leaks, connection pool exhaustion, or gradual performance degradation take time to manifest. Running each stage for a sufficient duration — 15 minutes for initial stages, 1-24 hours for later stages — ensures that issues are caught before proceeding to the next stage. Shorter durations may catch obvious errors but miss subtle issues that only appear under sustained load.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Missing business metrics</strong> during canary monitoring means that only technical metrics such as error rate and response time are tracked while business metrics such as conversion rate and user engagement are ignored. The new version may be technically correct but user-unfriendly, causing business metrics to decline. A UI redesign that increases load time by even 100 milliseconds can measurably impact conversion rates for e-commerce platforms. Always monitor both technical and business metrics during canary releases to catch both technical regressions and user experience issues.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Non-sticky sessions</strong> cause users to see different versions across requests, creating an inconsistent experience. Without sticky sessions, users may experience different UI rendering, different features, or different behavior depending on which version handles their request. This is particularly problematic when the new version introduces breaking changes to API response formats or UI components. Always use sticky sessions via user-based or cookie-based routing during canary releases to ensure consistent user experience.
         </p>
@@ -200,16 +219,19 @@ export default function CanaryDeploymentArticle() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Social Media Platform Rollout</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Social media platforms (Facebook, Twitter, Instagram) use canary releases for UI changes and new features. The new version is deployed to 1% of users, monitored for error rate spikes, engagement changes, and performance degradation. If metrics are healthy after 1 hour, traffic is increased to 5%, then 10%, 25%, 50%, and finally 100%. If engagement drops significantly at any stage (users do not like the new UI), the rollout is halted and rolled back. This pattern ensures that UI changes are validated with real users before full rollout.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce Checkout Redesign</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platforms use canary releases for checkout flow redesigns. The new checkout is deployed to 1% of users, monitored for conversion rate, error rate, and completion time. If conversion rate drops (users abandon the new checkout), the rollout is halted and rolled back. If conversion rate is stable or improves, the rollout proceeds through stages. This pattern ensures that checkout changes do not negatively impact revenue before full rollout.
-        </p>
+        </HighlightBlock>
 
         <h3>Enterprise Application with Compliance</h3>
         <p>
@@ -225,15 +247,18 @@ export default function CanaryDeploymentArticle() {
       {/* Section 8: Interview Questions & Answers */}
       <section>
         <h2>Interview Questions &amp; Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How does a canary release work?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: A canary release gradually rolls out a new version to users, starting with a small percentage of traffic (1-5%) and progressively increasing (5%, 10%, 25%, 50%, 100%). At each stage, canary metrics (error rate, response time, business metrics) are monitored and compared to the baseline (old version). If metrics are healthy, the rollout proceeds to the next stage. If metrics degrade, the rollout is halted and rolled back. The name comes from the &quot;canary in a coal mine&quot; metaphor — the small initial rollout acts as an early warning system for issues.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

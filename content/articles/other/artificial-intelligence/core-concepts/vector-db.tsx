@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,7 +25,10 @@ export default function ArticlePage() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A <strong>vector database</strong> is a specialized database designed
           to store, index, and search high-dimensional vectors (embeddings)
           efficiently. Unlike traditional databases that index scalar values
@@ -32,8 +36,8 @@ export default function ArticlePage() {
           databases index dense floating-point vectors using approximate nearest
           neighbor (ANN) algorithms that enable sub-linear search time across
           billions of vectors.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Vector databases emerged as a critical infrastructure component with
           the rise of embedding models and retrieval-augmented generation (RAG).
           When documents, images, audio, or any other content is converted to
@@ -44,7 +48,7 @@ export default function ArticlePage() {
           high-dimensional vectors — a linear scan across millions of vectors
           for each query is prohibitively slow, and B-tree indexes don&apos;t
           work for vector similarity.
-        </p>
+        </HighlightBlock>
         <p>
           The fundamental challenge of vector search is the{" "}
           <strong>curse of dimensionality</strong> — as the number of dimensions
@@ -70,7 +74,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundation of vector database indexing is the choice of{" "}
           <strong>similarity metric</strong>. The three dominant metrics are{" "}
           <strong>cosine similarity</strong> (measures the angle between vectors,
@@ -83,8 +90,8 @@ export default function ArticlePage() {
           normalized, equivalent to cosine similarity). The choice of metric
           affects both the search results and the efficiency of the index — some
           algorithms are optimized for specific metrics.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Hierarchical Navigable Small World (HNSW)</strong> is the most
           widely used vector indexing algorithm. HNSW organizes vectors into a
           multi-layered graph where each layer is a sparse subset of the vectors
@@ -95,7 +102,7 @@ export default function ArticlePage() {
           bottom layer (containing all vectors) finds the precise nearest
           neighbors. HNSW achieves O(log n) search time with 95-99% recall,
           making it the default choice for most vector databases.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/vector-db-indexing-algorithms.svg"
@@ -141,7 +148,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A production vector database architecture consists of several layers.
           The <strong>storage layer</strong> persists vectors and their metadata
           — this can be in-memory (fastest, limited by RAM), disk-based
@@ -152,8 +162,8 @@ export default function ArticlePage() {
           encodes the query vector (or receives pre-encoded vectors), traverses
           the index to find approximate nearest neighbors, and returns ranked
           results with similarity scores.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Metadata filtering</strong> is a critical feature that allows
           vector search to be combined with traditional filters. In a production
           RAG system, you don&apos;t just want the most similar documents — you
@@ -164,7 +174,7 @@ export default function ArticlePage() {
           accurate but slower, as it reduces the search space. Post-filtering
           (applying filters after vector search) is faster but may return fewer
           results than requested if many results are filtered out.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/other/artificial-intelligence/vector-db-similarity-metrics.svg"
@@ -206,7 +216,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Index algorithm selection</strong> involves trade-offs across
           search quality, speed, memory, and build time. HNSW offers the best
           search quality and speed but requires the most memory and longest
@@ -215,8 +228,8 @@ export default function ArticlePage() {
           sacrifices 1-5% recall. Flat indexes (brute-force scan) have perfect
           recall but O(n) search time — acceptable only for small datasets
           (under 100K vectors).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Hosted vs. self-managed</strong> vector databases present the
           familiar build-vs-buy trade-off. Hosted services (Pinecone, Weaviate
           Cloud, Milvus Cloud) offer zero operational overhead, automatic
@@ -226,7 +239,7 @@ export default function ArticlePage() {
           pgvector) offer predictable costs (infrastructure amortization) and
           full control over data flow and configuration, but require operational
           expertise for index tuning, scaling, backups, and monitoring.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Standalone vs. embedded</strong> is a newer trade-off.
           Standalone vector databases run as separate services with their own
@@ -248,7 +261,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Benchmark your specific dataset</strong> — the performance of
           vector indexes varies significantly based on the data distribution.
           An index configuration that achieves 98% recall on one dataset may
@@ -256,8 +272,8 @@ export default function ArticlePage() {
           representative sample) to benchmark different index algorithms and
           parameter settings. Measure recall@k, latency (p50, p95, p99), and
           memory consumption for each configuration.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Use the right similarity metric</strong> for your embedding
           model. Most text embedding models (OpenAI&apos;s text-embedding,
           Cohere&apos;s embed) are optimized for cosine similarity. Using
@@ -265,7 +281,7 @@ export default function ArticlePage() {
           because the models are trained to produce directionally meaningful
           vectors, not magnitude-meaningful ones. Check the embedding
           model&apos;s documentation for the recommended metric.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Implement incremental index management</strong> — as new
           documents are added, they should be embedded and added to the index
@@ -287,7 +303,10 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most common pitfall is <strong>ignoring the curse of
           dimensionality</strong>. High-dimensional vectors (1000+ dimensions)
           are harder to index efficiently — distances become less discriminative,
@@ -297,8 +316,8 @@ export default function ArticlePage() {
           embeddings) to reduce the vector size while preserving semantic
           information. Reducing from 1536 to 256 dimensions can improve search
           speed by 5-10x with minimal quality loss.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Metadata filter misconfiguration</strong> causes either
           missing results (overly restrictive filters) or irrelevant results
           (missing filters). If you filter by access permissions, ensure every
@@ -307,7 +326,7 @@ export default function ArticlePage() {
           change. A common bug is updating a document&apos;s content without
           updating its metadata, causing the old metadata to persist on the new
           vector.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Not tuning index parameters</strong> leads to either wasted
           resources (overly conservative settings that use more memory than
@@ -330,22 +349,25 @@ export default function ArticlePage() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Semantic document search</strong> — the most common use case
           for vector databases. Documents are embedded and indexed, and users
           search using natural language queries. The vector database returns the
           most semantically similar documents, even when the query uses different
           words than the documents. This is the foundation of RAG systems,
           enterprise search, and knowledge base search.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Recommendation systems</strong> — user preferences and item
           features are embedded into the same vector space, and recommendations
           are generated by finding items whose vectors are closest to the
           user&apos;s preference vector. This approach captures nuanced
           preferences that are difficult to express as explicit rules and
           adapts to changing user behavior as the preference vector is updated.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Deduplication and near-duplicate detection</strong> — vector
           search efficiently finds near-duplicate documents, images, or records
@@ -358,13 +380,16 @@ export default function ArticlePage() {
 
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: How does HNSW work and why is it the dominant vector indexing
             algorithm?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             HNSW (Hierarchical Navigable Small World) organizes vectors into a
             multi-layered proximity graph. The bottom layer contains all vectors
             as nodes, with edges connecting each node to its M nearest neighbors.
@@ -372,8 +397,8 @@ export default function ArticlePage() {
             below (typically 1/ln(M) of the nodes), with the same edge structure.
             This creates a hierarchy from a sparse top layer with long-range
             connections to a dense bottom layer with short-range connections.
-          </p>
-          <p>
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important">
             Search starts at a random node in the top layer and greedily moves
             to the neighbor closest to the query vector. When no closer neighbor
             exists, the search moves down to the next layer and continues. This
@@ -381,7 +406,7 @@ export default function ArticlePage() {
             result using the full vector set. The hierarchical structure enables
             the search to quickly traverse large distances in the top layers and
             fine-tune in the bottom layers, achieving O(log n) search time.
-          </p>
+          </HighlightBlock>
           <p>
             HNSW dominates because it offers the best trade-off between search
             quality (95-99% recall), speed (sub-millisecond for millions of

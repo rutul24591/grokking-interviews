@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,12 +27,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cookie consent management</strong> is the system for obtaining, storing, managing, and respecting user consent for cookie usage and tracking. It encompasses the consent banner (UI), consent storage (database), consent propagation (sharing consent status across systems), and consent withdrawal (allowing users to change their minds).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cookie consent is required by multiple regulations. GDPR (EU) requires opt-in consent before setting non-essential cookies. ePrivacy Directive (EU Cookie Law) specifically addresses cookie consent. CCPA (California) requires an opt-out mechanism for cookie-based tracking. Non-compliance carries severe penalties—GDPR fines can reach 4% of global revenue.
-        </p>
+        </HighlightBlock>
         <p>
           For staff/principal engineers, cookie consent management requires balancing four competing concerns. <strong>Compliance</strong> means meeting all regulatory requirements for consent. <strong>User Experience</strong> means minimizing disruption while obtaining valid consent. <strong>Technical Integration</strong> means propagating consent to all tracking systems. <strong>Consent Rate</strong> means maximizing valid consent without dark patterns.
         </p>
@@ -48,14 +52,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Consent Requirements by Regulation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Different regulations have different consent requirements. <strong>GDPR (EU)</strong> applies to any organization processing EU residents' data. It requires explicit opt-in before setting non-essential cookies. Valid consent must be freely given, specific, informed, and unambiguous. It requires granularity with separate consent for different purposes like analytics and marketing. Users must be able to withdraw consent as easily as giving it. Maintain records of consent including who, when, what, and how.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>ePrivacy Directive (EU Cookie Law)</strong> requires consent for non-essential cookies. Strictly necessary cookies like shopping cart and authentication don't require consent. Member states implement differently, with some stricter than others.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>CCPA (California)</strong> applies to businesses collecting California residents' data. It requires an opt-out mechanism ("Do Not Sell My Personal Information"). Disclose cookie usage in the privacy policy. Opt-in is required for users under 16.
         </p>
@@ -109,14 +116,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A robust consent management architecture treats consent as first-class system state with proper storage, propagation, and enforcement.
-        </p>
+        </HighlightBlock>
 
         <h3>Consent Management Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement a consent management system by displaying a consent banner on the first visit that explains cookies and obtains consent. Store consent in a cookie or localStorage and sync to the backend. Provide an API for checking consent status. Block tracking until consent is given. Allow users to change consent at any time.
-        </p>
+        </HighlightBlock>
         <p>
           Implementation: Use a Consent Management Platform (CMP) like OneTrust, Cookiebot, or Sourcepoint, or build custom.
         </p>
@@ -177,12 +187,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consent management involves trade-offs between compliance, user experience, and consent rates. CMP solutions like OneTrust provide the best compliance, fair UX, and good consent rate. This is best for enterprise and regulated organizations. Custom banner provides good compliance, the best UX, and variable consent rate. This is best for smaller organizations. Privacy-first (no consent) provides the best compliance and the best UX, but consent rate is N/A. This is best for privacy-focused sites.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The staff-level insight is that CMP is worth it for enterprise. Compliance risk outweighs cost. For smaller sites, a custom banner with privacy-first analytics may suffice.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -190,12 +203,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use a CMP for enterprise like OneTrust, Cookiebot, or Sourcepoint for compliance assurance. Allow granular consent with separate consent for analytics, marketing, and functional. Make "Accept" and "Reject" equally prominent. All checkboxes must be unchecked by default—no pre-ticked boxes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Provide easy withdrawal by providing a "Cookie Settings" link accessible from every page. Store consent records to maintain an audit trail for compliance proof. Renew periodically by renewing consent every 12 months. Test regularly by testing consent gating to ensure tracking is blocked before consent.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -203,12 +219,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tracking before consent by loading tracking scripts before the user consents violates GDPR. Pre-ticked boxes are invalid consent under GDPR. Asymmetric buttons by making "Reject" harder to find than "Accept" is a dark pattern.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           No withdrawal by not providing easy consent withdrawal violates GDPR. Bundled consent by bundling analytics consent with terms of service is invalid. No records means you can't prove compliance without documentation. Ignoring third-party scripts means they must also respect consent.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -216,16 +235,19 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>News Site: GDPR Compliance with CMP</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A news site had EU traffic but no GDPR-compliant consent. The solution was implementing OneTrust CMP with granular consent for analytics and marketing, consent gating for all scripts, and consent records stored for 2 years. The site achieved GDPR compliance with a 60% consent rate for analytics and zero compliance incidents.
-        </p>
+        </HighlightBlock>
 
         <h3>E-Commerce: Google Consent Mode</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce site needed to maintain Google Ads functionality with consent restrictions. The solution was implementing Google Consent Mode. When consent is denied, Google uses modeled conversions instead of tracked. This maintained ad optimization with a 40% consent denial rate while remaining GDPR compliant.
-        </p>
+        </HighlightBlock>
 
         <h3>SaaS: Custom Consent Banner</h3>
         <p>
@@ -243,14 +265,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What are the requirements for valid GDPR consent?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Freely given means no coercion or negative consequences for refusing. Specific means separate consent for different purposes. Informed means clear explanation of what cookies are used and why. Unambiguous means clear affirmative action like click or toggle—no pre-ticked boxes.
-            </p>
+            </HighlightBlock>
             <p>
               Consent must be obtained before setting non-essential cookies. Withdrawal must be as easy as giving consent.
             </p>

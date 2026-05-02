@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -41,7 +42,10 @@ export default function ArticlePage() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Vector clocks</strong> are a mechanism for tracking the causal
           relationships between events in a distributed system. In a
           single-machine application, the order of events is determined by the
@@ -52,8 +56,8 @@ export default function ArticlePage() {
           clocks may differ by milliseconds or seconds). This makes it
           impossible to determine the order of events across machines using
           physical timestamps alone.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Vector clocks solve this problem by assigning a logical timestamp — a
           vector of integers — to each event, rather than a single scalar
           timestamp. Each process in the system maintains a vector clock, where
@@ -67,7 +71,7 @@ export default function ArticlePage() {
           vector clock, and then incrementing its own component. This ensures
           that the vector clock tracks not only the process&apos;s own events,
           but also its knowledge of other processes&apos; events.
-        </p>
+        </HighlightBlock>
         <p>
           The key property of vector clocks is that they enable the detection of
           <em>causal relationships</em> between events. If event A causally
@@ -105,8 +109,11 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>vector clock algorithm</strong> operates on three rules.{" "}
           <strong>Rule 1: On a local event</strong> (at process{" "}
           <code>i</code>), the process increments its own component in the
@@ -122,9 +129,9 @@ export default function ArticlePage() {
           <code>VC[i]++</code>. This ensures that the process&apos;s vector
           clock reflects both its own events and its knowledge of other
           processes&apos; events (as communicated through the message).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>happens-before relationship</strong> (denoted{" "}
           <code>A → B</code>, meaning &quot;A happened before B&quot;) is
           defined as follows: A happens before B if A and B are events on the
@@ -135,7 +142,7 @@ export default function ArticlePage() {
           neither A happens before B nor B happens before A. The happens-before
           relationship is a partial order — it does not order all events (only
           causally related events), and it does not order concurrent events.
-        </p>
+        </HighlightBlock>
 
         <p>
           Vector clocks <strong>exactly capture the happens-before
@@ -186,6 +193,9 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/vector-clocks-diagram-1.svg"
@@ -193,7 +203,7 @@ export default function ArticlePage() {
           caption="Vector clock progression — each process increments its own component on local events, and merges vector clocks on message receipt"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The vector clock flow in a distributed system begins with each process
           initializing its vector clock to all zeros (e.g., for a 3-process
           system, <code>[0, 0, 0]</code>). When process A performs a local
@@ -207,9 +217,9 @@ export default function ArticlePage() {
           <code>[1, 1, 0]</code>. This ensures that process B&apos;s vector
           clock reflects both its own event (the second component is 1) and its
           knowledge of process A&apos;s event (the first component is 1).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The causality detection flow operates by comparing the vector clocks
           of two events. If event A has vector clock <code>[2, 1, 0]</code> and
           event B has vector clock <code>[2, 2, 0]</code>, then A&apos;s vector
@@ -225,7 +235,7 @@ export default function ArticlePage() {
           before the other, so the later update overwrites the earlier one) or
           concurrent (both updates happened independently, so a conflict
           resolution strategy must be applied).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/scalability-distributed-systems/vector-clocks-diagram-2.svg"
@@ -265,8 +275,11 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Vector clocks must be compared against the alternatives for tracking
           causal relationships: Lamport timestamps, hybrid logical clocks, and
           version vectors. Lamport timestamps use a single scalar value (rather
@@ -277,19 +290,19 @@ export default function ArticlePage() {
           not have causally preceded B. Vector clocks can detect concurrent
           events, but they require more storage and message overhead (N integers
           per event, where N is the number of processes).
-        </p>
+        </HighlightBlock>
 
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Property</th>
+  <tr className="border-b border-theme">
+<th className="p-3 text-left">Property</th>
               <th className="p-3 text-left">Lamport</th>
               <th className="p-3 text-left">Vector Clocks</th>
               <th className="p-3 text-left">Hybrid Logical Clocks</th>
-            </tr>
-          </thead>
+  </tr>
+</thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Size per Event</strong>
               </td>
@@ -298,15 +311,15 @@ export default function ArticlePage() {
               <td className="p-3">
                 Physical time + small counter
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Detects Causality</strong>
               </td>
               <td className="p-3">Partial</td>
               <td className="p-3">Full</td>
               <td className="p-3">Full</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Detects Concurrency</strong>
@@ -350,8 +363,11 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use vector clocks for conflict detection in distributed databases that
           allow concurrent writes. If the database allows multiple clients to
           write to the same key simultaneously (as in Dynamo&apos;s eventually
@@ -362,9 +378,9 @@ export default function ArticlePage() {
           writes enables the database to return both writes (siblings) to the
           client, which can then resolve the conflict (by merging the writes, or
           by applying a custom conflict resolution function).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use hybrid logical clocks (HLCs) instead of vector clocks when the
           primary goal is ordering events (rather than detecting concurrent
           events). HLCs provide the same causal ordering guarantees as vector
@@ -378,7 +394,7 @@ export default function ArticlePage() {
           as precisely as vector clocks (they can only detect that two events
           are concurrent if their HLCs are incomparable, which is less precise
           than vector clock comparison).
-        </p>
+        </HighlightBlock>
 
         <p>
           Prune vector clock histories to prevent unbounded growth. In a system
@@ -431,8 +447,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Assuming that Lamport timestamps can detect concurrent events is a
           common misconception. Lamport timestamps provide a partial ordering of
           events — if A&apos;s timestamp is less than B&apos;s, A may or may
@@ -443,9 +462,9 @@ export default function ArticlePage() {
           B&apos;s, A does not necessarily happen before B). Vector clocks are
           required to detect concurrent events — if two events&apos; vector
           clocks are incomparable, the events are concurrent.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Not handling vector clock growth can cause memory and message overhead
           issues in large systems. In a system with N processes, each vector
           clock has N components, and each message carries a vector clock of
@@ -456,7 +475,7 @@ export default function ArticlePage() {
           specific data item, rather than all events in the system), or to use
           hybrid logical clocks (which require only a physical timestamp and a
           small counter, rather than a vector of N integers).
-        </p>
+        </HighlightBlock>
 
         <p>
           Using vector clocks for ordering events when only causal tracking is
@@ -501,8 +520,11 @@ export default function ArticlePage() {
       {/* Section 7: Real-world Use Cases */}
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Amazon Dynamo uses vector clocks to detect concurrent writes and
           return siblings to the client for resolution. Each data item in Dynamo
           has an associated vector clock, where the <code>i</code>-th component
@@ -518,9 +540,9 @@ export default function ArticlePage() {
           use of vector clocks is one of the most famous examples of conflict
           detection in production — it enables Dynamo to tolerate concurrent
           writes without losing data.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Riak (a distributed key-value store based on Dynamo&apos;s design)
           uses vector clocks for the same purpose — detecting concurrent writes
           and returning siblings to the client. Riak extends Dynamo&apos;s
@@ -533,7 +555,7 @@ export default function ArticlePage() {
           examples of conflict detection in production — it enables Riak to
           provide high availability (writes are always accepted, even during
           network partitions) without losing data.
-        </p>
+        </HighlightBlock>
 
         <p>
           CouchDB uses version vectors (a variant of vector clocks) to track
@@ -575,13 +597,16 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q1: How do vector clocks detect concurrent events? Why can&apos;t
           Lamport timestamps do the same?
           </h3>
-          <p className="mb-3">
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Vector clocks detect concurrent events by comparing the vector clocks
             of two events. If event A has vector clock VC(A) and event B has
             vector clock VC(B), then A and B are concurrent if and only if
@@ -590,8 +615,8 @@ export default function ArticlePage() {
             some components of VC(A) are less than the corresponding components
             of VC(B). This means that neither event has knowledge of the other
             event&apos;s causal history, so they happened independently.
-          </p>
-          <p className="mb-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mb-3">
             Lamport timestamps cannot detect concurrent events because they use
             a single scalar value (rather than a vector) to order events. If
             event A has Lamport timestamp L(A) and event B has Lamport timestamp
@@ -604,7 +629,7 @@ export default function ArticlePage() {
             A). Therefore, the Lamport timestamp cannot distinguish between
             &quot;A happened before B&quot; and &quot;A and B are concurrent
             but B&apos;s timestamp is greater because of other messages.&quot;
-          </p>
+          </HighlightBlock>
           <p>
             The key insight is that a single scalar value cannot capture the
             multi-dimensional causal history of an event — it can only capture

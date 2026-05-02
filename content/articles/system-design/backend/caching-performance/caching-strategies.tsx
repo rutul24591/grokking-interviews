@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -91,9 +92,12 @@ export default function ArticlePage() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts: Read and Write Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <h3>Cache-Aside (Lazy Loading)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cache-aside is the simplest and most widely-used caching strategy. The
           application controls the cache directly: on read, it checks the cache
           first, and if the data is missing (cache miss), it loads from the
@@ -101,9 +105,9 @@ export default function ArticlePage() {
           (time-to-live). On write, the application updates the database and
           deletes the cache entry (invalidation), letting the next read
           repopulate the cache with fresh data.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The advantage of cache-aside is flexibility: the application decides
           what to cache, when to invalidate, and how to handle failures. It
           works well for read-heavy workloads where not all data needs to be
@@ -112,7 +116,7 @@ export default function ArticlePage() {
           pays the full database latency, and concurrent requests for the same
           missing key can cause a cache stampede (thundering herd) where many
           requests hit the database simultaneously.
-        </p>
+        </HighlightBlock>
 
         <p>
           Cache-aside is used by most web applications with Redis or Memcached.
@@ -210,9 +214,12 @@ export default function ArticlePage() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Implementation Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
 
         <h3>Application-Level Caching</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Application-level caching stores data in the application process
           memory (in-process cache) or in a nearby cache server (distributed
           cache). In-process caches (e.g., Caffeine for Java, lru_cache for
@@ -220,9 +227,9 @@ export default function ArticlePage() {
           across application instances. Each instance has its own copy of cached
           data, leading to potential inconsistency (one instance may have stale
           data after another instance updates the database).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Distributed caches (e.g., Redis, Memcached) are shared across all
           application instances, providing cache consistency across the fleet.
           The latency is higher than in-process caches (milliseconds vs.
@@ -231,7 +238,7 @@ export default function ArticlePage() {
           in-process cache for hot data (L1) and distributed cache for shared
           data (L2), combining the speed of in-process with the consistency of
           distributed.
-        </p>
+        </HighlightBlock>
 
         <h3>Cache Invalidation Strategies</h3>
         <p>
@@ -286,16 +293,19 @@ export default function ArticlePage() {
       {/* Section 4: Trade-offs & Comparison */}
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing a caching strategy involves trade-offs between consistency,
           latency, complexity, and data loss risk. No single strategy is best
           for all workloads—the right choice depends on the read/write ratio,
           freshness requirements, and acceptable failure modes.
-        </p>
+        </HighlightBlock>
 
         <h3>Consistency vs. Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Write-through provides strong consistency but has the highest write
           latency (cache + database). Write-behind provides the lowest write
           latency (cache only) but risks data loss if the cache crashes before
@@ -303,7 +313,7 @@ export default function ArticlePage() {
           with moderate latency (cache hit is fast, miss is slow). Read-through
           provides eventual consistency with simple application code (no caching
           logic needed).
-        </p>
+        </HighlightBlock>
 
         <h3>Read-Heavy vs. Write-Heavy Workloads</h3>
         <p>
@@ -346,23 +356,26 @@ export default function ArticlePage() {
       {/* Section 5: Best Practices */}
       <section>
         <h2>Best Practices for Caching Strategies</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Start with cache-aside.</strong> It is the simplest strategy,
           provides good flexibility, and is easy to debug. Most production
           systems start with cache-aside and only adopt more complex strategies
           (write-through, write-behind) when the workload demands it.
           Cache-aside with TTL-based expiration is the default pattern for most
           caching use cases.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Use write-through for consistency-critical writes.</strong>{" "}
           When data must be fresh (e.g., user account updates, financial data),
           write-through ensures that the cache and database are always
           consistent. The write latency penalty is acceptable because
           consistency is the priority.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>
@@ -405,8 +418,11 @@ export default function ArticlePage() {
       {/* Section 6: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls and How to Avoid Them</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Cache stampede (thundering herd).</strong> When a popular key
           expires, hundreds of concurrent requests may all miss the cache and
           hit the database simultaneously, overloading it. Fix: Use locking
@@ -414,16 +430,16 @@ export default function ArticlePage() {
           jitter to TTLs so keys don't expire simultaneously), or
           stale-while-revalidate (serve stale data while refreshing in
           background).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Cache penetration.</strong> Requests for non-existent keys
           always miss the cache and hit the database, which can be exploited by
           attackers (requesting random keys to overload the database). Fix: Use
           negative caching (cache the fact that a key doesn't exist with a short
           TTL), or use a Bloom filter to quickly check if a key could exist
           before hitting the database.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>Cache invalidation race condition.</strong> If the application
@@ -465,24 +481,27 @@ export default function ArticlePage() {
       {/* Section 7: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-commerce: Product Catalog (Cache-Aside)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce platform uses cache-aside for its product catalog. When
           a user views a product page, the application checks Redis for the
           product data. On a cache miss, it loads from PostgreSQL, caches with a
           1-hour TTL, and returns the data. Writes (price updates, inventory
           changes) update the database and delete the cache entry, so the next
           read loads fresh data.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This strategy works well because product catalog reads are 100x more
           frequent than writes, and a 1-hour staleness window is acceptable for
           browsing (but not for checkout, where real-time inventory and pricing
           are checked against the database). The cache hit rate is 95%, reducing
           database load by 95% and average page latency from 200ms to 10ms.
-        </p>
+        </HighlightBlock>
 
         <h3>Social Media: News Feed (Write-Behind)</h3>
         <p>
@@ -530,21 +549,24 @@ export default function ArticlePage() {
       {/* Section 8: Interview Questions */}
       <section>
         <h2>Interview Questions &amp; Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q1: Explain the difference between cache-aside and read-through
               caching. When would you choose one over the other?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> Cache-aside and read-through differ in
               who controls the cache. In cache-aside, the application controls
               the cache: it checks the cache, loads from the database on miss,
               and populates the cache. In read-through, the cache layer controls
               the cache: the application reads from the cache, and the cache
               transparently loads from the database on miss.
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               Choose cache-aside when: (1) You want flexibility in what to cache
               (not all data needs caching). (2) You want explicit control over

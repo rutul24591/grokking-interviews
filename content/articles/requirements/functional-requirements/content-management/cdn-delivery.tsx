@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,12 +34,15 @@ export default function CDNDeliveryArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CDN (Content Delivery Network) Delivery distributes content globally through strategically positioned edge cache servers, reducing latency for end users and offloading traffic from origin infrastructure. A CDN works by caching content at edge locations closer to users, serving subsequent requests from the cache rather than the origin server. For global platforms, CDN delivery is not optional—it&apos;s essential infrastructure that determines user experience quality, origin costs, and platform scalability. When users in Tokyo, London, and São Paulo all access your platform, a properly configured CDN ensures each receives content from a nearby edge location with minimal latency, rather than all traffic hitting a single origin datacenter.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, CDN delivery architecture involves multiple interconnected concerns: caching strategies (cache-aside, write-through, stale-while-revalidate), cache invalidation (purge by URL, tag-based invalidation, versioned URLs), edge optimization (image optimization, compression, minification at edge), multi-CDN routing (load balancing, failover, geo-routing), security (DDoS protection, WAF, token authentication), and performance monitoring (cache hit rates, edge latency, origin load). The implementation must balance competing priorities: cache hit rate versus content freshness, performance versus cost, simplicity versus flexibility. A poorly configured CDN can serve stale content, expose origin to traffic spikes, or incur unexpected costs from cache misses and bandwidth overages.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of CDN delivery extends beyond basic configuration. Cache key design determines what gets cached separately (by URL, headers, cookies, user agent). Invalidation strategies must handle both predictable updates (content publishing) and emergency purges (sensitive content removal). Multi-CDN setups require health monitoring, performance-based routing, and seamless failover. Edge computing capabilities (Cloudflare Workers, Lambda@Edge) enable running logic at edge nodes for personalization, A/B testing, and authentication. Security considerations include DDoS mitigation, WAF rule configuration, HTTPS enforcement, and bot detection. For staff engineers, CDN delivery is a strategic infrastructure decision with long-term consequences for performance, cost, and operational complexity.
         </p>
@@ -46,13 +50,16 @@ export default function CDNDeliveryArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Cache Headers and TTL Configuration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cache headers control how content is cached and for how long. Cache-Control is the primary header, with directives like max-age (how long content is fresh), s-maxage (shared cache TTL), public/private (cacheable by any cache or browser only), no-cache (must revalidate), and no-store (don&apos;t cache). ETag provides entity validation through content hashing—browsers send If-None-Match headers, origin responds 304 Not Modified if unchanged. Last-Modified provides timestamp-based validation. Vary header specifies which request headers affect caching (Accept-Encoding for compression variants, User-Agent for device-specific content). Proper header configuration is critical—missing headers cause cache misses, overly long TTLs serve stale content, and incorrect Vary headers cause cache fragmentation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           TTL (Time To Live) settings vary by content type. Static assets (images, CSS, JavaScript) use long TTLs (1 year) with versioned URLs—when content changes, the URL changes (app.v1.js → app.v2.js), invalidating the old cache naturally. Dynamic content (HTML pages, API responses) uses short TTLs (minutes to hours) with ETag validation for freshness. Personalized content (user dashboards, recommendations) often bypasses cache entirely or uses very short TTLs with user-specific cache keys. API responses are cached based on method and response type—GET requests are cacheable, while POST/PUT/DELETE requests trigger invalidation of related cached content.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Cache Invalidation Strategies</h3>
         <p>
@@ -98,9 +105,12 @@ export default function CDNDeliveryArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CDN delivery architecture spans origin infrastructure, CDN edge network, caching layer, and user routing. Origin infrastructure hosts original content. CDN edge network distributes content globally. Caching layer stores content at edge locations. User routing directs requests to optimal edge location. Each layer has specific responsibilities and configuration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/cdn-architecture.svg"
@@ -111,9 +121,9 @@ export default function CDNDeliveryArticle() {
         />
 
         <h3>Origin Infrastructure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Origin infrastructure serves as source of truth for content. Origin servers host original content, handle cache misses, and process invalidation requests. Origin shield (intermediate cache layer) consolidates cache misses from multiple edge nodes, reducing origin load. Origin configuration includes connection pooling (reuse connections to edge), keep-alive settings (maintain connections), and rate limiting (protect from traffic spikes). Origin must handle variable load—cache misses create unpredictable traffic patterns that can overwhelm unprepared origins.
-        </p>
+        </HighlightBlock>
         <p>
           Origin security protects infrastructure from direct access. Restrict origin access to CDN IP ranges only (block direct user access). Use origin authentication (signed requests from CDN to origin). Implement DDoS protection at origin level (rate limiting, IP blocking). Monitor origin health and set up alerts for unusual traffic patterns. Origin security is critical—a compromised origin undermines all CDN security.
         </p>
@@ -153,14 +163,17 @@ export default function CDNDeliveryArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CDN delivery design involves trade-offs between cache freshness and hit rate, single-CDN simplicity and multi-CDN redundancy, and edge optimization and origin control. Understanding these trade-offs enables informed decisions aligned with platform requirements and constraints.
-        </p>
+        </HighlightBlock>
 
         <h3>Cache Freshness: Long TTL vs. Short TTL</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Long TTL (hours to days). Pros: High cache hit rate (content stays cached longer), reduced origin load (fewer cache misses), lower CDN costs (fewer origin requests). Cons: Stale content served longer (updates delayed), requires robust invalidation (must purge on updates), risk of serving outdated content. Best for: Static content, infrequently updated content, content where brief staleness is acceptable.
-        </p>
+        </HighlightBlock>
         <p>
           Short TTL (seconds to minutes). Pros: Fresh content (updates reflected quickly), reduced invalidation complexity (content expires naturally), lower staleness risk. Cons: Lower cache hit rate (content expires frequently), higher origin load (more cache misses), higher CDN costs (more origin requests). Best for: Dynamic content, frequently updated content, content where freshness is critical.
         </p>
@@ -201,13 +214,16 @@ export default function CDNDeliveryArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Set appropriate cache headers:</strong> Cache-Control with max-age and stale-while-revalidate. ETag for validation. Vary header for content variants. Proper headers are foundation of effective caching.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use versioned URLs for static assets:</strong> app.v123.js, style.abc123.css. Natural invalidation through URL change. Long TTL (1 year) safe with versioned URLs.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement stale-while-revalidate:</strong> Serve stale content while refreshing. Maintains availability during origin issues. Configurable staleness window.
           </li>
@@ -237,13 +253,16 @@ export default function CDNDeliveryArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No cache headers:</strong> Content not cached properly, every request hits origin. <strong>Solution:</strong> Set Cache-Control headers with appropriate max-age and stale-while-revalidate values.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Too long TTL without invalidation:</strong> Stale content served indefinitely. <strong>Solution:</strong> Use versioned URLs for static assets, implement purge API for dynamic content.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Caching personalized content:</strong> Wrong content served to users. <strong>Solution:</strong> No cache for personalized content, or use user-specific cache keys with proper Vary headers.
           </li>
@@ -273,16 +292,19 @@ export default function CDNDeliveryArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>E-commerce Platform CDN</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce platform uses CDN for product images, static assets, and dynamic content. Static assets (CSS, JS, product images) use versioned URLs with 1-year TTL. Product pages use 5-minute TTL with stale-while-revalidate (serve 5-minute stale while revalidating). Shopping cart and checkout bypass cache entirely (personalized, sensitive). Image optimization at edge reduces image bandwidth by 60%. Multi-CDN setup with primary (Cloudflare) and backup (AWS CloudFront) for redundancy. Black Friday traffic handled with cache warming (pre-populate popular products) and origin shield (protect origin from cache miss storms).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">News Website CDN</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           News website uses CDN for article content, images, and breaking news. Articles use 1-hour TTL with tag-based invalidation (purge by article ID when updated). Breaking news uses cache warming (pre-populate homepage, trending articles). Images optimized at edge with WebP for supporting browsers. Multi-CDN routing based on geography (best CDN per region). During major news events, cache hit rate reaches 99%+ with proper warming. Invalidation API triggers immediate purge for corrections and updates.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Video Streaming CDN</h3>
         <p>
@@ -302,12 +324,15 @@ export default function CDNDeliveryArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle cache invalidation for updated content?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you handle cache invalidation for updated content?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> Use multiple invalidation strategies based on content type. Versioned URLs for static assets (app.v123.js → app.v124.js) provide natural invalidation. Purge by URL for specific content updates. Tag-based invalidation for grouped content (purge all &quot;article-123&quot; tagged content). Stale-while-revalidate maintains availability during invalidation. The key insight: no single strategy works for all cases—use versioned URLs for static, purge API for dynamic, and accept brief staleness for high-availability requirements.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

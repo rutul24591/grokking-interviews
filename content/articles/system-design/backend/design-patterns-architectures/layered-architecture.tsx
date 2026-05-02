@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,12 +28,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Layered architecture</strong> is a structural pattern that organizes an application into horizontal tiers, each with a distinct and well-defined responsibility. The layers are stacked such that higher layers depend on lower layers, and each layer interacts only with its immediate neighbors or with explicitly defined abstractions. The canonical model separates concerns into four tiers: <strong>presentation</strong> (handling user interaction, HTTP endpoints, API contracts), <strong>business</strong> (encoding business rules, workflows, and invariants), <strong>data access</strong> (managing persistence, queries, and data mapping), and <strong>infrastructure</strong> (providing cross-cutting concerns such as logging, configuration, messaging, and external service integration).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The foundational insight behind layered architecture is that <strong>separation of concerns reduces the blast radius of change</strong>. When a database schema changes, only the data access layer should need modification. When the UI framework is upgraded, only the presentation layer is affected. This isolation is what makes layered architecture the default choice for enterprise systems, where teams are large, change is frequent, and the cost of misunderstanding is high.
-        </p>
+        </HighlightBlock>
         <p>
           Layered architecture traces its roots to structured programming and modular design principles from the 1970s and 1980s. It was formalized in enterprise software engineering as a response to the "big ball of mud" problem, where codebases grow without structure and every component depends on every other component. The layered model provides a mental model and a physical structure that scales with team size and codebase complexity.
         </p>
@@ -49,6 +53,9 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/backend/design-patterns-architectures/layered-architecture-layers.svg"
@@ -57,12 +64,12 @@ export default function ArticlePage() {
         />
 
         <h3>The Presentation Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The presentation layer is the system's boundary with the outside world. It receives HTTP requests, parses input parameters, performs authentication and authorization at the edge, maps request data into application-layer commands, invokes the appropriate business logic, and shapes the response into the expected format. In a REST API, this layer contains controllers and route handlers. In a GraphQL API, it contains resolvers. In a server-rendered application, it contains view templates and page controllers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The critical discipline for the presentation layer is that it must contain no business rules. Its only responsibilities are input validation at the syntactic level, security enforcement at the transport level, and response formatting. When business rules leak into controllers, the system becomes difficult to test because every test must construct HTTP contexts. It also becomes difficult to reuse logic because the same rule is duplicated across multiple endpoints.
-        </p>
+        </HighlightBlock>
         <p>
           In production systems, the presentation layer also handles concerns like rate limiting, request correlation IDs for distributed tracing, CORS policy enforcement, and content negotiation. These are cross-cutting concerns that belong at the edge, not scattered throughout the application.
         </p>
@@ -123,14 +130,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A well-implemented layered architecture requires more than organizing code into folders. It requires deliberate decisions about dependency direction, interface design, and how data transforms as it moves between layers. The architecture must support the system's operational requirements, including testing, deployment, monitoring, and scaling.
-        </p>
+        </HighlightBlock>
 
         <h3>Dependency Direction and Inversion</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most critical architectural decision in layered design is the direction of dependencies. The naive approach has each layer depending on the concrete implementation of the layer below it. This creates a rigid architecture where changing the database requires changes throughout the stack. The correct approach uses the <strong>dependency inversion principle</strong>: higher layers define interfaces that lower layers implement. The business layer declares what it needs through repository interfaces, and the data access layer provides the implementation. This means the business layer depends on abstractions, not concretions.
-        </p>
+        </HighlightBlock>
         <p>
           Dependency inversion is implemented through interface segregation and inversion of control containers. The business layer defines interfaces for every external dependency it needs. The infrastructure layer provides a composition root, typically at application startup, where concrete implementations are bound to interfaces. This wiring is external to the business logic, keeping the core pure and testable. In practice, this means the business layer's service constructors receive interfaces, not concrete classes, and the DI container resolves them at runtime.
         </p>
@@ -163,14 +173,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Trade-offs & Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
 
         <h3>Layered vs Hexagonal Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Layered architecture and hexagonal architecture (also known as ports and adapters) share the goal of separating business logic from infrastructure, but they achieve it through different structural patterns. Layered architecture organizes code horizontally, with clear tiers and a top-down dependency flow. Hexagonal architecture places the domain at the center and surrounds it with ports (interfaces) and adapters (implementations). The hexagonal model is inherently more flexible because any adapter can connect to any port, and the domain has no awareness of which adapters are in use.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The trade-off is complexity versus flexibility. Layered architecture is simpler to understand, easier to navigate for new team members, and provides a clear mental model of where code belongs. It works exceptionally well for CRUD-heavy applications and standard enterprise systems. Hexagonal architecture provides superior testability and infrastructure independence because every external dependency is abstracted behind a port. It excels in domains with multiple input and output channels, such as systems that must support REST, gRPC, CLI, and message queue interfaces simultaneously.
-        </p>
+        </HighlightBlock>
         <p>
           The staff-level decision framework is straightforward. Choose layered architecture when the application has a primary access pattern, the domain complexity is moderate, and team size and turnover favor simplicity. Choose hexagonal architecture when the domain is complex, multiple delivery channels exist, infrastructure changes are frequent, or testability requirements are stringent. Many teams start with layered architecture and evolve toward hexagonal patterns in the domain core as complexity grows.
         </p>
@@ -208,12 +221,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Define clear responsibilities for each layer and document them so every team member understands where new code belongs. The presentation layer handles input parsing, security at the edge, and response formatting. The business layer encodes domain rules, orchestrates workflows, and manages transaction boundaries. The data access layer abstracts persistence behind repositories and handles data mapping. The infrastructure layer provides technical capabilities and implements external integrations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Enforce the dependency direction rigorously, especially around the domain core. Use dependency inversion so that the business layer defines interfaces and the data access layer implements them. Apply the dependency rule consistently: no layer should depend on layers above it, and the domain should never depend on infrastructure. Use architectural tests in CI to verify that domain modules do not import infrastructure packages, and fail the build when violations are detected.
-        </p>
+        </HighlightBlock>
         <p>
           Keep the business layer framework-agnostic by ensuring it contains no references to HTTP, databases, message queues, or file systems. This independence is what makes business logic testable in isolation and portable across deployment environments. Write unit tests for business services that mock repository interfaces and verify behavior without any infrastructure dependencies.
         </p>
@@ -233,12 +249,15 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most pervasive pitfall is the <strong>anemic domain model</strong>, where domain objects are reduced to data containers with getters and setters, and all business logic lives in service classes within the business layer. This pattern, sometimes called the transaction script anti-pattern, defeats the purpose of layering because the domain layer carries no meaning. Business rules are scattered across services, making them difficult to find, test, and reuse. The remedy is to enrich domain entities with behavior, placing invariants and business rules on the entities that own the data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Leaky persistence</strong> occurs when database concerns bleed into higher layers. This manifests as ORM entities exposed directly in API responses, SQL queries constructed in business services, or transaction management scattered across controllers. The consequence is that changes to the database schema ripple through the entire application. The remedy is to use repositories as the exclusive gateway to persistence, with data mappers translating between domain entities and persistence models.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>God services</strong> emerge when the business layer accumulates responsibility for every use case in the system. A single service class grows to thousands of lines, handling unrelated workflows and becoming impossible to test comprehensively. This happens when teams organize code by technical layer but not by business capability. The remedy is to split services by use case or aggregate root, creating focused service classes that each handle a coherent slice of functionality.
         </p>
@@ -258,14 +277,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>Enterprise E-Commerce Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A large e-commerce platform serving millions of users adopted layered architecture to manage its growing codebase. The presentation layer handled REST API endpoints for product catalog, cart management, checkout, and order tracking. The business layer encoded pricing rules, inventory management, promotional logic, and order processing workflows. The data access layer managed product catalogs, user profiles, and order history through repositories backed by PostgreSQL. The infrastructure layer integrated with payment gateways, email services, and CDN providers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The layering proved invaluable during a database migration from MySQL to PostgreSQL. Only the data access layer needed modification, while the business logic and API contracts remained unchanged. The migration was completed in six weeks with zero production incidents. The same layering facilitated a gradual migration from a monolithic architecture to microservices, as each layer could be extracted and deployed independently.
-        </p>
+        </HighlightBlock>
 
         <h3>Financial Services Application</h3>
         <p>
@@ -297,14 +319,17 @@ export default function ArticlePage() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is layered architecture and what problem does it solve?</h3>
-            <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="text-muted mb-3"><strong>Answer:</strong></HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Layered architecture organizes an application into horizontal tiers, each with a distinct responsibility. The canonical model has four layers: presentation (handling user interaction and HTTP endpoints), business (encoding business rules and workflows), data access (managing persistence through repositories), and infrastructure (providing logging, configuration, and external integrations). Each layer depends only on layers below it, creating a controlled dependency flow.
-            </p>
+            </HighlightBlock>
             <p>
               The problem it solves is the "big ball of mud" where code has no structure and every component depends on every other component. Layering separates concerns so that changes to the database only affect the data access layer, changes to the UI only affect the presentation layer, and business rules remain isolated and testable. This reduces the blast radius of change, enables parallel team development, and makes the codebase navigable for new engineers.
             </p>

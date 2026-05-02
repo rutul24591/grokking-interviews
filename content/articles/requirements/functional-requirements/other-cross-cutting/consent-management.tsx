@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,12 +35,15 @@ export default function ConsentManagementArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consent Management enables users to provide, manage, and withdraw consent for data processing activities. Users can grant consent (authorize data processing), view consent status (see what they&apos;ve consented to), withdraw consent (revoke authorization), and audit consent usage (see how consent is used). Consent management is fundamental to privacy compliance (GDPR, CCPA require consent for data processing), user trust (users control their data), and legal risk mitigation (proper consent reduces liability). For platforms that process user data, effective consent management is essential for compliance, trust, and legal protection.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, consent management architecture involves consent types (explicit consent, implicit consent, legitimate interest), consent collection (how consent is obtained), consent storage (how consent is recorded), consent withdrawal (how consent is revoked), and compliance enforcement (ensuring processing respects consent). The implementation must balance compliance (meet legal requirements) with usability (easy for users to manage) and business needs (enable data processing). Poor consent management leads to compliance violations, legal liability, and user distrust.
-        </p>
+        </HighlightBlock>
         <p>
           The complexity of consent management extends beyond simple opt-in/opt-out. Granular consent (separate consent for each purpose). Consent expiration (consent expires after time). Consent versioning (track consent form versions). Consent proof (evidence of consent for compliance). Legitimate interest assessment (when consent not required). For staff engineers, consent management is a compliance and privacy infrastructure decision affecting legal risk, user trust, and data processing capabilities.
         </p>
@@ -47,13 +51,16 @@ export default function ConsentManagementArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
         <h3>Consent Types</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Explicit consent requires clear affirmative action. Opt-in checkbox (user actively checks box). Written consent (user signs consent form). Electronic consent (user clicks &quot;I agree&quot;). Explicit consent is required for sensitive processing (GDPR special category data, CCPA data sale). Benefits include compliance (meets legal requirements), clear evidence (user actively consented). Drawbacks includes friction (users may not consent), reduced data availability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implicit consent is inferred from user actions. Browsing website (implies consent for cookies). Using service (implies consent for necessary processing). Not opting out (implies consent for opt-out processing). Implicit consent is permitted for some processing (necessary for service, legitimate interest) but not others (marketing, data sale). Benefits include less friction (no explicit action), smoother experience. Drawbacks includes compliance risk (may not meet requirements), weaker evidence.
-        </p>
+        </HighlightBlock>
         <p>
           Legitimate interest enables processing without consent. Legitimate interest assessment (document legitimate interest). Balancing test (balance interest vs. user rights). Opt-out option (user can object). Legitimate interest is alternative to consent for some processing (fraud prevention, security, direct marketing in some jurisdictions). Benefits include no consent required (processing can proceed), business flexibility. Drawbacks includes legal risk (must prove legitimate interest), user objection right.
         </p>
@@ -105,9 +112,12 @@ export default function ConsentManagementArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consent management architecture spans consent service, collection interface, storage system, and enforcement layer. Consent service manages consent definitions and relationships. Collection interface obtains consent from users. Storage system stores consent records. Enforcement layer ensures processing respects consent. Each layer has specific responsibilities and integration requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/other-cross-cutting/consent-management/consent-architecture.svg"
@@ -118,9 +128,9 @@ export default function ConsentManagementArticle() {
         />
 
         <h3>Consent Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Consent service manages consent definitions. Consent registry (define all consent purposes). Consent relationships (dependencies between consents). Consent metadata (description, legal basis, retention). Consent service is the source of truth for consent. Benefits include centralization (one place for consent), consistency (same consent everywhere). Drawbacks includes complexity (manage consent definitions), coupling (services depend on consent service).
-        </p>
+        </HighlightBlock>
         <p>
           Consent templates provide predefined consent requests. Purpose templates (consent for common purposes). Jurisdiction templates (consent for specific jurisdictions). Custom templates (organization-defined templates). Templates simplify consent collection (reuse vs. create each time). Benefits include consistency (same consent for same purpose), efficiency (reuse templates). Drawbacks includes inflexibility (templates may not fit all cases).
         </p>
@@ -160,14 +170,17 @@ export default function ConsentManagementArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Consent management design involves trade-offs between explicit and implicit consent, granular and bundled consent, and strict and lenient enforcement. Understanding these trade-offs enables informed decisions aligned with legal requirements and business needs.
-        </p>
+        </HighlightBlock>
 
         <h3>Consent: Explicit vs. Implicit</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Explicit consent (clear affirmative action). Pros: Compliance (meets GDPR, CCPA requirements), clear evidence (user actively consented), user awareness (users know they&apos;re consenting). Cons: Friction (users may not consent), reduced data availability (less consent), complexity (design consent forms). Best for: Sensitive processing, marketing, data sale.
-        </p>
+        </HighlightBlock>
         <p>
           Implicit consent (inferred from actions). Pros: Less friction (no explicit action), smoother experience, more data available. Cons: Compliance risk (may not meet requirements), weaker evidence (inferred not explicit), user unawareness (users may not realize). Best for: Necessary processing, legitimate interest, some analytics.
         </p>
@@ -208,13 +221,16 @@ export default function ConsentManagementArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use explicit consent for sensitive:</strong> Sensitive processing requires explicit consent. Marketing requires explicit consent. Data sale requires explicit consent (CCPA). Necessary processing may use implicit.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide granular consent:</strong> Separate consent for each purpose. Group related purposes. Can&apos;t bundle unrelated purposes. Users can consent to some but not others.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Make withdrawal easy:</strong> As easy to withdraw as to consent. Withdrawal button visible. Granular withdrawal. Immediate effect.
           </li>
@@ -244,13 +260,16 @@ export default function ConsentManagementArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Bundled consent:</strong> All consent in one request. <strong>Solution:</strong> Separate consent for each purpose, group related only.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Pre-checked boxes:</strong> Consent assumed unless unchecked. <strong>Solution:</strong> Unchecked by default, user must actively check.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No withdrawal option:</strong> Can&apos;t withdraw consent. <strong>Solution:</strong> Easy withdrawal, as easy as consent.
           </li>
@@ -280,16 +299,19 @@ export default function ConsentManagementArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
 
         <h3>GDPR Consent Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           EU platform implements GDPR-compliant consent. Explicit opt-in for all non-essential processing. Granular consent (separate for analytics, marketing, etc.). Easy withdrawal (one-click withdraw). Consent records (store with timestamp, version). Preference center (manage all consent). Legitimate interest assessment (document when used). EU users have full control over data processing consent.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">CCPA Consent Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           California platform implements CCPA-compliant consent. &quot;Do Not Sell&quot; opt-out (opt-out of data sale). Notice at collection (inform of data collection). Service provider agreements (contracts with processors). Consent for minors (parental consent for under 16). California users can opt-out of data sale.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6">Cookie Consent</h3>
         <p>
@@ -309,12 +331,15 @@ export default function ConsentManagementArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you design consent management that complies with GDPR and CCPA?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you design consent management that complies with GDPR and CCPA?</HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               Implement jurisdiction-aware consent management that automatically adapts to user location and applicable regulations. GDPR requires explicit opt-in for non-essential processing (advertising, analytics, research)—users must actively check box or click &quot;I agree,&quot; pre-ticked boxes don&apos;t count as valid consent. CCPA requires clear &quot;Do Not Sell My Personal Information&quot; opt-out mechanism—must be easy to find (footer link), easy to execute (one click), and honor global privacy control signals like GPC. Granular consent: separate consent for each purpose (essential, analytics, marketing, research)—don&apos;t bundle into single &quot;accept all&quot; button. Easy withdrawal: withdrawing consent must be as easy as giving consent—one click, no hurdles, no guilt trips, no &quot;are you sure?&quot; nagging. Consent records: store detailed records with timestamp, specific purposes consented, consent form version, user identity, and jurisdiction—retain for statute of limitations period (typically 3-6 years). Preference center: provide centralized dashboard where users can view and manage all consent choices, see what they&apos;ve consented to, and withdraw selectively. The compliance insight: different jurisdictions have different and sometimes conflicting requirements—design system that detects user jurisdiction (IP address, billing address, account settings) and adapts consent flows accordingly, maintain compliance matrix tracking requirements across all jurisdictions where you operate.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

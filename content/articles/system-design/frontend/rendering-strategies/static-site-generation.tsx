@@ -39,15 +39,15 @@ export default function StaticSiteGenerationConciseArticle() {
           to CDNs and served instantly with{" "}
           <Highlight tier="important">no server processing</Highlight>.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SSG represents a modern take on static site architecture. Traditional
           static sites (1990s-2000s) were hand-coded HTML files. Modern SSG
           (2015+) uses build-time rendering with data fetching, component
           frameworks, and dynamic generation from CMSs or databases. The output
           is still static files, but the build process is automated,
           data-driven, and component-based.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The pattern gained popularity with the Jamstack movement (2015+),
           pioneered by platforms like Netlify and Vercel, and tools like Jekyll,
           Hugo, Gatsby, and Next.js. SSG offers the best of all worlds for
@@ -55,14 +55,21 @@ export default function StaticSiteGenerationConciseArticle() {
           interactivity after hydration, plus CDN-level caching and minimal
           hosting costs. However, it requires a rebuild for content updates,
           making it best suited for content that changes infrequently.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Interview framing: SSG is the default for <strong>shared content</strong>{" "}
+          where you can tolerate <strong>update latency</strong>. The staff-level
+          discussion is how you handle freshness (webhooks, ISR, cache
+          invalidation), build scalability (incremental builds), and operational
+          safety (atomic deploys and rollbacks).
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
         <p>Understanding SSG requires grasping several fundamental concepts:</p>
         <ul>
-          <HighlightBlock as="li" tier="important">
+          <HighlightBlock as="li" tier="crucial">
             <strong>Build-Time Rendering:</strong> During{" "}
             <code>npm run build</code>, the framework fetches data from
             APIs/CMSs/databases and generates static HTML for every page. This
@@ -85,18 +92,18 @@ export default function StaticSiteGenerationConciseArticle() {
             page, making it interactive. You get instant load plus
             interactivity.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Incremental Builds:</strong> Modern tools support
             incremental/partial builds, rebuilding only changed pages instead of
             the entire site. This makes SSG viable for large sites (10,000+
             pages).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Revalidation Strategies:</strong> Hybrid approaches like ISR
             (Incremental Static Regeneration) allow updating specific pages
             without full rebuilds, combining SSG benefits with near-real-time
             updates.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -104,7 +111,11 @@ export default function StaticSiteGenerationConciseArticle() {
         <h2>Architecture & Flow</h2>
         <p>The SSG architecture follows this build and deployment pattern:</p>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
+        <HighlightBlock
+          as="div"
+          tier="important"
+          className="my-6 rounded-lg bg-panel-soft p-6"
+        >
           <h3 className="mb-4 text-lg font-semibold">
             SSG Build & Request Flow
           </h3>
@@ -173,7 +184,7 @@ export default function StaticSiteGenerationConciseArticle() {
               </li>
             </ol>
           </div>
-        </div>
+        </HighlightBlock>
 
         <HighlightBlock as="p" tier="crucial">
           The critical advantage is steps 2-3 are blazingly fast (50-200ms
@@ -212,6 +223,14 @@ export default function StaticSiteGenerationConciseArticle() {
           </ul>
         </HighlightBlock>
 
+        <HighlightBlock as="p" tier="important">
+          The staff-level operational detail: build-time rendering turns your
+          content system into part of your deploy pipeline. You typically add
+          safeguards like <strong>build budgets</strong>, dependency caching,
+          and fallback data handling so a transient CMS/API outage doesn’t block
+          every deploy.
+        </HighlightBlock>
+
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/rendering-strategies/ssg-build-flow.svg"
           alt="SSG Build Time Flow"
@@ -248,7 +267,7 @@ export default function StaticSiteGenerationConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Performance</strong>
               </td>
@@ -266,7 +285,7 @@ export default function StaticSiteGenerationConciseArticle() {
                 • Large sites (10k+ pages) require incremental builds
                 <br />• Content staleness until rebuild
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>SEO</strong>
@@ -284,7 +303,7 @@ export default function StaticSiteGenerationConciseArticle() {
                 <br />• User-specific pages not possible
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Development</strong>
               </td>
@@ -302,8 +321,8 @@ export default function StaticSiteGenerationConciseArticle() {
                 • Content updates require rebuild/redeploy
                 <br />• Complex data sourcing at build time
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Infrastructure</strong>
               </td>
@@ -321,8 +340,8 @@ export default function StaticSiteGenerationConciseArticle() {
                 • Can&apos;t handle truly dynamic content
                 <br />• Database/API access only at build time
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Content Updates</strong>
               </td>
@@ -338,7 +357,7 @@ export default function StaticSiteGenerationConciseArticle() {
                 • Not suitable for frequently changing data
                 <br />• Editorial workflow needs build trigger
               </td>
-            </tr>
+            </HighlightBlock>
           </tbody>
         </table>
 
@@ -399,24 +418,24 @@ export default function StaticSiteGenerationConciseArticle() {
         <h2>Best Practices</h2>
         <p>To build performant SSG sites, follow these practices:</p>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Optimize Build Performance:</strong> Use incremental builds
             (Gatsby, Next.js ISR) to rebuild only changed pages. Implement
             parallel data fetching. Cache API responses during build. Target
             build times {"&lt;"}10 minutes for sites with 1000+ pages.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Smart Revalidation Strategies:</strong> Use ISR (Incremental
             Static Regeneration) for semi-dynamic content. Set appropriate
             revalidation times (e.g., 60s for news, 3600s for docs). Trigger
             on-demand revalidation via webhooks from CMS.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Hybrid Rendering:</strong> Combine SSG for static content
             with CSR for dynamic parts. Use SSG for page shell, fetch
             personalized data client-side. Implement fallback pages for
             unpredictable routes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Image Optimization:</strong> Use modern formats (WebP, AVIF)
             with fallbacks. Generate multiple sizes at build time. Implement
@@ -453,11 +472,11 @@ export default function StaticSiteGenerationConciseArticle() {
             retries. Use build logs to identify bottlenecks. Implement build
             size limits.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>SEO Optimization:</strong> Generate sitemaps at build time.
             Create RSS feeds for content. Implement proper meta tags and Open
             Graph. Generate robots.txt and structured data (JSON-LD).
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
@@ -465,25 +484,25 @@ export default function StaticSiteGenerationConciseArticle() {
         <h2>Common Pitfalls</h2>
         <p>Avoid these common mistakes when building SSG applications:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Using SSG for Highly Dynamic Content:</strong> Real-time
             data (stock prices, live sports scores, user dashboards)
             doesn&apos;t fit SSG. Content becomes stale immediately. Use SSR or
             CSR for truly dynamic content. SSG works only when content changes
             infrequently (hours to days).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Implementing Fallback Pages:</strong> User-generated
             content creates unpredictable routes. Without fallback pages, 404s
             occur for new content. Use fallback: &apos;blocking&apos; or
             fallback: true in Next.js to generate pages on first request.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Slow Build Times:</strong> Building 10,000+ pages serially
             takes hours. Implement incremental builds, parallel processing, and
             data caching. Consider ISR to reduce build scope. Monitor and
             optimize slow build steps.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Forgetting About Build Costs:</strong> CI/CD build minutes
             cost money at scale. Optimize build performance. Use incremental
@@ -533,24 +552,24 @@ export default function StaticSiteGenerationConciseArticle() {
         <h2>Real-World Use Cases</h2>
         <p>SSG excels in these scenarios:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Blogs & Content Sites:</strong> Personal blogs, company
             blogs, and news sites where content updates daily or weekly.
             Examples: Smashing Magazine (Gatsby), CSS-Tricks, personal developer
             blogs. Perfect SEO, instant load, minimal cost.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Documentation Sites:</strong> Product docs, API references,
             and technical guides. Examples: React docs, Next.js docs (Next.js
             SSG), Stripe docs. Fast search, excellent SEO, version control
             benefits.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Marketing & Landing Pages:</strong> Product pages, feature
             pages, and campaign sites. Examples: Vercel homepage, Linear
             marketing site. Perfect Lighthouse scores, fast load = better
             conversion, excellent SEO.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>E-commerce Product Catalogs:</strong> Sites with relatively
             stable product catalogs. Examples: Shopify Plus stores with SSG,
@@ -612,7 +631,11 @@ export default function StaticSiteGenerationConciseArticle() {
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="crucial"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">Q: SSG vs SSR - when to use each?</p>
             <p className="mt-2 text-sm">
               A: Use SSG for content that changes infrequently (hours to days)
@@ -622,9 +645,13 @@ export default function StaticSiteGenerationConciseArticle() {
               load (CDN) but stale content. SSR has slower load (server
               processing) but always fresh. ISR bridges the gap.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="important"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">
               Q: How do you handle content updates in SSG?
             </p>
@@ -635,9 +662,13 @@ export default function StaticSiteGenerationConciseArticle() {
               On-demand revalidation via API (Next.js - CMS triggers specific
               page updates). Choose based on update frequency and site size.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="important"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">
               Q: What is Incremental Static Regeneration (ISR)?
             </p>
@@ -649,9 +680,13 @@ export default function StaticSiteGenerationConciseArticle() {
               performance with near-real-time updates. Set revalidate: 60 in
               Next.js getStaticProps to regenerate every 60 seconds.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="important"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">
               Q: How would you optimize SSG build times?
             </p>
@@ -663,14 +698,14 @@ export default function StaticSiteGenerationConciseArticle() {
               monitor and profile slow build steps. Target builds {"&lt;"}10
               minutes for 1000+ page sites.
             </p>
-          </div>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>References & Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://jamstack.org/generators/"
               className="text-accent hover:underline"
@@ -679,8 +714,8 @@ export default function StaticSiteGenerationConciseArticle() {
             >
               Jamstack - Static Site Generators Directory
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://nextjs.org/docs/pages/building-your-application/rendering/static-site-generation"
               className="text-accent hover:underline"
@@ -689,8 +724,8 @@ export default function StaticSiteGenerationConciseArticle() {
             >
               Next.js Documentation - Static Site Generation
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.gatsbyjs.com/docs/conceptual/rendering-options/"
               className="text-accent hover:underline"
@@ -699,8 +734,8 @@ export default function StaticSiteGenerationConciseArticle() {
             >
               Gatsby Documentation - Rendering Options
             </a>
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://docs.astro.build/en/core-concepts/routing/"
               className="text-accent hover:underline"
@@ -709,7 +744,7 @@ export default function StaticSiteGenerationConciseArticle() {
             >
               Astro Documentation - Routing & Static Generation
             </a>
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://www.11ty.dev/docs/"

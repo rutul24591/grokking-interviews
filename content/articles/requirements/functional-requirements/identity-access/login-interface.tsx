@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -33,14 +34,17 @@ export default function LoginInterfaceArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>Login Interface</strong> (also called Sign-in) is the primary authentication
           entry point for existing users to access their accounts. It is one of the most frequently
           used features on any platform and must balance security, convenience, and accessibility.
           Login is often the first interaction users have with your product each session — a
           smooth, secure login flow builds trust, while a broken flow leads to frustration and
           support tickets.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/login-interface-flow.svg"
@@ -48,14 +52,14 @@ export default function LoginInterfaceArticle() {
           caption="Login Interface Flow — showing authentication methods, MFA challenge, session creation, and redirect"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, designing a login interface requires deep
           understanding of authentication protocols (OAuth, SAML, OIDC), session management (token
           handling, refresh rotation), security threats (credential stuffing, phishing, brute
           force, account takeover), and UX patterns that reduce friction while maintaining
           security. The login flow also sets the foundation for the entire session and must
           integrate with broader identity infrastructure (MFA, SSO, passwordless, device trust).
-        </p>
+        </HighlightBlock>
         <p>
           Modern login interfaces have evolved from simple username/password forms to multi-factor
           authentication flows, passwordless options (magic links, WebAuthn/passkeys), biometric
@@ -68,12 +72,15 @@ export default function LoginInterfaceArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Login interface is built on fundamental concepts that determine how users authenticate
           and how sessions are managed. Understanding these concepts is essential for designing
           effective login systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Authentication Methods:</strong> Multiple methods for different user needs:
           Email/Password (traditional, most common), Phone/SMS (OTP via SMS, auto-read on mobile),
           Passwordless (magic links, one-time codes, WebAuthn), Social Login (Google, Facebook,
@@ -81,7 +88,7 @@ export default function LoginInterfaceArticle() {
           trade-offs — email/password is universal but vulnerable to credential stuffing,
           passwordless is secure but requires email/phone access, social login is convenient but
           creates IdP dependency.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Security Requirements:</strong> Rate limiting (per IP: 10/minute, per account:
           5/hour, exponential backoff), generic errors ("Invalid email or password" — not "email
@@ -110,11 +117,14 @@ export default function LoginInterfaceArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Login architecture separates authentication from session management, enabling flexible
           authentication methods with centralized session handling. This architecture is critical
           for supporting diverse login options while maintaining security.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/login-security.svg"
@@ -122,14 +132,14 @@ export default function LoginInterfaceArticle() {
           caption="Login Security Layers — showing threats, defenses, monitoring, rate limiting, and TLS protection"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Login flow: User navigates to login page, enters credentials (email/password, phone/SMS,
           social, SSO). Frontend validates format (email format, required fields), submits to
           backend. Backend validates credentials (constant-time comparison for passwords), checks
           rate limits, triggers MFA if required (new device, high-risk), creates session (access
           token + refresh token), sets cookies (HttpOnly, Secure, SameSite), redirects to
           dashboard. On new device, send notification email with "Was this you?" link.
-        </p>
+        </HighlightBlock>
         <p>
           Security architecture includes: rate limiting (multi-layer — per IP, per account, per
           device), credential stuffing detection (breach database checks, behavioral analysis),
@@ -158,25 +168,28 @@ export default function LoginInterfaceArticle() {
 
       <section>
         <h2>Trade-offs &amp; Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Designing login interface involves trade-offs between security, user experience, and
           operational complexity. Understanding these trade-offs is essential for making informed
           architecture decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Email vs Username for Login</h3>
           <ul className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Email:</strong> Unique by nature (no collisions), users don't forget it,
               required for communication (password reset, notifications), enables seamless password
               reset. Limitation: users may have multiple emails.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Username:</strong> Can be memorable, branding opportunity. Limitation: can be
               forgotten, aren't unique across platforms, create support burden (username taken,
               username recovery).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Recommendation:</strong> Email is preferred for most applications. Support
               email aliases (+ addressing, dots in Gmail) for flexibility. Allow both email and
@@ -226,20 +239,23 @@ export default function LoginInterfaceArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementing login interface requires following established best practices to ensure
           security, usability, and operational effectiveness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement rate limiting at multiple levels (IP, account, device) — 10/minute per IP,
           5/hour per account, exponential backoff (1s, 2s, 4s, 8s). Use constant-time comparison
           for password validation — prevent timing attacks. Log all authentication events for
           audit trails — detect fraud patterns. Implement account lockout with progressive delays
           — not hard lockout (prevents DoS). Use secure password hashing (Argon2id, bcrypt, scrypt)
           — never store plaintext passwords.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
         <p>
@@ -272,22 +288,25 @@ export default function LoginInterfaceArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Avoid these common mistakes when implementing login interface to ensure secure, usable,
           and maintainable login systems.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Revealing user existence:</strong> Error messages like "email not found" or
             "wrong password" allow attackers to enumerate valid emails.{" "}
             <strong>Fix:</strong> Use generic "Invalid email or password" message for all
             authentication failures. Same response time for all cases (prevent timing attacks).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No rate limiting:</strong> Allows brute force and credential stuffing attacks.{" "}
             <strong>Fix:</strong> Implement rate limiting per IP (10/min), per account (5/hour),
             with exponential backoff.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Storing passwords in plaintext:</strong> Catastrophic if database is
             compromised. <strong>Fix:</strong> Use Argon2id or bcrypt with appropriate cost
@@ -333,16 +352,19 @@ export default function LoginInterfaceArticle() {
 
       <section>
         <h2>Real-world Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Login interface is critical for user access. Here are real-world implementations from
           production systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Platform (Shopify)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> High cart abandonment during checkout due to login friction.
           1M logins/day during peak sales.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Implemented guest checkout + social login (Google, Facebook,
           Apple). Added "remember me" with 30-day sessions. Passwordless option for returning
@@ -435,14 +457,17 @@ export default function LoginInterfaceArticle() {
 
       <section>
         <h2>Interview Questions</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These questions test understanding of login interface design, implementation, and
           operational concerns.
-        </p>
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you prevent credential stuffing attacks?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How do you prevent credential stuffing attacks?</HighlightBlock>
             <p className="mt-2 text-sm">
               A: Multi-layer defense: (1) Rate limiting per IP and account with exponential
               backoff. (2) CAPTCHA after 3-5 failed attempts. (3) Check passwords against breach

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,7 @@ export default function WebRTCArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           <strong>WebRTC (Web Real-Time Communication)</strong> is a collection
           of browser APIs and protocols that enable peer-to-peer audio, video,
           and arbitrary data exchange directly between browsers without
@@ -52,8 +53,8 @@ export default function WebRTCArticle() {
           configurable reliability. Together, these APIs power video
           conferencing, screen sharing, file transfer, peer-to-peer gaming,
           and IoT device communication entirely within the browser.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The distinguishing characteristic of WebRTC is its peer-to-peer
           architecture. Unlike WebSockets or SSE where all communication flows
           through a server, WebRTC establishes direct connections between
@@ -67,8 +68,8 @@ export default function WebRTCArticle() {
           (Session Traversal Utilities for NAT) servers to discover public IP
           addresses and TURN (Traversal Using Relays around NAT) servers as
           fallback relays when direct connectivity is impossible.
-        </p>
-        <p className="mb-4">
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A critical concept is that WebRTC requires a <strong>signaling
           server</strong> to coordinate the initial connection setup, even
           though the media itself flows peer-to-peer. The signaling server
@@ -80,7 +81,7 @@ export default function WebRTCArticle() {
           bidirectional channel. This separation of signaling from media
           transport is a deliberate architectural choice that gives developers
           flexibility while keeping the media path optimized for low latency.
-        </p>
+        </HighlightBlock>
         <p>
           For staff and principal engineers, WebRTC expertise extends into
           scaling territory. Pure peer-to-peer works for 1:1 calls, but group
@@ -111,7 +112,7 @@ export default function WebRTCArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           The Signaling Process
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Connection establishment follows an offer/answer model. The
           initiating peer creates an SDP offer via{" "}
           <code>RTCPeerConnection.createOffer()</code>, sets it as its local
@@ -124,12 +125,12 @@ export default function WebRTCArticle() {
           resolutions and frame rates, DTLS fingerprints for encryption, and
           ICE credentials. Once both sides have exchanged SDPs, they begin the
           ICE candidate gathering process to find a viable network path.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           ICE, STUN, and TURN
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           ICE coordinates the NAT traversal process by gathering candidate
           addresses from multiple sources: host candidates (local IP addresses),
           server-reflexive candidates (public IP addresses discovered via STUN
@@ -144,12 +145,12 @@ export default function WebRTCArticle() {
           bandwidth-intensive, but it is the only option when both peers are
           behind symmetric NATs that block direct connectivity (approximately
           10-15% of connections in practice).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Media Streams and Tracks
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           The <code>getUserMedia()</code> API returns a{" "}
           <code>MediaStream</code> containing one or more{" "}
           <code>MediaStreamTrack</code> objects (typically one audio and one
@@ -164,7 +165,7 @@ export default function WebRTCArticle() {
           <code>insertable streams</code> for custom processing (background
           blur, noise suppression via <code>AudioWorklet</code>), and
           simulcast for sending multiple quality layers simultaneously.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           RTCDataChannel
@@ -212,13 +213,19 @@ export default function WebRTCArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Production WebRTC architectures for group communication use SFU
           servers as the central media routing layer. The signaling server
           coordinates room membership and connection setup, while the SFU
           handles the performance-critical task of receiving, selecting, and
           forwarding media streams with minimal latency.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          System-design depth comes from the control plane vs data plane split:
+          signaling and auth are HTTP-friendly, but media routing is a
+          low-latency, bandwidth-heavy pipeline that demands congestion control
+          and adaptation (simulcast/SVC).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/real-time-features/webrtc-diagram-2.svg"
@@ -226,7 +233,7 @@ export default function WebRTCArticle() {
           caption="Figure 2: SFU-based group video architecture with simulcast and bandwidth adaptation"
         />
 
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           In the SFU architecture, each participant establishes a single
           WebRTC connection to the SFU server. Participants send simulcast
           streams — the same video encoded at multiple quality levels (high,
@@ -241,7 +248,7 @@ export default function WebRTCArticle() {
           detection (forwarding only active speakers&apos; video), bandwidth
           estimation feedback to senders, and recording by writing streams to
           storage.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -251,15 +258,15 @@ export default function WebRTCArticle() {
         <h2 className="mb-4 text-2xl font-bold">
           Trade-offs &amp; Comparisons
         </h2>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           WebRTC architectures involve trade-offs between latency, bandwidth
           efficiency, server cost, and scalability. The following comparison
           evaluates the three primary topologies.
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-theme text-sm">
             <thead>
-              <tr className="bg-panel">
+              <HighlightBlock as="tr" tier="important">
                 <th className="border border-theme px-4 py-2 text-left">
                   Aspect
                 </th>
@@ -272,10 +279,10 @@ export default function WebRTCArticle() {
                 <th className="border border-theme px-4 py-2 text-left">
                   MCU
                 </th>
-              </tr>
+              </HighlightBlock>
             </thead>
             <tbody>
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="border border-theme px-4 py-2 font-medium">
                   Server Cost
                 </td>
@@ -288,7 +295,7 @@ export default function WebRTCArticle() {
                 <td className="border border-theme px-4 py-2">
                   High (transcoding and mixing)
                 </td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="border border-theme px-4 py-2 font-medium">
                   Upload Bandwidth
@@ -370,24 +377,24 @@ export default function WebRTCArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Always deploy both STUN and TURN servers — STUN handles the
             majority of connections (85-90%), but without TURN, users behind
             symmetric NATs or restrictive corporate firewalls cannot connect
             at all. Budget for TURN bandwidth costs accordingly
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Enable simulcast (sending multiple quality layers) for group calls
             — this allows the SFU to adapt quality per-recipient based on their
             bandwidth and viewport size without requiring the sender to
             re-encode
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Implement bandwidth estimation feedback loops between the SFU and
             clients — when a recipient&apos;s bandwidth drops, the SFU should
             switch to a lower simulcast layer rather than letting packets
             accumulate and cause freezing
-          </li>
+          </HighlightBlock>
           <li>
             Use <code>replaceTrack()</code> for camera/screen share switching
             instead of removing and re-adding tracks — this avoids SDP
@@ -422,25 +429,25 @@ export default function WebRTCArticle() {
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
         <ul className="list-disc space-y-2 pl-6">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>No TURN server</strong> — the most common production issue.
             Direct P2P connectivity fails for 10-15% of users behind symmetric
             NATs. Without a TURN relay fallback, these users simply cannot
             connect, and the failure is silent — no error is thrown, ICE just
             fails to find a path
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring permission handling</strong> — camera/microphone
             access requires user permission. Failing to handle the
             NotAllowedError gracefully (showing a blank video with no
             explanation) is a common UX failure in WebRTC applications
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Full mesh for group calls</strong> — implementing N:N
             peer connections for group video seems simpler than deploying an
             SFU, but it fails at 5+ participants due to upstream bandwidth
             exhaustion. Each participant must encode and upload N-1 streams
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not implementing ICE restart</strong> — mobile users
             frequently switch between WiFi and cellular. Without ICE restart,
@@ -473,7 +480,7 @@ export default function WebRTCArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Zoom: Global Video Conferencing
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
           Zoom&apos;s web client uses WebRTC with a globally distributed SFU
           infrastructure. Their architecture features regional media servers
           that participants connect to based on geographic proximity,
@@ -487,12 +494,12 @@ export default function WebRTCArticle() {
           end-to-end encryption (encrypting media before it reaches the SFU)
           and AI-powered noise suppression that runs in a Web Worker using
           WebAssembly.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Discord: Low-Latency Voice and Screen Sharing
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Discord uses WebRTC for voice channels and screen sharing across
           its 150+ million monthly active users. Their SFU infrastructure
           (built on custom C++ media servers) is optimized for the gaming use
@@ -506,12 +513,12 @@ export default function WebRTCArticle() {
           For large voice channels (100+ participants), they implemented a
           tiered architecture where only the most recent speakers&apos;
           streams are forwarded to reduce server load.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Miro: Real-Time Whiteboard Collaboration
         </h3>
-        <p className="mb-4">
+        <HighlightBlock as="p" tier="important">
           Miro&apos;s collaborative whiteboard combines WebRTC data channels
           with their real-time synchronization layer. While the primary board
           synchronization uses WebSocket, Miro leverages WebRTC data channels
@@ -523,7 +530,7 @@ export default function WebRTCArticle() {
           SFU-based WebRTC architecture that integrates with the board session,
           allowing participants to see who is speaking and where they are
           looking on the board simultaneously.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/real-time-features/webrtc-diagram-3.svg"
@@ -537,14 +544,17 @@ export default function WebRTCArticle() {
           ============================================================ */}
       <section className="mb-12">
         <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with (1) decision criteria and trade-offs, (2) failure modes and mitigations, and (3) how you would instrument/operate the solution at scale.
+        </HighlightBlock>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: Walk through the WebRTC connection establishment process from
               start to first media frame.
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important">
               1) Both peers connect to the signaling server (WebSocket). 2) Peer
               A creates an RTCPeerConnection, calls getUserMedia for local
               media, adds tracks to the connection. 3) Peer A calls
@@ -557,14 +567,14 @@ export default function WebRTCArticle() {
               signaling. 7) Connectivity checks run on candidate pairs. 8) The
               first successful pair becomes the media path. 9) DTLS handshake
               establishes encryption. 10) SRTP media begins flowing.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important">
               Q: Why is a TURN server necessary if STUN already provides NAT
               traversal?
-            </p>
+            </HighlightBlock>
             <p className="mt-2 text-sm">
               STUN only discovers the client&apos;s public IP/port mapping and
               works when both peers&apos; NATs allow incoming packets from the

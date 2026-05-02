@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,21 +24,24 @@ export default function UnionFindArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <h2 className="text-2xl font-bold mt-8 mb-4">1. Definition &amp; Context</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: define the constraint/goal and name the 2–3 variables that actually drive design decisions in production.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Union-Find (also called Disjoint Set Union, or DSU) is a data structure for maintaining
         a partition of a set into disjoint subsets and supporting two operations: <em>find</em>,
         which returns a canonical representative of the subset containing a given element, and
         <em>union</em>, which merges the subsets containing two elements. Built on the simplest
         of structures — a parent-pointer array — Union-Find achieves near-constant amortised
         time per operation when path compression and union by rank are applied together.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         Recognition signals are concrete. &quot;Are these two elements in the same group?&quot;,
         &quot;merge these accounts&quot;, &quot;edges arrive online; how many components remain?&quot;,
         &quot;build the minimum spanning tree&quot;, &quot;detect a cycle in this undirected
         graph&quot;. Whenever the question is about equivalence classes that grow over time
         with merges, Union-Find is the right tool.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         The structural insight is that the data structure carries no information about
         individual edges, only about which elements are equivalent. This makes it weaker than a
@@ -56,20 +60,23 @@ export default function UnionFindArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">2. Core Concepts</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: show you understand the primitives and which ones matter at scale (latency, correctness, UX, cost).
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Parent-pointer forest.</strong> Each subset is represented as a tree where every
         node points to its parent and the root points to itself. The root&apos;s identity is the
         canonical name of the subset. Initially every element is its own subset (a tree of size
         one), so parent[i] = i for all i.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>find with path compression.</strong> Walking from a node up to the root takes
         time proportional to the depth of the tree. Path compression makes every node along the
         walk point directly to the root, flattening the tree for future queries. The recursive
         one-liner — parent[x] = find(parent[x]); return parent[x] — is the canonical
         implementation. Iterative versions split into two passes: walk to the root, then walk
         again to overwrite each parent.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>union by rank (or size).</strong> Without this, repeated unions can produce a
         chain-shaped tree of depth O(n), and find degenerates to O(n). Union by rank attaches
@@ -109,19 +116,22 @@ export default function UnionFindArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/union-find-diagram-1.svg" alt="Union-Find operations and use cases" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">3. Architecture &amp; Flow</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the end-to-end flow, where state lives, and where you add backpressure, caching, and observability.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         The standard implementation: parent and rank arrays initialised so parent[i] = i and
         rank[i] = 0. find is recursive with path compression. union calls find on both
         arguments, returns false if they share a root, otherwise attaches the smaller-rank tree
         under the larger-rank tree, breaking ties by incrementing the rank of the absorbed
         root.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         For Kruskal&apos;s MST (Leetcode 1584, 1135): sort all edges by weight ascending. Walk
         the sorted list; for each edge (u, v, w), call union(u, v); if it returns true, add w
         to the running MST cost. Stop early when the number of components reaches one. Time
         O(E log E) dominated by the sort.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         For cycle detection in an undirected graph (Leetcode 261 Graph Valid Tree, 684
         Redundant Connection): for each edge, call union; the first union that returns false
@@ -149,20 +159,23 @@ export default function UnionFindArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">4. Trade-offs &amp; Comparisons</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Decision rule: choose the approach that makes failure modes explicit and keeps the common path fast, while keeping correctness boundaries clear.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Union-Find vs. BFS / DFS for connectivity.</strong> BFS / DFS is right for
         static graphs with offline queries (compute components once, answer queries). Union-Find
         is right for online edge insertions where queries interleave with insertions, or when
         only the connectivity relation is needed. Union-Find cannot delete edges efficiently —
         for that, more complex link-cut trees are required.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Union-Find vs. adjacency list with hash-set component IDs.</strong> A naive
         connectivity tracker assigns each node a component ID and re-labels on merge. Merging
         two components of sizes a and b requires re-labelling all elements in the smaller — O(min
         (a, b)) per union, total O(n log n) by the &quot;small-to-large&quot; charging argument.
         Union-Find achieves the same bound but with simpler code and inverse Ackermann constants.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Path compression alone vs. union by rank alone.</strong> Path compression alone
         gives O(log n) amortised per find. Union by rank alone gives O(log n) per find without
@@ -189,15 +202,18 @@ export default function UnionFindArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/union-find-diagram-2.svg" alt="Union-Find implementation template" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">5. Best Practices</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: list the 3–5 non-negotiables you would enforce with tests, budgets, and monitoring.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Always combine path compression and union by rank.</strong> Half the
         optimisation provides log n; both together provide α(n). The cost is two extra arrays.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Implement union to return a boolean.</strong> True for &quot;actually merged&quot;,
         false for &quot;already in the same set&quot;. The boolean is the cycle-detection signal
         and the component-count update trigger.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Track component count if the question asks.</strong> Initialise count = n.
         Decrement count on each true return from union.
@@ -221,14 +237,17 @@ export default function UnionFindArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">6. Common Pitfalls</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: call out the top failure modes teams hit in production and how you prevent/mitigate them.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Forgetting path compression.</strong> Without it, find can be O(n) on
         adversarial inputs. The full Union-Find guarantee requires both optimisations.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>Forgetting union by rank.</strong> Same problem from the other direction.
         Without rank, repeated unions can produce a chain.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>Recursion stack overflow.</strong> Recursive find on a long uncompressed path
         can exceed the recursion limit. Either compress aggressively from the start, or write
@@ -255,16 +274,19 @@ export default function UnionFindArticle() {
       </p>
 
       <h2 className="text-2xl font-bold mt-8 mb-4">7. Real-World Use Cases (Canonical Leetcode)</h2>
-      <p className="mb-4">
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: connect the design to measurable outcomes (CWV, conversion, error rates) and operational practices.
+        </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>547. Number of Provinces.</strong> Given an adjacency matrix of friendships,
         count the number of connected components. Union pairs that are friends; count distinct
         roots.
-      </p>
-      <p className="mb-4">
+      </HighlightBlock>
+      <HighlightBlock as="p" tier="important" className="mb-4">
         <strong>200. Number of Islands.</strong> Union-Find as an alternative to BFS / DFS.
         Each land cell is its own component; union with each adjacent land cell. Count
         components.
-      </p>
+      </HighlightBlock>
       <p className="mb-4">
         <strong>305. Number of Islands II.</strong> The streaming version. After each addLand,
         report the current number of islands. BFS / DFS would have to recompute on every
@@ -307,14 +329,17 @@ export default function UnionFindArticle() {
       <ArticleImage src="/diagrams/other/leetcode/patterns/union-find-diagram-3.svg" alt="Canonical Union-Find Leetcode problems" />
 
       <h2 className="text-2xl font-bold mt-8 mb-4">8. Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.
+        </HighlightBlock>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
-        <li><strong>Why is Union-Find amortised α(n)?</strong> Path compression flattens trees
+        <HighlightBlock as="li" tier="important"><strong>Why is Union-Find amortised α(n)?</strong> Path compression flattens trees
         each find; union by rank keeps trees shallow. Together they bound the amortised cost
         per operation by α(n), the inverse Ackermann function — for any realistic n, at most
-        4. The proof is Tarjan&apos;s, technical, but the result is widely cited.</li>
-        <li><strong>Why does the union return a boolean?</strong> True signals the merge happened
+        4. The proof is Tarjan&apos;s, technical, but the result is widely cited.</HighlightBlock>
+        <HighlightBlock as="li" tier="important"><strong>Why does the union return a boolean?</strong> True signals the merge happened
         (decrement component count). False signals the elements were already connected — the
-        edge closed a cycle.</li>
+        edge closed a cycle.</HighlightBlock>
         <li><strong>How does Union-Find handle string keys?</strong> Map strings to integer
         indices in a separate hashmap. The arrays remain integer-indexed.</li>
         <li><strong>Why is Union-Find better than DFS for online connectivity?</strong> DFS would
